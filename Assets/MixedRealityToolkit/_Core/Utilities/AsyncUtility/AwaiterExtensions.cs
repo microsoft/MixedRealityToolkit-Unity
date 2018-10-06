@@ -91,11 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async
             return awaiter;
         }
 
-        public static SimpleCoroutineAwaiter<WWW> GetAwaiter(this WWW instruction)
-        {
-            return GetAwaiterReturnSelf(instruction);
-        }
-
         public static SimpleCoroutineAwaiter<AssetBundle> GetAwaiter(this AssetBundleCreateRequest instruction)
         {
             var awaiter = new SimpleCoroutineAwaiter<AssetBundle>();
@@ -328,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async
                 }
 
                 result.AppendLine();
-                return "Unity Coroutine Object Trace: " + result;
+                return $"Unity Coroutine Object Trace: {result}";
             }
 
             private static List<Type> GenerateObjectTrace(IEnumerable<IEnumerator> enumerators)

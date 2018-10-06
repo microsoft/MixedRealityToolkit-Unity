@@ -15,9 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
     /// </summary>
     public class TeleportHotSpot : BaseFocusHandler, IMixedRealityTeleportHotSpot
     {
-        private static IMixedRealityTeleportSystem teleportSystem = null;
-        protected static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = MixedRealityManager.Instance.GetManager<IMixedRealityTeleportSystem>());
-
         #region IMixedRealityFocusHandler Implementation
 
         /// <inheritdoc />
@@ -33,8 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
                 if (eventData.Pointer.IsInteractionEnabled)
                 {
-                    TeleportSystem.RaiseTeleportCanceled(eventData.Pointer, this);
-                    TeleportSystem.RaiseTeleportRequest(eventData.Pointer, this);
+                    MixedRealityManager.TeleportSystem?.RaiseTeleportCanceled(eventData.Pointer, this);
+                    MixedRealityManager.TeleportSystem?.RaiseTeleportRequest(eventData.Pointer, this);
                 }
             }
             else if (eventData.OldFocusedObject == gameObject)
@@ -43,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
                 if (eventData.Pointer.IsInteractionEnabled)
                 {
-                    TeleportSystem.RaiseTeleportCanceled(eventData.Pointer, this);
+                    MixedRealityManager.TeleportSystem?.RaiseTeleportCanceled(eventData.Pointer, this);
                 }
             }
         }

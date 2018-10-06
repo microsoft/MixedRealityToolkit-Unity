@@ -1,0 +1,64 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
+using UnityEditor;
+using UnityEngine;
+
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
+{
+    [CustomEditor(typeof(MixedRealityDiagnosticsProfile))]
+    public class MixedRealityDiagnosticsSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    {
+        private SerializedProperty showCpu;
+        private SerializedProperty showFps;
+        private SerializedProperty showMemory;
+        private SerializedProperty visible;
+
+        private void OnEnable()
+        {
+            if (!CheckMixedRealityManager(false))
+            {
+                return;
+            }
+
+            showCpu = serializedObject.FindProperty("showCpu");
+            showFps = serializedObject.FindProperty("showFps");
+            showMemory = serializedObject.FindProperty("showMemory");
+            visible = serializedObject.FindProperty("visible");
+        }
+
+        public override void OnInspectorGUI()
+        {
+            RenderMixedRealityToolkitLogo();
+            if (!CheckMixedRealityManager())
+            {
+                return;
+            }
+
+            if (GUILayout.Button("Back to Configuration Profile"))
+            {
+                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+            }
+
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                GUI.enabled = false;
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Diagnostic Visualization Options", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Diagnostic visualizations can help monitor system resources and performance inside an application.", MessageType.Info);
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(visible);
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(showCpu);
+            EditorGUILayout.PropertyField(showFps);
+            EditorGUILayout.PropertyField(showMemory);
+        }
+    }
+}

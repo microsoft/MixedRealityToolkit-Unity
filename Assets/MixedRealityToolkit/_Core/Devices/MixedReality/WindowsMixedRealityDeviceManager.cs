@@ -201,8 +201,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         private static WsaGestureSettings WSAGestureSettings => (WsaGestureSettings)gestureSettings;
 
         private static GestureRecognizer navigationGestureRecognizer;
-        private static WsaGestureSettings WSANavigationSettings => (WsaGestureSettings)NavigationSettings;
-        private static WsaGestureSettings WSARailsNavigationSettings => (WsaGestureSettings)RailsNavigationSettings;
+        private static WsaGestureSettings WSANavigationSettings => (WsaGestureSettings)navigationSettings;
+        private static WsaGestureSettings WSARailsNavigationSettings => (WsaGestureSettings)railsNavigationSettings;
 
         #region IMixedRealityDeviceManager Interface
 
@@ -211,14 +211,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         {
             if (!Application.isPlaying) { return; }
 
+            RegisterGestureEvents();
+            RegisterNavigationEvents();
+
             if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile != null)
             {
                 var gestureProfile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile;
-                gestureSettings = gestureProfile.ManipulationGestures;
-                navigationSettings = gestureProfile.NavigationGestures;
-                useRailsNavigation = gestureProfile.UseRailsNavigation;
-                railsNavigationSettings = gestureProfile.RailsNavigationGestures;
+                GestureSettings = gestureProfile.ManipulationGestures;
+                NavigationSettings = gestureProfile.NavigationGestures;
+                RailsNavigationSettings = gestureProfile.RailsNavigationGestures;
+                UseRailsNavigation = gestureProfile.UseRailsNavigation;
 
                 for (int i = 0; i < gestureProfile.Gestures.Length; i++)
                 {
@@ -239,9 +242,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 }
             }
 
-            RegisterGestureEvents();
-            RegisterNavigationEvents();
-
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
             InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
@@ -258,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 if (controller != null)
                 {
                     controller.UpdateController(states[i]);
-                    InputSystem.RaiseSourceDetected(controller.InputSource, controller);
+                    MixedRealityManager.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                 }
             }
 
@@ -352,15 +352,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <summary>
         /// Retrieve the source controller from the Active Store, or create a new device and register it
         /// </summary>
-        /// <param name="interactionSourceState">Source State provided by the SDK</param>
+        /// <param name="interactionSource">Source State provided by the SDK</param>
         /// <param name="addController">Should the Source be added as a controller if it isn't found?</param>
         /// <returns>New or Existing Controller Input Source</returns>
-        private WindowsMixedRealityController GetController(InteractionSource interactionSourceState, bool addController = true)
+        private WindowsMixedRealityController GetController(InteractionSource interactionSource, bool addController = true)
         {
             //If a device is already registered with the ID provided, just return it.
-            if (activeControllers.ContainsKey(interactionSourceState.id))
+            if (activeControllers.ContainsKey(interactionSource.id))
             {
-                var controller = activeControllers[interactionSourceState.id] as WindowsMixedRealityController;
+                var controller = activeControllers[interactionSource.id] as WindowsMixedRealityController;
                 Debug.Assert(controller != null);
                 return controller;
             }
@@ -368,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             if (!addController) { return null; }
 
             Handedness controllingHand;
-            switch (interactionSourceState.handedness)
+            switch (interactionSource.handedness)
             {
                 default:
                     controllingHand = Handedness.None;
@@ -381,9 +381,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                     break;
             }
 
-            var pointers = interactionSourceState.supportsPointing ? RequestPointers(typeof(WindowsMixedRealityController), controllingHand) : null;
-            string nameModifier = controllingHand == Handedness.None ? "Hand" : controllingHand.ToString();
-            var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers);
+            var pointers = interactionSource.supportsPointing ? RequestPointers(typeof(WindowsMixedRealityController), controllingHand) : null;
+            string nameModifier = controllingHand == Handedness.None ? interactionSource.kind.ToString() : controllingHand.ToString();
+            var inputSource = MixedRealityManager.InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers);
             var detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
 
             if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityController)))
@@ -398,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
 
-            activeControllers.Add(interactionSourceState.id, detectedController);
+            activeControllers.Add(interactionSource.id, detectedController);
             return detectedController;
         }
 
@@ -412,7 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
             if (controller != null)
             {
-                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                MixedRealityManager.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
             }
 
             activeControllers.Remove(interactionSourceState.source.id);
@@ -432,7 +432,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
             if (controller != null)
             {
-                InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                MixedRealityManager.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
             }
 
             controller?.UpdateController(args.state);
@@ -483,7 +483,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var controller = GetController(args.source, false);
             if (controller != null)
             {
-                InputSystem?.RaiseGestureStarted(controller, holdAction);
+                MixedRealityManager.InputSystem?.RaiseGestureStarted(controller, holdAction);
             }
         }
 
@@ -492,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var controller = GetController(args.source, false);
             if (controller != null)
             {
-                InputSystem.RaiseGestureCompleted(controller, holdAction);
+                MixedRealityManager.InputSystem.RaiseGestureCompleted(controller, holdAction);
             }
         }
 
@@ -501,7 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var controller = GetController(args.source, false);
             if (controller != null)
             {
-                InputSystem.RaiseGestureCanceled(controller, holdAction);
+                MixedRealityManager.InputSystem.RaiseGestureCanceled(controller, holdAction);
             }
         }
 
@@ -510,7 +510,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var controller = GetController(args.source, false);
             if (controller != null)
             {
-                InputSystem.RaiseGestureStarted(controller, manipulationAction);
+                MixedRealityManager.InputSystem.RaiseGestureStarted(controller, manipulationAction);
             }
         }
 
@@ -519,7 +519,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var controller = GetController(args.source, false);
             if (controller != null)
             {
-                InputSystem.RaiseGestureUpdated(controller, manipulationAction, args.cumulativeDelta);
+                MixedRealityManager.InputSystem.RaiseGestureUpdated(controller, manipulationAction, args.cumulativeDelta);
             }
         }
 
@@ -528,7 +528,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var controller = GetController(args.source, false);
             if (controller != null)
             {
-                InputSystem.RaiseGestureCompleted(controller, manipulationAction, args.cumulativeDelta);
+                MixedRealityManager.InputSystem.RaiseGestureCompleted(controller, manipulationAction, args.cumulativeDelta);
             }
         }
 
@@ -537,7 +537,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var controller = GetController(args.source, false);
             if (controller != null)
             {
-                InputSystem.RaiseGestureCanceled(controller, manipulationAction);
+                MixedRealityManager.InputSystem.RaiseGestureCanceled(controller, manipulationAction);
             }
         }
 
@@ -550,7 +550,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var controller = GetController(args.source, false);
             if (controller != null)
             {
-                InputSystem.RaiseGestureStarted(controller, navigationAction);
+                MixedRealityManager.InputSystem.RaiseGestureStarted(controller, navigationAction);
             }
         }
 
@@ -559,7 +559,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var controller = GetController(args.source, false);
             if (controller != null)
             {
-                InputSystem.RaiseGestureUpdated(controller, navigationAction, args.normalizedOffset);
+                MixedRealityManager.InputSystem.RaiseGestureUpdated(controller, navigationAction, args.normalizedOffset);
             }
         }
 
@@ -568,7 +568,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var controller = GetController(args.source, false);
             if (controller != null)
             {
-                InputSystem.RaiseGestureCompleted(controller, navigationAction, args.normalizedOffset);
+                MixedRealityManager.InputSystem.RaiseGestureCompleted(controller, navigationAction, args.normalizedOffset);
             }
         }
 
@@ -577,7 +577,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var controller = GetController(args.source, false);
             if (controller != null)
             {
-                InputSystem.RaiseGestureCanceled(controller, navigationAction);
+                MixedRealityManager.InputSystem.RaiseGestureCanceled(controller, navigationAction);
             }
         }
 

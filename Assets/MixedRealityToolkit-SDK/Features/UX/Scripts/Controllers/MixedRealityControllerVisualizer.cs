@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using UnityEngine;
 
@@ -11,9 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
     /// The Mixed Reality Visualization component is primarily responsible for synchronizing the user's current input with controller models.
     /// </summary>
     /// <seealso cref="Core.Definitions.Devices.MixedRealityControllerMappingProfile"/>
-    public class MixedRealityControllerVisualizer : ControllerPoseSynchronizer
+    public class MixedRealityControllerVisualizer : ControllerPoseSynchronizer, IMixedRealityControllerVisualizer
     {
         // TODO wire up input actions to controller transform nodes / animations
+
+        /// <inheritdoc />
+        public GameObject GameObjectProxy => gameObject;
 
         #region IMixedRealityInputHandler Implementation
 

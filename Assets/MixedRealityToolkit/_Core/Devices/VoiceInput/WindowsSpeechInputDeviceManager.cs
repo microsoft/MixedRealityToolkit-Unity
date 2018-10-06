@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
 
-            InputSource = InputSystem?.RequestNewGenericInputSource("Windows Speech Input Source");
+            InputSource = MixedRealityManager.InputSystem?.RequestNewGenericInputSource("Windows Speech Input Source");
 
             var newKeywords = new string[Commands.Length];
 
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             {
                 if (Commands[i].Keyword == text)
                 {
-                    InputSystem.RaiseSpeechCommandRecognized(InputSource, Commands[i].Action, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, text);
+                    MixedRealityManager.InputSystem.RaiseSpeechCommandRecognized(InputSource, Commands[i].Action, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, text);
                     break;
                 }
             }

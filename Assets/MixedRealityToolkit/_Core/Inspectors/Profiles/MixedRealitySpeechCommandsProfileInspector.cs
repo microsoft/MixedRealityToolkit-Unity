@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealitySpeechCommandsProfile))]
     public class MixedRealitySpeechCommandsProfileInspector : MixedRealityBaseConfigurationProfileInspector
@@ -67,7 +68,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
             }
 
-            EditorGUILayout.Space();
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                GUI.enabled = false;
+            }
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);

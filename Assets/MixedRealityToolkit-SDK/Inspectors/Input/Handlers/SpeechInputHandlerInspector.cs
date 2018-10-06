@@ -28,21 +28,35 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 
             keywordsProperty = serializedObject.FindProperty("keywords");
             persistentKeywordsProperty = serializedObject.FindProperty("persistentKeywords");
-            registeredKeywords = RegisteredKeywords().Distinct().ToArray();
+
+            if (CheckMixedRealityManager(false))
+            {
+                registeredKeywords = RegisteredKeywords().Distinct().ToArray();
+            }
         }
 
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            serializedObject.Update();
+            if (!CheckMixedRealityManager())
+            {
+                return;
+            }
+
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
 
             if (registeredKeywords == null || registeredKeywords.Length == 0)
             {
-
+                registeredKeywords = RegisteredKeywords().Distinct().ToArray();
                 EditorGUILayout.HelpBox("No keywords registered.\n\nKeywords can be registered via Speech Commands Profile on the Mixed Reality Manager's Configuration Profile.", MessageType.Error);
                 return;
             }
 
+            serializedObject.Update();
             EditorGUILayout.PropertyField(persistentKeywordsProperty);
 
             ShowList(keywordsProperty);
@@ -136,8 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 
         private static IEnumerable<string> RegisteredKeywords()
         {
-            if (!MixedRealityManager.HasActiveProfile ||
-                !MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
                 !MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled ||
                  MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
             {

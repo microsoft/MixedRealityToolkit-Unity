@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Registered Components Profile", fileName = "MixedRealityRegisteredComponentsProfile", order = (int)CreateProfileMenuItemIndices.RegisteredComponents)]
-    public class MixedRealityRegisteredComponentsProfile : ScriptableObject
+    public class MixedRealityRegisteredComponentsProfile : BaseMixedRealityProfile
     {
         [SerializeField]
         private MixedRealityComponentConfiguration[] configurations = null;
