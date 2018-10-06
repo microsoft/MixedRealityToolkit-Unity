@@ -1,10 +1,11 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
@@ -146,6 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 }
             }
 #endif
+            EnsureMixedRealityRequirements();
 
             if (ActiveProfile.IsCameraProfileEnabled)
             {
@@ -154,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                     CameraCache.Main.transform.root.DontDestroyOnLoad();
                 }
 
-                if (MixedRealityCameraProfile.IsOpaque)
+                if (ActiveProfile.CameraProfile.IsOpaque)
                 {
                     ActiveProfile.CameraProfile.ApplySettingsForOpaqueDisplay();
                 }
@@ -175,18 +177,44 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 #endif
 
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
+
+                if (InputSystem == null)
+                {
+                    Debug.LogError("Failed to start the Input System!");
+                }
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
                 AddManager(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
+
+                if (BoundarySystem == null)
+                {
+                    Debug.LogError("Failed to start the Boundary System!");
+                }
             }
+
 
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
                 AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
+
+                if (TeleportSystem == null)
+                {
+                    Debug.LogError("Failed to start the Teleport System!");
+                }
+            }
+
+            if (ActiveProfile.IsDiagnosticsSystemEnabled)
+            {
+                AddManager(typeof(IMixedRealityDiagnosticsSystem), Activator.CreateInstance(ActiveProfile.DiagnosticsSystemSystemType) as IMixedRealityDiagnosticsSystem);
+
+                if (DiagnosticsSystem == null)
+                {
+                    Debug.LogError("Failed to start the Diagnostics System!");
+                }
             }
 
             if (ActiveProfile.RegisteredComponentsProfile != null)
@@ -227,6 +255,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             #endregion Managers Initialization
 
             isMixedRealityManagerInitializing = false;
+        }
+
+        private void EnsureMixedRealityRequirements()
+        {
+            // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
+            // We'll enforce that here, then tracking can update it to the appropriate position later.
+           CameraCache.Main.transform.position = Vector3.zero;
         }
 
         #region MonoBehaviour Implementation
@@ -338,6 +373,53 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 #endif // UNITY_EDITOR
 
                 Initialize();
+            }
+        }
+
+        private Transform mixedRealityPlayspace;
+
+        /// <summary>
+        /// Returns the MixedRealityPlayspace for the local player
+        /// </summary>
+        public Transform MixedRealityPlayspace
+        {
+            get {
+                AssertIsInitialized();
+                if (mixedRealityPlayspace)
+                {
+                    return mixedRealityPlayspace;
+                }
+                else
+                {
+                    string MixedRealityPlayspaceName = "MixedRealityPlayspace";
+                    if (CameraCache.Main.transform.parent == null)
+                    {
+                        mixedRealityPlayspace = new GameObject(MixedRealityPlayspaceName).transform;
+                        CameraCache.Main.transform.SetParent(mixedRealityPlayspace);
+                    }
+                    else
+                    {
+                        if (CameraCache.Main.transform.parent.name != MixedRealityPlayspaceName)
+                        {
+                            // Since the scene is set up with a different camera parent, its likely
+                            // that there's an expectation that that parent is going to be used for
+                            // something else. We print a warning to call out the fact that we're 
+                            // co-opting this object for use with teleporting and such, since that
+                            // might cause conflicts with the parent's intended purpose.
+                            Debug.LogWarning("The Mixed Reality Manager expected the camera's parent to be named " + MixedRealityPlayspaceName + ". The existing parent will be renamed and used instead.");
+                            CameraCache.Main.transform.parent.name = MixedRealityPlayspaceName; // If we rename it, we make it clearer that why it's being teleported around at runtime.
+                        }
+                    }
+
+                    // It's very important that the MixedRealityPlayspace align with the tracked space,
+                    // otherwise reality-locked things like playspace boundaries won't be aligned properly.
+                    // For now, we'll just assume that when the playspace is first initialized, the
+                    // tracked space origin overlaps with the world space origin. If a platform ever does
+                    // something else (i.e, placing the lower left hand corner of the tracked space at world 
+                    // space 0,0,0), we should compensate for that here.
+
+                    return mixedRealityPlayspace;
+                }
             }
         }
 
@@ -886,7 +968,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             return type == typeof(IMixedRealityInputSystem) ||
                    type == typeof(IMixedRealityTeleportSystem) ||
-                   type == typeof(IMixedRealityBoundarySystem);
+                   type == typeof(IMixedRealityBoundarySystem) ||
+                   type == typeof(IMixedRealityDiagnosticsSystem);
         }
 
         /// <summary>
@@ -979,5 +1062,37 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         #endregion Manager Utilities
 
         #endregion Manager Container Management
+
+        #region Manager Accessors
+
+        private static IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The current Input System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = Instance.GetManager<IMixedRealityInputSystem>());
+
+        private static IMixedRealityBoundarySystem boundarySystem = null;
+
+        /// <summary>
+        /// The current Boundary System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityBoundarySystem BoundarySystem => boundarySystem ?? (boundarySystem = Instance.GetManager<IMixedRealityBoundarySystem>());
+
+        private static IMixedRealityTeleportSystem teleportSystem = null;
+
+        /// <summary>
+        /// The current Teleport System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = Instance.GetManager<IMixedRealityTeleportSystem>());
+
+        private static IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
+
+        /// <summary>
+        /// The current Diagnostics System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityDiagnosticsSystem DiagnosticsSystem => diagnosticsSystem ?? (diagnosticsSystem = Instance.GetManager<IMixedRealityDiagnosticsSystem>());
+
+        #endregion Manager Accessors
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 {
     /// <summary>
     /// Helper class to assign the UIRaycastCamera when creating a new canvas object and assigning the world space render mode.
@@ -21,7 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
                                           "WorldCamera to use the FocusProvider's UIRaycastCamera.\n";
 
         private Canvas canvas;
-        private IMixedRealityInputSystem inputSystem;
 
         private void OnEnable()
         {
@@ -30,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
             if (MixedRealityManager.HasActiveProfile &&
                 MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
             {
-                inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
                 CheckCanvasSettings();
             }
         }
@@ -44,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
                 return;
             }
 
-            if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && inputSystem == null)
+            if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && MixedRealityManager.InputSystem == null)
             {
                 EditorGUILayout.HelpBox("No Input System Profile found in the Mixed Reality Manager's Active Profile.", MessageType.Error);
                 base.OnInspectorGUI();
@@ -66,11 +64,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
             bool removeHelper = false;
 
             // Update the world camera if we need to.
-            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != inputSystem.FocusProvider.UIRaycastCamera)
+            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != MixedRealityManager.InputSystem.FocusProvider.UIRaycastCamera)
             {
                 if (EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel"))
                 {
-                    canvas.worldCamera = inputSystem.FocusProvider.UIRaycastCamera;
+                    canvas.worldCamera = MixedRealityManager.InputSystem.FocusProvider.UIRaycastCamera;
                 }
                 else
                 {
@@ -79,14 +77,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
             }
 
             // Add the Canvas Helper if we need it.
-            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera == inputSystem.FocusProvider.UIRaycastCamera)
+            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera == MixedRealityManager.InputSystem.FocusProvider.UIRaycastCamera)
             {
                 var helper = canvas.gameObject.EnsureComponent<CanvasUtility>();
                 helper.Canvas = canvas;
             }
 
             // Reset the world canvas if we need to.
-            if (canvas.isRootCanvas && canvas.renderMode != RenderMode.WorldSpace && canvas.worldCamera == inputSystem.FocusProvider.UIRaycastCamera)
+            if (canvas.isRootCanvas && canvas.renderMode != RenderMode.WorldSpace && canvas.worldCamera == MixedRealityManager.InputSystem.FocusProvider.UIRaycastCamera)
             {
                 // Sets it back to MainCamera default.
                 canvas.worldCamera = null;

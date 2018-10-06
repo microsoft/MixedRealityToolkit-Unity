@@ -1,16 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityBoundaryVisualizationProfile))]
     public class MixedRealityBoundaryVisualizationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
+        private SerializedProperty boundaryHeight;
         private SerializedProperty showFloor;
         private SerializedProperty floorMaterial;
         private SerializedProperty floorScale;
@@ -37,6 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             {
                 return;
             }
+
+            boundaryHeight = serializedObject.FindProperty("boundaryHeight");
 
             showFloor = serializedObject.FindProperty("showFloor");
             floorMaterial = serializedObject.FindProperty("floorMaterial");
@@ -71,8 +76,22 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Boundary Visualization Options", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Boundary visualizations can help users stay oriented and comfortable in the experience.", MessageType.Info);
+            // Boundary settings depend on the experience scale
+            if (MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale != ExperienceScale.Room)
+            {
+                EditorGUILayout.Space();
+                EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Warning);
+            }
             EditorGUILayout.Space();
+
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                GUI.enabled = false;
+            }
+
             serializedObject.Update();
+            EditorGUILayout.PropertyField(boundaryHeight);
+            EditorGUILayout.Space();
             EditorGUILayout.LabelField("Floor Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(showFloor, showContent);
             EditorGUILayout.PropertyField(floorMaterial, materialContent);

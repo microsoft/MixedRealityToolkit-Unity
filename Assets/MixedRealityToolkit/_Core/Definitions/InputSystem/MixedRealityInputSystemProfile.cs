@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
     /// Configuration profile settings for setting up controller pointers.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input System Profile", fileName = "MixedRealityInputSystemProfile", order = (int)CreateProfileMenuItemIndices.Input)]
-    public class MixedRealityInputSystemProfile : ScriptableObject
+    public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
         [SerializeField]
         [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
@@ -128,6 +128,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         {
             get { return controllerMappingProfile; }
             private set { controllerMappingProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Device profile for rendering spatial controllers.")]
+        private MixedRealityControllerVisualizationProfile controllerVisualizationProfile;
+
+        /// <summary>
+        /// Device profile for rendering spatial controllers.
+        /// </summary>
+        public MixedRealityControllerVisualizationProfile ControllerVisualizationProfile
+        {
+            get { return controllerVisualizationProfile; }
+            private set { controllerVisualizationProfile = value; }
         }
     }
 }

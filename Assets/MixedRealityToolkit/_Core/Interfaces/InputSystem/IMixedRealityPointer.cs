@@ -17,11 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
     public interface IMixedRealityPointer : IEqualityComparer
     {
         /// <summary>
-        /// The pointer's current input system reference.
-        /// </summary>
-        IMixedRealityInputSystem InputSystem { get; }
-
-        /// <summary>
         /// The pointer's current controller reference.
         /// </summary>
         IMixedRealityController Controller { get; set; }

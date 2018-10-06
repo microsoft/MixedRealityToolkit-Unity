@@ -3,10 +3,13 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
@@ -19,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
     /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile", fileName = "MixedRealityConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
-    public class MixedRealityConfigurationProfile : ScriptableObject, ISerializationCallbackReceiver
+    public class MixedRealityConfigurationProfile : BaseMixedRealityProfile, ISerializationCallbackReceiver
     {
         #region Manager Registry properties
 
@@ -150,18 +153,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         }
 
         [SerializeField]
-        [Tooltip("The approximate height of the play space, in meters.")]
-        private float boundaryHeight = 3.0f;
-
-        /// <summary>
-        /// The developer defined height of the boundary, in meters.
-        /// </summary>
-        /// <remarks>
-        /// The BoundaryHeight property is used to create a three dimensional volume for the play space.
-        /// </remarks>
-        public float BoundaryHeight => boundaryHeight;
-
-        [SerializeField]
         [Tooltip("Profile for wiring up boundary visualization assets.")]
         private MixedRealityBoundaryVisualizationProfile boundaryVisualizationProfile;
 
@@ -193,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         private SystemType teleportSystemType;
 
         /// <summary>
-        /// Boundary System Script File to instantiate at runtime.
+        /// Teleport System Script File to instantiate at runtime.
         /// </summary>
         public SystemType TeleportSystemSystemType
         {
@@ -202,16 +193,40 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         }
 
         [SerializeField]
-        [Tooltip("The duration of the teleport in seconds.")]
-        private float teleportDuration = 0.25f;
+        [Tooltip("Profile for wiring up diagnostic assets.")]
+        private MixedRealityDiagnosticsProfile diagnosticsSystemProfile;
 
         /// <summary>
-        /// The duration of the teleport in seconds.
+        /// Active profile for diagnostic configuration
         /// </summary>
-        public float TeleportDuration
+        public MixedRealityDiagnosticsProfile DiagnosticsSystemProfile
         {
-            get { return teleportDuration; }
-            set { teleportDuration = value; }
+            get { return diagnosticsSystemProfile; }
+            private set { diagnosticsSystemProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable diagnostic system")]
+        private bool enableDiagnosticsSystem = false;
+
+        public bool IsDiagnosticsSystemEnabled
+        {
+            get { return enableDiagnosticsSystem && DiagnosticsSystemSystemType?.Type != null; }
+            private set { enableDiagnosticsSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Diagnostics System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityDiagnosticsSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType diagnosticsSystemType;
+
+        /// <summary>
+        /// Diagnostics Manager Script File to instantiate at runtime
+        /// </summary>
+        public SystemType DiagnosticsSystemSystemType
+        {
+            get { return diagnosticsSystemType; }
+            private set { diagnosticsSystemType = value; }
         }
 
         [SerializeField]
