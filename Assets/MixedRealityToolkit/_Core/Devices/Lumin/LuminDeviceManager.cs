@@ -44,19 +44,34 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
             return list.ToArray();
         }
 
+        /// <inheritdoc />
         public override void Enable()
         {
             var config = new MLInputConfiguration();
             var result = MLInput.Start(config);
+
             if (!result.IsOk)
             {
                 Debug.LogError($"Error: ControllerConnectionHandler failed starting MLInput: {result}");
+            }
+
+            for (byte i = 0; i < 3; i++)
+            {
+                // Currently no way to know what controllers are already connected.
+                // Just guessing there could be no more than 3: Two Spatial Controllers and Mobile App Controller.
+                var controller = GetController(i);
+
+                if (controller != null)
+                {
+                    MixedRealityManager.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                }
             }
 
             MLInput.OnControllerConnected += OnControllerConnected;
             MLInput.OnControllerDisconnected += OnControllerDisconnected;
         }
 
+        /// <inheritdoc />
         public override void Update()
         {
             foreach (var controller in activeControllers)
@@ -65,11 +80,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
             }
         }
 
+        /// <inheritdoc />
         public override void Disable()
         {
             MLInput.OnControllerConnected -= OnControllerConnected;
             MLInput.OnControllerDisconnected -= OnControllerDisconnected;
             MLInput.Stop();
+
+            foreach (var activeController in activeControllers)
+            {
+                var controller = GetController(activeController.Key, false);
+
+                if (controller != null)
+                {
+                    MixedRealityManager.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                }
+            }
+
+            activeControllers.Clear();
         }
 
         private LuminController GetController(byte controllerId, bool addController = true)
@@ -85,6 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
             if (!addController) { return null; }
 
             var mlController = MLInput.GetController(controllerId);
+
+            if (mlController == null) { return null; }
 
             if (mlController.Type == MLInputControllerType.None) { return null; }
 

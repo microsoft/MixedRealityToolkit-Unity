@@ -29,8 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
             new MixedRealityInteractionMapping(2, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(3, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(4, "Bumper Press", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(5, "Touchpad Position", AxisType.DualAxis, DeviceInputType.Touchpad, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(5, "Touchpad Press", AxisType.SingleAxis, DeviceInputType.TouchpadPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(5, "Home Press", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(6, "Touchpad Position", AxisType.DualAxis, DeviceInputType.Touchpad, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(7, "Touchpad Press", AxisType.SingleAxis, DeviceInputType.TouchpadPress, MixedRealityInputAction.None),
         };
 
         /// <inheritdoc />
@@ -70,21 +71,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
-                switch (Interactions[i].AxisType)
+                switch (Interactions[i].InputType)
                 {
-                    case AxisType.None:
+                    case DeviceInputType.SpatialPointer:
+                        UpdatePoseData(Interactions[i]);
                         break;
-                    case AxisType.Digital:
+                    case DeviceInputType.ButtonPress:
                         UpdateButtonData(Interactions[i]);
                         break;
-                    case AxisType.SingleAxis:
+                    case DeviceInputType.Select:
+                    case DeviceInputType.Trigger:
+                    case DeviceInputType.TriggerTouch:
+                    case DeviceInputType.TriggerPress:
+                    case DeviceInputType.TouchpadTouch:
+                    case DeviceInputType.TouchpadPress:
                         UpdateSingleAxisData(Interactions[i]);
                         break;
-                    case AxisType.DualAxis:
+                    case DeviceInputType.Touchpad:
                         UpdateDualAxisData(Interactions[i]);
-                        break;
-                    case AxisType.SixDof:
-                        UpdatePoseData(Interactions[i]);
                         break;
                     default:
                         Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [{GetType().Name}]");
@@ -110,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
 
                 if (IsPositionAvailable)
                 {
-                    IsPositionApproximate = !MlControllerReference.IsCFUIDTrackingEnabled;
+                    IsPositionApproximate = MlControllerReference.CalibrationAccuracy <= MLControllerCalibAccuracy.Medium;
                 }
                 else
                 {
@@ -158,8 +162,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
+            var buttonId = interactionMapping.Description.Contains("Home")
+                ? (int)MLInputControllerButton.HomeTap
+                : (int)MLInputControllerButton.Bumper;
+
             // Update the interaction data source
-            interactionMapping.BoolData = MlControllerReference.State.ButtonState[(int)MLInputControllerButton.Bumper] == 1;
+            interactionMapping.BoolData = MlControllerReference.State.ButtonState[buttonId] == 1;
 
             // If our value changed raise it.
             if (interactionMapping.Changed)
@@ -187,10 +195,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
 
-            var singleAxisValue = MlControllerReference.TriggerValue;
+            float singleAxisValue = interactionMapping.Description.Contains("Touchpad")
+                ? MlControllerReference.Touch1PosAndForce.z
+                : MlControllerReference.TriggerValue;
 
             switch (interactionMapping.InputType)
             {
+                case DeviceInputType.Select:
                 case DeviceInputType.TriggerPress:
                     // Update the interaction data source
                     interactionMapping.BoolData = singleAxisValue.Equals(1);
@@ -201,6 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
                     interactionMapping.BoolData = !singleAxisValue.Equals(0);
                     break;
                 case DeviceInputType.Trigger:
+                case DeviceInputType.TouchpadPress:
                     // Update the interaction data source
                     interactionMapping.FloatData = singleAxisValue;
 
@@ -277,8 +289,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
-                // Raise input system Event if it enabled
-                MixedRealityManager.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentPointerPose);
+                // Raise input system Event if it enabled 
+                MixedRealityManager.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
             }
         }
 

@@ -362,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     if (supportedControllerType == SupportedControllerType.WindowsMixedReality &&
                         handedness == Handedness.None)
                     {
-                        controllerTitle = "HoloLens Gestures";
+                        controllerTitle = "HoloLens Input";
                     }
 
                     if (handedness != Handedness.Right)
@@ -389,15 +389,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             GUILayout.EndVertical();
         }
 
-        private void AddController(SerializedProperty controllerList, Type controllerType)
+        private void AddController(SerializedProperty controllerList, Type controllerType, Handedness handedness = Handedness.None)
         {
             controllerList.InsertArrayElementAtIndex(controllerList.arraySize);
             var index = controllerList.arraySize - 1;
             var mixedRealityControllerMapping = controllerList.GetArrayElementAtIndex(index);
             var mixedRealityControllerMappingDescription = mixedRealityControllerMapping.FindPropertyRelative("description");
-            mixedRealityControllerMappingDescription.stringValue = controllerType.Name;
+            mixedRealityControllerMappingDescription.stringValue = $"{controllerType.Name} {handedness}";
             var mixedRealityControllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
-            mixedRealityControllerHandedness.intValue = 0;
+            mixedRealityControllerHandedness.intValue = (int)handedness;
             var mixedRealityControllerInteractions = mixedRealityControllerMapping.FindPropertyRelative("interactions");
             var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
             useCustomInteractionMappings.boolValue = controllerType == typeof(GenericOpenVRController) || controllerType == typeof(GenericJoystickController);

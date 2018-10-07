@@ -53,7 +53,7 @@ MonoBehaviour:
         Microsoft.MixedReality.Toolkit
     componentName: Unity Touch Input Manger
     priority: 10
-    runtimePlatform: -1
+    runtimePlatform: 15
     configurationProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.Lumin.LuminDeviceManager,
