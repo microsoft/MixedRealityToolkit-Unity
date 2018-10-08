@@ -12,10 +12,18 @@ UWP/
 WindowsStoreApp/
 UnityGenerated/
 UnityPackageManager/
+.out/
 project.json
 project.lock.json
-WSATestCertificate.pfx
-WSATestCertificate.pfx.meta
+*.package
+
+# ============ #
+# Certificates #
+# ============ #
+*.cert
+*.privkey
+*.pfx
+*.pfx.meta
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
