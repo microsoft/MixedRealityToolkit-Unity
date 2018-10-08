@@ -111,7 +111,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Input Action Rules Profile", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Input Action Rules help define alternative Actions that will be raised based on specific criteria.\n\n" +
-                                    "You can create new rules by assigning a base Input Action below, then assigning the criteria you'd like to meet. When the criteria is met, the Rule's Action will be raised with the criteria value.", MessageType.Info);
+                                    "You can create new rules by assigning a base Input Action below, then assigning the criteria you'd like to meet. When the criteria is met, the Rule's Action will be raised with the criteria value.\n\n" +
+                                    "Note: Rules can only be created for the same axis constraints.", MessageType.Info);
 
             EditorGUILayout.Space();
 
