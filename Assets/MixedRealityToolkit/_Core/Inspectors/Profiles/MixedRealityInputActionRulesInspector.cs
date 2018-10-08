@@ -18,9 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
     {
         private static readonly GUIContent RuleAddButtonContent = new GUIContent("+ Add a New Rule Definition");
         private static readonly GUIContent RuleMinusButtonContent = new GUIContent("-", "Remove Rule Definition");
-        private static readonly GUIContent BaseActionContent = new GUIContent("Base Input Action", "The Action that will raise new actions based on the criteria met");
-        private static readonly GUIContent RuleActionContent = new GUIContent("Rule Input Action", "The Action that will be raised when the criteria is met");
-        private static readonly GUIContent CriteriaContent = new GUIContent("Action Criteria", "The Criteria that must be met in order to raise the new Action");
+        private static readonly GUIContent BaseActionContent = new GUIContent("Base Input Action:", "The Action that will raise new actions based on the criteria met");
+        private static readonly GUIContent RuleActionContent = new GUIContent("Rule Input Action:", "The Action that will be raised when the criteria is met");
+        private static readonly GUIContent CriteriaContent = new GUIContent("Action Criteria:", "The Criteria that must be met in order to raise the new Action");
 
         private SerializedProperty inputActionRulesDigital;
         private SerializedProperty inputActionRulesSingleAxis;
@@ -220,8 +220,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 .ToArray();
         }
 
-        private void RenderCriteriaField(MixedRealityInputAction action)
+        private void RenderCriteriaField(MixedRealityInputAction action, SerializedProperty criteriaValue = null)
         {
+            var isWideMode = EditorGUIUtility.wideMode;
+            EditorGUIUtility.wideMode = true;
             if (action != MixedRealityInputAction.None)
             {
                 switch (action.AxisConstraint)
@@ -230,30 +232,142 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                         EditorGUILayout.HelpBox("Base rule must have a valid axis constraint.", MessageType.Warning);
                         break;
                     case AxisType.Digital:
-                        currentBoolCriteria = EditorGUILayout.Toggle(CriteriaContent, currentBoolCriteria);
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
+                        EditorGUI.BeginChangeCheck();
+                        var boolValue = EditorGUILayout.Toggle(GUIContent.none, criteriaValue?.boolValue ?? currentBoolCriteria, GUILayout.Width(64), GUILayout.ExpandWidth(true));
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            if (criteriaValue != null)
+                            {
+                                criteriaValue.boolValue = boolValue;
+                            }
+                            else
+                            {
+                                currentBoolCriteria = boolValue;
+                            }
+                        }
+
+                        EditorGUILayout.EndHorizontal();
                         break;
                     case AxisType.SingleAxis:
-                        currentSingleAxisCriteria = EditorGUILayout.FloatField(CriteriaContent, currentSingleAxisCriteria);
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
+                        EditorGUI.BeginChangeCheck();
+                        var floatValue = EditorGUILayout.FloatField(GUIContent.none, criteriaValue?.floatValue ?? currentSingleAxisCriteria, GUILayout.Width(64), GUILayout.ExpandWidth(true));
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            if (criteriaValue != null)
+                            {
+                                criteriaValue.floatValue = floatValue;
+                            }
+                            else
+                            {
+                                currentSingleAxisCriteria = floatValue;
+                            }
+                        }
+
+                        EditorGUILayout.EndHorizontal();
                         break;
                     case AxisType.DualAxis:
-                        currentDualAxisCriteria = EditorGUILayout.Vector2Field(CriteriaContent, currentDualAxisCriteria);
+                        EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
+                        EditorGUI.indentLevel++;
+                        EditorGUI.BeginChangeCheck();
+                        var dualAxisValue = EditorGUILayout.Vector2Field("Position", criteriaValue?.vector2Value ?? currentDualAxisCriteria, GUILayout.Width(64), GUILayout.ExpandWidth(true));
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            if (criteriaValue != null)
+                            {
+                                criteriaValue.vector2Value = dualAxisValue;
+                            }
+                            else
+                            {
+                                currentDualAxisCriteria = dualAxisValue;
+                            }
+                        }
+
+                        EditorGUI.indentLevel--;
                         break;
                     case AxisType.ThreeDofPosition:
-                        currentVectorCriteria = EditorGUILayout.Vector3Field(CriteriaContent, currentVectorCriteria);
+                        EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
+                        EditorGUI.indentLevel++;
+                        EditorGUI.BeginChangeCheck();
+                        var positionValue = EditorGUILayout.Vector3Field("Position", criteriaValue?.vector3Value ?? currentVectorCriteria, GUILayout.ExpandWidth(true));
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            if (criteriaValue != null)
+                            {
+                                criteriaValue.vector3Value = positionValue;
+                            }
+                            else
+                            {
+                                currentVectorCriteria = positionValue;
+                            }
+                        }
+
+                        EditorGUI.indentLevel--;
                         break;
                     case AxisType.ThreeDofRotation:
-                        currentQuaternionCriteria.eulerAngles = EditorGUILayout.Vector3Field(CriteriaContent, currentQuaternionCriteria.eulerAngles);
+                        EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
+                        EditorGUI.indentLevel++;
+                        EditorGUI.BeginChangeCheck();
+                        var rotationValue = EditorGUILayout.Vector3Field("Rotation", criteriaValue?.quaternionValue.eulerAngles ?? currentQuaternionCriteria.eulerAngles, GUILayout.ExpandWidth(true));
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            if (criteriaValue != null)
+                            {
+                                criteriaValue.quaternionValue = Quaternion.Euler(rotationValue);
+                            }
+                            else
+                            {
+                                currentQuaternionCriteria = Quaternion.Euler(rotationValue);
+                            }
+                        }
+
+                        EditorGUI.indentLevel--;
                         break;
                     case AxisType.SixDof:
-                        EditorGUILayout.LabelField(CriteriaContent);
+                        EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
                         EditorGUI.indentLevel++;
-                        currentPoseCriteria.Position = EditorGUILayout.Vector3Field("Position", currentPoseCriteria.Position);
-                        Quaternion rotation = currentPoseCriteria.Rotation;
-                        rotation.eulerAngles = EditorGUILayout.Vector3Field("Rotation", rotation.eulerAngles);
-                        currentPoseCriteria.Rotation = rotation;
+
+                        var posePosition = currentPoseCriteria.Position;
+                        var poseRotation = currentPoseCriteria.Rotation;
+
+                        if (criteriaValue != null)
+                        {
+                            posePosition = criteriaValue.FindPropertyRelative("position").vector3Value;
+                            poseRotation = criteriaValue.FindPropertyRelative("rotation").quaternionValue;
+                        }
+
+                        EditorGUI.BeginChangeCheck();
+                        posePosition = EditorGUILayout.Vector3Field("Position", posePosition);
+
+                        poseRotation.eulerAngles = EditorGUILayout.Vector3Field("Rotation", poseRotation.eulerAngles);
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            if (criteriaValue != null)
+                            {
+                                criteriaValue.FindPropertyRelative("position").vector3Value = posePosition;
+                                criteriaValue.FindPropertyRelative("rotation").quaternionValue = poseRotation;
+                            }
+                            else
+                            {
+                                currentPoseCriteria.Position = posePosition;
+                                currentPoseCriteria.Rotation = poseRotation;
+                            }
+                        }
+
                         EditorGUI.indentLevel--;
                         break;
                 }
+
+                EditorGUIUtility.wideMode = isWideMode;
             }
         }
 
@@ -318,13 +432,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             ruleActionConstraint.intValue = (int)currentRuleAction.AxisConstraint;
         }
 
-        private int RenderBaseInputAction(int baseActionId, out MixedRealityInputAction action)
+        private int RenderBaseInputAction(int baseActionId, out MixedRealityInputAction action, bool isLocked = false)
         {
             action = MixedRealityInputAction.None;
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(BaseActionContent);
+            EditorGUILayout.LabelField(BaseActionContent, GUILayout.Width(128));
             EditorGUI.BeginChangeCheck();
-            baseActionId = EditorGUILayout.IntPopup(baseActionId, baseActionLabels, baseActionIds);
+
+            if (!isLocked)
+            {
+                baseActionId = EditorGUILayout.IntPopup(baseActionId, baseActionLabels, baseActionIds, GUILayout.ExpandWidth(true));
+            }
 
             for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Length; i++)
             {
@@ -339,6 +457,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 GetCompatibleActions(action);
             }
 
+            if (isLocked)
+            {
+                EditorGUILayout.LabelField(action.Description, EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
+            }
+
             EditorGUILayout.EndHorizontal();
             return baseActionId;
         }
@@ -347,9 +470,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         {
             action = MixedRealityInputAction.None;
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(RuleActionContent);
+            EditorGUILayout.LabelField(RuleActionContent, GUILayout.Width(128));
             EditorGUI.BeginChangeCheck();
-            ruleActionId = EditorGUILayout.IntPopup(ruleActionId, ruleActionLabels, ruleActionIds);
+            ruleActionId = EditorGUILayout.IntPopup(ruleActionId, ruleActionLabels, ruleActionIds, GUILayout.ExpandWidth(true));
 
             for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Length; i++)
             {
@@ -397,18 +520,19 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                     EditorGUI.indentLevel++;
 
                     MixedRealityInputAction newBaseAction;
-                    baseActionId.intValue = RenderBaseInputAction(baseActionId.intValue, out newBaseAction);
+                    baseActionId.intValue = RenderBaseInputAction(baseActionId.intValue, out newBaseAction, true);
                     baseActionDescription.stringValue = newBaseAction.Description;
                     baseActionConstraint.intValue = (int)newBaseAction.AxisConstraint;
 
-                    if (baseActionId.intValue == ruleActionId.intValue || newBaseAction == MixedRealityInputAction.None)
+                    if (baseActionId.intValue == ruleActionId.intValue || newBaseAction == MixedRealityInputAction.None || baseActionConstraint.intValue != ruleActionConstraint.intValue)
                     {
+                        criteria.Reset();
                         ruleActionId.intValue = (int)MixedRealityInputAction.None.Id;
                         ruleActionDescription.stringValue = MixedRealityInputAction.None.Description;
                         ruleActionConstraint.intValue = (int)MixedRealityInputAction.None.AxisConstraint;
                     }
 
-                    EditorGUILayout.PropertyField(criteria, CriteriaContent);
+                    RenderCriteriaField(newBaseAction, criteria);
 
                     MixedRealityInputAction newRuleAction;
                     ruleActionId.intValue = RenderRuleInputAction(ruleActionId.intValue, out newRuleAction);
