@@ -16,12 +16,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     public class SwapVolume : MonoBehaviour, IMixedRealityPointerHandler
     {
         [SerializeField]
+        [Tooltip("The scene object to be hidden when the active solver is enabled.")]
         private GameObject hideThisObject = null;
 
         [SerializeField]
+        [Tooltip("The solver prefab to be spawned and used when this volume is activated.")]
         private GameObject spawnThisPrefab = null;
 
         [SerializeField]
+        [Tooltip("Whether to update the solver's target to be the controller that clicked on the volume or not.")]
         private bool updateSolverTargetToClickSource = true;
 
         private SolverHandler solverHandler;
