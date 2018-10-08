@@ -54,6 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private bool[] quaternionFoldouts;
         private bool[] poseFoldouts;
 
+        private MixedRealityInputActionRulesProfile thisProfile;
+
         private void OnEnable()
         {
             if (!CheckMixedRealityManager(false) ||
@@ -71,12 +73,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             inputActionRulesPoseAxis = serializedObject.FindProperty("inputActionRulesPoseAxis");
 
             baseActionLabels = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+                .Where(action => action.AxisConstraint != AxisType.None && action.AxisConstraint != AxisType.Raw)
                 .Select(action => action.Description)
-                .Prepend("None").ToArray();
+                .ToArray();
 
             baseActionIds = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+                .Where(action => action.AxisConstraint != AxisType.None && action.AxisConstraint != AxisType.Raw)
                 .Select(action => (int)action.Id)
-                .Prepend(0).ToArray();
+                .ToArray();
+
+            thisProfile = target as MixedRealityInputActionRulesProfile;
 
             ResetCriteria();
         }
@@ -128,6 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.Space();
 
             GUI.enabled = isGuiLocked &&
+                          !RuleExists() &&
                           currentBaseAction != MixedRealityInputAction.None &&
                           currentRuleAction != MixedRealityInputAction.None &&
                           currentBaseAction.AxisConstraint != AxisType.None &&
@@ -157,6 +164,27 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             serializedObject.ApplyModifiedProperties();
         }
 
+        private bool RuleExists()
+        {
+            switch (currentBaseAction.AxisConstraint)
+            {
+                default:
+                    return false;
+                case AxisType.Digital:
+                    return thisProfile.InputActionRulesDigital.Any(digitalRule => digitalRule.BaseAction == currentBaseAction && digitalRule.RuleAction == currentRuleAction);
+                case AxisType.SingleAxis:
+                    return thisProfile.InputActionRulesSingleAxis.Any(singleAxisRule => singleAxisRule.BaseAction == currentBaseAction && singleAxisRule.RuleAction == currentRuleAction);
+                case AxisType.DualAxis:
+                    return thisProfile.InputActionRulesDualAxis.Any(dualAxisRule => dualAxisRule.BaseAction == currentBaseAction && dualAxisRule.RuleAction == currentRuleAction);
+                case AxisType.ThreeDofPosition:
+                    return thisProfile.InputActionRulesVectorAxis.Any(vectorAxisRule => vectorAxisRule.BaseAction == currentBaseAction && vectorAxisRule.RuleAction == currentRuleAction);
+                case AxisType.ThreeDofRotation:
+                    return thisProfile.InputActionRulesQuaternionAxis.Any(quaternionRule => quaternionRule.BaseAction == currentBaseAction && quaternionRule.RuleAction == currentRuleAction);
+                case AxisType.SixDof:
+                    return thisProfile.InputActionRulesPoseAxis.Any(poseRule => poseRule.BaseAction == currentBaseAction && poseRule.RuleAction == currentRuleAction);
+            }
+        }
+
         private void ResetCriteria()
         {
             selectedBaseActionId = 0;
@@ -183,12 +211,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             ruleActionLabels = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == baseAction.AxisConstraint && inputAction.Id != baseAction.Id)
                 .Select(action => action.Description)
-                .Prepend("None").ToArray();
+                .ToArray();
 
             ruleActionIds = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == baseAction.AxisConstraint && inputAction.Id != baseAction.Id)
                 .Select(action => (int)action.Id)
-                .Prepend(0).ToArray();
+                .ToArray();
         }
 
         private void RenderCriteriaField(MixedRealityInputAction action)
@@ -198,11 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 switch (action.AxisConstraint)
                 {
                     default:
-                    case AxisType.None:
-                        EditorGUILayout.HelpBox("Base rule must have an axis constraint.", MessageType.Warning);
-                        break;
-                    case AxisType.Raw:
-                        EditorGUILayout.HelpBox("Base rule's axis constraint is Raw. It's not possible to set this value in the inspector.", MessageType.Warning);
+                        EditorGUILayout.HelpBox("Base rule must have a valid axis constraint.", MessageType.Warning);
                         break;
                     case AxisType.Digital:
                         currentBoolCriteria = EditorGUILayout.Toggle(CriteriaContent, currentBoolCriteria);
@@ -383,7 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                         ruleActionConstraint.intValue = (int)MixedRealityInputAction.None.AxisConstraint;
                     }
 
-                    EditorGUILayout.PropertyField(criteria);
+                    EditorGUILayout.PropertyField(criteria, CriteriaContent);
 
                     MixedRealityInputAction newRuleAction;
                     ruleActionId.intValue = RenderRuleInputAction(ruleActionId.intValue, out newRuleAction);
