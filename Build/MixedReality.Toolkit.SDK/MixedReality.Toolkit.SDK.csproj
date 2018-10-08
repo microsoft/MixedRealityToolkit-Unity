@@ -6,6 +6,11 @@
 
   <ItemGroup>
     <Compile Include="$(MRTKRoot)\Assets\MixedRealityToolkit-SDK\**\*.cs" />
+
+    <Content Include="$(MRTKRoot)\Assets\MixedRealityToolkit-SDK\Profiles\*">
+      <PackagePath>%(RelativeDir)</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
