@@ -409,6 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                             Debug.LogWarning("The Mixed Reality Manager expected the camera's parent to be named " + MixedRealityPlayspaceName + ". The existing parent will be renamed and used instead.");
                             CameraCache.Main.transform.parent.name = MixedRealityPlayspaceName; // If we rename it, we make it clearer that why it's being teleported around at runtime.
                         }
+                        mixedRealityPlayspace = CameraCache.Main.transform.parent;
                     }
 
                     // It's very important that the MixedRealityPlayspace align with the tracked space,
