@@ -12,19 +12,18 @@ UWP/
 WindowsStoreApp/
 UnityGenerated/
 UnityPackageManager/
+.out/
 project.json
 project.lock.json
-.out/
+*.package
 
-# ===== #
-# Certs #
-# ===== #
-WSATestCertificate.pfx
-WSATestCertificate.pfx.meta
+# ============ #
+# Certificates #
+# ============ #
 *.cert
-*.cert.meta
 *.privkey
-*.privkey.meta
+*.pfx
+*.pfx.meta
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
@@ -49,7 +48,6 @@ obj/
 *.log
 *.idb
 *.opendb
-*.package
 
 # ============================ #
 # Visual Studio Code Generated #
@@ -64,6 +62,4 @@ Assets/ThirdParty/
 Assets/ThirdParty.meta
 Assets/TextMesh Pro.meta
 Assets/TextMesh Pro/
-Assets/MagicLeap.meta
-Assets/MagicLeap/
 --Version/
