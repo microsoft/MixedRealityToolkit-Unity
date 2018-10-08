@@ -25,6 +25,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     }
 
     /// <summary>
+    /// A way to cache some serializes values to pass between buttons and handlers
+    /// </summary>
+    [System.Serializable]
+    public class ThemeTarget
+    {
+        public List<ThemeProperty> Properties;
+        public GameObject Target;
+        public State[] States;
+    }
+
+    /// <summary>
     /// The main settings found in Themes
     /// </summary>
     [System.Serializable]
@@ -38,5 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public ThemeEaseSettings Easing;
         public bool NoEasing;
         public bool IsValid;
+        public ThemeTarget ThemeTarget;
     }
 }
