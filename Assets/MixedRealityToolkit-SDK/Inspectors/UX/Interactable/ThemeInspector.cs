@@ -824,7 +824,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                             GUILayout.Space(5);
                         }
 
-                        string[] shaderOptionNames = SerializedPropertyToOptions(shaderNames);
+                        string[] shaderOptionNames = InspectorBase.GetOptions(shaderNames);
                         string propName = shaderOptionNames[propId.intValue];
                         bool hasShaderProperty = true;
 

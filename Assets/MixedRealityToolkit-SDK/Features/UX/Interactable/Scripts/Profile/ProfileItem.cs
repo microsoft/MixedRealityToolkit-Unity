@@ -47,22 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     names.Add(type.Name);
                 }
             }
-
-            /* works with IL2CPP, but not with .NET
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var assembly in assemblies)
-            {
-                var types = assembly.GetTypes();
-                foreach (var type in types)
-                {
-                    if (type.IsSubclassOf(typeof(ThemeBase)))
-                    {
-                        themeTypes.Add(type);
-                        names.Add(type.Name);
-                    }
-                }
-            }*/
-
+            
             ThemeLists lists = new ThemeLists();
             lists.Types = themeTypes;
             lists.Names = names;
