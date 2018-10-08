@@ -5,13 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="$(MRTKRoot)\Assets\MixedRealityToolkit\**\*.cs" />
+    <Compile Include="$(MRTKRoot)\Assets\MixedRealityToolkit\**\*.cs" Exclude="$(MRTKRoot)\Assets\MixedRealityToolkit\Inspectors\Profiles\*.cs" />
+
     <Content Include="$(MRTKRoot)\Assets\MixedRealityToolkit\_Core\Resources\**\*">
       <PackagePath>%(RelativeDir)</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 
-    <Content Include="$(MRTKRoot)\Assets\MixedRealityToolkit\_Core\Inspectors\Profiles\*.cs">
+    <Content Include="$(MRTKRoot)\Assets\MixedRealityToolkit\Inspectors\Profiles\*.cs">
       <PackagePath>%(RelativeDir)</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -21,6 +22,10 @@
     <Reference Include="$(UnityEngineDll)" />
     <Reference Include="$(UnityEditorDll)" />
     <Reference Include="$(UnityEngineUIExtensionDll)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
   </ItemGroup>
 
 </Project>
