@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (property.objectReferenceValue == null)
             {
-                if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton))
+                if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton, GUILayout.Width(32f)))
                 {
                     var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
                     Debug.Assert(profileTypeName != null, "No Type Found");
