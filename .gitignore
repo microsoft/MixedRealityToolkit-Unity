@@ -14,8 +14,15 @@ UnityGenerated/
 UnityPackageManager/
 project.json
 project.lock.json
-WSATestCertificate.pfx
-WSATestCertificate.pfx.meta
+*.package
+
+# ============ #
+# Certificates #
+# ============ #
+*.cert
+*.privkey
+*.pfx
+*.pfx.meta
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
@@ -55,3 +62,4 @@ Assets/ThirdParty.meta
 Assets/TextMesh Pro.meta
 Assets/TextMesh Pro/
 --Version/
+.out/
