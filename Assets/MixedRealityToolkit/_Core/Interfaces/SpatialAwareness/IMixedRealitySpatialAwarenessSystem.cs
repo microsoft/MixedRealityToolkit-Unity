@@ -16,6 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// </summary>
         AutoStartBehavior StartupBehavior { get; set; }
 
+        // todo: ObserverVolumeType
+
         /// <summary>
         /// Gets or sets the size of the volume, in meters per axis, from which individual observations will be made.
         /// </summary>
