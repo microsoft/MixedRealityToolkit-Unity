@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     {
         // todo
         public int Id;
-        public GameObject MeshObject;
+        public GameObject GameObject;
         public MeshRenderer Renderer;
         public MeshFilter Filter;
         public MeshCollider Collider;

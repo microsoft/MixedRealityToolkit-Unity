@@ -97,13 +97,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             SpatialMeshObject newMesh = new SpatialMeshObject();
 
             newMesh.Id = meshId;
-            newMesh.MeshObject = new GameObject(name, requiredMeshComponents);
-            newMesh.MeshObject.layer = MixedRealityManager.SpatialAwarenessSystem.MeshPhysicsLayer;
+            newMesh.GameObject = new GameObject(name, requiredMeshComponents);
+            newMesh.GameObject.layer = MixedRealityManager.SpatialAwarenessSystem.MeshPhysicsLayer;
 
-            newMesh.Filter = newMesh.MeshObject.GetComponent<MeshFilter>();
+            newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
             newMesh.Filter.sharedMesh = mesh;
 
-            newMesh.Renderer = newMesh.MeshObject.GetComponent<MeshRenderer>();
+            newMesh.Renderer = newMesh.GameObject.GetComponent<MeshRenderer>();
             // todo - consider how to handle enabling, etc
 
             // Reset the surface mesh collider to fit the updated mesh. 
@@ -114,6 +114,42 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             newMesh.Collider.sharedMesh = newMesh.Filter.sharedMesh;
 
             return newMesh;
+        }
+
+        /// <summary>
+        /// Clean up the resources associated with the surface.
+        /// </summary>
+        /// <param name="meshObject">The <see cref="SpatialMeshObject"/> whose resources will be cleaned up.</param>
+        /// <param name="destroyGameObject"></param>
+        /// <param name="destroyMeshes"></param>
+        protected void CleanupMeshObject(
+            SpatialMeshObject meshObject,
+            bool destroyGameObject = true,
+            bool destroyMeshes = true)
+        {
+            if (destroyGameObject && (meshObject.GameObject != null))
+            {
+                Object.Destroy(meshObject.GameObject);
+                meshObject.GameObject = null;
+            }
+
+            Mesh filterMesh = meshObject.Filter.sharedMesh;
+            Mesh colliderMesh = meshObject.Collider.sharedMesh;
+
+            if (destroyMeshes)
+            {
+                if (filterMesh != null)
+                {
+                    Object.Destroy(filterMesh);
+                    meshObject.Filter.sharedMesh = null;
+                }
+
+                if ((colliderMesh != null) && (colliderMesh != filterMesh))
+                {
+                    Object.Destroy(colliderMesh);
+                    meshObject.Collider.sharedMesh = null;
+                }
+            }
         }
     }
 }

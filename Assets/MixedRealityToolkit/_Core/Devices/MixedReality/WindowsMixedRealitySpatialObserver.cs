@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         private void UpdateObserver()
         {
             // Only update the observer if it is running.
-            if (IsRunning && (outstandingMeshObject == null))
+            if (IsRunning && !outstandingMeshObject.HasValue)
             {
                 // If we have a mesh to work on...
                 if (meshWorkQueue.Count > 0)
@@ -270,20 +270,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             SpatialMeshObject newMesh;
             WorldAnchor worldAnchor;
 
-            if (spareMeshObject == null)
+            if (!spareMeshObject.HasValue)
             {
                 newMesh = CreateSpatialMeshObject(null, meshName, surfaceId.handle);
 
-                worldAnchor = newMesh.MeshObject.AddComponent<WorldAnchor>();
+                worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
             }
             else
             {
                 newMesh = spareMeshObject.Value;
                 spareMeshObject = null;
 
-                newMesh.MeshObject.name = meshName;
+                newMesh.GameObject.name = meshName;
                 newMesh.Id = surfaceId.handle;
 
+                // todo: what do we need of this?
                 //    Debug.Assert(!newMesh.MeshObject.activeSelf);
 
                 // todo: newMesh.MeshObject.SetActive(false);
@@ -293,31 +294,29 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
                 // todo: newMesh.Renderer.enabled = false;
 
-                worldAnchor = newMesh.MeshObject.GetComponent<WorldAnchor>();
+                worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
             }
 
             Debug.Assert(worldAnchor != null);
 
-            //var surfaceData = new SurfaceData(
-            //    surfaceID,
-            //    newMesh.Filter,
-            //    worldAnchor,
-            //    newMesh.Collider,
-            //    TrianglesPerCubicMeter,
-            //    _bakeCollider: true
-            //    );
+            SurfaceData surfaceData = new SurfaceData(
+                surfaceId,
+                newMesh.Filter,
+                worldAnchor,
+                newMesh.Collider,
+                MixedRealityManager.SpatialAwarenessSystem.MeshTrianglesPerCubicMeter,
+                true);
 
-            //if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
-            //{
-            //    outstandingMeshRequest = newSurface;
-            //}
-            //else
-            //{
-            //    Debug.LogErrorFormat("Mesh request for failed. Is {0} a valid Surface ID?", surfaceID.handle);
-
-            //    Debug.Assert(outstandingMeshRequest == null);
-            //    ReclaimSurface(newSurface);
-            //}
+            if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
+            {
+                outstandingMeshObject = newMesh;
+            }
+            else
+            {
+                Debug.LogError($"Mesh request failed for Id == surfaceId.handle");
+                Debug.Assert(outstandingMeshObject == null);
+                ReclaimMeshObject(newMesh);
+            }
         }
 #endif // UNITY_WSA
 
@@ -355,7 +354,63 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         {
             if (!IsRunning) { return; }
 
+            if (!outstandingMeshObject.HasValue)
+            {
+                Debug.LogWarning($"OnDataReady called for mesh id {cookedData.id.handle} while no request was outstanding.");
+                return;
+            }
+
+            if (!outputWritten)
+            {
+                Debug.LogWarning($"OnDataReady reported no data written for mesh id {cookedData.id.handle}");
+                ReclaimMeshObject(outstandingMeshObject.Value);
+                outstandingMeshObject = null;
+                return;
+            }
+
+            if (outstandingMeshObject.Value.Id != cookedData.id.handle)
+            {
+                Debug.LogWarning($"OnDataReady called for for mesh id {cookedData.id.handle} while request for mesh id {outstandingMeshObject.Value.Id} was outstanding.");
+                ReclaimMeshObject(outstandingMeshObject.Value);
+                outstandingMeshObject = null;
+                return;
+            }
+
             // todo
+            //Debug.Assert(outstandingMeshRequest.Value.Object.activeSelf);
+            //outstandingMeshRequest.Value.Renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
+
+            //SurfaceObject? replacedSurface = UpdateOrAddSurfaceObject(outstandingMeshRequest.Value, destroyGameObjectIfReplaced: false);
+            //outstandingMeshRequest = null;
+
+            //if (replacedSurface != null)
+            //{
+            //    ReclaimSurface(replacedSurface.Value);
+            //}
+
+            // Send the appropriate mesh event (added or updated)
+            // todo
+        }
+
+        /// <summary>
+        /// Reclaims the <see cref="SpatialMeshObject"/> to allow for later reuse.
+        /// </summary>
+        /// <param name="availableMeshObject"></param>
+        private void ReclaimMeshObject(SpatialMeshObject availableMeshObject)
+        {
+            if (spareMeshObject == null)
+            {
+                CleanupMeshObject(availableMeshObject, false);
+
+                availableMeshObject.GameObject.name = "Unused Spatial Mesh";
+                availableMeshObject.GameObject.SetActive(false);
+
+                spareMeshObject = availableMeshObject;
+            }
+            else
+            {
+                CleanupMeshObject(availableMeshObject);
+            }
         }
 
         // todo: SetObserverOrigin
