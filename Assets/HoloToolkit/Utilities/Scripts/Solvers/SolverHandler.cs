@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity
                 if (trackedObjectToReference != value)
                 {
                     trackedObjectToReference = value;
-                    TransformTarget = null;
+                    OnControllerLost();
                     AttachToNewTrackedObject();
                 }
             }
@@ -66,7 +66,7 @@ namespace HoloToolkit.Unity
             set
             {
                 additionalOffset = value;
-                UpdateOffsetTransform();
+                TrackTransform(TransformTarget);
             }
         }
 
@@ -76,7 +76,7 @@ namespace HoloToolkit.Unity
             set
             {
                 additionalRotation = value;
-                UpdateOffsetTransform();
+                TrackTransform(TransformTarget);
             }
         }
 
@@ -202,24 +202,7 @@ namespace HoloToolkit.Unity
 
         private void TrackTransform(Transform newTrackedTransform)
         {
-            if (RequiresOffset())
-            {
-                TransformTarget = MakeOffsetTransform(newTrackedTransform);
-            }
-            else
-            {
-                TransformTarget = newTrackedTransform;
-            }
-        }
-
-        private bool RequiresOffset()
-        {
-            return AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0;
-        }
-
-        private void UpdateOffsetTransform()
-        {
-            TransformTarget = MakeOffsetTransform(TransformTarget);
+            TransformTarget = MakeOffsetTransform(newTrackedTransform);
         }
 
         private Transform MakeOffsetTransform(Transform parentTransform)
@@ -233,6 +216,9 @@ namespace HoloToolkit.Unity
             transformWithOffset.transform.localPosition = AdditionalOffset;
             transformWithOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
             transformWithOffset.name = string.Format("{0} on {1} with offset {2}, {3}", gameObject.name, TrackedObjectToReference.ToString(), AdditionalOffset, AdditionalRotation);
+            // In order to account for the reversed normals due to the glTF coordinate system change, we need to provide rotated attachment points.
+            transformWithOffset.transform.Rotate(0, 180, 0);
+
             return transformWithOffset.transform;
         }
 

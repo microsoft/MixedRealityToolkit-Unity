@@ -130,6 +130,11 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             private set {isHost = value; }
         }
 
+        private void Awake()
+        {
+            isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
+        }
+
         private void Start()
         {
             string[] errors;
@@ -151,7 +156,6 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
                 return;
             }
 #endif
-            isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
 
             // The host needs an aditional component
             if (isHost)
