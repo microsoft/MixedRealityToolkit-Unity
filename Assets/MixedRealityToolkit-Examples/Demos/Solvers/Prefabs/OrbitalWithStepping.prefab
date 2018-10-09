@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114474594170136286}
   - component: {fileID: 114785721768203206}
   m_Layer: 0
-  m_Name: Orbital
+  m_Name: OrbitalWithStepping
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,5 +124,5 @@ MonoBehaviour:
   orientationType: 2
   localOffset: {x: 0, y: 0, z: 0}
   worldOffset: {x: 0, y: -0.6, z: 1}
-  useAngleSteppingForWorldOffset: 0
+  useAngleSteppingForWorldOffset: 1
   tetherAngleSteps: 10
