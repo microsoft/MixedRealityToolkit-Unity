@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114474594170136286}
   - component: {fileID: 114785721768203206}
   m_Layer: 0
-  m_Name: BodyLocked
+  m_Name: Orbital
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
