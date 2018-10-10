@@ -9,7 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
     internal class MemoryUseTracker
     {
-        private Process currentProcess = Process.GetCurrentProcess();
         private readonly MemoryReading[] memoryReadings;
         private int index = 0;
 
@@ -29,9 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         public MemoryReading GetReading()
         {
             var reading = memoryReadings[index];
-
-            reading.VirtualMemoryInBytes = currentProcess.VirtualMemorySize64;
-            reading.WorkingSetMemoryInBytes = currentProcess.WorkingSet64;
             reading.GCMemoryInBytes = GC.GetTotalMemory(false);
 
             index = (index + 1) % memoryReadings.Length;
@@ -41,14 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
         public struct MemoryReading
         {
-            public long VirtualMemoryInBytes { get; set; }
-            public long WorkingSetMemoryInBytes { get; set; }
             public long GCMemoryInBytes { get; set; }
 
             public MemoryReading Reset()
             {
-                VirtualMemoryInBytes = 0;
-                WorkingSetMemoryInBytes = 0;
                 GCMemoryInBytes = 0;
 
                 return this;
@@ -56,8 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
             public static MemoryReading operator +(MemoryReading a, MemoryReading b)
             {
-                a.VirtualMemoryInBytes += b.VirtualMemoryInBytes;
-                a.WorkingSetMemoryInBytes += b.WorkingSetMemoryInBytes;
                 a.GCMemoryInBytes += b.GCMemoryInBytes;
 
                 return a;
@@ -65,8 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
             public static MemoryReading operator /(MemoryReading a, int b)
             {
-                a.VirtualMemoryInBytes /= b;
-                a.WorkingSetMemoryInBytes /= b;
                 a.GCMemoryInBytes /= b;
 
                 return a;
