@@ -1,0 +1,15 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.StateControl",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.Core",
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

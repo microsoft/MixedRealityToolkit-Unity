@@ -1,0 +1,10 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.AppSystems",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.Core"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

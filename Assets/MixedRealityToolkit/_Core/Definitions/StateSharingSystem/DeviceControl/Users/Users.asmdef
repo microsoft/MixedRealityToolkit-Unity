@@ -1,0 +1,20 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.DeviceControl.Users",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.Core",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.AppSystems",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.StateControl",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.CameraControl",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.DeviceControl",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.Initialization",
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
