@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
 
         private void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping)
         {
-            Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
+            Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis || interactionMapping.AxisType == AxisType.Digital);
 
             float singleAxisValue = interactionMapping.Description.Contains("Touchpad")
                 ? MlControllerReference.Touch1PosAndForce.z
