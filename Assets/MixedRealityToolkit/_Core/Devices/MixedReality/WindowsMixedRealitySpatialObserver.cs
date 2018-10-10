@@ -35,6 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
 #if UNITY_WSA
             CreateObserver();
+
+            // Apply the initial oberserver volume settings.
+            ConfigureObserverVolume();
 #endif // UNITY_WSA
         }
 
@@ -87,9 +90,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 #endif // UNITY_WSA
 
         /// <summary>
+        /// The observation extents that are currently in use by the surface observer.
+        /// </summary>
+        private Vector3 currentObserverExtents = Vector3.zero;
+
+        /// <summary>
         /// A queue of <see cref="SurfaceId"/> that need their meshes created (or updated).
         /// </summary>
         private readonly Queue<SurfaceId> meshWorkQueue = new Queue<SurfaceId>();
+
+        /// <summary>
+        /// Identifies the meshes, by id, that are being baked by Unity and if it has been added (true) 
+        /// or is being updated (false). 
+        /// </summary>
+        private Dictionary<int, bool> meshAddStatus = new Dictionary<int, bool>();
 
         /// <summary>
         /// To prevent too many meshes from being generated at the same time, we will
@@ -110,15 +124,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         private float lastUpdated = 0;
 
-        private Dictionary<int, GameObject> meshes = new Dictionary<int, GameObject>();
+        private Dictionary<int, SpatialMeshObject> meshObjects = new Dictionary<int, SpatialMeshObject>();
 
         /// <inheritdoc />
-        public IDictionary<int, GameObject> Meshes
+        public override IDictionary<int, GameObject> Meshes
         {
             get
             {
-                // We return a copy of the meshes collection to preserve the integrity of our internal dictionary.
-                return new Dictionary<int, GameObject>(meshes);
+                Dictionary<int, GameObject> meshes = new Dictionary<int, GameObject>();
+                foreach(int id in meshObjects.Keys)
+                {
+                    meshes.Add(id, meshObjects[id].GameObject);
+                }
+                return meshes;
             }
         }
 
@@ -243,14 +261,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                     // We're using a simple first-in-first-out rule for requesting meshes, but a more sophisticated algorithm could prioritize
                     // the queue based on distance to the user or some other metric.
                     RequestMesh(meshWorkQueue.Dequeue());
-
                 }
                 // If enough time has passed since the previous observer update...
                 else if (Time.time - lastUpdated >= MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval)
                 {
-                    // todo:
-                    //// The application can update the observation extents at any time.
-                    //ApplyObservationExtents();
+                    // The application can update the observer volume at any time, make sure we are using the latest.
+                    ConfigureObserverVolume();
 
                     observer.Update(SurfaceObserver_OnSurfaceChanged);
                     lastUpdated = Time.time;
@@ -318,6 +334,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 ReclaimMeshObject(newMesh);
             }
         }
+
+        /// <summary>
+        /// Applys the configured observation extents.
+        /// </summary>
+        private void ConfigureObserverVolume()
+        {
+            Vector3 newExtents = MixedRealityManager.SpatialAwarenessSystem.ObservationExtents;
+
+            if (currentObserverExtents.Equals(newExtents)) { return; }
+            observer.SetVolumeAsAxisAlignedBox(Vector3.zero, newExtents);
+        }
 #endif // UNITY_WSA
 
         /// <summary>
@@ -335,11 +362,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             {
                 case SurfaceChange.Added:
                 case SurfaceChange.Updated:
+                    meshAddStatus.Add(id.handle, (changeType == SurfaceChange.Added));
                     meshWorkQueue.Enqueue(id);
                     break;
 
                 case SurfaceChange.Removed:
-                    // todo
+                    RemoveMeshObject(id.handle);
                     break;
             }
         }
@@ -376,20 +404,59 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 return;
             }
 
-            // todo
-            //Debug.Assert(outstandingMeshRequest.Value.Object.activeSelf);
-            //outstandingMeshRequest.Value.Renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
+            // Recalculate the mesh normals if requested.
+            if (MixedRealityManager.SpatialAwarenessSystem.MeshRecalculateNormals)
+            {
+                outstandingMeshObject.Value.Filter.sharedMesh.RecalculateNormals();
+            }
 
-            //SurfaceObject? replacedSurface = UpdateOrAddSurfaceObject(outstandingMeshRequest.Value, destroyGameObjectIfReplaced: false);
-            //outstandingMeshRequest = null;
-
-            //if (replacedSurface != null)
-            //{
-            //    ReclaimSurface(replacedSurface.Value);
-            //}
+            // Add the mesh to our collection
+            meshObjects.Add(cookedData.id.handle, outstandingMeshObject.Value);
 
             // Send the appropriate mesh event (added or updated)
-            // todo
+            bool isNewMesh = false;
+            if (meshAddStatus.TryGetValue(cookedData.id.handle, out isNewMesh))
+            {
+                GameObject mesh = outstandingMeshObject.Value.GameObject;
+                if (isNewMesh)
+                {
+                    MixedRealityManager.SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, mesh);
+                }
+                else
+                {
+                    MixedRealityManager.SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, mesh);
+                }
+
+                meshAddStatus.Remove(cookedData.id.handle);
+            }
+
+            // We are done with the outstanding mesh object, reset it's value.
+            outstandingMeshObject = null;
+        }
+
+        /// <summary>
+        /// Removes the <see cref="SpatialMeshObject"/> associated with the specified id.
+        /// </summary>
+        /// <param name="id">The id of the mesh to be removed.</param>
+        private void RemoveMeshObject(int id)
+        {
+            SpatialMeshObject mesh;
+
+            if (meshObjects.TryGetValue(id, out mesh))
+            {
+                // Remove the mesh object from the collection.
+                meshObjects.Remove(id);
+
+                // Cleanup the mesh.
+                // Do not destroy the game object, destroy the meshes.
+                CleanupMeshObject(mesh, false, true);
+
+                // Reclaim the mesh object for future use.
+                ReclaimMeshObject(mesh);
+
+                // Send the mesh removed event
+                MixedRealityManager.SpatialAwarenessSystem.RaiseMeshRemoved(id);
+            }
         }
 
         /// <summary>
@@ -414,7 +481,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         }
 
         // todo: SetObserverOrigin
-        // todo: SetObserverVolume
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }
