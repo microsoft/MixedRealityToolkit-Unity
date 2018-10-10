@@ -132,7 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             get
             {
                 Dictionary<int, GameObject> meshes = new Dictionary<int, GameObject>();
-                foreach(int id in meshObjects.Keys)
+                // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
+                foreach (int id in meshObjects.Keys)
                 {
                     meshes.Add(id, meshObjects[id].GameObject);
                 }
@@ -212,38 +213,32 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
             if (Application.isPlaying)
             {
-                //    // Clean up mesh objects.
-                //    // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
-                //    foreach (GameObject mesh in Meshes.Values)
-                //    {
-                //        if (Application.isEditor)
-                //        {
-                //            Object.DestroyImmediate(mesh);
-                //        }
-                //        else
-                //        {
-                //            Object.Destroy(mesh);
-                //        }
-                //    }
-                //    Meshes.Clear();
+                // Clean up mesh objects.
+                // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
+                foreach (SpatialMeshObject meshObject in meshObjects.Values)
+                {
+                    // Cleanup mesh object.
+                    // Destroy the game object, destroy the meshes.
+                    CleanupMeshObject(meshObject);
+                }
+                meshObjects.Clear();
 
-                //    // Clean up mesh objects that were to be baked.
-                //    // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
-                //    foreach (GameObject mesh in meshesToBake.Values)
-                //    {
-                //        if (Application.isEditor)
-                //        {
-                //            Object.DestroyImmediate(mesh);
-                //        }
-                //        else
-                //        {
-                //            Object.Destroy(mesh);
-                //        }
-                //    }
-                //    meshesToBake.Clear();
+                // Cleanup the oustanding mesh object.
+                if (outstandingMeshObject.HasValue)
+                {
+                    // Destroy the game object, destroy the meshes.
+                    CleanupMeshObject(outstandingMeshObject.Value);
+                }
 
-                //    // Clean up planar surface objects
-                //    // todo
+                // Cleanup the spare mesh object
+                if (spareMeshObject.HasValue)
+                {
+                    // Destroy the game object, destroy the meshes.
+                    CleanupMeshObject(spareMeshObject.Value);
+                }
+
+                // Clean up planar surface objects
+                // todo
             }
         }
 
@@ -299,16 +294,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
                 newMesh.GameObject.name = meshName;
                 newMesh.Id = surfaceId.handle;
-
-                // todo: what do we need of this?
-                //    Debug.Assert(!newMesh.MeshObject.activeSelf);
-
-                // todo: newMesh.MeshObject.SetActive(false);
-
-                //    Debug.Assert(newMesh.Filter.sharedMesh == null);
-                //    Debug.Assert(newMesh.Collider.sharedMesh == null);
-
-                // todo: newMesh.Renderer.enabled = false;
 
                 worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
             }
@@ -449,7 +434,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
                 // Cleanup the mesh.
                 // Do not destroy the game object, destroy the meshes.
-                CleanupMeshObject(mesh, false, true);
+                CleanupMeshObject(mesh, false);
 
                 // Reclaim the mesh object for future use.
                 ReclaimMeshObject(mesh);
@@ -465,8 +450,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// <param name="availableMeshObject"></param>
         private void ReclaimMeshObject(SpatialMeshObject availableMeshObject)
         {
-            if (spareMeshObject == null)
+            if (!spareMeshObject.HasValue)
             {
+                // Cleanup the mesh object.
+                // Do not destroy the game object, destroy the meshes.
                 CleanupMeshObject(availableMeshObject, false);
 
                 availableMeshObject.GameObject.name = "Unused Spatial Mesh";
@@ -476,6 +463,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             }
             else
             {
+                // Cleanup the mesh object.
+                // Destroy the game object, destroy the meshes.
                 CleanupMeshObject(availableMeshObject);
             }
         }
