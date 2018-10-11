@@ -17,6 +17,8 @@ MonoBehaviour:
   useRailsNavigation: 0
   railsNavigationGestures: 896
   windowsGestureAutoStart: 0
+  luminControllerGestures: -1
+  luminHandGestures: -1
   gestures:
   - description: Hold
     gestureType: 1

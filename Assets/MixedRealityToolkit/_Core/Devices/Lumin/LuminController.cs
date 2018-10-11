@@ -48,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
 #if PLATFORM_LUMIN
 
         internal MLInputController MlControllerReference { get; set; }
+        internal LuminControllerGestureSettings ControllerGestureSettings { get; set; }
 
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
         private MixedRealityPose lastControllerPose = MixedRealityPose.ZeroIdentity;
@@ -62,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
             if (!Enabled) { return; }
 
             UpdateControllerData();
+            UpdateGestureData();
 
             if (Interactions == null)
             {
@@ -97,9 +99,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
             }
         }
 
-        /// <summary>
-        /// Update the "Controller" input from the device
-        /// </summary>
         private void UpdateControllerData()
         {
             var lastState = TrackingState;
@@ -156,6 +155,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
                     MixedRealityManager.InputSystem?.RaiseSourceRotationChanged(InputSource, this, currentControllerPose.Rotation);
                 }
             }
+        }
+
+        private void UpdateGestureData()
+        {
+            // TODO Add controller gesture support
         }
 
         private void UpdateButtonData(MixedRealityInteractionMapping interactionMapping)

@@ -18,6 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private static readonly GUIContent DescriptionContent = new GUIContent("Description", "The human readable description of the Gesture.");
         private static readonly GUIContent GestureTypeContent = new GUIContent("Gesture Type", "The type of Gesture that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a Gesture is recognized.");
+        private static readonly GUIContent ControllerGestureContent = new GUIContent("Controller Gestures");
+        private static readonly GUIContent HandGestureContent = new GUIContent("Hand Gestures");
 
         private static GUIContent[] actionLabels;
         private static int[] actionIds;
@@ -28,6 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty windowsNavigationGestureSettings;
         private SerializedProperty windowsRailsNavigationGestures;
         private SerializedProperty windowsGestureAutoStart;
+        private SerializedProperty luminControllerGestures;
+        private SerializedProperty luminHandGestures;
 
         private void OnEnable()
         {
@@ -39,6 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             windowsNavigationGestureSettings = serializedObject.FindProperty("navigationGestures");
             windowsRailsNavigationGestures = serializedObject.FindProperty("railsNavigationGestures");
             windowsGestureAutoStart = serializedObject.FindProperty("windowsGestureAutoStart");
+            luminControllerGestures = serializedObject.FindProperty("luminControllerGestures");
+            luminHandGestures = serializedObject.FindProperty("luminHandGestures");
 
             if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile != null)
@@ -89,12 +95,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             serializedObject.Update();
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Windows Gesture Settings", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(windowsManipulationGestureSettings);
             EditorGUILayout.PropertyField(windowsNavigationGestureSettings);
             EditorGUILayout.PropertyField(useRailsNavigation);
             EditorGUILayout.PropertyField(windowsRailsNavigationGestures);
             EditorGUILayout.PropertyField(windowsGestureAutoStart);
-
+            EditorGUI.indentLevel--;
+            EditorGUILayout.LabelField("Lumin Gesture Settings", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(luminControllerGestures, ControllerGestureContent);
+            EditorGUILayout.PropertyField(luminHandGestures, HandGestureContent);
+            EditorGUI.indentLevel--;
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Defined Recognizable Gestures", EditorStyles.boldLabel);
             RenderList(gestures);

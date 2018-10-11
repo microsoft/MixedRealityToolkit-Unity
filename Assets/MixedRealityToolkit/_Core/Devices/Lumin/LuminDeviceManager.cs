@@ -47,12 +47,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
         /// <inheritdoc />
         public override void Enable()
         {
-            var config = new MLInputConfiguration();
-            var result = MLInput.Start(config);
-
-            if (!result.IsOk)
+            if (!MLInput.IsStarted)
             {
-                Debug.LogError($"Error: ControllerConnectionHandler failed starting MLInput: {result}");
+                var config = new MLInputConfiguration();
+                var result = MLInput.Start(config);
+
+                if (!result.IsOk)
+                {
+                    Debug.LogError($"Error: failed starting MLInput: {result}");
+                    return;
+                }
+            }
+
+            if (!MLHands.IsStarted)
+            {
+                var result = MLHands.Start();
+                if (!result.IsOk)
+                {
+                    Debug.LogError($"Error: failed starting MLHands: {result}");
+                    return;
+                }
+
+                // TODO set gesture settings
             }
 
             for (byte i = 0; i < 3; i++)
@@ -78,6 +94,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
             {
                 controller.Value?.UpdateController();
             }
+
+            // TODO Update hand gestures
         }
 
         /// <inheritdoc />
@@ -86,6 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
             MLInput.OnControllerConnected -= OnControllerConnected;
             MLInput.OnControllerDisconnected -= OnControllerDisconnected;
             MLInput.Stop();
+            MLHands.Stop();
 
             foreach (var activeController in activeControllers)
             {
