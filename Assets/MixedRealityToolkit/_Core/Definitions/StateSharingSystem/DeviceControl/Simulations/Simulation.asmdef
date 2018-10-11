@@ -1,0 +1,15 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.DeviceControl.Simulation",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.Core",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.AppSystems",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.DeviceControl.Users",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.StateControl",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.AppSystems.StateObjects",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.StateSharingSystem.AppSystems.Sessions"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
