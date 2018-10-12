@@ -49,6 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
                 return;
             }
 
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile == null)
+            {
+                EditorGUILayout.HelpBox("No Speech Commands Profile Found, be sure to specify a profile in the Input System's configuration profile.", MessageType.Error);
+                return;
+            }
+
             if (registeredKeywords == null || registeredKeywords.Length == 0)
             {
                 registeredKeywords = RegisteredKeywords().Distinct().ToArray();
@@ -151,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
         private static IEnumerable<string> RegisteredKeywords()
         {
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
-                !MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled ||
+                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile == null ||
                  MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
             {
                 yield break;
