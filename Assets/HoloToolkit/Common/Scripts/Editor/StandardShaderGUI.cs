@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using System;
@@ -99,6 +99,7 @@ namespace HoloToolkit.Unity
             public static GUIContent fadeBeginDistance = new GUIContent("Fade Begin", "Distance From Camera to Begin Fade In");
             public static GUIContent fadeCompleteDistance = new GUIContent("Fade Complete", "Distance From Camera When Fade is Fully In");
             public static GUIContent hoverLight = new GUIContent("Hover Light", "Enable utilization of a Hover Light");
+            public static GUIContent hoverLightRadius = new GUIContent("Hover Light Radius", "Alter the radius of a Hover Light");
             public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Color");
             public static GUIContent hoverLightOpaque = new GUIContent("Hover Light Opaque", "Enable Hover Light on Transparent Pixels");
             public static GUIContent enableHoverColorOpaqueOverride = new GUIContent("Override Color", "Override Opaque Hover Color");
@@ -162,6 +163,7 @@ namespace HoloToolkit.Unity
         protected MaterialProperty fadeBeginDistance;
         protected MaterialProperty fadeCompleteDistance;
         protected MaterialProperty hoverLight;
+        protected MaterialProperty hoverLightRadius;
         protected MaterialProperty enableHoverColorOverride;
         protected MaterialProperty hoverLightOpaque;
         protected MaterialProperty enableHoverColorOpaqueOverride;
@@ -224,6 +226,7 @@ namespace HoloToolkit.Unity
             fadeBeginDistance = FindProperty("_FadeBeginDistance", props);
             fadeCompleteDistance = FindProperty("_FadeCompleteDistance", props);
             hoverLight = FindProperty("_HoverLight", props);
+            hoverLightRadius = FindProperty("_HoverLightRadius", props);
             enableHoverColorOverride = FindProperty("_EnableHoverColorOverride", props);
             hoverColorOverride = FindProperty("_HoverColorOverride", props);
             hoverLightOpaque = FindProperty("_HoverLightOpaque", props);
@@ -516,6 +519,7 @@ namespace HoloToolkit.Unity
 
             if (PropertyEnabled(hoverLight))
             {
+                materialEditor.ShaderProperty(hoverLightRadius, Styles.hoverLightRadius, 2);
                 materialEditor.ShaderProperty(enableHoverColorOverride, Styles.enableHoverColorOverride, 2);
 
                 if (PropertyEnabled(enableHoverColorOverride))
