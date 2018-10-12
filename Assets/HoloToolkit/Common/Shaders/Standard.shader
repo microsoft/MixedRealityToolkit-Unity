@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 Shader "MixedRealityToolkit/Standard"
@@ -37,6 +37,7 @@ Shader "MixedRealityToolkit/Standard"
 
         // Fluent options.
         [Toggle(_HOVER_LIGHT)] _HoverLight("Hover Light", Float) = 1.0
+		_HoverLightRadius("Hover Light Radius", Range(0.01, 10.0)) = 1.0
         [Toggle(_HOVER_COLOR_OVERRIDE)] _EnableHoverColorOverride("Hover Color Override", Float) = 0.0
         _HoverColorOverride("Hover Color Override", Color) = (1.0, 1.0, 1.0, 1.0)
         [Toggle(_HOVER_LIGHT_OPAQUE)] _HoverLightOpaque("Hover Light Opaque", Float) = 0.0
@@ -261,6 +262,7 @@ Shader "MixedRealityToolkit/Standard"
 #endif
 
 #if defined(_HOVER_LIGHT)
+			fixed _HoverLightRadius;
 #if defined(_MULTI_HOVER_LIGHT)
 #define HOVER_LIGHT_COUNT 3
 #else
@@ -322,7 +324,7 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_HOVER_LIGHT)
             inline fixed HoverLight(float4 hoverLight, float3 worldPosition, float alpha)
             {
-                return (1.0 - saturate(length(hoverLight.xyz - worldPosition) / hoverLight.w)) * alpha;
+                return (1.0 - saturate(length(hoverLight.xyz - worldPosition) / (hoverLight.w * _HoverLightRadius))) * alpha;
             }
 #endif
 
@@ -522,7 +524,7 @@ Shader "MixedRealityToolkit/Standard"
                 {
                     int dataIndex = lightIndex * HOVER_LIGHT_DATA_SIZE;
                     fixed hoverValue = HoverLight(_HoverLightData[dataIndex], i.worldPosition.xyz, _HoverLightData[dataIndex + 1].a);
-                    pointToHover += hoverValue;
+                    pointToHover += (hoverValue * hoverValue);
                     hoverColor += lerp(fixed3(0.0, 0.0, 0.0), _HoverLightData[dataIndex + 1].rgb, hoverValue);
                 }
 #if defined(_HOVER_COLOR_OVERRIDE)
