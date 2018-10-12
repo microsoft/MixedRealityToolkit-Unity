@@ -381,12 +381,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 return;
             }
 
-            if (outstandingMeshObject.Value.Id != cookedData.id.handle)
+            // todo: investigate
+            //if (outstandingMeshObject.Value.Id != cookedData.id.handle)
+            //{
+            //    Debug.LogWarning($"OnDataReady called for for mesh id {cookedData.id.handle} while request for mesh id {outstandingMeshObject.Value.Id} was outstanding.");
+            //    ReclaimMeshObject(outstandingMeshObject.Value);
+            //    outstandingMeshObject = null;
+            //    return;
+            //}
+
+            // Apply the appropriate material to the mesh.
+            SpatialMeshDisplayOptions displayOption = MixedRealityManager.SpatialAwarenessSystem.MeshDisplayOption;
+            if (displayOption != SpatialMeshDisplayOptions.None)
             {
-                Debug.LogWarning($"OnDataReady called for for mesh id {cookedData.id.handle} while request for mesh id {outstandingMeshObject.Value.Id} was outstanding.");
-                ReclaimMeshObject(outstandingMeshObject.Value);
-                outstandingMeshObject = null;
-                return;
+                outstandingMeshObject.Value.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
+                    MixedRealityManager.SpatialAwarenessSystem.MeshVisibleMaterial :
+                    MixedRealityManager.SpatialAwarenessSystem.MeshOcclusionMaterial;
             }
 
             // Recalculate the mesh normals if requested.
@@ -395,8 +405,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 outstandingMeshObject.Value.Filter.sharedMesh.RecalculateNormals();
             }
 
-            // Add the mesh to our collection
-            meshObjects.Add(cookedData.id.handle, outstandingMeshObject.Value);
+            // Add / update the mesh to our collection
+            if (!meshObjects.ContainsKey(cookedData.id.handle))
+            {
+                meshObjects.Add(cookedData.id.handle, outstandingMeshObject.Value);
+            }
+            else
+            {
+                meshObjects[cookedData.id.handle] = outstandingMeshObject.Value;
+            }
 
             // Send the appropriate mesh event (added or updated)
             bool isNewMesh = false;

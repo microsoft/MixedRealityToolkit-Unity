@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness mesh subsystem.
         /// </summary>
-        IDictionary<int, GameObject> MeshObjects { get; }
+        IDictionary<int, GameObject> Meshes { get; }
 
         #region Mesh Events
 
@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// floor surfaces within the application. When enabled, the surfaces will be added to the scene
         /// and rendered using the configured <see cref="FloorSurfaceMaterial"/>.
         /// </summary>
-        bool RenderFloorSurfaces { get; set; }
+        bool DisplayFloorSurfaces { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Material"/> to be used when rendering floor surfaces.
@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// ceiling surfaces within the application. When enabled, the surfaces will be added to the scene
         /// and rendered using the configured <see cref="CeilingSurfaceMaterial"/>.
         /// </summary>
-        bool RenderCeilingSurfaces { get; set; }
+        bool DisplayCeilingSurfaces { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Material"/> to be used when rendering ceiling surfaces.
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// wall surfaces within the application. When enabled, the surfaces will be added to the scene
         /// and rendered using the configured <see cref="WallSurfaceMaterial"/>.
         /// </summary>
-        bool RenderWallSurfaces { get; set; }
+        bool DisplayWallSurfaces { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Material"/> to be used when rendering wall surfaces.
@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// horizontal platform surfaces within the application. When enabled, the surfaces will be added to the scene
         /// and rendered using the configured <see cref="PlatformSurfaceMaterial"/>.
         /// </summary>
-        bool RenderPlatformSurfaces { get; set; }
+        bool DisplayPlatformSurfaces { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Material"/> to be used when rendering horizontal platform surfaces.
@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness surface finding subsystem.
         /// </summary>
-        IDictionary<int, GameObject> SurfaceObjects { get; }
+        IDictionary<int, GameObject> PlanarSurfaces { get; }
 
         #region Surface Finding Events
 

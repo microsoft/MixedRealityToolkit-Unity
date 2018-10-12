@@ -21,7 +21,7 @@ MonoBehaviour:
   meshTrianglesPerCubicMeter: 0
   meshRecalculateNormals: 1
   meshDisplayOption: 1
-  meshMaterial: {fileID: 2100000, guid: a923a5d1aebc7fe449b4ab3289da537b, type: 2}
+  meshVisibleMaterial: {fileID: 2100000, guid: a923a5d1aebc7fe449b4ab3289da537b, type: 2}
   meshOcclusionMaterial: {fileID: 2100000, guid: a809c7ea182b699409443d46d5b42435,
     type: 2}
   useSurfaceFindingSystem: 0

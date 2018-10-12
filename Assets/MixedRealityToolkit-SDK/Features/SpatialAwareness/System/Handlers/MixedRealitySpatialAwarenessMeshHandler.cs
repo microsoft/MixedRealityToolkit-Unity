@@ -17,13 +17,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.Handlers
         /// <inheritdoc />
         public void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData)
         {
-            ApplyMeshMaterial(eventData.GameObject);
+            //ApplyMeshMaterial(eventData.GameObject);
+            eventData.GameObject.SetActive(true);
         }
 
         /// <inheritdoc />
         public void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData)
         {
-            ApplyMeshMaterial(eventData.GameObject);
+            //ApplyMeshMaterial(eventData.GameObject);
+            eventData.GameObject.SetActive(true);
         }
 
         /// <inheritdoc />

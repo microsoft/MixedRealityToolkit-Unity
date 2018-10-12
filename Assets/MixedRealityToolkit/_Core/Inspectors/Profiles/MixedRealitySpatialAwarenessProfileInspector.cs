@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty meshTrianglesPerCubicMeter;
         private SerializedProperty meshRecalculateNormals;
         private SerializedProperty meshDisplayOption;
-        private SerializedProperty meshMaterial;
+        private SerializedProperty meshVisibleMaterial;
         private SerializedProperty meshOcclusionMaterial;
 
         // Surface Finding settings
@@ -73,7 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             meshTrianglesPerCubicMeter = serializedObject.FindProperty("meshTrianglesPerCubicMeter");
             meshRecalculateNormals = serializedObject.FindProperty("meshRecalculateNormals");
             meshDisplayOption = serializedObject.FindProperty("meshDisplayOption");
-            meshMaterial = serializedObject.FindProperty("meshMaterial");
+            meshVisibleMaterial = serializedObject.FindProperty("meshMaterial");
+            meshVisibleMaterial = serializedObject.FindProperty("meshVisibleMaterial");
             meshOcclusionMaterial = serializedObject.FindProperty("meshOcclusionMaterial");
 
             // Surface Finding settings
@@ -127,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(meshTrianglesPerCubicMeter, trianglesPerCubicMeterContent);
             EditorGUILayout.PropertyField(meshRecalculateNormals);
             EditorGUILayout.PropertyField(meshDisplayOption, displayOptionContent);
-            EditorGUILayout.PropertyField(meshMaterial, visibleMaterialContent);
+            EditorGUILayout.PropertyField(meshVisibleMaterial, visibleMaterialContent);
             EditorGUILayout.PropertyField(meshOcclusionMaterial, occlusionMaterialContent);
 
             EditorGUILayout.Space();

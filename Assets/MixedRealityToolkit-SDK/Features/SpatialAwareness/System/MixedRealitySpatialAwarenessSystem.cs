@@ -92,6 +92,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         {
             meshEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
             surfaceFindingEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
+
+            // Mesh settings
+            UseMeshSystem = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UseMeshSystem;
+            MeshPhysicsLayer = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshPhysicsLayer;
+            MeshLevelOfDetail = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshLevelOfDetail;
+            MeshTrianglesPerCubicMeter = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshTrianglesPerCubicMeter;
+            MeshRecalculateNormals = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshRecalculateNormals;
+            MeshDisplayOption = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshDisplayOption;
+            MeshVisibleMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshVisibleMaterial;
+            MeshOcclusionMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshOcclusionMaterial;
+
+            // Surface finding settings
+            UseSurfaceFindingSystem = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UseSurfaceFindingSystem;
+            SurfacePhysicsLayer = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingPhysicsLayer;
+            SurfaceFindingMinimumArea = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingMinimumArea;
+            DisplayFloorSurfaces = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayFloorSurfaces;
+            FloorSurfaceMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.FloorSurfaceMaterial;
+            DisplayCeilingSurfaces = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayCeilingSurface;
+            CeilingSurfaceMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.CeilingSurfaceMaterial;
+            DisplayWallSurfaces = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayWallSurface;
+            WallSurfaceMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.WallSurfaceMaterial;
+            DisplayPlatformSurfaces = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayPlatformSurfaces;
+            PlatformSurfaceMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.PlatformSurfaceMaterial;
         }
 
         /// <inheritdoc/>
@@ -159,14 +182,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         #region Mesh Events
 
         /// <inheritdoc />
-        public void RaiseMeshAdded(int meshId, GameObject meshObject)
+        public void RaiseMeshAdded(int meshId, GameObject mesh)
         {
             if (!UseMeshSystem) { return; }
 
             // Parent the mesh object
-            meshObject.transform.parent = MeshParent.transform;
+            mesh.transform.parent = MeshParent.transform;
 
-            meshEventData.Initialize(this, meshId, meshObject);
+            meshEventData.Initialize(this, meshId, mesh);
             HandleEvent(meshEventData, OnMeshAdded);
         }
 
@@ -181,14 +204,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             };
 
         /// <inheritdoc />
-        public void RaiseMeshUpdated(int meshId, GameObject meshObject)
+        public void RaiseMeshUpdated(int meshId, GameObject mesh)
         {
             if (!UseMeshSystem) { return; }
 
             // Parent the mesh object
-            meshObject.transform.parent = MeshParent.transform;
+            mesh.transform.parent = MeshParent.transform;
 
-            meshEventData.Initialize(this, meshId, meshObject);
+            meshEventData.Initialize(this, meshId, mesh);
             HandleEvent(meshEventData, OnMeshUpdated);
         }
 
@@ -469,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public Material MeshOcclusionMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public IDictionary<int, GameObject> MeshObjects
+        public IDictionary<int, GameObject> Meshes
         {
             get
             {
@@ -495,31 +518,31 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public float SurfaceFindingMinimumArea { get; set; } = 0.025f;
 
         /// <inheritdoc />
-        public bool RenderFloorSurfaces { get; set; } = false;
+        public bool DisplayFloorSurfaces { get; set; } = false;
 
         /// <inheritdoc />
         public Material FloorSurfaceMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public bool RenderCeilingSurfaces { get; set; } = false;
+        public bool DisplayCeilingSurfaces { get; set; } = false;
 
         /// <inheritdoc />
         public Material CeilingSurfaceMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public bool RenderWallSurfaces { get; set; } = false;
+        public bool DisplayWallSurfaces { get; set; } = false;
 
         /// <inheritdoc />
         public Material WallSurfaceMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public bool RenderPlatformSurfaces { get; set; } = false;
+        public bool DisplayPlatformSurfaces { get; set; } = false;
 
         /// <inheritdoc />
         public Material PlatformSurfaceMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public IDictionary<int, GameObject> SurfaceObjects
+        public IDictionary<int, GameObject> PlanarSurfaces
         {
             get
             {

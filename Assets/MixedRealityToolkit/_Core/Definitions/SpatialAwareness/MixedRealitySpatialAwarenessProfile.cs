@@ -103,12 +103,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 
         [SerializeField]
         [Tooltip("Material to use when displaying meshes")]
-        private Material meshMaterial = null;
+        private Material meshVisibleMaterial = null;
 
         /// <summary>
         /// The material to be used when automatically displaying spatial meshes.
         /// </summary>
-        public Material MeshMaterial => meshMaterial;
+        public Material MeshVisibleMaterial => meshVisibleMaterial;
 
         [SerializeField]
         [Tooltip("Material to use when spatial meshes should occlude other objects")]
