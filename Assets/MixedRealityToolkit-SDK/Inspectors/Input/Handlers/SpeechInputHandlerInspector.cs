@@ -105,9 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
             for (int index = 0; index < list.arraySize; index++)
             {
                 // the element
-                SerializedProperty elementProperty = list.GetArrayElementAtIndex(index);
+                SerializedProperty speechCommandProperty = list.GetArrayElementAtIndex(index);
                 EditorGUILayout.BeginHorizontal();
-                bool elementExpanded = EditorGUILayout.PropertyField(elementProperty);
+                bool elementExpanded = EditorGUILayout.PropertyField(speechCommandProperty);
                 GUILayout.FlexibleSpace();
                 // the remove element button
                 bool elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
@@ -119,9 +119,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 
                 EditorGUILayout.EndHorizontal();
 
+                SerializedProperty keywordProperty = speechCommandProperty.FindPropertyRelative("keyword");
+
+                bool invalidKeyword = true;
+                foreach (string keyword in registeredKeywords)
+                {
+                    if (keyword == keywordProperty.stringValue)
+                    {
+                        invalidKeyword = false;
+                        break;
+                    }
+                }
+
+                if (invalidKeyword)
+                {
+                    EditorGUILayout.HelpBox("Registered keyword is not recognized in the speech command profile!", MessageType.Error);
+                }
+
                 if (!elementRemoved && elementExpanded)
                 {
-                    SerializedProperty keywordProperty = elementProperty.FindPropertyRelative("keyword");
                     string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
                     int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
                     int currentSelection = EditorGUILayout.Popup("keyword", previousSelection, keywords);
@@ -131,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
                         keywordProperty.stringValue = keywords[currentSelection];
                     }
 
-                    SerializedProperty responseProperty = elementProperty.FindPropertyRelative("response");
+                    SerializedProperty responseProperty = speechCommandProperty.FindPropertyRelative("response");
                     EditorGUILayout.PropertyField(responseProperty, true);
                 }
             }
