@@ -59,8 +59,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// </summary>
         private AudioClip dictationAudioClip;
 
-        private DictationRecognizer dictationRecognizer;
-        
+        private static DictationRecognizer dictationRecognizer;
+
+        private readonly WaitUntil waitUntilPhraseRecognitionSystemHasStarted = new WaitUntil(() => PhraseRecognitionSystem.Status != SpeechSystemStatus.Stopped);
+        private readonly WaitUntil waitUntilPhraseRecognitionSystemHasStopped = new WaitUntil(() => PhraseRecognitionSystem.Status != SpeechSystemStatus.Running);
+
+        private readonly WaitUntil waitUntilDictationRecognizerHasStarted = new WaitUntil(() => dictationRecognizer.Status != SpeechSystemStatus.Stopped);
+        private readonly WaitUntil waitUntilDictationRecognizerHasStopped = new WaitUntil(() => dictationRecognizer.Status != SpeechSystemStatus.Running);
+
         /// <inheritdoc />
         public override void Enable()
         {
@@ -135,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// <inheritdoc />
         public async Task StartRecordingAsync(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10, string micDeviceName = "")
         {
-            if (IsListening || isTransitioning || MixedRealityManager.InputSystem == null)
+            if (IsListening || isTransitioning || MixedRealityManager.InputSystem == null || !Application.isPlaying)
             {
                 Debug.LogWarning("Unable to start recording");
                 return;
@@ -156,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 PhraseRecognitionSystem.Shutdown();
             }
 
-            await new WaitUntil(() => PhraseRecognitionSystem.Status != SpeechSystemStatus.Running);
+            await waitUntilPhraseRecognitionSystemHasStopped;
 
             // Query the maximum frequency of the default microphone.
             int minSamplingRate; // Not used.
@@ -167,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             dictationRecognizer.AutoSilenceTimeoutSeconds = autoSilenceTimeout;
             dictationRecognizer.Start();
 
-            await new WaitUntil(() => dictationRecognizer.Status != SpeechSystemStatus.Stopped);
+            await waitUntilDictationRecognizerHasStarted;
 
             if (dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
@@ -190,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// <inheritdoc />
         public async Task<AudioClip> StopRecordingAsync()
         {
-            if (!IsListening || isTransitioning)
+            if (!IsListening || isTransitioning || !Application.isPlaying)
             {
                 Debug.LogWarning("Unable to stop recording");
                 return null;
@@ -212,11 +218,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 dictationRecognizer.Stop();
             }
 
-            await new WaitUntil(() => dictationRecognizer.Status != SpeechSystemStatus.Running);
+            await waitUntilDictationRecognizerHasStopped;
 
             PhraseRecognitionSystem.Restart();
 
-            await new WaitUntil(() => PhraseRecognitionSystem.Status == SpeechSystemStatus.Running);
+            await waitUntilPhraseRecognitionSystemHasStarted;
 
             isTransitioning = false;
             return dictationAudioClip;
