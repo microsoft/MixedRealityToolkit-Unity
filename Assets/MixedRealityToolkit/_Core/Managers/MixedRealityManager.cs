@@ -538,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             if (manager == null)
             {
-                throw new NullReferenceException($"Unable to find {type.Name}.");
+                Debug.Log($"Unable to find {type.Name}.");
             }
 
             return manager;

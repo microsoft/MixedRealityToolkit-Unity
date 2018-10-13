@@ -93,6 +93,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             meshEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
             surfaceFindingEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
 
+            // General settings
+            StartupBehavior = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.StartupBehavior;
+            ObservationExtents = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.ObservationExtents;
+            UpdateInterval = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval;
+
             // Mesh settings
             UseMeshSystem = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UseMeshSystem;
             MeshPhysicsLayer = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshPhysicsLayer;
@@ -121,6 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public override void Reset()
         {
             base.Reset();
+            // todo: cleanup some objects but not the root scene items
             InitializeInternal();
         }
 
@@ -175,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
                 }
 
                 // Tell the observer to clean up
-                SpatialAwarenessObserver.Destroy();
+                SpatialAwarenessObserver?.Destroy();
             }
         }
 
@@ -496,7 +502,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         {
             get
             {
-                // This implementation of the spatial awareness system manages game objects.
+                // The observer manages the mesh collection.
                 return SpatialAwarenessObserver.Meshes;
             }
         }

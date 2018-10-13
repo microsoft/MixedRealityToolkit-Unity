@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             if (observer == null)
             {
                 observer = new SurfaceObserver();
-                //    ApplyObservationExtents();
+                ConfigureObserverVolume();
 
                 if (MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.StartupBehavior == AutoStartBehavior.AutoStart)
                 {
