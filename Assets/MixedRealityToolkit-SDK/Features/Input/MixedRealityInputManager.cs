@@ -275,37 +275,43 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 return;
             }
 
-            GameObject focusedObject = FocusProvider?.GetFocusedObject(baseInputEventData);
+            Debug.Assert(baseInputEventData.InputSource.Pointers != null, $"InputSource {baseInputEventData.InputSource.SourceName} doesn't have any registered pointers! Input Sources without pointers should use the GazeProvider's pointer as a default fallback.");
 
-            // Handle modal input if one exists
-            if (modalInputStack.Count > 0)
+            // Get the focused object for each pointer of the event source
+            for (int i = 0; i < baseInputEventData.InputSource.Pointers.Length; i++)
             {
-                GameObject modalInput = modalInputStack.Peek();
+                GameObject focusedObject = FocusProvider?.GetFocusedObject(baseInputEventData.InputSource.Pointers[i]);
 
-                // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
-                if (focusedObject != null && modalInput != null && focusedObject.transform.IsChildOf(modalInput.transform))
+                // Handle modal input if one exists
+                if (modalInputStack.Count > 0)
+                {
+                    GameObject modalInput = modalInputStack.Peek();
+
+                    // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
+                    if (focusedObject != null && modalInput != null && focusedObject.transform.IsChildOf(modalInput.transform))
+                    {
+                        if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
+                        {
+                            return;
+                        }
+                    }
+                    // Otherwise, just invoke the event on the modal handler itself
+                    else
+                    {
+                        if (ExecuteEvents.ExecuteHierarchy(modalInput, baseInputEventData, eventHandler) && baseInputEventData.used)
+                        {
+                            return;
+                        }
+                    }
+                }
+
+                // If event was not handled by modal, pass it on to the current focused object
+                if (focusedObject != null)
                 {
                     if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
                     {
                         return;
                     }
-                }
-                // Otherwise, just invoke the event on the modal handler itself
-                else
-                {
-                    if (ExecuteEvents.ExecuteHierarchy(modalInput, baseInputEventData, eventHandler) && baseInputEventData.used)
-                    {
-                        return;
-                    }
-                }
-            }
-
-            // If event was not handled by modal, pass it on to the current focused object
-            if (focusedObject != null)
-            {
-                if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
-                {
-                    return;
                 }
             }
 
