@@ -262,8 +262,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             Debug.Assert(eventData != null);
             var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
             Debug.Assert(baseInputEventData != null);
-            Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}");
             Debug.Assert(!baseInputEventData.used);
+
+            if (baseInputEventData.InputSource == null)
+            {
+                Debug.LogError($"Failed to find an input source for {baseInputEventData}");
+                return;
+            }
 
             // Send the event to global listeners
             base.HandleEvent(eventData, eventHandler);
@@ -275,7 +280,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 return;
             }
 
-            Debug.Assert(baseInputEventData.InputSource.Pointers != null, $"InputSource {baseInputEventData.InputSource.SourceName} doesn't have any registered pointers! Input Sources without pointers should use the GazeProvider's pointer as a default fallback.");
+            if (baseInputEventData.InputSource.Pointers == null)
+            {
+                Debug.LogError($"InputSource {baseInputEventData.InputSource.SourceName} doesn't have any registered pointers! Input Sources without pointers should use the GazeProvider's pointer as a default fallback.");
+                return;
+            }
 
             // Get the focused object for each pointer of the event source
             for (int i = 0; i < baseInputEventData.InputSource.Pointers.Length; i++)
