@@ -163,6 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             }
 
             await waitUntilPhraseRecognitionSystemHasStopped;
+            Debug.Assert(PhraseRecognitionSystem.Status == SpeechSystemStatus.Stopped);
 
             // Query the maximum frequency of the default microphone.
             int minSamplingRate; // Not used.
@@ -174,6 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             dictationRecognizer.Start();
 
             await waitUntilDictationRecognizerHasStarted;
+            Debug.Assert(dictationRecognizer.Status == SpeechSystemStatus.Running);
 
             if (dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
@@ -219,10 +221,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             }
 
             await waitUntilDictationRecognizerHasStopped;
+            Debug.Assert(dictationRecognizer.Status == SpeechSystemStatus.Stopped);
 
             PhraseRecognitionSystem.Restart();
 
             await waitUntilPhraseRecognitionSystemHasStarted;
+            Debug.Assert(PhraseRecognitionSystem.Status == SpeechSystemStatus.Running);
 
             isTransitioning = false;
             return dictationAudioClip;
