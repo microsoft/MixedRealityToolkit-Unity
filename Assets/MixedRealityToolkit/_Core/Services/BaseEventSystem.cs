@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Managers
+namespace Microsoft.MixedReality.Toolkit.Core.Services
 {
     /// <summary>
     /// Base Event System that can be inherited from to give other system features event capabilities.

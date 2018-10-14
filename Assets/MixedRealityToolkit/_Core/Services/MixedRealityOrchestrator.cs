@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Managers
+namespace Microsoft.MixedReality.Toolkit.Core.Services
 {
     /// <summary>
     /// The Mixed Reality Orchestrator is responsible for coordinating the operation of the Mixed Reality Toolkit.

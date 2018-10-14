@@ -1,4 +1,4 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.Managers;
+﻿using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
