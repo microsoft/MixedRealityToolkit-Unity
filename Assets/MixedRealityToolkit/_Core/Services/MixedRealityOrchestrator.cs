@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                     return null;
                 }
 
-                MixedRealityOrchestrator[] objects = FindObjectsOfType<MixedRealityOrchestrator>();
+                var objects = FindObjectsOfType<MixedRealityOrchestrator>();
                 searchForInstance = false;
 
                 switch (objects.Length)
@@ -387,6 +387,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             get
             {
                 AssertIsInitialized();
+
                 if (mixedRealityPlayspace)
                 {
                     return mixedRealityPlayspace;
@@ -407,7 +408,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                         // co-opting this object for use with teleporting and such, since that
                         // might cause conflicts with the parent's intended purpose.
                         Debug.LogWarning($"The Mixed Reality Orchestrator expected the camera\'s parent to be named {MixedRealityPlayspaceName}. The existing parent will be renamed and used instead.");
-                        CameraCache.Main.transform.parent.name = MixedRealityPlayspaceName; // If we rename it, we make it clearer that why it's being teleported around at runtime.
+                        // If we rename it, we make it clearer that why it's being teleported around at runtime.
+                        CameraCache.Main.transform.parent.name = MixedRealityPlayspaceName;
                     }
                     mixedRealityPlayspace = CameraCache.Main.transform.parent;
                 }
@@ -418,7 +420,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 // tracked space origin overlaps with the world space origin. If a platform ever does
                 // something else (i.e, placing the lower left hand corner of the tracked space at world 
                 // space 0,0,0), we should compensate for that here.
-
                 return mixedRealityPlayspace;
             }
         }
@@ -429,12 +430,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             DestroyAllServices();
         }
 
-        /// <summary>
-        /// Base Awake method that sets the Singleton's unique instance.
-        /// Called by Unity when initializing a MonoBehaviour.
-        /// Scripts that extend Singleton should be sure to call base.Awake() unless they want
-        /// lazy initialization
-        /// </summary>
         private void Awake()
         {
             if (IsInitialized && instance != this)
@@ -457,33 +452,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
         }
 
-        /// <summary>
-        /// The MonoBehaviour OnEnable event, which is then circulated to all active services
-        /// </summary>
         private void OnEnable()
         {
             EnableAllServices();
         }
 
-        /// <summary>
-        /// The MonoBehaviour Update event, which is then circulated to all active services
-        /// </summary>
         private void Update()
         {
             UpdateAllServices();
         }
 
-        /// <summary>
-        /// The MonoBehaviour OnDisable event, which is then circulated to all active services
-        /// </summary>
         private void OnDisable()
         {
             DisableAllServices();
         }
 
-        /// <summary>
-        /// The MonoBehaviour Destroy event, which is then circulated to all active services prior to the Mixed Reality Orchestrator being destroyed
-        /// </summary>
         private void OnDestroy()
         {
             DestroyAllServices();
