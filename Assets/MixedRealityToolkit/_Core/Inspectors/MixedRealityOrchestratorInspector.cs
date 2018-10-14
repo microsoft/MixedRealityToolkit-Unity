@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
     [CustomEditor(typeof(MixedRealityOrchestrator))]
-    public class MixedRealityManagerInspector : Editor
+    public class MixedRealityOrchestratorInspector : Editor
     {
         private SerializedProperty activeProfile;
         private int currentPickerWindow = -1;
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
         }
 
         [MenuItem("Mixed Reality Toolkit/Configure...")]
-        public static void CreateMixedRealityManagerObject()
+        public static void CreateMixedRealityOrchestratorObject()
         {
             Selection.activeObject = MixedRealityOrchestrator.Instance;
             EditorGUIUtility.PingObject(MixedRealityOrchestrator.Instance);

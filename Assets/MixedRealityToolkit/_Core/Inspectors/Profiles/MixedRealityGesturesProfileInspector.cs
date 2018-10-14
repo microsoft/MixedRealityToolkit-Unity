@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private void OnEnable()
         {
-            if (!CheckMixedRealityManager(false)) { return; }
+            if (!CheckMixedRealityConfigured(false)) { return; }
 
             gestures = serializedObject.FindProperty("gestures");
             windowsManipulationGestureSettings = serializedObject.FindProperty("manipulationGestures");
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             RenderMixedRealityToolkitLogo();
 
-            if (!CheckMixedRealityManager()) { return; }
+            if (!CheckMixedRealityConfigured()) { return; }
 
             if (!MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled)
             {

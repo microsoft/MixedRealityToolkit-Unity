@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
             keywordsProperty = serializedObject.FindProperty("keywords");
             persistentKeywordsProperty = serializedObject.FindProperty("persistentKeywords");
 
-            if (CheckMixedRealityManager(false))
+            if (CheckMixedRealityConfigured(false))
             {
                 registeredKeywords = RegisteredKeywords().Distinct().ToArray();
             }
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            if (!CheckMixedRealityManager())
+            if (!CheckMixedRealityConfigured())
             {
                 return;
             }

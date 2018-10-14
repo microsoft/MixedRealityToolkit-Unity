@@ -79,17 +79,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             private set { speechCommandsProfile = value; }
         }
 
-        private IMixedRealityDictationManager dictationManager;
+        private IMixedRealityDictationSystem dictationSystem;
 
         /// <summary>
-        /// Current Registered Dictation Manager.
+        /// Current Registered Dictation System.
         /// </summary>
-        public IMixedRealityDictationManager DictationManager => dictationManager ?? (dictationManager = MixedRealityOrchestrator.Instance.GetService<IMixedRealityDictationManager>());
+        public IMixedRealityDictationSystem DictationSystem => dictationSystem ?? (dictationSystem = MixedRealityOrchestrator.Instance.GetService<IMixedRealityDictationSystem>());
 
         /// <summary>
         /// Is Dictation Enabled?
         /// </summary>
-        public bool IsDictationEnabled => MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled && DictationManager != null;
+        public bool IsDictationEnabled => MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled && DictationSystem != null;
 
         [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]

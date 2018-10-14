@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         /// Check and make sure we have a Mixed Reality Orchestrator and an active profile.
         /// </summary>
         /// <returns>True if the Mixed Reality Orchestrator is properly initialized.</returns>
-        protected bool CheckMixedRealityManager(bool showHelpBox = true)
+        protected static bool CheckMixedRealityConfigured(bool showHelpBox = true)
         {
             if (!MixedRealityOrchestrator.IsInitialized)
             {
@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     {
                         EditorGUILayout.HelpBox("No Mixed Reality Orchestrator found in scene.", MessageType.Error);
                     }
+
                     return false;
                 }
 
@@ -34,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     EditorGUILayout.HelpBox("No Active Profile set on the Mixed Reality Orchestrator.", MessageType.Error);
                 }
+
                 return false;
             }
 

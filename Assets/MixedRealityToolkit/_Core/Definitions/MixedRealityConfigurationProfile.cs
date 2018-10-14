@@ -23,17 +23,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile", fileName = "MixedRealityConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
     public class MixedRealityConfigurationProfile : BaseMixedRealityProfile, ISerializationCallbackReceiver
     {
-        #region Manager Registry properties
+        #region Service Registry properties
 
         [SerializeField]
         private SystemType[] initialServiceTypes = null;
 
         /// <summary>
-        /// Dictionary list of active managers used by the Mixed Reality Orchestrator at runtime
+        /// Dictionary list of active Systems used by the Mixed Reality Orchestrator at runtime
         /// </summary>
         public Dictionary<Type, IMixedRealityService> ActiveServices { get; } = new Dictionary<Type, IMixedRealityService>();
 
-        #endregion Manager Registry properties
+        #endregion Service Registry properties
 
         #region Mixed Reality Orchestrator configurable properties
 
@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         private SystemType diagnosticsSystemType;
 
         /// <summary>
-        /// Diagnostics Manager Script File to instantiate at runtime
+        /// Diagnostics System Script File to instantiate at runtime
         /// </summary>
         public SystemType DiagnosticsSystemSystemType
         {

@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private void OnEnable()
         {
-            if (!CheckMixedRealityManager(false))
+            if (!CheckMixedRealityConfigured(false))
             {
                 return;
             }
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            if (!CheckMixedRealityManager())
+            if (!CheckMixedRealityConfigured())
             {
                 return;
             }

@@ -16,7 +16,7 @@ using UnityEngine.Windows.Speech;
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-    public class WindowsDictationInputDeviceManager : BaseDeviceManager, IMixedRealityDictationManager
+    public class WindowsDictationInputDeviceManager : BaseDeviceManager, IMixedRealityDictationSystem
     {
         /// <summary>
         /// Constructor.
