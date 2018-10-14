@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
     /// </summary>
     public class MixedRealityBoundaryManager : BaseEventSystem, IMixedRealityBoundarySystem
     {
-        #region IMixedRealityManager Implementation
+        #region IMixedRealityService Implementation
 
         private BoundaryEventData boundaryEventData = null;
 
@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             handler.OnBoundaryVisualizationChanged(boundaryEventData);
         };
 
-        #endregion IMixedRealityManager Implementation
+        #endregion IMixedRealityService Implementation
 
         #region IMixedRealtyEventSystem Implementation
 

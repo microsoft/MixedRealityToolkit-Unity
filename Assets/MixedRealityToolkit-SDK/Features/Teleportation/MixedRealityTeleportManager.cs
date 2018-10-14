@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         /// </summary>
         private GameObject eventSystemReference = null;
 
-        #region IMixedRealityManager Implementation
+        #region IMixedRealityService Implementation
 
         /// <inheritdoc />
         public override void Initialize()
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             }
         }
 
-        #endregion IMixedRealityManager Implementation
+        #endregion IMixedRealityService Implementation
 
         #region IEventSystemManager Implementation
 

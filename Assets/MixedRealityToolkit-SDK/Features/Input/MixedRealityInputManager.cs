@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private SpeechEventData speechEventData;
         private DictationEventData dictationEventData;
 
-        #region IMixedRealityManager Implementation
+        #region IMixedRealityService Implementation
 
         /// <summary>
         /// Constructor
@@ -247,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             base.Destroy();
         }
 
-        #endregion IMixedRealityManager Implementation
+        #endregion IMixedRealityService Implementation
 
         #region IEventSystemManager Implementation
 

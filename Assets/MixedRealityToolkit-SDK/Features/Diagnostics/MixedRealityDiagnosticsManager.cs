@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
     public class MixedRealityDiagnosticsManager : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
-        #region IMixedRealityManager
+        #region IMixedRealityService
         private DiagnosticsEventData eventData;
         private GameObject diagnosticVisualization;
 
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
                 handler.OnDiagnosticSettingsChanged(diagnosticsEventsData);
             };
 
-        #endregion IMixedRealityManager
+        #endregion IMixedRealityService
 
         #region IMixedRealityDiagnosticsManager
         private bool visible;
