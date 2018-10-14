@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 
             if (MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled && MixedRealityOrchestrator.InputSystem == null)
             {
-                EditorGUILayout.HelpBox("No Input System Profile found in the Mixed Reality Manager's Active Profile.", MessageType.Error);
+                EditorGUILayout.HelpBox("No Input System Profile found in the Mixed Reality Orchestrator's Active Profile.", MessageType.Error);
                 base.OnInspectorGUI();
                 return;
             }

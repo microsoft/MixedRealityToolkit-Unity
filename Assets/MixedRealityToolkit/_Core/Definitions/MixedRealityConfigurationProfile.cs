@@ -29,13 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         private SystemType[] initialServiceTypes = null;
 
         /// <summary>
-        /// Dictionary list of active managers used by the Mixed Reality Manager at runtime
+        /// Dictionary list of active managers used by the Mixed Reality Orchestrator at runtime
         /// </summary>
         public Dictionary<Type, IMixedRealityService> ActiveServices { get; } = new Dictionary<Type, IMixedRealityService>();
 
         #endregion Manager Registry properties
 
-        #region Mixed Reality Manager configurable properties
+        #region Mixed Reality Orchestrator configurable properties
 
         [SerializeField]
         [Tooltip("The scale of the Mixed Reality experience.")]
@@ -229,15 +229,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         }
 
         [SerializeField]
-        [Tooltip("All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.")]
+        [Tooltip("All the additional non-required systems, features, and managers registered with the Mixed Reality Orchestrator.")]
         private MixedRealityRegisteredComponentsProfile registeredComponentsProfile = null;
 
         /// <summary>
-        /// All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.
+        /// All the additional non-required systems, features, and managers registered with the Mixed Reality Orchestrator.
         /// </summary>
         public MixedRealityRegisteredComponentsProfile RegisteredComponentsProfile => registeredComponentsProfile;
 
-        #endregion Mixed Reality Manager configurable properties
+        #endregion Mixed Reality Orchestrator configurable properties
 
         #region ISerializationCallbackReceiver Implementation
 

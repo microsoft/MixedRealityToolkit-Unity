@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     if (EditorUtility.DisplayDialog(
                         "Attention!",
-                        "There is no active Mixed Reality Manager in your scene!\n\nWould you like to create one now?",
+                        "There is no active Mixed Reality Orchestrator in your scene!\n\nWould you like to create one now?",
                         "Yes",
                         "Later"))
                     {
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     }
                     else
                     {
-                        Debug.LogWarning("No Mixed Reality Manager in your scene.");
+                        Debug.LogWarning("No Mixed Reality Orchestrator in your scene.");
                         return;
                     }
                 }
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (!MixedRealityOrchestrator.IsInitialized)
             {
-                EditorGUILayout.HelpBox("Unable to find Mixed Reality Manager!", MessageType.Error);
+                EditorGUILayout.HelpBox("Unable to find Mixed Reality Orchestrator!", MessageType.Error);
                 return;
             }
 

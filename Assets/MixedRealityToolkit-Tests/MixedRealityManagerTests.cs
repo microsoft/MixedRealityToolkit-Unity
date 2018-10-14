@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test02_TestNoMixedRealityConfigurationFound()
         {
-            LogAssert.Expect(LogType.Error, "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Manager");
+            LogAssert.Expect(LogType.Error, "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Orchestrator");
 
             MixedRealityOrchestrator.Instance.ActiveProfile = null;
 
@@ -346,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// The initialize function is used to setup the manager once created.
-        /// This method is called once all managers have been registered in the Mixed Reality Manager.
+        /// This method is called once all managers have been registered in the Mixed Reality Orchestrator.
         /// </summary>
         public override void Initialize()
         {
@@ -362,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Optional ProfileUpdate function to allow reconfiguration when the active configuration profile of the Mixed Reality Manager is replaced
+        /// Optional ProfileUpdate function to allow reconfiguration when the active configuration profile of the Mixed Reality Orchestrator is replaced
         /// </summary>
         public override void Reset()
         {
@@ -370,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Optional Destroy function to perform cleanup of the manager before the Mixed Reality Manager is destroyed
+        /// Optional Destroy function to perform cleanup of the manager before the Mixed Reality Orchestrator is destroyed
         /// </summary>
         public override void Destroy()
         {
@@ -384,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// The initialize function is used to setup the manager once created.
-        /// This method is called once all managers have been registered in the Mixed Reality Manager.
+        /// This method is called once all managers have been registered in the Mixed Reality Orchestrator.
         /// </summary>
         public override void Initialize()
         {
@@ -400,7 +400,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Optional ProfileUpdate function to allow reconfiguration when the active configuration profile of the Mixed Reality Manager is replaced
+        /// Optional ProfileUpdate function to allow reconfiguration when the active configuration profile of the Mixed Reality Orchestrator is replaced
         /// </summary>
         public override void Reset()
         {
@@ -408,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Optional Destroy function to perform cleanup of the manager before the Mixed Reality Manager is destroyed
+        /// Optional Destroy function to perform cleanup of the manager before the Mixed Reality Orchestrator is destroyed
         /// </summary>
         public override void Destroy()
         {

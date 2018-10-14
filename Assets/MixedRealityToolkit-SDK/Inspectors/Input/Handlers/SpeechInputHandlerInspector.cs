@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
             if (registeredKeywords == null || registeredKeywords.Length == 0)
             {
                 registeredKeywords = RegisteredKeywords().Distinct().ToArray();
-                EditorGUILayout.HelpBox("No keywords registered.\n\nKeywords can be registered via Speech Commands Profile on the Mixed Reality Manager's Configuration Profile.", MessageType.Error);
+                EditorGUILayout.HelpBox("No keywords registered.\n\nKeywords can be registered via Speech Commands Profile on the Mixed Reality Orchestrator's Configuration Profile.", MessageType.Error);
                 return;
             }
 

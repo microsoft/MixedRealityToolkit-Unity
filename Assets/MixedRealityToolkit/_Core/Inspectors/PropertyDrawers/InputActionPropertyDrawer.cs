@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
             if (!MixedRealityOrchestrator.IsInitialized || !MixedRealityOrchestrator.HasActiveProfile)
             {
                 profile = null;
-                actionLabels = new[] { new GUIContent("Missing Mixed Reality Manager") };
+                actionLabels = new[] { new GUIContent("Missing Mixed Reality Orchestrator") };
                 actionIds = new[] { 0 };
             }
 
