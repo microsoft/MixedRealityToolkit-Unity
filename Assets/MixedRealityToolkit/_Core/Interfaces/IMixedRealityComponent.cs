@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
     /// <summary>
     /// Generic interface for all optional Mixed Reality systems, components, or features that can be added to the <see cref="Definitions.MixedRealityComponentConfiguration"/>
     /// </summary>
-    public interface IMixedRealityComponent : IMixedRealityManager
+    public interface IMixedRealityComponent : IMixedRealityService
     {
         // Empty for now, but it is used to filter out the valid class types in the inspector dropdown.
     }

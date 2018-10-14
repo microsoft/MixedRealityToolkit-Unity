@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
                 return;
             }
 
-            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+            if (!MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
                 return;
@@ -150,16 +150,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 
         private static IEnumerable<string> RegisteredKeywords()
         {
-            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
-                !MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled ||
-                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
+            if (!MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled ||
+                !MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled ||
+                 MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
             {
                 yield break;
             }
 
-            for (var i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length; i++)
+            for (var i = 0; i < MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length; i++)
             {
-                yield return MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands[i].Keyword;
+                yield return MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands[i].Keyword;
             }
         }
     }

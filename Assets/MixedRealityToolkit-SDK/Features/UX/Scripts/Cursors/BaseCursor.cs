@@ -263,10 +263,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         protected virtual void RegisterManagers()
         {
             // Register the cursor as a listener, so that it can always get input events it cares about
-            MixedRealityManager.InputSystem.Register(gameObject);
+            MixedRealityOrchestrator.InputSystem.Register(gameObject);
 
             // Setup the cursor to be able to respond to input being globally enabled / disabled
-            if (MixedRealityManager.InputSystem.IsInputEnabled)
+            if (MixedRealityOrchestrator.InputSystem.IsInputEnabled)
             {
                 OnInputEnabled();
             }
@@ -275,8 +275,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 OnInputDisabled();
             }
 
-            MixedRealityManager.InputSystem.InputEnabled += OnInputEnabled;
-            MixedRealityManager.InputSystem.InputDisabled += OnInputDisabled;
+            MixedRealityOrchestrator.InputSystem.InputEnabled += OnInputEnabled;
+            MixedRealityOrchestrator.InputSystem.InputDisabled += OnInputDisabled;
         }
 
         /// <summary>
@@ -284,9 +284,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// </summary>
         protected virtual void UnregisterManagers()
         {
-            MixedRealityManager.InputSystem.InputEnabled -= OnInputEnabled;
-            MixedRealityManager.InputSystem.InputDisabled -= OnInputDisabled;
-            MixedRealityManager.InputSystem.Unregister(gameObject);
+            MixedRealityOrchestrator.InputSystem.InputEnabled -= OnInputEnabled;
+            MixedRealityOrchestrator.InputSystem.InputDisabled -= OnInputDisabled;
+            MixedRealityOrchestrator.InputSystem.Unregister(gameObject);
         }
 
         /// <summary>
@@ -302,9 +302,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
 
             FocusDetails focusDetails;
 
-            if (!MixedRealityManager.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
+            if (!MixedRealityOrchestrator.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
-                if (MixedRealityManager.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                if (MixedRealityOrchestrator.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
                 {
                     Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
                 }
@@ -312,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 return;
             }
 
-            GameObject newTargetedObject = MixedRealityManager.InputSystem.FocusProvider.GetFocusedObject(Pointer);
+            GameObject newTargetedObject = MixedRealityOrchestrator.InputSystem.FocusProvider.GetFocusedObject(Pointer);
             Vector3 lookForward;
 
             // Normalize scale on before update

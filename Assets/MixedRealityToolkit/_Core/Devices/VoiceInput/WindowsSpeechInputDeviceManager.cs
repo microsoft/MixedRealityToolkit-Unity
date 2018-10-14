@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
         /// </summary>
-        private static SpeechCommands[] Commands => MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands;
+        private static SpeechCommands[] Commands => MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands;
 
         /// <summary>
         /// The Input Source for Windows Speech Input.
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
 
-            InputSource = MixedRealityManager.InputSystem?.RequestNewGenericInputSource("Windows Speech Input Source");
+            InputSource = MixedRealityOrchestrator.InputSystem?.RequestNewGenericInputSource("Windows Speech Input Source");
 
             var newKeywords = new string[Commands.Length];
 
@@ -50,11 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 newKeywords[i] = Commands[i].Keyword;
             }
 
-            RecognitionConfidenceLevel = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
+            RecognitionConfidenceLevel = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
             keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel) RecognitionConfidenceLevel);
             keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
-            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
+            if (MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
             {
                 StartRecognition();
             }
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             {
                 if (Commands[i].Keyword == text)
                 {
-                    MixedRealityManager.InputSystem.RaiseSpeechCommandRecognized(InputSource, Commands[i].Action, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, text);
+                    MixedRealityOrchestrator.InputSystem.RaiseSpeechCommandRecognized(InputSource, Commands[i].Action, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, text);
                     break;
                 }
             }

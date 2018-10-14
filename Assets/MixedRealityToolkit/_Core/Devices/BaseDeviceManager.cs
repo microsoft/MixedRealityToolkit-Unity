@@ -64,13 +64,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         {
             var pointers = new List<IMixedRealityPointer>();
 
-            if (MixedRealityManager.HasActiveProfile &&
-                MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
-                MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+            if (MixedRealityOrchestrator.HasActiveProfile &&
+                MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled &&
+                MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
             {
-                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
+                for (int i = 0; i < MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
                 {
-                    var pointerProfile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions[i];
+                    var pointerProfile = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions[i];
 
                     if (!useSpecificType)
                     {
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
                         var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-                        pointerObject.transform.SetParent(MixedRealityManager.Instance.MixedRealityPlayspace);
+                        pointerObject.transform.SetParent(MixedRealityOrchestrator.Instance.MixedRealityPlayspace);
 
                         if (pointer != null)
                         {

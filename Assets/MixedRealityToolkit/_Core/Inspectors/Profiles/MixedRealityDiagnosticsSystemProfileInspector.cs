@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (GUILayout.Button("Back to Configuration Profile"))
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                Selection.activeObject = MixedRealityOrchestrator.Instance.ActiveProfile;
             }
 
             if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)

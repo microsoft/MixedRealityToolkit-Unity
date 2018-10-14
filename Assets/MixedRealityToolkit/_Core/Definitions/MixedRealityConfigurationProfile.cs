@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
@@ -27,12 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         #region Manager Registry properties
 
         [SerializeField]
-        private SystemType[] initialManagerTypes = null;
+        private SystemType[] initialServiceTypes = null;
 
         /// <summary>
         /// Dictionary list of active managers used by the Mixed Reality Manager at runtime
         /// </summary>
-        public Dictionary<Type, IMixedRealityManager> ActiveManagers { get; } = new Dictionary<Type, IMixedRealityManager>();
+        public Dictionary<Type, IMixedRealityService> ActiveServices { get; } = new Dictionary<Type, IMixedRealityService>();
 
         #endregion Manager Registry properties
 
@@ -245,24 +244,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// <inheritdoc />
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            var count = ActiveManagers.Count;
-            initialManagerTypes = new SystemType[count];
+            var count = ActiveServices.Count;
+            initialServiceTypes = new SystemType[count];
 
-            foreach (var manager in ActiveManagers)
+            foreach (var service in ActiveServices)
             {
                 --count;
-                initialManagerTypes[count] = new SystemType(manager.Value.GetType());
+                initialServiceTypes[count] = new SystemType(service.Value.GetType());
             }
         }
 
         /// <inheritdoc />
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            if (ActiveManagers.Count == 0)
+            if (ActiveServices.Count == 0)
             {
-                for (int i = 0; i < initialManagerTypes?.Length; i++)
+                for (int i = 0; i < initialServiceTypes?.Length; i++)
                 {
-                    ActiveManagers.Add(initialManagerTypes[i], Activator.CreateInstance(initialManagerTypes[i]) as IMixedRealityManager);
+                    ActiveServices.Add(initialServiceTypes[i], Activator.CreateInstance(initialServiceTypes[i]) as IMixedRealityService);
                 }
             }
         }

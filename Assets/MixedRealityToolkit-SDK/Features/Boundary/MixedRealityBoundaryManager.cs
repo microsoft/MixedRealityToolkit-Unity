@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
     /// </summary>
-    public class MixedRealityBoundaryManager : MixedRealityEventManager, IMixedRealityBoundarySystem
+    public class MixedRealityBoundaryManager : BaseEventSystem, IMixedRealityBoundarySystem
     {
         #region IMixedRealityManager Implementation
 
@@ -39,18 +39,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         {
             boundaryEventData = new BoundaryEventData(EventSystem.current);
 
-            Scale = MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale;
-            BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryHeight;
+            Scale = MixedRealityOrchestrator.Instance.ActiveProfile.TargetExperienceScale;
+            BoundaryHeight = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryHeight;
 
             SetTrackingSpace();
             CalculateBoundaryBounds();
             Boundary.visible = true;
 
-            ShowFloor = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowFloor;
-            ShowPlayArea = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowPlayArea;
-            ShowTrackedArea = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowTrackedArea;
-            ShowBoundaryWalls = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowBoundaryWalls;
-            ShowBoundaryCeiling = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowBoundaryCeiling;
+            ShowFloor = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowFloor;
+            ShowPlayArea = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowPlayArea;
+            ShowTrackedArea = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowTrackedArea;
+            ShowBoundaryWalls = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowBoundaryWalls;
+            ShowBoundaryCeiling = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowBoundaryCeiling;
 
             if (ShowFloor)
             {
@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         private GameObject CreateBoundaryVisualizationParent()
         {
             GameObject visualizationParent = new GameObject("Boundary System Visualizations");
-            visualizationParent.transform.parent = MixedRealityManager.Instance.MixedRealityPlayspace;
+            visualizationParent.transform.parent = MixedRealityOrchestrator.Instance.MixedRealityPlayspace;
 
             return visualizationParent;
         }
@@ -456,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
 
             // Handle the user teleporting (boundary moves with them).
-            location = MixedRealityManager.Instance.MixedRealityPlayspace.InverseTransformPoint(location);
+            location = MixedRealityOrchestrator.Instance.MixedRealityPlayspace.InverseTransformPoint(location);
 
             if (FloorHeight.Value > location.y ||
                 BoundaryHeight < location.y)
@@ -499,7 +499,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
 
             // Handle the user teleporting (boundary moves with them).
-            Vector3 transformedCenter = MixedRealityManager.Instance.MixedRealityPlayspace.TransformPoint(
+            Vector3 transformedCenter = MixedRealityOrchestrator.Instance.MixedRealityPlayspace.TransformPoint(
                 new Vector3(rectangularBounds.Center.x, 0f, rectangularBounds.Center.y));
 
             center = new Vector2(transformedCenter.x, transformedCenter.z);
@@ -523,17 +523,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                 return null;
             }
 
-            Vector3 floorScale = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorScale;
+            Vector3 floorScale = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorScale;
 
             // Render the floor.
             currentFloorObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentFloorObject.name = "Boundary System Floor";
             currentFloorObject.transform.localScale = new Vector3(floorScale.x, boundaryObjectThickness, floorScale.y);
             currentFloorObject.transform.Translate(new Vector3(
-                MixedRealityManager.Instance.MixedRealityPlayspace.position.x, 
+                MixedRealityOrchestrator.Instance.MixedRealityPlayspace.position.x, 
                 FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f), 
-                MixedRealityManager.Instance.MixedRealityPlayspace.position.z));
-            currentFloorObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorMaterial;
+                MixedRealityOrchestrator.Instance.MixedRealityPlayspace.position.z));
+            currentFloorObject.GetComponent<Renderer>().sharedMaterial = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorMaterial;
 
             return currentFloorObject;
         }
@@ -571,7 +571,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             currentPlayAreaObject.transform.Translate(new Vector3(center.x, boundaryObjectRenderOffset, center.y));
             currentPlayAreaObject.transform.Rotate(new Vector3(90, -angle, 0));
             currentPlayAreaObject.transform.localScale = new Vector3(width, height, 1.0f);
-            currentPlayAreaObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.PlayAreaMaterial;
+            currentPlayAreaObject.GetComponent<Renderer>().sharedMaterial = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.PlayAreaMaterial;
 
             currentPlayAreaObject.transform.parent = BoundaryVisualizationParent.transform;
 
@@ -606,14 +606,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             currentTrackedAreaObject.layer = ignoreRaycastLayerValue;
             currentTrackedAreaObject.AddComponent<LineRenderer>();
             currentTrackedAreaObject.transform.Translate(new Vector3(
-                MixedRealityManager.Instance.MixedRealityPlayspace.position.x,
+                MixedRealityOrchestrator.Instance.MixedRealityPlayspace.position.x,
                 boundaryObjectRenderOffset,
-                MixedRealityManager.Instance.MixedRealityPlayspace.position.z));
+                MixedRealityOrchestrator.Instance.MixedRealityPlayspace.position.z));
 
             // Configure the renderer properties.
             float lineWidth = 0.01f;
             LineRenderer lineRenderer = currentTrackedAreaObject.GetComponent<LineRenderer>();
-            lineRenderer.sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.TrackedAreaMaterial;
+            lineRenderer.sharedMaterial = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.TrackedAreaMaterial;
             lineRenderer.useWorldSpace = false;
             lineRenderer.startWidth = lineWidth;
             lineRenderer.endWidth = lineWidth;
@@ -653,7 +653,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             {
                 GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 wall.name = $"Wall {i}";
-                wall.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryWallMaterial;
+                wall.GetComponent<Renderer>().sharedMaterial = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryWallMaterial;
                 wall.transform.localScale = new Vector3((Bounds[i].PointB - Bounds[i].PointA).magnitude, BoundaryHeight, wallDepth);
                 wall.layer = ignoreRaycastLayerValue;
 
@@ -703,7 +703,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                 boundaryBoundingBox.center.x,
                 BoundaryHeight + (currentCeilingObject.transform.localScale.y * 0.5f),
                 boundaryBoundingBox.center.z));
-            currentCeilingObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryCeilingMaterial;
+            currentCeilingObject.GetComponent<Renderer>().sharedMaterial = MixedRealityOrchestrator.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryCeilingMaterial;
 
             currentCeilingObject.transform.parent = BoundaryVisualizationParent.transform;
 

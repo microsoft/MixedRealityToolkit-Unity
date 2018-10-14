@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             await WaitUntilInputSystemValid;
 
-            foreach (var inputSource in MixedRealityManager.InputSystem.DetectedInputSources)
+            foreach (var inputSource in MixedRealityOrchestrator.InputSystem.DetectedInputSources)
             {
                 RegisterPointers(inputSource);
             }
@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void Update()
         {
-            if (MixedRealityManager.InputSystem == null) { return; }
+            if (MixedRealityOrchestrator.InputSystem == null) { return; }
 
             UpdatePointers();
             UpdateFocusedObjects();
@@ -453,7 +453,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 RegisterPointer(inputSource.Pointers[i]);
 
                 // Special Registration for Gaze
-                if (inputSource.SourceId == MixedRealityManager.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
+                if (inputSource.SourceId == MixedRealityOrchestrator.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
                 {
                     gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
                 }
@@ -485,10 +485,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                 if (!objectIsStillFocusedByOtherPointer)
                 {
-                    MixedRealityManager.InputSystem.RaiseFocusExit(pointer, unfocusedObject);
+                    MixedRealityOrchestrator.InputSystem.RaiseFocusExit(pointer, unfocusedObject);
                 }
 
-                MixedRealityManager.InputSystem.RaisePreFocusChanged(pointer, unfocusedObject, null);
+                MixedRealityOrchestrator.InputSystem.RaisePreFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
@@ -817,21 +817,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 GameObject pendingUnfocusObject = change.PreviousPointerTarget;
                 GameObject pendingFocusObject = change.CurrentPointerTarget;
 
-                MixedRealityManager.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                MixedRealityOrchestrator.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
 
                 if (pendingOverallFocusExitSet.Contains(pendingUnfocusObject))
                 {
-                    MixedRealityManager.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
+                    MixedRealityOrchestrator.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
                     pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
                 }
 
                 if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
                 {
-                    MixedRealityManager.InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
+                    MixedRealityOrchestrator.InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                MixedRealityManager.InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                MixedRealityOrchestrator.InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
@@ -861,7 +861,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
                     // If the source lost is the gaze input source, then reset it.
-                    if (eventData.InputSource.SourceId == MixedRealityManager.InputSystem.GazeProvider.GazeInputSource.SourceId)
+                    if (eventData.InputSource.SourceId == MixedRealityOrchestrator.InputSystem.GazeProvider.GazeInputSource.SourceId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;

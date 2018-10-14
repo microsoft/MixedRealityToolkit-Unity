@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
-    public class MixedRealityDiagnosticsManager : MixedRealityEventManager, IMixedRealityDiagnosticsSystem
+    public class MixedRealityDiagnosticsManager : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
         #region IMixedRealityManager
         private DiagnosticsEventData eventData;
@@ -24,10 +24,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         {
             eventData = new DiagnosticsEventData(EventSystem.current);
 
-            Visible = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.Visible;
-            ShowCpu = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowCpu;
-            ShowFps = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowFps;
-            ShowMemory = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowMemory;
+            Visible = MixedRealityOrchestrator.Instance.ActiveProfile.DiagnosticsSystemProfile.Visible;
+            ShowCpu = MixedRealityOrchestrator.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowCpu;
+            ShowFps = MixedRealityOrchestrator.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowFps;
+            ShowMemory = MixedRealityOrchestrator.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowMemory;
 
             RaiseDiagnosticsChanged();
         }

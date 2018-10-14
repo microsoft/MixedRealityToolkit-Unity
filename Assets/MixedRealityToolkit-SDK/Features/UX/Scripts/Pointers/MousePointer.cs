@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 RayStabilizer = null;
             }
 
-            foreach (var inputSource in MixedRealityManager.InputSystem.DetectedInputSources)
+            foreach (var inputSource in MixedRealityOrchestrator.InputSystem.DetectedInputSources)
             {
                 if (inputSource.SourceId == Controller.InputSource.SourceId)
                 {

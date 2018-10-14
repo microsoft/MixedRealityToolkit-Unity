@@ -70,14 +70,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (GUILayout.Button("Back to Configuration Profile"))
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                Selection.activeObject = MixedRealityOrchestrator.Instance.ActiveProfile;
             }
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Boundary Visualization Options", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Boundary visualizations can help users stay oriented and comfortable in the experience.", MessageType.Info);
             // Boundary settings depend on the experience scale
-            if (MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale != ExperienceScale.Room)
+            if (MixedRealityOrchestrator.Instance.ActiveProfile.TargetExperienceScale != ExperienceScale.Room)
             {
                 EditorGUILayout.Space();
                 EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Warning);

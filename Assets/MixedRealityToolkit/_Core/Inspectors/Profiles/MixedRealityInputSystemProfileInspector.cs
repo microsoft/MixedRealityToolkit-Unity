@@ -22,12 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private void OnEnable()
         {
-            if (!MixedRealityManager.ConfirmInitialized())
+            if (!MixedRealityOrchestrator.ConfirmInitialized())
             {
                 return;
             }
 
-            if (!MixedRealityManager.HasActiveProfile)
+            if (!MixedRealityOrchestrator.HasActiveProfile)
             {
                 return;
             }
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (GUILayout.Button("Back to Configuration Profile"))
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                Selection.activeObject = MixedRealityOrchestrator.Instance.ActiveProfile;
             }
 
             EditorGUILayout.Space();
@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (changed)
             {
-                EditorApplication.delayCall += () => MixedRealityManager.Instance.ResetConfiguration(MixedRealityManager.Instance.ActiveProfile);
+                EditorApplication.delayCall += () => MixedRealityOrchestrator.Instance.ResetConfiguration(MixedRealityOrchestrator.Instance.ActiveProfile);
             }
         }
     }

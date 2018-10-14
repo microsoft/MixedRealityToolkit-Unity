@@ -10,11 +10,11 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Core.Managers
 {
     /// <summary>
-    /// Event System Manager that can be inherited from to give other managers event capabilities.
+    /// Base Event System that can be inherited from to give other system features event capabilities.
     /// </summary>
-    public abstract class MixedRealityEventManager : BaseManager, IMixedRealityEventSystem
+    public abstract class BaseEventSystem : BaseService, IMixedRealityEventSystem
     {
-        #region IEventSystemManager Implementation
+        #region IMixedRealityEventSystem Implementation
 
         private static bool isExecutingEvents = false;
         private readonly WaitUntil doneExecutingEvents = new WaitUntil(() => !isExecutingEvents);
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             EventListeners.Remove(listener);
         }
 
-        #endregion IEventSystemManager Implementation
+        #endregion IMixedRealityEventSystem Implementation
 
         // Example Event Pattern #############################################################
 

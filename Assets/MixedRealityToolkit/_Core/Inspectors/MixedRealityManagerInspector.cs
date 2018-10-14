@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
-    [CustomEditor(typeof(MixedRealityManager))]
+    [CustomEditor(typeof(MixedRealityOrchestrator))]
     public class MixedRealityManagerInspector : Editor
     {
         private SerializedProperty activeProfile;
@@ -85,15 +85,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
             if (changed)
             {
-                MixedRealityManager.Instance.ResetConfiguration((MixedRealityConfigurationProfile)activeProfile.objectReferenceValue);
+                MixedRealityOrchestrator.Instance.ResetConfiguration((MixedRealityConfigurationProfile)activeProfile.objectReferenceValue);
             }
         }
 
         [MenuItem("Mixed Reality Toolkit/Configure...")]
         public static void CreateMixedRealityManagerObject()
         {
-            Selection.activeObject = MixedRealityManager.Instance;
-            EditorGUIUtility.PingObject(MixedRealityManager.Instance);
+            Selection.activeObject = MixedRealityOrchestrator.Instance;
+            EditorGUIUtility.PingObject(MixedRealityOrchestrator.Instance);
         }
     }
 }

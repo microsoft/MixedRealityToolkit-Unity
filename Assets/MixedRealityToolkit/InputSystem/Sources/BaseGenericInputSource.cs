@@ -22,9 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <param name="pointers"></param>
         public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null)
         {
-            SourceId = MixedRealityManager.InputSystem.GenerateNewSourceId();
+            SourceId = MixedRealityOrchestrator.InputSystem.GenerateNewSourceId();
             SourceName = name;
-            Pointers = pointers ?? new[] { MixedRealityManager.InputSystem.GazeProvider.GazePointer };
+            Pointers = pointers ?? new[] { MixedRealityOrchestrator.InputSystem.GazeProvider.GazePointer };
         }
 
         /// <inheritdoc />

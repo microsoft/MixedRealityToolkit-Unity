@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
 
             if (Canvas.isRootCanvas && Canvas.renderMode == RenderMode.WorldSpace)
             {
-                Canvas.worldCamera = MixedRealityManager.InputSystem.FocusProvider.UIRaycastCamera;
+                Canvas.worldCamera = MixedRealityOrchestrator.InputSystem.FocusProvider.UIRaycastCamera;
             }
         }
     }

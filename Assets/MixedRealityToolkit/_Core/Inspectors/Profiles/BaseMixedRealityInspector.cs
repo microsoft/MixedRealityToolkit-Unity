@@ -11,10 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         /// <returns>True if the Mixed Reality Manager is properly initialized.</returns>
         protected bool CheckMixedRealityManager(bool showHelpBox = true)
         {
-            if (!MixedRealityManager.IsInitialized)
+            if (!MixedRealityOrchestrator.IsInitialized)
             {
                 // Search the scene for one, in case we've just hot reloaded the assembly.
-                var managerSearch = FindObjectsOfType<MixedRealityManager>();
+                var managerSearch = FindObjectsOfType<MixedRealityOrchestrator>();
 
                 if (managerSearch.Length == 0)
                 {
@@ -25,10 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     return false;
                 }
 
-                MixedRealityManager.ConfirmInitialized();
+                MixedRealityOrchestrator.ConfirmInitialized();
             }
 
-            if (!MixedRealityManager.HasActiveProfile)
+            if (!MixedRealityOrchestrator.HasActiveProfile)
             {
                 if (showHelpBox)
                 {

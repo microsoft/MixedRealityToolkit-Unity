@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void CreateMixedRealityManager()
         {
             // Create The MR Manager
-            MixedRealityManager.ConfirmInitialized();
+            MixedRealityOrchestrator.ConfirmInitialized();
         }
 
         [Test]
@@ -30,8 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Create The MR Manager
             CreateMixedRealityManager();
-            GameObject manager = GameObject.Find(nameof(MixedRealityManager));
-            Assert.AreEqual(nameof(MixedRealityManager), manager.name);
+            GameObject manager = GameObject.Find(nameof(MixedRealityOrchestrator));
+            Assert.AreEqual(nameof(MixedRealityOrchestrator), manager.name);
         }
 
         [Test]
@@ -39,10 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             LogAssert.Expect(LogType.Error, "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Manager");
 
-            MixedRealityManager.Instance.ActiveProfile = null;
+            MixedRealityOrchestrator.Instance.ActiveProfile = null;
 
-            Assert.IsFalse(MixedRealityManager.HasActiveProfile);
-            Assert.IsNull(MixedRealityManager.Instance.ActiveProfile);
+            Assert.IsFalse(MixedRealityOrchestrator.HasActiveProfile);
+            Assert.IsNull(MixedRealityOrchestrator.Instance.ActiveProfile);
 
             CleanupScene();
         }
@@ -53,8 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Create Test Configuration
-            Assert.AreEqual(0, MixedRealityManager.Instance.ActiveProfile.ActiveManagers.Count);
-            Assert.AreEqual(3, MixedRealityManager.Instance.MixedRealityComponents.Count);
+            Assert.AreEqual(0, MixedRealityOrchestrator.Instance.ActiveProfile.ActiveServices.Count);
+            Assert.AreEqual(3, MixedRealityOrchestrator.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -63,13 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Tests
-            Assert.IsNotNull(MixedRealityManager.Instance.ActiveProfile);
-            Assert.IsNotEmpty(MixedRealityManager.Instance.ActiveProfile.ActiveManagers);
-            Assert.AreEqual(1, MixedRealityManager.Instance.ActiveProfile.ActiveManagers.Count);
-            Assert.AreEqual(3, MixedRealityManager.Instance.MixedRealityComponents.Count);
+            Assert.IsNotNull(MixedRealityOrchestrator.Instance.ActiveProfile);
+            Assert.IsNotEmpty(MixedRealityOrchestrator.Instance.ActiveProfile.ActiveServices);
+            Assert.AreEqual(1, MixedRealityOrchestrator.Instance.ActiveProfile.ActiveServices.Count);
+            Assert.AreEqual(3, MixedRealityOrchestrator.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -78,10 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Retrieve Input System
-            var inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+            var inputSystem = MixedRealityOrchestrator.Instance.GetService<IMixedRealityInputSystem>();
 
             // Tests
             Assert.IsNotNull(inputSystem);
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Check for Input System
-            var inputSystemExists = MixedRealityManager.Instance.ManagerExists<IMixedRealityInputSystem>();
+            var inputSystemExists = MixedRealityOrchestrator.Instance.IsServiceRegistered<IMixedRealityInputSystem>();
 
             // Tests
             Assert.IsFalse(inputSystemExists);
@@ -106,10 +106,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Check for Input System
-            var inputSystemExists = MixedRealityManager.Instance.ManagerExists<IMixedRealityInputSystem>();
+            var inputSystemExists = MixedRealityOrchestrator.Instance.IsServiceRegistered<IMixedRealityInputSystem>();
 
             // Tests
             Assert.IsTrue(inputSystemExists);
@@ -123,13 +123,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var component = new TestComponentManager1();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), component);
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), component);
 
             // Tests
-            Assert.AreEqual(4, MixedRealityManager.Instance.MixedRealityComponents.Count);
+            Assert.AreEqual(4, MixedRealityOrchestrator.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -138,13 +138,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), new TestComponentManager1());
 
             // Retrieve Component1
-            var component1 = MixedRealityManager.Instance.GetManager(typeof(ITestComponentManager1));
+            var component1 = MixedRealityOrchestrator.Instance.GetService(typeof(ITestComponentManager1));
 
             // Tests
             Assert.IsNotNull(component1);
@@ -156,15 +156,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1());
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1());
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), new TestComponentManager1());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), new TestComponentManager1());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), new TestComponentManager1());
 
             // Retrieve Component1
-            var components = MixedRealityManager.Instance.GetManagers(typeof(ITestComponentManager1));
+            var components = MixedRealityOrchestrator.Instance.GetActiveServices(typeof(ITestComponentManager1));
 
             // Tests
             Assert.AreEqual(3, components.Count());
@@ -176,15 +176,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), new TestComponentManager1());
 
             try
             {
                 // Validate non-existent component
-                MixedRealityManager.Instance.GetManager(typeof(ITestComponentManager2), "Test2");
+                MixedRealityOrchestrator.Instance.GetService(typeof(ITestComponentManager2), "Test2");
                 Assert.Fail();
             }
             catch (Exception)
@@ -199,13 +199,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component 1
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), new TestComponentManager1());
 
             // Validate non-existent component
-            var component2 = MixedRealityManager.Instance.ManagerExists<ITestComponentManager2>();
+            var component2 = MixedRealityOrchestrator.Instance.IsServiceRegistered<ITestComponentManager2>();
 
             // Tests
             Assert.IsFalse(component2);
@@ -217,19 +217,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             //Add test component 1
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), new TestComponentManager1());
 
             //Add test component 2
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test2-1" });
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test2-1" });
 
             // Tests
-            Assert.IsNotNull(MixedRealityManager.Instance.ActiveProfile);
-            Assert.IsNotEmpty(MixedRealityManager.Instance.ActiveProfile.ActiveManagers);
-            Assert.AreEqual(1, MixedRealityManager.Instance.ActiveProfile.ActiveManagers.Count);
-            Assert.AreEqual(5, MixedRealityManager.Instance.MixedRealityComponents.Count);
+            Assert.IsNotNull(MixedRealityOrchestrator.Instance.ActiveProfile);
+            Assert.IsNotEmpty(MixedRealityOrchestrator.Instance.ActiveProfile.ActiveServices);
+            Assert.AreEqual(1, MixedRealityOrchestrator.Instance.ActiveProfile.ActiveServices.Count);
+            Assert.AreEqual(5, MixedRealityOrchestrator.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -238,23 +238,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component 1
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1 { Name = "Test14-1" });
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), new TestComponentManager1 { Name = "Test14-1" });
 
             // Add test component 2
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test14-2" });
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test14-2" });
 
             // Retrieve Test component 2-2
-            TestComponentManager2 component2 = (TestComponentManager2)MixedRealityManager.Instance.GetManager(typeof(ITestComponentManager2), "Test14-2");
+            TestComponentManager2 component2 = (TestComponentManager2)MixedRealityOrchestrator.Instance.GetService(typeof(ITestComponentManager2), "Test14-2");
 
             // Component 2-2 Tests
             Assert.IsNotNull(component2.InputSystem);
             Assert.AreEqual("Test14-2", component2.Name);
 
             // Retrieve Test component 2-1
-            TestComponentManager1 component1 = (TestComponentManager1)MixedRealityManager.Instance.GetManager(typeof(ITestComponentManager1), "Test14-1");
+            TestComponentManager1 component1 = (TestComponentManager1)MixedRealityOrchestrator.Instance.GetService(typeof(ITestComponentManager1), "Test14-1");
 
             // Component 2-1 Tests
             Assert.IsNotNull(component1.InputSystem);
@@ -267,17 +267,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component 1
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1 { Name = "Test15-1" });
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), new TestComponentManager1 { Name = "Test15-1" });
 
             // Add test components 2
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test15-2.1" });
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test15-2.2" });
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test15-2.1" });
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test15-2.2" });
 
             // Retrieve Component2
-            var components = MixedRealityManager.Instance.GetManagers(typeof(ITestComponentManager2));
+            var components = MixedRealityOrchestrator.Instance.GetActiveServices(typeof(ITestComponentManager2));
 
             // Tests
             Assert.AreEqual(2, components.Count());
@@ -289,18 +289,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component 1
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1 { Name = "Test16-1.1" });
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1 { Name = "Test16-1.2" });
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), new TestComponentManager1 { Name = "Test16-1.1" });
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager1), new TestComponentManager1 { Name = "Test16-1.2" });
 
             // Add test components 2
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test16-2.1" });
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test16-2.2" });
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test16-2.1" });
+            MixedRealityOrchestrator.Instance.RegisterService(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test16-2.2" });
 
             // Retrieve Component1
-            var allComponents = MixedRealityManager.Instance.MixedRealityComponents;
+            var allComponents = MixedRealityOrchestrator.Instance.MixedRealityComponents;
 
             // Tests
             Assert.AreEqual(7, allComponents.Count);
@@ -325,10 +325,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CreateMixedRealityManager();
 
             // Test the Manager
-            Assert.IsNotNull(MixedRealityManager.Instance);
+            Assert.IsNotNull(MixedRealityOrchestrator.Instance);
             var configuration = ScriptableObject.CreateInstance<MixedRealityConfigurationProfile>();
-            MixedRealityManager.Instance.ActiveProfile = configuration;
-            Assert.NotNull(MixedRealityManager.Instance.ActiveProfile);
+            MixedRealityOrchestrator.Instance.ActiveProfile = configuration;
+            Assert.NotNull(MixedRealityOrchestrator.Instance.ActiveProfile);
         }
 
         #endregion Helper Functions
@@ -336,11 +336,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
     #region Test Components
 
-    public interface ITestComponentManager1 : IMixedRealityManager { }
+    public interface ITestComponentManager1 : IMixedRealityService { }
 
-    public interface ITestComponentManager2 : IMixedRealityManager { }
+    public interface ITestComponentManager2 : IMixedRealityService { }
 
-    internal class TestComponentManager1 : BaseManager, ITestComponentManager1
+    internal class TestComponentManager1 : BaseService, ITestComponentManager1
     {
         public IMixedRealityInputSystem InputSystem = null;
 
@@ -350,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         public override void Initialize()
         {
-            InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+            InputSystem = MixedRealityOrchestrator.Instance.GetService<IMixedRealityInputSystem>();
         }
 
         /// <summary>
@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
     }
 
-    internal class TestComponentManager2 : BaseManager, ITestComponentManager2
+    internal class TestComponentManager2 : BaseService, ITestComponentManager2
     {
         public IMixedRealityInputSystem InputSystem = null;
 
@@ -388,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         public override void Initialize()
         {
-            InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+            InputSystem = MixedRealityOrchestrator.Instance.GetService<IMixedRealityInputSystem>();
         }
 
         /// <summary>

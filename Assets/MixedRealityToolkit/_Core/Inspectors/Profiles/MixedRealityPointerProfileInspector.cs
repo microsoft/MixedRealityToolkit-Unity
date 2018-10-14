@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (GUILayout.Button("Back to Input Profile"))
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
+                Selection.activeObject = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile;
             }
 
             EditorGUILayout.Space();

@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (GUILayout.Button("Back to Configuration Profile"))
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                Selection.activeObject = MixedRealityOrchestrator.Instance.ActiveProfile;
             }
 
             EditorGUILayout.Space();
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     if (EditorGUI.EndChangeCheck())
                     {
                         serializedObject.ApplyModifiedProperties();
-                        MixedRealityManager.Instance.ResetConfiguration(MixedRealityManager.Instance.ActiveProfile);
+                        MixedRealityOrchestrator.Instance.ResetConfiguration(MixedRealityOrchestrator.Instance.ActiveProfile);
                     }
 
                     EditorGUI.indentLevel--;

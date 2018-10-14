@@ -278,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     {
                         teleportEnabled = true;
 
-                        MixedRealityManager.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
+                        MixedRealityOrchestrator.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
                     }
                     else if (canMove)
                     {
@@ -303,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                             {
                                 canMove = false;
                                 // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
-                                MixedRealityManager.Instance.MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
+                                MixedRealityOrchestrator.Instance.MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
                             }
                             else // We may be trying to strafe backwards.
                             {
@@ -317,10 +317,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                                 if (offsetStrafeAngle > 0 && offsetStrafeAngle < backStrafeActivationAngle)
                                 {
                                     canMove = false;
-                                    var height = MixedRealityManager.Instance.MixedRealityPlayspace.position.y;
-                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityManager.Instance.MixedRealityPlayspace.position;
+                                    var height = MixedRealityOrchestrator.Instance.MixedRealityPlayspace.position.y;
+                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityOrchestrator.Instance.MixedRealityPlayspace.position;
                                     newPosition.y = height;
-                                    MixedRealityManager.Instance.MixedRealityPlayspace.position = newPosition;
+                                    MixedRealityOrchestrator.Instance.MixedRealityPlayspace.position = newPosition;
                                 }
                             }
                         }
@@ -344,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                         TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                     {
-                        MixedRealityManager.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                        MixedRealityOrchestrator.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
                     }
                 }
 
@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     canTeleport = false;
                     teleportEnabled = false;
-                    MixedRealityManager.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                    MixedRealityOrchestrator.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
                 }
             }
 

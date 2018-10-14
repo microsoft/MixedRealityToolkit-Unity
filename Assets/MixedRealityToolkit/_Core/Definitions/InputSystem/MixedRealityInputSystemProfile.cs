@@ -59,12 +59,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// <summary>
         /// Current Registered Speech System.
         /// </summary>
-        public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityManager.Instance.GetManager<IMixedRealitySpeechSystem>());
+        public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityOrchestrator.Instance.GetService<IMixedRealitySpeechSystem>());
 
         /// <summary>
         /// Is the speech Commands Enabled?
         /// </summary>
-        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled;
+        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled;
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
@@ -84,12 +84,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// <summary>
         /// Current Registered Dictation Manager.
         /// </summary>
-        public IMixedRealityDictationManager DictationManager => dictationManager ?? (dictationManager = MixedRealityManager.Instance.GetManager<IMixedRealityDictationManager>());
+        public IMixedRealityDictationManager DictationManager => dictationManager ?? (dictationManager = MixedRealityOrchestrator.Instance.GetService<IMixedRealityDictationManager>());
 
         /// <summary>
         /// Is Dictation Enabled?
         /// </summary>
-        public bool IsDictationEnabled => MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && DictationManager != null;
+        public bool IsDictationEnabled => MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled && DictationManager != null;
 
         [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]

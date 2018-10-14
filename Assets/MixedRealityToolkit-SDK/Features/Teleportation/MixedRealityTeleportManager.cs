@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityTeleportSystem"/>
     /// </summary>
-    public class MixedRealityTeleportManager : MixedRealityEventManager, IMixedRealityTeleportSystem
+    public class MixedRealityTeleportManager : BaseEventSystem, IMixedRealityTeleportSystem
     {
         private TeleportEventData teleportEventData;
 
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
                 if (eventSystems.Length == 0)
                 {
-                    if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+                    if (!MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled)
                     {
                         eventSystemReference = new GameObject("Event System");
                         eventSystemReference.AddComponent<EventSystem>();
@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         {
             isProcessingTeleportRequest = true;
 
-            var cameraParent = MixedRealityManager.Instance.MixedRealityPlayspace;
+            var cameraParent = MixedRealityOrchestrator.Instance.MixedRealityPlayspace;
 
             targetRotation = Vector3.zero;
             targetRotation.y = eventData.Pointer.PointerOrientation;

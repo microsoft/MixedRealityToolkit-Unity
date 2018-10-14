@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
             }
 
             var pointers = RequestPointers(controllerType, controllingHand);
-            var inputSource = MixedRealityManager.InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
+            var inputSource = MixedRealityOrchestrator.InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
 
             if (detectedController == null)
