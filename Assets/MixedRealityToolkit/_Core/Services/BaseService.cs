@@ -4,7 +4,7 @@
 namespace Microsoft.MixedReality.Toolkit.Core.Managers
 {
     /// <summary>
-    /// The base manager implements the IMixedRealityService interface and provides default properties for all services
+    /// The base service implements <see cref="Interfaces.IMixedRealityService"/> and provides default properties for all services.
     /// </summary>
     public class BaseService : Interfaces.IMixedRealityService
     {
