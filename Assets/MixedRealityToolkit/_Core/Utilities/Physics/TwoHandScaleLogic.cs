@@ -26,6 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
             startObjectScale = manipulationRoot.transform.localScale;
         }
 
+        /// <summary>
+        /// Update the scale.
+        /// </summary>
+        /// <param name="handsPressedMap"></param>
+        /// <returns>Rhe new scale.</returns>
         public virtual Vector3 Update(Dictionary<uint, Vector3> handsPressedMap)
         {
             return startObjectScale * (GetMinDistanceBetweenHands(handsPressedMap) / startHandDistanceMeters);

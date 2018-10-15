@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 {
@@ -57,13 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         public const int RHT = 3;
         public const int FWD = 4;
         public const int BCK = 5;
-
-        public enum Axis
-        {
-            X,
-            Y,
-            Z
-        }
 
         #region Public Static Functions
         /// <summary>
@@ -231,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// </summary>
         /// <param name="bounds"></param>
         /// <param name="positions"></param>
-        public static void GetCornerAndMidPointPositions2D(this Bounds bounds, Transform transform, ref Vector3[] positions, Axis flattenAxis)
+        public static void GetCornerAndMidPointPositions2D(this Bounds bounds, Transform transform, ref Vector3[] positions, CardinalAxisType flattenAxis)
         {
             // Calculate the local points to transform.
             Vector3 center = bounds.center;
@@ -251,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 
             switch (flattenAxis)
             {
-                case Axis.X:
+                case CardinalAxisType.X:
                 default:
                     leftEdge = center.z - extents.z;
                     rightEdge = center.z + extents.z;
@@ -264,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
                     positions[RB] = transform.TransformPoint(0, bottomEdge, rightEdge);
                     break;
 
-                case Axis.Y:
+                case CardinalAxisType.Y:
                     leftEdge = center.z - extents.z;
                     rightEdge = center.z + extents.z;
                     bottomEdge = center.x - extents.x;
@@ -276,7 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
                     positions[RB] = transform.TransformPoint(bottomEdge, 0, rightEdge);
                     break;
 
-                case Axis.Z:
+                case CardinalAxisType.Z:
                     leftEdge = center.x - extents.x;
                     rightEdge = center.x + extents.x;
                     bottomEdge = center.y - extents.y;
@@ -451,6 +446,158 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             return (distToClosestPoint1.magnitude <= distToClosestPoint2.magnitude);
         }
 
+        /// <summary>
+        /// Method to get bounding box points using Collider method.
+        /// </summary>
+        /// <param name="target">gameObject that boundingBox bounds.</param>
+        /// <param name="boundsPoints">array reference that gets filled with points</param>
+        /// <param name="ignoreLayers">layerMask to simplify search</param>
+        public static void GetColliderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
+        {
+            Collider[] colliders = target.GetComponentsInChildren<Collider>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                if (ignoreLayers == (1 << colliders[i].gameObject.layer | ignoreLayers))
+                {
+                    continue;
+                }
+
+                switch (colliders[i].GetType().Name)
+                {
+                    case "SphereCollider":
+                        SphereCollider sc = colliders[i] as SphereCollider;
+                        Bounds sphereBounds = new Bounds(sc.center, Vector3.one * sc.radius * 2);
+                        sphereBounds.GetFacePositions(sc.transform, ref corners);
+                        boundsPoints.AddRange(corners);
+                        break;
+
+                    case "BoxCollider":
+                        BoxCollider bc = colliders[i] as BoxCollider;
+                        Bounds boxBounds = new Bounds(bc.center, bc.size);
+                        boxBounds.GetCornerPositions(bc.transform, ref corners);
+                        boundsPoints.AddRange(corners);
+                        break;
+
+                    case "MeshCollider":
+                        MeshCollider mc = colliders[i] as MeshCollider;
+                        Bounds meshBounds = mc.sharedMesh.bounds;
+                        meshBounds.GetCornerPositions(mc.transform, ref corners);
+                        boundsPoints.AddRange(corners);
+                        break;
+
+                    case "CapsuleCollider":
+                        CapsuleCollider cc = colliders[i] as CapsuleCollider;
+                        Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
+                        switch (cc.direction)
+                        {
+                            case 0:
+                                capsuleBounds.size = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
+                                break;
+
+                            case 1:
+                                capsuleBounds.size = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
+                                break;
+
+                            case 2:
+                                capsuleBounds.size = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
+                                break;
+                        }
+                        capsuleBounds.GetFacePositions(cc.transform, ref corners);
+                        boundsPoints.AddRange(corners);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// GetRenderBoundsPoints gets bounding box points using RenderBounds
+        /// </summary>
+        /// <param name="target">gameObject that boundingbox bounds</param>
+        /// <param name="boundsPoints">array reference that gets filled with points</param>
+        /// <param name="ignoreLayers">layerMask to simplify search</param>
+        public static void GetRenderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
+        {
+            Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
+            for (int i = 0; i < renderers.Length; ++i)
+            {
+                var rendererObj = renderers[i];
+                if (ignoreLayers == (1 << rendererObj.gameObject.layer | ignoreLayers))
+                {
+                    continue;
+                }
+
+                rendererObj.bounds.GetCornerPositionsFromRendererBounds(ref corners);
+                boundsPoints.AddRange(corners);
+            }
+        }
+
+        public static Bounds GetRenderBounds(GameObject target)
+        {
+            Bounds bounds = new Bounds();
+            Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
+            for (int i = 0; i < renderers.Length; ++i)
+            {
+                var rendererObj = renderers[i];
+                bounds.ExpandToContain(rendererObj.bounds);
+            }
+
+            return bounds;
+        }
+
+        /// <summary>
+        /// GetMeshFilterBoundsPoints - gets boundingbox points using MeshFilter method.
+        /// </summary>
+        /// <param name="target">gameObject that boundingbox bounds</param>
+        /// <param name="boundsPoints">array reference that gets filled with points</param>
+        /// <param name="ignoreLayers">layerMask to simplify search</param>
+        public static void GetMeshFilterBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
+        {
+            MeshFilter[] meshFilters = target.GetComponentsInChildren<MeshFilter>();
+            for (int i = 0; i < meshFilters.Length; i++)
+            {
+                var meshFilterObj = meshFilters[i];
+                if (ignoreLayers == (1 << meshFilterObj.gameObject.layer | ignoreLayers))
+                {
+                    continue;
+                }
+
+                Bounds meshBounds = meshFilterObj.sharedMesh.bounds;
+                meshBounds.GetCornerPositions(meshFilterObj.transform, ref corners);
+                boundsPoints.AddRange(corners);
+            }
+            RectTransform[] rectTransforms = target.GetComponentsInChildren<RectTransform>();
+            for (int i = 0; i < rectTransforms.Length; i++)
+            {
+                rectTransforms[i].GetWorldCorners(rectTransformCorners);
+                boundsPoints.AddRange(rectTransformCorners);
+            }
+        }
+
+        /// <summary>
+        /// Get Corners of boundingbox Non-axis aligned (aligned to object)
+        /// </summary>
+        /// <param name="target">gameObject that boundingbox bounds</param>
+        /// <param name="boundsPoints">array reference that gets filled with points</param>
+        public static void GetNonAxisAlignedBB_Corners(GameObject target, List<Vector3> boundsPoints)
+        {
+            LayerMask mask = new LayerMask();
+
+            GameObject clone = GameObject.Instantiate(target);
+            clone.transform.localRotation = Quaternion.identity;
+            clone.transform.position = Vector3.zero;
+            clone.transform.localScale = Vector3.one;
+            GetMeshFilterBoundsPoints(clone, boundsPoints, mask);
+            Vector3 centroid = target.transform.position;
+            GameObject.Destroy(clone);
+
+            for (int i = 0; i < boundsPoints.Count; ++i)
+            {
+                boundsPoints[i] = target.transform.localToWorldMatrix.MultiplyPoint(boundsPoints[i]);
+            }
+        }
         #endregion
 
         #region Private Static Functions
@@ -461,6 +608,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         {
             return new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
         }
+
+        private static Vector3[] corners = null;
+        private static Vector3[] rectTransformCorners = new Vector3[4];
+
         #endregion
     }
 }

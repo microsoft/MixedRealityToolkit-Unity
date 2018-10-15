@@ -3,11 +3,13 @@
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 {
-    public enum RotationConstraintType
+    /// <summary>
+    /// When a cardinal axis is needed.
+    /// </summary>
+    public enum CardinalAxisType
     {
-        None,
-        XAxisOnly,
-        YAxisOnly,
-        ZAxisOnly
+        X = 0,
+        Y,
+        Z
     }
 }

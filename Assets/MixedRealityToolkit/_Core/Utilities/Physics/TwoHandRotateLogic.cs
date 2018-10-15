@@ -20,16 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
     public class TwoHandRotateLogic
     {
         private const float RotationMultiplier = 2f;
-        private readonly RotationConstraintType initialRotationConstraint;
-
-        private RotationConstraintType currentRotationConstraint;
+        private readonly AxisConstraintType initialRotationConstraint;
         private Vector3 previousHandlebarRotation;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="rotationConstraint"></param>
-        public TwoHandRotateLogic(RotationConstraintType rotationConstraint)
+        public TwoHandRotateLogic(AxisConstraintType rotationConstraint)
         {
             initialRotationConstraint = rotationConstraint;
         }
@@ -39,10 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// XOrYBasedOnInitialHandPosition might change the current rotation constraint based on the 
         /// initial hand positions at the start
         /// </summary>
-        public RotationConstraintType GetCurrentRotationConstraint()
-        {
-            return currentRotationConstraint;
-        }
+        public AxisConstraintType CurrentRotationConstraint { get; private set; }
 
         /// <summary>
         /// Setup the rotation logic.
@@ -50,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// <param name="handsPressedMap"></param>
         public void Setup(Dictionary<uint, Vector3> handsPressedMap)
         {
-            currentRotationConstraint = initialRotationConstraint;
+            CurrentRotationConstraint = initialRotationConstraint;
             previousHandlebarRotation = GetHandlebarDirection(handsPressedMap);
         }
 
@@ -63,8 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, Quaternion currentRotation)
         {
             var handlebarDirection = GetHandlebarDirection(handsPressedMap);
-            var handlebarDirectionProjected = ProjectHandlebarGivenConstraint(currentRotationConstraint, handlebarDirection);
-            var prevHandlebarDirectionProjected = ProjectHandlebarGivenConstraint(currentRotationConstraint, previousHandlebarRotation);
+            var handlebarDirectionProjected = ProjectHandlebarGivenConstraint(CurrentRotationConstraint, handlebarDirection);
+            var prevHandlebarDirectionProjected = ProjectHandlebarGivenConstraint(CurrentRotationConstraint, previousHandlebarRotation);
 
             previousHandlebarRotation = handlebarDirection;
 
@@ -75,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
             rotationDelta.ToAngleAxis(out angle, out axis);
             angle *= RotationMultiplier;
 
-            if (currentRotationConstraint == RotationConstraintType.YAxisOnly)
+            if (CurrentRotationConstraint == AxisConstraintType.YAxis)
             {
                 // If we are rotating about Y axis, then make sure we rotate about global Y axis.
                 // Since the angle is obtained from a quaternion, we need to properly orient it (up or down) based
@@ -86,21 +81,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
             return Quaternion.AngleAxis(angle, axis) * currentRotation;
         }
 
-        private static Vector3 ProjectHandlebarGivenConstraint(RotationConstraintType constraint, Vector3 handlebarRotation)
+        private static Vector3 ProjectHandlebarGivenConstraint(AxisConstraintType constraint, Vector3 handlebarRotation)
         {
             Vector3 result = handlebarRotation;
             switch (constraint)
             {
-                case RotationConstraintType.XAxisOnly:
+                case AxisConstraintType.XAxis:
                     result.x = 0;
                     break;
-                case RotationConstraintType.YAxisOnly:
+                case AxisConstraintType.YAxis:
                     result.y = 0;
                     break;
-                case RotationConstraintType.ZAxisOnly:
+                case AxisConstraintType.ZAxis:
                     result.z = 0;
                     break;
-                case RotationConstraintType.None:
+                case AxisConstraintType.None:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
