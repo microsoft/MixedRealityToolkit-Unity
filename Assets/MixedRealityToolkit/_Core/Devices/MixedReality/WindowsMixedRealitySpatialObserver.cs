@@ -321,7 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         }
 
         /// <summary>
-        /// Applys the configured observation extents.
+        /// Applies the configured observation extents.
         /// </summary>
         private void ConfigureObserverVolume()
         {
