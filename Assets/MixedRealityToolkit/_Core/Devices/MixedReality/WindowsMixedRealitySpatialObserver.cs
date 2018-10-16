@@ -87,11 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// The surface observer providing the spatial data.
         /// </summary>
         private SurfaceObserver observer = null;
-#endif // UNITY_WSA
 
-        /// <summary>
-        /// The observation extents that are currently in use by the surface observer.
-        /// </summary>
+        /// <summary> 
+        /// The observation extents that are currently in use by the surface observer. 
+        /// </summary> 
         private Vector3 currentObserverExtents = Vector3.zero;
 
         /// <summary>
@@ -99,18 +98,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         private readonly Queue<SurfaceId> meshWorkQueue = new Queue<SurfaceId>();
 
-        /// <summary>
-        /// Identifies the meshes, by id, that are being baked by Unity and if it has been added (true) 
-        /// or is being updated (false). 
-        /// </summary>
+        /// <summary> 
+        /// Identifies the meshes, by id, that are being baked by Unity and if it has been added (true)  
+        /// or is being updated (false).  
+        /// </summary> 
         private Dictionary<int, bool> meshAddStatus = new Dictionary<int, bool>();
 
-        /// <summary>
-        /// To prevent too many meshes from being generated at the same time, we will
-        /// only request one mesh to be created at a time.  This variable will track
-        /// if a mesh creation request is in flight.
-        /// </summary>
+        /// <summary> 
+        /// To prevent too many meshes from being generated at the same time, we will 
+        /// only request one mesh to be created at a time.  This variable will track 
+        /// if a mesh creation request is in flight. 
+        /// </summary> 
         private SpatialMeshObject? outstandingMeshObject = null;
+
+        /// <summary>
+        /// The time at which the surface observer was last asked for updated data.
+        /// </summary>
+        private float lastUpdated = 0;
+    #endif // UNITY_WSA
 
         /// <summary>
         /// When surfaces are replaced or removed, rather than destroying them, we'll keep
@@ -118,11 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// game object create/destroy cycles, which should help performance.
         /// </summary>
         private SpatialMeshObject? spareMeshObject = null;
-
-        /// <summary>
-        /// The time at which the surface observer was last asked for updated data.
-        /// </summary>
-        private float lastUpdated = 0;
 
         private Dictionary<int, SpatialMeshObject> meshObjects = new Dictionary<int, SpatialMeshObject>();
 
@@ -330,7 +330,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             if (currentObserverExtents.Equals(newExtents)) { return; }
             observer.SetVolumeAsAxisAlignedBox(Vector3.zero, newExtents);
         }
-#endif // UNITY_WSA
 
         /// <summary>
         /// Handles the SurfaceObserver's OnSurfaceChanged event.
@@ -435,6 +434,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             // We are done with the outstanding mesh object, reset it's value.
             outstandingMeshObject = null;
         }
+#endif // UNITY_WSA
 
         /// <summary>
         /// Removes the <see cref="SpatialMeshObject"/> associated with the specified id.
