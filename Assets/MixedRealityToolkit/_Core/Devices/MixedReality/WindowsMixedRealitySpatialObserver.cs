@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 #if UNITY_WSA
             CreateObserver();
 
-            // Apply the initial oberserver volume settings.
+            // Apply the initial observer volume settings.
             ConfigureObserverVolume();
 #endif // UNITY_WSA
         }
