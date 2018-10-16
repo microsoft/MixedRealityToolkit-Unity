@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 }
                 meshObjects.Clear();
 
-                // Cleanup the oustanding mesh object.
+                // Cleanup the outstanding mesh object.
                 if (outstandingMeshObject.HasValue)
                 {
                     // Destroy the game object, destroy the meshes.
