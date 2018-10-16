@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 #if UNITY_WSA
             CreateObserver();
 
-            // Apply the initial oberserver volume settings.
+            // Apply the initial observer volume settings.
             ConfigureObserverVolume();
 #endif // UNITY_WSA
         }
@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 }
                 meshObjects.Clear();
 
-                // Cleanup the oustanding mesh object.
+                // Cleanup the outstanding mesh object.
                 if (outstandingMeshObject.HasValue)
                 {
                     // Destroy the game object, destroy the meshes.
@@ -321,7 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         }
 
         /// <summary>
-        /// Applys the configured observation extents.
+        /// Applies the configured observation extents.
         /// </summary>
         private void ConfigureObserverVolume()
         {
