@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
                     meshParent = null;
                 }
 
-                // Detatch the surface objects (they are to be cleaned up by the observer) and cleanup the parent
+                // Detach the surface objects (they are to be cleaned up by the observer) and cleanup the parent
                 if (surfaceParent != null)
                 {
                     surfaceParent.transform.DetachChildren();
