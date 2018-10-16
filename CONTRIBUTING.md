@@ -6,7 +6,7 @@ For larger submissions, we have drafted contribution guidelines to ensure a smoo
 
 All changes be they small or large, need to adhere to the [MRTK Coding Standards](/CodingGuidelines.md), so please ensure you are familiar with these while developing to avoid delays when the change is being reviewed.
 
-If you have any questions, please reach out on the [HoloLens forums](https://forums.hololens.com/) or the [HoloDevelopers slack](https://holodevelopers.slack.com/). You can easily be granted access the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
+If you have any questions, please reach out on the [HoloLens forums](https://forums.hololens.com/) or the [HoloDevelopers slack](https://holodevelopers.slack.com/). You can easily be granted access to the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
 
 # Submission process
 We provide several paths to enable developers to contribute to the Mixed Reality Toolkit, all starting with [creating a new Issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose)
