@@ -18,11 +18,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
 
         // todo: ObserverVolumeType
 
+        // todo?: bool StationaryObserver
+
         /// <summary>
         /// Gets or sets the size of the volume, in meters per axis, from which individual observations will be made.
         /// </summary>
-        /// <remarks>This is not the total size of the observable space.</remarks>
         Vector3 ObservationExtents { get; set; }
+
+        /// <summary>
+        /// Gets or sets the origin of the observer.
+        /// </summary>
+        /// <remarks>
+        /// Moving the observer origin allows the spatial awareness system to locate and discard meshes as the user
+        /// navigates the environment.
+        /// </remarks>
+        Vector3 ObserverOrigin { get; set; }
+
+        // todo Quaternion ObserverOrientation { get; set }
 
         /// <summary>
         /// Gets or sets the frequency, in seconds, at which the spatial observer updates.

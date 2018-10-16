@@ -375,6 +375,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         /// <inheritdoc />
         public Vector3 ObservationExtents { get; set; } = Vector3.one * 10;
 
+        /// <inheritdoc />
+        public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
+
         private float updateInterval = 3.5f;
 
         /// <inheritdoc />

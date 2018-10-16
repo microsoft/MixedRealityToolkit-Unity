@@ -88,6 +88,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         private SurfaceObserver observer = null;
 
+        /// <summary>
+        /// The current location of the surface observer.
+        /// </summary>
+        private Vector3 currentObserverOrigin = Vector3.zero;
+
         /// <summary> 
         /// The observation extents that are currently in use by the surface observer. 
         /// </summary> 
@@ -112,19 +117,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         private SpatialMeshObject? outstandingMeshObject = null;
 
         /// <summary>
-        /// The time at which the surface observer was last asked for updated data.
-        /// </summary>
-        private float lastUpdated = 0;
-    #endif // UNITY_WSA
-
-        /// <summary>
         /// When surfaces are replaced or removed, rather than destroying them, we'll keep
         /// one as a spare for use in outstanding mesh requests. That way, we'll have fewer
         /// game object create/destroy cycles, which should help performance.
         /// </summary>
-        private SpatialMeshObject? spareMeshObject = null;
+        protected SpatialMeshObject? spareMeshObject = null;
 
-        private Dictionary<int, SpatialMeshObject> meshObjects = new Dictionary<int, SpatialMeshObject>();
+        /// <summary>
+        /// The time at which the surface observer was last asked for updated data.
+        /// </summary>
+        private float lastUpdated = 0;
+#endif // UNITY_WSA
 
         /// <inheritdoc />
         public override IDictionary<int, GameObject> Meshes
@@ -213,15 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
             if (Application.isPlaying)
             {
-                // Clean up mesh objects.
-                // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
-                foreach (SpatialMeshObject meshObject in meshObjects.Values)
-                {
-                    // Cleanup mesh object.
-                    // Destroy the game object, destroy the meshes.
-                    CleanupMeshObject(meshObject);
-                }
-                meshObjects.Clear();
+                base.CleanupMeshes();
 
                 // Cleanup the outstanding mesh object.
                 if (outstandingMeshObject.HasValue)
@@ -320,15 +315,74 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             }
         }
 
+
+        /// <summary>
+        /// Removes the <see cref="SpatialMeshObject"/> associated with the specified id.
+        /// </summary>
+        /// <param name="id">The id of the mesh to be removed.</param>
+        protected void RemoveMeshObject(int id)
+        {
+            SpatialMeshObject mesh;
+
+            if (meshObjects.TryGetValue(id, out mesh))
+            {
+                // Remove the mesh object from the collection.
+                meshObjects.Remove(id);
+
+                // Cleanup the mesh.
+                // Do not destroy the game object, destroy the meshes.
+                CleanupMeshObject(mesh, false);
+
+                // Reclaim the mesh object for future use.
+                ReclaimMeshObject(mesh);
+
+                // Send the mesh removed event
+                MixedRealityManager.SpatialAwarenessSystem.RaiseMeshRemoved(id);
+            }
+        }
+
+        /// <summary>
+        /// Reclaims the <see cref="SpatialMeshObject"/> to allow for later reuse.
+        /// </summary>
+        /// <param name="availableMeshObject"></param>
+        protected void ReclaimMeshObject(SpatialMeshObject availableMeshObject)
+        {
+            if (!spareMeshObject.HasValue)
+            {
+                // Cleanup the mesh object.
+                // Do not destroy the game object, destroy the meshes.
+                CleanupMeshObject(availableMeshObject, false);
+
+                availableMeshObject.GameObject.name = "Unused Spatial Mesh";
+                availableMeshObject.GameObject.SetActive(false);
+
+                spareMeshObject = availableMeshObject;
+            }
+            else
+            {
+                // Cleanup the mesh object.
+                // Destroy the game object, destroy the meshes.
+                CleanupMeshObject(availableMeshObject);
+            }
+        }
+
         /// <summary>
         /// Applies the configured observation extents.
         /// </summary>
         private void ConfigureObserverVolume()
         {
             Vector3 newExtents = MixedRealityManager.SpatialAwarenessSystem.ObservationExtents;
+            Vector3 newOrigin = MixedRealityManager.SpatialAwarenessSystem.ObserverOrigin;
 
-            if (currentObserverExtents.Equals(newExtents)) { return; }
-            observer.SetVolumeAsAxisAlignedBox(Vector3.zero, newExtents);
+            if (currentObserverExtents.Equals(newExtents) &&
+                currentObserverOrigin.Equals(newOrigin))
+            {
+                return;
+            }
+            observer.SetVolumeAsAxisAlignedBox(newOrigin, newExtents);
+
+            currentObserverExtents = newExtents;
+            currentObserverOrigin = newOrigin;
         }
 
         /// <summary>
@@ -435,56 +489,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             outstandingMeshObject = null;
         }
 #endif // UNITY_WSA
-
-        /// <summary>
-        /// Removes the <see cref="SpatialMeshObject"/> associated with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the mesh to be removed.</param>
-        private void RemoveMeshObject(int id)
-        {
-            SpatialMeshObject mesh;
-
-            if (meshObjects.TryGetValue(id, out mesh))
-            {
-                // Remove the mesh object from the collection.
-                meshObjects.Remove(id);
-
-                // Cleanup the mesh.
-                // Do not destroy the game object, destroy the meshes.
-                CleanupMeshObject(mesh, false);
-
-                // Reclaim the mesh object for future use.
-                ReclaimMeshObject(mesh);
-
-                // Send the mesh removed event
-                MixedRealityManager.SpatialAwarenessSystem.RaiseMeshRemoved(id);
-            }
-        }
-
-        /// <summary>
-        /// Reclaims the <see cref="SpatialMeshObject"/> to allow for later reuse.
-        /// </summary>
-        /// <param name="availableMeshObject"></param>
-        private void ReclaimMeshObject(SpatialMeshObject availableMeshObject)
-        {
-            if (!spareMeshObject.HasValue)
-            {
-                // Cleanup the mesh object.
-                // Do not destroy the game object, destroy the meshes.
-                CleanupMeshObject(availableMeshObject, false);
-
-                availableMeshObject.GameObject.name = "Unused Spatial Mesh";
-                availableMeshObject.GameObject.SetActive(false);
-
-                spareMeshObject = availableMeshObject;
-            }
-            else
-            {
-                // Cleanup the mesh object.
-                // Destroy the game object, destroy the meshes.
-                CleanupMeshObject(availableMeshObject);
-            }
-        }
 
         // todo: SetObserverOrigin
 

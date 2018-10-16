@@ -84,6 +84,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         };
 
         /// <summary>
+        /// The collection of meshes being managed by the observer.
+        /// </summary>
+        protected Dictionary<int, SpatialMeshObject> meshObjects = new Dictionary<int, SpatialMeshObject>();
+
+        /// <summary>
         /// Creates a <see cref="SpatialMeshObject"/>.
         /// </summary>
         /// <param name="mesh"></param> todo: add comments
@@ -117,6 +122,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             newMesh.Collider.sharedMesh = newMesh.Filter.sharedMesh;
 
             return newMesh;
+        }
+
+        /// <summary>
+        /// Cleans up mesh objects managed by the observer.
+        /// </summary>
+        protected void CleanupMeshes()
+        {
+            // Clean up mesh objects.
+            // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
+            foreach (SpatialMeshObject meshObject in meshObjects.Values)
+            {
+                // Cleanup mesh object.
+                // Destroy the game object, destroy the meshes.
+                CleanupMeshObject(meshObject);
+            }
+            meshObjects.Clear();
         }
 
         /// <summary>
