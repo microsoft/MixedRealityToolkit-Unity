@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         void RaiseMeshUpdated(int meshId, GameObject meshObject);
 
         /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an exising mesh has been removed.
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an existing mesh has been removed.
         /// </summary>
         /// <param name="meshId">Value identifying the mesh.</param>
         /// <remarks>
