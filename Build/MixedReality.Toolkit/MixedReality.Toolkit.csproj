@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MRTKRoot)\Assets\MixedRealityToolkit\**\*.cs"  />
+
+    <Content Include="$(MRTKRoot)\Assets\MixedRealityToolkit\_Core\Resources\**\*">
+      <PackagePath>%(RelativeDir)</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="$(UnityEngineDll)" />
+    <Reference Include="$(UnityEditorDll)" />
+    <Reference Include="$(UnityEngineUIExtensionDll)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>
