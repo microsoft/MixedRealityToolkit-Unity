@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         void RaiseSurfaceUpdated(int surfaceId, GameObject surfaceObject);
 
         /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceUpdated"/> method to indicate an exising planar surface has been removed.
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceUpdated"/> method to indicate an existing planar surface has been removed.
         /// </summary>
         /// <param name="surfaceId">Value identifying the surface.</param>
         /// <remarks>
