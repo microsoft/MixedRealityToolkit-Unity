@@ -216,6 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
             if (Application.isPlaying)
             {
+                // Cleanup the mesh objects that are being manaaged by this observer.
                 base.CleanupMeshes();
 
                 // Cleanup the outstanding mesh object.
@@ -223,6 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 {
                     // Destroy the game object, destroy the meshes.
                     CleanupMeshObject(outstandingMeshObject.Value);
+                    outstandingMeshObject = null;
                 }
 
                 // Cleanup the spare mesh object
@@ -230,6 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 {
                     // Destroy the game object, destroy the meshes.
                     CleanupMeshObject(spareMeshObject.Value);
+                    spareMeshObject = null;
                 }
 
                 // Clean up planar surface objects
@@ -434,20 +437,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 return;
             }
 
-            // todo: investigate
-            //if (outstandingMeshObject.Value.Id != cookedData.id.handle)
-            //{
-            //    Debug.LogWarning($"OnDataReady called for for mesh id {cookedData.id.handle} while request for mesh id {outstandingMeshObject.Value.Id} was outstanding.");
-            //    ReclaimMeshObject(outstandingMeshObject.Value);
-            //    outstandingMeshObject = null;
-            //    return;
-            //}
+            // Since there is only one outstanding mesh object, update the id to match
+            // the one received after baking.
+            SpatialMeshObject meshObject = outstandingMeshObject.Value;
+            meshObject.Id = cookedData.id.handle;
+            outstandingMeshObject = null;
 
             // Apply the appropriate material to the mesh.
             SpatialMeshDisplayOptions displayOption = MixedRealityManager.SpatialAwarenessSystem.MeshDisplayOption;
             if (displayOption != SpatialMeshDisplayOptions.None)
             {
-                outstandingMeshObject.Value.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
+                meshObject.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
                     MixedRealityManager.SpatialAwarenessSystem.MeshVisibleMaterial :
                     MixedRealityManager.SpatialAwarenessSystem.MeshOcclusionMaterial;
             }
@@ -455,38 +455,36 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             // Recalculate the mesh normals if requested.
             if (MixedRealityManager.SpatialAwarenessSystem.MeshRecalculateNormals)
             {
-                outstandingMeshObject.Value.Filter.sharedMesh.RecalculateNormals();
+                meshObject.Filter.sharedMesh.RecalculateNormals();
             }
 
             // Add / update the mesh to our collection
             if (!meshObjects.ContainsKey(cookedData.id.handle))
             {
-                meshObjects.Add(cookedData.id.handle, outstandingMeshObject.Value);
+                meshObjects.Add(cookedData.id.handle, meshObject);
             }
             else
             {
-                meshObjects[cookedData.id.handle] = outstandingMeshObject.Value;
+                meshObjects[cookedData.id.handle] = meshObject;
             }
 
             // Send the appropriate mesh event (added or updated)
             bool isNewMesh = false;
             if (meshAddStatus.TryGetValue(cookedData.id.handle, out isNewMesh))
             {
-                GameObject mesh = outstandingMeshObject.Value.GameObject;
+                GameObject mesh = meshObject.GameObject;
                 if (isNewMesh)
                 {
                     MixedRealityManager.SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, mesh);
                 }
                 else
                 {
+                    // todo... need to remove the old mesh...
                     MixedRealityManager.SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, mesh);
                 }
 
                 meshAddStatus.Remove(cookedData.id.handle);
             }
-
-            // We are done with the outstanding mesh object, reset it's value.
-            outstandingMeshObject = null;
         }
 #endif // UNITY_WSA
 
