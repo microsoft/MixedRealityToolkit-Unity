@@ -6,6 +6,7 @@
         <UnityManagedRoot>$(UnityInstallRoot)\Editor\Data\Managed</UnityManagedRoot>
         <UnityEngineDll>$(UnityManagedRoot)\UnityEngine.dll</UnityEngineDll>
         <UnityEngineUIExtensionDll>$(UnityInstallRoot)\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</UnityEngineUIExtensionDll>
+        <MRTKBinaryFramework>netstandard2.0</MRTKBinaryFramework>
         <OutputPath>$(MRTKRoot)\Build\__output</OutputPath>
         <MRTKConstants>UNITY_2018_1_OR_NEWER</MRTKConstants>
         <DefineConstants>$(MRTKConstants)</DefineConstants>

@@ -1,11 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
   <PropertyGroup>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="$(MRTKRoot)\Assets\MixedRealityToolkit\**\*.cs"  />
+    <Compile Include="$(MRTKRoot)\Src\MixedRealityToolkit\**\*.cs"  />
     <Compile Include="InternalsVisibleTo.cs"  />
 
     <Content Include="$(MRTKRoot)\Assets\MixedRealityToolkit\_Core\Resources\**\*">
@@ -22,5 +23,13 @@
   <ItemGroup>
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
   </ItemGroup>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+  <!-- All AfterBuild logic has to go post Sdk.targets, since AfterBuild is defined in the .targets file -->
+  <Target Name="AfterBuild" Condition=" '$(TargetFramework)' == '$(MRTKBinaryFramework)'">
+    <Message Text="Copying $(OutputPath)$(AssemblyName).dll => $(MRTKRoot)\Assets\Bin\$(AssemblyName)" Importance="high" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(MRTKRoot)\Assets\Bin" />
+  </Target>
 
 </Project>
