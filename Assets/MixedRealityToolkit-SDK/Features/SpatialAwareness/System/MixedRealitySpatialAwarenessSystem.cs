@@ -379,7 +379,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
 
         /// <inheritdoc />
-        public float UpdateInterval { get; set } = 3.5f;
+        public float UpdateInterval { get; set; } = 3.5f;
 
         /// <inheritdoc />
         public bool IsObserverRunning
