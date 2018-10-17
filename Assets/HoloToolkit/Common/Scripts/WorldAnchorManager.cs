@@ -324,7 +324,7 @@ namespace HoloToolkit.Unity
             for (var i = 0; i < anchors.Length; i++)
             {
                 // Don't remove SpatialMapping anchors if exists
-                if (spatialMappingManager != null && anchors[i].gameObject.transform.parent.gameObject == spatialMappingManager.gameObject)
+                if (spatialMappingManager != null && anchors[i].gameObject.transform.parent != null && anchors[i].gameObject.transform.parent.gameObject == spatialMappingManager.gameObject)
                 { continue; }
 
                 // Let's check to see if there are anchors we weren't accounting for.
