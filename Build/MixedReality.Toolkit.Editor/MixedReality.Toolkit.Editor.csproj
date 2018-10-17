@@ -3,8 +3,6 @@
   <PropertyGroup>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <DefineConstants>$(MRTKConstants);UNITY_EDITOR</DefineConstants>
-    <IncludeBuildOutput>False</IncludeBuildOutput>
-    <IncludeSource>True</IncludeSource>
   </PropertyGroup>
 
   <ItemGroup>
