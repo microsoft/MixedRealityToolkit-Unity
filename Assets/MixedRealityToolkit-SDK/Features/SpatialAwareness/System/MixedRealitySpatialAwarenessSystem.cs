@@ -428,18 +428,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 
             set
             {
-                if (IsObserverRunning)
-                {
-                    Debug.LogError("MeshLevelOfDetail cannot be modified while the observer is running.");
-                    return;
-                }
-
                 if (meshLevelOfDetail != value)
                 {
                     // Non-custom values automatically modify MeshTrianglesPerCubicMeter
                     if (value != SpatialAwarenessMeshLevelOfDetail.Custom)
                     {
-                        meshTrianglesPerCubicMeter = (int)value;
+                        MeshTrianglesPerCubicMeter = (int)value;
                     }
 
                     meshLevelOfDetail = value;
@@ -447,27 +441,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             }
         }
 
-        private int meshTrianglesPerCubicMeter = (int)SpatialAwarenessMeshLevelOfDetail.Coarse;
-
         /// <inheritdoc />
-        public int MeshTrianglesPerCubicMeter
-        {
-            get
-            {
-                return meshTrianglesPerCubicMeter;
-            }
-
-            set
-            {
-                if (IsObserverRunning)
-                {
-                    Debug.LogError("MeshTrianglesPerCubicMeter cannot be modified while the observer is running.");
-                    return;
-                }
-
-                meshTrianglesPerCubicMeter = value;
-            }
-        }
+        public int MeshTrianglesPerCubicMeter { get; set; } = (int)SpatialAwarenessMeshLevelOfDetail.Coarse;
 
         /// <inheritdoc />
         public bool MeshRecalculateNormals { get; set; } = true;

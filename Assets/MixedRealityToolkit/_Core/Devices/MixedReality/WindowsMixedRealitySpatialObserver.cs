@@ -104,12 +104,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         private readonly Queue<SurfaceId> meshWorkQueue = new Queue<SurfaceId>();
 
         /// <summary> 
-        /// Identifies the meshes, by id, that are being baked by Unity and if it has been added (true)  
-        /// or is being updated (false).  
-        /// </summary> 
-        private Dictionary<int, bool> meshAddStatus = new Dictionary<int, bool>();
-
-        /// <summary> 
         /// To prevent too many meshes from being generated at the same time, we will 
         /// only request one mesh to be created at a time.  This variable will track 
         /// if a mesh creation request is in flight. 
@@ -292,6 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
                 newMesh.GameObject.name = meshName;
                 newMesh.Id = surfaceId.handle;
+                newMesh.GameObject.SetActive(true);
 
                 worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
             }
@@ -331,10 +326,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             {
                 // Remove the mesh object from the collection.
                 meshObjects.Remove(id);
-
-                // Cleanup the mesh.
-                // Do not destroy the game object, destroy the meshes.
-                CleanupMeshObject(mesh, false);
 
                 // Reclaim the mesh object for future use.
                 ReclaimMeshObject(mesh);
@@ -403,7 +394,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             {
                 case SurfaceChange.Added:
                 case SurfaceChange.Updated:
-                    meshAddStatus.Add(id.handle, (changeType == SurfaceChange.Added));
                     meshWorkQueue.Enqueue(id);
                     break;
 
@@ -447,9 +437,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             SpatialMeshDisplayOptions displayOption = MixedRealityManager.SpatialAwarenessSystem.MeshDisplayOption;
             if (displayOption != SpatialMeshDisplayOptions.None)
             {
+                meshObject.Renderer.enabled = true;
                 meshObject.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
                     MixedRealityManager.SpatialAwarenessSystem.MeshVisibleMaterial :
                     MixedRealityManager.SpatialAwarenessSystem.MeshOcclusionMaterial;
+            }
+            else
+            {
+                meshObject.Renderer.enabled = false;
             }
 
             // Recalculate the mesh normals if requested.
@@ -462,28 +457,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             if (!meshObjects.ContainsKey(cookedData.id.handle))
             {
                 meshObjects.Add(cookedData.id.handle, meshObject);
+                MixedRealityManager.SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, meshObject.GameObject);
             }
             else
             {
+                // Reclaim the old mesh object for future use.
+                ReclaimMeshObject(meshObjects[cookedData.id.handle]);
                 meshObjects[cookedData.id.handle] = meshObject;
-            }
-
-            // Send the appropriate mesh event (added or updated)
-            bool isNewMesh = false;
-            if (meshAddStatus.TryGetValue(cookedData.id.handle, out isNewMesh))
-            {
-                GameObject mesh = meshObject.GameObject;
-                if (isNewMesh)
-                {
-                    MixedRealityManager.SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, mesh);
-                }
-                else
-                {
-                    // todo... need to remove the old mesh...
-                    MixedRealityManager.SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, mesh);
-                }
-
-                meshAddStatus.Remove(cookedData.id.handle);
+                MixedRealityManager.SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, meshObject.GameObject);
             }
         }
 #endif // UNITY_WSA
