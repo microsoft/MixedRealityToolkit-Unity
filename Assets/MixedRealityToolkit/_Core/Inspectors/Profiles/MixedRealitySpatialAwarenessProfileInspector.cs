@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         // General settings
         private SerializedProperty startupBehavior;
         private SerializedProperty observationExtents;
+        private SerializedProperty isStationaryObserver;
         private SerializedProperty updateInterval;
 
         // Mesh settings
@@ -64,6 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             // General settings
             startupBehavior = serializedObject.FindProperty("startupBehavior");
             observationExtents = serializedObject.FindProperty("observationExtents");
+            isStationaryObserver = serializedObject.FindProperty("isStationaryObserver");
             updateInterval = serializedObject.FindProperty("updateInterval");
 
             // Mesh settings
@@ -118,6 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.LabelField("General Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(startupBehavior);
             EditorGUILayout.PropertyField(observationExtents);
+            EditorGUILayout.PropertyField(isStationaryObserver);
             EditorGUILayout.PropertyField(updateInterval);
 
             EditorGUILayout.Space();

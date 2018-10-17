@@ -3,15 +3,15 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 using System.Collections.Generic;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
-
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 {
@@ -81,6 +81,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         #endregion IMixedRealityManager implementation
 
         #region IMixedRealitySpatialAwarenessObserver implementation
+
+        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+
+        /// <summary>
+        /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
+        /// </summary>
+        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityManager.SpatialAwarenessSystem);
 
 #if UNITY_WSA
         /// <summary>
@@ -181,12 +188,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         private void CreateObserver()
         {
+            if (SpatialAwarenessSystem == null) { return; }
+
             if (observer == null)
             {
                 observer = new SurfaceObserver();
                 ConfigureObserverVolume();
 
-                if (MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.StartupBehavior == AutoStartBehavior.AutoStart)
+                if (SpatialAwarenessSystem.StartupBehavior == AutoStartBehavior.AutoStart)
                 {
                     StartObserving();
                 }
@@ -239,6 +248,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         private void UpdateObserver()
         {
+            if (SpatialAwarenessSystem == null) { return; }
+
             // Only update the observer if it is running.
             if (IsRunning && !outstandingMeshObject.HasValue)
             {
@@ -250,8 +261,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                     RequestMesh(meshWorkQueue.Dequeue());
                 }
                 // If enough time has passed since the previous observer update...
-                else if (Time.time - lastUpdated >= MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval)
+                else if (Time.time - lastUpdated >= SpatialAwarenessSystem.UpdateInterval)
                 {
+                    // Update the observer location if it is not stationary
+                    if (!SpatialAwarenessSystem.IsStationaryObserver)
+                    {
+                        SpatialAwarenessSystem.ObserverOrigin = CameraCache.Main.transform.position;
+                    }
+
                     // The application can update the observer volume at any time, make sure we are using the latest.
                     ConfigureObserverVolume();
 
@@ -269,7 +286,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         {
             string meshName = ("SpatialMesh - " + surfaceId.handle);
 
-            // todo:
             SpatialMeshObject newMesh;
             WorldAnchor worldAnchor;
 
@@ -298,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 newMesh.Filter,
                 worldAnchor,
                 newMesh.Collider,
-                MixedRealityManager.SpatialAwarenessSystem.MeshTrianglesPerCubicMeter,
+                SpatialAwarenessSystem.MeshTrianglesPerCubicMeter,
                 true);
 
             if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
@@ -331,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 ReclaimMeshObject(mesh);
 
                 // Send the mesh removed event
-                MixedRealityManager.SpatialAwarenessSystem.RaiseMeshRemoved(id);
+                SpatialAwarenessSystem.RaiseMeshRemoved(id);
             }
         }
 
@@ -365,8 +381,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         private void ConfigureObserverVolume()
         {
-            Vector3 newExtents = MixedRealityManager.SpatialAwarenessSystem.ObservationExtents;
-            Vector3 newOrigin = MixedRealityManager.SpatialAwarenessSystem.ObserverOrigin;
+            Vector3 newExtents = SpatialAwarenessSystem.ObservationExtents;
+            Vector3 newOrigin = SpatialAwarenessSystem.ObserverOrigin;
 
             if (currentObserverExtents.Equals(newExtents) &&
                 currentObserverOrigin.Equals(newOrigin))
@@ -434,13 +450,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             outstandingMeshObject = null;
 
             // Apply the appropriate material to the mesh.
-            SpatialMeshDisplayOptions displayOption = MixedRealityManager.SpatialAwarenessSystem.MeshDisplayOption;
+            SpatialMeshDisplayOptions displayOption = SpatialAwarenessSystem.MeshDisplayOption;
             if (displayOption != SpatialMeshDisplayOptions.None)
             {
                 meshObject.Renderer.enabled = true;
                 meshObject.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
-                    MixedRealityManager.SpatialAwarenessSystem.MeshVisibleMaterial :
-                    MixedRealityManager.SpatialAwarenessSystem.MeshOcclusionMaterial;
+                    SpatialAwarenessSystem.MeshVisibleMaterial :
+                    SpatialAwarenessSystem.MeshOcclusionMaterial;
             }
             else
             {
@@ -448,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             }
 
             // Recalculate the mesh normals if requested.
-            if (MixedRealityManager.SpatialAwarenessSystem.MeshRecalculateNormals)
+            if (SpatialAwarenessSystem.MeshRecalculateNormals)
             {
                 meshObject.Filter.sharedMesh.RecalculateNormals();
             }
@@ -468,11 +484,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
             if (sendUpdatedEvent)
             {
-                MixedRealityManager.SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, meshObject.GameObject);
+                SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, meshObject.GameObject);
             }
             else
             {
-                MixedRealityManager.SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, meshObject.GameObject);
+                SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, meshObject.GameObject);
             }
         }
 #endif // UNITY_WSA

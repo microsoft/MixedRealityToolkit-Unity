@@ -13,7 +13,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCustomProfile: 0
   startupBehavior: 0
-  observationExtents: {x: 10, y: 10, z: 10}
+  observationExtents: {x: 3, y: 3, z: 3}
+  isStationaryObserver: 0
   updateInterval: 3.5
   useMeshSystem: 1
   meshPhysicsLayer: 31

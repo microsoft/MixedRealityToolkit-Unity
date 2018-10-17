@@ -168,7 +168,10 @@ Prefab:
         your environment as a wireframe mesh.
 
 
-        Glance around your space and watch the mesh data appear.'
+        Move around your space and watch the mesh data appear.
+
+
+        As you move, meshes will appear in front of you and disappear behind you. '
       objectReference: {fileID: 0}
     - target: {fileID: 114713125240876806, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 2}

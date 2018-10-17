@@ -26,6 +26,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         Vector3 ObservationExtents { get; set; }
 
         /// <summary>
+        /// Should the observer remain stationary in the scene?
+        /// </summary>
+        /// <remarks>
+        /// Set IsStationaryObserver set to false, to move the volume with the user. 
+        /// If set to true, the origin will be 0,0,0 or the last known location.
+        /// </remarks>
+        bool IsStationaryObserver { get; set; }
+
+        /// <summary>
         /// Gets or sets the origin of the observer.
         /// </summary>
         /// <remarks>

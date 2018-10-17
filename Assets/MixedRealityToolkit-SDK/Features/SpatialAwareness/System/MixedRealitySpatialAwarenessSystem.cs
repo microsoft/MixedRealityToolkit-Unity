@@ -96,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             // General settings
             StartupBehavior = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.StartupBehavior;
             ObservationExtents = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.ObservationExtents;
+            IsStationaryObserver = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.IsStationaryObserver;
             UpdateInterval = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval;
 
             // Mesh settings
@@ -373,7 +374,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public AutoStartBehavior StartupBehavior { get; set; } = AutoStartBehavior.AutoStart;
 
         /// <inheritdoc />
-        public Vector3 ObservationExtents { get; set; } = Vector3.one * 10;
+        public Vector3 ObservationExtents { get; set; } = Vector3.one * 3;
+
+        /// <inheritdoc />
+        public bool IsStationaryObserver { get; set; } = false;
 
         /// <inheritdoc />
         public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
