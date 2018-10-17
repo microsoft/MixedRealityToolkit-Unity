@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         private GameObject SpatialAwarenessParent => spatialAwarenessParent ?? (spatialAwarenessParent = CreateSpatialAwarenessParent());
 
         /// <summary>
-        /// Creates the parent for spatial awareness objects so that the scene heirarchy does not get overly cluttered.
+        /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
         /// </summary>
         /// <returns>
         /// The <see cref="GameObject"/> to which spatial awareness created objects will be parented.
@@ -52,10 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         private GameObject SurfaceParent => surfaceParent ?? (surfaceParent = CreateSecondGenerationParent("Surfaces"));
 
         /// <summary>
-        /// Creates the a parent, that is a child if the Spatial Awareness System parent so that the scene heirarchy does not get overly cluttered.
+        /// Creates the a parent, that is a child if the Spatial Awareness System parent so that the scene hierarchy does not get overly cluttered.
         /// </summary>
         /// <returns>
-        /// The <see cref="GameObject"/> to whichspatial awareness objects will be parented.
+        /// The <see cref="GameObject"/> to which spatial awareness objects will be parented.
         /// </returns>
         private GameObject CreateSecondGenerationParent(string name)
         {
