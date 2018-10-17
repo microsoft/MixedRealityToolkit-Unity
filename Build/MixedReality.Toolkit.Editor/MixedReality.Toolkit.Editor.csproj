@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="$(MRTKRoot)\Src\MixedRealityToolkit-Editor\**\*.cs"  />
+    <Compile Include="$(MRTKRoot)\Assets\**\*.cs"  />
   </ItemGroup>
 
   <ItemGroup>
