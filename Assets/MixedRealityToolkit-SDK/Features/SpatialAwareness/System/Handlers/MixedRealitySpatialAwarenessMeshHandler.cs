@@ -17,19 +17,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.Handlers
         /// <inheritdoc />
         public void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData)
         {
-            eventData.GameObject.SetActive(true);
+            // Custom implementations can use this event to access the mesh data on arrival.
         }
 
         /// <inheritdoc />
         public void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData)
         {
-            eventData.GameObject.SetActive(true);
+            // Custom implementations can use this event to access the mesh data on update.
         }
 
         /// <inheritdoc />
         public void OnMeshRemoved(MixedRealitySpatialAwarenessEventData eventData)
         {
-            eventData.GameObject.SetActive(false);
+            // Custom implementations can use this event to respond to mesh removal.
         }
     }
 }

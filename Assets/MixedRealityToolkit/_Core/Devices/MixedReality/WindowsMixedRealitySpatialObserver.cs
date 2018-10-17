@@ -454,22 +454,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             }
 
             // Add / update the mesh to our collection
-            if (!meshObjects.ContainsKey(cookedData.id.handle))
-            {
-                meshObjects.Add(cookedData.id.handle, meshObject);
-                MixedRealityManager.SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, meshObject.GameObject);
-            }
-            else
+            // todo: fix
+            bool sendUpdatedEvent = false;
+            if (meshObjects.ContainsKey(cookedData.id.handle))
             {
                 // Reclaim the old mesh object for future use.
                 ReclaimMeshObject(meshObjects[cookedData.id.handle]);
-                meshObjects[cookedData.id.handle] = meshObject;
+                meshObjects.Remove(cookedData.id.handle);
+
+                sendUpdatedEvent = true;
+            }
+            meshObjects.Add(cookedData.id.handle, meshObject);
+
+            if (sendUpdatedEvent)
+            {
                 MixedRealityManager.SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, meshObject.GameObject);
+            }
+            else
+            {
+                MixedRealityManager.SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, meshObject.GameObject);
             }
         }
 #endif // UNITY_WSA
-
-        // todo: SetObserverOrigin
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }
