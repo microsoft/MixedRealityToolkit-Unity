@@ -378,27 +378,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         /// <inheritdoc />
         public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
 
-        private float updateInterval = 3.5f;
-
         /// <inheritdoc />
-        public float UpdateInterval
-        {
-            get
-            {
-                return updateInterval;
-            }
-
-            set
-            {
-                if (IsObserverRunning)
-                {
-                    Debug.LogError("UpdateInterval cannot be modified while the observer is running.");
-                    return;
-                }
-
-                updateInterval = value;
-            }
-        }
+        public float UpdateInterval { get; set } = 3.5f;
 
         /// <inheritdoc />
         public bool IsObserverRunning
