@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MixedReality.Toolkit", "Mix
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MixedReality.Toolkit.SDK", "MixedReality.Toolkit.SDK\MixedReality.Toolkit.SDK.csproj", "{49892648-F5DF-403A-90A8-4495A029BFD5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixedReality.Toolkit.Editor", "MixedReality.Toolkit.Editor\MixedReality.Toolkit.Editor.csproj", "{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{49892648-F5DF-403A-90A8-4495A029BFD5}.Release|x64.Build.0 = Release|Any CPU
 		{49892648-F5DF-403A-90A8-4495A029BFD5}.Release|x86.ActiveCfg = Release|Any CPU
 		{49892648-F5DF-403A-90A8-4495A029BFD5}.Release|x86.Build.0 = Release|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Debug|x64.Build.0 = Debug|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Debug|x86.Build.0 = Debug|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Release|x64.ActiveCfg = Release|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Release|x64.Build.0 = Release|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Release|x86.ActiveCfg = Release|Any CPU
+		{035D1F09-F77F-4A0A-9F9B-9DB163D38F2C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

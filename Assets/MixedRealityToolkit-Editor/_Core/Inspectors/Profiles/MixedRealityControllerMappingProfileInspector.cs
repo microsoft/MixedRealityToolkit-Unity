@@ -359,7 +359,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                         GUILayout.BeginHorizontal();
                     }
 
-                    var buttonContent = new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTextureScaled(supportedControllerType, handedness));
+                    var buttonContent = new GUIContent(controllerTitle, ControllerMappingLibraryEditorExtensions.GetControllerTextureScaled(supportedControllerType, handedness));
 
                     if (GUILayout.Button(buttonContent, controllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32f), GUILayout.ExpandWidth(true)))
                     {

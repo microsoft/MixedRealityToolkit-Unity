@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
         private void OnFocus()
         {
-            currentControllerTexture = ControllerMappingLibrary.GetControllerTexture(currentControllerType, currentHandedness);
+            currentControllerTexture = ControllerMappingLibraryEditorExtensions.GetControllerTexture(currentControllerType, currentHandedness);
 
             #region Interaction Constraint Setup
 
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 .Select(action => (int)action.Id)
                 .Prepend(0).ToArray();
 
-            axisLabels = ControllerMappingLibrary.UnityInputManagerAxes
+            axisLabels = ControllerMappingLibraryEditorExtensions.UnityInputManagerAxes
                 .Select(axis => new GUIContent(axis.Name))
                 .Prepend(new GUIContent("None")).ToArray();
 
@@ -718,9 +718,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
         {
             var axisId = -1;
 
-            for (int j = 0; j < ControllerMappingLibrary.UnityInputManagerAxes.Length; j++)
+            for (int j = 0; j < ControllerMappingLibraryEditorExtensions.UnityInputManagerAxes.Length; j++)
             {
-                if (ControllerMappingLibrary.UnityInputManagerAxes[j].Name == axisCode.stringValue)
+                if (ControllerMappingLibraryEditorExtensions.UnityInputManagerAxes[j].Name == axisCode.stringValue)
                 {
                     axisId = j + 1;
                     break;
@@ -739,11 +739,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 }
                 else
                 {
-                    for (int j = 0; j < ControllerMappingLibrary.UnityInputManagerAxes.Length; j++)
+                    for (int j = 0; j < ControllerMappingLibraryEditorExtensions.UnityInputManagerAxes.Length; j++)
                     {
                         if (axisId - 1 == j)
                         {
-                            axisCode.stringValue = ControllerMappingLibrary.UnityInputManagerAxes[j].Name;
+                            axisCode.stringValue = ControllerMappingLibraryEditorExtensions.UnityInputManagerAxes[j].Name;
                             axisCode.serializedObject.ApplyModifiedProperties();
                             break;
                         }

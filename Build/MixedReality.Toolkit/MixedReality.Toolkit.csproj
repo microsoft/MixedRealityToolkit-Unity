@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Compile Include="$(MRTKRoot)\Assets\MixedRealityToolkit\**\*.cs"  />
+    <Compile Include="InternalsVisibleTo.cs"  />
 
     <Content Include="$(MRTKRoot)\Assets\MixedRealityToolkit\_Core\Resources\**\*">
       <PackagePath>%(RelativeDir)</PackagePath>
@@ -15,7 +16,6 @@
 
   <ItemGroup>
     <Reference Include="$(UnityEngineDll)" />
-    <Reference Include="$(UnityEditorDll)" />
     <Reference Include="$(UnityEngineUIExtensionDll)" />
   </ItemGroup>
 

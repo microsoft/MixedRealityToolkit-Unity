@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DefineConstants>$(MRTKConstants);UNITY_EDITOR</DefineConstants>
+    <IncludeBuildOutput>False</IncludeBuildOutput>
+    <IncludeSource>True</IncludeSource>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MRTKRoot)\Assets\MixedRealityToolkit-Editor\**\*.cs"  />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="$(UnityEngineDll)" />
+    <Reference Include="$(UnityEngineUIExtensionDll)" />
+    <Reference Include="$(UnityManagedRoot)\UnityEditor.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../MixedReality.Toolkit/MixedReality.Toolkit.csproj" />
+    <ProjectReference Include="../MixedReality.Toolkit.SDK/MixedReality.Toolkit.SDK.csproj" />
+  </ItemGroup>
+
+</Project>

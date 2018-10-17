@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             {
 #if UNITY_EDITOR
                 // Make sure unity axis mappings are set.
-                Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
+                Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibraryEditorExtensions.UnityInputManagerAxes);
 #endif
 
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);

@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <Reference Include="$(UnityEngineDll)" />
-    <Reference Include="$(UnityEditorDll)" />
     <Reference Include="$(UnityEngineUIExtensionDll)" />
     <ProjectReference Include="../MixedReality.Toolkit/MixedReality.Toolkit.csproj" />
   </ItemGroup>
