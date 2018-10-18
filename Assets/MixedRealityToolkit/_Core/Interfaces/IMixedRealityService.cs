@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
 
         /// <summary>
         /// The initialize function is used to setup the service once created.
-        /// This method is called once all services have been registered in the Mixed Reality Orchestrator.
+        /// This method is called once all services have been registered in the Mixed Reality Toolkit.
         /// </summary>
         void Initialize();
 
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         void Disable();
 
         /// <summary>
-        /// Optional Destroy function to perform cleanup of the service before the Mixed Reality Orchestrator is destroyed.
+        /// Optional Destroy function to perform cleanup of the service before the Mixed Reality Toolkit is destroyed.
         /// </summary>
         void Destroy();
     }

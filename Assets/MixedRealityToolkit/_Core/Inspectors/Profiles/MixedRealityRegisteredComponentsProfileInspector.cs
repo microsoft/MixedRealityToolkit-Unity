@@ -38,12 +38,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (GUILayout.Button("Back to Configuration Profile"))
             {
-                Selection.activeObject = MixedRealityOrchestrator.Instance.ActiveProfile;
+                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
             }
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Registered Components Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("This profile defines any additional systems, features, and managers to register with the Mixed Reality Orchestrator.", MessageType.Info);
+            EditorGUILayout.HelpBox("This profile defines any additional systems, features, and managers to register with the Mixed Reality Toolkit.", MessageType.Info);
 
             if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
             {
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     if (EditorGUI.EndChangeCheck())
                     {
                         serializedObject.ApplyModifiedProperties();
-                        MixedRealityOrchestrator.Instance.ResetConfiguration(MixedRealityOrchestrator.Instance.ActiveProfile);
+                        MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
                     }
 
                     EditorGUI.indentLevel--;

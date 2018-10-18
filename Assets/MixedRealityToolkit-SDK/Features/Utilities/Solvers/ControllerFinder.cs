@@ -78,13 +78,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             // Look if the controller was already loaded. This could happen if the
             // GameObject was instantiated at runtime and the model loaded event has already fired.
-            if (MixedRealityOrchestrator.InputSystem == null)
+            if (MixedRealityToolkit.InputSystem == null)
             {
                 // The InputSystem could not be found.
                 return;
             }
 
-            foreach (IMixedRealityController controller in MixedRealityOrchestrator.InputSystem.DetectedControllers)
+            foreach (IMixedRealityController controller in MixedRealityToolkit.InputSystem.DetectedControllers)
             {
                 if (controller.ControllerHandedness == handedness)
                 {

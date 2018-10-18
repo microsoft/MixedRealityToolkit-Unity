@@ -19,19 +19,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
 
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent content)
         {
-            if (!MixedRealityOrchestrator.IsInitialized || !MixedRealityOrchestrator.HasActiveProfile)
+            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.HasActiveProfile)
             {
                 profile = null;
-                actionLabels = new[] { new GUIContent("Missing Mixed Reality Orchestrator") };
+                actionLabels = new[] { new GUIContent("Missing Mixed Reality Toolkit") };
                 actionIds = new[] { 0 };
             }
 
             if (profile == null ||
-                (MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled &&
+                (MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
                  profile.InputActions != null &&
-                 profile.InputActions != MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions))
+                 profile.InputActions != MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions))
             {
-                profile = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile;
+                profile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile;
 
                 if (profile != null)
                 {
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
                 }
             }
 
-            if (!MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled)
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 profile = null;
                 actionLabels = new[] { new GUIContent("Input System Disabled") };

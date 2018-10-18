@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             currentPointer = eventData.Pointer;
 
             FocusDetails focusDetails;
-            Vector3 initialDraggingPosition = MixedRealityOrchestrator.InputSystem.FocusProvider.TryGetFocusDetails(eventData, out focusDetails)
+            Vector3 initialDraggingPosition = MixedRealityToolkit.InputSystem.FocusProvider.TryGetFocusDetails(eventData, out focusDetails)
                     ? focusDetails.Point
                     : hostTransform.position;
 
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             // TODO: robertes: Fix push/pop and single-handler model so that multiple HandDraggable components can be active at once.
 
             // Add self as a modal input handler, to get all inputs during the manipulation
-            MixedRealityOrchestrator.InputSystem.PushModalInputHandler(gameObject);
+            MixedRealityToolkit.InputSystem.PushModalInputHandler(gameObject);
 
             isDragging = true;
 
@@ -327,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             }
 
             // Remove self as a modal input handler
-            MixedRealityOrchestrator.InputSystem.PopModalInputHandler();
+            MixedRealityToolkit.InputSystem.PopModalInputHandler();
 
             isDragging = false;
 

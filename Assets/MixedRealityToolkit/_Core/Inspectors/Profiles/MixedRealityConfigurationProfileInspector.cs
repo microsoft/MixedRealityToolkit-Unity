@@ -45,35 +45,35 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             configurationProfile = target as MixedRealityConfigurationProfile;
 
             // Create The MR Manager if none exists.
-            if (!MixedRealityOrchestrator.IsInitialized)
+            if (!MixedRealityToolkit.IsInitialized)
             {
                 // Search the scene for one, in case we've just hot reloaded the assembly.
-                var managerSearch = FindObjectsOfType<MixedRealityOrchestrator>();
+                var managerSearch = FindObjectsOfType<MixedRealityToolkit>();
 
                 if (managerSearch.Length == 0)
                 {
                     if (EditorUtility.DisplayDialog(
                         "Attention!",
-                        "There is no active Mixed Reality Orchestrator in your scene!\n\nWould you like to create one now?",
+                        "There is no active Mixed Reality Toolkit in your scene!\n\nWould you like to create one now?",
                         "Yes",
                         "Later"))
                     {
-                        MixedRealityOrchestrator.Instance.ActiveProfile = configurationProfile;
+                        MixedRealityToolkit.Instance.ActiveProfile = configurationProfile;
                     }
                     else
                     {
-                        Debug.LogWarning("No Mixed Reality Orchestrator in your scene.");
+                        Debug.LogWarning("No Mixed Reality Toolkit in your scene.");
                         return;
                     }
                 }
             }
 
-            if (!MixedRealityOrchestrator.ConfirmInitialized())
+            if (!MixedRealityToolkit.ConfirmInitialized())
             {
                 return;
             }
 
-            if (!MixedRealityOrchestrator.HasActiveProfile)
+            if (!MixedRealityToolkit.HasActiveProfile)
             {
                 return;
             }
@@ -108,9 +108,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             serializedObject.Update();
             RenderMixedRealityToolkitLogo();
 
-            if (!MixedRealityOrchestrator.IsInitialized)
+            if (!MixedRealityToolkit.IsInitialized)
             {
-                EditorGUILayout.HelpBox("Unable to find Mixed Reality Orchestrator!", MessageType.Error);
+                EditorGUILayout.HelpBox("Unable to find Mixed Reality Toolkit!", MessageType.Error);
                 return;
             }
 
@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (changed)
             {
-                EditorApplication.delayCall += () => MixedRealityOrchestrator.Instance.ResetConfiguration(configurationProfile);
+                EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(configurationProfile);
             }
         }
     }

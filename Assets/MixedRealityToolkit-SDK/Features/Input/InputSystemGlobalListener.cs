@@ -14,13 +14,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     {
         private bool lateInitialize = true;
 
-        protected readonly WaitUntil WaitUntilInputSystemValid = new WaitUntil(() => MixedRealityOrchestrator.InputSystem != null);
+        protected readonly WaitUntil WaitUntilInputSystemValid = new WaitUntil(() => MixedRealityToolkit.InputSystem != null);
 
         protected virtual void OnEnable()
         {
-            if (MixedRealityOrchestrator.IsInitialized && MixedRealityOrchestrator.InputSystem != null && !lateInitialize)
+            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.InputSystem != null && !lateInitialize)
             {
-                MixedRealityOrchestrator.InputSystem.Register(gameObject);
+                MixedRealityToolkit.InputSystem.Register(gameObject);
             }
         }
 
@@ -30,13 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 await WaitUntilInputSystemValid;
                 lateInitialize = false;
-                MixedRealityOrchestrator.InputSystem.Register(gameObject);
+                MixedRealityToolkit.InputSystem.Register(gameObject);
             }
         }
 
         protected virtual void OnDisable()
         {
-            MixedRealityOrchestrator.InputSystem?.Unregister(gameObject);
+            MixedRealityToolkit.InputSystem?.Unregister(gameObject);
         }
     }
 }

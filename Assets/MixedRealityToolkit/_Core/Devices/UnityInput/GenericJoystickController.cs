@@ -94,18 +94,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 // Raise input system Event if it enabled
                 if (interactionMapping.BoolData)
                 {
-                    MixedRealityOrchestrator.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    MixedRealityToolkit.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
                 else
                 {
-                    MixedRealityOrchestrator.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
             else
             {
                 if (interactionMapping.BoolData)
                 {
-                    MixedRealityOrchestrator.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
         }
@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                     if (interactionMapping.Changed)
                     {
                         // Raise input system Event if it enabled
-                        MixedRealityOrchestrator.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
+                        MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
                     }
                     return;
                 default:
@@ -162,18 +162,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 // Raise input system Event if it enabled
                 if (interactionMapping.BoolData)
                 {
-                    MixedRealityOrchestrator.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    MixedRealityToolkit.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
                 else
                 {
-                    MixedRealityOrchestrator.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
             else
             {
                 if (interactionMapping.BoolData)
                 {
-                    MixedRealityOrchestrator.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, singleAxisValue);
+                    MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, singleAxisValue);
                 }
             }
         }
@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
-                MixedRealityOrchestrator.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
+                MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
             }
         }
 
@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
-                MixedRealityOrchestrator.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
+                MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
             }
         }
     }

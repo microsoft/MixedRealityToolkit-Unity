@@ -40,10 +40,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 
             MixedRealityRaycaster.DebugEnabled = true;
 
-            if (MixedRealityOrchestrator.InputSystem != null)
+            if (MixedRealityToolkit.InputSystem != null)
             {
                 var pointers = RequestPointers(new SystemType(typeof(MouseController)), Handedness.Any, true);
-                mouseInputSource = MixedRealityOrchestrator.InputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
+                mouseInputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
             }
 
             Controller = new MouseController(TrackingState.NotApplicable, Handedness.Any, mouseInputSource);
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             }
 
             Controller.SetupConfiguration(typeof(MouseController));
-            MixedRealityOrchestrator.InputSystem?.RaiseSourceDetected(Controller.InputSource, Controller);
+            MixedRealityToolkit.InputSystem?.RaiseSourceDetected(Controller.InputSource, Controller);
         }
 
         /// <inheritdoc />
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         {
             if (Controller != null)
             {
-                MixedRealityOrchestrator.InputSystem?.RaiseSourceLost(Controller.InputSource, Controller);
+                MixedRealityToolkit.InputSystem?.RaiseSourceLost(Controller.InputSource, Controller);
             }
         }
     }

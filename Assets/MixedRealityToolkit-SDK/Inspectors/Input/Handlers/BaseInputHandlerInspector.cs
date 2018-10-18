@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 
         protected virtual void OnEnable()
         {
-            MixedRealityOrchestrator.ConfirmInitialized();
+            MixedRealityToolkit.ConfirmInitialized();
             isFocusRequiredProperty = serializedObject.FindProperty("isFocusRequired");
         }
 

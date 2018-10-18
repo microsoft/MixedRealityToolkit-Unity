@@ -9,8 +9,8 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
-    [CustomEditor(typeof(MixedRealityOrchestrator))]
-    public class MixedRealityOrchestratorInspector : Editor
+    [CustomEditor(typeof(MixedRealityToolkit))]
+    public class MixedRealityToolkitInspector : Editor
     {
         private SerializedProperty activeProfile;
         private int currentPickerWindow = -1;
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             {
                 if (allConfigProfiles.Length > 1)
                 {
-                    EditorUtility.DisplayDialog("Attention!", "You must choose a profile for the Mixed Reality Orchestrator.", "OK");
+                    EditorUtility.DisplayDialog("Attention!", "You must choose a profile for the Mixed Reality Toolkit.", "OK");
                     currentPickerWindow = GUIUtility.GetControlID(FocusType.Passive);
                     EditorGUIUtility.ShowObjectPicker<MixedRealityConfigurationProfile>(null, false, string.Empty, currentPickerWindow);
                 }
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 }
                 else
                 {
-                    if (EditorUtility.DisplayDialog("Attention!", "No profiles were found for the Mixed Reality Orchestrator.\n\n" +
+                    if (EditorUtility.DisplayDialog("Attention!", "No profiles were found for the Mixed Reality Toolkit.\n\n" +
                                                                   "Would you like to create one now?", "OK", "Later"))
                     {
                         ScriptableObject profile = CreateInstance(nameof(MixedRealityConfigurationProfile));
@@ -85,15 +85,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
             if (changed)
             {
-                MixedRealityOrchestrator.Instance.ResetConfiguration((MixedRealityConfigurationProfile)activeProfile.objectReferenceValue);
+                MixedRealityToolkit.Instance.ResetConfiguration((MixedRealityConfigurationProfile)activeProfile.objectReferenceValue);
             }
         }
 
         [MenuItem("Mixed Reality Toolkit/Configure...")]
         public static void CreateMixedRealityOrchestratorObject()
         {
-            Selection.activeObject = MixedRealityOrchestrator.Instance;
-            EditorGUIUtility.PingObject(MixedRealityOrchestrator.Instance);
+            Selection.activeObject = MixedRealityToolkit.Instance;
+            EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
         }
     }
 }

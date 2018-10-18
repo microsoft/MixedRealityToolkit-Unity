@@ -63,13 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         {
             foreach (var controller in ActiveTouches)
             {
-                if (controller.Value == null || MixedRealityOrchestrator.InputSystem == null) { continue; }
+                if (controller.Value == null || MixedRealityToolkit.InputSystem == null) { continue; }
 
-                foreach (var inputSource in MixedRealityOrchestrator.InputSystem.DetectedInputSources)
+                foreach (var inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
                 {
                     if (inputSource.SourceId == controller.Value.InputSource.SourceId)
                     {
-                        MixedRealityOrchestrator.InputSystem.RaiseSourceLost(controller.Value.InputSource, controller.Value);
+                        MixedRealityToolkit.InputSystem.RaiseSourceLost(controller.Value.InputSource, controller.Value);
                     }
                 }
             }
@@ -84,10 +84,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             {
                 IMixedRealityInputSource inputSource = null;
 
-                if (MixedRealityOrchestrator.InputSystem != null)
+                if (MixedRealityToolkit.InputSystem != null)
                 {
                     var pointers = RequestPointers(typeof(UnityTouchController), Handedness.Any, true);
-                    inputSource = MixedRealityOrchestrator.InputSystem.RequestNewGenericInputSource($"Touch {touch.fingerId}", pointers);
+                    inputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource($"Touch {touch.fingerId}", pointers);
                 }
 
                 controller = new UnityTouchController(TrackingState.NotApplicable, Handedness.Any, inputSource);
@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 ActiveTouches.Add(touch.fingerId, controller);
             }
 
-            MixedRealityOrchestrator.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+            MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
             controller.StartTouch();
             UpdateTouchData(touch, ray);
         }
@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             }
 
             controller.EndTouch();
-            MixedRealityOrchestrator.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+            MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
         }
     }
 }

@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
             #region Interaction Constraint Setup
 
-            actionIds = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            actionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Select(action => (int)action.Id)
                 .Prepend(0).ToArray();
 
@@ -110,81 +110,81 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 .Select(axis => new GUIContent(axis.Name))
                 .Prepend(new GUIContent("None")).ToArray();
 
-            actionIds = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            actionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.None)
                 .Select(action => (int)action.Id)
                 .Prepend(0).ToArray();
 
-            actionLabels = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            actionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.None)
                 .Select(inputAction => new GUIContent(inputAction.Description))
                 .Prepend(new GUIContent("None")).ToArray();
 
-            rawActionIds = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            rawActionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.Raw)
                 .Select(action => (int)action.Id)
                 .Prepend(0).ToArray();
 
-            rawActionLabels = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            rawActionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                  .Where(inputAction => inputAction.AxisConstraint == AxisType.Raw)
                  .Select(inputAction => new GUIContent(inputAction.Description))
                  .Prepend(new GUIContent("None")).ToArray();
 
-            digitalActionIds = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            digitalActionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.Digital)
                 .Select(action => (int)action.Id)
                 .Prepend(0).ToArray();
 
-            digitalActionLabels = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            digitalActionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.Digital)
                 .Select(inputAction => new GUIContent(inputAction.Description))
                 .Prepend(new GUIContent("None")).ToArray();
 
-            singleAxisActionIds = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            singleAxisActionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.SingleAxis)
                 .Select(action => (int)action.Id)
                 .Prepend(0).ToArray();
 
-            singleAxisActionLabels = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            singleAxisActionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.SingleAxis)
                 .Select(inputAction => new GUIContent(inputAction.Description))
                 .Prepend(new GUIContent("None")).ToArray();
 
-            dualAxisActionIds = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            dualAxisActionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.DualAxis)
                 .Select(action => (int)action.Id).Prepend(0).ToArray();
 
-            dualAxisActionLabels = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            dualAxisActionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.DualAxis)
                 .Select(inputAction => new GUIContent(inputAction.Description))
                 .Prepend(new GUIContent("None")).ToArray();
 
-            threeDofPositionActionIds = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            threeDofPositionActionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.ThreeDofPosition)
                 .Select(action => (int)action.Id)
                 .Prepend(0).ToArray();
 
-            threeDofPositionActionLabels = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            threeDofPositionActionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.ThreeDofPosition)
                 .Select(inputAction => new GUIContent(inputAction.Description))
                 .Prepend(new GUIContent("None")).ToArray();
 
-            threeDofRotationActionIds = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            threeDofRotationActionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.ThreeDofRotation)
                 .Select(action => (int)action.Id)
                 .Prepend(0).ToArray();
 
-            threeDofRotationActionLabels = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            threeDofRotationActionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.ThreeDofRotation)
                 .Select(inputAction => new GUIContent(inputAction.Description))
                 .Prepend(new GUIContent("None")).ToArray();
 
-            sixDofActionIds = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            sixDofActionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.SixDof)
                 .Select(action => (int)action.Id)
                 .Prepend(0).ToArray();
 
-            sixDofActionLabels = MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            sixDofActionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == AxisType.SixDof)
                 .Select(inputAction => new GUIContent(inputAction.Description))
                 .Prepend(new GUIContent("None")).ToArray();
@@ -454,7 +454,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
                     if (EditorGUI.EndChangeCheck())
                     {
-                        var inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
+                        var inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                         actionDescription.stringValue = inputAction.Description;
                         actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
                     }
@@ -694,7 +694,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                     {
                         MixedRealityInputAction inputAction = actionId.intValue == 0 ?
                             MixedRealityInputAction.None :
-                            MixedRealityOrchestrator.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
+                            MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                         actionId.intValue = (int)inputAction.Id;
                         actionDescription.stringValue = inputAction.Description;
                         actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;

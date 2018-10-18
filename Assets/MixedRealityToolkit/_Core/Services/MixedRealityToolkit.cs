@@ -17,20 +17,20 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Services
 {
     /// <summary>
-    /// The Mixed Reality Orchestrator is responsible for coordinating the operation of the Mixed Reality Toolkit.
+    /// This class is responsible for coordinating the operation of the Mixed Reality Toolkit. It is the only Singleton in the entire project.
     /// It provides a service registry for all active services that are used within a project as well as providing the active configuration profile for the project.
     /// The Profile can be swapped out at any time to meet the needs of your project.
     /// </summary>
-    public class MixedRealityOrchestrator : MonoBehaviour
+    public class MixedRealityToolkit : MonoBehaviour
     {
-        #region Mixed Reality Orchestrator Profile configuration
+        #region Mixed Reality Toolkit Profile configuration
 
         private const string MixedRealityPlayspaceName = "MixedRealityPlayspace";
 
         private bool isInitializing = false;
 
         /// <summary>
-        /// Checks if there is a valid instance of the MixedRealityOrchestrator, then checks if there is there a valid Active Profile.
+        /// Checks if there is a valid instance of the MixedRealityToolkit, then checks if there is there a valid Active Profile.
         /// </summary>
         public static bool HasActiveProfile
         {
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <summary>
-        /// The active profile of the Mixed Reality Orchestrator which controls which components are active and their initial configuration.
+        /// The active profile of the Mixed Reality Toolkit which controls which components are active and their initial configuration.
         /// *Note configuration is used on project initialization or replacement, changes to properties while it is running has no effect.
         /// </summary>
         [SerializeField]
@@ -103,12 +103,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             Initialize();
         }
 
-        #endregion Mixed Reality Orchestrator Profile configuration
+        #endregion Mixed Reality Toolkit Profile configuration
 
         #region Mixed Reality runtime component registry
 
         /// <summary>
-        /// Local component registry for the Mixed Reality Orchestrator, to allow runtime use of the <see cref="IMixedRealityComponent"/>.
+        /// Local component registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="IMixedRealityComponent"/>.
         /// </summary>
         public List<Tuple<Type, IMixedRealityComponent>> MixedRealityComponents { get; } = new List<Tuple<Type, IMixedRealityComponent>>();
 
@@ -118,17 +118,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         /// <summary>
         /// Function called when the instance is assigned.
-        /// Once all services are registered and properties updated, the Mixed Reality Orchestrator will initialize all active services.
+        /// Once all services are registered and properties updated, the Mixed Reality Toolkit will initialize all active services.
         /// This ensures all services can reference each other once started.
         /// </summary>
         private void Initialize()
         {
             isInitializing = true;
 
-            //If the Mixed Reality Orchestrator is not configured, stop.
+            //If the Mixed Reality Toolkit is not configured, stop.
             if (ActiveProfile == null)
             {
-                Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Orchestrator");
+                Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit");
                 return;
             }
 
@@ -267,14 +267,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         #region MonoBehaviour Implementation
 
-        private static MixedRealityOrchestrator instance;
+        private static MixedRealityToolkit instance;
 
         /// <summary>
         /// Returns the Singleton instance of the classes type.
         /// If no instance is found, then we search for an instance in the scene.
         /// If more than one instance is found, we throw an error and no instance is returned.
         /// </summary>
-        public static MixedRealityOrchestrator Instance
+        public static MixedRealityToolkit Instance
         {
             get
             {
@@ -288,19 +288,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     return null;
                 }
 
-                var objects = FindObjectsOfType<MixedRealityOrchestrator>();
+                var objects = FindObjectsOfType<MixedRealityToolkit>();
                 searchForInstance = false;
 
                 switch (objects.Length)
                 {
                     case 0:
-                        instance = new GameObject(nameof(MixedRealityOrchestrator)).AddComponent<MixedRealityOrchestrator>();
+                        instance = new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>();
                         break;
                     case 1:
                         instance = objects[0];
                         break;
                     default:
-                        Debug.LogError($"Expected exactly 1 {nameof(MixedRealityOrchestrator)} but found {objects.Length}.");
+                        Debug.LogError($"Expected exactly 1 {nameof(MixedRealityToolkit)} but found {objects.Length}.");
                         return null;
                 }
 
@@ -317,11 +317,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private static bool searchForInstance = true;
 
         /// <summary>
-        /// Expose an assertion whether the MixedRealityOrchestrator class is initialized.
+        /// Expose an assertion whether the MixedRealityToolkit class is initialized.
         /// </summary>
         public static void AssertIsInitialized()
         {
-            Debug.Assert(IsInitialized, "The MixedRealityOrchestrator has not been initialized.");
+            Debug.Assert(IsInitialized, "The MixedRealityToolkit has not been initialized.");
         }
 
         /// <summary>
@@ -330,19 +330,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         public static bool IsInitialized => instance != null;
 
         /// <summary>
-        /// Static function to determine if the MixedRealityOrchestrator class has been initialized or not.
+        /// Static function to determine if the MixedRealityToolkit class has been initialized or not.
         /// </summary>
         /// <returns></returns>
         public static bool ConfirmInitialized()
         {
             // ReSharper disable once UnusedVariable
             // Assigning the Instance to access is used Implicitly.
-            MixedRealityOrchestrator access = Instance;
+            MixedRealityToolkit access = Instance;
             return IsInitialized;
         }
 
         /// <summary>
-        /// Lock property for the Mixed Reality Orchestrator to prevent reinitialization
+        /// Lock property for the Mixed Reality Toolkit to prevent reinitialization
         /// </summary>
         private readonly object initializedLock = new object();
 
@@ -407,7 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                         // something else. We print a warning to call out the fact that we're 
                         // co-opting this object for use with teleporting and such, since that
                         // might cause conflicts with the parent's intended purpose.
-                        Debug.LogWarning($"The Mixed Reality Orchestrator expected the camera\'s parent to be named {MixedRealityPlayspaceName}. The existing parent will be renamed and used instead.");
+                        Debug.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {MixedRealityPlayspaceName}. The existing parent will be renamed and used instead.");
                         // If we rename it, we make it clearer that why it's being teleported around at runtime.
                         CameraCache.Main.transform.parent.name = MixedRealityPlayspaceName;
                     }
@@ -443,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     Destroy(this);
                 }
 
-                Debug.LogWarning("Trying to instantiate a second instance of the Mixed Reality Orchestrator. Additional Instance was destroyed");
+                Debug.LogWarning("Trying to instantiate a second instance of the Mixed Reality Toolkit. Additional Instance was destroyed");
             }
             else if (!IsInitialized)
             {
@@ -485,7 +485,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         #region Individual Service Management
 
         /// <summary>
-        /// Add a new service to the Mixed Reality Orchestrator active service registry.
+        /// Add a new service to the Mixed Reality Toolkit active service registry.
         /// </summary>
         /// <param name="type">The interface type for the system to be managed.  E.G. InputSystem, BoundarySystem</param>
         /// <param name="service">The Instance of the service class to register</param>
@@ -493,7 +493,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (ActiveProfile == null)
             {
-                Debug.LogError($"Unable to add a new {type.Name} Service as the Mixed Reality Orchestrator has to Active Profile");
+                Debug.LogError($"Unable to add a new {type.Name} Service as the Mixed Reality Toolkit has to Active Profile");
             }
 
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
@@ -529,7 +529,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <summary>
-        /// Generic function used to retrieve a service from the Mixed Reality Orchestrator active service registry
+        /// Generic function used to retrieve a service from the Mixed Reality Toolkit active service registry
         /// </summary>
         /// <typeparam name="T">The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem.
         /// *Note type should be the Interface of the system to be retrieved and not the class itself</typeparam>
@@ -540,20 +540,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <summary>
-        /// Retrieve a service from the Mixed Reality Orchestrator active service registry
+        /// Retrieve a service from the Mixed Reality Toolkit active service registry
         /// </summary>
         /// <param name="type">The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem</param>
-        /// <returns>The Mixed Reality Orchestrator of the specified type</returns>
+        /// <returns>The Mixed Reality Toolkit of the specified type</returns>
         public IMixedRealityService GetService(Type type)
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to get {nameof(type)} Service as the Mixed Reality Orchestrator has no Active Profile.");
+                throw new ArgumentNullException($"Unable to get {nameof(type)} Service as the Mixed Reality Toolkit has no Active Profile.");
             }
 
             if (!IsInitialized)
             {
-                throw new ArgumentNullException($"Unable to get {nameof(type)} Service as the Mixed Reality Orchestrator has not been initialized!");
+                throw new ArgumentNullException($"Unable to get {nameof(type)} Service as the Mixed Reality Toolkit has not been initialized!");
             }
 
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
@@ -577,16 +577,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <summary>
-        /// Retrieve a service from the Mixed Reality Orchestrator active service registry
+        /// Retrieve a service from the Mixed Reality Toolkit active service registry
         /// </summary>
         /// <param name="type">The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem</param>
         /// <param name="serviceName">Name of the specific service</param>
-        /// <returns>The Mixed Reality Orchestrator of the specified type</returns>
+        /// <returns>The Mixed Reality Toolkit of the specified type</returns>
         public IMixedRealityService GetService(Type type, string serviceName)
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to get {serviceName} Service as the Mixed Reality Orchestrator has no Active Profile");
+                throw new ArgumentNullException($"Unable to get {serviceName} Service as the Mixed Reality Toolkit has no Active Profile");
             }
 
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
@@ -611,14 +611,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <summary>
-        /// Remove all services from the Mixed Reality Orchestrator active service registry for a given type
+        /// Remove all services from the Mixed Reality Toolkit active service registry for a given type
         /// </summary>
         /// <param name="type">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
         public void UnregisterService(Type type)
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to remove {nameof(type)} Service as the Mixed Reality Orchestrator has no Active Profile");
+                throw new ArgumentNullException($"Unable to remove {nameof(type)} Service as the Mixed Reality Toolkit has no Active Profile");
             }
 
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
@@ -639,7 +639,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <summary>
-        /// Remove services from the Mixed Reality Orchestrator active service registry for a given type and name
+        /// Remove services from the Mixed Reality Toolkit active service registry for a given type and name
         /// Name is only supported for Mixed Reality runtime components
         /// </summary>
         /// <param name="type">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
@@ -648,7 +648,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to remove {nameof(type)} service as the Mixed Reality Orchestrator has no Active Profile");
+                throw new ArgumentNullException($"Unable to remove {nameof(type)} service as the Mixed Reality Toolkit has no Active Profile");
             }
 
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
@@ -670,7 +670,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <summary>
-        /// Disable all services in the Mixed Reality Orchestrator active service registry for a given type
+        /// Disable all services in the Mixed Reality Toolkit active service registry for a given type
         /// </summary>
         /// <param name="type">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
         public void DisableService(Type type)
@@ -691,7 +691,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <summary>
-        /// Disable a specific service from the Mixed Reality Orchestrator active service registry
+        /// Disable a specific service from the Mixed Reality Toolkit active service registry
         /// </summary>
         /// <param name="type">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
         /// <param name="serviceName">Name of the specific service</param>
@@ -714,7 +714,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <summary>
-        /// Enable all services in the Mixed Reality Orchestrator active service registry for a given type
+        /// Enable all services in the Mixed Reality Toolkit active service registry for a given type
         /// </summary>
         /// <param name="type">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
         public void EnableService(Type type)
@@ -735,7 +735,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <summary>
-        /// Enable a specific service from the Mixed Reality Orchestrator active service registry
+        /// Enable a specific service from the Mixed Reality Toolkit active service registry
         /// </summary>
         /// <param name="type">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
         /// <param name="serviceName">Name of the specific service</param>
@@ -762,7 +762,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         #region Multiple Service Management
 
         /// <summary>
-        /// Retrieve all services from the Mixed Reality Orchestrator active service registry for a given type and an optional name
+        /// Retrieve all services from the Mixed Reality Toolkit active service registry for a given type and an optional name
         /// </summary>
         /// <param name="type">The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem</param>
         /// <returns>An array of services that meet the search criteria</returns>
@@ -774,7 +774,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <summary>
-        /// Retrieve all services from the Mixed Reality Orchestrator active service registry for a given type and an optional name
+        /// Retrieve all services from the Mixed Reality Toolkit active service registry for a given type and an optional name
         /// </summary>
         /// <param name="type">The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem</param>
         /// <param name="serviceName">Name of the specific service</param>
@@ -783,7 +783,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to get {nameof(type)} Service as the Mixed Reality Orchestrator has no Active Profile");
+                throw new ArgumentNullException($"Unable to get {nameof(type)} Service as the Mixed Reality Toolkit has no Active Profile");
             }
 
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
@@ -818,7 +818,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         private void InitializeAllServices()
         {
-            //If the Mixed Reality Orchestrator is not configured, stop.
+            //If the Mixed Reality Toolkit is not configured, stop.
             if (activeProfile == null) { return; }
 
             //Initialize all services
@@ -836,7 +836,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         private void ResetAllServices()
         {
-            //If the Mixed Reality Orchestrator is not configured, stop.
+            //If the Mixed Reality Toolkit is not configured, stop.
             if (activeProfile == null) { return; }
 
             // Reset all active services in the registry
@@ -854,7 +854,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         private void EnableAllServices()
         {
-            //If the Mixed Reality Orchestrator is not configured, stop.
+            //If the Mixed Reality Toolkit is not configured, stop.
             if (activeProfile == null) { return; }
 
             // Enable all active services in the registry
@@ -872,7 +872,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         private void UpdateAllServices()
         {
-            //If the Mixed Reality Orchestrator is not configured, stop.
+            //If the Mixed Reality Toolkit is not configured, stop.
             if (activeProfile == null) { return; }
 
             // Update service registry
@@ -890,7 +890,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         private void DisableAllServices()
         {
-            //If the Mixed Reality Orchestrator is not configured, stop.
+            //If the Mixed Reality Toolkit is not configured, stop.
             if (activeProfile == null) { return; }
 
             // Disable all active services in the registry
@@ -908,7 +908,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         private void DestroyAllServices()
         {
-            //If the Mixed Reality Orchestrator is not configured, stop.
+            //If the Mixed Reality Toolkit is not configured, stop.
             if (activeProfile == null) { return; }
 
             // Destroy all active services in the registry
@@ -933,7 +933,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         #region Service Utilities
 
         /// <summary>
-        /// Generic function used to interrogate the Mixed Reality Orchestrator active service registry for the existence of a service
+        /// Generic function used to interrogate the Mixed Reality Toolkit active service registry for the existence of a service
         /// </summary>
         /// <typeparam name="T">The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem.
         /// *Note type should be the Interface of the system to be retrieved and not the class itself</typeparam>
@@ -1053,28 +1053,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private static IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
-        /// The current Input System registered with the Mixed Reality Orchestrator.
+        /// The current Input System registered with the Mixed Reality Toolkit.
         /// </summary>
         public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = Instance.GetService<IMixedRealityInputSystem>());
 
         private static IMixedRealityBoundarySystem boundarySystem = null;
 
         /// <summary>
-        /// The current Boundary System registered with the Mixed Reality Orchestrator.
+        /// The current Boundary System registered with the Mixed Reality Toolkit.
         /// </summary>
         public static IMixedRealityBoundarySystem BoundarySystem => boundarySystem ?? (boundarySystem = Instance.GetService<IMixedRealityBoundarySystem>());
 
         private static IMixedRealityTeleportSystem teleportSystem = null;
 
         /// <summary>
-        /// The current Teleport System registered with the Mixed Reality Orchestrator.
+        /// The current Teleport System registered with the Mixed Reality Toolkit.
         /// </summary>
         public static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = Instance.GetService<IMixedRealityTeleportSystem>());
 
         private static IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
 
         /// <summary>
-        /// The current Diagnostics System registered with the Mixed Reality Orchestrator.
+        /// The current Diagnostics System registered with the Mixed Reality Toolkit.
         /// </summary>
         public static IMixedRealityDiagnosticsSystem DiagnosticsSystem => diagnosticsSystem ?? (diagnosticsSystem = Instance.GetService<IMixedRealityDiagnosticsSystem>());
 

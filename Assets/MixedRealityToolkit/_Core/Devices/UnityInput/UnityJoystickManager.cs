@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             {
                 if (genericOpenVRController.Value != null)
                 {
-                    MixedRealityOrchestrator.InputSystem?.RaiseSourceLost(genericOpenVRController.Value.InputSource, genericOpenVRController.Value);
+                    MixedRealityToolkit.InputSystem?.RaiseSourceLost(genericOpenVRController.Value.InputSource, genericOpenVRController.Value);
                 }
             }
 
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 
                         if (controller != null)
                         {
-                            MixedRealityOrchestrator.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                            MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
                         }
 
                         ActiveControllers.Remove(lastDeviceList[i]);
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 
                     if (controller != null)
                     {
-                        MixedRealityOrchestrator.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                        MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                     }
                 }
             }
@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                     break;
             }
 
-            var inputSource = MixedRealityOrchestrator.InputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller");
+            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller");
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
 
             if (detectedController == null)

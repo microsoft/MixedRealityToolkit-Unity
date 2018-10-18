@@ -127,9 +127,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.OnEnable();
 
-            if (MixedRealityOrchestrator.IsInitialized && MixedRealityOrchestrator.TeleportSystem != null && !lateRegisterTeleport)
+            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.TeleportSystem != null && !lateRegisterTeleport)
             {
-                MixedRealityOrchestrator.TeleportSystem.Register(gameObject);
+                MixedRealityToolkit.TeleportSystem.Register(gameObject);
             }
         }
 
@@ -139,9 +139,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (lateRegisterTeleport)
             {
-                await new WaitUntil(() => MixedRealityOrchestrator.TeleportSystem != null);
+                await new WaitUntil(() => MixedRealityToolkit.TeleportSystem != null);
                 lateRegisterTeleport = false;
-                MixedRealityOrchestrator.TeleportSystem.Register(gameObject);
+                MixedRealityToolkit.TeleportSystem.Register(gameObject);
             }
 
             await WaitUntilInputSystemValid;
@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected override void OnDisable()
         {
             base.OnDisable();
-            MixedRealityOrchestrator.TeleportSystem?.Unregister(gameObject);
+            MixedRealityToolkit.TeleportSystem?.Unregister(gameObject);
 
             IsHoldPressed = false;
             IsSelectPressed = false;
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             {
                 if (pointerId == 0)
                 {
-                    pointerId = MixedRealityOrchestrator.InputSystem.FocusProvider.GenerateNewPointerId();
+                    pointerId = MixedRealityToolkit.InputSystem.FocusProvider.GenerateNewPointerId();
                 }
 
                 return pointerId;
@@ -245,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public float PointerExtent
         {
-            get { return overrideGlobalPointerExtent ? MixedRealityOrchestrator.InputSystem.FocusProvider.GlobalPointingExtent : pointerExtent; }
+            get { return overrideGlobalPointerExtent ? MixedRealityToolkit.InputSystem.FocusProvider.GlobalPointingExtent : pointerExtent; }
             set { pointerExtent = value; }
         }
 
@@ -391,8 +391,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 if (eventData.MixedRealityInputAction == pointerAction)
                 {
                     IsSelectPressed = false;
-                    MixedRealityOrchestrator.InputSystem.RaisePointerClicked(this, Handedness, pointerAction, 0);
-                    MixedRealityOrchestrator.InputSystem.RaisePointerUp(this, Handedness, pointerAction);
+                    MixedRealityToolkit.InputSystem.RaisePointerClicked(this, Handedness, pointerAction, 0);
+                    MixedRealityToolkit.InputSystem.RaisePointerUp(this, Handedness, pointerAction);
                 }
             }
         }
@@ -413,7 +413,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsSelectPressed = true;
                     HasSelectPressedOnce = true;
-                    MixedRealityOrchestrator.InputSystem.RaisePointerDown(this, Handedness, pointerAction);
+                    MixedRealityToolkit.InputSystem.RaisePointerDown(this, Handedness, pointerAction);
                 }
             }
         }

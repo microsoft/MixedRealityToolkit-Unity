@@ -24,10 +24,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         {
             eventData = new DiagnosticsEventData(EventSystem.current);
 
-            Visible = MixedRealityOrchestrator.Instance.ActiveProfile.DiagnosticsSystemProfile.Visible;
-            ShowCpu = MixedRealityOrchestrator.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowCpu;
-            ShowFps = MixedRealityOrchestrator.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowFps;
-            ShowMemory = MixedRealityOrchestrator.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowMemory;
+            Visible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.Visible;
+            ShowCpu = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowCpu;
+            ShowFps = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowFps;
+            ShowMemory = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowMemory;
 
             RaiseDiagnosticsChanged();
         }

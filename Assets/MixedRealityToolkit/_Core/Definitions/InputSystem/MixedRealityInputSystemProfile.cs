@@ -59,12 +59,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// <summary>
         /// Current Registered Speech System.
         /// </summary>
-        public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityOrchestrator.Instance.GetService<IMixedRealitySpeechSystem>());
+        public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySpeechSystem>());
 
         /// <summary>
         /// Is the speech Commands Enabled?
         /// </summary>
-        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled;
+        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled;
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
@@ -84,12 +84,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// <summary>
         /// Current Registered Dictation System.
         /// </summary>
-        public IMixedRealityDictationSystem DictationSystem => dictationSystem ?? (dictationSystem = MixedRealityOrchestrator.Instance.GetService<IMixedRealityDictationSystem>());
+        public IMixedRealityDictationSystem DictationSystem => dictationSystem ?? (dictationSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityDictationSystem>());
 
         /// <summary>
         /// Is Dictation Enabled?
         /// </summary>
-        public bool IsDictationEnabled => MixedRealityOrchestrator.Instance.ActiveProfile.IsInputSystemEnabled && DictationSystem != null;
+        public bool IsDictationEnabled => MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && DictationSystem != null;
 
         [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
