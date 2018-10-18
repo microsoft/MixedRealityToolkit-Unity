@@ -1,7 +1,7 @@
 # Contributing
 
-HoloToolkit welcomes contributions from the community. 
-If you have any questions, please reach out on the [HoloLens forums](https://forums.hololens.com/).
+HoloToolkit welcomes contributions from the community.
+If you have any questions, please reach out on the [HoloLens forums](https://forums.hololens.com/) or the [HoloDevelopers slack](https://holodevelopers.slack.com/). You can easily be granted access to the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
 
 # Process
 
@@ -16,7 +16,7 @@ If you have any questions, please reach out on the [HoloLens forums](https://for
 
 For things like fixing typos and small bug fixes, you can skip this step.
 
-If your change is more than a simple fix, please don't just create a big pull request. 
+If your change is more than a simple fix, please don't just create a big pull request.
 Instead, start by [opening an issue](https://github.com/Microsoft/HoloToolkit-Unity/issues) describing the problem you want to solve and how you plan to approach the problem. 
 This will let us have a brief discussion about the problem and, hopefully, identify some potential pitfalls before too much time is spent.
 
@@ -33,7 +33,7 @@ To identify the appropriate development branch:
 3. If the **Status** is not **Accepting changes**, select the next release
 4. Note the **Development branch** for Pull Request submission.
 
-Any pull request made directly to master will be retargetted to a development branches by a project maintainer.
+Any pull request made directly to master will be retargeted to a development branches by a project maintainer.
 
 NOTE: A project maintainer may retarget your PR to a different development branch based on the release priorities.
 
