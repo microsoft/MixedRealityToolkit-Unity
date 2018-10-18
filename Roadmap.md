@@ -30,7 +30,7 @@ As needed, patch and hot fix releases will be released between the scheduled cad
 
 Starting with the May 2018 release, the MRTK version numbers are adopting [Semantic versioning](https://semver.org/) rather than aligning with a specific Unity release.
 
-The MRTK will use the first two version fields (2017.4) to indicate the recommended version is the Unity 2017 LTS version. The third field will indicate the MRTK revision number (ex: 2017.4.2). The fourth will always be zero (2017.4.2.0).
+The MRTK will use the first version field to represent the product, and should coincide with the intended Unity release (2017, 2018 etc.) Product changes may or may not contain breaking changes, but should be evaluated as high risk to update across. The second number will represent a release, which may add new features or contain breaking changes from the prior release; this should be considered a medium risk update. The third number will be revision, which should contain only bug fixes or minor changes for a release and be safe to upgrade to. The fourth will always be zero (2017.4.2.0). Be sure to always check the release notes for what has changed.
 
 ### Development branches
 
