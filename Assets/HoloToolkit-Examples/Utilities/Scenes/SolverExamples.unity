@@ -1700,6 +1700,11 @@ Prefab:
       propertyPath: hideThisObject
       value: 
       objectReference: {fileID: 37845493}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: updateSolverTargetToClickSource
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 687094229f7a92743bd68e3e190259ae, type: 2}
   m_IsPrefabParent: 0
