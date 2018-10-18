@@ -35,6 +35,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// </summary>
         private readonly Dictionary<uint, IMixedRealityController> activeControllers = new Dictionary<uint, IMixedRealityController>();
 
+        /// <summary>
+        /// Cache of the states captured from the Unity InteractionManager for UWP
+        /// </summary>
+        InteractionSourceState[] interactionmanagerStates;
+
+        /// <summary>
+        /// The current source state reading for the Unity InteractionManager for UWP
+        /// </summary>
+        public InteractionSourceState[] LastInteractionManagerStateReading { get; protected set; }
+
         /// <inheritdoc/>
         public override IMixedRealityController[] GetActiveControllers()
         {
@@ -243,21 +253,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             }
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
-            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
-            InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
-            InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
 
-            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
+            interactionmanagerStates = InteractionManager.GetCurrentReading();
 
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
-            for (var i = 0; i < states.Length; i++)
+            for (var i = 0; i < interactionmanagerStates?.Length; i++)
             {
-                var controller = GetController(states[i].source);
+                var controller = GetController(interactionmanagerStates[i].source);
 
                 if (controller != null)
                 {
-                    controller.UpdateController(states[i]);
+                    controller.UpdateController(interactionmanagerStates[i]);
                     MixedRealityManager.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                 }
             }
@@ -268,6 +275,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             {
                 GestureRecognizerEnabled = true;
             }
+        }
+
+        /// <inheritdoc/>
+        public override void Update()
+        {
+            base.Update();
+
+            interactionmanagerStates = InteractionManager.GetCurrentReading();
+
+            for (var i = 0; i < interactionmanagerStates?.Length; i++)
+            {
+                var controller = GetController(interactionmanagerStates[i].source);
+
+                if (controller != null)
+                {
+                    controller.UpdateController(interactionmanagerStates[i]);
+                }
+            }
+
+            LastInteractionManagerStateReading = interactionmanagerStates;
         }
 
         private void RegisterGestureEvents()
@@ -333,9 +360,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             navigationGestureRecognizer?.Dispose();
 
             InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
-            InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
-            InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
-            InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
 
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
@@ -436,33 +460,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             }
 
             controller?.UpdateController(args.state);
-        }
-
-        /// <summary>
-        /// SDK Interaction Source Updated Event handler
-        /// </summary>
-        /// <param name="args">SDK source updated event arguments</param>
-        private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
-        {
-            GetController(args.state.source)?.UpdateController(args.state);
-        }
-
-        /// <summary>
-        /// SDK Interaction Source Pressed Event handler
-        /// </summary>
-        /// <param name="args">SDK source pressed event arguments</param>
-        private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs args)
-        {
-            GetController(args.state.source)?.UpdateController(args.state);
-        }
-
-        /// <summary>
-        /// SDK Interaction Source Released Event handler
-        /// </summary>
-        /// <param name="args">SDK source released event arguments</param>
-        private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs args)
-        {
-            GetController(args.state.source)?.UpdateController(args.state);
         }
 
         /// <summary>
