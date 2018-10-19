@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             currentPointer = eventData.Pointer;
 
             FocusDetails focusDetails;
-            Vector3 initialDraggingPosition = MixedRealityManager.InputSystem.FocusProvider.TryGetFocusDetails(eventData.Pointer, out focusDetails)
+            Vector3 initialDraggingPosition = MixedRealityManager.InputSystem.FocusProvider.TryGetFocusDetails(currentPointer, out focusDetails)
                     ? focusDetails.Point
                     : hostTransform.position;
 
