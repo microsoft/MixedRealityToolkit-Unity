@@ -229,13 +229,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         }
 
         [SerializeField]
-        [Tooltip("All the additional non-required systems, features, and managers registered with the Mixed Reality Toolkit.")]
-        private MixedRealityRegisteredComponentsProfile registeredComponentsProfile = null;
+        [Tooltip("All the additional non-required services registered with the Mixed Reality Toolkit.")]
+        private MixedRealityRegisteredServiceProvidersProfile registeredServiceProvidersProfile = null;
 
         /// <summary>
         /// All the additional non-required systems, features, and managers registered with the Mixed Reality Toolkit.
         /// </summary>
-        public MixedRealityRegisteredComponentsProfile RegisteredComponentsProfile => registeredComponentsProfile;
+        public MixedRealityRegisteredServiceProvidersProfile RegisteredServiceProvidersProfile => registeredServiceProvidersProfile;
 
         #endregion Mixed Reality Toolkit configurable properties
 

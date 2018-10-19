@@ -10,10 +10,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 {
     /// <summary>
-    /// Defines a system, feature, or manager to be registered with the <see cref="IMixedRealityService"/> on startup.
+    /// Defines a system, feature, or manager to be registered with as a <see cref="IMixedRealityServiceProvider"/> on startup.
     /// </summary>
     [Serializable]
-    public struct MixedRealityComponentConfiguration
+    public struct MixedRealityServiceConfiguration
     {
         /// <summary>
         /// Constructor.
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// <param name="priority">The priority this system, feature, or manager will be initialized in.</param>
         /// <param name="runtimePlatform">The runtime platform(s) to run this system, feature, or manager on.</param>
         /// <param name="configurationProfile">The configuration profile for the system, feature, or manager.</param>
-        public MixedRealityComponentConfiguration(SystemType componentType, string componentName, uint priority, SupportedPlatforms runtimePlatform, ScriptableObject configurationProfile)
+        public MixedRealityServiceConfiguration(SystemType componentType, string componentName, uint priority, SupportedPlatforms runtimePlatform, ScriptableObject configurationProfile)
         {
             this.componentType = componentType;
             this.componentName = componentName;
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         }
 
         [SerializeField]
-        [Implements(typeof(IMixedRealityComponent), TypeGrouping.ByNamespaceFlat)]
+        [Implements(typeof(IMixedRealityServiceProvider), TypeGrouping.ByNamespaceFlat)]
         private SystemType componentType;
 
         /// <summary>

@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 {
-    public class MouseDeviceManager : BaseDeviceManager, IMixedRealityComponent
+    public class MouseDeviceManager : BaseDeviceManager, IMixedRealityServiceProvider
     {
         public MouseDeviceManager(string name, uint priority) : base(name, priority) { }
 

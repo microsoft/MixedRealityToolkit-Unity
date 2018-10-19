@@ -19,7 +19,7 @@ using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 {
-    public class WindowsMixedRealityDeviceManager : BaseDeviceManager, IMixedRealityComponent
+    public class WindowsMixedRealityDeviceManager : BaseDeviceManager, IMixedRealityServiceProvider
     {
         /// <summary>
         /// Constructor.

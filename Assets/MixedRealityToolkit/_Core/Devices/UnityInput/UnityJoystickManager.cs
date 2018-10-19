@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
     /// <summary>
     /// Manages joysticks using unity input system.
     /// </summary>
-    public class UnityJoystickManager : BaseDeviceManager, IMixedRealityComponent
+    public class UnityJoystickManager : BaseDeviceManager, IMixedRealityServiceProvider
     {
         /// <summary>
         /// Constructor.

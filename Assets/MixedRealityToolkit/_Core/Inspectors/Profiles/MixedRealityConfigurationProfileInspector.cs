@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty diagnosticsSystemProfile;
 
         // Additional registered components profile
-        private SerializedProperty registeredComponentsProfile;
+        private SerializedProperty registeredServiceProvidersProfile;
 
         private MixedRealityConfigurationProfile configurationProfile;
 
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             diagnosticsSystemProfile = serializedObject.FindProperty("diagnosticsSystemProfile");
 
             // Additional registered components configuration
-            registeredComponentsProfile = serializedObject.FindProperty("registeredComponentsProfile");
+            registeredServiceProvidersProfile = serializedObject.FindProperty("registeredServiceProvidersProfile");
         }
 
         public override void OnInspectorGUI()
@@ -203,8 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             changed |= RenderProfile(diagnosticsSystemProfile);
 
             GUILayout.Space(12f);
-            EditorGUILayout.LabelField("Additional Components", EditorStyles.boldLabel);
-            changed |= RenderProfile(registeredComponentsProfile);
+            EditorGUILayout.LabelField("Additional Service Providers", EditorStyles.boldLabel);
+            changed |= RenderProfile(registeredServiceProvidersProfile);
 
             if (!changed)
             {

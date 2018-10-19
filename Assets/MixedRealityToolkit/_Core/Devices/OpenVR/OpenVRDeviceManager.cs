@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
     /// </summary>
-    public class OpenVRDeviceManager : UnityJoystickManager, IMixedRealityComponent
+    public class OpenVRDeviceManager : UnityJoystickManager, IMixedRealityServiceProvider
     {
         /// <summary>
         /// Constructor.
