@@ -8,7 +8,6 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
 using NUnit.Framework;
 using System;
-using System.Linq;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;

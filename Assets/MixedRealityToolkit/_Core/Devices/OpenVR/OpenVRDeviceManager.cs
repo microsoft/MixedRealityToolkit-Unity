@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using UnityEngine;
@@ -14,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
     /// </summary>
-    public class OpenVRDeviceManager : UnityJoystickManager, IMixedRealityServiceProvider
+    public class OpenVRDeviceManager : UnityJoystickManager
     {
         /// <summary>
         /// Constructor.
