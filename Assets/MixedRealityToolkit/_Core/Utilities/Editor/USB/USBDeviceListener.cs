@@ -27,7 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Usb
 
         private static void NotifyUsbDevicesChanged(UsbDevice[] devices)
         {
-            UsbDevicesChanged?.Invoke(devices);
+            if (UsbDevicesChanged != null)
+            {
+                UsbDevicesChanged.Invoke(devices);
+            }
 
             usbDevicesList.Clear();
 
