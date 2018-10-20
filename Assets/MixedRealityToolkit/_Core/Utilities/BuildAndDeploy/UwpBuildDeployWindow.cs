@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
     /// Build window - supports SLN creation, APPX from SLN, Deploy on device, and misc helper utilities associated with the build/deploy/test iteration loop
     /// Requires the device to be set in developer mode and to have secure connections disabled (in the security tab in the device portal)
     /// </summary>
-    public class BuildDeployWindow : EditorWindow
+    public class UwpBuildDeployWindow : EditorWindow
     {
         #region Internal Types
 
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
         private readonly GUIContent buildDirectoryLabel = new GUIContent("Build Directory", "It's recommended to use 'UWP'");
 
-        private readonly GUIContent useCSharpProjectsLabel = new GUIContent("Unity C# Projects", "Generate C# Project References for debugging");
+        private readonly GUIContent useCSharpProjectsLabel = new GUIContent("Generate C# Debug", "Generate C# Project References for debugging.\nOnly availible in .NET Scripting runtime.");
 
         private readonly GUIContent autoIncrementLabel = new GUIContent("Auto Increment", "Increases Version Build Number");
 
@@ -161,8 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
         #region Fields
 
-        private int halfWidth;
-        private int quarterWidth;
+        private const float HalfWidth = 256f;
 
         private float timeLastUpdatedBuilds;
 
@@ -189,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
         public static void OpenWindow()
         {
             // Dock it next to the Scene View.
-            var window = GetWindow<BuildDeployWindow>(typeof(SceneView));
+            var window = GetWindow<UwpBuildDeployWindow>(typeof(SceneView));
             window.titleContent = new GUIContent("Build Window");
             window.Show();
         }
@@ -225,9 +224,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
         private void OnGUI()
         {
-            quarterWidth = Screen.width / 4;
-            halfWidth = Screen.width / 2;
-
             #region Quick Options
 
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WSAPlayer)
@@ -249,14 +245,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
                 GUI.enabled = Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
 
-                if (GUILayout.Button("Open Build Directory", GUILayout.Width(quarterWidth)))
+                if (GUILayout.Button("Open Build Directory"))
                 {
                     EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
                 }
 
                 GUI.enabled = true;
 
-                if (GUILayout.Button("Open Player Settings", GUILayout.Width(quarterWidth)))
+                if (GUILayout.Button("Open Player Settings"))
                 {
                     EditorApplication.ExecuteMenuItem("Edit/Project Settings/Player");
                 }
@@ -283,14 +279,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             GUI.enabled = ShouldBuildSLNBeEnabled;
 
             // Build & Run button...
-            if (GUILayout.Button(CanInstall ? buildAllThenInstallLabel : buildAllLabel, GUILayout.Width(halfWidth - 20)))
+            if (GUILayout.Button(CanInstall ? buildAllThenInstallLabel : buildAllLabel, GUILayout.Width(HalfWidth), GUILayout.ExpandWidth(true)))
             {
                 EditorApplication.delayCall += () => BuildAll(canInstall);
             }
 
             GUI.enabled = true;
 
-            if (GUILayout.Button("Open Player Settings", GUILayout.Width(quarterWidth)))
+            if (GUILayout.Button("Open Player Settings"))
             {
                 EditorApplication.ExecuteMenuItem("Edit/Project Settings/Player");
             }
@@ -349,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
             GUI.enabled = Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
 
-            if (GUILayout.Button("Open Build Directory", GUILayout.Width(halfWidth)))
+            if (GUILayout.Button("Open Build Directory", GUILayout.Width(HalfWidth)))
             {
                 EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
             }
@@ -358,11 +354,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
+
+            // Generate C# Project References for debugging
+            bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
+
+            var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
+
+            GUI.enabled = curScriptingBackend == ScriptingImplementation.WinRTDotNET;
+            bool shouldGenerateProjects = EditorGUILayout.Toggle(useCSharpProjectsLabel, generateReferenceProjects);
+            GUI.enabled = true;
+
+            if (shouldGenerateProjects != generateReferenceProjects)
+            {
+                EditorUserBuildSettings.wsaGenerateReferenceProjects = shouldGenerateProjects;
+            }
+
             GUILayout.FlexibleSpace();
 
             GUI.enabled = ShouldOpenSLNBeEnabled;
 
-            if (GUILayout.Button("Open in Visual Studio", GUILayout.Width(halfWidth)))
+            if (GUILayout.Button("Open in Visual Studio", GUILayout.Width(HalfWidth)))
             {
                 // Open SLN
                 string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
@@ -381,40 +392,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             }
 
             EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
-
-            // Generate C# Project References for debugging
-            GUILayout.FlexibleSpace();
-            var previousLabelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = 105;
-            bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
-            bool shouldGenerateProjects = EditorGUILayout.Toggle(useCSharpProjectsLabel, generateReferenceProjects);
-
-            if (shouldGenerateProjects != generateReferenceProjects)
-            {
-                EditorUserBuildSettings.wsaGenerateReferenceProjects = shouldGenerateProjects;
-            }
-
-            EditorGUIUtility.labelWidth = previousLabelWidth;
+            EditorGUILayout.Space();
 
             // Build Unity Player
             GUI.enabled = ShouldBuildSLNBeEnabled;
 
-            if (GUILayout.Button("Build Unity Project", GUILayout.Width(halfWidth)))
+            if (GUILayout.Button("Build Unity Project"))
             {
                 EditorApplication.delayCall += BuildUnityProject;
             }
 
             GUI.enabled = true;
 
-            EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
         }
 
         private void AppxBuildGUI()
         {
             GUILayout.BeginVertical();
-            GUILayout.BeginHorizontal();
 
             // SDK and MS Build Version(and save setting, if it's changed)
             string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
@@ -436,7 +431,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                 }
             }
 
-            EditorGUILayout.LabelField("Required SDK Version: " + SdkVersion, GUILayout.Width(halfWidth - 16));
+            EditorGUILayout.HelpBox("Required SDK Version: " + SdkVersion, MessageType.Info);
 
             // Throw exception if user has no Windows 10 SDK installed
             if (currentSDKVersionIndex < 0)
@@ -446,7 +441,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                     Debug.LogError($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {SdkVersion} SDK from Visual Studio Installer.");
                 }
 
-                GUILayout.EndHorizontal();
                 EditorGUILayout.HelpBox($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {SdkVersion} SDK from Visual Studio Installer.", MessageType.Error);
                 GUILayout.EndVertical();
                 IsValidSdkInstalled = false;
@@ -460,17 +454,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             if (curScriptingBackend == ScriptingImplementation.WinRTDotNET)
             {
                 EditorGUILayout.HelpBox(".NET Scripting backend is depreciated, please use IL2CPP.", MessageType.Warning);
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
-                GUILayout.FlexibleSpace();
             }
 
-            var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup(
-                "Scripting Backend",
-                (int)curScriptingBackend,
-                scriptingBackendNames,
-                scriptingBackendEnum,
-                GUILayout.Width(halfWidth));
+            var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup("Scripting Backend", (int)curScriptingBackend, scriptingBackendNames, scriptingBackendEnum, GUILayout.Width(HalfWidth));
 
             if (newScriptingBackend != curScriptingBackend)
             {
@@ -498,10 +484,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                 EditorUserBuildSettings.wsaUWPSDK = newSDKVersion;
             }
 
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
             // Build config (and save setting, if it's changed)
             string curBuildConfigString = BuildDeployPreferences.BuildConfig;
 
@@ -520,7 +502,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             }
 
             EditorUserBuildSettings.GetWSADotNetNative(buildConfigOption);
-            buildConfigOption = (WSABuildType)EditorGUILayout.EnumPopup("Build Configuration", buildConfigOption, GUILayout.Width(halfWidth));
+            buildConfigOption = (WSABuildType)EditorGUILayout.EnumPopup("Build Configuration", buildConfigOption, GUILayout.Width(HalfWidth));
 
             string buildConfigString = buildConfigOption.ToString();
 
@@ -528,10 +510,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             {
                 BuildDeployPreferences.BuildConfig = buildConfigString;
             }
-
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
 
             // Build Platform (and save setting, if it's changed)
             string curBuildPlatformString = BuildDeployPreferences.BuildPlatform;
@@ -546,7 +524,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                 buildPlatformOption = BuildPlatformEnum.x64;
             }
 
-            buildPlatformOption = (BuildPlatformEnum)EditorGUILayout.EnumPopup("Build Platform", buildPlatformOption, GUILayout.Width(halfWidth));
+            buildPlatformOption = (BuildPlatformEnum)EditorGUILayout.EnumPopup("Build Platform", buildPlatformOption, GUILayout.Width(HalfWidth));
 
             string newBuildPlatformString;
 
@@ -565,9 +543,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                 BuildDeployPreferences.BuildPlatform = newBuildPlatformString;
             }
 
-            GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
 
             var previousLabelWidth = EditorGUIUtility.labelWidth;
 
@@ -589,9 +565,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
             EditorGUI.BeginChangeCheck();
 
-            newVersion.x = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Major, GUILayout.Width(quarterWidth / 2 - 3));
-            newVersion.y = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Minor, GUILayout.Width(quarterWidth / 2 - 3));
-            newVersion.z = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Build, GUILayout.Width(quarterWidth / 2 - 3));
+            newVersion.x = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Major);
+            newVersion.y = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Minor);
+            newVersion.z = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Build);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -599,7 +575,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             }
 
             GUI.enabled = false;
-            EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Revision, GUILayout.Width(quarterWidth / 2 - 3));
+            EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Revision);
+            GUI.enabled = true;
+
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            // Open AppX packages location
+            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
+            string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}{appxDirectory}");
+            GUI.enabled = builds.Count > 0 && !string.IsNullOrEmpty(appxBuildPath);
+
+            if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(HalfWidth)))
+            {
+                EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
+            }
+
             GUI.enabled = true;
 
             GUILayout.EndHorizontal();
@@ -623,7 +615,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             // Build APPX
             GUI.enabled = ShouldBuildAppxBeEnabled;
 
-            if (GUILayout.Button("Build APPX", GUILayout.Width(halfWidth)))
+            if (GUILayout.Button("Build APPX", GUILayout.Width(HalfWidth)))
             {
                 // Check if solution exists
                 string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
@@ -641,22 +633,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             }
 
             GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            // Open AppX packages location
-            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
-            string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}{appxDirectory}");
-            GUI.enabled = builds.Count > 0 && !string.IsNullOrEmpty(appxBuildPath);
-
-            if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(halfWidth)))
-            {
-                EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
-            }
-
-            GUI.enabled = true;
-
-            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
 
@@ -664,6 +640,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
         {
             Debug.Assert(portalConnections.Connections.Count != 0);
             Debug.Assert(currentConnectionInfoIndex >= 0);
+
             if (currentConnectionInfoIndex > portalConnections.Connections.Count - 1)
             {
                 currentConnectionInfoIndex = 0;
@@ -675,7 +652,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
             GUI.enabled = IsHoloLensConnectedUsb;
 
-            if (GUILayout.Button(pairHoloLensUsbLabel, GUILayout.Width(quarterWidth)))
+            if (GUILayout.Button(pairHoloLensUsbLabel, GUILayout.Width(128f)))
             {
                 EditorApplication.delayCall += PairDevice;
             }
@@ -689,7 +666,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             bool useSSL = EditorGUILayout.Toggle(useSSLLabel, BuildDeployPreferences.UseSSL);
             EditorGUIUtility.labelWidth = previousLabelWidth;
 
-            currentConnectionInfoIndex = EditorGUILayout.Popup(currentConnectionInfoIndex, targetIps, GUILayout.Width(halfWidth - 48));
+            currentConnectionInfoIndex = EditorGUILayout.Popup(currentConnectionInfoIndex, targetIps);
 
             var currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
             bool currentConnectionIsLocal = IsLocalConnection(currentConnection);
@@ -726,7 +703,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
 
-            GUILayout.Label(currentConnection.MachineName, GUILayout.Width(halfWidth));
+            GUILayout.Label(currentConnection.MachineName, GUILayout.Width(HalfWidth));
 
             GUILayout.EndHorizontal();
 
@@ -736,17 +713,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             GUILayout.FlexibleSpace();
 
             GUI.enabled = !currentConnectionIsLocal;
-            currentConnection.IP = EditorGUILayout.TextField(ipAddressLabel, currentConnection.IP, GUILayout.Width(halfWidth));
+            currentConnection.IP = EditorGUILayout.TextField(ipAddressLabel, currentConnection.IP, GUILayout.Width(HalfWidth));
             GUI.enabled = true;
 
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            currentConnection.User = EditorGUILayout.TextField("Username", currentConnection.User, GUILayout.Width(halfWidth));
+            currentConnection.User = EditorGUILayout.TextField("Username", currentConnection.User, GUILayout.Width(HalfWidth));
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            currentConnection.Password = EditorGUILayout.PasswordField("Password", currentConnection.Password, GUILayout.Width(halfWidth));
+            currentConnection.Password = EditorGUILayout.PasswordField("Password", currentConnection.Password, GUILayout.Width(HalfWidth));
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
 
@@ -784,7 +761,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             {
                 GUI.enabled = IsValidIpAddress(currentConnection.IP) && IsCredentialsValid(currentConnection);
 
-                if (GUILayout.Button("Connect", GUILayout.Width(quarterWidth)))
+                if (GUILayout.Button("Connect"))
                 {
                     EditorApplication.delayCall += () =>
                     {
@@ -798,7 +775,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             GUI.enabled = DevicePortalConnectionEnabled && CanInstall;
 
             // Open web portal
-            if (GUILayout.Button("Open Device Portal", GUILayout.Width(quarterWidth)))
+            if (GUILayout.Button("Open Device Portal", GUILayout.Width(128f)))
             {
                 EditorApplication.delayCall += () => OpenDevicePortal(portalConnections, currentConnection);
             }
