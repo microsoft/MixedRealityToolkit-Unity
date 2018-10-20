@@ -2,8 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -18,11 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private static readonly GUIContent DescriptionContent = new GUIContent("Description", "The human readable description of the Gesture.");
         private static readonly GUIContent GestureTypeContent = new GUIContent("Gesture Type", "The type of Gesture that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a Gesture is recognized.");
-        private static readonly GUIContent ControllerGestureContent = new GUIContent("Controller Gestures");
-        private static readonly GUIContent HandGestureContent = new GUIContent("Hand Gestures");
-
-        private static GUIContent[] actionLabels;
-        private static int[] actionIds;
 
         private SerializedProperty gestures;
         private SerializedProperty windowsManipulationGestureSettings;
@@ -30,8 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty windowsNavigationGestureSettings;
         private SerializedProperty windowsRailsNavigationGestures;
         private SerializedProperty windowsGestureAutoStart;
-        private SerializedProperty luminControllerGestures;
-        private SerializedProperty luminHandGestures;
+
+        private MixedRealityGesturesProfile thisProfile;
+        private static GUIContent[] allGestureLabels;
+        private static int[] allGestureIds;
+        private static GUIContent[] actionLabels;
+        private static int[] actionIds;
 
         private void OnEnable()
         {
@@ -43,15 +45,42 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             windowsNavigationGestureSettings = serializedObject.FindProperty("navigationGestures");
             windowsRailsNavigationGestures = serializedObject.FindProperty("railsNavigationGestures");
             windowsGestureAutoStart = serializedObject.FindProperty("windowsGestureAutoStart");
-            luminControllerGestures = serializedObject.FindProperty("luminControllerGestures");
-            luminHandGestures = serializedObject.FindProperty("luminHandGestures");
+            thisProfile = target as MixedRealityGesturesProfile;
+            Debug.Assert(thisProfile != null);
 
             if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile != null)
             {
-                actionLabels = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
-                actionIds = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
+                actionLabels = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+                    .Select(action => new GUIContent(action.Description))
+                    .Prepend(new GUIContent("None")).ToArray();
+                actionIds = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+                    .Select(action => (int)action.Id)
+                    .Prepend(0).ToArray();
             }
+
+            UpdateGestureLabels();
+        }
+
+        private void UpdateGestureLabels()
+        {
+            var allGestureTypeNames = Enum.GetNames(typeof(GestureInputType));
+
+            var tempIds = new List<int>();
+            var tempContent = new List<GUIContent>();
+
+            for (int i = 0; i < allGestureTypeNames.Length; i++)
+            {
+                if (allGestureTypeNames[i].Equals("None") ||
+                    thisProfile.Gestures.All(mapping => !allGestureTypeNames[i].Equals(mapping.GestureType.ToString())))
+                {
+                    tempContent.Add(new GUIContent(allGestureTypeNames[i]));
+                    tempIds.Add(i);
+                }
+            }
+
+            allGestureIds = tempIds.ToArray();
+            allGestureLabels = tempContent.ToArray();
         }
 
         public override void OnInspectorGUI()
@@ -95,25 +124,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             serializedObject.Update();
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Windows Gesture Settings", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(windowsManipulationGestureSettings);
             EditorGUILayout.PropertyField(windowsNavigationGestureSettings);
             EditorGUILayout.PropertyField(useRailsNavigation);
             EditorGUILayout.PropertyField(windowsRailsNavigationGestures);
             EditorGUILayout.PropertyField(windowsGestureAutoStart);
-            EditorGUI.indentLevel--;
-            EditorGUILayout.LabelField("Lumin Gesture Settings", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(luminControllerGestures, ControllerGestureContent);
-            EditorGUILayout.PropertyField(luminHandGestures, HandGestureContent);
-            EditorGUI.indentLevel--;
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Defined Recognizable Gestures", EditorStyles.boldLabel);
             RenderList(gestures);
             serializedObject.ApplyModifiedProperties();
         }
 
-        private static void RenderList(SerializedProperty list)
+        private void RenderList(SerializedProperty list)
         {
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
@@ -124,8 +147,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 var speechCommand = list.GetArrayElementAtIndex(list.arraySize - 1);
                 var keyword = speechCommand.FindPropertyRelative("description");
                 keyword.stringValue = string.Empty;
-                var keyCode = speechCommand.FindPropertyRelative("gestureType");
-                keyCode.intValue = (int)KeyCode.None;
+                var gestureType = speechCommand.FindPropertyRelative("gestureType");
+                gestureType.intValue = (int)GestureInputType.None;
                 var action = speechCommand.FindPropertyRelative("action");
                 var actionId = action.FindPropertyRelative("id");
                 actionId.intValue = 0;
@@ -141,6 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 EditorGUILayout.HelpBox("Define a new Gesture.", MessageType.Warning);
                 GUILayout.EndVertical();
+                UpdateGestureLabels();
                 return;
             }
 
@@ -161,13 +185,36 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 EditorGUILayout.BeginHorizontal();
                 SerializedProperty gesture = list.GetArrayElementAtIndex(i);
                 var keyword = gesture.FindPropertyRelative("description");
-                EditorGUILayout.PropertyField(keyword, GUIContent.none, GUILayout.ExpandWidth(true));
                 var gestureType = gesture.FindPropertyRelative("gestureType");
-                EditorGUILayout.PropertyField(gestureType, GUIContent.none, GUILayout.Width(80f));
                 var action = gesture.FindPropertyRelative("action");
                 var actionId = action.FindPropertyRelative("id");
                 var actionDescription = action.FindPropertyRelative("description");
                 var actionConstraint = action.FindPropertyRelative("axisConstraint");
+
+                EditorGUILayout.PropertyField(keyword, GUIContent.none, GUILayout.ExpandWidth(true));
+
+                Debug.Assert(allGestureLabels.Length == allGestureIds.Length);
+
+                var gestureLabels = new GUIContent[allGestureLabels.Length + 1];
+                var gestureIds = new int[allGestureIds.Length + 1];
+
+                gestureLabels[0] = new GUIContent(((GestureInputType)gestureType.intValue).ToString());
+                gestureIds[0] = gestureType.intValue;
+
+                for (int j = 0; j < allGestureLabels.Length; j++)
+                {
+                    gestureLabels[j + 1] = allGestureLabels[j];
+                    gestureIds[j + 1] = allGestureIds[j];
+                }
+
+                EditorGUI.BeginChangeCheck();
+                gestureType.intValue = EditorGUILayout.IntPopup(GUIContent.none, gestureType.intValue, gestureLabels, gestureIds, GUILayout.Width(80f));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    serializedObject.ApplyModifiedProperties();
+                    UpdateGestureLabels();
+                }
 
                 EditorGUI.BeginChangeCheck();
                 actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, actionLabels, actionIds, GUILayout.Width(64f));
@@ -177,11 +224,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                     actionDescription.stringValue = inputAction.Description;
                     actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                    serializedObject.ApplyModifiedProperties();
                 }
 
                 if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {
                     list.DeleteArrayElementAtIndex(i);
+                    serializedObject.ApplyModifiedProperties();
+                    UpdateGestureLabels();
                 }
 
                 EditorGUILayout.EndHorizontal();
