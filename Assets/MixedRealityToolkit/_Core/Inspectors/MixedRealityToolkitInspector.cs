@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             EditorGUILayout.PropertyField(activeProfile);
             bool changed = EditorGUI.EndChangeCheck();
             string commandName = Event.current.commandName;
-            var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityConfigurationProfile>();
+            var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>();
 
             if (activeProfile.objectReferenceValue == null && currentPickerWindow == -1 && checkChange)
             {
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 {
                     EditorUtility.DisplayDialog("Attention!", "You must choose a profile for the Mixed Reality Toolkit.", "OK");
                     currentPickerWindow = GUIUtility.GetControlID(FocusType.Passive);
-                    EditorGUIUtility.ShowObjectPicker<MixedRealityConfigurationProfile>(null, false, string.Empty, currentPickerWindow);
+                    EditorGUIUtility.ShowObjectPicker<MixedRealityToolkitConfigurationProfile>(null, false, string.Empty, currentPickerWindow);
                 }
                 else if (allConfigProfiles.Length == 1)
                 {
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                     if (EditorUtility.DisplayDialog("Attention!", "No profiles were found for the Mixed Reality Toolkit.\n\n" +
                                                                   "Would you like to create one now?", "OK", "Later"))
                     {
-                        ScriptableObject profile = CreateInstance(nameof(MixedRealityConfigurationProfile));
+                        ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
                         profile.CreateAsset();
                         activeProfile.objectReferenceValue = profile;
                         Selection.activeObject = profile;
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
             if (changed)
             {
-                MixedRealityToolkit.Instance.ResetConfiguration((MixedRealityConfigurationProfile)activeProfile.objectReferenceValue);
+                MixedRealityToolkit.Instance.ResetConfiguration((MixedRealityToolkitConfigurationProfile)activeProfile.objectReferenceValue);
             }
         }
 

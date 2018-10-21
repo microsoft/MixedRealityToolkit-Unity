@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Tests
             Assert.IsNotNull(MixedRealityToolkit.Instance);
-            var configuration = ScriptableObject.CreateInstance<MixedRealityConfigurationProfile>();
+            var configuration = ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
             MixedRealityToolkit.Instance.ActiveProfile = configuration;
             Assert.NotNull(MixedRealityToolkit.Instance.ActiveProfile);
         }

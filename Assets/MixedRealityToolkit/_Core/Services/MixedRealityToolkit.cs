@@ -56,12 +56,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// </summary>
         [SerializeField]
         [Tooltip("The current active configuration for the Mixed Reality project")]
-        private MixedRealityConfigurationProfile activeProfile = null;
+        private MixedRealityToolkitConfigurationProfile activeProfile = null;
 
         /// <summary>
         /// The public property of the Active Profile, ensuring events are raised on the change of the configuration
         /// </summary>
-        public MixedRealityConfigurationProfile ActiveProfile
+        public MixedRealityToolkitConfigurationProfile ActiveProfile
         {
             get
             {
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// When a configuration Profile is replaced with a new configuration, force all services to reset and read the new values
         /// </summary>
         /// <param name="profile"></param>
-        public void ResetConfiguration(MixedRealityConfigurationProfile profile)
+        public void ResetConfiguration(MixedRealityToolkitConfigurationProfile profile)
         {
             if (activeProfile != null)
             {
