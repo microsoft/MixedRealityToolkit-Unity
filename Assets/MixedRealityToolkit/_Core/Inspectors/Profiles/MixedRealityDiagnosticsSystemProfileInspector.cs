@@ -17,8 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty showMemory;
         private SerializedProperty visible;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!CheckMixedRealityManager(false))
             {
                 return;
@@ -43,10 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
             }
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Diagnostic Visualization Options", EditorStyles.boldLabel);

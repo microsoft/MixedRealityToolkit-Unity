@@ -56,8 +56,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
         private MixedRealityInputActionRulesProfile thisProfile;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!CheckMixedRealityManager(false) ||
                 !MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
                  MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
@@ -115,6 +117,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                                     "Note: Rules can only be created for the same axis constraints.", MessageType.Info);
 
             EditorGUILayout.Space();
+
+            CheckProfileLock(target);
 
             var isGuiLocked = !(MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile);
             GUI.enabled = isGuiLocked;

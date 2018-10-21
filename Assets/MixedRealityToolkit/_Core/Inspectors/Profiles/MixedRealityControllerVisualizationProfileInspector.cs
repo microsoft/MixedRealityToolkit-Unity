@@ -37,8 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private float defaultLabelWidth;
         private float defaultFieldWidth;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             defaultLabelWidth = EditorGUIUtility.labelWidth;
             defaultFieldWidth = EditorGUIUtility.fieldWidth;
 
@@ -88,10 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                                     "Global settings are the default fallback, and any specific controller definitions take precedence.", MessageType.Info);
             serializedObject.Update();
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
 
             EditorGUIUtility.labelWidth = 168f;
             EditorGUILayout.PropertyField(renderMotionControllers);

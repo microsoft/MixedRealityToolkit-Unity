@@ -17,8 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private static bool[] configFoldouts;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!CheckMixedRealityManager(false))
             {
                 return;
@@ -45,10 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.LabelField("Registered Components Profile", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("This profile defines any additional systems, features, and managers to register with the Mixed Reality Manager.", MessageType.Info);
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
 
             serializedObject.Update();
             RenderList(configurations);

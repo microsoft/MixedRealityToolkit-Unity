@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                                                                   "Would you like to create one now?", "OK", "Later"))
                     {
                         ScriptableObject profile = CreateInstance(nameof(MixedRealityConfigurationProfile));
-                        profile.CreateAsset();
+                        profile.CreateAsset("Assets/CustomProfiles");
                         activeProfile.objectReferenceValue = profile;
                         Selection.activeObject = profile;
                         EditorGUIUtility.PingObject(profile);
