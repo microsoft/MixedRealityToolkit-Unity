@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     CreateCopyProfileValues();
                 }
 
-                if (GUILayout.Button("Start from Scratch"))
+                if (GUILayout.Button("Create new profiles"))
                 {
                     ScriptableObject profile = CreateInstance(nameof(MixedRealityConfigurationProfile));
                     var newProfile = profile.CreateAsset("Assets/CustomProfiles") as MixedRealityConfigurationProfile;
