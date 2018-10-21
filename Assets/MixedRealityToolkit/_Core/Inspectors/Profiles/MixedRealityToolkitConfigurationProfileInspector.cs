@@ -9,8 +9,8 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
-    [CustomEditor(typeof(MixedRealityConfigurationProfile))]
-    public class MixedRealityConfigurationProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    [CustomEditor(typeof(MixedRealityToolkitConfigurationProfile))]
+    public class MixedRealityToolkitConfigurationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
 
@@ -38,11 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         // Additional registered components profile
         private SerializedProperty registeredServiceProvidersProfile;
 
-        private MixedRealityConfigurationProfile configurationProfile;
+        private MixedRealityToolkitConfigurationProfile configurationProfile;
 
         private void OnEnable()
         {
-            configurationProfile = target as MixedRealityConfigurationProfile;
+            configurationProfile = target as MixedRealityToolkitConfigurationProfile;
 
             // Create The MR Manager if none exists.
             if (!MixedRealityToolkit.IsInitialized)
