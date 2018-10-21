@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
             {
                 EditorGUILayout.HelpBox("The Mixed Reality Toolkit's core SDK profiles can be used to get up and running quickly.\n\n" +
-                                        "You can use the default profiles provided, copy and customize the default profiles, or create your own from scratch", MessageType.Warning);
+                                        "You can use the default profiles provided, copy and customize the default profiles, or create your own.", MessageType.Warning);
                 EditorGUILayout.BeginHorizontal();
 
                 if (GUILayout.Button("Copy & Customize"))
