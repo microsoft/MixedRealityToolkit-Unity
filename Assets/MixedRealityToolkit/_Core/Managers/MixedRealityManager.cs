@@ -271,7 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// <summary>
         /// Returns the Singleton instance of the classes type.
         /// If no instance is found, then we search for an instance in the scene.
-        /// If more than one instance is found, we throw an error and no instance is returned.
+        /// If more than one instance is found, we log an error and no instance is returned.
         /// </summary>
         public static MixedRealityManager Instance
         {
@@ -514,8 +514,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 Debug.LogError($"Unable to add a new {type.Name} Manager as the Mixed Reality manager has to Active Profile");
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (manager == null) { throw new ArgumentNullException(nameof(manager)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to add a manager of type null.");
+                return;
+            }
+            if (manager == null)
+            {
+                Debug.LogWarning("Unable to add a manager with a null instance.");
+                return;
+            }
 
             if (IsCoreManagerType(type))
             {
@@ -566,15 +574,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile.");
+                Debug.LogError($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile.");
+                return null;
             }
 
             if (!IsInitialized)
             {
-                throw new ArgumentNullException($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has not been initialized!");
+                Debug.LogError($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has not been initialized!");
+                return null;
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to get null manager type.");
+                return null;
+            }
 
             IMixedRealityManager manager;
             if (IsCoreManagerType(type))
@@ -588,7 +602,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             if (manager == null)
             {
-                throw new NullReferenceException($"Unable to find {type.Name}.");
+                Debug.Log($"Unable to find {type.Name}.");
             }
 
             return manager;
@@ -604,11 +618,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to get {managerName} Manager as the Mixed Reality Manager has no Active Profile");
+                Debug.LogError($"Unable to get {managerName} Manager as the Mixed Reality Manager has no Active Profile.");
+                return null;
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (string.IsNullOrEmpty(managerName)) { throw new ArgumentNullException(nameof(managerName)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to get null manager type.");
+                return null;
+            }
+            if (string.IsNullOrEmpty(managerName))
+            {
+                Debug.LogError("Unable to get manager by name without the name being specified.");
+                return null;
+            }
 
             IMixedRealityManager manager;
             if (IsCoreManagerType(type))
@@ -622,7 +645,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             if (manager == null)
             {
-                throw new NullReferenceException($"Unable to find {managerName} Manager.");
+                Debug.LogError($"Unable to find {managerName} Manager.");
             }
 
             return manager;
@@ -636,10 +659,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to remove {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile");
+                Debug.LogError($"Unable to remove {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile.");
+                return;
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to remove null manager type.");
+                return;
+            }
 
             if (IsCoreManagerType(type))
             {
@@ -666,11 +694,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to remove {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile");
+                Debug.LogError($"Unable to remove {managerName} Manager as the Mixed Reality Manager has no Active Profile.");
+                return;
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (string.IsNullOrEmpty(managerName)) { throw new ArgumentNullException(nameof(managerName)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to remove null manager type.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(managerName))
+            {
+                Debug.LogError("Unable to remove manager by name without the name being specified.");
+                return;
+            }
 
             if (IsCoreManagerType(type))
             {
@@ -693,7 +731,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// <param name="type">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
         public void DisableManager(Type type)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to disable null manager type.");
+                return;
+            }
 
             if (IsCoreManagerType(type))
             {
@@ -715,8 +757,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// <param name="managerName">Name of the specific manager</param>
         public void DisableManager(Type type, string managerName)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (string.IsNullOrEmpty(managerName)) { throw new ArgumentNullException(nameof(managerName)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to disable null manager type.");
+                return;
+            }
+            if (string.IsNullOrEmpty(managerName))
+            {
+                Debug.LogError("Unable to disable manager by name without the name being specified.");
+                return;
+            }
 
             if (IsCoreManagerType(type))
             {
@@ -737,7 +787,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// <param name="type">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
         public void EnableManager(Type type)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to enable null manager type.");
+                return;
+            }
 
             if (IsCoreManagerType(type))
             {
@@ -759,8 +813,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// <param name="managerName">Name of the specific manager</param>
         public void EnableManager(Type type, string managerName)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (string.IsNullOrEmpty(managerName)) { throw new ArgumentNullException(nameof(managerName)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to enable null manager type.");
+                return;
+            }
+            if (string.IsNullOrEmpty(managerName))
+            {
+                Debug.LogError("Unable to enable manager by name without the name being specified.");
+                return;
+            }
 
             if (IsCoreManagerType(type))
             {
@@ -786,7 +848,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// <returns>An array of Managers that meet the search criteria</returns>
         public IEnumerable<IMixedRealityManager> GetManagers(Type type)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get managers with a type of null.");
+                return new List<IMixedRealityManager>();
+            }
 
             return GetManagers(type, string.Empty);
         }
@@ -801,10 +867,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile");
+                Debug.LogWarning($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile");
+                return new List<IMixedRealityManager>();
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get managers with a type of null.");
+                return new List<IMixedRealityManager>();
+            }
 
             var managers = new List<IMixedRealityManager>();
 
@@ -965,7 +1036,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
         private bool IsCoreManagerType(Type type)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning($"Null cannot be a core manager.");
+                return false;
+            }
 
             return type == typeof(IMixedRealityInputSystem) ||
                    type == typeof(IMixedRealityTeleportSystem) ||
@@ -980,7 +1055,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// <param name="manager">return parameter of the function</param>
         private void GetComponentByType(Type type, out IMixedRealityManager manager)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get a component with a type of null.");
+                manager = null;
+                return;
+            }
 
             GetComponentByTypeAndName(type, string.Empty, out manager);
         }
@@ -993,7 +1073,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// <param name="manager">return parameter of the function</param>
         private void GetComponentByTypeAndName(Type type, string managerName, out IMixedRealityManager manager)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get a component with a type of null.");
+                manager = null;
+                return;
+            }
 
             manager = null;
 
@@ -1020,14 +1105,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
         private void GetComponentsByType(Type type, ref List<IMixedRealityManager> managers)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get components with a type of null.");
+                return;
+            }
 
             GetComponentsByTypeAndName(type, string.Empty, ref managers);
         }
 
         private void GetComponentsByTypeAndName(Type type, string managerName, ref List<IMixedRealityManager> managers)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get components with a type of null.");
+                return;
+            }
 
             for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
