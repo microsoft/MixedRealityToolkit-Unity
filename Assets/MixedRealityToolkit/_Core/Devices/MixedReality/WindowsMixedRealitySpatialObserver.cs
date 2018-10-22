@@ -470,7 +470,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             }
 
             // Add / update the mesh to our collection
-            // todo: fix
             bool sendUpdatedEvent = false;
             if (meshObjects.ContainsKey(cookedData.id.handle))
             {
