@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
         private readonly GUIContent buildDirectoryLabel = new GUIContent("Build Directory", "It's recommended to use 'UWP'");
 
-        private readonly GUIContent useCSharpProjectsLabel = new GUIContent("Generate C# Debug", "Generate C# Project References for debugging.\nOnly availible in .NET Scripting runtime.");
+        private readonly GUIContent useCSharpProjectsLabel = new GUIContent("Generate C# Debug", "Generate C# Project References for debugging.\nOnly available in .NET Scripting runtime.");
 
         private readonly GUIContent autoIncrementLabel = new GUIContent("Auto Increment", "Increases Version Build Number");
 
