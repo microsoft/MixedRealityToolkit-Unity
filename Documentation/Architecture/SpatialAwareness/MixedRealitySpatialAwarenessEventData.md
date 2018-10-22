@@ -16,14 +16,6 @@ The MixedRealitySpatialAwarenessEventData provides the data shared by all of the
 
 The time at which the event occurred.
 
-## EventType
-
-| Type |
-| --- |
-| [SpatialAwarenessEventType](./SpatialAwarenessEventType.md) |
-
-The type of event that has occurred.
-
 ## Id
 
 | Type |
@@ -31,14 +23,6 @@ The type of event that has occurred.
 | UInt32 |
 
 An identifier assigned to a specific object in the spatial awareness system.
-
-## DataType
-
-| Type |
-| --- |
-| [SpatialAwarenessDataType](./SpatialAwarenessDataType.md) |
-
-The type of data to which the event is associated.
 
 ## GameObject
 
@@ -51,5 +35,3 @@ Unity GameObject, managed by the spatial awareness system, representing the data
 ## See Also
 
 - [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
-- [SpatialAwarenessDataType Enumeration](./SpatialAwarenessDataType.md)
-- [SpatialAwarenessEventType Enumeration](./SpatialAwarenessEventType.md)

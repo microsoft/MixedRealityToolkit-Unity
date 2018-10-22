@@ -16,11 +16,34 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// </summary>
         AutoStartBehavior StartupBehavior { get; set; }
 
+        // todo: ObserverVolumeType
+
+        // todo?: bool StationaryObserver
+
         /// <summary>
         /// Gets or sets the size of the volume, in meters per axis, from which individual observations will be made.
         /// </summary>
-        /// <remarks>This is not the total size of the observable space.</remarks>
         Vector3 ObservationExtents { get; set; }
+
+        /// <summary>
+        /// Should the observer remain stationary in the scene?
+        /// </summary>
+        /// <remarks>
+        /// Set IsStationaryObserver set to false, to move the volume with the user. 
+        /// If set to true, the origin will be 0,0,0 or the last known location.
+        /// </remarks>
+        bool IsStationaryObserver { get; set; }
+
+        /// <summary>
+        /// Gets or sets the origin of the observer.
+        /// </summary>
+        /// <remarks>
+        /// Moving the observer origin allows the spatial awareness system to locate and discard meshes as the user
+        /// navigates the environment.
+        /// </remarks>
+        Vector3 ObserverOrigin { get; set; }
+
+        // todo Quaternion ObserverOrientation { get; set }
 
         /// <summary>
         /// Gets or sets the frequency, in seconds, at which the spatial observer updates.
@@ -107,7 +130,40 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness mesh subsystem.
         /// </summary>
-        IDictionary<int, GameObject> MeshObjects { get; }
+        IDictionary<int, GameObject> Meshes { get; }
+
+        #region Mesh Events
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded"/> method to indicate a mesh has been added.
+        /// </summary>
+        /// <param name="meshId">Value identifying the mesh.</param>
+        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseMeshAdded(int meshId, GameObject meshObject);
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an existing mesh has been updated.
+        /// </summary>
+        /// <param name="meshId">Value identifying the mesh.</param>
+        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseMeshUpdated(int meshId, GameObject meshObject);
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an existing mesh has been removed.
+        /// </summary>
+        /// <param name="meshId">Value identifying the mesh.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseMeshRemoved(int meshId);
+
+        #endregion Mesh Events
 
         #endregion Mesh Handling
 
@@ -142,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// floor surfaces within the application. When enabled, the surfaces will be added to the scene
         /// and rendered using the configured <see cref="FloorSurfaceMaterial"/>.
         /// </summary>
-        bool RenderFloorSurfaces { get; set; }
+        bool DisplayFloorSurfaces { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Material"/> to be used when rendering floor surfaces.
@@ -154,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// ceiling surfaces within the application. When enabled, the surfaces will be added to the scene
         /// and rendered using the configured <see cref="CeilingSurfaceMaterial"/>.
         /// </summary>
-        bool RenderCeilingSurfaces { get; set; }
+        bool DisplayCeilingSurfaces { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Material"/> to be used when rendering ceiling surfaces.
@@ -166,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// wall surfaces within the application. When enabled, the surfaces will be added to the scene
         /// and rendered using the configured <see cref="WallSurfaceMaterial"/>.
         /// </summary>
-        bool RenderWallSurfaces { get; set; }
+        bool DisplayWallSurfaces { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Material"/> to be used when rendering wall surfaces.
@@ -178,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// horizontal platform surfaces within the application. When enabled, the surfaces will be added to the scene
         /// and rendered using the configured <see cref="PlatformSurfaceMaterial"/>.
         /// </summary>
-        bool RenderPlatformSurfaces { get; set; }
+        bool DisplayPlatformSurfaces { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Material"/> to be used when rendering horizontal platform surfaces.
@@ -188,7 +244,40 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness surface finding subsystem.
         /// </summary>
-        IDictionary<int, GameObject> SurfaceObjects { get; }
+        IDictionary<int, GameObject> PlanarSurfaces { get; }
+
+        #region Surface Finding Events
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceAdded"/> method to indicate a planar surface has been added.
+        /// </summary>
+        /// <param name="surfaceId">Value identifying the surface.</param>
+        /// <param name="surfaceObject">The surface <see cref="GameObject"/>.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseSurfaceAdded(int surfaceId, GameObject surfaceObject);
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceUpdated"/> method to indicate an existing planar surface has been updated.
+        /// </summary>
+        /// <param name="surfaceId">Value identifying the surface.</param>
+        /// <param name="surfaceObject">The surface <see cref="GameObject"/>.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseSurfaceUpdated(int surfaceId, GameObject surfaceObject);
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceUpdated"/> method to indicate an existing planar surface has been removed.
+        /// </summary>
+        /// <param name="surfaceId">Value identifying the surface.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseSurfaceRemoved(int surfaceId);
+
+        #endregion Surface Finding Events
 
         #endregion Surface Finding Handling
     }

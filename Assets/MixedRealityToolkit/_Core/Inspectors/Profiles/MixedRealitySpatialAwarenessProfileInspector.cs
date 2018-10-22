@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
@@ -14,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         // General settings
         private SerializedProperty startupBehavior;
         private SerializedProperty observationExtents;
+        private SerializedProperty isStationaryObserver;
         private SerializedProperty updateInterval;
 
         // Mesh settings
@@ -23,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty meshTrianglesPerCubicMeter;
         private SerializedProperty meshRecalculateNormals;
         private SerializedProperty meshDisplayOption;
-        private SerializedProperty meshMaterial;
+        private SerializedProperty meshVisibleMaterial;
         private SerializedProperty meshOcclusionMaterial;
 
         // Surface Finding settings
@@ -63,6 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             // General settings
             startupBehavior = serializedObject.FindProperty("startupBehavior");
             observationExtents = serializedObject.FindProperty("observationExtents");
+            isStationaryObserver = serializedObject.FindProperty("isStationaryObserver");
             updateInterval = serializedObject.FindProperty("updateInterval");
 
             // Mesh settings
@@ -72,7 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             meshTrianglesPerCubicMeter = serializedObject.FindProperty("meshTrianglesPerCubicMeter");
             meshRecalculateNormals = serializedObject.FindProperty("meshRecalculateNormals");
             meshDisplayOption = serializedObject.FindProperty("meshDisplayOption");
-            meshMaterial = serializedObject.FindProperty("meshMaterial");
+            meshVisibleMaterial = serializedObject.FindProperty("meshMaterial");
+            meshVisibleMaterial = serializedObject.FindProperty("meshVisibleMaterial");
             meshOcclusionMaterial = serializedObject.FindProperty("meshOcclusionMaterial");
 
             // Surface Finding settings
@@ -108,9 +112,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.Space();
             serializedObject.Update();
 
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                GUI.enabled = false;
+            }
+
             EditorGUILayout.LabelField("General Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(startupBehavior);
             EditorGUILayout.PropertyField(observationExtents);
+            EditorGUILayout.PropertyField(isStationaryObserver);
             EditorGUILayout.PropertyField(updateInterval);
 
             EditorGUILayout.Space();
@@ -121,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(meshTrianglesPerCubicMeter, trianglesPerCubicMeterContent);
             EditorGUILayout.PropertyField(meshRecalculateNormals);
             EditorGUILayout.PropertyField(meshDisplayOption, displayOptionContent);
-            EditorGUILayout.PropertyField(meshMaterial, visibleMaterialContent);
+            EditorGUILayout.PropertyField(meshVisibleMaterial, visibleMaterialContent);
             EditorGUILayout.PropertyField(meshOcclusionMaterial, occlusionMaterialContent);
 
             EditorGUILayout.Space();

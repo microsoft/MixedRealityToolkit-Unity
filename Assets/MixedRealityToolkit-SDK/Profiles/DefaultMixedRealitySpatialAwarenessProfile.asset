@@ -11,19 +11,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ce77c4cbff53f458a4a58f1407173a, type: 3}
   m_Name: DefaultMixedRealitySpatialAwarenessProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   startupBehavior: 0
-  observationExtents: {x: 10, y: 10, z: 10}
+  observationExtents: {x: 3, y: 3, z: 3}
+  isStationaryObserver: 0
   updateInterval: 3.5
   useMeshSystem: 1
   meshPhysicsLayer: 31
   meshLevelOfDetail: 0
   meshTrianglesPerCubicMeter: 0
   meshRecalculateNormals: 1
-  meshDisplayOption: 0
-  meshMaterial: {fileID: 2100000, guid: a923a5d1aebc7fe449b4ab3289da537b, type: 2}
+  meshDisplayOption: 1
+  meshVisibleMaterial: {fileID: 2100000, guid: a923a5d1aebc7fe449b4ab3289da537b, type: 2}
   meshOcclusionMaterial: {fileID: 2100000, guid: a809c7ea182b699409443d46d5b42435,
     type: 2}
-  useSurfaceFindingSystem: 1
+  useSurfaceFindingSystem: 0
   surfaceFindingPhysicsLayer: 31
   surfaceFindingMinimumArea: 0.025
   displayFloorSurfaces: 0

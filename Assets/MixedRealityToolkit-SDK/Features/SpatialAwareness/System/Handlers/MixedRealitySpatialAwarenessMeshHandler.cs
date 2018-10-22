@@ -1,32 +1,35 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.Handlers
 {
     /// <summary>
     /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessMeshHandler"/> interface.
     /// </summary>
-    public class MixedRealitySpatialAwarehessMeshHandler : IMixedRealitySpatialAwarenessMeshHandler
+    public class MixedRealitySpatialAwarenessMeshHandler : MonoBehaviour, IMixedRealitySpatialAwarenessMeshHandler
     {
         /// <inheritdoc />
-        public void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData)
         {
-            // todo
+            // Custom implementations can use this event to access the mesh data on arrival.
         }
 
         /// <inheritdoc />
-        public void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData)
         {
-            // todo
+            // Custom implementations can use this event to access the mesh data on update.
         }
 
         /// <inheritdoc />
-        public void OnMeshRemoved(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnMeshRemoved(MixedRealitySpatialAwarenessEventData eventData)
         {
-            // todo
+            // Custom implementations can use this event to respond to mesh removal.
         }
     }
 }

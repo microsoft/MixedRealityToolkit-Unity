@@ -25,8 +25,6 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 
 ## Enumerations
 
-- [SpatialAwarenessDataType](./SpatialAwarenessDataType.md)
-- [SpatialAwarenessEventType](./SpatialAwarenessEventType.md)
 - [SpatialAwarenessMeshDisplayOptions](./SpatialAwarenessMeshDisplayOptions.md)
 - [SpatialAwarenessMeshLevelOfDetail](./SpatialAwarenessMeshLevelOfDetail.md)
 - [SpatialAwarenessSurfaceTypes](./SpatialAwarenessSurfaceTypes.md)

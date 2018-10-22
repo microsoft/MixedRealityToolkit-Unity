@@ -538,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             if (manager == null)
             {
-                throw new NullReferenceException($"Unable to find {type.Name}.");
+                Debug.Log($"Unable to find {type.Name}.");
             }
 
             return manager;
@@ -920,6 +920,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             return type == typeof(IMixedRealityInputSystem) ||
                    type == typeof(IMixedRealityTeleportSystem) ||
                    type == typeof(IMixedRealityBoundarySystem) ||
+                   type == typeof(IMixedRealitySpatialAwarenessSystem) ||
                    type == typeof(IMixedRealityDiagnosticsSystem);
         }
 
@@ -1036,6 +1037,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// The current Teleport System registered with the Mixed Reality Manager.
         /// </summary>
         public static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = Instance.GetManager<IMixedRealityTeleportSystem>());
+
+        private static IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+
+        /// <summary>
+        /// The current Spatial Awareness System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = Instance.GetManager<IMixedRealitySpatialAwarenessSystem>());
 
         private static IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
 

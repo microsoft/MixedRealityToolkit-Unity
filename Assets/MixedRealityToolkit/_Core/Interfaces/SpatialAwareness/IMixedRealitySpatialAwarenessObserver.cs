@@ -25,5 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// Stop the observer.
         /// </summary>
         void StopObserving();
+
+        /// <summary>
+        /// The collection of mesh <see cref="GameObject"/>s that have been observed.
+        /// </summary>
+        IDictionary<int, GameObject> Meshes { get; }
     }
 }

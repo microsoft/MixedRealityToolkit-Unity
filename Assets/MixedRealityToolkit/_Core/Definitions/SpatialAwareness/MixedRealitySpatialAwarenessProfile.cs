@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     /// Configuration profile settings for setting up the spatial awareness system.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Spatial Awareness Profile", fileName = "MixedRealitySpatialAwarenessProfile", order = (int)CreateProfileMenuItemIndices.SpatialAwareness)]
-    public class MixedRealitySpatialAwarenessProfile : ScriptableObject
+    public class MixedRealitySpatialAwarenessProfile : BaseMixedRealityProfile
     {
         #region General settings
 
@@ -25,12 +25,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 
         [SerializeField]
         [Tooltip("The dimensions of the spatial observer volume, in meters.")]
-        private Vector3 observationExtents = new Vector3(10f, 10f, 10f);
+        private Vector3 observationExtents = Vector3.one * 3;
 
         /// <summary>
         /// The size of the volume, in meters per axis, from which individual observations will be made.
         /// </summary>
         public Vector3 ObservationExtents => observationExtents;
+
+        [SerializeField]
+        [Tooltip("Should the spatial observer remain in a fixed location?")]
+        private bool isStationaryObserver = false;
+
+        /// <summary>
+        /// The size of the volume, in meters per axis, from which individual observations will be made.
+        /// </summary>
+        public bool IsStationaryObserver => isStationaryObserver;
 
         [SerializeField]
         [Tooltip("How often, in seconds, should the spatial observer update?")]
@@ -103,12 +112,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 
         [SerializeField]
         [Tooltip("Material to use when displaying meshes")]
-        private Material meshMaterial = null;
+        private Material meshVisibleMaterial = null;
 
         /// <summary>
         /// The material to be used when automatically displaying spatial meshes.
         /// </summary>
-        public Material MeshMaterial => meshMaterial;
+        public Material MeshVisibleMaterial => meshVisibleMaterial;
 
         [SerializeField]
         [Tooltip("Material to use when spatial meshes should occlude other objects")]
