@@ -3,7 +3,7 @@ Classes that are needed by most feature areas are in this folder.
 
 ### [Scripts](Scripts)
 ---
-Utilitiy Scripts.
+Utility Scripts.
 
 #### [Editor](Scripts/Editor)
 ---
@@ -19,7 +19,7 @@ Base class for auto configuration build windows.
 Renders the UI and handles update logic for MixedRealityToolkit/Configure/Apply HoloLens Capability Settings.
 
 ##### EditorGUIExtensions.cs
-Extensions for the UnityEnditor.EditorGUI class.
+Extensions for the UnityEditor.EditorGUI class.
 
 ##### EditorGUILayoutExtensions.cs
 Extensions for the UnityEditor.EditorGUILayout class.
@@ -48,7 +48,7 @@ A custom shader inspector for the "MixedRealityToolkit/Standard" shader.
 Extensions for the action class.  These methods encapsulate the null check before raising an event for an Action.
 
 ##### ComponentExtensions.cs
-Extensions methods for the Unity Component class.  This also includes some component-related extensions for the GameObjet class.
+Extensions methods for the Unity Component class.  This also includes some component-related extensions for the GameObject class.
 
 ##### Extensions.cs
 A class with general purpose extensions methods.
@@ -92,7 +92,7 @@ TODO: Remove if redundant to InterpolatedVector3.cs
 ---
 
 #### ApplicationViewManager.cs
-Switches app to a XAML page view, and waits for a return value from it.
+Switches app to a XAML page view and waits for a return value from it.
 
 #### Billboard.cs
 Rotates a hologram so it is always facing towards the camera.
@@ -126,7 +126,7 @@ Causes a hologram to maintain a fixed angular size, which is to say it occupies 
 Simple Behaviour which calculates the average frames per second over a number of frames and shows the FPS in a referenced Text control.
 
 #### HeadsUpDirectionIndicator.cs
-Spawns a user specified "pointer" object and startup and alligns it to aim at a target object which keeping the pointer in view at all times.
+Spawns a user specified "pointer" object and startup and aligns it to aim at a target object which keeping the pointer in view at all times.
 
 #### InterpolationUtilities.cs
 Static class containing interpolation-related utility functions.
@@ -178,7 +178,7 @@ Miscellaneous utility methods.
 Vector Statistics used in gaze stabilization.
 
 #### WorldAnchorManager.cs
-Wrapper around world anchor store to streamline some of the persistence api busy work.
+Wrapper around world anchor store to streamline some of the persistence API busy work.
 
 #### HoverLight.cs
 Utility component to animate and visualize a hover light that can be used with the "MixedRealityToolkit/Standard" shader "_HoverLight" feature.
@@ -206,7 +206,7 @@ Tests related to the utilities features. To use the scene:
 5. Click 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
 
 #### HeadsUpDirectionIndicator.unity
-This scene shows 7 marker objects with 7 HeadsUpDirectionIndicators pointing to each. Each indicator has a label that matches its corresponding marker. 6 of the marker/indicator pairs are used to test the edge cases of axis aligned markers. The 7th is an arbitrary point off of the cartesean axes. From the starting position, the user should be able to follow the direction of each indicator and arrive at the marker with the corresponding axis label. At the start, the labels should be in the following screen locations.
+This scene shows 7 marker objects with 7 HeadsUpDirectionIndicators pointing to each. Each indicator has a label that matches its corresponding marker. 6 of the marker/indicator pairs are used to test the edge cases of axis aligned markers. The 7th is an arbitrary point off of the Cartesian axes. From the starting position, the user should be able to follow the direction of each indicator and arrive at the marker with the corresponding axis label. At the start, the labels should be in the following screen locations.
 
 - \-X at the left
 - +X at the right
