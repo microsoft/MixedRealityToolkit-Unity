@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityRegisteredServiceProvidersProfile))]
-    public class MixedRealityRegisteredComponentsProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    public class MixedRealityRegisteredServiceProviderProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Unregister");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Register a new Service Provider");
