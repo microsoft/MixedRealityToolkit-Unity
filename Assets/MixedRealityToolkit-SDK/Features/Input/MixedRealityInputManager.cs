@@ -302,6 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                     if (modalInput != null)
                     {
                         modalEventHandled = true;
+
                         // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
                         if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
                         {
