@@ -13,21 +13,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.Handlers
     public class MixedRealitySpatialAwarenessSurfaceFindingHandler : MonoBehaviour, IMixedRealitySpatialAwarenessSurfaceFindingHandler
     {
         /// <inheritdoc />
-        public void OnSurfaceAdded(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnSurfaceAdded(MixedRealitySpatialAwarenessEventData eventData)
         {
-            // todo
+            // Custom implementations can use this event to access the plane data on arrival.
         }
 
         /// <inheritdoc />
-        public void OnSurfaceUpdated(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnSurfaceUpdated(MixedRealitySpatialAwarenessEventData eventData)
         {
-            // todo
+            // Custom implementations can use this event to access the plane data on update.
         }
 
         /// <inheritdoc />
-        public void OnSurfaceRemoved(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnSurfaceRemoved(MixedRealitySpatialAwarenessEventData eventData)
         {
-            // todo
+            // Custom implementations can use this event to respond to plane removal.
         }
     }
 }

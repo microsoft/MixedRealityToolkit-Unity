@@ -15,19 +15,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.Handlers
     public class MixedRealitySpatialAwarenessMeshHandler : MonoBehaviour, IMixedRealitySpatialAwarenessMeshHandler
     {
         /// <inheritdoc />
-        public void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData)
         {
             // Custom implementations can use this event to access the mesh data on arrival.
         }
 
         /// <inheritdoc />
-        public void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData)
         {
             // Custom implementations can use this event to access the mesh data on update.
         }
 
         /// <inheritdoc />
-        public void OnMeshRemoved(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnMeshRemoved(MixedRealitySpatialAwarenessEventData eventData)
         {
             // Custom implementations can use this event to respond to mesh removal.
         }
