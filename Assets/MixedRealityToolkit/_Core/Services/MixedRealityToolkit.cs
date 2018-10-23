@@ -501,7 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Debug.LogWarning("Unable to add a manager of type null.");
                 return;
             }
-            if (manager == null)
+            if (service == null)
             {
                 Debug.LogWarning("Unable to add a manager with a null instance.");
                 return;
@@ -600,7 +600,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (ActiveProfile == null)
             {
-                Debug.LogError($"Unable to get {managerName} Manager as the Mixed Reality Manager has no Active Profile.");
+                Debug.LogError($"Unable to get {serviceName} Manager as the Mixed Reality Manager has no Active Profile.");
                 return null;
             }
 
@@ -609,7 +609,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Debug.LogError("Unable to get null manager type.");
                 return null;
             }
-            if (string.IsNullOrEmpty(managerName))
+            if (string.IsNullOrEmpty(serviceName))
             {
                 Debug.LogError("Unable to get manager by name without the name being specified.");
                 return null;
@@ -627,7 +627,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (service == null)
             {
-                Debug.LogError($"Unable to find {managerName} Manager.");
+                Debug.LogError($"Unable to find {serviceName} Manager.");
             }
 
             return service;
@@ -676,7 +676,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (ActiveProfile == null)
             {
-                Debug.LogError($"Unable to remove {managerName} Manager as the Mixed Reality Manager has no Active Profile.");
+                Debug.LogError($"Unable to remove {serviceName} Manager as the Mixed Reality Manager has no Active Profile.");
                 return;
             }
 
@@ -686,7 +686,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 return;
             }
 
-            if (string.IsNullOrEmpty(managerName))
+            if (string.IsNullOrEmpty(serviceName))
             {
                 Debug.LogError("Unable to remove manager by name without the name being specified.");
                 return;
@@ -744,7 +744,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Debug.LogError("Unable to disable null manager type.");
                 return;
             }
-            if (string.IsNullOrEmpty(managerName))
+            if (string.IsNullOrEmpty(serviceName))
             {
                 Debug.LogError("Unable to disable manager by name without the name being specified.");
                 return;
@@ -800,7 +800,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Debug.LogError("Unable to enable null manager type.");
                 return;
             }
-            if (string.IsNullOrEmpty(managerName))
+            if (string.IsNullOrEmpty(serviceName))
             {
                 Debug.LogError("Unable to enable manager by name without the name being specified.");
                 return;
@@ -833,7 +833,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (type == null)
             {
                 Debug.LogWarning("Unable to get managers with a type of null.");
-                return new List<IMixedRealityManager>();
+                return new List<IMixedRealityService>();
             }
 
             return GetActiveServices(type, string.Empty);
@@ -850,13 +850,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (ActiveProfile == null)
             {
                 Debug.LogWarning($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile");
-                return new List<IMixedRealityManager>();
+                return new List<IMixedRealityService>();
             }
 
             if (type == null)
             {
                 Debug.LogWarning("Unable to get managers with a type of null.");
-                return new List<IMixedRealityManager>();
+                return new List<IMixedRealityService>();
             }
 
             var services = new List<IMixedRealityService>();
@@ -1040,7 +1040,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (type == null)
             {
                 Debug.LogWarning("Unable to get a component with a type of null.");
-                manager = null;
+                service = null;
                 return;
             }
 
@@ -1058,8 +1058,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (type == null)
             {
                 Debug.LogWarning("Unable to get a component with a type of null.");
-                manager = null;
-                return;
+                service = null;
+                return false;
             }
 
             service = null;
