@@ -195,10 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public string PointerName
         {
-            get
-            {
-                return pointerName;
-            }
+            get { return pointerName; }
             set
             {
                 pointerName = value;

@@ -252,52 +252,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #endregion MonoBehaviour Implementation
 
-        #region Focus Details by EventData
-
-        /// <inheritdoc />
-        public GameObject GetFocusedObject(BaseInputEventData eventData)
-        {
-            Debug.Assert(eventData != null);
-            if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
-
-            IMixedRealityPointer pointer;
-            return TryGetPointingSource(eventData, out pointer) ? GetFocusedObject(pointer) : null;
-        }
-
-        /// <inheritdoc />
-        public bool TryGetFocusDetails(BaseInputEventData eventData, out FocusDetails focusDetails)
-        {
-            foreach (var pointerData in pointers)
-            {
-                if (pointerData.Pointer.InputSourceParent.SourceId == eventData.SourceId)
-                {
-                    focusDetails = pointerData.Details;
-                    return true;
-                }
-            }
-
-            focusDetails = default(FocusDetails);
-            return false;
-        }
-
-        /// <inheritdoc />
-        public bool TryGetPointingSource(BaseInputEventData eventData, out IMixedRealityPointer pointer)
-        {
-            foreach (var pointerData in pointers)
-            {
-                if (pointerData.Pointer.InputSourceParent.SourceId == eventData.SourceId)
-                {
-                    pointer = pointerData.Pointer;
-                    return true;
-                }
-            }
-
-            pointer = null;
-            return false;
-        }
-
-        #endregion Focus Details by EventData
-
         #region Focus Details by IMixedRealityPointer
 
         /// <inheritdoc />

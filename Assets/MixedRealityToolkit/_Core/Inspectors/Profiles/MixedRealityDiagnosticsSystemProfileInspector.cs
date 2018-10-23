@@ -48,6 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 GUI.enabled = false;
             }
 
+            serializedObject.Update();
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Diagnostic Visualization Options", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Diagnostic visualizations can help monitor system resources and performance inside an application.", MessageType.Info);
@@ -59,6 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(showCpu);
             EditorGUILayout.PropertyField(showFps);
             EditorGUILayout.PropertyField(showMemory);
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
