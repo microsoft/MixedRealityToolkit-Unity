@@ -190,11 +190,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
+        private string pointerName = string.Empty;
+
         /// <inheritdoc />
         public string PointerName
         {
-            get { return gameObject.name; }
-            set { gameObject.name = value; }
+            get { return pointerName; }
+            set
+            {
+                pointerName = value;
+                gameObject.name = value;
+            }
         }
 
         /// <inheritdoc />
