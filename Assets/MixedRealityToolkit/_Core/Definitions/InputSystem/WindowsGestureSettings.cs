@@ -6,7 +6,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
 {
     /// <summary>
-    /// Copy of Unity's<see cref="UnityEngine.XR.WSA.Input.GestureSettings"/>
+    /// Copy of Unity's <see cref="UnityEngine.XR.WSA.Input.GestureSettings"/>
     /// </summary>
     [Flags]
     public enum WindowsGestureSettings
