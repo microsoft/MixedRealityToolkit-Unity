@@ -272,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <summary>
         /// Returns the Singleton instance of the classes type.
         /// If no instance is found, then we search for an instance in the scene.
-        /// If more than one instance is found, we throw an error and no instance is returned.
+        /// If more than one instance is found, we log an error and no instance is returned.
         /// </summary>
         public static MixedRealityToolkit Instance
         {
@@ -496,8 +496,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Debug.LogError($"Unable to add a new {type.Name} Service as the Mixed Reality Toolkit has to Active Profile");
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (service == null) { throw new ArgumentNullException(nameof(service)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to add a manager of type null.");
+                return;
+            }
+            if (manager == null)
+            {
+                Debug.LogWarning("Unable to add a manager with a null instance.");
+                return;
+            }
 
             if (IsCoreSystem(type))
             {
@@ -548,15 +556,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to get {nameof(type)} Service as the Mixed Reality Toolkit has no Active Profile.");
+                Debug.LogError($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile.");
+                return null;
             }
 
             if (!IsInitialized)
             {
-                throw new ArgumentNullException($"Unable to get {nameof(type)} Service as the Mixed Reality Toolkit has not been initialized!");
+                Debug.LogError($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has not been initialized!");
+                return null;
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to get null manager type.");
+                return null;
+            }
 
             IMixedRealityService service;
             if (IsCoreSystem(type))
@@ -570,7 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (service == null)
             {
-                throw new NullReferenceException($"Unable to find {type.Name}.");
+                Debug.Log($"Unable to find {type.Name}.");
             }
 
             return service;
@@ -586,11 +600,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to get {serviceName} Service as the Mixed Reality Toolkit has no Active Profile");
+                Debug.LogError($"Unable to get {managerName} Manager as the Mixed Reality Manager has no Active Profile.");
+                return null;
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (string.IsNullOrEmpty(serviceName)) { throw new ArgumentNullException(nameof(serviceName)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to get null manager type.");
+                return null;
+            }
+            if (string.IsNullOrEmpty(managerName))
+            {
+                Debug.LogError("Unable to get manager by name without the name being specified.");
+                return null;
+            }
 
             IMixedRealityService service;
             if (IsCoreSystem(type))
@@ -604,7 +627,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (service == null)
             {
-                throw new NullReferenceException($"Unable to find {serviceName} Service.");
+                Debug.LogError($"Unable to find {managerName} Manager.");
             }
 
             return service;
@@ -618,10 +641,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to remove {nameof(type)} Service as the Mixed Reality Toolkit has no Active Profile");
+                Debug.LogError($"Unable to remove {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile.");
+                return;
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to remove null manager type.");
+                return;
+            }
 
             if (IsCoreSystem(type))
             {
@@ -648,11 +676,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to remove {nameof(type)} service as the Mixed Reality Toolkit has no Active Profile");
+                Debug.LogError($"Unable to remove {managerName} Manager as the Mixed Reality Manager has no Active Profile.");
+                return;
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (string.IsNullOrEmpty(serviceName)) { throw new ArgumentNullException(nameof(serviceName)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to remove null manager type.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(managerName))
+            {
+                Debug.LogError("Unable to remove manager by name without the name being specified.");
+                return;
+            }
 
             if (IsCoreSystem(type))
             {
@@ -675,7 +713,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="type">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
         public void DisableService(Type type)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to disable null manager type.");
+                return;
+            }
 
             if (IsCoreSystem(type))
             {
@@ -697,8 +739,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="serviceName">Name of the specific service</param>
         public void DisableService(Type type, string serviceName)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (string.IsNullOrEmpty(serviceName)) { throw new ArgumentNullException(nameof(serviceName)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to disable null manager type.");
+                return;
+            }
+            if (string.IsNullOrEmpty(managerName))
+            {
+                Debug.LogError("Unable to disable manager by name without the name being specified.");
+                return;
+            }
 
             if (IsCoreSystem(type))
             {
@@ -719,7 +769,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="type">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
         public void EnableService(Type type)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to enable null manager type.");
+                return;
+            }
 
             if (IsCoreSystem(type))
             {
@@ -741,8 +795,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="serviceName">Name of the specific service</param>
         public void EnableService(Type type, string serviceName)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (string.IsNullOrEmpty(serviceName)) { throw new ArgumentNullException(nameof(serviceName)); }
+            if (type == null)
+            {
+                Debug.LogError("Unable to enable null manager type.");
+                return;
+            }
+            if (string.IsNullOrEmpty(managerName))
+            {
+                Debug.LogError("Unable to enable manager by name without the name being specified.");
+                return;
+            }
 
             if (IsCoreSystem(type))
             {
@@ -768,7 +830,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <returns>An array of services that meet the search criteria</returns>
         public List<IMixedRealityService> GetActiveServices(Type type)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get managers with a type of null.");
+                return new List<IMixedRealityManager>();
+            }
 
             return GetActiveServices(type, string.Empty);
         }
@@ -783,10 +849,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to get {nameof(type)} Service as the Mixed Reality Toolkit has no Active Profile");
+                Debug.LogWarning($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile");
+                return new List<IMixedRealityManager>();
             }
 
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get managers with a type of null.");
+                return new List<IMixedRealityManager>();
+            }
 
             var services = new List<IMixedRealityService>();
 
@@ -947,7 +1018,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         private bool IsCoreSystem(Type type)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning($"Null cannot be a core manager.");
+                return false;
+            }
 
             return type == typeof(IMixedRealityInputSystem) ||
                    type == typeof(IMixedRealityTeleportSystem) ||
@@ -962,7 +1037,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="service">return parameter of the function</param>
         private void GetService(Type type, out IMixedRealityService service)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get a component with a type of null.");
+                manager = null;
+                return;
+            }
 
             GetService(type, string.Empty, out service);
         }
@@ -975,7 +1055,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="service">return parameter of the function</param>
         private bool GetService(Type type, string serviceName, out IMixedRealityService service)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get a component with a type of null.");
+                manager = null;
+                return;
+            }
 
             service = null;
 
@@ -1004,14 +1089,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         private void GetService(Type type, ref List<IMixedRealityService> services)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get components with a type of null.");
+                return;
+            }
 
             GetServices(type, string.Empty, ref services);
         }
 
         private void GetServices(Type type, string serviceName, ref List<IMixedRealityService> services)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (type == null)
+            {
+                Debug.LogWarning("Unable to get components with a type of null.");
+                return;
+            }
 
             for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
