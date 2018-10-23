@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public UnityEvent Event;
         public string ClassName;
         public ReceiverBase Receiver;
-        public List<PropertySetting> Settings;
+        public List<InspectorPropertySetting> Settings;
 
         public struct EventLists
         {
@@ -32,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public struct ReceiverData
         {
             public string Name;
-            public List<FieldData> Fields;
+            public List<InspectorFieldData> Fields;
         }
         
         public ReceiverData AddOnClick()
@@ -50,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             ReceiverBase receiver = (ReceiverBase)Activator.CreateInstance(type, Event);
             // get the settings for the inspector
 
-            List<FieldData> fields = new List<FieldData>();
+            List<InspectorFieldData> fields = new List<InspectorFieldData>();
 
             Type myType = receiver.GetType();
             int index = 0;
@@ -62,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 var attrs = (InspectorField[])prop.GetCustomAttributes(typeof(InspectorField), false);
                 foreach (var attr in attrs)
                 {
-                    fields.Add(new FieldData() { Name = prop.Name, Attributes = attr, Value = prop.GetValue(receiver, null)});
+                    fields.Add(new InspectorFieldData() { Name = prop.Name, Attributes = attr, Value = prop.GetValue(receiver, null)});
                 }
 
                 index++;
@@ -74,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 var attrs = (InspectorField[])field.GetCustomAttributes(typeof(InspectorField), false);
                 foreach (var attr in attrs)
                 {
-                    fields.Add(new FieldData() { Name = field.Name, Attributes = attr, Value = field.GetValue(receiver) });
+                    fields.Add(new InspectorFieldData() { Name = field.Name, Attributes = attr, Value = field.GetValue(receiver) });
                 }
 
                 index++;
@@ -139,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             Type eventType = lists.EventTypes[index];
             // apply the settings?
             ReceiverBase newEvent = (ReceiverBase)Activator.CreateInstance(eventType, iEvent.Event);
-            GenericFields<ReceiverBase>.LoadSettings(newEvent, iEvent.Settings);
+            InspectorGenericFields<ReceiverBase>.LoadSettings(newEvent, iEvent.Settings);
 
             return newEvent;
         }

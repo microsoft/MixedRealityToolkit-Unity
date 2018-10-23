@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(States))]
-    public class StatesInspector : InspectorBase
+    public class StatesInspector : Editor
     {
         protected States instance;
         protected SerializedProperty stateList;
@@ -22,13 +23,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         // list of State names
         protected string[] stateOptions;
-        
+
+
+        // indent tracker
+        protected static int indentOnSectionStart = 0;
+
+
         protected virtual void OnEnable()
         {
             instance = (States)target;
             
             stateList = serializedObject.FindProperty("StateList");
-            AdjustListSettings(stateList.arraySize);
             instance.SetupStateOptions();
         }
 
@@ -36,9 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             //base.OnInspectorGUI();
             serializedObject.Update();
-            
-            DrawTitle("States");
-            DrawNotice("Manage state configurations to drive Interactables or Tansitions");
+
+            InspectorUIUtility.DrawTitle("States");
+            InspectorUIUtility.DrawNotice("Manage state configurations to drive Interactables or Tansitions");
 
             // get the list of options and InteractableStates
             stateOptions = instance.StateOptions;
@@ -84,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     name.stringValue = stateEnums[newEnumIndex];
                 }
 
-                SmallButton(new GUIContent(minus, "Remove State"), i, RemoveState);
+                InspectorUIUtility.SmallButton(new GUIContent(InspectorUIUtility.Minus, "Remove State"), i, RemoveState);
                 
                 EditorGUILayout.EndHorizontal();
 
@@ -94,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 EditorGUILayout.EndVertical();
             }
 
-            FlexButton(new GUIContent("+", "Add Theme Property"), 0, AddState);
+            InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), 0, AddState);
 
             serializedObject.ApplyModifiedProperties();
         }

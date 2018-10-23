@@ -8,7 +8,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
 {
     /// <summary>
     /// A set of field/proptery tags used to define how a property should render in a custom inspector
@@ -66,9 +66,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         public UnityEngine.Object Value { get; set; }
 
-        public static PropertySetting FieldToProperty(InspectorField attributes, object fieldValue, string fieldName)
+        public static InspectorPropertySetting FieldToProperty(InspectorField attributes, object fieldValue, string fieldName)
         {
-            PropertySetting setting = new PropertySetting();
+            InspectorPropertySetting setting = new InspectorPropertySetting();
             setting.Type = attributes.Type;
             setting.Tooltip = attributes.Tooltip;
             setting.Label = attributes.Label;
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// <param name="setting"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        public static PropertySetting UpdatePropertySetting(PropertySetting setting, object update)
+        public static InspectorPropertySetting UpdatePropertySetting(InspectorPropertySetting setting, object update)
         {
             switch (setting.Type)
             {
@@ -160,9 +160,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// <param name="settings"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static object GetSettingValue(List<PropertySetting> settings, string name)
+        public static object GetSettingValue(List<InspectorPropertySetting> settings, string name)
         {
-            PropertySetting setting = new PropertySetting();
+            InspectorPropertySetting setting = new InspectorPropertySetting();
             for (int i = 0; i < settings.Count; i++)
             {
                 if (settings[i].Name == name)

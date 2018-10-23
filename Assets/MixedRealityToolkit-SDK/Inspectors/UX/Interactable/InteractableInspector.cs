@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System;
@@ -19,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(Interactable))]
-    public class InteractableInspector : InspectorBase
+    public class InteractableInspector : Editor
     {
         protected Interactable instance;
         protected List<InteractableEvent> eventList;
@@ -37,6 +38,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         protected string[] actionOptions;
 
         protected static bool ProfilesSetup = false;
+        
+        // indent tracker
+        protected static int indentOnSectionStart = 0;
+
+        protected List<InspectorUIUtility.ListSettings> listSettings;
+
+        protected GUIStyle boxStyle;
+
+        private SerializedProperty tempSettings;
+
 
         protected virtual void OnEnable()
         {
@@ -44,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             eventList = instance.Events;
            
             profileList = serializedObject.FindProperty("Profiles");
-            AdjustListSettings(profileList.arraySize);
+            listSettings = InspectorUIUtility.AdjustListSettings(null, profileList.arraySize);
             showProfiles = EditorPrefs.GetBool(prefKey, showProfiles);
 
             SetupEventOptions();
@@ -89,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             serializedObject.Update();
 
             EditorGUILayout.Space();
-            DrawTitle("Interactable");
+            InspectorUIUtility.DrawTitle("Interactable");
             //EditorGUILayout.LabelField(new GUIContent("Interactable Settings"));
 
             EditorGUILayout.BeginVertical("Box");
@@ -103,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 string statesPrefKey = "Settings_States";
                 bool prefsShowStates = EditorPrefs.GetBool(statesPrefKey);
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
-                showStates = DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 2, prefsShowStates, FontStyle.Normal, false);
+                showStates = InspectorUIUtility.DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 2, prefsShowStates, FontStyle.Normal, false);
                 drawerStarted = true;
                 if (showStates != prefsShowStates)
                 {
@@ -139,13 +150,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
 
             if (drawerStarted)
-            { 
-                DrawSectionEnd(indentOnSectionStart);
+            {
+                InspectorUIUtility.DrawSectionEnd(indentOnSectionStart);
             }
 
             if (states.objectReferenceValue == null)
             {
-                DrawError("Please assign a States object!");
+                InspectorUIUtility.DrawError("Please assign a States object!");
                 serializedObject.ApplyModifiedProperties();
                 return;
             }
@@ -202,16 +213,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
-            DrawDivider();
+            InspectorUIUtility.DrawDivider();
 
             if (!ProfilesSetup && !showProfiles)
             {
-                DrawWarning("Profiles (Optional) have not been set up or has errors.");
+                InspectorUIUtility.DrawWarning("Profiles (Optional) have not been set up or has errors.");
             }
 
             // profiles section
             string profileTitle = "Profiles";
-            bool isOPen = DrawSectionStart(profileTitle, indentOnSectionStart + 1, showProfiles, GetLableStyle(titleFontSize, titleColor).fontStyle, false, titleFontSize);
+            bool isOPen = InspectorUIUtility.DrawSectionStart(profileTitle, indentOnSectionStart + 1, showProfiles, InspectorUIUtility.LableStyle(InspectorUIUtility.TitleFontSize, InspectorUIUtility.ColorTint50).fontStyle, false, InspectorUIUtility.TitleFontSize);
 
             if (showProfiles != isOPen)
             {
@@ -245,9 +256,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     }
 
                     EditorGUILayout.BeginHorizontal();
-                    DrawLabel(targetName, 12, baseColor);
+                    InspectorUIUtility.DrawLabel(targetName, 12, InspectorUIUtility.ColorTint100);
 
-                    bool triggered = SmallButton(new GUIContent("\u2212", "Remove Profile"), i, RemoveProfile);
+                    bool triggered = InspectorUIUtility.SmallButton(new GUIContent(InspectorUIUtility.Minus, "Remove Profile"), i, RemoveProfile);
 
                     if (triggered)
                     {
@@ -312,8 +323,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                             if (themeItem.objectReferenceValue.name == "DefaultTheme")
                             {
                                 EditorGUILayout.BeginHorizontal();
-                                DrawWarning("DefaultTheme should not be edited.  ");
-                                bool newTheme = FlexButton(new GUIContent("Create Theme", "Create a new theme"), new int[] { i, t, 0}, CreateTheme);
+                                InspectorUIUtility.DrawWarning("DefaultTheme should not be edited.  ");
+                                bool newTheme = InspectorUIUtility.FlexButton(new GUIContent("Create Theme", "Create a new theme"), new int[] { i, t, 0}, CreateTheme);
                                 if (newTheme)
                                 {
                                     continue;
@@ -328,8 +339,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                             string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
                             bool showSettings = EditorPrefs.GetBool(prefKey);
 
-                            ListSettings settings = listSettings[i];
-                            bool show = DrawSectionStart(themeItem.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 3, showSettings, FontStyle.Normal, false);
+                            InspectorUIUtility.ListSettings settings = listSettings[i];
+                            bool show = InspectorUIUtility.DrawSectionStart(themeItem.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 3, showSettings, FontStyle.Normal, false);
 
                             if (show != showSettings)
                             {
@@ -356,14 +367,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                                 ThemeInspector.RenderThemeSettings(themeObjSettings, themeObj, themeOptions, gameObject, location, iStates);
 
-                                FlexButton(new GUIContent("+", "Add Theme Property"), location, AddThemeProperty);
+                                InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), location, AddThemeProperty);
 
                                 ThemeInspector.RenderThemeStates(themeObjSettings, iStates, 30);
 
                                 themeObj.ApplyModifiedProperties();
                             }
 
-                            DrawSectionEnd(indentOnSectionStart + 2);
+                            InspectorUIUtility.DrawSectionEnd(indentOnSectionStart + 2);
                             listSettings[i] = settings;
 
                             validProfileCnt++;
@@ -414,11 +425,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                                 }
                                 else
                                 {
-                                    DrawError("DefaultTheme missing from project!");
+                                    InspectorUIUtility.DrawError("DefaultTheme missing from project!");
                                 }
                             }
 
-                            DrawError(themeMsg);
+                            InspectorUIUtility.DrawError(themeMsg);
                         }
                     }
 
@@ -465,13 +476,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
 
             ProfilesSetup = validProfileCnt == profileList.arraySize + themeCnt;
-            
-            DrawSectionEnd(indentOnSectionStart);
+
+            InspectorUIUtility.DrawSectionEnd(indentOnSectionStart);
             EditorGUILayout.Space();
-            DrawDivider();
+            InspectorUIUtility.DrawDivider();
 
             // Events section
-            DrawTitle("Events");
+            InspectorUIUtility.DrawTitle("Events");
             //EditorGUILayout.LabelField(new GUIContent("Events"));
 
             SerializedProperty onClick = serializedObject.FindProperty("OnClick");
@@ -520,7 +531,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             themes.ClearArray();
 
-            listSettings.Add(new ListSettings() { Show = false, Scroll = new Vector2() });
+            listSettings.Add(new InspectorUIUtility.ListSettings() { Show = false, Scroll = new Vector2() });
         }
 
         protected void RemoveProfile(int index, SerializedProperty prop = null)
@@ -668,11 +679,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             
             if (!String.IsNullOrEmpty(className.stringValue))
             {
-                int receiverIndex = ReverseLookup(className.stringValue, eventOptions);
+                int receiverIndex = InspectorUIUtility.ReverseLookup(className.stringValue, eventOptions);
                 InteractableEvent.ReceiverData data = eventList[index].AddReceiver(eventTypes[receiverIndex]);
                 name.stringValue = data.Name;
 
-                PropertySettingsList(settings, data.Fields);
+                InspectorFieldsUtility.PropertySettingsList(settings, data.Fields);
             }
         }
 
@@ -684,7 +695,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             SerializedProperty className = eventItem.FindPropertyRelative("ClassName");
 
             // show event dropdown
-            int id = ReverseLookup(className.stringValue, eventOptions);
+            int id = InspectorUIUtility.ReverseLookup(className.stringValue, eventOptions);
             int newId = EditorGUILayout.Popup("Select Event Type", id, eventOptions);
 
             if (id != newId)
@@ -701,13 +712,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             SerializedProperty eventSettings = eventItem.FindPropertyRelative("Settings");
             for (int j = 0; j < eventSettings.arraySize; j++)
             {
-                DisplayPropertyField(eventSettings.GetArrayElementAtIndex(j));
+                InspectorFieldsUtility.DisplayPropertyField(eventSettings.GetArrayElementAtIndex(j));
             }
             EditorGUI.indentLevel = indentOnSectionStart;
 
             EditorGUILayout.Space();
 
-            FlexButton(new GUIContent("Remove Event"), index, RemoveEvent);
+            InspectorUIUtility.FlexButton(new GUIContent("Remove Event"), index, RemoveEvent);
 
             EditorGUILayout.EndVertical();
         }

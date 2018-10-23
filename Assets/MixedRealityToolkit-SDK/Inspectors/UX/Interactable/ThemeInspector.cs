@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     
 #if UNITY_EDITOR
     [CustomEditor(typeof(Theme))]
-    public class ThemeInspector : InspectorBase
+    public class ThemeInspector : Editor
     {
         protected SerializedProperty settings;
 
@@ -30,12 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         protected static string[] shaderOptions;
         protected static State[] themeStates;
 
-        private SerializedProperty tempSettings;
+        // indent tracker
+        protected static int indentOnSectionStart = 0;
+
+        protected GUIStyle boxStyle;
 
         protected virtual void OnEnable()
         {
             settings = serializedObject.FindProperty("Settings");
-            AdjustListSettings(settings.arraySize);
             SetupThemeOptions();
         }
         
@@ -55,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             //base.OnInspectorGUI();
             serializedObject.Update();
 
-            boxStyle = Box(0);
+            boxStyle = InspectorUIUtility.Box(0);
 
             GUILayout.BeginVertical(boxStyle);
             bool hasStates = RenderStates();
@@ -82,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             
             RenderThemeSettings(settings, null, themeOptions, null, new int[] { 0, -1, 0 }, GetStates());
 
-            FlexButton(new GUIContent("+", "Add Theme Property"), new int[] { 0 }, AddThemeProperty);
+            InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), new int[] { 0 }, AddThemeProperty);
 
             // render a list of all the properties from the theme based on state
             RenderThemeStates(settings, GetStates(), 0);
@@ -106,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 string statesPrefKey = target.name + "Settings_States";
                 bool prefsShowStates = EditorPrefs.GetBool(statesPrefKey);
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
-                showStates = DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart, prefsShowStates, FontStyle.Normal, false);
+                showStates = InspectorUIUtility.DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart, prefsShowStates, FontStyle.Normal, false);
                 drawerStarted = true;
                 if (showStates != prefsShowStates)
                 {
@@ -142,12 +145,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (drawerStarted)
             {
-                DrawSectionEnd(indentOnSectionStart);
+                InspectorUIUtility.DrawSectionEnd(indentOnSectionStart);
             }
 
             if (states.objectReferenceValue == null)
             {
-                DrawError("Please assign a States object! Ex: DefaultInteractableStates");
+                InspectorUIUtility.DrawError("Please assign a States object! Ex: DefaultInteractableStates");
                 serializedObject.ApplyModifiedProperties();
                 return false;
             }
@@ -230,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             // get class value types
             if (!String.IsNullOrEmpty(className.stringValue))
             {
-                int propIndex = ReverseLookup(className.stringValue, themeOptions);
+                int propIndex = InspectorUIUtility.ReverseLookup(className.stringValue, themeOptions);
                 GameObject renderHost = null;
                 if (target != null)
                 {
@@ -744,10 +747,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public static void RenderThemeSettings(SerializedProperty themeSettings, SerializedObject themeObj, string[] themeOptions, SerializedProperty gameObject, int[] listIndex, State[] states)
         {
-            GUIStyle box = Box(0);
+            GUIStyle box = InspectorUIUtility.Box(0);
             if (themeObj != null)
             {
-                box = Box(30);
+                box = InspectorUIUtility.Box(30);
             }
 
             for (int n = 0; n < themeSettings.arraySize; n++)
@@ -760,7 +763,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 EditorGUILayout.BeginVertical(box);
                 // a dropdown for the type of theme, they should make sense
                 // show event dropdown
-                int id = ReverseLookup(className.stringValue, themeOptions);
+                int id = InspectorUIUtility.ReverseLookup(className.stringValue, themeOptions);
 
                 EditorGUILayout.BeginHorizontal();
                 int newId = EditorGUILayout.Popup("Theme Property", id, themeOptions);
@@ -773,7 +776,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         listIndex[2] = n;
                     }
 
-                    bool removed = SmallButton(new GUIContent("\u2212", "Remove Theme Property"), listIndex, RemoveThemeProperty, themeSettings);
+                    bool removed = InspectorUIUtility.SmallButton(new GUIContent(InspectorUIUtility.Minus, "Remove Theme Property"), listIndex, RemoveThemeProperty, themeSettings);
 
                     if (removed)
                     {
@@ -824,7 +827,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                             GUILayout.Space(5);
                         }
 
-                        string[] shaderOptionNames = InspectorBase.GetOptions(shaderNames);
+                        string[] shaderOptionNames = InspectorUIUtility.GetOptions(shaderNames);
                         string propName = shaderOptionNames[propId.intValue];
                         bool hasShaderProperty = true;
 
@@ -889,7 +892,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                             if (!hasShaderProperty)
                             {
-                                DrawError(propName + " is not available on the currently assigned Material.");
+                                InspectorUIUtility.DrawError(propName + " is not available on the currently assigned Material.");
                             }
                         }
                         else
@@ -909,7 +912,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 if (animatorCount < sProps.arraySize)
                 {
-                    DrawDivider();
+                    InspectorUIUtility.DrawDivider();
 
                     // show theme properties
                     SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
@@ -951,7 +954,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         props = sProps;
 #pragma warning restore 0219    // enable value is never used warning
 
-                        FlexButton(new GUIContent("Create Animations", "Create and add an Animator with AnimationClips"), listIndex, AddAnimator, targetInfo);
+                        InspectorUIUtility.FlexButton(new GUIContent("Create Animations", "Create and add an Animator with AnimationClips"), listIndex, AddAnimator, targetInfo);
                     }
                 }
 
@@ -985,12 +988,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         
         public static void RenderThemeStates(SerializedProperty settings, State[] states, int margin)
         {
-            GUIStyle box = Box(margin);
+            GUIStyle box = InspectorUIUtility.Box(margin);
 
             EditorGUILayout.BeginVertical(box);
             for (int n = 0; n < states.Length; n++)
             {
-                DrawLabel(states[n].Name, 12, titleColor);
+                InspectorUIUtility.DrawLabel(states[n].Name, 12, InspectorUIUtility.ColorTint50);
 
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
 

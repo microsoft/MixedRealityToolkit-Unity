@@ -8,13 +8,13 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
 {
     /// <summary>
     /// A set of Inspector fields for setting up properties in a
     /// component that can be automatically rendered in a custom inspector
     /// </summary>
-    public class GenericFields<T>
+    public class InspectorGenericFields<T>
     {
         /// <summary>
         /// Copies values from Inspector PropertySettings to an instantiated class on start,
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         /// <param name="target"></param>
         /// <param name="settings"></param>
-        public static void LoadSettings(T target, List<PropertySetting> settings)
+        public static void LoadSettings(T target, List<InspectorPropertySetting> settings)
         {
             Type myType = target.GetType();
 
@@ -57,10 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static List<PropertySetting> GetSettings(T source)
+        public static List<InspectorPropertySetting> GetSettings(T source)
         {
             Type myType = source.GetType();
-            List<PropertySetting> settings = new List<PropertySetting>();
+            List<InspectorPropertySetting> settings = new List<InspectorPropertySetting>();
 
             PropertyInfo[] propInfoList = myType.GetProperties();
             for (int i = 0; i < propInfoList.Length; i++)
