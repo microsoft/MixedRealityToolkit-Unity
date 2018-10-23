@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    [CreateAssetMenu(fileName = "States", menuName = "Interactable/State", order = 1)]
+    [CreateAssetMenu(fileName = "States", menuName = "Mixed Reality Toolkit/Interactable/State", order = 1)]
     public class States : ScriptableObject
     {
         public List<State> StateList;

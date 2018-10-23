@@ -11,32 +11,32 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// <summary>
     /// Uses Animator to control Interacable feedback based on state changes.
     /// </summary>
-    public class AnimatorTheme : ThemeBase
+    public class InteractableAnimatorTheme : InteractableThemeBase
     {
         private int lastIndex = 0;
 
-        public AnimatorTheme()
+        public InteractableAnimatorTheme()
         {
             Types = new Type[] { typeof(Transform) };
             Name = "AnimatorTheme";
             ThemeProperties.Add(
-                new ThemeProperty()
+                new InteractableThemeProperty()
                 {
                     Name = "Animator Trigger",
-                    Type = ThemePropertyValueTypes.AnimatorTrigger,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { String = "Default" }
+                    Type = InteractableThemePropertyValueTypes.AnimatorTrigger,
+                    Values = new List<InteractableThemePropertyValue>(),
+                    Default = new InteractableThemePropertyValue() { String = "Default" }
                 });
         }
 
-        public override ThemePropertyValue GetProperty(ThemeProperty property)
+        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
-            ThemePropertyValue start = new ThemePropertyValue();
+            InteractableThemePropertyValue start = new InteractableThemePropertyValue();
             start.String = property.Values[lastIndex].String;
             return start;
         }
 
-        public override void SetValue(ThemeProperty property, int index, float percentage)
+        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
             if(lastIndex != index)
             {

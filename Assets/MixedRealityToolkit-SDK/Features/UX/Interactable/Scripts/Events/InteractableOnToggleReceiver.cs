@@ -11,15 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// <summary>
     /// a receiver that listens to toggle events
     /// </summary>
-    public class OnToggleReceiver : ReceiverBase
+    public class InteractableOnToggleReceiver : ReceiverBase
     {
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Deselect", Tooltip = "The toggle is deselected")]
         public UnityEvent OnDeselect = new UnityEvent();
         
-        private State lastState;
         private int lastIndex;
 
-        public OnToggleReceiver(UnityEvent ev) : base(ev)
+        public InteractableOnToggleReceiver(UnityEvent ev) : base(ev)
         {
             Name = "OnSelect";
         }
@@ -41,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
 
             lastIndex = currentIndex;
-            lastState = state.CurrentState();
         }
     }
 }

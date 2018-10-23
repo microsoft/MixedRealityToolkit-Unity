@@ -76,13 +76,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public bool FocusEnabled { get { return !IsGlobal; } set { IsGlobal = !value; } }
 
         // list of profiles can match themes with gameObjects
-        public List<ProfileItem> Profiles = new List<ProfileItem>();
+        public List<InteractableProfileItem> Profiles = new List<InteractableProfileItem>();
         // Base onclick event
         public UnityEvent OnClick;
         // list of events added to this interactable
         public List<InteractableEvent> Events = new List<InteractableEvent>();
         // the list of running theme instances to receive state changes
-        public List<ThemeBase> runningThemesList = new List<ThemeBase>();
+        public List<InteractableThemeBase> runningThemesList = new List<InteractableThemeBase>();
 
         // the list of profile settings, so theme values are not directly effected
         protected List<ProfileSettings> runningProfileSettings = new List<ProfileSettings>();
@@ -256,8 +256,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         protected virtual void SetupThemes()
         {
-            ProfileItem.ThemeLists lists = ProfileItem.GetThemeTypes();
-            runningThemesList = new List<ThemeBase>();
+            InteractableProfileItem.ThemeLists lists = InteractableProfileItem.GetThemeTypes();
+            runningThemesList = new List<InteractableThemeBase>();
             runningProfileSettings = new List<ProfileSettings>();
             for (int i = 0; i < Profiles.Count; i++)
             {
@@ -269,12 +269,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     ThemeSettings themeSettings = new ThemeSettings();
                     if (Profiles[i].Target != null && theme != null)
                     {
-                        List<ThemePropertySettings> tempSettings = new List<ThemePropertySettings>();
+                        List<InteractableThemePropertySettings> tempSettings = new List<InteractableThemePropertySettings>();
                         for (int n = 0; n < theme.Settings.Count; n++)
                         {
-                            ThemePropertySettings settings = theme.Settings[n];
+                            InteractableThemePropertySettings settings = theme.Settings[n];
 
-                            settings.Theme = ProfileItem.GetTheme(settings, Profiles[i].Target, lists);
+                            settings.Theme = InteractableProfileItem.GetTheme(settings, Profiles[i].Target, lists);
                             
                             // add themes to theme list based on dimension
                             if (j == dimensionIndex)
@@ -504,33 +504,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnInputUp(InputEventData eventData)
         {
-            //ignore for now
-            return;
-
-            if (!CanInteract() && !HasPress)
+            //ignore for now - waiting to finalize how actions, input and pointer events should work together.
+            
+            if ((!CanInteract() && !HasPress) || true)
             {
                 return;
             }
-
-            print("Input Up: " + pointers.Count + " / " + name + " / " + HasFocus);
             
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
                 SetPress(false);
             }
+            
         }
 
         public void OnInputDown(InputEventData eventData)
         {
-            //ignore for now
-            return;
-
-            if (!CanInteract())
+            //ignore for now - waiting to finalize how actions, input and pointer events should work together.
+            
+            if (!CanInteract() || true)
             {
                 return;
             }
-
-            print("Input Down: " + pointers.Count + " / " + name + " / " + HasFocus);
+            
             if(ShouldListen(eventData.MixedRealityInputAction))
             {
                 SetPress(true);
@@ -541,8 +537,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             // ignore for now - using pointer events,
             // but may need to come back to these events for menu and trigger filtering
-
-            //print("PRESSED: " + eventData.InputData + " / " + eventData.MixedRealityInputAction.Description + " / " + name);
 
             if (!CanInteract() || true)
             {
@@ -730,7 +724,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         protected void FilterThemesByDimensions()
         {
-            runningThemesList = new List<ThemeBase>();
+            runningThemesList = new List<InteractableThemeBase>();
 
             for (int i = 0; i < runningProfileSettings.Count; i++)
             {

@@ -1235,8 +1235,8 @@ MonoBehaviour:
   Dimensions: 2
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
-  RequiresGaze: 1
+  VoiceCommand: Radial Two
+  RequiresGaze: 0
   Profiles:
   - Target: {fileID: 1842973494018042}
     Themes:
@@ -1286,8 +1286,8 @@ MonoBehaviour:
   Dimensions: 2
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
-  RequiresGaze: 1
+  VoiceCommand: Radial One
+  RequiresGaze: 0
   Profiles:
   - Target: {fileID: 1903041749280706}
     Themes:
@@ -1434,8 +1434,8 @@ MonoBehaviour:
   Dimensions: 2
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
-  RequiresGaze: 1
+  VoiceCommand: Radial Three
+  RequiresGaze: 0
   Profiles:
   - Target: {fileID: 1301037372891736}
     Themes:

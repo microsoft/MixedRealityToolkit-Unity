@@ -97,13 +97,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             // States
             bool showStates = false;
             SerializedProperty states = serializedObject.FindProperty("States");
+            bool drawerStarted = false;
             if (states.objectReferenceValue != null)
             {
                 string statesPrefKey = "Settings_States";
                 bool prefsShowStates = EditorPrefs.GetBool(statesPrefKey);
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
                 showStates = DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 2, prefsShowStates, FontStyle.Normal, false);
-            
+                drawerStarted = true;
                 if (showStates != prefsShowStates)
                 {
                     EditorPrefs.SetBool(statesPrefKey, showStates);
@@ -137,7 +138,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
             }
 
-            DrawSectionEnd(indentOnSectionStart);
+            if (drawerStarted)
+            { 
+                DrawSectionEnd(indentOnSectionStart);
+            }
 
             if (states.objectReferenceValue == null)
             {
@@ -530,7 +534,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
          
         protected void SetupThemeOptions()
         {
-            ProfileItem.ThemeLists lists = ProfileItem.GetThemeTypes();
+            InteractableProfileItem.ThemeLists lists = InteractableProfileItem.GetThemeTypes();
             themeOptions = lists.Names.ToArray();
             themeTypes = lists.Types.ToArray();
         }

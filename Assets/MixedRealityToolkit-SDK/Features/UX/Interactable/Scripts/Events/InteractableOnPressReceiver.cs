@@ -9,40 +9,42 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     /// <summary>
-    /// A basic focus event receiver
+    /// Basic press event receiver
     /// </summary>
-    public class OnFocusReceiver : ReceiverBase
+    public class InteractableOnPressReceiver : ReceiverBase
     {
-        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Focus Off", Tooltip = "Focus has left the object")]
-        public UnityEvent OnFocusOff = new UnityEvent();
+        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Deselect", Tooltip = "The toggle is deselected")]
+        public UnityEvent OnRelease = new UnityEvent();
 
-        private bool hadFocus;
+        private bool hasDown;
         private State lastState;
 
-        public OnFocusReceiver(UnityEvent ev) : base(ev)
+        public InteractableOnPressReceiver(UnityEvent ev) : base(ev)
         {
-            Name = "OnFocus";
+            Name = "OnPress";
         }
 
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
             bool changed = state.CurrentState() != lastState;
 
-            bool hasFocus = state.GetState(InteractableStates.InteractableStateEnum.Focus).Value > 0;
+            bool hadDown = hasDown;
+            hasDown = state.GetState(InteractableStates.InteractableStateEnum.Pressed).Value > 0;
 
-            if (hadFocus != hasFocus && changed)
+            bool focused = state.GetState(InteractableStates.InteractableStateEnum.Focus).Value > 0;
+
+            if (changed && hasDown != hadDown && focused)
             {
-                if (hasFocus)
+                if (hasDown)
                 {
                     uEvent.Invoke();
                 }
                 else
                 {
-                    OnFocusOff.Invoke();
+                    OnRelease.Invoke();
                 }
             }
-
-            hadFocus = hasFocus;
+            
             lastState = state.CurrentState();
         }
     }

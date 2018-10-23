@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         
         public ReceiverData AddOnClick()
         {
-            return AddReceiver(typeof(OnClickReceiver));
+            return AddReceiver(typeof(InteractableOnClickReceiver));
         }
 
         /// <summary>

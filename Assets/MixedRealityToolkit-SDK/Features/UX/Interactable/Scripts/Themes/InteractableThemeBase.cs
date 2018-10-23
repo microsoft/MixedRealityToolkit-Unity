@@ -12,14 +12,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// Base class for themes
     /// </summary>
     
-    public abstract class ThemeBase
+    public abstract class InteractableThemeBase
     {
         public Type[] Types;
         public string Name = "Base Theme";
-        public List<ThemeProperty> ThemeProperties = new List<ThemeProperty>();
-        public List<ThemePropertyValue> CustomSettings = new List<ThemePropertyValue>();
+        public List<InteractableThemeProperty> ThemeProperties = new List<InteractableThemeProperty>();
+        public List<InteractableThemePropertyValue> CustomSettings = new List<InteractableThemePropertyValue>();
         public GameObject Host;
-        public ThemeEaseSettings Ease;
+        public InteractableThemeEaseSettings Ease;
         public bool Loaded;
 
         private bool hasFirstState = false;
@@ -29,17 +29,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         //! find a way to set the default values of the properties, like scale should be Vector3.one
         // these should be custom, per theme
 
-        public abstract void SetValue(ThemeProperty property, int index, float percentage);
+        public abstract void SetValue(InteractableThemeProperty property, int index, float percentage);
 
-        public abstract ThemePropertyValue GetProperty(ThemeProperty property);
+        public abstract InteractableThemePropertyValue GetProperty(InteractableThemeProperty property);
 
-        public virtual void Init(GameObject host, ThemePropertySettings settings)
+        public virtual void Init(GameObject host, InteractableThemePropertySettings settings)
         {
             Host = host;
 
             for (int i = 0; i < settings.Properties.Count; i++)
             {
-                ThemeProperty prop = ThemeProperties[i];
+                InteractableThemeProperty prop = ThemeProperties[i];
                 prop.ShaderOptionNames = settings.Properties[i].ShaderOptionNames;
                 prop.ShaderOptions = settings.Properties[i].ShaderOptions;
                 prop.PropId = settings.Properties[i].PropId;
@@ -65,9 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return Mathf.RoundToInt((e - s) * t) + s;
         }
 
-        protected ThemeEaseSettings CopyEase(ThemeEaseSettings ease)
+        protected InteractableThemeEaseSettings CopyEase(InteractableThemeEaseSettings ease)
         {
-            ThemeEaseSettings newEase = new ThemeEaseSettings();
+            InteractableThemeEaseSettings newEase = new InteractableThemeEaseSettings();
             newEase.Curve = ease.Curve;
             newEase.EaseValues = ease.EaseValues;
             newEase.LerpTime = ease.LerpTime;
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 for (int i = 0; i < ThemeProperties.Count; i++)
                 {
-                    ThemeProperty current = ThemeProperties[i];
+                    InteractableThemeProperty current = ThemeProperties[i];
                     current.StartValue = GetProperty(current);
                     if (hasFirstState)
                     {
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 Ease.OnUpdate();
                 for (int i = 0; i < ThemeProperties.Count; i++)
                 {
-                    ThemeProperty current = ThemeProperties[i];
+                    InteractableThemeProperty current = ThemeProperties[i];
                     SetValue(current, state, Ease.GetCurved());
                 }
             }

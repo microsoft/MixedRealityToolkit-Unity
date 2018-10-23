@@ -9,43 +9,43 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     /// <summary>
-    /// Basic press event receiver
+    /// A basic receiver for detecting clicks
     /// </summary>
-    public class OnPressReceiver : ReceiverBase
+    public class InteractableOnClickReceiver : ReceiverBase
     {
-        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Deselect", Tooltip = "The toggle is deselected")]
-        public UnityEvent OnRelease = new UnityEvent();
+        [InspectorField(Type = InspectorField.FieldTypes.Float, Label = "Click Time", Tooltip = "The press and release should happen within this time")]
+        public float ClickTime = 0.5f;
+
+        private float clickTimer = 0;
 
         private bool hasDown;
-        private State lastState;
 
-        public OnPressReceiver(UnityEvent ev) : base(ev)
+        public InteractableOnClickReceiver(UnityEvent ev): base(ev)
         {
-            Name = "OnPress";
+            Name = "OnClick";
         }
 
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
-            bool changed = state.CurrentState() != lastState;
-
             bool hadDown = hasDown;
             hasDown = state.GetState(InteractableStates.InteractableStateEnum.Pressed).Value > 0;
 
             bool focused = state.GetState(InteractableStates.InteractableStateEnum.Focus).Value > 0;
 
-            if (changed && hasDown != hadDown && focused)
+            if (hadDown && !hasDown && focused && clickTimer < ClickTime)
             {
-                if (hasDown)
-                {
-                    uEvent.Invoke();
-                }
-                else
-                {
-                    OnRelease.Invoke();
-                }
+                Debug.Log("Click!");
+                uEvent.Invoke();
             }
-            
-            lastState = state.CurrentState();
+
+            if (!hasDown)
+            {
+                clickTimer = 0;
+            }
+            else
+            {
+                clickTimer += Time.deltaTime;
+            }
         }
     }
 }

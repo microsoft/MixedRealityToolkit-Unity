@@ -9,26 +9,26 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public class ColorTheme : ShaderTheme
+    public class InteractableColorTheme : InteractableShaderTheme
     {
-        public ColorTheme()
+        public InteractableColorTheme()
         {
             Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text) };
             Name = "Color Theme";
-            ThemeProperties = new List<ThemeProperty>();
+            ThemeProperties = new List<InteractableThemeProperty>();
             ThemeProperties.Add(
-                new ThemeProperty()
+                new InteractableThemeProperty()
                 {
                     Name = "Color",
-                    Type = ThemePropertyValueTypes.Color,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Color = Color.white}
+                    Type = InteractableThemePropertyValueTypes.Color,
+                    Values = new List<InteractableThemePropertyValue>(),
+                    Default = new InteractableThemePropertyValue() { Color = Color.white}
                 });
         }
 
-        public override ThemePropertyValue GetProperty(ThemeProperty property)
+        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
-            ThemePropertyValue color = new ThemePropertyValue();
+            InteractableThemePropertyValue color = new InteractableThemePropertyValue();
             TextMesh mesh = Host.GetComponent<TextMesh>();
             if (mesh != null)
             {
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return base.GetProperty(property);
         }
 
-        public override void SetValue(ThemeProperty property, int index, float percentage)
+        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
             Color color = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
             TextMesh mesh = Host.GetComponent<TextMesh>();

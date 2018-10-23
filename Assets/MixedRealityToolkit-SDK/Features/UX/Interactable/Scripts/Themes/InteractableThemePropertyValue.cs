@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// </summary>
     
     [System.Serializable]
-    public class ThemePropertyValue
+    public class InteractableThemePropertyValue
     {
         public string Name;
         public string String;
