@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -58,9 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
         private void OnEnable()
         {
-            if (!CheckMixedRealityManager(false) ||
-                !MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
-                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
+            if (!CheckMixedRealityConfigured(false) ||
+                !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
+                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 return;
             }
@@ -72,12 +72,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             inputActionRulesQuaternionAxis = serializedObject.FindProperty("inputActionRulesQuaternionAxis");
             inputActionRulesPoseAxis = serializedObject.FindProperty("inputActionRulesPoseAxis");
 
-            baseActionLabels = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            baseActionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(action => action.AxisConstraint != AxisType.None && action.AxisConstraint != AxisType.Raw)
                 .Select(action => action.Description)
                 .ToArray();
 
-            baseActionIds = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            baseActionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(action => action.AxisConstraint != AxisType.None && action.AxisConstraint != AxisType.Raw)
                 .Select(action => (int)action.Id)
                 .ToArray();
@@ -91,13 +91,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         {
             RenderMixedRealityToolkitLogo();
 
-            if (!CheckMixedRealityManager() ||
-                !MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
-                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
+            if (!CheckMixedRealityConfigured() ||
+                !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
+                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 if (GUILayout.Button("Back to Configuration Profile"))
                 {
-                    Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
                 }
 
                 return;
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             if (GUILayout.Button("Back to Input Profile"))
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
+                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
             }
 
             EditorGUILayout.Space();
@@ -209,12 +209,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
         private static void GetCompatibleActions(MixedRealityInputAction baseAction)
         {
-            ruleActionLabels = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            ruleActionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == baseAction.AxisConstraint && inputAction.Id != baseAction.Id)
                 .Select(action => action.Description)
                 .ToArray();
 
-            ruleActionIds = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
+            ruleActionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions
                 .Where(inputAction => inputAction.AxisConstraint == baseAction.AxisConstraint && inputAction.Id != baseAction.Id)
                 .Select(action => (int)action.Id)
                 .ToArray();
@@ -444,11 +444,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 baseActionId = EditorGUILayout.IntPopup(baseActionId, baseActionLabels, baseActionIds, GUILayout.ExpandWidth(true));
             }
 
-            for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Length; i++)
+            for (int i = 0; i < MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Length; i++)
             {
-                if (baseActionId == (int)MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[i].Id)
+                if (baseActionId == (int)MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[i].Id)
                 {
-                    action = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[i];
+                    action = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[i];
                 }
             }
 
@@ -474,11 +474,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUI.BeginChangeCheck();
             ruleActionId = EditorGUILayout.IntPopup(ruleActionId, ruleActionLabels, ruleActionIds, GUILayout.ExpandWidth(true));
 
-            for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Length; i++)
+            for (int i = 0; i < MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Length; i++)
             {
-                if (ruleActionId == (int)MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[i].Id)
+                if (ruleActionId == (int)MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[i].Id)
                 {
-                    action = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[i];
+                    action = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[i];
                 }
             }
 

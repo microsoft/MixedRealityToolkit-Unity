@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using System;
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityInputSystem"/>
     /// </summary>
-    public class MixedRealityInputManager : MixedRealityEventManager, IMixedRealityInputSystem
+    public class MixedRealityInputManager : BaseEventSystem, IMixedRealityInputSystem
     {
         /// <inheritdoc />
         public event Action InputEnabled;
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public override void Initialize()
         {
             base.Initialize();
-            CurrentInputActionRulesProfile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
+            CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
             InitializeInternal();
             InputEnabled?.Invoke();
         }

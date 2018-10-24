@@ -21,14 +21,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
             pointerDownProperty = serializedObject.FindProperty("onPointerDownActionEvent");
             pointerClickedProperty = serializedObject.FindProperty("onPointerClickedActionEvent");
 
-            CheckMixedRealityManager(false);
+            CheckMixedRealityConfigured(false);
         }
 
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
-            if (!CheckMixedRealityManager()) { return; }
+            if (!CheckMixedRealityConfigured()) { return; }
 
             serializedObject.Update();
             EditorGUILayout.PropertyField(pointerUpProperty, true);

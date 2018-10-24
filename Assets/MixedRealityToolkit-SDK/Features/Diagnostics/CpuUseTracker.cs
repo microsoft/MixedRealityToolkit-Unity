@@ -2,8 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Linq;
+
+#if !WINDOWS_UWP || ENABLE_IL2CPP
 using System.Diagnostics;
+using System.Linq;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
@@ -25,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         public double GetReadingInMs()
         {
 #if WINDOWS_UWP && !ENABLE_IL2CPP
-            // UWP doesn't support process with dotnet runtime, so we can't get CPU readings with the current pattern. 
+            // UWP doesn't support process with .NET runtime, so we can't get CPU readings with the current pattern.
             return -1;
 #else
             if (!processorTime.HasValue)

@@ -2300,7 +2300,7 @@ GameObject:
   - component: {fileID: 1540929158}
   - component: {fileID: 1540929157}
   m_Layer: 0
-  m_Name: MixedRealityManager
+  m_Name: MixedRealityToolkit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
