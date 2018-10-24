@@ -542,7 +542,7 @@ GameObject:
   - component: {fileID: 979633973}
   - component: {fileID: 979633972}
   m_Layer: 0
-  m_Name: MixedRealityManager
+  m_Name: MixedRealityToolkit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

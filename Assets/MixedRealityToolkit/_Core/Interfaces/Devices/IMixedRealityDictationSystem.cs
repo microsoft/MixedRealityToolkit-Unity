@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
     /// <summary>
     /// Mixed Reality Toolkit controller definition, used to manage a specific controller type
     /// </summary>
-    public interface IMixedRealityDictationManager : IMixedRealityDeviceManager, IMixedRealityComponent
+    public interface IMixedRealityDictationSystem : IMixedRealityDeviceManager, IMixedRealityExtensionService
     {
         /// <summary>
         /// Is the system currently listing to dictation input?
