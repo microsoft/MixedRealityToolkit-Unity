@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
     /// <summary>
     /// This class handles the solver components that are attached to this <see cref="GameObject"/>
     /// </summary>
-    public class SolverHandler : MonoBehaviour
+    public class SolverHandler : ControllerFinder
     {
         [SerializeField]
         [Tooltip("Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.")]
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             set
             {
                 additionalOffset = value;
-                TransformTarget = MakeOffsetTransform(TransformTarget);
+                transformTarget = MakeOffsetTransform(transformTarget);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             set
             {
                 additionalRotation = value;
-                TransformTarget = MakeOffsetTransform(TransformTarget);
+                transformTarget = MakeOffsetTransform(transformTarget);
             }
         }
 
@@ -134,9 +134,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             DeltaTime = 0.0f;
 
             solvers.AddRange(GetComponents<Solver>());
+        }
 
+        private void Start()
+        {
             // TransformTarget overrides TrackedObjectToReference
-            if (!TransformTarget)
+            if (!transformTarget)
             {
                 AttachToNewTrackedObject();
             }
@@ -166,21 +169,42 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         protected void OnDestroy()
         {
-            if (transformWithOffset != null)
-            {
-                Destroy(transformWithOffset);
-            }
+            DetachFromCurrentTrackedObject();
         }
 
         #endregion MonoBehaviour Implementation
+
+        protected override void OnControllerFound()
+        {
+            if (!transformTarget)
+            {
+                TrackTransform(ControllerTransform);
+            }
+        }
+
+        protected override void OnControllerLost()
+        {
+            DetachFromCurrentTrackedObject();
+        }
 
         /// <summary>
         /// Clears the transform target and attaches to the current <see cref="TrackedObjectToReference"/>.
         /// </summary>
         public void RefreshTrackedObject()
         {
-            transformTarget = null;
+            DetachFromCurrentTrackedObject();
             AttachToNewTrackedObject();
+        }
+
+        protected virtual void DetachFromCurrentTrackedObject()
+        {
+            transformTarget = null;
+
+            if (transformWithOffset != null)
+            {
+                Destroy(transformWithOffset);
+                transformWithOffset = null;
+            }
         }
 
         protected virtual void AttachToNewTrackedObject()
@@ -188,15 +212,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             switch (TrackedObjectToReference)
             {
                 case TrackedObjectType.Head:
+                    // No need to search for a controller if we've already attached to the head.
+                    Handedness = Handedness.None;
                     TrackTransform(CameraCache.Main.transform);
                     break;
-                // Other cases will come online as ControllerFinder is ported appropriately.
+                case TrackedObjectType.MotionControllerLeft:
+                    Handedness = Handedness.Left;
+                    break;
+                case TrackedObjectType.MotionControllerRight:
+                    Handedness = Handedness.Right;
+                    break;
             }
         }
 
         private void TrackTransform(Transform newTrackedTransform)
         {
-            TransformTarget = RequiresOffset ? MakeOffsetTransform(newTrackedTransform) : newTrackedTransform;
+            transformTarget = RequiresOffset ? MakeOffsetTransform(newTrackedTransform) : newTrackedTransform;
         }
 
         private Transform MakeOffsetTransform(Transform parentTransform)

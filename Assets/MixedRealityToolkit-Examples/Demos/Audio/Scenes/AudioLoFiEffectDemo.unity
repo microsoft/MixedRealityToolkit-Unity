@@ -376,7 +376,7 @@ GameObject:
   m_Component:
   - component: {fileID: 874911121}
   m_Layer: 0
-  m_Name: Body
+  m_Name: MixedRealityPlayspace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -642,6 +642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sourceQuality: 0
+  influencerController: {fileID: 1014969685}
 --- !u!114 &1014969685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -655,7 +656,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateInterval: 0.25
   maxDistance: 20
-  MaxObjects: 10
+  maxObjects: 10
+  audioSource: {fileID: 1014969681}
 --- !u!1 &1353076106
 GameObject:
   m_ObjectHideFlags: 0

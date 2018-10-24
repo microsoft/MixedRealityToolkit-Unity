@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         private GameObject CreateBoundaryVisualizationParent()
         {
             GameObject visualizationParent = new GameObject("Boundary System Visualizations");
-            visualizationParent.transform.parent = CameraCache.Main.transform.parent;
+            visualizationParent.transform.parent = MixedRealityManager.Instance.MixedRealityPlayspace;
 
             return visualizationParent;
         }
@@ -456,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
 
             // Handle the user teleporting (boundary moves with them).
-            location = CameraCache.Main.transform.parent.InverseTransformPoint(location);
+            location = MixedRealityManager.Instance.MixedRealityPlayspace.InverseTransformPoint(location);
 
             if (FloorHeight.Value > location.y ||
                 BoundaryHeight < location.y)
@@ -499,7 +499,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
 
             // Handle the user teleporting (boundary moves with them).
-            Vector3 transformedCenter = CameraCache.Main.transform.parent.TransformPoint(
+            Vector3 transformedCenter = MixedRealityManager.Instance.MixedRealityPlayspace.TransformPoint(
                 new Vector3(rectangularBounds.Center.x, 0f, rectangularBounds.Center.y));
 
             center = new Vector2(transformedCenter.x, transformedCenter.z);
@@ -530,9 +530,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             currentFloorObject.name = "Boundary System Floor";
             currentFloorObject.transform.localScale = new Vector3(floorScale.x, boundaryObjectThickness, floorScale.y);
             currentFloorObject.transform.Translate(new Vector3(
-                CameraCache.Main.transform.parent.position.x, 
+                MixedRealityManager.Instance.MixedRealityPlayspace.position.x, 
                 FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f), 
-                CameraCache.Main.transform.parent.position.z));
+                MixedRealityManager.Instance.MixedRealityPlayspace.position.z));
             currentFloorObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorMaterial;
 
             return currentFloorObject;
@@ -606,9 +606,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             currentTrackedAreaObject.layer = ignoreRaycastLayerValue;
             currentTrackedAreaObject.AddComponent<LineRenderer>();
             currentTrackedAreaObject.transform.Translate(new Vector3(
-                CameraCache.Main.transform.parent.position.x,
+                MixedRealityManager.Instance.MixedRealityPlayspace.position.x,
                 boundaryObjectRenderOffset,
-                CameraCache.Main.transform.parent.position.z));
+                MixedRealityManager.Instance.MixedRealityPlayspace.position.z));
 
             // Configure the renderer properties.
             float lineWidth = 0.01f;

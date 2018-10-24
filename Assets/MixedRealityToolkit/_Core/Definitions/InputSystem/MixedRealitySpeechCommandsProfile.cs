@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
     /// Configuration profile settings for setting up and consuming Speech Commands.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Speech Commands Profile", fileName = "MixedRealitySpeechCommandsProfile", order = (int)CreateProfileMenuItemIndices.Speech)]
-    public class MixedRealitySpeechCommandsProfile : ScriptableObject
+    public class MixedRealitySpeechCommandsProfile : BaseMixedRealityProfile
     {
         [SerializeField]
         [Tooltip("Whether the recognizer should be activated on start.")]

@@ -28,13 +28,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 
             keywordsProperty = serializedObject.FindProperty("keywords");
             persistentKeywordsProperty = serializedObject.FindProperty("persistentKeywords");
-            registeredKeywords = RegisteredKeywords().Distinct().ToArray();
+
+            if (CheckMixedRealityManager(false))
+            {
+                registeredKeywords = RegisteredKeywords().Distinct().ToArray();
+            }
         }
 
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            serializedObject.Update();
+            if (!CheckMixedRealityManager())
+            {
+                return;
+            }
 
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
             {
@@ -49,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
                 return;
             }
 
+            serializedObject.Update();
             EditorGUILayout.PropertyField(persistentKeywordsProperty);
 
             ShowList(keywordsProperty);
@@ -142,8 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 
         private static IEnumerable<string> RegisteredKeywords()
         {
-            if (!MixedRealityManager.ConfirmInitialized() ||
-                !MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
                 !MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled ||
                  MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
             {

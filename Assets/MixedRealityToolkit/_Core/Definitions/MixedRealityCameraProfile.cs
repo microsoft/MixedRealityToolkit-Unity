@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
     /// Based on those values, you can customize your camera and quality settings.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = (int)CreateProfileMenuItemIndices.Camera)]
-    public class MixedRealityCameraProfile : ScriptableObject
+    public class MixedRealityCameraProfile : BaseMixedRealityProfile
     {
         private enum DisplayType
         {

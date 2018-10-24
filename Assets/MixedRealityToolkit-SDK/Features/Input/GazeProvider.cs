@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
@@ -234,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             /// <param name="handedness">Optional handedness of the source that pressed the pointer.</param>
             public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
             {
-                InputSystem.RaisePointerDown(this, handedness, mixedRealityInputAction);
+                MixedRealityManager.InputSystem.RaisePointerDown(this, handedness, mixedRealityInputAction);
             }
 
             /// <summary>
@@ -244,8 +245,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             /// <param name="handedness">Optional handedness of the source that released the pointer.</param>
             public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
             {
-                InputSystem.RaisePointerClicked(this, handedness, mixedRealityInputAction, 0);
-                InputSystem.RaisePointerUp(this, handedness, mixedRealityInputAction);
+                MixedRealityManager.InputSystem.RaisePointerClicked(this, handedness, mixedRealityInputAction, 0);
+                MixedRealityManager.InputSystem.RaisePointerUp(this, handedness, mixedRealityInputAction);
             }
         }
 
@@ -341,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             base.OnDisable();
             GazePointer.BaseCursor?.SetVisibility(false);
-            InputSystem?.RaiseSourceLost(GazeInputSource);
+            MixedRealityManager.InputSystem?.RaiseSourceLost(GazeInputSource);
         }
 
         #endregion MonoBehaviour Implementation
@@ -394,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private async void RaiseSourceDetected()
         {
             await WaitUntilInputSystemValid;
-            InputSystem.RaiseSourceDetected(GazeInputSource);
+            MixedRealityManager.InputSystem.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
         }
 
