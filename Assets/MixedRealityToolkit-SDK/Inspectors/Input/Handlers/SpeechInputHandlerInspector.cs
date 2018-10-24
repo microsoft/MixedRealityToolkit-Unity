@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
                 return;
             }
 
-            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile == null)
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile == null)
             {
                 EditorGUILayout.HelpBox("No Speech Commands Profile Found, be sure to specify a profile in the Input System's configuration profile.", MessageType.Error);
                 return;
