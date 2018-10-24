@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
     /// <summary>
     /// Generic interface for all Mixed Reality Services
     /// </summary>
-    public interface IMixedRealityService // IMixedRealityManager
+    public interface IMixedRealityService
     {
         /// <summary>
         /// Optional Priority attribute if multiple services of the same type are required, enables targeting a service for action.
