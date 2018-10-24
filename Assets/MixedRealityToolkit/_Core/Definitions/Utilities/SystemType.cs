@@ -59,19 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            if (!string.IsNullOrEmpty(reference))
-            {
-                type = Type.GetType(reference);
-
-                if (type == null)
-                {
-                    Debug.LogWarning($"'{reference}' was referenced but class or struct type was not found.");
-                }
-            }
-            else
-            {
-                type = null;
-            }
+            type = !string.IsNullOrEmpty(reference) ? Type.GetType(reference) : null;
         }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize() { }

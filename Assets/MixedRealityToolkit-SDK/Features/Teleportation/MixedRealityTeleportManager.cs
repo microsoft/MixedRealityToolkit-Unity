@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityTeleportSystem"/>
     /// </summary>
-    public class MixedRealityTeleportManager : MixedRealityEventManager, IMixedRealityTeleportSystem
+    public class MixedRealityTeleportManager : BaseEventSystem, IMixedRealityTeleportSystem
     {
         private TeleportEventData teleportEventData;
 
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         /// </summary>
         private GameObject eventSystemReference = null;
 
-        #region IMixedRealityManager Implementation
+        #region IMixedRealityService Implementation
 
         /// <inheritdoc />
         public override void Initialize()
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
                 if (eventSystems.Length == 0)
                 {
-                    if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+                    if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
                     {
                         eventSystemReference = new GameObject("Event System");
                         eventSystemReference.AddComponent<EventSystem>();
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             }
         }
 
-        #endregion IMixedRealityManager Implementation
+        #endregion IMixedRealityService Implementation
 
         #region IEventSystemManager Implementation
 
@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         {
             isProcessingTeleportRequest = true;
 
-            var cameraParent = MixedRealityManager.Instance.MixedRealityPlayspace;
+            var cameraParent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
 
             targetRotation = Vector3.zero;
             targetRotation.y = eventData.Pointer.PointerOrientation;

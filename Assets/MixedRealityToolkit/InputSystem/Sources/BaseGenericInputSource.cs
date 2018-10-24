@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using System.Collections;
 
@@ -22,9 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <param name="pointers"></param>
         public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null)
         {
-            SourceId = MixedRealityManager.InputSystem.GenerateNewSourceId();
+            SourceId = MixedRealityToolkit.InputSystem.GenerateNewSourceId();
             SourceName = name;
-            Pointers = pointers ?? new[] { MixedRealityManager.InputSystem.GazeProvider.GazePointer };
+            Pointers = pointers ?? new[] { MixedRealityToolkit.InputSystem.GazeProvider.GazePointer };
         }
 
         /// <inheritdoc />
