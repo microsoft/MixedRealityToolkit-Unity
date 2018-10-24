@@ -1,25 +1,27 @@
 fileFormatVersion: 2
-guid: c185ec90f910abc4fbf0c1ef8a5c8a66
+guid: aa39033344b08ce4bab10cc11dc6d6b8
+timeCreated: 1493052376
+licenseType: Pro
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 19
   fileIDToRecycleName:
-    100000: CINEMA_4D_Editor
+    100000: Coffee
     100002: //RootNode
-    100004: Platonic
-    400000: CINEMA_4D_Editor
+    100004: CoffeeCup
+    400000: Coffee
     400002: //RootNode
-    400004: Platonic
-    2000000: CINEMA_4D_Editor
-    2100000: No Name
-    2300000: Platonic
-    3300000: Platonic
-    4300000: Platonic
-  externalObjects: {}
+    400004: CoffeeCup
+    2300000: Coffee
+    2300002: CoffeeCup
+    3300000: Coffee
+    3300002: CoffeeCup
+    4300000: CoffeeCup
+    4300002: Coffee
+    9500000: //RootNode
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -32,34 +34,26 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    importAnimatedCustomProperties: 0
-    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 100
     meshCompression: 0
     addColliders: 0
-    importVisibility: 1
-    importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importBlendShapes: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
-    weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -69,8 +63,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-    normalCalculationMode: 4
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
@@ -86,7 +79,7 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 0

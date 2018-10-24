@@ -1,25 +1,33 @@
 fileFormatVersion: 2
-guid: 76a90a8ee3079bc4b839ceed941ecda0
+guid: 3f8a3164171bcba42b1e2b051b994a3c
+timeCreated: 1493847758
+licenseType: Pro
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 19
   fileIDToRecycleName:
-    100000: CINEMA_4D_Editor
-    100002: //RootNode
-    100004: Platonic
-    400000: CINEMA_4D_Editor
-    400002: //RootNode
-    400004: Platonic
-    2000000: CINEMA_4D_Editor
-    2100000: No Name
-    2300000: Platonic
-    3300000: Platonic
-    4300000: Platonic
-  externalObjects: {}
+    100000: Body
+    100002: Cheese
+    100004: Mouse
+    100006: //RootNode
+    100008: Tail
+    400000: Body
+    400002: Cheese
+    400004: Mouse
+    400006: //RootNode
+    400008: Tail
+    2300000: Body
+    2300002: Cheese
+    2300004: Tail
+    3300000: Body
+    3300002: Cheese
+    3300004: Tail
+    4300000: Cheese
+    4300002: Body
+    4300004: Tail
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -32,15 +40,12 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    importAnimatedCustomProperties: 0
-    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -48,18 +53,13 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importVisibility: 1
-    importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importBlendShapes: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
-    weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -69,8 +69,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-    normalCalculationMode: 4
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
