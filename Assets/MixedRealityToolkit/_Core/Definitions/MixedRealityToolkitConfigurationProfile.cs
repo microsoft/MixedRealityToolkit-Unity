@@ -20,22 +20,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
     /// <summary>
     /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile", fileName = "MixedRealityConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
-    public class MixedRealityConfigurationProfile : BaseMixedRealityProfile, ISerializationCallbackReceiver
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Toolkit Configuration Profile", fileName = "MixedRealityToolkitConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
+    public class MixedRealityToolkitConfigurationProfile : BaseMixedRealityProfile, ISerializationCallbackReceiver
     {
-        #region Manager Registry properties
+        #region Service Registry properties
 
         [SerializeField]
-        private SystemType[] initialManagerTypes = null;
+        private SystemType[] initialServiceTypes = null;
 
         /// <summary>
-        /// Dictionary list of active managers used by the Mixed Reality Manager at runtime
+        /// Dictionary list of active Systems used by the Mixed Reality Toolkit at runtime
         /// </summary>
-        public Dictionary<Type, IMixedRealityManager> ActiveManagers { get; } = new Dictionary<Type, IMixedRealityManager>();
+        public Dictionary<Type, IMixedRealityService> ActiveServices { get; } = new Dictionary<Type, IMixedRealityService>();
 
-        #endregion Manager Registry properties
+        #endregion Service Registry properties
 
-        #region Mixed Reality Manager configurable properties
+        #region Mixed Reality Toolkit configurable properties
 
         [SerializeField]
         [Tooltip("The scale of the Mixed Reality experience.")]
@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         private SystemType diagnosticsSystemType;
 
         /// <summary>
-        /// Diagnostics Manager Script File to instantiate at runtime
+        /// Diagnostics System Script File to instantiate at runtime
         /// </summary>
         public SystemType DiagnosticsSystemSystemType
         {
@@ -229,39 +229,39 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         }
 
         [SerializeField]
-        [Tooltip("All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.")]
-        private MixedRealityRegisteredComponentsProfile registeredComponentsProfile = null;
+        [Tooltip("All the additional non-required services registered with the Mixed Reality Toolkit.")]
+        private MixedRealityRegisteredServiceProvidersProfile registeredServiceProvidersProfile = null;
 
         /// <summary>
-        /// All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.
+        /// All the additional non-required systems, features, and managers registered with the Mixed Reality Toolkit.
         /// </summary>
-        public MixedRealityRegisteredComponentsProfile RegisteredComponentsProfile => registeredComponentsProfile;
+        public MixedRealityRegisteredServiceProvidersProfile RegisteredServiceProvidersProfile => registeredServiceProvidersProfile;
 
-        #endregion Mixed Reality Manager configurable properties
+        #endregion Mixed Reality Toolkit configurable properties
 
         #region ISerializationCallbackReceiver Implementation
 
         /// <inheritdoc />
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            var count = ActiveManagers.Count;
-            initialManagerTypes = new SystemType[count];
+            var count = ActiveServices.Count;
+            initialServiceTypes = new SystemType[count];
 
-            foreach (var manager in ActiveManagers)
+            foreach (var service in ActiveServices)
             {
                 --count;
-                initialManagerTypes[count] = new SystemType(manager.Value.GetType());
+                initialServiceTypes[count] = new SystemType(service.Value.GetType());
             }
         }
 
         /// <inheritdoc />
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            if (ActiveManagers.Count == 0)
+            if (ActiveServices.Count == 0)
             {
-                for (int i = 0; i < initialManagerTypes?.Length; i++)
+                for (int i = 0; i < initialServiceTypes?.Length; i++)
                 {
-                    ActiveManagers.Add(initialManagerTypes[i], Activator.CreateInstance(initialManagerTypes[i]) as IMixedRealityManager);
+                    ActiveServices.Add(initialServiceTypes[i], Activator.CreateInstance(initialServiceTypes[i]) as IMixedRealityService);
                 }
             }
         }

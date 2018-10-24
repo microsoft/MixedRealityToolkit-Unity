@@ -4,14 +4,14 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
-    [CustomEditor(typeof(MixedRealityConfigurationProfile))]
-    public class MixedRealityConfigurationProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    [CustomEditor(typeof(MixedRealityToolkitConfigurationProfile))]
+    public class MixedRealityToolkitConfigurationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
 
@@ -37,46 +37,46 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty diagnosticsSystemProfile;
 
         // Additional registered components profile
-        private SerializedProperty registeredComponentsProfile;
+        private SerializedProperty registeredServiceProvidersProfile;
 
-        private MixedRealityConfigurationProfile configurationProfile;
+        private MixedRealityToolkitConfigurationProfile configurationProfile;
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            configurationProfile = target as MixedRealityConfigurationProfile;
+            configurationProfile = target as MixedRealityToolkitConfigurationProfile;
 
             // Create The MR Manager if none exists.
-            if (!MixedRealityManager.IsInitialized)
+            if (!MixedRealityToolkit.IsInitialized)
             {
                 // Search the scene for one, in case we've just hot reloaded the assembly.
-                var managerSearch = FindObjectsOfType<MixedRealityManager>();
+                var managerSearch = FindObjectsOfType<MixedRealityToolkit>();
 
                 if (managerSearch.Length == 0)
                 {
                     if (EditorUtility.DisplayDialog(
                         "Attention!",
-                        "There is no active Mixed Reality Manager in your scene!\n\nWould you like to create one now?",
+                        "There is no active Mixed Reality Toolkit in your scene!\n\nWould you like to create one now?",
                         "Yes",
                         "Later"))
                     {
-                        MixedRealityManager.Instance.ActiveProfile = configurationProfile;
+                        MixedRealityToolkit.Instance.ActiveProfile = configurationProfile;
                     }
                     else
                     {
-                        Debug.LogWarning("No Mixed Reality Manager in your scene.");
+                        Debug.LogWarning("No Mixed Reality Toolkit in your scene.");
                         return;
                     }
                 }
             }
 
-            if (!MixedRealityManager.ConfirmInitialized())
+            if (!MixedRealityToolkit.ConfirmInitialized())
             {
                 return;
             }
 
-            if (!MixedRealityManager.HasActiveProfile)
+            if (!MixedRealityToolkit.HasActiveProfile)
             {
                 return;
             }
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             diagnosticsSystemProfile = serializedObject.FindProperty("diagnosticsSystemProfile");
 
             // Additional registered components configuration
-            registeredComponentsProfile = serializedObject.FindProperty("registeredComponentsProfile");
+            registeredServiceProvidersProfile = serializedObject.FindProperty("registeredServiceProvidersProfile");
         }
 
         public override void OnInspectorGUI()
@@ -111,9 +111,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             serializedObject.Update();
             RenderMixedRealityToolkitLogo();
 
-            if (!MixedRealityManager.IsInitialized)
+            if (!MixedRealityToolkit.IsInitialized)
             {
-                EditorGUILayout.HelpBox("Unable to find Mixed Reality Manager!", MessageType.Error);
+                EditorGUILayout.HelpBox("Unable to find Mixed Reality Toolkit!", MessageType.Error);
                 return;
             }
 
@@ -130,9 +130,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                 if (GUILayout.Button("Create new profiles"))
                 {
-                    ScriptableObject profile = CreateInstance(nameof(MixedRealityConfigurationProfile));
-                    var newProfile = profile.CreateAsset("Assets/CustomProfiles") as MixedRealityConfigurationProfile;
-                    MixedRealityManager.Instance.ActiveProfile = newProfile;
+                    ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
+                    var newProfile = profile.CreateAsset("Assets/CustomProfiles") as MixedRealityToolkitConfigurationProfile;
+                    MixedRealityToolkit.Instance.ActiveProfile = newProfile;
                     Selection.activeObject = newProfile;
                 }
 
@@ -223,8 +223,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             changed |= RenderProfile(diagnosticsSystemProfile);
 
             GUILayout.Space(12f);
-            EditorGUILayout.LabelField("Additional Components", EditorStyles.boldLabel);
-            changed |= RenderProfile(registeredComponentsProfile);
+            EditorGUILayout.LabelField("Additional Service Providers", EditorStyles.boldLabel);
+            changed |= RenderProfile(registeredServiceProvidersProfile);
 
             if (!changed)
             {
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (changed)
             {
-                EditorApplication.delayCall += () => MixedRealityManager.Instance.ResetConfiguration(configurationProfile);
+                EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(configurationProfile);
             }
         }
     }

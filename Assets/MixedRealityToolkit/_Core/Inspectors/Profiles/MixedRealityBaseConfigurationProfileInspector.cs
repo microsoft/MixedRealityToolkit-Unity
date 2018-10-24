@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEditor;
 using UnityEngine;
@@ -64,9 +64,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 // For now we only replace it if it's the master configuration profile.
                 // Sub-profiles are easy to update in the master configuration inspector.
-                if (MixedRealityManager.Instance.ActiveProfile.GetType() == profile.GetType())
+                if (MixedRealityToolkit.Instance.ActiveProfile.GetType() == profile.GetType())
                 {
-                    MixedRealityManager.Instance.ActiveProfile = profile as MixedRealityConfigurationProfile;
+                    MixedRealityToolkit.Instance.ActiveProfile = profile as MixedRealityToolkitConfigurationProfile;
                 }
             }
         }

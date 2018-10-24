@@ -9,10 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7612acbc1a4a4ed0afa5f4ccbe42bee4, type: 3}
-  m_Name: DefaultMixedRealityConfigurationProfile
+  m_Name: DefaultMixedRealityToolkitConfigurationProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  initialManagerTypes:
+  initialServiceTypes:
   - reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
       Microsoft.MixedReality.Toolkit.SDK
   - reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
@@ -43,5 +43,5 @@ MonoBehaviour:
   diagnosticsSystemType:
     reference: Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem.MixedRealityDiagnosticsManager,
       Microsoft.MixedReality.Toolkit.SDK
-  registeredComponentsProfile: {fileID: 11400000, guid: efbaf6ea540c69f4fb75415a5d145a53,
+  registeredServiceProvidersProfile: {fileID: 11400000, guid: efbaf6ea540c69f4fb75415a5d145a53,
     type: 2}

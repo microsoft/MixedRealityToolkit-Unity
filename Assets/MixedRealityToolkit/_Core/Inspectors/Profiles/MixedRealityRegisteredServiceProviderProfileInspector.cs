@@ -2,17 +2,17 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
-    [CustomEditor(typeof(MixedRealityRegisteredComponentsProfile))]
-    public class MixedRealityRegisteredComponentsProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    [CustomEditor(typeof(MixedRealityRegisteredServiceProvidersProfile))]
+    public class MixedRealityRegisteredServiceProviderProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Unregister");
-        private static readonly GUIContent AddButtonContent = new GUIContent("+ Register a new configuration");
+        private static readonly GUIContent AddButtonContent = new GUIContent("+ Register a new Service Provider");
         private SerializedProperty configurations;
 
         private static bool[] configFoldouts;
@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             base.OnEnable();
 
-            if (!CheckMixedRealityManager(false))
+            if (!CheckMixedRealityConfigured(false))
             {
                 return;
             }
@@ -33,19 +33,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            if (!CheckMixedRealityManager())
+            if (!CheckMixedRealityConfigured())
             {
                 return;
             }
 
             if (GUILayout.Button("Back to Configuration Profile"))
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Registered Components Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("This profile defines any additional systems, features, and managers to register with the Mixed Reality Manager.", MessageType.Info);
+            EditorGUILayout.LabelField("Registered Service Providers Profile", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("This profile defines any additional Services like systems, features, and managers to register with the Mixed Reality Toolkit.", MessageType.Info);
 
             CheckProfileLock(target);
 
@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 var configurationProfile = managerConfig.FindPropertyRelative("configurationProfile");
                 configurationProfile.objectReferenceValue = null;
                 serializedObject.ApplyModifiedProperties();
-                var componentType = ((MixedRealityRegisteredComponentsProfile)serializedObject.targetObject).Configurations[list.arraySize - 1].ComponentType;
+                var componentType = ((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[list.arraySize - 1].ComponentType;
                 componentType.Type = null;
                 configFoldouts = new bool[list.arraySize];
                 return;
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (list == null || list.arraySize == 0)
             {
-                EditorGUILayout.HelpBox("Register a new configuration.", MessageType.Warning);
+                EditorGUILayout.HelpBox("Register a new Service Provider.", MessageType.Warning);
                 GUILayout.EndVertical();
                 return;
             }
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     if (EditorGUI.EndChangeCheck())
                     {
                         serializedObject.ApplyModifiedProperties();
-                        MixedRealityManager.Instance.ResetConfiguration(MixedRealityManager.Instance.ActiveProfile);
+                        MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
                     }
 
                     EditorGUI.indentLevel--;

@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using System;
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityInputSystem"/>
     /// </summary>
-    public class MixedRealityInputManager : MixedRealityEventManager, IMixedRealityInputSystem
+    public class MixedRealityInputManager : BaseEventSystem, IMixedRealityInputSystem
     {
         /// <inheritdoc />
         public event Action InputEnabled;
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public override void Initialize()
         {
             base.Initialize();
-            CurrentInputActionRulesProfile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
+            CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
             InitializeInternal();
             InputEnabled?.Invoke();
         }
@@ -259,50 +259,77 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             Debug.Assert(eventData != null);
             var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
             Debug.Assert(baseInputEventData != null);
-            Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}");
             Debug.Assert(!baseInputEventData.used);
+
+            if (baseInputEventData.InputSource == null)
+            {
+                Debug.LogError($"Failed to find an input source for {baseInputEventData}");
+                return;
+            }
 
             // Send the event to global listeners
             base.HandleEvent(eventData, eventHandler);
 
             if (baseInputEventData.used)
             {
-                // All global listeners get a chance to see the event, but if any of them marked it used, we stop
-                // the event from going any further.
+                // All global listeners get a chance to see the event,
+                // but if any of them marked it used,
+                // we stop the event from going any further.
                 return;
             }
 
-            GameObject focusedObject = FocusProvider?.GetFocusedObject(baseInputEventData);
-
-            // Handle modal input if one exists
-            if (modalInputStack.Count > 0)
+            if (baseInputEventData.InputSource.Pointers == null)
             {
-                GameObject modalInput = modalInputStack.Peek();
+                Debug.LogError($"InputSource {baseInputEventData.InputSource.SourceName} doesn't have any registered pointers! Input Sources without pointers should use the GazeProvider's pointer as a default fallback.");
+                return;
+            }
 
-                // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
-                if (focusedObject != null && modalInput != null && focusedObject.transform.IsChildOf(modalInput.transform))
+            var modalEventHandled = false;
+
+            // Get the focused object for each pointer of the event source
+            for (int i = 0; i < baseInputEventData.InputSource.Pointers.Length; i++)
+            {
+                GameObject focusedObject = FocusProvider?.GetFocusedObject(baseInputEventData.InputSource.Pointers[i]);
+
+                // Handle modal input if one exists
+                if (modalInputStack.Count > 0 && !modalEventHandled)
+                {
+                    GameObject modalInput = modalInputStack.Peek();
+
+                    if (modalInput != null)
+                    {
+                        modalEventHandled = true;
+
+                        // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
+                        if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
+                        {
+                            if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
+                            {
+                                return;
+                            }
+                        }
+                        // Otherwise, just invoke the event on the modal handler itself
+                        else
+                        {
+                            if (ExecuteEvents.ExecuteHierarchy(modalInput, baseInputEventData, eventHandler) && baseInputEventData.used)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("ModalInput GameObject reference was null!\nDid this GameObject get destroyed?");
+                    }
+                }
+
+                // If event was not handled by modal, pass it on to the current focused object
+                if (focusedObject != null)
                 {
                     if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
                     {
                         return;
                     }
-                }
-                // Otherwise, just invoke the event on the modal handler itself
-                else
-                {
-                    if (ExecuteEvents.ExecuteHierarchy(modalInput, baseInputEventData, eventHandler) && baseInputEventData.used)
-                    {
-                        return;
-                    }
-                }
-            }
-
-            // If event was not handled by modal, pass it on to the current focused object
-            if (focusedObject != null)
-            {
-                if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
-                {
-                    return;
                 }
             }
 

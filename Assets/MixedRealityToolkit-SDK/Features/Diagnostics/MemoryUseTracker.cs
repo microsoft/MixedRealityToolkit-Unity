@@ -3,7 +3,6 @@
 
 using System;
 using System.Linq;
-using System.Diagnostics;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
