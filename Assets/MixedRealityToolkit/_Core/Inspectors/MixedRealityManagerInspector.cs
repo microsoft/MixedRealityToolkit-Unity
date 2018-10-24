@@ -93,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
         public static void CreateMixedRealityManagerObject()
         {
             Selection.activeObject = MixedRealityManager.Instance;
+            var playspace = MixedRealityManager.Instance.MixedRealityPlayspace;
             EditorGUIUtility.PingObject(MixedRealityManager.Instance);
         }
     }

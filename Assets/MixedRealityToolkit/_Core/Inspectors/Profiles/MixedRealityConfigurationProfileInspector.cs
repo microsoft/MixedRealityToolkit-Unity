@@ -58,7 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                         "Yes",
                         "Later"))
                     {
-                        MixedRealityManager.Instance.ActiveProfile = configurationProfile;
+                       var playspace = MixedRealityManager.Instance.MixedRealityPlayspace;
+                       MixedRealityManager.Instance.ActiveProfile = configurationProfile;
                     }
                     else
                     {
