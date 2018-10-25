@@ -4,6 +4,7 @@
 using System.IO;
 using UnityEngine;
 using UnityEditor;
+using UnityEditorInternal.VR;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 {
@@ -14,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
     public class EnforceEditorSettings
     {
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
-        private const string BuildTargetKey = "_MixedRealityToolkit_Editor_Settings_CurrentBuildTarget";
+        private const string BuildTargetGroupKey = "_MixedRealityToolkit_Editor_Settings_CurrentBuildTargetGroup";
 
         private static BuildTargetGroup currentBuildTargetGroup = BuildTargetGroup.Unknown;
 
@@ -38,9 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         static EnforceEditorSettings()
         {
+
             SetIconTheme();
 
-            if (!IsNewSession())
+            if (!IsNewSession)
             {
                 return;
             }
@@ -71,10 +73,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                     "Later"))
                 {
                     EditorSettings.externalVersionControl = "Visible Meta Files";
-                    Debug.Log("Updated external version control mode: " + EditorSettings.externalVersionControl);
+                    Debug.Log($"Updated external version control mode: {EditorSettings.externalVersionControl}");
                     refresh = true;
                 }
             }
+
+            refresh |= CheckVRSettings();
 
             var currentScriptingBackend = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup);
 
@@ -144,26 +148,63 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             }
         }
 
+        private static bool CheckVRSettings()
+        {
+            var currentBuildTarget = EditorUserBuildSettings.activeBuildTarget;
+            var availableVRDevices = VREditor.GetAvailableVirtualRealitySDKs(currentBuildTargetGroup);
+            var enabledVRDevices = VREditor.GetVREnabledDevicesOnTarget(currentBuildTarget);
+
+            bool isVRDeviceEnabled = false;
+
+            Debug.Log("Available Devices:");
+            foreach (string availableVRDevice in availableVRDevices)
+            {
+                isVRDeviceEnabled |= VREditor.IsVRDeviceEnabledForBuildTarget(currentBuildTarget, availableVRDevice);
+                Debug.Log(availableVRDevice);
+            }
+
+            Debug.Log("Enabled Devices:");
+            foreach (var enabledVRDevice in enabledVRDevices)
+            {
+                Debug.Log(enabledVRDevice);
+            }
+
+            if (!isVRDeviceEnabled || !PlayerSettings.virtualRealitySupported)
+            {
+                if (EditorUtility.DisplayDialog("Activate XR Settings?",
+                    "The Mixed Reality Toolkit would like to enable the XR Settings for you.", "Ok", "Later"))
+                {
+
+                }
+            }
+
+            //VREditor.SetVREnabledDevicesOnTargetGroup(BuildTargetGroup.WSA, new[] { "WindowsMR" });
+            return false;
+        }
+
         /// <summary>
         /// Returns true the first time it is called within this editor session, and false for all subsequent calls.
-        /// <remarks>A new session is also true if the editor build target is changed.</remarks>
+        /// <remarks>A new session is also true if the editor build target group is changed.</remarks>
         /// </summary>
-        private static bool IsNewSession()
+        private static bool IsNewSession
         {
-            if (currentBuildTargetGroup == BuildTargetGroup.Unknown)
+            get
             {
-                currentBuildTargetGroup = (BuildTargetGroup)SessionState.GetInt(BuildTargetKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
-            }
+                if (currentBuildTargetGroup == BuildTargetGroup.Unknown)
+                {
+                    currentBuildTargetGroup = (BuildTargetGroup)SessionState.GetInt(BuildTargetGroupKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
+                }
 
-            if (!SessionState.GetBool(SessionKey, false) || currentBuildTargetGroup != EditorUserBuildSettings.selectedBuildTargetGroup)
-            {
-                currentBuildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
-                SessionState.SetInt(BuildTargetKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
-                SessionState.SetBool(SessionKey, true);
-                return true;
-            }
+                if (!SessionState.GetBool(SessionKey, false) || currentBuildTargetGroup != EditorUserBuildSettings.selectedBuildTargetGroup)
+                {
+                    currentBuildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+                    SessionState.SetInt(BuildTargetGroupKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
+                    SessionState.SetBool(SessionKey, true);
+                    return true;
+                }
 
-            return false;
+                return false;
+            }
         }
 
         private static bool FindDirectory(string directoryPathToSearch, string directoryName, out string path)
