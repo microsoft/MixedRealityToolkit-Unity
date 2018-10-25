@@ -530,7 +530,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
             else
             {
-                MixedRealityComponents.Add(new Tuple<Type, IMixedRealityExtensionService>(type, (IMixedRealityExtensionService)service));
+                if (!(service is IMixedRealityExtensionService))
+                {
+                    Debug.LogError("Unable to register service. Concrete type is missing IMixedRealityExtensionService implementation.");
+                    return;
+                }
+
+                MixedRealityComponents.Add(new Tuple<Type, IMixedRealityExtensionService>(type, service as IMixedRealityExtensionService));
                 if (!isInitializing) { service.Initialize(); }
                 mixedRealityComponentsCount = MixedRealityComponents.Count;
             }
