@@ -93,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
         public static void CreateMixedRealityOrchestratorObject()
         {
             Selection.activeObject = MixedRealityToolkit.Instance;
+            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
         }
     }
