@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
     /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Toolkit Configuration Profile", fileName = "MixedRealityToolkitConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
-    public class MixedRealityToolkitConfigurationProfile : BaseMixedRealityProfile, ISerializationCallbackReceiver
+    public class MixedRealityToolkitConfigurationProfile : BaseMixedRealityProfile
     {
         #region Service Registry properties
 
@@ -238,33 +238,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public MixedRealityRegisteredServiceProvidersProfile RegisteredServiceProvidersProfile => registeredServiceProvidersProfile;
 
         #endregion Mixed Reality Toolkit configurable properties
-
-        #region ISerializationCallbackReceiver Implementation
-
-        /// <inheritdoc />
-        void ISerializationCallbackReceiver.OnBeforeSerialize()
-        {
-            var count = ActiveServices.Count;
-            initialServiceTypes = new SystemType[count];
-
-            foreach (var service in ActiveServices)
-            {
-                --count;
-                initialServiceTypes[count] = new SystemType(service.Value.GetType());
-            }
-        }
-
-        /// <inheritdoc />
-        void ISerializationCallbackReceiver.OnAfterDeserialize()
-        {
-            if (ActiveServices.Count == 0)
-            {
-                for (int i = 0; i < initialServiceTypes?.Length; i++)
-                {
-                    ActiveServices.Add(initialServiceTypes[i], Activator.CreateInstance(initialServiceTypes[i]) as IMixedRealityService);
-                }
-            }
-        }
     }
-    #endregion  ISerializationCallbackReceiver Implementation
 }

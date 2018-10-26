@@ -13,12 +13,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCustomProfile: 0
   initialServiceTypes:
-  - reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
-      Microsoft.MixedReality.Toolkit.SDK
-  - reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
-      Microsoft.MixedReality.Toolkit.SDK
-  - reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
-      Microsoft.MixedReality.Toolkit.SDK
   targetExperienceScale: 3
   enableCameraProfile: 1
   cameraProfile: {fileID: 11400000, guid: 8089ccfdd4494cd38f676f9fc1f46a04, type: 2}
