@@ -526,17 +526,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
             else
             {
-                try
+                if (typeof(IMixedRealityExtensionService).IsAssignableFrom(type))
                 {
-                    MixedRealityComponents.Add(new Tuple<Type, IMixedRealityExtensionService>(type, (IMixedRealityExtensionService)service));
-                    if (!isInitializing) { service.Initialize(); }
-                    mixedRealityComponentsCount = MixedRealityComponents.Count;
-                    return true;
-                }
-                catch (Exception)
-                {
+                    Debug.LogError($"Unable to register {service}. Concrete type does not implement the IMixedRealityExtensionService implementation.");
                     return false;
                 }
+
+                MixedRealityComponents.Add(new Tuple<Type, IMixedRealityExtensionService>(type, (IMixedRealityExtensionService)service));
+                if (!isInitializing) { service.Initialize(); }
+                mixedRealityComponentsCount = MixedRealityComponents.Count;
+                return true;
             }
         }
 
