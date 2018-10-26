@@ -25,9 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
     {
         #region Service Registry properties
 
-        [SerializeField]
-        private SystemType[] initialServiceTypes = null;
-
         /// <summary>
         /// Dictionary list of active Systems used by the Mixed Reality Toolkit at runtime
         /// </summary>
