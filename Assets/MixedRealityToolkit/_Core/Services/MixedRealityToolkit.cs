@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                RegisterService(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
+                RegisterService(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType.Type) as IMixedRealityInputSystem);
 
                 if (InputSystem == null)
                 {
@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
-                RegisterService(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
+                RegisterService(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType.Type) as IMixedRealityBoundarySystem);
 
                 if (BoundarySystem == null)
                 {
@@ -200,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
-                RegisterService(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
+                RegisterService(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType.Type) as IMixedRealityTeleportSystem);
 
                 if (TeleportSystem == null)
                 {
@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (ActiveProfile.IsDiagnosticsSystemEnabled)
             {
-                RegisterService(typeof(IMixedRealityDiagnosticsSystem), Activator.CreateInstance(ActiveProfile.DiagnosticsSystemSystemType) as IMixedRealityDiagnosticsSystem);
+                RegisterService(typeof(IMixedRealityDiagnosticsSystem), Activator.CreateInstance(ActiveProfile.DiagnosticsSystemSystemType.Type) as IMixedRealityDiagnosticsSystem);
 
                 if (DiagnosticsSystem == null)
                 {
@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     {
                         if (configuration.ComponentType.Type != null)
                         {
-                            RegisterService(typeof(IMixedRealityExtensionService), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityExtensionService);
+                            RegisterService(typeof(IMixedRealityExtensionService), Activator.CreateInstance(configuration.ComponentType.Type, configuration.ComponentName, configuration.Priority) as IMixedRealityExtensionService);
                         }
                     }
                 }
@@ -494,6 +494,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (ActiveProfile == null)
             {
                 Debug.LogError($"Unable to add a new {type.Name} Service as the Mixed Reality Toolkit has to Active Profile");
+                return;
             }
 
             if (type == null)
@@ -501,6 +502,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Debug.LogWarning("Unable to add a manager of type null.");
                 return;
             }
+
             if (service == null)
             {
                 Debug.LogWarning("Unable to add a manager with a null instance.");
@@ -510,14 +512,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (IsCoreSystem(type))
             {
                 IMixedRealityService preExistingService;
-                if (IsCoreSystem(type))
-                {
-                    ActiveProfile.ActiveServices.TryGetValue(type, out preExistingService);
-                }
-                else
-                {
-                    GetService(type, out preExistingService);
-                }
+
+                ActiveProfile.ActiveServices.TryGetValue(type, out preExistingService);
 
                 if (preExistingService == null)
                 {
@@ -532,11 +528,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 if (!(service is IMixedRealityExtensionService))
                 {
-                    Debug.LogError("Unable to register service. Concrete type is missing IMixedRealityExtensionService implementation.");
+                    Debug.LogError($"Unable to register {service}. Concrete type is missing IMixedRealityExtensionService implementation.");
                     return;
                 }
 
-                MixedRealityComponents.Add(new Tuple<Type, IMixedRealityExtensionService>(type, service as IMixedRealityExtensionService));
+                MixedRealityComponents.Add(new Tuple<Type, IMixedRealityExtensionService>(type, (IMixedRealityExtensionService)service));
                 if (!isInitializing) { service.Initialize(); }
                 mixedRealityComponentsCount = MixedRealityComponents.Count;
             }
@@ -579,6 +575,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
 
             IMixedRealityService service;
+
             if (IsCoreSystem(type))
             {
                 ActiveProfile.ActiveServices.TryGetValue(type, out service);
@@ -615,6 +612,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Debug.LogError("Unable to get null manager type.");
                 return null;
             }
+
             if (string.IsNullOrEmpty(serviceName))
             {
                 Debug.LogError("Unable to get manager by name without the name being specified.");
@@ -665,6 +663,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 IMixedRealityService service;
                 GetService(type, out service);
+
                 if (service != null)
                 {
                     MixedRealityComponents.Remove(new Tuple<Type, IMixedRealityExtensionService>(type, (IMixedRealityExtensionService)service));
@@ -1026,14 +1025,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (type == null)
             {
-                Debug.LogWarning($"Null cannot be a core manager.");
+                Debug.LogWarning("Null cannot be a core manager.");
                 return false;
             }
 
-            return type == typeof(IMixedRealityInputSystem) ||
-                   type == typeof(IMixedRealityTeleportSystem) ||
-                   type == typeof(IMixedRealityBoundarySystem) ||
-                   type == typeof(IMixedRealityDiagnosticsSystem);
+            return typeof(IMixedRealityInputSystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type);
         }
 
         /// <summary>
