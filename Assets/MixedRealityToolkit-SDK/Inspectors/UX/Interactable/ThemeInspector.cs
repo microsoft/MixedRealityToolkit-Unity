@@ -230,17 +230,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             SerializedProperty className = settingsItem.FindPropertyRelative("Name");
 
+            InteractableProfileItem.ThemeLists lists = InteractableProfileItem.GetThemeTypes();
+            string[] options = lists.Names.ToArray();
+            Type[] types = lists.Types.ToArray();
+
             // get class value types
             if (!String.IsNullOrEmpty(className.stringValue))
             {
-                int propIndex = InspectorUIUtility.ReverseLookup(className.stringValue, themeOptions);
+                int propIndex = InspectorUIUtility.ReverseLookup(className.stringValue, options);
                 GameObject renderHost = null;
                 if (target != null)
                 {
                     renderHost = (GameObject)target.objectReferenceValue;
                 }
 
-                InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(themeTypes[propIndex], renderHost);
+                InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(types[propIndex], renderHost);
 
                 // does this object have the right component types
                 SerializedProperty isValid = settingsItem.FindPropertyRelative("IsValid");
@@ -762,9 +766,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 EditorGUILayout.BeginVertical(box);
                 // a dropdown for the type of theme, they should make sense
-                // show event dropdown
+                // show theme dropdown
                 int id = InspectorUIUtility.ReverseLookup(className.stringValue, themeOptions);
-
+                
                 EditorGUILayout.BeginHorizontal();
                 int newId = EditorGUILayout.Popup("Theme Property", id, themeOptions);
 

@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// </summary>
     public class InteractableOnPressReceiver : ReceiverBase
     {
-        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Deselect", Tooltip = "The toggle is deselected")]
+        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "The button is released")]
         public UnityEvent OnRelease = new UnityEvent();
 
         private bool hasDown;
