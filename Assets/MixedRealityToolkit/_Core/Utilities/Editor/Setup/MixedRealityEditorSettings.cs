@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
     /// Sets Force Text Serialization and visible meta files in all projects that use the Mixed Reality Toolkit.
     /// </summary>
     [InitializeOnLoad]
-    public class EnforceEditorSettings
+    public class MixedRealityEditorSettings
     {
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
         private const string BuildTargetKey = "_MixedRealityToolkit_Editor_Settings_CurrentBuildTarget";
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             }
         }
 
-        static EnforceEditorSettings()
+        static MixedRealityEditorSettings()
         {
             SetIconTheme();
 
