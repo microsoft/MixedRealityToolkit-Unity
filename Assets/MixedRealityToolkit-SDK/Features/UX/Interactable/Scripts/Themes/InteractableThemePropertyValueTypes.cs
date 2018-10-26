@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// <summary>
     /// Theme property value types used for converting theme values back and forth from serialized objects
     /// </summary>
-    public enum ThemePropertyValueTypes {
+    public enum InteractableThemePropertyValueTypes {
         Float,
         Int,
         Color,

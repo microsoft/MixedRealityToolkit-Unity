@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// </summary>
     public struct ThemeSettings
     {
-        public List<ThemePropertySettings> Settings;
+        public List<InteractableThemePropertySettings> Settings;
     }
 
     /// <summary>
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     [System.Serializable]
     public class ThemeTarget
     {
-        public List<ThemeProperty> Properties;
+        public List<InteractableThemeProperty> Properties;
         public GameObject Target;
         public State[] States;
     }
@@ -39,14 +39,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// The main settings found in Themes
     /// </summary>
     [System.Serializable]
-    public struct ThemePropertySettings
+    public struct InteractableThemePropertySettings
     {
         public string Name;
         public Type Type;
-        public ThemeBase Theme;
-        public List<ThemeProperty> Properties;
-        public List<ThemeProperty> History;
-        public ThemeEaseSettings Easing;
+        public InteractableThemeBase Theme;
+        public List<InteractableThemeProperty> Properties;
+        public List<InteractableThemeProperty> History;
+        public InteractableThemeEaseSettings Easing;
         public bool NoEasing;
         public bool IsValid;
         public ThemeTarget ThemeTarget;

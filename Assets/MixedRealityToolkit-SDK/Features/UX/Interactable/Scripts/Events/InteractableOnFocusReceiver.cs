@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// <summary>
     /// A basic focus event receiver
     /// </summary>
-    public class OnFocusReceiver : ReceiverBase
+    public class InteractableOnFocusReceiver : ReceiverBase
     {
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Focus Off", Tooltip = "Focus has left the object")]
         public UnityEvent OnFocusOff = new UnityEvent();
@@ -19,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private bool hadFocus;
         private State lastState;
 
-        public OnFocusReceiver(UnityEvent ev) : base(ev)
+        public InteractableOnFocusReceiver(UnityEvent ev) : base(ev)
         {
             Name = "OnFocus";
         }

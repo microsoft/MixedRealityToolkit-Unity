@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// </summary>
     
     [System.Serializable]
-    public class ProfileItem
+    public class InteractableProfileItem
     {
         [System.Serializable]
         public struct ThemeLists
@@ -37,11 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             List<Type> themeTypes = new List<Type>();
             List<string> names = new List<string>();
             
-            Assembly assembly = typeof(ThemeBase).GetTypeInfo().Assembly;
+            Assembly assembly = typeof(InteractableThemeBase).GetTypeInfo().Assembly;
             foreach (Type type in assembly.GetTypes())
             {
                 TypeInfo info = type.GetTypeInfo();
-                if (info.BaseType.Equals(typeof(ThemeBase)) || info.BaseType.Equals(typeof(ShaderTheme)) || info.BaseType.Equals(typeof(ColorTheme)))
+                if (info.BaseType.Equals(typeof(InteractableThemeBase)) || info.BaseType.Equals(typeof(InteractableShaderTheme)) || info.BaseType.Equals(typeof(InteractableColorTheme)))
                 {
                     themeTypes.Add(type);
                     names.Add(type.Name);
@@ -61,11 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// <param name="host"></param>
         /// <param name="lists"></param>
         /// <returns></returns>
-        public static ThemeBase GetTheme(ThemePropertySettings settings, GameObject host, ThemeLists lists)
+        public static InteractableThemeBase GetTheme(InteractableThemePropertySettings settings, GameObject host, ThemeLists lists)
         {
             int index = InspectorField.ReverseLookup(settings.Name, lists.Names.ToArray());
             Type themeType = lists.Types[index];
-            ThemeBase theme = (ThemeBase)Activator.CreateInstance(themeType, host);
+            InteractableThemeBase theme = (InteractableThemeBase)Activator.CreateInstance(themeType, host);
             theme.Init(host ,settings);
             return theme;
         }

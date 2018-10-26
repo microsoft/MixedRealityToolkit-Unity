@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public class ColorChildrenTheme : ShaderTheme
+    public class InteractableColorChildrenTheme : InteractableShaderTheme
     {
         public struct BlocksAndRenderer
         {
@@ -19,29 +19,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         private List<BlocksAndRenderer> propertyBlocks;
 
-        public ColorChildrenTheme()
+        public InteractableColorChildrenTheme()
         {
             Types = new Type[] {  };
             Name = "Color Children Theme";
-            ThemeProperties = new List<ThemeProperty>();
+            ThemeProperties = new List<InteractableThemeProperty>();
             ThemeProperties.Add(
-                new ThemeProperty()
+                new InteractableThemeProperty()
                 {
                     Name = "Color",
-                    Type = ThemePropertyValueTypes.Color,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Color = Color.white}
+                    Type = InteractableThemePropertyValueTypes.Color,
+                    Values = new List<InteractableThemePropertyValue>(),
+                    Default = new InteractableThemePropertyValue() { Color = Color.white}
                 });
         }
 
-        public override void Init(GameObject host, ThemePropertySettings settings)
+        public override void Init(GameObject host, InteractableThemePropertySettings settings)
         {
             base.Init(host, settings);
 
             shaderProperties = new List<ShaderProperties>();
             for (int i = 0; i < ThemeProperties.Count; i++)
             {
-                ThemeProperty prop = ThemeProperties[i];
+                InteractableThemeProperty prop = ThemeProperties[i];
                 if (prop.ShaderOptions.Count > 0)
                 {
                     shaderProperties.Add(prop.ShaderOptions[prop.PropId]);
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             Renderer[] list = host.GetComponentsInChildren<Renderer>();
             for (int i = 0; i < list.Length; i++)
             {
-                MaterialPropertyBlock block = ThemeShaderUtils.GetMaterialPropertyBlock(list[i].gameObject, shaderProperties.ToArray());
+                MaterialPropertyBlock block = InteractableThemeShaderUtils.GetMaterialPropertyBlock(list[i].gameObject, shaderProperties.ToArray());
                 BlocksAndRenderer bAndR = new BlocksAndRenderer();
                 bAndR.Renderer = list[i];
                 bAndR.Block = block;
@@ -61,9 +61,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
-        public override ThemePropertyValue GetProperty(ThemeProperty property)
+        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
-            ThemePropertyValue color = new ThemePropertyValue();
+            InteractableThemePropertyValue color = new InteractableThemePropertyValue();
 
             string propId = property.GetShaderPropId();
 
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return color;
         }
 
-        public override void SetValue(ThemeProperty property, int index, float percentage)
+        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
             Color color = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
 

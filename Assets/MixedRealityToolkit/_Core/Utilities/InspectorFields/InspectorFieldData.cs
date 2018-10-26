@@ -7,13 +7,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
 {
     /// <summary>
     /// A reference to the InspectorField and cached info
     /// </summary>
     [System.Serializable]
-    public struct FieldData
+    public struct InspectorFieldData
     {
         public InspectorField Attributes;
         public object Value;

@@ -7,13 +7,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
 {
     /// <summary>
     /// A InspectorField property definition and value.
     /// </summary>
     [System.Serializable]
-    public struct PropertySetting
+    public struct InspectorPropertySetting
     {
         public InspectorField.FieldTypes Type;
         public string Label;

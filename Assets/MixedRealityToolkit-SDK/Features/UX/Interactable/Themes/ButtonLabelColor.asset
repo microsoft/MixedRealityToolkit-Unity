@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: 
   Settings:
-  - Name: ColorTheme
+  - Name: InteractableColorTheme
     Properties:
     - Name: Color
       Type: 2
@@ -114,7 +114,6 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
-      NoEasing: 0
     History:
     - Name: Color
       Type: 2
@@ -215,7 +214,6 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
-      NoEasing: 0
     - Name: Offset
       Type: 6
       Values:
@@ -315,7 +313,6 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
-      NoEasing: 0
     - Name: Scale
       Type: 6
       Values:
@@ -415,7 +412,6 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
-      NoEasing: 0
     Easing:
       EaseValues: 1
       Curve:
@@ -443,6 +439,11 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 0
       LerpTime: 0.3
+    NoEasing: 0
     IsValid: 0
+    ThemeTarget:
+      Properties: []
+      Target: {fileID: 0}
+      States: []
   CustomSettings: []
   States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}

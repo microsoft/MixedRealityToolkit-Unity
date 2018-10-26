@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// Collection of shader and material utilities
     /// </summary>
 
-    public class ThemeShaderUtils : MonoBehaviour
+    public class InteractableThemeShaderUtils : MonoBehaviour
     {
         /// <summary>
         /// Get a MaterialPropertyBlock and copy the designated properties

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// <summary>
     /// A basic receiver for detecting clicks
     /// </summary>
-    public class OnClickReceiver : ReceiverBase
+    public class InteractableOnClickReceiver : ReceiverBase
     {
         [InspectorField(Type = InspectorField.FieldTypes.Float, Label = "Click Time", Tooltip = "The press and release should happen within this time")]
         public float ClickTime = 0.5f;
@@ -19,9 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private float clickTimer = 0;
 
         private bool hasDown;
-        private State lastState;
 
-        public OnClickReceiver(UnityEvent ev): base(ev)
+        public InteractableOnClickReceiver(UnityEvent ev): base(ev)
         {
             Name = "OnClick";
         }
@@ -47,8 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 clickTimer += Time.deltaTime;
             }
-
-            lastState = state.CurrentState();
         }
     }
 }

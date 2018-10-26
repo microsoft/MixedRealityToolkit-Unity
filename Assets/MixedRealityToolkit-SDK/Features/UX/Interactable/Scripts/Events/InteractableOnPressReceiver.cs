@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,15 +12,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// <summary>
     /// Basic press event receiver
     /// </summary>
-    public class OnPressReceiver : ReceiverBase
+    public class InteractableOnPressReceiver : ReceiverBase
     {
-        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Deselect", Tooltip = "The toggle is deselected")]
+        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "The button is released")]
         public UnityEvent OnRelease = new UnityEvent();
 
         private bool hasDown;
         private State lastState;
 
-        public OnPressReceiver(UnityEvent ev) : base(ev)
+        public InteractableOnPressReceiver(UnityEvent ev) : base(ev)
         {
             Name = "OnPress";
         }

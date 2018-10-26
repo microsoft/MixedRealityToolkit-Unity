@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// <summary>
     /// Basic hold event receiver
     /// </summary>
-    public class OnHoldReceiver : ReceiverBase
+    public class InteractableOnHoldReceiver : ReceiverBase
     {
         [InspectorField(Type = InspectorField.FieldTypes.Float, Label = "Hold Time", Tooltip = "The amount of time to press before triggering event")]
         public float HoldTime = 1f;
@@ -19,9 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private float clickTimer = 0;
 
         private bool hasDown;
-        private State lastState;
 
-        public OnHoldReceiver(UnityEvent ev): base(ev)
+        public InteractableOnHoldReceiver(UnityEvent ev): base(ev)
         {
             Name = "OnHold";
         }
@@ -51,8 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     uEvent.Invoke();
                 }
             }
-            
-            lastState = state.CurrentState();
         }
     }
 }

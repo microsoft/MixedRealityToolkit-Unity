@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// </summary>
     
     [System.Serializable]
-    public class ThemeEaseSettings
+    public class InteractableThemeEaseSettings
     {
         public enum BasicEaseCurves { Linear, EaseIn, EaseOut, EaseInOut }
         public bool EaseValues = false;
@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public float LerpTime = 0.5f;
         private float timer = 0.5f;
 
-        public ThemeEaseSettings()
+        public InteractableThemeEaseSettings()
         {
             Stop();
         }

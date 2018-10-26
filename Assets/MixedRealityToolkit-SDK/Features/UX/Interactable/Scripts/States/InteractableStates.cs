@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// <summary>
     /// list of Interactable states and basic comparison
     /// </summary>
-    public class InteractableStates : StateModel
+    public class InteractableStates : InteractableStateModel
     {
         public enum InteractableStateEnum {
             /// <summary>
