@@ -582,3 +582,19 @@ public class MyClass
  ```
 
 >Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
+
+## Use [platform dependent compilation](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html) to ensure the Toolkit won't break the build on another platform
+
+* Use `WINDOWS_UWP` in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to `UNITY_WSA && !UNITY_EDITOR` and should be used in favor of.
+* Use `UNITY_WSA` to use UWP-specific Unity APIs, such as the `UnityEngine.XR.WSA` namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.
+
+This chart can help you decide which `#if` to use, depending on your use cases and the build settings you expect.
+
+| | UWP IL2CPP | UWP .NET | Editor |
+| --- | --- | --- | --- |
+| `UNITY_EDITOR` | False | False | True |
+| `UNITY_WSA` | True | True | True |
+| `WINDOWS_UWP` | True | True | False |
+| `UNITY_WSA && !UNITY_EDITOR` | True | True | False |
+| `ENABLE_WINMD_SUPPORT` | True | True | False |
+| `NETFX_CORE` | False | True | False |
