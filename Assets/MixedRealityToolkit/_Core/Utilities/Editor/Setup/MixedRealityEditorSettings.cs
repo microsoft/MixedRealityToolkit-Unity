@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         private static string mixedRealityToolkit_RelativeFolderPath = string.Empty;
 
-        public static string MixedRealityToolkit_RelativeFolderPath
+        public static string MixedRealityToolkit_AbsoluteFolderPath
         {
             get
             {
@@ -35,6 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                 return mixedRealityToolkit_RelativeFolderPath;
             }
         }
+
+        public static string MixedRealityToolkit_RelativeFolderPath => MixedRealityToolkit_AbsoluteFolderPath.Replace(Application.dataPath + "\\", "Assets/");
 
         static MixedRealityEditorSettings()
         {
@@ -193,13 +195,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         private static void SetIconTheme()
         {
-            if (string.IsNullOrEmpty(MixedRealityToolkit_RelativeFolderPath))
+            if (string.IsNullOrEmpty(MixedRealityToolkit_AbsoluteFolderPath))
             {
                 Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
                 return;
             }
 
-            var icons = Directory.GetFiles($"{MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Icons");
+            var icons = Directory.GetFiles($"{MixedRealityToolkit_AbsoluteFolderPath}/_Core/Resources/Icons");
             var icon = new Texture2D(2, 2);
 
             for (int i = 0; i < icons.Length; i++)
