@@ -1,13 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-
 using System.Collections.Generic;
-
 using UnityEngine;
 
-using QRCodesTrackerPlugin;
 namespace HoloToolkit.Unity.QRTracking
 {
     public class QRCodesVisualizer : MonoBehaviour
@@ -15,8 +11,9 @@ namespace HoloToolkit.Unity.QRTracking
         public GameObject qrCodePrefab;
 
         private SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
-
-        struct ActionData
+        
+#if UNITY_EDITOR || UNITY_WSA
+        private struct ActionData
         {
             public enum Type
             {
@@ -35,12 +32,16 @@ namespace HoloToolkit.Unity.QRTracking
         }
 
         private Queue<ActionData> pendingActions = new Queue<ActionData>();
+#endif // UNITY_EDITOR || UNITY_WSA
+
         private void Awake()
         {
+#if UNITY_EDITOR || UNITY_WSA
             qrCodesObjectsList = new SortedDictionary<System.Guid, GameObject>();
             QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
             QRCodesManager.Instance.QRCodeUpdated += Instance_QRCodeUpdated;
             QRCodesManager.Instance.QRCodeRemoved += Instance_QRCodeRemoved;
+#endif // UNITY_EDITOR || UNITY_WSA
         }
 
         private void Start()
@@ -49,6 +50,12 @@ namespace HoloToolkit.Unity.QRTracking
             {
                 throw new System.Exception("Prefab not assigned");
             }
+        }
+
+#if UNITY_EDITOR || UNITY_WSA
+        private void Update()
+        {
+            HandleEvents();
         }
 
         private void Instance_QRCodeAdded(object sender, QRCodeEventArgs<QRCodesTrackerPlugin.QRCode> e)
@@ -105,11 +112,6 @@ namespace HoloToolkit.Unity.QRTracking
                 }
             }
         }
-
-        private void Update()
-        {
-            HandleEvents();
-        }
+#endif // UNITY_EDITOR || UNITY_WSA
     }
-
 }
