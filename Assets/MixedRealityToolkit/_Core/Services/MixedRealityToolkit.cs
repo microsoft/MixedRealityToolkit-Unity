@@ -1028,10 +1028,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 return false;
             }
 
-            return type == typeof(IMixedRealityInputSystem) ||
-                   type == typeof(IMixedRealityTeleportSystem) ||
-                   type == typeof(IMixedRealityBoundarySystem) ||
-                   type == typeof(IMixedRealityDiagnosticsSystem);
+            return typeof(IMixedRealityInputSystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type);
         }
 
         /// <summary>
