@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 using System.Collections.Generic;
@@ -25,13 +25,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         public WindowsMixedRealitySpatialObserver(string name, uint priority) : base(name, priority)
         { }
 
-        #region IMixedRealityManager implementation
+        #region IMixedRealityToolkit implementation
 
         /// <inheritdoc />
         public override void Initialize()
         {
             // Only initialize if the Spatial Awareness system has been enabled in the configuration profile.
-            if (!MixedRealityManager.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled) { return; }
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled) { return; }
 
 #if UNITY_WSA
             CreateObserver();
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 #endif // UNITY_WSA
         }
 
-        #endregion IMixedRealityManager implementation
+        #endregion IMixedRealityToolkit implementation
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// <summary>
         /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityManager.SpatialAwarenessSystem);
+        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 
 #if UNITY_WSA
         /// <summary>

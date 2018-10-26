@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
     /// <summary>
     /// Class poviding the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
-    public class MixedRealitySpatialAwarenessSystem : MixedRealityEventManager, IMixedRealitySpatialAwarenessSystem
+    public class MixedRealitySpatialAwarenessSystem : BaseEventSystem, IMixedRealitySpatialAwarenessSystem
     {
         private GameObject spatialAwarenessParent = null;
 
@@ -71,9 +71,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         /// <summary>
         /// The <see cref="IMixedRealitySpatialAwarenessObserver"/>, if any, that is active on the current platform.
         /// </summary>
-        private IMixedRealitySpatialAwarenessObserver SpatialAwarenessObserver => spatialAwarenessObserver ?? (spatialAwarenessObserver = MixedRealityManager.Instance.GetManager<IMixedRealitySpatialAwarenessObserver>());
+        private IMixedRealitySpatialAwarenessObserver SpatialAwarenessObserver => spatialAwarenessObserver ?? (spatialAwarenessObserver = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessObserver>());
 
-        #region IMixedRealityManager Implementation
+        #region IMixedRealityToolkit Implementation
 
         private MixedRealitySpatialAwarenessEventData meshEventData = null;
         private MixedRealitySpatialAwarenessEventData surfaceFindingEventData = null;
@@ -94,33 +94,33 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             surfaceFindingEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
 
             // General settings
-            StartupBehavior = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.StartupBehavior;
-            ObservationExtents = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.ObservationExtents;
-            IsStationaryObserver = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.IsStationaryObserver;
-            UpdateInterval = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval;
+            StartupBehavior = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.StartupBehavior;
+            ObservationExtents = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.ObservationExtents;
+            IsStationaryObserver = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.IsStationaryObserver;
+            UpdateInterval = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval;
 
             // Mesh settings
-            UseMeshSystem = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UseMeshSystem;
-            MeshPhysicsLayer = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshPhysicsLayer;
-            MeshLevelOfDetail = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshLevelOfDetail;
-            MeshTrianglesPerCubicMeter = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshTrianglesPerCubicMeter;
-            MeshRecalculateNormals = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshRecalculateNormals;
-            MeshDisplayOption = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshDisplayOption;
-            MeshVisibleMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshVisibleMaterial;
-            MeshOcclusionMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshOcclusionMaterial;
+            UseMeshSystem = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UseMeshSystem;
+            MeshPhysicsLayer = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshPhysicsLayer;
+            MeshLevelOfDetail = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshLevelOfDetail;
+            MeshTrianglesPerCubicMeter = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshTrianglesPerCubicMeter;
+            MeshRecalculateNormals = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshRecalculateNormals;
+            MeshDisplayOption = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshDisplayOption;
+            MeshVisibleMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshVisibleMaterial;
+            MeshOcclusionMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshOcclusionMaterial;
 
             // Surface finding settings
-            UseSurfaceFindingSystem = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UseSurfaceFindingSystem;
-            SurfacePhysicsLayer = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingPhysicsLayer;
-            SurfaceFindingMinimumArea = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingMinimumArea;
-            DisplayFloorSurfaces = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayFloorSurfaces;
-            FloorSurfaceMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.FloorSurfaceMaterial;
-            DisplayCeilingSurfaces = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayCeilingSurface;
-            CeilingSurfaceMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.CeilingSurfaceMaterial;
-            DisplayWallSurfaces = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayWallSurface;
-            WallSurfaceMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.WallSurfaceMaterial;
-            DisplayPlatformSurfaces = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayPlatformSurfaces;
-            PlatformSurfaceMaterial = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.PlatformSurfaceMaterial;
+            UseSurfaceFindingSystem = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UseSurfaceFindingSystem;
+            SurfacePhysicsLayer = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingPhysicsLayer;
+            SurfaceFindingMinimumArea = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingMinimumArea;
+            DisplayFloorSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayFloorSurfaces;
+            FloorSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.FloorSurfaceMaterial;
+            DisplayCeilingSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayCeilingSurface;
+            CeilingSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.CeilingSurfaceMaterial;
+            DisplayWallSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayWallSurface;
+            WallSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.WallSurfaceMaterial;
+            DisplayPlatformSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayPlatformSurfaces;
+            PlatformSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.PlatformSurfaceMaterial;
         }
 
         /// <inheritdoc/>
@@ -315,7 +315,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         
         #endregion Surface Finding Events
 
-        #endregion IMixedRealityManager Implementation
+        #endregion IMixedRealityToolkit Implementation
 
         #region IMixedRealtyEventSystem Implementation
 

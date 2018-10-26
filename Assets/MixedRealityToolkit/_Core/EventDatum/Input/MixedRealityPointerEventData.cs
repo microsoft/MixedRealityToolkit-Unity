@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <param name="pointer"></param>
         /// <param name="inputAction"></param>
         /// <param name="count"></param>
-        public void Initialize(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, int count)
+        public void Initialize(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, int count = 0)
         {
             Initialize(pointer.InputSourceParent, inputAction);
             Pointer = pointer;
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <param name="count"></param>
         /// <param name="inputAction"></param>
         /// <param name="handedness"></param>
-        public void Initialize(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction, int count)
+        public void Initialize(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction, int count = 0)
         {
             Initialize(pointer.InputSourceParent, handedness, inputAction);
             Pointer = pointer;

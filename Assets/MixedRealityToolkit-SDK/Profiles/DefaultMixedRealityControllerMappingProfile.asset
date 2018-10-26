@@ -12,21 +12,12 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityControllerMappingProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  renderMotionControllers: 1
-  useDefaultModels: 0
-  globalLeftHandModel: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,
-    type: 2}
-  globalRightHandModel: {fileID: 1760394390528354, guid: 9ef0df44319c4fb4a05649e5b8ceb6d1,
-    type: 2}
   mixedRealityControllerMappingProfiles:
-  - id: 0
-    description: MouseController
+  - description: MouseController
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.MouseController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -159,14 +150,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 1
-    description: UnityTouchController
+  - description: UnityTouchController
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityTouchController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -208,14 +196,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 2
-    description: Xbox Controller
+  - description: Xbox Controller
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.XboxController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -426,14 +411,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 3
-    description: Windows Mixed Reality Motion Controller Left
+  - description: Windows Mixed Reality Motion Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -592,14 +574,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 4
-    description: Windows Mixed Reality Motion Controller Right
+  - description: Windows Mixed Reality Motion Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -758,14 +737,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 5
-    description: Windows Mixed Reality Hand Gestures
+  - description: Windows Mixed Reality Hand Gestures
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -924,14 +900,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 6
-    description: Open VR Motion Controller Left
+  - description: Open VR Motion Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.WindowsMixedRealityOpenVRMotionController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -1090,14 +1063,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 7
-    description: Open VR Motion Controller Right
+  - description: Open VR Motion Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.WindowsMixedRealityOpenVRMotionController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -1256,14 +1226,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 8
-    description: Vive Wand Controller Left
+  - description: Vive Wand Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.ViveWandController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -1383,14 +1350,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 9
-    description: Vive Wand Controller Right
+  - description: Vive Wand Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.ViveWandController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -1510,14 +1474,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 10
-    description: Oculus Touch Controller Left
+  - description: Oculus Touch Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OculusTouchController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -1741,14 +1702,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 11
-    description: Oculus Touch Controller Right
+  - description: Oculus Touch Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OculusTouchController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -1959,14 +1917,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 12
-    description: Oculus Remote Controller
+  - description: Oculus Remote Controller
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OculusRemoteController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -2008,14 +1963,11 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 13
-    description: Generic OpenVR Controller Left
+  - description: Generic OpenVR Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 1
     interactions:
     - id: 0
@@ -2174,14 +2126,11 @@ MonoBehaviour:
       axisCodeY: AXIS_18
       invertXAxis: 0
       invertYAxis: 0
-  - id: 14
-    description: Generic OpenVR Controller Right
+  - description: Generic OpenVR Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
     useCustomInteractionMappings: 1
     interactions:
     - id: 0

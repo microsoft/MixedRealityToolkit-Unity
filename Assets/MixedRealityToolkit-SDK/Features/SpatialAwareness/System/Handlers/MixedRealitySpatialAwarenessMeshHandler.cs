@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.Handlers

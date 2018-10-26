@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             // Save the preferences
             if (EditorGUI.EndChangeCheck())
             {
-                EditorPrefs.SetBool("_LockProfiles", LockProfiles);
+                EditorPrefsUtility.SetEditorPref("_LockProfiles", LockProfiles);
             }
 
             if (!LockProfiles)

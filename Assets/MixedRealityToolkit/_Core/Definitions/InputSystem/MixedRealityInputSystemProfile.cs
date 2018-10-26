@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
@@ -42,6 +42,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         }
 
         [SerializeField]
+        [Tooltip("Input Action Rules Profile for raising actions based on specific criteria.")]
+        private MixedRealityInputActionRulesProfile inputActionRulesProfile;
+
+        /// <summary>
+        /// Input Action Rules Profile for raising actions based on specific criteria.
+        /// </summary>
+        public MixedRealityInputActionRulesProfile InputActionRulesProfile
+        {
+            get { return inputActionRulesProfile; }
+            private set { inputActionRulesProfile = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Pointer Configuration options")]
         private MixedRealityPointerProfile pointerProfile;
 
@@ -59,12 +72,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// <summary>
         /// Current Registered Speech System.
         /// </summary>
-        public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityManager.Instance.GetManager<IMixedRealitySpeechSystem>());
+        public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySpeechSystem>());
 
         /// <summary>
         /// Is the speech Commands Enabled?
         /// </summary>
-        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled;
+        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled;
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
@@ -79,17 +92,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             private set { speechCommandsProfile = value; }
         }
 
-        private IMixedRealityDictationManager dictationManager;
+        private IMixedRealityDictationSystem dictationSystem;
 
         /// <summary>
-        /// Current Registered Dictation Manager.
+        /// Current Registered Dictation System.
         /// </summary>
-        public IMixedRealityDictationManager DictationManager => dictationManager ?? (dictationManager = MixedRealityManager.Instance.GetManager<IMixedRealityDictationManager>());
+        public IMixedRealityDictationSystem DictationSystem => dictationSystem ?? (dictationSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityDictationSystem>());
 
         /// <summary>
         /// Is Dictation Enabled?
         /// </summary>
-        public bool IsDictationEnabled => MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && DictationManager != null;
+        public bool IsDictationEnabled => MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && DictationSystem != null;
 
         [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
@@ -115,6 +128,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         {
             get { return controllerMappingProfile; }
             private set { controllerMappingProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Device profile for rendering spatial controllers.")]
+        private MixedRealityControllerVisualizationProfile controllerVisualizationProfile;
+
+        /// <summary>
+        /// Device profile for rendering spatial controllers.
+        /// </summary>
+        public MixedRealityControllerVisualizationProfile ControllerVisualizationProfile
+        {
+            get { return controllerVisualizationProfile; }
+            private set { controllerVisualizationProfile = value; }
         }
     }
 }

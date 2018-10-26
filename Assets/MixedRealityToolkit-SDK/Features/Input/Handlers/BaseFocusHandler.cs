@@ -19,17 +19,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         [Tooltip("Is focus enabled for this component?")]
         private bool focusEnabled = true;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Is focus enabled for this <see cref="UnityEngine.Component"/>?
+        /// </summary>
         public virtual bool FocusEnabled
         {
             get { return focusEnabled; }
             set { focusEnabled = value; }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Does this object currently have focus by any <see cref="IMixedRealityPointer"/>?
+        /// </summary>
         public bool HasFocus => FocusEnabled && Focusers.Count > 0;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The list of <see cref="IMixedRealityPointer"/>s that are currently focused on this <see cref="UnityEngine.GameObject"/>
+        /// </summary>
         public List<IMixedRealityPointer> Focusers { get; } = new List<IMixedRealityPointer>(0);
 
         /// <inheritdoc />

@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             Priority = priority;
         }
 
-        #region IMixedRealityManager implementation
+        #region IMixedRealityToolkit implementation
 
         public string Name { get; }
 
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <inheritdoc />
         public virtual void Destroy() { }
 
-        #endregion IMixedRealityManager implementation
+        #endregion IMixedRealityToolkit implementation
 
         /// <summary>
         /// Is the observer running (actively accumulating spatial data)?
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
 
             newMesh.Id = meshId;
             newMesh.GameObject = new GameObject(name, requiredMeshComponents);
-            newMesh.GameObject.layer = MixedRealityManager.SpatialAwarenessSystem.MeshPhysicsLayer;
+            newMesh.GameObject.layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayer;
 
             newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
             newMesh.Filter.sharedMesh = mesh;
