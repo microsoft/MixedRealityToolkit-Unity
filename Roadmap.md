@@ -4,14 +4,14 @@
 
 | Release | Development branch | Timeline | Project board |
 | --- | --- | --- | --- |
-| [MRTK vNext](#mrtk-version-next) | mrtk_development | October 2018 | [MRTK vNext](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/5) |
-| 2017.4.3.0 | htk_development | Q1 2019 | [2017.4.3.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/17) |
+| [MRTK vNext](#mrtk-version-next) | mrtk_development | December 2018 | [MRTK vNext](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/5) |
+| 2017.4.4.0 | htk_development | Q1 2019 | [2017.4.4.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/17) |
 
 ## Most recent releases
 
 | Release | Branch | Tag | Project board | Tested Unity Versions |
 | --- | --- | --- | --- | --- |
-| [2017.4.2.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/2017.4.2.0) | master | 2017.4.2.0 | [2017.4.2.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/15) | 2017.1 - 2017.4 |
+| [2017.4.3.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/2017.4.3.0) | master | 2017.4.3.0 | [2017.4.3.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/18) | 2017.1 - 2017.4 |
 | [2018.8.0.0_Alpha2.1](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/2018.8.0.0_Alpha2.1) | mrtk_release | 2018.8.0.0_Alpha2.1 | N/A | 2018.1 |
 
 ## Master branch
