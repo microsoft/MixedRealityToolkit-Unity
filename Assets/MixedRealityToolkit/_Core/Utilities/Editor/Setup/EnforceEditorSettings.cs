@@ -16,10 +16,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
     {
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
         private const string BuildTargetGroupKey = "_MixedRealityToolkit_Editor_Settings_CurrentBuildTargetGroup";
+        private const string HasCheckedXRSupportKey = "_MixedRealityToolkit_Editor_Settings_HasCheckedXRSupport";
 
         private static BuildTargetGroup currentBuildTargetGroup = BuildTargetGroup.Unknown;
 
         private static string mixedRealityToolkit_RelativeFolderPath = string.Empty;
+
+        private static bool hasCheckedVREnabled = false;
 
         public static string MixedRealityToolkit_RelativeFolderPath
         {
@@ -193,12 +196,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                 if (currentBuildTargetGroup == BuildTargetGroup.Unknown)
                 {
                     currentBuildTargetGroup = (BuildTargetGroup)SessionState.GetInt(BuildTargetGroupKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
+                    SessionState.SetBool(HasCheckedXRSupportKey, false);
                 }
 
-                if (!SessionState.GetBool(SessionKey, false) || currentBuildTargetGroup != EditorUserBuildSettings.selectedBuildTargetGroup)
+                if (currentBuildTargetGroup != EditorUserBuildSettings.selectedBuildTargetGroup)
                 {
                     currentBuildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
                     SessionState.SetInt(BuildTargetGroupKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
+                    return true;
+                }
+
+                if (!SessionState.GetBool(HasCheckedXRSupportKey, false))
+                {
+                    SessionState.SetBool(HasCheckedXRSupportKey, true);
+                    return true;
+                }
+
+                if (!SessionState.GetBool(SessionKey, false))
+                {
                     SessionState.SetBool(SessionKey, true);
                     return true;
                 }
