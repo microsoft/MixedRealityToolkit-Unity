@@ -526,7 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
             else
             {
-                if (typeof(IMixedRealityExtensionService).IsAssignableFrom(type))
+                if (!typeof(IMixedRealityExtensionService).IsAssignableFrom(type))
                 {
                     Debug.LogError($"Unable to register {service}. Concrete type does not implement the IMixedRealityExtensionService implementation.");
                     return false;
