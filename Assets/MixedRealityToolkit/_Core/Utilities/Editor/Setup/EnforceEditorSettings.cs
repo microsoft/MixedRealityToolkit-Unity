@@ -16,13 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
     {
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
         private const string BuildTargetGroupKey = "_MixedRealityToolkit_Editor_Settings_CurrentBuildTargetGroup";
-        private const string HasCheckedXRSupportKey = "_MixedRealityToolkit_Editor_Settings_HasCheckedXRSupport";
 
         private static BuildTargetGroup currentBuildTargetGroup = BuildTargetGroup.Unknown;
 
         private static string mixedRealityToolkit_RelativeFolderPath = string.Empty;
-
-        private static bool hasCheckedVREnabled = false;
 
         public static string MixedRealityToolkit_RelativeFolderPath
         {
@@ -42,7 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         static EnforceEditorSettings()
         {
-
             SetIconTheme();
 
             if (!IsNewSession)
@@ -53,90 +49,34 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             bool refresh = false;
             bool restart = false;
 
-            if (EditorSettings.serializationMode != SerializationMode.ForceText)
+            if (EditorSettings.serializationMode != SerializationMode.ForceText ||
+                PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) != ScriptingImplementation.IL2CPP ||
+                !EditorSettings.externalVersionControl.Equals("Visible Meta Files") ||
+                !PlayerSettings.virtualRealitySupported)
             {
                 if (EditorUtility.DisplayDialog(
-                        "Force Text Asset Serialization?",
-                        "The Mixed Reality Toolkit is easier to maintain if the asset serialization mode for this project is set to \"Force Text\". Would you like to make this change?",
-                        "Force Text Serialization",
+                        "Apply Mixed Reality Toolkit Default Settings?",
+                        "The Mixed Reality Toolkit needs to apply the following settings to your project:\n\n" +
+                        "- Enable XR Settings for your current platform\n" +
+                        "- Force Text Serialization\n" +
+                        "- Visible meta files\n" +
+                        "- Change the Scripting Backend to use IL2CPP\n\n" +
+                        "Would you like to make this change?",
+                        "Update Settings",
                         "Later"))
                 {
                     EditorSettings.serializationMode = SerializationMode.ForceText;
-                    Debug.Log("Setting Force Text Serialization");
-                    refresh = true;
-                }
-            }
-
-            if (!EditorSettings.externalVersionControl.Equals("Visible Meta Files"))
-            {
-                if (EditorUtility.DisplayDialog(
-                    "Make Meta Files Visible?",
-                    "The Mixed Reality Toolkit would like to make meta files visible so they can be more easily handled with common version control systems. Would you like to make this change?",
-                    "Enable Visible Meta Files",
-                    "Later"))
-                {
                     EditorSettings.externalVersionControl = "Visible Meta Files";
-                    Debug.Log($"Updated external version control mode: {EditorSettings.externalVersionControl}");
-                    refresh = true;
-                }
-            }
-
-            refresh |= CheckVRSettings();
-
-            var currentScriptingBackend = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup);
-
-            if (currentScriptingBackend != ScriptingImplementation.IL2CPP)
-            {
-                if (EditorUtility.DisplayDialog(
-                    "Change the Scripting Backend to IL2CPP?",
-                    "The Mixed Reality Toolkit would like to change the Scripting Backend to use IL2CPP.\n\n" +
-                    "Would you like to make this change?",
-                    "Enable IL2CPP",
-                    "Later"))
-                {
                     PlayerSettings.SetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup, ScriptingImplementation.IL2CPP);
-                    Debug.Log("Updated Scripting Backend to use IL2CPP");
+                    PlayerSettings.virtualRealitySupported = true;
                     refresh = true;
                 }
             }
 
             if (PlayerSettings.scriptingRuntimeVersion != ScriptingRuntimeVersion.Latest)
             {
-                if (EditorUtility.DisplayDialog(
-                        "Change the Scripting Runtime Version to the 4.x Equivalent?",
-                        "The Mixed Reality Toolkit would like to change the Scripting Runtime Version to use the .NET 4.x Equivalent.\n\n" +
-                        "In order for the change to take place the Editor must be restarted, and any changes will be saved.\n\n" +
-                        "WARNING: If you do not make this change, then your project will fail to compile.\n\n" +
-                        "Would you like to make this change?",
-                        "Enable .NET 4.x Equivalent",
-                        "Later"))
-                {
-                    PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
-                    restart = true;
-                }
-                else
-                {
-                    Debug.LogWarning("You must change the Runtime Scripting Version to 4.x in the Player Settings to get this asset to compile correctly.");
-                }
-            }
-
-            if (PlayerSettings.scriptingRuntimeVersion == ScriptingRuntimeVersion.Latest)
-            {
-                var currentApiCompatibility = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup);
-                if (currentApiCompatibility != ApiCompatibilityLevel.NET_4_6 && currentApiCompatibility != ApiCompatibilityLevel.NET_Standard_2_0)
-                {
-                    if (EditorUtility.DisplayDialog(
-                            "Change the Scripting API Compatibility to .NET 4.x?",
-                            "The Mixed Reality Toolkit would like to change the Scripting API Compatibility to use .NET 4.x\n\n" +
-                            "Would you like to make this change?",
-                            "Enable .NET 4.x",
-                            "Later"))
-                    {
-                        PlayerSettings.SetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup, ApiCompatibilityLevel.NET_4_6);
-                        Debug.Log("Updated Scripting API Compatibility to .NET 4.x");
-                        refresh = true;
-                    }
-                }
+                PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
+                restart = true;
             }
 
             if (refresh || restart)
@@ -151,40 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             }
         }
 
-        private static bool CheckVRSettings()
-        {
-            var currentBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-            var availableVRDevices = VREditor.GetAvailableVirtualRealitySDKs(currentBuildTargetGroup);
-            var enabledVRDevices = VREditor.GetVREnabledDevicesOnTarget(currentBuildTarget);
-
-            bool isVRDeviceEnabled = false;
-
-            Debug.Log("Available Devices:");
-            foreach (string availableVRDevice in availableVRDevices)
-            {
-                isVRDeviceEnabled |= VREditor.IsVRDeviceEnabledForBuildTarget(currentBuildTarget, availableVRDevice);
-                Debug.Log(availableVRDevice);
-            }
-
-            Debug.Log("Enabled Devices:");
-            foreach (var enabledVRDevice in enabledVRDevices)
-            {
-                Debug.Log(enabledVRDevice);
-            }
-
-            if (!isVRDeviceEnabled || !PlayerSettings.virtualRealitySupported)
-            {
-                if (EditorUtility.DisplayDialog("Activate XR Settings?",
-                    "The Mixed Reality Toolkit would like to enable the XR Settings for you.", "Ok", "Later"))
-                {
-
-                }
-            }
-
-            //VREditor.SetVREnabledDevicesOnTargetGroup(BuildTargetGroup.WSA, new[] { "WindowsMR" });
-            return false;
-        }
-
         /// <summary>
         /// Returns true the first time it is called within this editor session, and false for all subsequent calls.
         /// <remarks>A new session is also true if the editor build target group is changed.</remarks>
@@ -193,28 +99,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         {
             get
             {
+                if (!SessionState.GetBool(SessionKey, false))
+                {
+                    SessionState.SetBool(SessionKey, true);
+                    return true;
+                }
+
                 if (currentBuildTargetGroup == BuildTargetGroup.Unknown)
                 {
                     currentBuildTargetGroup = (BuildTargetGroup)SessionState.GetInt(BuildTargetGroupKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
-                    SessionState.SetBool(HasCheckedXRSupportKey, false);
                 }
 
                 if (currentBuildTargetGroup != EditorUserBuildSettings.selectedBuildTargetGroup)
                 {
                     currentBuildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
                     SessionState.SetInt(BuildTargetGroupKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
-                    return true;
-                }
-
-                if (!SessionState.GetBool(HasCheckedXRSupportKey, false))
-                {
-                    SessionState.SetBool(HasCheckedXRSupportKey, true);
-                    return true;
-                }
-
-                if (!SessionState.GetBool(SessionKey, false))
-                {
-                    SessionState.SetBool(SessionKey, true);
                     return true;
                 }
 
