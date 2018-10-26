@@ -4,7 +4,7 @@
 using System.IO;
 using UnityEngine;
 using UnityEditor;
-using UnityEditorInternal.VR;
+using UnityEditor.Build;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 {
@@ -12,12 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
     /// Sets Force Text Serialization and visible meta files in all projects that use the Mixed Reality Toolkit.
     /// </summary>
     [InitializeOnLoad]
-    public class EnforceEditorSettings
+    public class EnforceEditorSettings : IActiveBuildTargetChanged
     {
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
-        private const string BuildTargetGroupKey = "_MixedRealityToolkit_Editor_Settings_CurrentBuildTargetGroup";
-
-        private static BuildTargetGroup currentBuildTargetGroup = BuildTargetGroup.Unknown;
 
         private static string mixedRealityToolkit_RelativeFolderPath = string.Empty;
 
@@ -62,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                         "- Visible meta files\n" +
                         "- Change the Scripting Backend to use IL2CPP\n\n" +
                         "Would you like to make this change?",
-                        "Update Settings",
+                        "Apply",
                         "Later"))
                 {
                     EditorSettings.serializationMode = SerializationMode.ForceText;
@@ -99,25 +96,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         {
             get
             {
-                if (!SessionState.GetBool(SessionKey, false))
-                {
-                    SessionState.SetBool(SessionKey, true);
-                    return true;
-                }
+                if (SessionState.GetBool(SessionKey, false)) { return false; }
 
-                if (currentBuildTargetGroup == BuildTargetGroup.Unknown)
-                {
-                    currentBuildTargetGroup = (BuildTargetGroup)SessionState.GetInt(BuildTargetGroupKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
-                }
-
-                if (currentBuildTargetGroup != EditorUserBuildSettings.selectedBuildTargetGroup)
-                {
-                    currentBuildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
-                    SessionState.SetInt(BuildTargetGroupKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
-                    return true;
-                }
-
-                return false;
+                SessionState.SetBool(SessionKey, true);
+                return true;
             }
         }
 
@@ -179,6 +161,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+        }
+
+        public int callbackOrder { get; } = 0;
+
+        public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
+        {
+            SessionState.SetBool(SessionKey, false);
         }
     }
 }
