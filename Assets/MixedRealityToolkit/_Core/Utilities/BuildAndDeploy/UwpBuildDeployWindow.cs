@@ -1292,6 +1292,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
             if (string.IsNullOrEmpty(PackageName))
             {
+                Debug.LogWarning("No Package Name Found");
                 return;
             }
 
@@ -1347,6 +1348,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
         {
             if (string.IsNullOrEmpty(PackageName))
             {
+                Debug.LogWarning("No Package Name Found");
                 return;
             }
 
