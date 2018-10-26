@@ -499,7 +499,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal
                 return false;
             }
 
-            Debug.Log($"Attempting to uninstall {packageName} on {targetDevice.MachineName}");
+            Debug.Log($"Attempting to uninstall {packageName} on {targetDevice.MachineName}...");
 
             string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={UnityWebRequest.EscapeURL(appInfo.PackageFullName)}";
             var response = await Rest.DeleteAsync(query, targetDevice.Authorization);
