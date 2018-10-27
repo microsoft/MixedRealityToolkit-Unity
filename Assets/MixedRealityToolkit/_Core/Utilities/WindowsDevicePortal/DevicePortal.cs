@@ -360,6 +360,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
             if (!isAuth) { return false; }
 
+            Debug.Log($"Starting install on {targetDevice.MachineName}...");
+
             // Calculate the cert and dependency paths
             string fileName = Path.GetFileName(appFullPath);
             string certFullPath = Path.ChangeExtension(appFullPath, ".cer");
@@ -497,12 +499,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal
                 return false;
             }
 
+            Debug.Log($"Attempting to uninstall {packageName} on {targetDevice.MachineName}...");
+
             string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={UnityWebRequest.EscapeURL(appInfo.PackageFullName)}";
             var response = await Rest.DeleteAsync(query, targetDevice.Authorization);
 
             if (response.Successful)
             {
-                Debug.LogFormat("Successfully uninstalled {0} on {1}.", packageName, targetDevice.MachineName);
+                Debug.Log($"Successfully uninstalled {packageName} on {targetDevice.MachineName}.");
             }
             else
             if (!response.Successful)
@@ -630,7 +634,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal
                 return string.Empty;
             }
 
-            string logFile = $"{Application.temporaryCachePath}/{targetDevice.MachineName}_{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}_deviceLog.txt";
+            string logFile = $"{Application.temporaryCachePath}/{targetDevice.MachineName}_{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}_player.txt";
             var response = await Rest.GetAsync(string.Format(FileQuery, FinalizeUrl(targetDevice.IP), appInfo.PackageFullName), targetDevice.Authorization);
 
             if (!response.Successful)
@@ -819,6 +823,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal
 
                     // Strip the beginning of the cookie header
                     targetDevice.CsrfToken = targetDevice.CsrfToken.Replace("CSRF-Token=", string.Empty);
+                }
+                else
+                {
+                    Debug.LogError($"Authentication failed! {response.ResponseBody}");
                 }
 
                 if (!string.IsNullOrEmpty(targetDevice.CsrfToken))

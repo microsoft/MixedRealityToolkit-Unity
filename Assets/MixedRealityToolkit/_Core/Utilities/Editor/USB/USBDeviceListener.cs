@@ -4,21 +4,19 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Hardware;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Usb
 {
     [InitializeOnLoad]
     public class USBDeviceListener
     {
-        [SerializeField]
         public static USBDeviceInfo[] USBDevices;
 
         public delegate void OnUsbDevicesChanged(UsbDevice[] usbDevices);
 
         public static event OnUsbDevicesChanged UsbDevicesChanged;
 
-        private static List<USBDeviceInfo> usbDevicesList = new List<USBDeviceInfo>(0);
+        private static readonly List<USBDeviceInfo> USBDevicesList = new List<USBDeviceInfo>(0);
 
         static USBDeviceListener()
         {
@@ -27,19 +25,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Usb
 
         private static void NotifyUsbDevicesChanged(UsbDevice[] devices)
         {
-            if (UsbDevicesChanged != null)
-            {
-                UsbDevicesChanged.Invoke(devices);
-            }
+            UsbDevicesChanged?.Invoke(devices);
 
-            usbDevicesList.Clear();
+            USBDevicesList.Clear();
 
             foreach (UsbDevice device in devices)
             {
-                usbDevicesList.Add(new USBDeviceInfo(device.vendorId, device.udid, device.productId, device.name, device.revision));
+                USBDevicesList.Add(new USBDeviceInfo(device.vendorId, device.udid, device.productId, device.name, device.revision));
             }
 
-            USBDevices = usbDevicesList.ToArray();
+            USBDevices = USBDevicesList.ToArray();
         }
     }
 }
