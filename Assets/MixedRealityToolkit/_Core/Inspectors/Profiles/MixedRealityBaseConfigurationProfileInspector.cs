@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,12 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             if (logoLightTheme == null)
             {
-                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/MRTK_Logo_Black.png", typeof(Texture2D));
+                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MRTK_Logo_Black.png", typeof(Texture2D));
             }
 
             if (logoDarkTheme == null)
             {
-                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/MRTK_Logo_White.png", typeof(Texture2D));
+                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MRTK_Logo_White.png", typeof(Texture2D));
             }
         }
 
