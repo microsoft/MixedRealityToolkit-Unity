@@ -62,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                         "Later"))
                     {
                         var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+                        Debug.Assert(playspace != null);
                         MixedRealityToolkit.Instance.ActiveProfile = configurationProfile;
                     }
                     else
@@ -118,26 +119,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
+            EditorGUILayout.HelpBox("The Mixed Reality Toolkit's core SDK profiles can be used to get up and running quickly.\n\n" +
+                                    "You can use the default profiles provided, copy and customize the default profiles, or create your own.", MessageType.Warning);
+            EditorGUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Copy & Customize"))
+            {
+                CreateCopyProfileValues();
+            }
+
+            if (GUILayout.Button("Create new profiles"))
+            {
+                ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
+                var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit-Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;
+                MixedRealityToolkit.Instance.ActiveProfile = newProfile;
+                Selection.activeObject = newProfile;
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            // We don't call the CheckLock method so won't get a duplicate message.
             if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
             {
-                EditorGUILayout.HelpBox("The Mixed Reality Toolkit's core SDK profiles can be used to get up and running quickly.\n\n" +
-                                        "You can use the default profiles provided, copy and customize the default profiles, or create your own.", MessageType.Warning);
-                EditorGUILayout.BeginHorizontal();
-
-                if (GUILayout.Button("Copy & Customize"))
-                {
-                    CreateCopyProfileValues();
-                }
-
-                if (GUILayout.Button("Create new profiles"))
-                {
-                    ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
-                    var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit-Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;
-                    MixedRealityToolkit.Instance.ActiveProfile = newProfile;
-                    Selection.activeObject = newProfile;
-                }
-
-                EditorGUILayout.EndHorizontal();
                 GUI.enabled = false;
             }
 
