@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         /// <summary>
         /// The size at which to display the rectangular floor plane <see cref="GameObject"/>.
         /// </summary>
-        public Vector3 FloorScale => floorScale;
+        public Vector2 FloorScale => floorScale;
 
         #endregion Floor settings
 
