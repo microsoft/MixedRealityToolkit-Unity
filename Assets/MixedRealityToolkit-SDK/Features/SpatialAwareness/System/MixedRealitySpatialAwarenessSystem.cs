@@ -15,7 +15,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 {
     /// <summary>
-    /// Class poviding the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
+    /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
     public class MixedRealitySpatialAwarenessSystem : MixedRealityEventManager, IMixedRealitySpatialAwarenessSystem
     {
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         /// <summary>
         /// Parent <see cref="GameObject"/> which will encapsulate all of the spatial awareness system created scene objects.
         /// </summary>
-        private GameObject SpatialAwarenessParent => spatialAwarenessParent ?? (spatialAwarenessParent = CreateSpatialAwarenessParent());
+        private GameObject SpatialAwarenessParent => spatialAwarenessParent != null ? spatialAwarenessParent : (spatialAwarenessParent = CreateSpatialAwarenessParent);
 
         /// <summary>
         /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
@@ -32,24 +32,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         /// <returns>
         /// The <see cref="GameObject"/> to which spatial awareness created objects will be parented.
         /// </returns>
-        private GameObject CreateSpatialAwarenessParent()
-        {
-            return new GameObject("Spatial Awareness System");
-        }
+        private GameObject CreateSpatialAwarenessParent => new GameObject("Spatial Awareness System");
 
         private GameObject meshParent = null;
 
         /// <summary>
         /// Parent <see cref="GameObject"/> which will encapsulate all of the system created mesh objects.
         /// </summary>
-        private GameObject MeshParent => meshParent ?? (meshParent = CreateSecondGenerationParent("Meshes"));
+        private GameObject MeshParent => meshParent != null ? meshParent : (meshParent = CreateSecondGenerationParent("Meshes"));
 
         private GameObject surfaceParent = null;
 
         /// <summary>
         /// Parent <see cref="GameObject"/> which will encapsulate all of the system created mesh objects.
         /// </summary>
-        private GameObject SurfaceParent => surfaceParent ?? (surfaceParent = CreateSecondGenerationParent("Surfaces"));
+        private GameObject SurfaceParent => surfaceParent != null ? surfaceParent : (surfaceParent = CreateSecondGenerationParent("Surfaces"));
 
         /// <summary>
         /// Creates the a parent, that is a child if the Spatial Awareness System parent so that the scene hierarchy does not get overly cluttered.
@@ -312,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
                 MixedRealitySpatialAwarenessEventData spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
                 handler.OnSurfaceRemoved(spatialEventData);
             };
-        
+
         #endregion Surface Finding Events
 
         #endregion IMixedRealityManager Implementation
@@ -398,15 +395,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         /// <inheritdoc />
         public void ResumeObserver()
         {
-            if (SpatialAwarenessObserver == null) { return; }
-            SpatialAwarenessObserver.StartObserving();
+            SpatialAwarenessObserver?.StartObserving();
         }
 
         /// <inheritdoc />
         public void SuspendObserver()
         {
-            if (SpatialAwarenessObserver == null) { return; }
-            SpatialAwarenessObserver.StopObserving();
+            SpatialAwarenessObserver?.StopObserving();
         }
 
         #region Mesh Handling implementation
@@ -426,7 +421,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail
         {
             get
-            { 
+            {
                 return meshLevelOfDetail;
             }
 
@@ -461,14 +456,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public Material MeshOcclusionMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public IDictionary<int, GameObject> Meshes
-        {
-            get
-            {
-                // The observer manages the mesh collection.
-                return SpatialAwarenessObserver.Meshes;
-            }
-        }
+        /// <remarks>The observer manages the mesh collection.</remarks>
+        public IDictionary<int, GameObject> Meshes => SpatialAwarenessObserver.Meshes;
 
         #endregion Mesh Handling implementation
 
