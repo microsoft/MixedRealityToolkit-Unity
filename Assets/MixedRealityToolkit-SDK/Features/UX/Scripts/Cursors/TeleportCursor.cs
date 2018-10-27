@@ -92,10 +92,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
 
             if (!MixedRealityToolkit.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
-                Debug.LogError(MixedRealityToolkit.InputSystem.FocusProvider.IsPointerRegistered(Pointer)
-                    ? $"{gameObject.name}: Unable to get focus details for {pointer.GetType().Name}!"
-                    : $"{pointer.GetType().Name} has not been registered!");
                 SetVisibility(false);
+
+                if (MixedRealityToolkit.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                {
+                    Debug.LogError($"{gameObject.name}: Unable to get focus details for {pointer.GetType().Name}!");
+                }
+
                 return;
             }
 
