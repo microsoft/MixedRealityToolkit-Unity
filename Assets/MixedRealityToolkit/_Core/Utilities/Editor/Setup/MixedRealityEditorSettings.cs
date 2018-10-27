@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
     /// Sets Force Text Serialization and visible meta files in all projects that use the Mixed Reality Toolkit.
     /// </summary>
     [InitializeOnLoad]
-    public class EnforceEditorSettings
+    public class MixedRealityEditorSettings
     {
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
         private const string BuildTargetKey = "_MixedRealityToolkit_Editor_Settings_CurrentBuildTarget";
@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         private static string mixedRealityToolkit_RelativeFolderPath = string.Empty;
 
-        public static string MixedRealityToolkit_RelativeFolderPath
+        public static string MixedRealityToolkit_AbsoluteFolderPath
         {
             get
             {
@@ -36,7 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             }
         }
 
-        static EnforceEditorSettings()
+        public static string MixedRealityToolkit_RelativeFolderPath => MixedRealityToolkit_AbsoluteFolderPath.Replace(Application.dataPath + "\\", "Assets/");
+
+        static MixedRealityEditorSettings()
         {
             SetIconTheme();
 
@@ -193,13 +195,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         private static void SetIconTheme()
         {
-            if (string.IsNullOrEmpty(MixedRealityToolkit_RelativeFolderPath))
+            if (string.IsNullOrEmpty(MixedRealityToolkit_AbsoluteFolderPath))
             {
                 Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
                 return;
             }
 
-            var icons = Directory.GetFiles($"{MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Icons");
+            var icons = Directory.GetFiles($"{MixedRealityToolkit_AbsoluteFolderPath}/_Core/Resources/Icons");
             var icon = new Texture2D(2, 2);
 
             for (int i = 0; i < icons.Length; i++)
