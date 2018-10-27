@@ -124,7 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (eventData.InputSource.SourceId == Controller.InputSource.SourceId)
             {
-                Debug.Log("Pointer detected");
                 isInteractionEnabled = true;
             }
         }
