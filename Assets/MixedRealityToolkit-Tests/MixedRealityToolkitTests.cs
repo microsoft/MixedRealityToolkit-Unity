@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Create Test Configuration
             Assert.AreEqual(0, MixedRealityToolkit.Instance.ActiveProfile.ActiveServices.Count);
-            Assert.AreEqual(3, MixedRealityToolkit.Instance.MixedRealityComponents.Count);
+            Assert.AreEqual(0, MixedRealityToolkit.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(MixedRealityToolkit.Instance.ActiveProfile);
             Assert.IsNotEmpty(MixedRealityToolkit.Instance.ActiveProfile.ActiveServices);
             Assert.AreEqual(1, MixedRealityToolkit.Instance.ActiveProfile.ActiveServices.Count);
-            Assert.AreEqual(3, MixedRealityToolkit.Instance.MixedRealityComponents.Count);
+            Assert.AreEqual(0, MixedRealityToolkit.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -117,16 +117,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             InitializeMixedRealityToolkitScene();
 
-            var component = new TestComponent1();
-
             // Add Input System
             MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), component);
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1());
 
             // Tests
-            Assert.AreEqual(4, MixedRealityToolkit.Instance.MixedRealityComponents.Count);
+            Assert.AreEqual(1, MixedRealityToolkit.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -157,14 +155,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Add test component
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1());
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1());
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1());
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IFailComponent), new TestFailComponent());
+            LogAssert.Expect(LogType.Error, $"Unable to register {typeof(IFailComponent)}. Concrete type does not implement the IMixedRealityExtensionService implementation.");
 
-            // Retrieve Component1
-            var components = MixedRealityToolkit.Instance.GetActiveServices(typeof(ITestComponent1));
+            // Retrieve all registered IMixedRealityExtensionServices
+            var components = MixedRealityToolkit.Instance.GetActiveServices(typeof(IMixedRealityExtensionService));
 
             // Tests
-            Assert.AreEqual(3, components.Count);
+            Assert.AreEqual(2, components.Count);
         }
 
         [Test]
@@ -178,16 +177,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Add test component
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1());
 
-            try
-            {
-                // Validate non-existent component
-                MixedRealityToolkit.Instance.GetService(typeof(ITestComponent2), "Test2");
-                Assert.Fail();
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
+            // Validate non-existent component
+            MixedRealityToolkit.Instance.GetService(typeof(ITestComponent2), "Test2");
+            LogAssert.Expect(LogType.Error, "Unable to find Test2 Manager.");
         }
 
         [Test]
@@ -226,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(MixedRealityToolkit.Instance.ActiveProfile);
             Assert.IsNotEmpty(MixedRealityToolkit.Instance.ActiveProfile.ActiveServices);
             Assert.AreEqual(1, MixedRealityToolkit.Instance.ActiveProfile.ActiveServices.Count);
-            Assert.AreEqual(5, MixedRealityToolkit.Instance.MixedRealityComponents.Count);
+            Assert.AreEqual(2, MixedRealityToolkit.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -300,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var allComponents = MixedRealityToolkit.Instance.MixedRealityComponents;
 
             // Tests
-            Assert.AreEqual(7, allComponents.Count);
+            Assert.AreEqual(4, allComponents.Count);
         }
 
         [Test]
@@ -334,9 +326,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
     #region Test Components
 
-    public interface ITestComponent1 : IMixedRealityService { }
+    public interface ITestComponent1 : IMixedRealityExtensionService { }
 
-    public interface ITestComponent2 : IMixedRealityService { }
+    public interface ITestComponent2 : IMixedRealityExtensionService { }
 
     internal class TestComponent1 : BaseService, ITestComponent1
     {
@@ -349,30 +341,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public override void Initialize()
         {
             InputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
-        }
-
-        /// <summary>
-        /// Optional Update function to perform per-frame updates of the service
-        /// </summary>
-        public override void Update()
-        {
-            // TODO Update stuff 
-        }
-
-        /// <summary>
-        /// Optional ProfileUpdate function to allow reconfiguration when the active configuration profile of the Mixed Reality Toolkit is replaced
-        /// </summary>
-        public override void Reset()
-        {
-            // TODO React to profile change
-        }
-
-        /// <summary>
-        /// Optional Destroy function to perform cleanup of the service before the Mixed Reality Toolkit is destroyed
-        /// </summary>
-        public override void Destroy()
-        {
-            // TODO Destroy stuff 
         }
     }
 
@@ -388,31 +356,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             InputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
         }
-
-        /// <summary>
-        /// Optional Update function to perform per-frame updates of the service
-        /// </summary>
-        public override void Update()
-        {
-            // TODO Update stuff 
-        }
-
-        /// <summary>
-        /// Optional ProfileUpdate function to allow reconfiguration when the active configuration profile of the Mixed Reality Toolkit is replaced
-        /// </summary>
-        public override void Reset()
-        {
-            // TODO React to profile change
-        }
-
-        /// <summary>
-        /// Optional Destroy function to perform cleanup of the service before the Mixed Reality Toolkit is destroyed
-        /// </summary>
-        public override void Destroy()
-        {
-            // TODO Destroy stuff 
-        }
     }
+
+    internal interface IFailComponent : IMixedRealityService { }
+
+    internal class TestFailComponent : BaseService, IFailComponent { }
 
     #endregion Test Components
 }
