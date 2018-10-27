@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private static BaseMixedRealityProfile profile;
         private static SerializedObject targetProfile;
-
         private static BaseMixedRealityProfile profileToCopy;
 
         protected virtual void Awake()
