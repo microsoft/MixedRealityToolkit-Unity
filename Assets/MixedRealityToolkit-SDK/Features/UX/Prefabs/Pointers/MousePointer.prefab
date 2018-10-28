@@ -60,7 +60,7 @@ MonoBehaviour:
     axisConstraint: 0
   cursorPrefab: {fileID: 1151083198953756, guid: 667821d88830305449757690d22f71e0,
     type: 2}
-  disableCursorOnStart: 0
+  disableCursorOnStart: 1
   setCursorVisibilityOnSourceDetected: 0
   raycastOrigin: {fileID: 0}
   activeHoldAction:
@@ -75,3 +75,6 @@ MonoBehaviour:
   overrideGlobalPointerExtent: 0
   pointerExtent: 10
   pointerOrientation: 0
+  hideCursorWhenInactive: 1
+  movementThresholdToUnHide: 0.1
+  hideTimeout: 3

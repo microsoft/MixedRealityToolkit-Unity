@@ -17,7 +17,34 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     /// </summary>
     public class MousePointer : BaseControllerPointer, IMixedRealityMousePointer
     {
+        [SerializeField]
+        [Tooltip("Should the mouse cursor be hidden when no active input is received?")]
+        private bool hideCursorWhenInactive = true;
+
+        /// <inheritdoc />
+        public bool HideCursorWhenInactive => hideCursorWhenInactive;
+
+        [SerializeField]
+        [Range(0.01f, 1f)]
+        [Tooltip("What is the movement threshold to reach before un-hiding mouse cursor?")]
+        private float movementThresholdToUnHide = 0.1f;
+
+        /// <inheritdoc />
+        public float MovementThresholdToUnHide => movementThresholdToUnHide;
+
+        [SerializeField]
+        [Range(0f, 10f)]
+        [Tooltip("How long should it take before the mouse cursor is hidden?")]
+        private float hideTimeout = 3.0f;
+
+        /// <inheritdoc />
+        public float HideTimeout => hideTimeout;
+
+        private float timeoutTimer;
+
         private bool isInteractionEnabled = false;
+
+        private bool cursorWasDisabledOnDown = false;
 
         /// <inheritdoc />
         public override bool IsInteractionEnabled => isInteractionEnabled;
@@ -66,6 +93,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (UseSourcePoseData)
             {
+                if (!BaseCursor.IsVisible &&
+                    (eventData.SourceData.x >= movementThresholdToUnHide ||
+                     eventData.SourceData.y >= MovementThresholdToUnHide))
+                {
+                    BaseCursor?.SetVisibility(true);
+                    transform.rotation = CameraCache.Main.transform.rotation;
+                }
+
                 var newRotation = Vector3.zero;
                 newRotation.x += eventData.SourceData.y;
                 newRotation.y += eventData.SourceData.x;
@@ -81,13 +116,47 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 if (!UseSourcePoseData &&
                     PoseAction == eventData.MixedRealityInputAction)
                 {
+                    if (!BaseCursor.IsVisible &&
+                        (eventData.InputData.x >= movementThresholdToUnHide ||
+                         eventData.InputData.y >= MovementThresholdToUnHide))
+                    {
+                        BaseCursor?.SetVisibility(true);
+                        transform.rotation = CameraCache.Main.transform.rotation;
+                    }
+
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
+
                     var newRotation = Vector3.zero;
                     newRotation.x += eventData.InputData.x;
                     newRotation.y += eventData.InputData.y;
                     transform.Rotate(newRotation, Space.World);
                 }
+            }
+        }
+
+        /// <inheritdoc />
+        public override void OnInputDown(InputEventData eventData)
+        {
+            cursorWasDisabledOnDown = !BaseCursor.IsVisible;
+
+            if (cursorWasDisabledOnDown)
+            {
+                BaseCursor?.SetVisibility(true);
+                transform.rotation = CameraCache.Main.transform.rotation;
+            }
+            else
+            {
+                base.OnInputDown(eventData);
+            }
+        }
+
+        /// <inheritdoc />
+        public override void OnInputUp(InputEventData eventData)
+        {
+            if (BaseCursor.IsVisible && !cursorWasDisabledOnDown)
+            {
+                base.OnInputUp(eventData);
             }
         }
 
@@ -107,6 +176,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     isInteractionEnabled = true;
                     break;
                 }
+            }
+        }
+
+        private void Update()
+        {
+            if (!isInteractionEnabled) { return; }
+
+            timeoutTimer += Time.unscaledDeltaTime;
+
+            if (timeoutTimer >= hideTimeout)
+            {
+                timeoutTimer = 0.0f;
+                BaseCursor?.SetVisibility(false);
             }
         }
 

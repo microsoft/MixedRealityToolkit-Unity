@@ -111,6 +111,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         }
 
         /// <inheritdoc />
+        public bool IsVisible => PrimaryCursorVisual != null ? PrimaryCursorVisual.gameObject.activeInHierarchy : gameObject.activeInHierarchy;
+
+        /// <inheritdoc />
         public bool SetVisibilityOnSourceDetected { get; set; } = false;
 
         /// <inheritdoc />
