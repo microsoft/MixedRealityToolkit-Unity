@@ -94,8 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             private set { speechCommandsProfile = value; }
         }
 
-        [SerializeField]
-        [Tooltip("Dictation system to be used within the project")]
         private IMixedRealityDictationSystem dictationSystem;
 
         /// <summary>
