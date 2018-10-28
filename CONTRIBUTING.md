@@ -33,7 +33,7 @@ To identify the appropriate development branch:
 3. If the **Status** is not **Accepting changes**, select the next release
 4. Note the **Development branch** for Pull Request submission.
 
-Any pull request made directly to master will be retargeted to development branches by a project maintainer.
+Any pull request made directly to master will be retargeted to a development branches by a project maintainer.
 
 NOTE: A project maintainer may retarget your PR to a different development branch based on the release priorities.
 
