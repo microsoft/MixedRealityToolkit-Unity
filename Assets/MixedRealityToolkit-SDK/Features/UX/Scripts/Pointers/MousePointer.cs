@@ -17,8 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     /// </summary>
     public class MousePointer : BaseControllerPointer, IMixedRealityMousePointer
     {
-        private Vector3 newRotation = Vector3.zero;
-
         private bool isInteractionEnabled = false;
 
         /// <inheritdoc />
@@ -68,10 +66,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (UseSourcePoseData)
             {
-                newRotation = transform.rotation.eulerAngles;
+                var newRotation = Vector3.zero;
                 newRotation.x += eventData.SourceData.y;
                 newRotation.y += eventData.SourceData.x;
-                transform.rotation = Quaternion.Euler(newRotation);
+                transform.Rotate(newRotation, Space.World);
             }
         }
 
@@ -85,10 +83,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    newRotation = transform.rotation.eulerAngles;
+                    var newRotation = Vector3.zero;
                     newRotation.x += eventData.InputData.x;
                     newRotation.y += eventData.InputData.y;
-                    transform.rotation = Quaternion.Euler(newRotation);
+                    transform.Rotate(newRotation, Space.World);
                 }
             }
         }
@@ -122,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             base.OnSourceDetected(eventData);
 
-            if (eventData.InputSource.SourceId == Controller.InputSource.SourceId)
+            if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
                 isInteractionEnabled = true;
             }
@@ -133,9 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.OnSourceLost(eventData);
 
-            if (Controller != null &&
-                eventData.Controller != null &&
-                eventData.Controller.InputSource.SourceId == Controller.InputSource.SourceId)
+            if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
                 isInteractionEnabled = false;
             }

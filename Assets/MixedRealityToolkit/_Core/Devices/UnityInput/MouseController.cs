@@ -126,25 +126,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                         if (Interactions[i].BoolData)
                         {
                             MixedRealityToolkit.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
-
-                            if (Interactions[i].KeyCode == KeyCode.Mouse0)
-                            {
-                                MixedRealityToolkit.InputSystem?.RaisePointerDown(InputSource.Pointers[0], Interactions[i].MixedRealityInputAction);
-                            }
                         }
                         else
                         {
-                            if (Input.GetKeyUp(KeyCode.Mouse0))
-                            {
-                                MixedRealityToolkit.InputSystem?.RaisePointerClicked(InputSource.Pointers[0], Interactions[i].MixedRealityInputAction, 1);
-                            }
-
                             MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
-
-                            if (Input.GetKeyUp(KeyCode.Mouse0))
-                            {
-                                MixedRealityToolkit.InputSystem?.RaisePointerUp(InputSource.Pointers[0], Interactions[i].MixedRealityInputAction);
-                            }
                         }
                     }
                     else

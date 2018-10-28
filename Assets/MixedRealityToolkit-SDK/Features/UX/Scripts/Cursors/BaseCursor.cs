@@ -322,7 +322,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             if (newTargetedObject == null)
             {
                 TargetedObject = null;
-
                 targetPosition = RayStep.GetPointByDistance(Pointer.Rays, defaultCursorDistance);
                 lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, defaultCursorDistance);
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
