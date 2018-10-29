@@ -28,18 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             private set { inputActionsProfile = value; }
         }
 
-        [SerializeField]
-        [Tooltip("Gesture Mapping Profile for recognizing gestures across all platforms.")]
-        private MixedRealityGesturesProfile gesturesProfile;
-
-        /// <summary>
-        /// Gesture Mapping Profile for recognizing gestures across all platforms.
-        /// </summary>
-        public MixedRealityGesturesProfile GesturesProfile
-        {
-            get { return gesturesProfile; }
-            private set { gesturesProfile = value; }
-        }
 
         [SerializeField]
         [Tooltip("Input Action Rules Profile for raising actions based on specific criteria.")]
@@ -66,6 +54,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             get { return pointerProfile; }
             private set { pointerProfile = value; }
         }
+
+        [SerializeField]
+        [Tooltip("Gesture Mapping Profile for recognizing gestures across all platforms.")]
+        private MixedRealityGesturesProfile gesturesProfile;
+
+        /// <summary>
+        /// Gesture Mapping Profile for recognizing gestures across all platforms.
+        /// </summary>
+        public MixedRealityGesturesProfile GesturesProfile
+        {
+            get { return gesturesProfile; }
+            private set { gesturesProfile = value; }
+        }
+
 
         private IMixedRealitySpeechSystem speechSystem;
 
