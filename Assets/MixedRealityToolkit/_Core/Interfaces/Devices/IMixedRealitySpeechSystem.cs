@@ -9,6 +9,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
     public interface IMixedRealitySpeechSystem : IMixedRealityDeviceManager, IMixedRealityExtensionService
     {
         /// <summary>
+        /// Query whether or not the speech system is active
+        /// </summary>
+        bool IsRecognitionActive { get; }
+
+        /// <summary>
         /// Make sure the keyword recognizer is on, then stop it.
         /// Otherwise, leave it alone because it's already in the desired state.
         /// </summary>
