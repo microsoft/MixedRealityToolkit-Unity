@@ -476,7 +476,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateInterval: 0.25
   maxDistance: 20
-  MaxObjects: 10
+  maxObjects: 10
+  audioSource: {fileID: 977203055}
 --- !u!135 &977203057
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -541,7 +542,7 @@ GameObject:
   - component: {fileID: 979633973}
   - component: {fileID: 979633972}
   m_Layer: 0
-  m_Name: MixedRealityManager
+  m_Name: MixedRealityToolkit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -801,7 +802,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1912278560}
   m_Layer: 0
-  m_Name: Body
+  m_Name: MixedRealityPlayspace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

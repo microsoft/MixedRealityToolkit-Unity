@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,27 +14,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     {
         private SerializedProperty inputActionsProfile;
         private SerializedProperty gesturesProfile;
+        private SerializedProperty inputActionRulesProfile;
         private SerializedProperty pointerProfile;
         private SerializedProperty speechCommandsProfile;
+        private SerializedProperty controllerVisualizationProfile;
         private SerializedProperty enableControllerMapping;
         private SerializedProperty controllerMappingProfile;
 
         private void OnEnable()
         {
-            if (!MixedRealityManager.ConfirmInitialized())
+            if (!MixedRealityToolkit.ConfirmInitialized())
             {
                 return;
             }
 
-            if (!MixedRealityManager.HasActiveProfile)
+            if (!MixedRealityToolkit.HasActiveProfile)
             {
                 return;
             }
 
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             gesturesProfile = serializedObject.FindProperty("gesturesProfile");
+            inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
+            controllerVisualizationProfile = serializedObject.FindProperty("controllerVisualizationProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
         }
@@ -42,14 +46,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            if (!CheckMixedRealityManager())
+            if (!CheckMixedRealityConfigured())
             {
                 return;
             }
 
             if (GUILayout.Button("Back to Configuration Profile"))
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
             }
 
             EditorGUILayout.Space();
@@ -70,9 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             changed |= RenderProfile(inputActionsProfile);
             changed |= RenderProfile(gesturesProfile);
+            changed |= RenderProfile(inputActionRulesProfile);
             changed |= RenderProfile(pointerProfile);
             changed |= RenderProfile(speechCommandsProfile);
-
+            changed |= RenderProfile(controllerVisualizationProfile);
             EditorGUILayout.PropertyField(enableControllerMapping);
             changed |= RenderProfile(controllerMappingProfile);
 
@@ -86,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (changed)
             {
-                EditorApplication.delayCall += () => MixedRealityManager.Instance.ResetConfiguration(MixedRealityManager.Instance.ActiveProfile);
+                EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
             }
         }
     }

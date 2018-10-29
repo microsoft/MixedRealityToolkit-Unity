@@ -1,16 +1,17 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
-    public class MixedRealityDiagnosticsManager : MixedRealityEventManager, IMixedRealityDiagnosticsSystem
+    public class MixedRealityDiagnosticsManager : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
-        #region IMixedRealityManager
+        #region IMixedRealityService
         private DiagnosticsEventData eventData;
         private GameObject diagnosticVisualization;
 
@@ -24,10 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         {
             eventData = new DiagnosticsEventData(EventSystem.current);
 
-            Visible = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.Visible;
-            ShowCpu = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowCpu;
-            ShowFps = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowFps;
-            ShowMemory = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowMemory;
+            Visible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.Visible;
+            ShowCpu = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowCpu;
+            ShowFps = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowFps;
+            ShowMemory = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowMemory;
 
             RaiseDiagnosticsChanged();
         }
@@ -92,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
                 handler.OnDiagnosticSettingsChanged(diagnosticsEventsData);
             };
 
-        #endregion IMixedRealityManager
+        #endregion IMixedRealityService
 
         #region IMixedRealityDiagnosticsManager
         private bool visible;
