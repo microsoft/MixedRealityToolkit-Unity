@@ -17,44 +17,177 @@ namespace HoloToolkit.Unity.UX
         [Tooltip("Choose this option if Rig is to be applied to a 2D object.")]
         private BoundingBox.FlattenModeEnum flattenedAxis = default(BoundingBox.FlattenModeEnum);
 
+        public BoundingBox.FlattenModeEnum FlattenedAxis
+        {
+            get
+            {
+                return flattenedAxis;
+            }
+            set
+            {
+                flattenedAxis = value;
+            }
+        }
+
         [Header("Customization Settings")]
         [SerializeField]
         private Material scaleHandleMaterial;
+        public Material ScaleHandleMaterial
+        {
+            get
+            {
+                return scaleHandleMaterial;
+            }
+            set
+            {
+                scaleHandleMaterial = value;
+            }
+        }
 
         [SerializeField]
         private Material rotateHandleMaterial;
+        public Material RotateHandleMaterial
+        {
+            get
+            {
+                return rotateHandleMaterial;
+            }
+            set
+            {
+                rotateHandleMaterial = value;
+            }
+        }
 
         [SerializeField]
         private Material interactingMaterial;
+        public Material InteractingMaterial
+        {
+            get
+            {
+                return interactingMaterial;
+            }
+            set
+            {
+                interactingMaterial = value;
+            }
+        }
 
         [Header("Behavior")]
         [SerializeField]
         private float scaleRate = 1.0f;
+        public float ScaleRate
+        {
+            get
+            {
+                return scaleRate;
+            }
+            set
+            {
+                scaleRate = value;
+            }
+        }
 
         [SerializeField]
         private float appBarHoverOffsetZ = 0.05f;
+        public float AppBarHoverOffsetZ
+        {
+            get
+            {
+                return appBarHoverOffsetZ;
+            }
+            set
+            {
+                appBarHoverOffsetZ = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("This is the maximum scale that one grab can accomplish.")]
         private float maxScale = 2.0f;
+        public float MaxScale
+        {
+            get
+            {
+                return maxScale;
+            }
+            set
+            {
+                maxScale = value;
+            }
+        }
 
         [SerializeField]
         private BoundingBoxGizmoHandleRotationType rotationType = BoundingBoxGizmoHandleRotationType.objectCoordinates;
+        public BoundingBoxGizmoHandleRotationType RotationType
+        {
+            get
+            {
+                return rotationType;
+            }
+            set
+            {
+                rotationType = value;
+            }
+        }
 
         [SerializeField]
         private BoundingBoxGizmoHandleHandMotionType handMotionToRotate = BoundingBoxGizmoHandleHandMotionType.handRotatesToRotateObject;
+        public BoundingBoxGizmoHandleHandMotionType HandMotionToRotate
+        {
+            get
+            {
+                return handMotionToRotate;
+            }
+            set
+            {
+                handMotionToRotate = value;
+            }
+        }
 
         [SerializeField]
         private bool rotateAroundPivot = false;
+        public bool RotateAroundPivot
+        {
+            get
+            {
+                return rotateAroundPivot;
+            }
+            set
+            {
+                rotateAroundPivot = value;
+            }
+        }
 
         [Header("Preset Components")]
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
         private BoundingBox boundingBoxPrefab;
+        public BoundingBox BoundingBoxPrefab
+        {
+            get
+            {
+                return boundingBoxPrefab;
+            }
+            set
+            {
+                boundingBoxPrefab = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("AppBar prefab.")]
         private AppBar appBarPrefab = null;
+        public AppBar AppBarPrefab
+        {
+            get
+            {
+                return appBarPrefab;
+            }
+            set
+            {
+                appBarPrefab = value;
+            }
+        }
 
         private BoundingBox boxInstance;
 
@@ -81,58 +214,6 @@ namespace HoloToolkit.Unity.UX
         private Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
 
         private bool destroying = false;
-
-        public BoundingBox BoundingBoxPrefab
-        {
-            get
-            {
-                return boundingBoxPrefab;
-            }
-
-            set
-            {
-                boundingBoxPrefab = value;
-            }
-        }
-
-        public Material ScaleHandleMaterial
-        {
-            get
-            {
-                return scaleHandleMaterial;
-            }
-
-            set
-            {
-                scaleHandleMaterial = value;
-            }
-        }
-
-        public Material RotateHandleMaterial
-        {
-            get
-            {
-                return rotateHandleMaterial;
-            }
-
-            set
-            {
-                rotateHandleMaterial = value;
-            }
-        }
-
-        public Material InteractingMaterial
-        {
-            get
-            {
-                return interactingMaterial;
-            }
-
-            set
-            {
-                interactingMaterial = value;
-            }
-        }
 
         public void Activate()
         {
