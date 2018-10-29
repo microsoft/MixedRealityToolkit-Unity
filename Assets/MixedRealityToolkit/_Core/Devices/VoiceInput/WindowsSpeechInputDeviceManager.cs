@@ -32,9 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 
         private KeywordRecognizer keywordRecognizer;
 
-        /// <summary>
-        /// Query whether or not the speech system is active
-        /// </summary>
+        /// <inheritdoc />
         public bool IsRecognitionActive
         {
             get { return keywordRecognizer != null && keywordRecognizer.IsRunning; }
@@ -92,10 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             }
         }
 
-        /// <summary>
-        /// Make sure the keyword recognizer is off, then start it.
-        /// Otherwise, leave it alone because it's already in the desired state.
-        /// </summary>
+        /// <inheritdoc />
         public void StartRecognition()
         {
             if (keywordRecognizer != null && !keywordRecognizer.IsRunning)
@@ -104,10 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             }
         }
 
-        /// <summary>
-        /// Make sure the keyword recognizer is on, then stop it.
-        /// Otherwise, leave it alone because it's already in the desired state.
-        /// </summary>
+        /// <inheritdoc />
         public void StopRecognition()
         {
             if (keywordRecognizer != null && keywordRecognizer.IsRunning)
