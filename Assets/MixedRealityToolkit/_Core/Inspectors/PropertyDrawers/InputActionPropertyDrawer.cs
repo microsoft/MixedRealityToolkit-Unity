@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -19,19 +19,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
 
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent content)
         {
-            if (!MixedRealityManager.IsInitialized || !MixedRealityManager.HasActiveProfile)
+            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.HasActiveProfile)
             {
                 profile = null;
-                actionLabels = new[] { new GUIContent("Missing Mixed Reality Manager") };
+                actionLabels = new[] { new GUIContent("Missing Mixed Reality Toolkit") };
                 actionIds = new[] { 0 };
             }
 
             if (profile == null ||
-                (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
+                (MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
                  profile.InputActions != null &&
-                 profile.InputActions != MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions))
+                 profile.InputActions != MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions))
             {
-                profile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile;
+                profile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile;
 
                 if (profile != null)
                 {
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
                 }
             }
 
-            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 profile = null;
                 actionLabels = new[] { new GUIContent("Input System Disabled") };

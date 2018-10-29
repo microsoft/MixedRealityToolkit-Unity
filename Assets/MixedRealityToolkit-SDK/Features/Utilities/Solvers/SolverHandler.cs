@@ -134,7 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             DeltaTime = 0.0f;
 
             solvers.AddRange(GetComponents<Solver>());
+        }
 
+        private void Start()
+        {
             // TransformTarget overrides TrackedObjectToReference
             if (!transformTarget)
             {
@@ -166,10 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         protected void OnDestroy()
         {
-            if (transformWithOffset != null)
-            {
-                Destroy(transformWithOffset);
-            }
+            DetachFromCurrentTrackedObject();
         }
 
         #endregion MonoBehaviour Implementation
@@ -184,19 +184,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         protected override void OnControllerLost()
         {
-            transformTarget = null;
-
-            if (transformWithOffset != null)
-            {
-                Destroy(transformWithOffset);
-                transformWithOffset = null;
-            }
+            DetachFromCurrentTrackedObject();
         }
 
         /// <summary>
         /// Clears the transform target and attaches to the current <see cref="TrackedObjectToReference"/>.
         /// </summary>
         public void RefreshTrackedObject()
+        {
+            DetachFromCurrentTrackedObject();
+            AttachToNewTrackedObject();
+        }
+
+        protected virtual void DetachFromCurrentTrackedObject()
         {
             transformTarget = null;
 
@@ -205,8 +205,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 Destroy(transformWithOffset);
                 transformWithOffset = null;
             }
-
-            AttachToNewTrackedObject();
         }
 
         protected virtual void AttachToNewTrackedObject()

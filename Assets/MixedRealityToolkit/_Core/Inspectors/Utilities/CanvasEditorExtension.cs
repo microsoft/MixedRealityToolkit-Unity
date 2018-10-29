@@ -2,8 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -26,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         {
             canvas = (Canvas)target;
 
-            if (MixedRealityManager.HasActiveProfile &&
-                MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+            if (MixedRealityToolkit.HasActiveProfile &&
+                MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 CheckCanvasSettings();
             }
@@ -35,16 +34,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 
         public override void OnInspectorGUI()
         {
-            if (!MixedRealityManager.HasActiveProfile ||
-                !MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+            if (!MixedRealityToolkit.HasActiveProfile ||
+                !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 base.OnInspectorGUI();
                 return;
             }
 
-            if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && MixedRealityManager.InputSystem == null)
+            if (MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && MixedRealityToolkit.InputSystem == null)
             {
-                EditorGUILayout.HelpBox("No Input System Profile found in the Mixed Reality Manager's Active Profile.", MessageType.Error);
+                EditorGUILayout.HelpBox("No Input System Profile found in the Mixed Reality Toolkit's Active Profile.", MessageType.Error);
                 base.OnInspectorGUI();
                 return;
             }
@@ -64,11 +63,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             bool removeHelper = false;
 
             // Update the world camera if we need to.
-            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != MixedRealityManager.InputSystem.FocusProvider.UIRaycastCamera)
+            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera)
             {
                 if (EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel"))
                 {
-                    canvas.worldCamera = MixedRealityManager.InputSystem.FocusProvider.UIRaycastCamera;
+                    canvas.worldCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
                 }
                 else
                 {
@@ -77,14 +76,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             }
 
             // Add the Canvas Helper if we need it.
-            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera == MixedRealityManager.InputSystem.FocusProvider.UIRaycastCamera)
+            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera == MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera)
             {
                 var helper = canvas.gameObject.EnsureComponent<CanvasUtility>();
                 helper.Canvas = canvas;
             }
 
             // Reset the world canvas if we need to.
-            if (canvas.isRootCanvas && canvas.renderMode != RenderMode.WorldSpace && canvas.worldCamera == MixedRealityManager.InputSystem.FocusProvider.UIRaycastCamera)
+            if (canvas.isRootCanvas && canvas.renderMode != RenderMode.WorldSpace && canvas.worldCamera == MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera)
             {
                 // Sets it back to MainCamera default.
                 canvas.worldCamera = null;
