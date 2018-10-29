@@ -93,11 +93,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (UseSourcePoseData)
             {
-                if (!BaseCursor.IsVisible &&
+                if (BaseCursor != null &&
+                    !BaseCursor.IsVisible &&
                     (eventData.SourceData.x >= movementThresholdToUnHide ||
                      eventData.SourceData.y >= MovementThresholdToUnHide))
                 {
-                    BaseCursor?.SetVisibility(true);
+                    BaseCursor.SetVisibility(true);
                     transform.rotation = CameraCache.Main.transform.rotation;
                 }
 
@@ -116,11 +117,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 if (!UseSourcePoseData &&
                     PoseAction == eventData.MixedRealityInputAction)
                 {
-                    if (!BaseCursor.IsVisible &&
+                    if (BaseCursor != null &&
+                        !BaseCursor.IsVisible &&
                         (eventData.InputData.x >= movementThresholdToUnHide ||
                          eventData.InputData.y >= MovementThresholdToUnHide))
                     {
-                        BaseCursor?.SetVisibility(true);
+                        BaseCursor.SetVisibility(true);
                         transform.rotation = CameraCache.Main.transform.rotation;
                     }
 
