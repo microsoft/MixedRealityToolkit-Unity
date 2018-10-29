@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 {
     /// <summary>
     /// Implements common logic for rotating holograms using a handlebar metaphor. 
@@ -20,16 +20,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
     public class TwoHandRotateLogic
     {
         private const float RotationMultiplier = 2f;
-        private readonly RotationConstraintType initialRotationConstraint;
+        private readonly AxisConstraint initialRotationConstraint;
 
-        private RotationConstraintType currentRotationConstraint;
+        private AxisConstraint currentRotationConstraint;
         private Vector3 previousHandlebarRotation;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="rotationConstraint"></param>
-        public TwoHandRotateLogic(RotationConstraintType rotationConstraint)
+        public TwoHandRotateLogic(AxisConstraint rotationConstraint)
         {
             initialRotationConstraint = rotationConstraint;
         }
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// XOrYBasedOnInitialHandPosition might change the current rotation constraint based on the 
         /// initial hand positions at the start
         /// </summary>
-        public RotationConstraintType GetCurrentRotationConstraint()
+        public AxisConstraint GetCurrentRotationConstraint()
         {
             return currentRotationConstraint;
         }
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
             rotationDelta.ToAngleAxis(out angle, out axis);
             angle *= RotationMultiplier;
 
-            if (currentRotationConstraint == RotationConstraintType.YAxisOnly)
+            if (currentRotationConstraint == AxisConstraint.YAxisOnly)
             {
                 // If we are rotating about Y axis, then make sure we rotate about global Y axis.
                 // Since the angle is obtained from a quaternion, we need to properly orient it (up or down) based
@@ -86,21 +86,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
             return Quaternion.AngleAxis(angle, axis) * currentRotation;
         }
 
-        private static Vector3 ProjectHandlebarGivenConstraint(RotationConstraintType constraint, Vector3 handlebarRotation)
+        private static Vector3 ProjectHandlebarGivenConstraint(AxisConstraint constraint, Vector3 handlebarRotation)
         {
             Vector3 result = handlebarRotation;
             switch (constraint)
             {
-                case RotationConstraintType.XAxisOnly:
+                case AxisConstraint.XAxisOnly:
                     result.x = 0;
                     break;
-                case RotationConstraintType.YAxisOnly:
+                case AxisConstraint.YAxisOnly:
                     result.y = 0;
                     break;
-                case RotationConstraintType.ZAxisOnly:
+                case AxisConstraint.ZAxisOnly:
                     result.z = 0;
                     break;
-                case RotationConstraintType.None:
+                case AxisConstraint.None:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
