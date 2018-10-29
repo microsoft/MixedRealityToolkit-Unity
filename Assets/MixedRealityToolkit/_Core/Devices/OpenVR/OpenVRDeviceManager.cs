@@ -4,8 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using UnityEngine;
 
@@ -14,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
     /// </summary>
-    public class OpenVRDeviceManager : UnityJoystickManager, IMixedRealityComponent
+    public class OpenVRDeviceManager : UnityJoystickManager
     {
         /// <summary>
         /// Constructor.
@@ -79,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
             }
 
             var pointers = RequestPointers(controllerType, controllingHand);
-            var inputSource = MixedRealityManager.InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
+            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
 
             if (detectedController == null)

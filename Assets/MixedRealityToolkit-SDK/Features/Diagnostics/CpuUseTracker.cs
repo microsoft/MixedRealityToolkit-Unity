@@ -2,17 +2,23 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Linq;
+
+#if !WINDOWS_UWP || ENABLE_IL2CPP
 using System.Diagnostics;
+using System.Linq;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
     internal class CpuUseTracker
     {
         private TimeSpan? processorTime;
-        private Process currentProcess = Process.GetCurrentProcess();
         private TimeSpan[] readings = new TimeSpan[20];
-        int index = 0;
+        private int index = 0;
+
+#if !WINDOWS_UWP || ENABLE_IL2CPP
+        private Process currentProcess = Process.GetCurrentProcess();
+#endif
 
         public void Reset()
         {
@@ -21,6 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
         public double GetReadingInMs()
         {
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+            // UWP doesn't support process with .NET runtime, so we can't get CPU readings with the current pattern.
+            return -1;
+#else
             if (!processorTime.HasValue)
             {
                 processorTime = currentProcess.TotalProcessorTime;
@@ -35,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
             index = (index + 1) % readings.Length;
 
             return Math.Round(readings.Average(t => t.TotalMilliseconds), 2);
+#endif
         }
     }
 }

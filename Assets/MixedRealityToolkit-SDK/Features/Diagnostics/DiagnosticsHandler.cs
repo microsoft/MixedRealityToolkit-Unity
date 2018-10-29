@@ -42,16 +42,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         private FpsUseTracker fpsUseTracker = new FpsUseTracker();
         StringBuilder displayText = new StringBuilder();
 
-        private GUIStyle style = new GUIStyle()
-        {
-            alignment = TextAnchor.UpperLeft,
-            normal = new GUIStyleState()
-            {
-                textColor = new Color(0, 0, 0.5f, 1)
-            }
-        };
+        private GUIStyle style = null;
 
         private Rect rect = new Rect();
+
+        private void Awake()
+        {
+            style = new GUIStyle()
+            {
+                alignment = TextAnchor.UpperLeft,
+                normal = new GUIStyleState()
+                {
+                    textColor = new Color(0, 0, 0.5f, 1)
+                }
+            };
+        }
 
         /// <summary>
         /// Updates the diagnostic settings
