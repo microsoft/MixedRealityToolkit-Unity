@@ -14,6 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
     [InitializeOnLoad]
     public class MixedRealityEditorSettings : IActiveBuildTargetChanged
     {
+        public MixedRealityEditorSettings()
+        {
+            callbackOrder = 0;
+        }
+
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
 
         private static string mixedRealityToolkit_RelativeFolderPath = string.Empty;
@@ -22,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(mixedRealityToolkit_RelativeFolderPath))
+                if (string.IsNullOrEmpty(mixedRealityToolkit_RelativeFolderPath))
                 {
                     if (!FindDirectory(Application.dataPath, "MixedRealityToolkit", out mixedRealityToolkit_RelativeFolderPath))
                     {
@@ -34,7 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             }
         }
 
-        public static string MixedRealityToolkit_RelativeFolderPath => MixedRealityToolkit_AbsoluteFolderPath.Replace(Application.dataPath + "\\", "Assets/");
+        public static string MixedRealityToolkit_RelativeFolderPath
+        {
+            get { return MixedRealityToolkit_AbsoluteFolderPath.Replace(Application.dataPath + "\\", "Assets/"); }
+        }
 
         static MixedRealityEditorSettings()
         {
@@ -138,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                 return;
             }
 
-            var icons = Directory.GetFiles($"{MixedRealityToolkit_AbsoluteFolderPath}/_Core/Resources/Icons");
+            var icons = Directory.GetFiles(MixedRealityToolkit_AbsoluteFolderPath + "/_Core/Resources/Icons");
             var icon = new Texture2D(2, 2);
 
             for (int i = 0; i < icons.Length; i++)
@@ -165,8 +173,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
 
-        public int callbackOrder { get; } = 0;
+        /// <inheritdoc />
+        public int callbackOrder { get; private set; }
 
+        /// <inheritdoc />
         public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
         {
             SessionState.SetBool(SessionKey, false);
