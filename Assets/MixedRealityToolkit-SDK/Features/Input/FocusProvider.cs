@@ -187,10 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
-                if (clearPreviousObject)
-                {
-                    PreviousPointerTarget = null;
-                }
+                PreviousPointerTarget = clearPreviousObject ? null : CurrentPointerTarget;
 
                 focusDetails.Point = Details.Point;
                 focusDetails.Normal = Details.Normal;
