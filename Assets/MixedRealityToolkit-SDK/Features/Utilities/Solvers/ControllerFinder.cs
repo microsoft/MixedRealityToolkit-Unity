@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            if (eventData.Controller.ControllerHandedness == handedness)
+            if (eventData.Controller?.ControllerHandedness == handedness)
             {
                 AddControllerTransform(eventData.Controller);
             }
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.Controller.ControllerHandedness == handedness)
+            if (eventData.Controller?.ControllerHandedness == handedness)
             {
                 RemoveControllerTransform();
             }
