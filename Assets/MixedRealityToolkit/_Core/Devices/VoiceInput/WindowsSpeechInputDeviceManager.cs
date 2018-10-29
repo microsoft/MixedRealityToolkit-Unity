@@ -30,8 +30,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// </summary>
         public IMixedRealityInputSource InputSource = null;
 
-
         private KeywordRecognizer keywordRecognizer;
+
+        /// <summary>
+        /// Query whether or not the speech system is active
+        /// </summary>
+        public bool IsRecognitionActive
+        {
+            get { return keywordRecognizer != null && keywordRecognizer.IsRunning; }
+        }
 
         public RecognitionConfidenceLevel RecognitionConfidenceLevel { get; set; }
 
