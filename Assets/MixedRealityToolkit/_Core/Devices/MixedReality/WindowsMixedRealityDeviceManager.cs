@@ -452,9 +452,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <param name="args">SDK source detected event arguments</param>
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
         {
+            bool raiseSourceDetected = !activeControllers.ContainsKey(args.state.source.id);
+
             var controller = GetController(args.state.source);
 
-            if (controller != null)
+            if (controller != null && raiseSourceDetected)
             {
                 MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
             }
