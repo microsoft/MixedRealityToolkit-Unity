@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private readonly GUIContent trianglesPerCubicMeterContent = new GUIContent("Triangles/Cubic Meter");
         private readonly GUIContent useSystemContent = new GUIContent("Use System");
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
             if (!CheckMixedRealityConfigured(false))
             {

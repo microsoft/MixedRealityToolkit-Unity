@@ -20,8 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private int currentlySelectedPointerOption = -1;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!CheckMixedRealityConfigured(false))
             {
                 return;
@@ -57,10 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.HelpBox("Pointers attach themselves onto controllers as they are initialized.", MessageType.Info);
             EditorGUILayout.Space();
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
 
             serializedObject.Update();
             currentlySelectedPointerOption = -1;

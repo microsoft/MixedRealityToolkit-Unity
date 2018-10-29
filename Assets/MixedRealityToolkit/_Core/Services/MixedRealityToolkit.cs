@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     {
                         if (configuration.ComponentType.Type != null)
                         {
-                            if(!RegisterService(typeof(IMixedRealityExtensionService), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityExtensionService))
+                            if (!RegisterService(typeof(IMixedRealityExtensionService), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityExtensionService))
                             {
                                 Debug.LogError($"Failed to register the {configuration.ComponentType.Type} Extension Service!");
                             }
@@ -512,6 +512,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Debug.LogWarning("Unable to add a manager of type null.");
                 return false;
             }
+
             if (service == null)
             {
                 Debug.LogWarning("Unable to add a manager with a null instance.");
@@ -529,25 +530,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     ActiveProfile.ActiveServices.Add(type, service);
                     return true;
                 }
-                else
-                {
-                    Debug.LogError($"There's already a {type.Name} registered.");
-                    return false;
-                }
-            }
-            else
-            {
-                if (!typeof(IMixedRealityExtensionService).IsAssignableFrom(type))
-                {
-                    Debug.LogError($"Unable to register {service}. Concrete type does not implement the IMixedRealityExtensionService implementation.");
-                    return false;
-                }
 
-                MixedRealityComponents.Add(new Tuple<Type, IMixedRealityExtensionService>(type, (IMixedRealityExtensionService)service));
-                if (!isInitializing) { service.Initialize(); }
-                mixedRealityComponentsCount = MixedRealityComponents.Count;
-                return true;
+                Debug.LogError($"There's already a {type.Name} registered.");
+                return false;
             }
+
+            if (!typeof(IMixedRealityExtensionService).IsAssignableFrom(type))
+            {
+                Debug.LogError($"Unable to register {type}. Concrete type does not implement the IMixedRealityExtensionService implementation.");
+                return false;
+            }
+
+            MixedRealityComponents.Add(new Tuple<Type, IMixedRealityExtensionService>(type, (IMixedRealityExtensionService)service));
+            if (!isInitializing) { service.Initialize(); }
+            mixedRealityComponentsCount = MixedRealityComponents.Count;
+            return true;
         }
 
         /// <summary>

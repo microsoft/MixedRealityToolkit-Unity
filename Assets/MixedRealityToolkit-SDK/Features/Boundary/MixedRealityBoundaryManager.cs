@@ -523,7 +523,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                 return null;
             }
 
-            Vector3 floorScale = MixedRealityToolkit.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorScale;
+            Vector2 floorScale = MixedRealityToolkit.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorScale;
 
             // Render the floor.
             currentFloorObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
