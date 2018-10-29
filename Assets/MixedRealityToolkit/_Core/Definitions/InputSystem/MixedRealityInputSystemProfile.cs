@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Globalization;
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
@@ -75,24 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// Current Registered Speech System.
         /// </summary>
         public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySpeechSystem>());
-
-
-        /// <summary>
-        /// The list of cultures where speech recognition is supported.  Cultures added as needed
-        /// </summary>
-        private List<CultureInfo> supportedVoiceCultures = new List<CultureInfo>
-        {
-            new CultureInfo("en-US")
-        };
-
-        /// <summary>
-        /// REturns whether speech is supported for the current language/culture or not
-        /// </summary>
-        public bool IsSpeechSupported
-        {
-            // Use UI Culture instead of just culture since that will match the current display lang/culture
-            get { return supportedVoiceCultures.Contains(CultureInfo.CurrentUICulture); }
-        }
 
         /// <summary>
         /// Is the speech Commands Enabled?
