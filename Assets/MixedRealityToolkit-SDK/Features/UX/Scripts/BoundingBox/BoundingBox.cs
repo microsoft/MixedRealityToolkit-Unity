@@ -386,7 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 Vector3 newRemotePoint;
                 //TODO: this line gets the finger grab point in space in hololens
-                if (currentPointer != null )
+                if (usingPose == false)
                 {
                     currentPointer.TryGetPointerPosition(out newRemotePoint);
                 }
@@ -1131,6 +1131,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             if (currentInputSource == null)
             {
                 IMixedRealityPointer pointer = eventData.InputSource.Pointers[0];
+                Debug.Log("## OnInputDown1: SourceName ## " + eventData.InputSource.SourceName);
 
                 Ray ray;
                 //TODO: this line needs to get the fingerGrab point in hololens
@@ -1142,6 +1143,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     if (collider != null)
                     {
                         currentInputSource = eventData.InputSource;
+                        Debug.Log("## OnInputDown2: SourceName ## " + eventData.InputSource.SourceName);
+
                         currentPointer = pointer;
                         grabbedHandle = collider.gameObject;
                         currentHandleType = GetHandleType(grabbedHandle);
@@ -1169,9 +1172,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
         public void OnPoseInputChanged(InputEventData<MixedRealityPose> eventData)
         {
+            Debug.Log("## SourceName ## " + eventData.InputSource.SourceName);
+
             if (currentInputSource != null && eventData.InputSource == currentInputSource)
             {
-                if (eventData.MixedRealityInputAction.Description != "Pointer Pose" && eventData.MixedRealityInputAction.Description != "Grip Pose")
+                if (eventData.InputSource.SourceName.Contains("Hand"))
                 {
                     usingPose = true;
                     currentPosePosition = eventData.InputData.Position;
@@ -1200,10 +1205,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnGestureStarted(InputEventData eventData)
         {
+            Debug.Log("## OnGestureStarted: SourceName ## " + eventData.InputSource.SourceName);
+
         }
 
         public void OnGestureUpdated(InputEventData eventData)
         {
+            Debug.Log("## OnGestureUpdated: SourceName ## " + eventData.InputSource.SourceName);
+
         }
 
         public void OnGestureCompleted(InputEventData eventData)
