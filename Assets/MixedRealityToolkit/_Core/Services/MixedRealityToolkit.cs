@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
     /// It provides a service registry for all active services that are used within a project as well as providing the active configuration profile for the project.
     /// The Profile can be swapped out at any time to meet the needs of your project.
     /// </summary>
-    public class MixedRealityToolkit : MonoBehaviour
+    public sealed class MixedRealityToolkit : MonoBehaviour
     {
         #region Mixed Reality Toolkit Profile configuration
 
