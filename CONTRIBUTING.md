@@ -5,7 +5,7 @@ If you have any questions, please reach out on the [HoloLens forums](https://for
 
 # Process
 
-1. [Make a proposal](https://github.com/Microsoft/HoloToolkit-Unity/issues) (either new, or for one of the elements in our backlog)
+1. [Make a proposal](https://github.com/Microsoft/HoloToolkit-Unity/issues) (either new or for one of the elements in our backlog)
 2. Identify the appropriate development branch
 3. Implement the proposal and its tests.
 4. Ensure that your implementation meets the [coding guidelines](CodingGuidelines.md).
@@ -22,9 +22,9 @@ This will let us have a brief discussion about the problem and, hopefully, ident
 
 Note:  If you wish to work on something that already exists on our backlog, you can use that work item as your proposal.  
 
-# Identifing the development branch
+# Identifying the development branch
 
-The master branch does not accept direct pull requests. Each change must be submitted through an appropriate developement branch. Each upcoming MRTK release has its own development branch (ex: may18_dev).
+The master branch does not accept direct pull requests. Each change must be submitted through an appropriate development branch. Each upcoming MRTK release has its own development branch (ex: may18_dev).
 
 To identify the appropriate development branch:
 
@@ -46,7 +46,7 @@ NOTE: A project maintainer may retarget your PR to a different development branc
 5. Make sure that all the tests continue to pass.
 6. Ensure the code is [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; Store -> Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
 7. Ensure you update the [README](https://github.com/Microsoft/HoloToolkit-Unity/blob/master/README.md) with additional documentation as needed.
-8. Also update the [HoloToolkit-Unity wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) if you think it will be useful for other developers.
+8. Also, update the [HoloToolkit-Unity wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) if you think it will be useful for other developers.
 
 # Pull request
 
