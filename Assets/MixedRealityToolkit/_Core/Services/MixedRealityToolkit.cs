@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
@@ -194,6 +195,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 }
             }
 
+
+            // If the Spatial Awareness system has been selected for initialization in the Active profile, enable it in the project
+            if (ActiveProfile.IsSpatialAwarenessSystemEnabled)
+            {
+                if (!RegisterService(typeof(IMixedRealitySpatialAwarenessSystem), Activator.CreateInstance(ActiveProfile.SpatialAwarenessSystemSystemType) as IMixedRealitySpatialAwarenessSystem) ||
+                    SpatialAwarenessSystem == null)
+                {
+                    Debug.LogError("Failed to start the Spatial Awareness System!");
+                }
+            }
 
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
@@ -1027,6 +1038,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             return typeof(IMixedRealityInputSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type);
         }
 
@@ -1156,6 +1168,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// The current Boundary System registered with the Mixed Reality Toolkit.
         /// </summary>
         public static IMixedRealityBoundarySystem BoundarySystem => boundarySystem ?? (boundarySystem = Instance.GetService<IMixedRealityBoundarySystem>());
+
+        private static IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+
+        /// <summary>
+        /// The current Spatial Awareness System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = Instance.GetService<IMixedRealitySpatialAwarenessSystem>());
 
         private static IMixedRealityTeleportSystem teleportSystem = null;
 

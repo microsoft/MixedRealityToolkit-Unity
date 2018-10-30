@@ -31,6 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         // Teleport system properties
         private SerializedProperty enableTeleportSystem;
         private SerializedProperty teleportSystemType;
+        // Spatial Awareness system properties
+        private SerializedProperty enableSpatialAwarenessSystem;
+        private SerializedProperty spatialAwarenessSystemType;
+        private SerializedProperty spatialAwarenessProfile;
         // Diagnostic system properties
         private SerializedProperty enableDiagnosticsSystem;
         private SerializedProperty diagnosticsSystemType;
@@ -99,6 +103,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             // Teleport system configuration
             enableTeleportSystem = serializedObject.FindProperty("enableTeleportSystem");
             teleportSystemType = serializedObject.FindProperty("teleportSystemType");
+            // Spatial Awareness system configuration
+            enableSpatialAwarenessSystem = serializedObject.FindProperty("enableSpatialAwarenessSystem");
+            spatialAwarenessSystemType = serializedObject.FindProperty("spatialAwarenessSystemType");
+            spatialAwarenessProfile = serializedObject.FindProperty("spatialAwarenessProfile");
             // Diagnostics system configuration
             enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
@@ -219,7 +227,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(enableTeleportSystem);
             EditorGUILayout.PropertyField(teleportSystemType);
 
-            // Teleport System configuration
+            // Spatial Awareness System configuration
+            GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Spatial Awareness System Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
+            EditorGUILayout.PropertyField(spatialAwarenessSystemType);
+            changed |= RenderProfile(spatialAwarenessProfile);
+
+            // Diagnostics System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Diagnostics System Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableDiagnosticsSystem);
