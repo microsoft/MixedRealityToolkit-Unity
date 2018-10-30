@@ -6,10 +6,8 @@ using System;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
-//using Microsoft.MixedReality.Toolkit.SDK.UX;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Lines;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
-//using HoloToolkit.Unity.Buttons;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 {
@@ -81,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         [SerializeField]
-        protected DisplayModeType tipState;
+        private DisplayModeType tipState;
         /// <summary>
         /// getter/setter for the display state of a tooltip
         /// </summary>
@@ -98,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         [SerializeField]
-        protected DisplayModeType groupTipState;
+        private DisplayModeType groupTipState;
         /// <summary>
         /// getter/setter for display state of group of tooltips
         /// </summary>
@@ -115,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         [SerializeField]
-        protected DisplayModeType masterTipState;
+        private DisplayModeType masterTipState;
         /// <summary>
         /// getter/setter for display state of master tooltip
         /// </summary>
@@ -133,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [Tooltip("GameObject that the line and text are attached to")]
         [SerializeField]
-        protected GameObject anchor;
+        private GameObject anchor;
         /// <summary>
         /// getter/setter for ameObject that the line and text are attached to
         /// </summary>
@@ -151,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [Tooltip("Pivot point that text will rotate around as well as the point where the Line will be rendered to.")]
         [SerializeField]
-        protected GameObject pivot;
+        private GameObject pivot;
         /// <summary>
         /// Pivot point that text will rotate around as well as the point where the Line will be rendered to. 
         /// </summary>
@@ -165,16 +163,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [Tooltip("GameObject text that is displayed on the tooltip.")]
         [SerializeField]
-        protected GameObject label;
+        private GameObject label;
 
         [Tooltip("Parent of the Text and Background")]
         [SerializeField]
-        protected GameObject contentParent;
+        private GameObject contentParent;
 
         [Tooltip("Text for the ToolTip to say")]
         [SerializeField]
         [TextArea]
-        protected string toolTipText;
+        private string toolTipText;
         /// <summary>
         /// Text for the ToolTip to display
         /// </summary>
@@ -198,11 +196,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [Tooltip("The padding around the content (height / width)")]
         [SerializeField]
-        protected Vector2 backgroundPadding;
+        private Vector2 backgroundPadding;
 
         [Tooltip("The offset of the background (x / y / z)")]
         [SerializeField]
-        protected Vector3 backgroundOffset;
+        private Vector3 backgroundOffset;
         /// <summary>
         /// The offset of the background (x / y / z)
         /// </summary>
@@ -217,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         [Tooltip("The scale of all the content (label, backgrounds, etc.)")]
         [SerializeField]
         [Range(0.01f, 3f)]
-        protected float contentScale = 1f;
+        private float contentScale = 1f;
         /// <summary>
         /// The scale of all the content (label, backgrounds, etc.)
         /// </summary>
@@ -237,13 +235,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         [Tooltip("The font size of the tooltip.)")]
         [SerializeField]
         [Range(10, 60)]
-        protected int fontSize = 30;
+        private int fontSize = 30;
 
         [SerializeField]
-        protected ToolTipAttachPointType attachPointType = ToolTipAttachPointType.Closest;
-        /// <summary>
-        /// getter/setter for type of pivot
-        /// </summary>
+        private ToolTipAttachPointType attachPointType = ToolTipAttachPointType.Closest;
         public ToolTipAttachPointType PivotType
         {
             get
@@ -258,9 +253,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [Tooltip("The line connecting the anchor to the pivot. If present, this component will be updated automatically.\n\nRecommended: SimpleLine, Spline, and ParabolaConstrainted")]
         [SerializeField]
-        protected BaseMixedRealityLineDataProvider toolTipLine;
+        private BaseMixedRealityLineDataProvider toolTipLine;
 
-        protected Vector2 localContentSize;
+        private Vector2 localContentSize;
         /// <summary>
         /// getter/setter for size of tooltip.
         /// </summary>
@@ -272,11 +267,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             }
         }
 
-        protected Vector3 localAttachPoint;
+        private Vector3 localAttachPoint;
 
-        protected Vector3 attachPointOffset;
+        private Vector3 attachPointOffset;
 
-        protected Vector3[] localAttachPointPositions;
+        private Vector3[] localAttachPointPositions;
 
         /// <summary>
         /// point about which ToolTip pivots to face camera
@@ -448,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
             if (IsOn) {
                 contentParent.SetActive(true);
-                localAttachPoint = ToolTipUtility.FindClosestAttachPointToAnchor(anchor.transform, contentParent.transform, localAttachPointPositions, attachPointType);
+                localAttachPoint = ToolTipUtility.FindClosestAttachPointToAnchor(anchor.transform, contentParent.transform, localAttachPointPositions, PivotType);
             } else {
                 contentParent.SetActive(false);
             }
@@ -475,7 +470,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             }
             // Now that we have the size of our content, get our pivots
             ToolTipUtility.GetAttachPointPositions(ref localAttachPointPositions, localContentSize);
-            localAttachPoint = ToolTipUtility.FindClosestAttachPointToAnchor(anchor.transform, contentParent.transform, localAttachPointPositions, attachPointType);
+            localAttachPoint = ToolTipUtility.FindClosestAttachPointToAnchor(anchor.transform, contentParent.transform, localAttachPointPositions, PivotType);
         }
 
         protected virtual bool EnforceHierarchy() {

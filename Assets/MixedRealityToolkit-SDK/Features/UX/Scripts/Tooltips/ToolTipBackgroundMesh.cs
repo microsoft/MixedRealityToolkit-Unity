@@ -1,7 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
@@ -63,8 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             if (BackgroundRenderer != null)
             {
                 //Get the local size of the content - this is the scale of the text under the content parent
-                Vector3 localContentSize = toolTip.LocalContentSize;
-                Vector3 localContentOffset = toolTip.LocalContentOffset;
+                Vector3 localContentSize = ToolTipContent.LocalContentSize;
+                Vector3 localContentOffset = ToolTipContent.LocalContentOffset;
 
                 //Get the size of the mesh and use this to adjust the local content size on the x / y axis
                 //This will accomodate meshes that aren't built to 1,1 scale
@@ -86,10 +84,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             if (Application.isPlaying)
                 return;
 
-            if (toolTip == null)
-                toolTip = gameObject.GetComponent<ToolTip>();
+            if (ToolTipContent == null)
+                ToolTipContent = gameObject.GetComponent<ToolTip>();
 
-            if (toolTip == null)
+            if (ToolTipContent == null)
                 return;
 
             ScaleToFitContent();

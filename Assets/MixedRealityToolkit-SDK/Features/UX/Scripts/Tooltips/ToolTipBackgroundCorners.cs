@@ -45,11 +45,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         protected override void ScaleToFitContent()
         {
             // Get the local size of the content - this is the scale of the text under the content parent
-            Vector3 localContentSize = toolTip.LocalContentSize;
+            Vector3 localContentSize = ToolTipContent.LocalContentSize;
             localContentSize.z = 1;
             // Multiply it by 0.5 to get extents
             localContentSize *= 0.5f;
-            Vector3 localContentOffset = toolTip.LocalContentOffset;
+            Vector3 localContentOffset = ToolTipContent.LocalContentOffset;
             // Put the corner objects at the corners
             Vector3 topLeft = new Vector3(-localContentSize.x + localContentOffset.x, localContentSize.y + localContentOffset.y, localContentOffset.x);
             Vector3 topRight = new Vector3(localContentSize.x + localContentOffset.x, localContentSize.y + localContentOffset.y, localContentOffset.x);
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             switch (scaleMode)
             {
                 case ScaleModeEnum.World:
-                    Vector3 lossyScale = toolTip.ContentParentTransform.lossyScale;
+                    Vector3 lossyScale = ToolTipContent.ContentParentTransform.lossyScale;
                     globalScale.x /= lossyScale.x;
                     globalScale.y /= lossyScale.y;
                     globalScale.z /= lossyScale.z;

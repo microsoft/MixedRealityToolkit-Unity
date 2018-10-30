@@ -17,8 +17,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     public abstract class ToolTipBackground : MonoBehaviour
     {
         [SerializeField]
-        protected ToolTip toolTip;
-
+        private ToolTip toolTip;
+        /// <summary>
+        /// getter/setter for display state of group of tooltips
+        /// </summary>
+        public ToolTip ToolTipContent
+        {
+            set
+            {
+                toolTip = ToolTipContent;
+            }
+            get
+            {
+                return toolTip;
+            }
+        }
         protected virtual void OnEnable()
         {
             toolTip = gameObject.EnsureComponent<ToolTip>();

@@ -192,8 +192,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         protected override void ScaleToFitContent()
         {
             // Get the local size of the content - this is the scale of the text under the content parent
-            Vector3 localContentSize = toolTip.LocalContentSize;
-            Vector3 localContentOffset = toolTip.LocalContentOffset;
+            Vector3 localContentSize = ToolTipContent.LocalContentSize;
+            Vector3 localContentOffset = ToolTipContent.LocalContentOffset;
 
             // Get the size of the mesh and use this to adjust the local content size on the x / y axis
             // This will accomodate meshes that aren't built to 1,1 scale
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             rotationTarget.Rotate(velocity * blobRotation * 360);
 
             // Adjust the tool tip attach position
-            toolTip.AttachPointPosition = attachPointOffset.position;
+            ToolTipContent.AttachPointPosition = attachPointOffset.position;
 
             lastPosition = currentPosition;
         }
