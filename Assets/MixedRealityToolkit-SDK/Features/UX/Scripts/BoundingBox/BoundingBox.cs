@@ -195,6 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private Vector3 grabStartPoint;
         private IMixedRealityPointer currentPointer;
         private IMixedRealityInputSource currentInputSource;
+        private Vector3 initialGazePoint = Vector3.zero;
         private GameObject targetObject;
         private GameObject rigRoot;
         private BoxCollider cachedTargetCollider;
@@ -1149,7 +1150,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 IMixedRealityPointer pointer = eventData.InputSource.Pointers[0];
                 Ray ray;
-                //TODO: this line needs to get the fingerGrab point in hololens
                 if (true == pointer.TryGetPointingRay(out ray))
                 {
                     handleMoveType = HandleMoveType.Ray;
@@ -1170,6 +1170,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         initialScale = targetObject.transform.localScale;
                         pointer.TryGetPointerPosition(out initialGrabPoint);
                         ShowOneHandle(grabbedHandle);
+                        initialGazePoint = Vector3.zero;
                     }
                 }
             }
@@ -1192,7 +1193,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 if (eventData.InputSource.SourceName.Contains("Hand"))
                 {
                     usingPose = true;
-                    currentPosePosition = eventData.InputData.Position;
+                    if (initialGazePoint == Vector3.zero)
+                    {
+                        initialGazePoint = eventData.InputData.Position;
+                    }
+                    currentPosePosition = initialGrabbedPosition + (eventData.InputData.Position - initialGazePoint);
                 }
             }
             else
