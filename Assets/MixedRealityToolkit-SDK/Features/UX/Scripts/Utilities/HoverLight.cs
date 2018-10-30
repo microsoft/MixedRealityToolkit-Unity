@@ -91,8 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         {
             if (activeHoverLights.Count >= hoverLightCount)
             {
-                Debug.LogWarning($"Max hover light count ({hoverLightCount}) exceeded.");
-                return;
+                Debug.LogWarningFormat("Max hover light count ({0}) exceeded.", hoverLightCount);
             }
 
             activeHoverLights.Add(light);
