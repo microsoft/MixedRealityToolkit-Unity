@@ -72,8 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [Tooltip("For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of Bounding Box.")]
         [SerializeField]
         private BoxCollider BoxColliderToUse = null;
-        [SerializeField]
-        private bool useBoxColliderForBounds = false;
 
         [Header("Behavior")]
         [SerializeField]
@@ -222,6 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private Vector3 currentRotationAxis;
         private Vector3 initialScale;
         private Vector3 initialGrabbedPosition;
+        private Vector3 initialGrabbedCentroid;
         private Vector3 initialGrabPoint;
 
         private CardinalAxisType[] edgeAxes;
@@ -238,10 +237,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         #region Monobehaviour Methods
         private void Start()
         {
-            if (useBoxColliderForBounds == false && BoxColliderToUse != null)
-            {
-                BoxColliderToUse = null;
-            }
             targetObject = this.gameObject;
 
             if (MixedRealityManager.IsInitialized && MixedRealityManager.InputSystem != null )
@@ -358,25 +353,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 if (currentHandleType == HandleType.rotation)
                 {
-                    Vector3 projPt = Vector3.ProjectOnPlane((grabRayPt - rigRoot.transform.position).normalized, currentRotationAxis);
-                    Quaternion q = Quaternion.FromToRotation((grabbedHandle.transform.position - rigRoot.transform.position).normalized, projPt.normalized);
-                    Vector3 axis;
-                    float angle;
-                    q.ToAngleAxis(out angle, out axis);
-                    targetObject.transform.RotateAround(rigRoot.transform.position, axis, angle);
+                    RotateByHandle(grabRayPt);
                 }
                 else if (currentHandleType == HandleType.scale)
                 {
-                    Vector3 correctedPt = PointToRay(rigRoot.transform.position, grabbedHandle.transform.position, grabRayPt);
-                    Vector3 rigCentroid = rigRoot.transform.position;
-                    float startMag = (initialGrabbedPosition - rigCentroid).magnitude;
-                    float newMag = (correctedPt - rigCentroid).magnitude;
-                    float ratio = newMag / startMag;
-
-                    Vector3 newScale = ClampScale(initialScale * ratio);
-
-                    //scale from object center
-                    targetObject.transform.localScale = newScale;
+                    ScaleByHandle(grabRayPt);
                 }
             }
         }
@@ -399,27 +380,56 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 if (currentHandleType == HandleType.rotation)
                 {
-                    Vector3 projPt = Vector3.ProjectOnPlane((newGrabbedPosition - rigRoot.transform.position).normalized, currentRotationAxis);
-                    Quaternion q = Quaternion.FromToRotation((grabbedHandle.transform.position - rigRoot.transform.position).normalized, projPt.normalized);
-                    Vector3 axis;
-                    float angle;
-                    q.ToAngleAxis(out angle, out axis);
-                    targetObject.transform.RotateAround(rigRoot.transform.position, axis, angle);
+                    RotateByHandle(newGrabbedPosition);
                 }
                 else if (currentHandleType == HandleType.scale)
                 {
-                    Vector3 correctedPt = PointToRay(rigRoot.transform.position, grabbedHandle.transform.position, newGrabbedPosition);
-                    Vector3 rigCentroid = rigRoot.transform.position;
-                    float startMag = (initialGrabbedPosition - rigCentroid).magnitude;
-                    float newMag = (correctedPt - rigCentroid).magnitude;
-                    float ratio = newMag / startMag;
-
-                    Vector3 newScale = ClampScale(initialScale * ratio);
-
-                    //scale from object center
-                    targetObject.transform.localScale = newScale;
+                    ScaleByHandle(newGrabbedPosition);
                 }
             }
+        }
+
+        private void RotateByHandle(Vector3 newHandlePosition)
+        {
+            Vector3 projPt = Vector3.ProjectOnPlane((newHandlePosition - rigRoot.transform.position).normalized, currentRotationAxis);
+            Quaternion q = Quaternion.FromToRotation((grabbedHandle.transform.position - rigRoot.transform.position).normalized, projPt.normalized);
+            Vector3 axis;
+            float angle;
+            q.ToAngleAxis(out angle, out axis);
+            targetObject.transform.RotateAround(rigRoot.transform.position, axis, angle);
+        }
+        private void ScaleByHandle(Vector3 newHandlePosition)
+        {
+            bool lockBackCorner = false;
+            Vector3 correctedPt = PointToRay(rigRoot.transform.position, grabbedHandle.transform.position, newHandlePosition);
+            Vector3 rigCentroid = rigRoot.transform.position;
+            float startMag = (initialGrabbedPosition - rigCentroid).magnitude;
+            float newMag = (correctedPt - rigCentroid).magnitude;
+
+            if (lockBackCorner == false)
+            {
+                bool isClamped;
+                float ratio = newMag / startMag;
+                Vector3 newScale = ClampScale(initialScale * ratio, out isClamped);
+                //scale from object center
+                targetObject.transform.localScale = newScale;
+            }
+            else
+            {
+                bool isClamped;
+                float halfRatio = ((newMag + startMag) * 0.5f) / startMag;
+                Vector3 newScale = ClampScale(initialScale * halfRatio, out isClamped);
+                if (isClamped == false)
+                {
+                    //scale from object center
+                    targetObject.transform.localScale = newScale;
+                    Vector3 oldHandlePosition = grabbedHandle.transform.position;
+                    UpdateRigHandles();
+                    targetObject.transform.position = initialGrabbedCentroid + (grabbedHandle.transform.position - oldHandlePosition);
+                }
+            }
+
+
         }
         private Vector3 GetRotationAxis(GameObject handle)
         {
@@ -786,19 +796,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 edgeCenters[11] = (boundsCorners[3] + boundsCorners[7]) * 0.5f;
             }
         }
-        private Vector3 ClampScale(Vector3 scale)
+        private Vector3 ClampScale(Vector3 scale, out bool clamped)
         {
             Vector3 finalScale = scale;
             Vector3 maximumScale = initialScale * scaleMaximum;
+            clamped = false;
+
             if (scale.x > maximumScale.x || scale.y > maximumScale.y || scale.z > maximumScale.z)
             {
                 finalScale = maximumScale;
+                clamped = true;
             }
+
             Vector3 minimumScale = initialScale * scaleMinimum;
+
             if (finalScale.x < minimumScale.x || finalScale.y < minimumScale.y || finalScale.z < minimumScale.z)
             {
                 finalScale = minimumScale;
+                clamped = true;
             }
+
             return finalScale;
         }
         private Vector3 GetLinkDimensions()
@@ -1131,8 +1148,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             if (currentInputSource == null)
             {
                 IMixedRealityPointer pointer = eventData.InputSource.Pointers[0];
-                Debug.Log("## OnInputDown1: SourceName ## " + eventData.InputSource.SourceName);
-
                 Ray ray;
                 //TODO: this line needs to get the fingerGrab point in hololens
                 if (true == pointer.TryGetPointingRay(out ray))
@@ -1143,7 +1158,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     if (collider != null)
                     {
                         currentInputSource = eventData.InputSource;
-                        Debug.Log("## OnInputDown2: SourceName ## " + eventData.InputSource.SourceName);
 
                         currentPointer = pointer;
                         grabbedHandle = collider.gameObject;
@@ -1152,6 +1166,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         currentPointer.TryGetPointingRay(out initialGrabRay);
                         initialGrabMag = distance;
                         initialGrabbedPosition = grabbedHandle.transform.position;
+                        initialGrabbedCentroid = targetObject.transform.position;
                         initialScale = targetObject.transform.localScale;
                         pointer.TryGetPointerPosition(out initialGrabPoint);
                         ShowOneHandle(grabbedHandle);
@@ -1172,8 +1187,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
         public void OnPoseInputChanged(InputEventData<MixedRealityPose> eventData)
         {
-            Debug.Log("## SourceName ## " + eventData.InputSource.SourceName);
-
             if (currentInputSource != null && eventData.InputSource == currentInputSource)
             {
                 if (eventData.InputSource.SourceName.Contains("Hand"))
@@ -1205,14 +1218,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnGestureStarted(InputEventData eventData)
         {
-            Debug.Log("## OnGestureStarted: SourceName ## " + eventData.InputSource.SourceName);
-
         }
 
         public void OnGestureUpdated(InputEventData eventData)
         {
-            Debug.Log("## OnGestureUpdated: SourceName ## " + eventData.InputSource.SourceName);
-
         }
 
         public void OnGestureCompleted(InputEventData eventData)
