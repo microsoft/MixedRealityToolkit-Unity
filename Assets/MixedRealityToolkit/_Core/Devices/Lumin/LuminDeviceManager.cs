@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
 
                 if (controller != null)
                 {
-                    MixedRealityManager.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                    MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                 }
             }
 
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
 
                 if (controller != null)
                 {
-                    MixedRealityManager.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                    MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
                 }
             }
 
@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
             }
 
             var pointers = mlController.Type == MLInputControllerType.Control ? RequestPointers(typeof(LuminController), controllingHand) : null;
-            var inputSource = MixedRealityManager.InputSystem?.RequestNewGenericInputSource($"Lumin Controller {controllingHand}", pointers);
+            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"Lumin Controller {controllingHand}", pointers);
             var detectedController = new LuminController(TrackingState.NotTracked, controllingHand, inputSource);
 
             if (!detectedController.SetupConfiguration(typeof(LuminController)))
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
 
             if (controller != null)
             {
-                MixedRealityManager.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
             }
 
             controller?.UpdateController();
@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Lumin
 
             if (controller != null)
             {
-                MixedRealityManager.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
             }
 
             activeControllers.Remove(controllerId);
