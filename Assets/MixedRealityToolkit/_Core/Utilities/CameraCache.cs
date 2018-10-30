@@ -48,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
                             // If we still didn't find it, just set the first camera.
                             if (mainCamera == null)
                             {
+                                Debug.LogWarning($"No main camera found. The Mixed Reality Toolkit used {cameras[0].name} as your main.");
                                 mainCamera = Refresh(cameras[0]);
                             }
 
