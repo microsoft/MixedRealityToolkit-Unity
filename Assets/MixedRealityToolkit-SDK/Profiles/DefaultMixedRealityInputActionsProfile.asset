@@ -46,3 +46,6 @@ MonoBehaviour:
   - id: 11
     description: Scroll
     axisConstraint: 4
+  - id: 12
+    description: Mouse Delta
+    axisConstraint: 4
