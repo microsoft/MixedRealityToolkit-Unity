@@ -10,8 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
     public class MousePointerInspector : BaseControllerPointerInspector
     {
         private SerializedProperty hideCursorWhenInactive;
-        private SerializedProperty movementThresholdToUnHide;
         private SerializedProperty hideTimeout;
+        private SerializedProperty movementThresholdToUnHide;
         private bool mousePointerFoldout = true;
 
         protected override void OnEnable()
@@ -38,8 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
 
                 if (hideCursorWhenInactive.boolValue)
                 {
-                    EditorGUILayout.PropertyField(movementThresholdToUnHide);
                     EditorGUILayout.PropertyField(hideTimeout);
+                    EditorGUILayout.PropertyField(movementThresholdToUnHide);
                 }
 
                 EditorGUI.indentLevel--;

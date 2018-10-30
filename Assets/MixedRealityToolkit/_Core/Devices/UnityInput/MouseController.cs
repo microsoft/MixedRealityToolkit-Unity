@@ -74,8 +74,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             }
 
             // Don't ask me why it's mapped weird. Bc Unity...
-            mouseDelta.x = Input.GetAxis("Mouse X");
-            mouseDelta.y = -Input.GetAxis("Mouse Y");
+            mouseDelta.x = -Input.GetAxis("Mouse Y");
+            mouseDelta.y = Input.GetAxis("Mouse X");
             MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, mouseDelta);
             MixedRealityToolkit.InputSystem?.RaiseSourcePoseChanged(InputSource, this, controllerPose);
             MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, Input.mouseScrollDelta);

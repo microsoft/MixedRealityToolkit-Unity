@@ -30,6 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [SerializeField]
         private bool disableCursorOnStart = false;
 
+        protected bool DisableCursorOnStart => disableCursorOnStart;
+
         [SerializeField]
         private bool setCursorVisibilityOnSourceDetected = false;
 
