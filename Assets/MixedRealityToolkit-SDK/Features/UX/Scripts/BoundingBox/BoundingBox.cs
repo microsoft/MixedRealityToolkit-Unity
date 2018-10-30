@@ -366,18 +366,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             if (currentHandleType != HandleType.none)
             {
+                Vector3 newGrabbedPosition;
                 Vector3 newRemotePoint;
                 //TODO: this line gets the finger grab point in space in hololens
                 if (usingPose == false)
                 {
                     currentPointer.TryGetPointerPosition(out newRemotePoint);
+                    newGrabbedPosition = initialGrabbedPosition + (newRemotePoint - initialGrabPoint);
                 }
                 else
                 {
-                    newRemotePoint = currentPosePosition;
+                    if (initialGazePoint == Vector3.zero)
+                    {
+                        return;
+                    }
+                    newGrabbedPosition = currentPosePosition;
                 }
-
-                Vector3 newGrabbedPosition = initialGrabbedPosition + (newRemotePoint - initialGrabPoint);
 
                 if (currentHandleType == HandleType.rotation)
                 {
