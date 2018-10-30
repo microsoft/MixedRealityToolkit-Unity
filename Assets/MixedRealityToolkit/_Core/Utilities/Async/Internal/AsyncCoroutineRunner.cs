@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal
@@ -28,11 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal
     /// This Async Coroutine Runner is just a helper object to
     /// ensure that coroutines run properly with async/await.
     /// </summary>
-    public class AsyncCoroutineRunner : MonoBehaviour
+    internal sealed class AsyncCoroutineRunner : MonoBehaviour
     {
         private static AsyncCoroutineRunner instance;
 
-        public static AsyncCoroutineRunner Instance
+        private static readonly Queue<Action> Actions = new Queue<Action>();
+
+        internal static AsyncCoroutineRunner Instance
         {
             get
             {
@@ -43,6 +47,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal
 
                 if (instance == null)
                 {
+                    var instanceGameObject = GameObject.Find("AsyncCoroutineRunner");
+                    if (instanceGameObject != null)
+                    {
+                        instance = instanceGameObject.GetComponent<AsyncCoroutineRunner>();
+                        if (instance == null)
+                        {
+                            Debug.Log("[AsyncCoroutineRunner] Found GameObject but didn't have component");
+                            Destroy(instanceGameObject);
+                        }
+                    }
+
                     instance = new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
                     instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
 #if !UNITY_EDITOR
@@ -54,9 +69,36 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal
             }
         }
 
+        internal static void Post(Action task)
+        {
+            lock (Actions)
+            {
+                Actions.Enqueue(task);
+            }
+        }
+
         private void Update()
         {
             Debug.Assert(Instance != null);
+
+            int actionCount;
+
+            lock (Actions)
+            {
+                actionCount = Actions.Count;
+            }
+
+            for (int i = 0; i < actionCount; i++)
+            {
+                Action next;
+
+                lock (Actions)
+                {
+                    next = Actions.Dequeue();
+                }
+
+                next();
+            }
         }
     }
 }
