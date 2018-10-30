@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public override void OnInputDown(InputEventData eventData)
         {
-            cursorWasDisabledOnDown = !BaseCursor.IsVisible;
+            cursorWasDisabledOnDown = isDisabled;
 
             if (cursorWasDisabledOnDown)
             {
@@ -160,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public override void OnInputUp(InputEventData eventData)
         {
-            if (BaseCursor.IsVisible && !cursorWasDisabledOnDown)
+            if (!isDisabled && !cursorWasDisabledOnDown)
             {
                 base.OnInputUp(eventData);
             }
@@ -230,12 +230,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     BaseCursor?.SetVisibility(true);
                     transform.rotation = CameraCache.Main.transform.rotation;
                 }
-                else
-                {
-                    timeoutTimer = 0.0f;
-                }
 
                 isDisabled = false;
+            }
+
+            if (!isDisabled)
+            {
+                timeoutTimer = 0.0f;
             }
 
             var newRotation = Vector3.zero;
