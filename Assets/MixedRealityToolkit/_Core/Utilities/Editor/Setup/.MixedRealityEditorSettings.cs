@@ -46,12 +46,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         static MixedRealityEditorSettings()
         {
-            SetIconTheme();
-
-            if (!IsNewSession)
+            if (!IsNewSession || Application.isPlaying)
             {
                 return;
             }
+
+            SetIconTheme();
 
             bool refresh = false;
             bool restart = false;
