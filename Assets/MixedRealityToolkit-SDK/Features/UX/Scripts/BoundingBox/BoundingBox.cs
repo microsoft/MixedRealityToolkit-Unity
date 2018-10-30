@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public class BoundingBox : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityInputHandler, IMixedRealityGestureHandler, IMixedRealitySpatialInputHandler
+    public class BoundingBox : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityInputHandler, IMixedRealityGestureHandler, IMixedRealitySpatialInputHandler, IMixedRealitySourceStateHandler
     {
         #region Enums
         private enum FlattenModeType
@@ -1247,6 +1247,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnRotationChanged(InputEventData<Quaternion> eventData)
         {
+        }
+
+        public void OnSourceDetected(SourceStateEventData eventData)
+        {
+        }
+
+        public void OnSourceLost(SourceStateEventData eventData)
+        {
+            if (currentInputSource == eventData.InputSource)
+            {
+                currentInputSource = null;
+                currentHandleType = HandleType.none;
+                currentPointer = null;
+                grabbedHandle = null;
+                ResetHandleVisibility();
+            }
         }
 
 
