@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async
             }
             else
             {
-                SyncContextUtility.UnitySynchronizationContext.Post(state => action(), null);
+                AsyncCoroutineRunner.Post(action);
             }
         }
 
