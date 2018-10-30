@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Devices.Lumin;
 using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
 using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
@@ -99,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
             }
-            
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Controller Input Mapping", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Use this profile to define all the controllers and their inputs your users will be able to use in your application.\n\n" +
@@ -151,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             bool reset = false;
             if (controllerRenderList.Count > 0)
             {
-                for (var type = 1; type <= (int)SupportedControllerType.Mouse; type++)
+                for (var type = 1; type <= (int)SupportedControllerType.Lumin; type++)
                 {
                     if (controllerRenderList.All(profile => profile.ControllerType != (SupportedControllerType)type))
                     {
@@ -164,6 +165,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                         if ((SupportedControllerType)type == SupportedControllerType.Mouse)
                         {
                             AddController(controllerList, typeof(MouseController));
+                            reset = true;
+                        }
+
+                        if ((SupportedControllerType)type == SupportedControllerType.Lumin)
+                        {
+                            AddController(controllerList, typeof(LuminController));
                             reset = true;
                         }
                     }
@@ -222,6 +229,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 else if (controllerType == typeof(MouseController))
                 {
                     supportedControllerType = SupportedControllerType.Mouse;
+                }
+                else if (controllerType == typeof(LuminController))
+                {
+                    supportedControllerType = SupportedControllerType.Lumin;
                 }
 
                 bool skip = false;
@@ -351,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     if (supportedControllerType == SupportedControllerType.WindowsMixedReality &&
                         handedness == Handedness.None)
                     {
-                        controllerTitle = "HoloLens Gestures";
+                        controllerTitle = "HoloLens Input";
                     }
 
                     if (handedness != Handedness.Right)
@@ -378,15 +389,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             GUILayout.EndVertical();
         }
 
-        private void AddController(SerializedProperty controllerList, Type controllerType)
+        private void AddController(SerializedProperty controllerList, Type controllerType, Handedness handedness = Handedness.None)
         {
             controllerList.InsertArrayElementAtIndex(controllerList.arraySize);
             var index = controllerList.arraySize - 1;
             var mixedRealityControllerMapping = controllerList.GetArrayElementAtIndex(index);
             var mixedRealityControllerMappingDescription = mixedRealityControllerMapping.FindPropertyRelative("description");
-            mixedRealityControllerMappingDescription.stringValue = controllerType.Name;
+            mixedRealityControllerMappingDescription.stringValue = $"{controllerType.Name} {handedness}";
             var mixedRealityControllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
-            mixedRealityControllerHandedness.intValue = 0;
+            mixedRealityControllerHandedness.intValue = (int)handedness;
             var mixedRealityControllerInteractions = mixedRealityControllerMapping.FindPropertyRelative("interactions");
             var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
             useCustomInteractionMappings.boolValue = controllerType == typeof(GenericOpenVRController) || controllerType == typeof(GenericJoystickController);

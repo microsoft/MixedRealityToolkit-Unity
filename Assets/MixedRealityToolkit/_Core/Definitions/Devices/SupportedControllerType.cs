@@ -20,5 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         Xbox,
         TouchScreen,
         Mouse,
+        Lumin
     }
 }

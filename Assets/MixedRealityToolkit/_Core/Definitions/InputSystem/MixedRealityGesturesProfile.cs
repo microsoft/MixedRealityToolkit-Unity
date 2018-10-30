@@ -55,6 +55,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
 
         public AutoStartBehavior WindowsGestureAutoStart => windowsGestureAutoStart;
 
+        [EnumFlags]
+        [SerializeField]
+        private LuminControllerGestureSettings luminControllerGestures = (LuminControllerGestureSettings)~0;
+
+        public LuminControllerGestureSettings LuminControllerGestures => luminControllerGestures;
+
+        [EnumFlags]
+        [SerializeField]
+        private LuminHandGestureSettings luminHandGestures = (LuminHandGestureSettings)~0;
+
+        public LuminHandGestureSettings LuminHandGestures => luminHandGestures;
+
         [SerializeField]
         private MixedRealityGestureMapping[] gestures =
         {
