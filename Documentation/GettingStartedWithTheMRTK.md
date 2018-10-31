@@ -95,18 +95,18 @@ Switch to other platforms (ensure they have XR enabled in their player settings)
 
 The Mixed Reality Toolkit configuration is all centralized on one place and attached to the MixedRealityToolkit object in your active scene.
 
-![](/External/ReadMeImages/MRTK_ActiveConfiguration.png)
+![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
 
 Clicking on this profile will show the configuration screens for the Mixed Reality Toolkit:
 
-![](/External/ReadMeImages/MRTK_MixedRealityToolkitConfigurationScreen.png)
+![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png)
 
 From here you can navigate to all the configuration profiles for the MRTK, including:
 
 * Main Mixed Reality Toolkit Configuration
 * Camera Settings
 * Input System Settings
-* Boundary Settings
+* Boundary Visualization Settings
 * Teleporting Settings
 * Spatial Awareness Settings
 * Diagnostics Settings
@@ -128,12 +128,26 @@ When you start a new project, we provide a default set of configurations with ev
 
 ![](/External/ReadMeImages/MRTK_CopyCreateConfigurationOptions.png)
 
+When profiles are created by the MRTK, they are then placed in the following folder:
+
+> "Assets\MixedRealityToolkit-Generated\CustomProfiles"
+
 At each step in the configuration, you can choose to remove and create a new profile, or simply copy the existing settings and continue to customize:
 
 ![](/External/ReadMeImages/MRTK_CopyProfileOptions.png)
 
-### **[For more information on Configuring the Configuration Profiles](/Documentation/MixedRealityConfigurationGuide.md)**
+### **[For more information on customising the Configuration Profiles](/Documentation/MixedRealityConfigurationGuide.md)**
 Please check out the [Mixed Reality Configuration Guide](/Documentation/MixedRealityConfigurationGuide.md)
 
-## TBC
-More?
+## Get building your project
+
+Now your project is up and running, you can start building your Mixed Reality project.  
+
+For more information on the rest of the toolkit, please check the following guides:
+
+* [Mixed Reality Configuration Guide](/Documentation/MixedRealityConfigurationGuide.md)
+* [Getting to know the Mixed Reality Toolkit Input System]() (Coming Soon)
+* [Customizing your controllers in the MRTK]() (Coming Soon)
+* [A walkthrough the UX components of the MRTK SDK]() (Coming Soon)
+* [Using Solvers to bind your objects together]() (Coming Soon)
+* [Creating interactions between the player and your project]() (Coming Soon)
