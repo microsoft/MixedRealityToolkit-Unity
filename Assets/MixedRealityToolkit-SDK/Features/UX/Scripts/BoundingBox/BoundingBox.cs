@@ -449,35 +449,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         private void ScaleByHandle(Vector3 newHandlePosition)
         {
-            bool lockBackCorner = false;
             Vector3 correctedPt = PointToRay(rigRoot.transform.position, grabbedHandle.transform.position, newHandlePosition);
             Vector3 rigCentroid = rigRoot.transform.position;
             float startMag = (initialGrabbedPosition - rigCentroid).magnitude;
             float newMag = (correctedPt - rigCentroid).magnitude;
 
-            if (lockBackCorner == false)
-            {
-                bool isClamped;
-                float ratio = newMag / startMag;
-                Vector3 newScale = ClampScale(initialScale * ratio, out isClamped);
-                //scale from object center
-                targetObject.transform.localScale = newScale;
-            }
-            else
-            {
-                bool isClamped;
-                float halfRatio = ((newMag + startMag) * 0.5f) / startMag;
-                Vector3 newScale = ClampScale(initialScale * halfRatio, out isClamped);
-
-                if (isClamped == false)
-                {
-                    //scale from object center
-                    targetObject.transform.localScale = newScale;
-                    Vector3 oldHandlePosition = grabbedHandle.transform.position;
-                    UpdateRigHandles();
-                    targetObject.transform.position = initialGrabbedCentroid + (grabbedHandle.transform.position - oldHandlePosition);
-                }
-            }
+            bool isClamped;
+            float ratio = newMag / startMag;
+            Vector3 newScale = ClampScale(initialScale * ratio, out isClamped);
+            //scale from object center
+            targetObject.transform.localScale = newScale;
         }
 
         private Vector3 GetRotationAxis(GameObject handle)
