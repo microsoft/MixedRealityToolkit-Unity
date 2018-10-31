@@ -1235,7 +1235,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.InputSource.SourceId == currentInputSource.SourceId)
+            if (currentInputSource != null && eventData.InputSource.SourceId == currentInputSource.SourceId)
             {
                 currentInputSource = null;
                 currentHandleType = HandleType.None;
