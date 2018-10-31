@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
+namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 {
     /// <summary>
     /// <see cref="Array"/> type method extensions.

@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
     [CustomEditor(typeof(ClipPlane))]
     public class ClipPlaneEditor : Editor

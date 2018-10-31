@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
 {
     /// <summary>
     /// Manager interface for a Input system in the Mixed Reality Toolkit
@@ -32,6 +32,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// List of the Interaction Input Sources as detected by the input manager like hands or motion controllers.
         /// </summary>
         HashSet<IMixedRealityInputSource> DetectedInputSources { get; }
+
+        /// <summary>
+        /// List of <see cref="IMixedRealityController"/>s currently detected by the input manager.
+        /// </summary>
+        /// <remarks>
+        /// This property is similar to <see cref="DetectedInputSources"/>, as this is a subset of those <see cref="IMixedRealityInputSource"/>s in that list.
+        /// </remarks>
+        HashSet<IMixedRealityController> DetectedControllers { get; }
 
         /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.
@@ -425,193 +433,101 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 
         #endregion Generic Input Events
 
-        #region Hold Events
+        #region Generic Gesture Events
 
         /// <summary>
-        /// Raise the hold started input event.
+        /// Raise the Gesture Started Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldStarted(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        void RaiseGestureStarted(IMixedRealityController controller, MixedRealityInputAction action);
 
         /// <summary>
-        /// Raise the hold started input event.
+        /// Raise the Gesture Updated Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldStarted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action);
 
         /// <summary>
-        /// Raise the hold completed input event.
+        /// Raise the Gesture Updated Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldCompleted(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Vector2 inputData);
 
         /// <summary>
-        /// Raise the hold completed input event.
+        /// Raise the Gesture Updated Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldCompleted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Vector3 inputData);
 
         /// <summary>
-        /// Raise the hold canceled input event.
+        /// Raise the Gesture Updated Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldCanceled(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Quaternion inputData);
 
         /// <summary>
-        /// Raise the hold canceled input event.
+        /// Raise the Gesture Updated Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldCanceled(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        #endregion Hold Events
-
-        #region Navigation Events
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, MixedRealityPose inputData);
 
         /// <summary>
-        /// Raise the navigation started input event.
+        /// Raise the Gesture Completed Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseNavigationStarted(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action);
 
         /// <summary>
-        /// Raise the navigation started input event.
+        /// Raise the Gesture Completed Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseNavigationStarted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Vector2 inputData);
 
         /// <summary>
-        /// 
+        /// Raise the Gesture Completed Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="normalizedOffset"></param>
-        void RaiseNavigationUpdated(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 normalizedOffset);
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Vector3 inputData);
 
         /// <summary>
-        /// 
+        /// Raise the Gesture Completed Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="normalizedOffset"></param>
-        void RaiseNavigationUpdated(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 normalizedOffset);
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Quaternion inputData);
 
         /// <summary>
-        /// 
+        /// Raise the Gesture Completed Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="normalizedOffset"></param>
-        void RaiseNavigationCompleted(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 normalizedOffset);
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, MixedRealityPose inputData);
 
         /// <summary>
-        /// 
+        /// Raise the Gesture Canceled Event.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="normalizedOffset"></param>
-        void RaiseNavigationCompleted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 normalizedOffset);
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        void RaiseGestureCanceled(IMixedRealityController controller, MixedRealityInputAction action);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseNavigationCanceled(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseNavigationCanceled(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        #endregion Navigation Events
-
-        #region Manipulation Events
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseManipulationStarted(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseManipulationStarted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="cumulativeDelta"></param>
-        void RaiseManipulationUpdated(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 cumulativeDelta);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="cumulativeDelta"></param>
-        void RaiseManipulationUpdated(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 cumulativeDelta);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="cumulativeDelta"></param>
-        void RaiseManipulationCompleted(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 cumulativeDelta);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="handedness"></param>
-        /// <param name="cumulativeDelta"></param>
-        void RaiseManipulationCompleted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 cumulativeDelta);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseManipulationCanceled(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseManipulationCanceled(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        #endregion Manipulation Events
-
-        #region Windows Speech
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        #endregion
 
         #region Speech Keyword Events
 
@@ -623,9 +539,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="confidence"></param>
         /// <param name="phraseDuration"></param>
         /// <param name="phraseStartTime"></param>
-        /// <param name="semanticMeanings"></param>
         /// <param name="text"></param>
-        void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, MixedRealityInputAction inputAction, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string text);
+        void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, MixedRealityInputAction inputAction, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, string text);
 
         #endregion Speech Keyword Events
 
@@ -635,42 +550,35 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// 
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="inputAction"></param>
         /// <param name="dictationHypothesis"></param>
         /// <param name="dictationAudioClip"></param>
-        void RaiseDictationHypothesis(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationHypothesis, AudioClip dictationAudioClip = null);
+        void RaiseDictationHypothesis(IMixedRealityInputSource source, string dictationHypothesis, AudioClip dictationAudioClip = null);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="inputAction"></param>
         /// <param name="dictationResult"></param>
         /// <param name="dictationAudioClip"></param>
-        void RaiseDictationResult(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip = null);
+        void RaiseDictationResult(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="inputAction"></param>
         /// <param name="dictationResult"></param>
         /// <param name="dictationAudioClip"></param>
-        void RaiseDictationComplete(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip);
+        void RaiseDictationComplete(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="inputAction"></param>
         /// <param name="dictationResult"></param>
         /// <param name="dictationAudioClip"></param>
-        void RaiseDictationError(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip = null);
+        void RaiseDictationError(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null);
 
         #endregion Dictation Events
-
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-        #endregion Windows Speech
 
         #endregion Input Events
     }

@@ -3,10 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
 {
     /// <summary>
     /// Compares the Raycast Results from Unity's Graphic &amp; Physics Raycasters.

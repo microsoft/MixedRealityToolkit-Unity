@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
+namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 {
     /// <summary>
     /// Extension methods for Unity's GameObject class

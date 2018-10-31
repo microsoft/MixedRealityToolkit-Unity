@@ -5,11 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
+namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 {
     /// <summary>
     /// Extension methods for .Net Collection objects, e.g. Lists, Dictionaries, Arrays

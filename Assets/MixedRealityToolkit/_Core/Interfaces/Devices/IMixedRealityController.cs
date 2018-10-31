@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
 {
     /// <summary>
     /// Mixed Reality Toolkit controller definition, used to manage a specific controller type
@@ -31,6 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
         /// The registered Input Source for this controller
         /// </summary>
         IMixedRealityInputSource InputSource { get; }
+
+        /// <summary>
+        /// The controller's "Visual" <see cref="UnityEngine.Component"/> in the scene.
+        /// </summary>
+        IMixedRealityControllerVisualizer Visualizer { get; }
 
         /// <summary>
         /// Indicates that this controller is currently providing position data.

@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Lines;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 {
     /// <summary>
     /// Implements Unity's built in line renderer component, and applies the line data to it.

@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
 {
     [CustomPropertyDrawer(typeof(MixedRealityInputAction))]
     public class InputActionPropertyDrawer : PropertyDrawer
@@ -19,24 +19,33 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
 
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent content)
         {
-            if (!MixedRealityManager.IsInitialized || !MixedRealityManager.HasActiveProfile)
+            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.HasActiveProfile)
             {
                 profile = null;
-                actionLabels = new[] { new GUIContent("Missing Mixed Reality Manager") };
+                actionLabels = new[] { new GUIContent("Missing Mixed Reality Toolkit") };
                 actionIds = new[] { 0 };
             }
 
-            if (profile == null)
+            if (profile == null ||
+                (MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
+                 profile.InputActions != null &&
+                 profile.InputActions != MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions))
             {
-                if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+                profile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile;
+
+                if (profile != null)
                 {
-                    profile = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile;
                     actionLabels = profile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
                     actionIds = profile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
                 }
+                else
+                {
+                    actionLabels = new[] { new GUIContent("No input action profile found") };
+                    actionIds = new[] { 0 };
+                }
             }
 
-            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 profile = null;
                 actionLabels = new[] { new GUIContent("Input System Disabled") };

@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityTeleportSystem"/>
     /// </summary>
-    public class MixedRealityTeleportManager : MixedRealityEventManager, IMixedRealityTeleportSystem
+    public class MixedRealityTeleportManager : BaseEventSystem, IMixedRealityTeleportSystem
     {
         private TeleportEventData teleportEventData;
 
@@ -27,9 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         /// <summary>
         /// only used to clean up event system when shutting down if this system created one.
         /// </summary>
-        private GameObject eventSystemReference;
+        private GameObject eventSystemReference = null;
 
-        #region IMixedRealityManager Implementation
+        #region IMixedRealityService Implementation
 
         /// <inheritdoc />
         public override void Initialize()
@@ -40,16 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
         private void InitializeInternal()
         {
-            if (CameraCache.Main.transform.parent == null)
-            {
-                var cameraParent = new GameObject("Body");
-                CameraCache.Main.transform.SetParent(cameraParent.transform);
-            }
-
-            // Make sure the camera is at the scene origin.
-            CameraCache.Main.transform.parent.transform.position = Vector3.zero;
-            CameraCache.Main.transform.localPosition = Vector3.zero;
-
 #if UNITY_EDITOR
             if (!UnityEditor.EditorApplication.isPlaying)
             {
@@ -57,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
                 if (eventSystems.Length == 0)
                 {
-                    if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+                    if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
                     {
                         eventSystemReference = new GameObject("Event System");
                         eventSystemReference.AddComponent<EventSystem>();
@@ -74,7 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             }
 #endif // UNITY_EDITOR
 
-            TeleportDuration = MixedRealityManager.Instance.ActiveProfile.TeleportDuration;
             teleportEventData = new TeleportEventData(EventSystem.current);
         }
 
@@ -96,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             }
         }
 
-        #endregion IMixedRealityManager Implementation
+        #endregion IMixedRealityService Implementation
 
         #region IEventSystemManager Implementation
 
@@ -248,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         {
             isProcessingTeleportRequest = true;
 
-            var cameraParent = CameraCache.Main.transform.parent;
+            var cameraParent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
 
             targetRotation = Vector3.zero;
             targetRotation.y = eventData.Pointer.PointerOrientation;

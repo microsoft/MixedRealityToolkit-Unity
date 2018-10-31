@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Boundary;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
@@ -16,9 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class BoundaryVisualizationDemo : MonoBehaviour, IMixedRealityBoundaryHandler
     {
-        private IMixedRealityBoundarySystem BoundaryManager => boundaryManager ?? (boundaryManager = MixedRealityManager.Instance.GetManager<IMixedRealityBoundarySystem>());
-        private IMixedRealityBoundarySystem boundaryManager = null;
-
+        private GameObject markerParent;
         private readonly List<GameObject> markers = new List<GameObject>();
 
         [SerializeField]
@@ -27,11 +26,28 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         private bool showPlayArea = true;
 
+        [SerializeField]
+        private bool showTrackedArea = true;
+
+        [SerializeField]
+        private bool showBoundaryWalls = true;
+
+        [SerializeField]
+        private bool showBoundaryCeiling = true;
+
         #region MonoBehaviour Implementation
+
+        private void Awake()
+        {
+            markerParent = new GameObject();
+            markerParent.name = "Boundary Demo Markers";
+            markerParent.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+        }
 
         private void Start()
         {
-            if (BoundaryManager != null)
+
+            if (MixedRealityToolkit.BoundarySystem != null)
             {
                 if (markers.Count == 0)
                 {
@@ -42,21 +58,25 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void Update()
         {
-            if (BoundaryManager != null)
+            if (MixedRealityToolkit.BoundarySystem != null)
             {
-                BoundaryManager.ShowFloor = showFloor;
-                BoundaryManager.ShowPlayArea = showPlayArea;
+                MixedRealityToolkit.BoundarySystem.ShowFloor = showFloor;
+                MixedRealityToolkit.BoundarySystem.ShowPlayArea = showPlayArea;
+                MixedRealityToolkit.BoundarySystem.ShowTrackedArea = showTrackedArea;
+                MixedRealityToolkit.BoundarySystem.ShowBoundaryWalls = showBoundaryWalls;
+                MixedRealityToolkit.BoundarySystem.ShowBoundaryCeiling = showBoundaryCeiling;
             }
         }
 
-        private void OnEnable()
+        private async void OnEnable()
         {
-            BoundaryManager.Register(gameObject);
+            await new WaitUntil(() => MixedRealityToolkit.BoundarySystem != null);
+            MixedRealityToolkit.BoundarySystem.Register(gameObject);
         }
 
         private void OnDisable()
         {
-            BoundaryManager.Unregister(gameObject);
+            MixedRealityToolkit.BoundarySystem?.Unregister(gameObject);
         }
 
         #endregion MonoBehaviour Implementation
@@ -83,13 +103,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             float widthRect;
             float heightRect;
 
-            if (!BoundaryManager.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
+            if (!MixedRealityToolkit.BoundarySystem.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
             {
                 // If we have no boundary manager or rectangular bounds we will show no indicators
                 return;
             }
 
-            MixedRealityBoundaryVisualizationProfile visualizationProfile = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile;
+            MixedRealityBoundaryVisualizationProfile visualizationProfile = MixedRealityToolkit.Instance.ActiveProfile.BoundaryVisualizationProfile;
             if (visualizationProfile == null)
             {
                 // We do not have a visualization profile configured, therefore do not render the indicators.
@@ -114,12 +134,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                     Material material = null;
                     // Check inscribed rectangle first
-                    if (BoundaryManager.Contains(position, Boundary.Type.PlayArea))
+                    if (MixedRealityToolkit.BoundarySystem.Contains(position, Boundary.Type.PlayArea))
                     {
                         material = visualizationProfile.PlayAreaMaterial;
                     }
                     // Then check geometry
-                    else if (BoundaryManager.Contains(position, Boundary.Type.TrackedArea))
+                    else if (MixedRealityToolkit.BoundarySystem.Contains(position, Boundary.Type.TrackedArea))
                     {
                         material = visualizationProfile.TrackedAreaMaterial;
                     }
@@ -128,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     {
                         GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         marker.name = "Boundary Demo Marker";
-                        marker.transform.SetParent(transform);
+                        marker.transform.parent = markerParent.transform;
                         marker.transform.position = position;
                         marker.transform.localScale = Vector3.one * indicatorScale;
                         marker.GetComponent<MeshRenderer>().sharedMaterial = material;

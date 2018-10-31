@@ -610,14 +610,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c523107adbf4a9b8ca63b83f2f89aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultCursorDistance: 2
   surfaceCursorDistance: 0.02
   useUnscaledTime: 1
   positionLerpTime: 0.01
   scaleLerpTime: 0.01
   rotationLerpTime: 0.01
   lookRotationBlend: 0
-  primaryCursorVisual: {fileID: 4000014090385390}
+  PrimaryCursorVisual: {fileID: 4000014090385390}
+  defaultCursorDistance: 2
   cursorStateData:
   - name: Observe
     cursorState: 0

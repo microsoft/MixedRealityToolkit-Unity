@@ -24,6 +24,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ChannelMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -81,6 +85,7 @@ Material:
     - _DstBlend: 0
     - _EdgeSmoothingValue: 0.002
     - _EmissionScaleUI: 0
+    - _EnableChannelMap: 0
     - _EnableEmission: 0
     - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 0
@@ -96,6 +101,7 @@ Material:
     - _HoverLight: 0
     - _HoverLightOpaque: 0
     - _InnerGlow: 0
+    - _InstancedColor: 0
     - _Lightmapping: 1
     - _Metallic: 0
     - _Mode: 0
@@ -115,6 +121,10 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComparison: 0
+    - _StencilOperation: 0
+    - _StencilReference: 0
     - _UVSec: 0
     - _ZTest: 4
     - _ZWrite: 1
