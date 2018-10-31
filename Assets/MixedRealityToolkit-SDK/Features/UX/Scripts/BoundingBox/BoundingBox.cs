@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -240,9 +239,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             targetObject = this.gameObject;
 
-            if (MixedRealityManager.IsInitialized && MixedRealityManager.InputSystem != null )
+            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.InputSystem != null )
             {
-                MixedRealityManager.InputSystem.Register(targetObject);
+                MixedRealityToolkit.InputSystem.Register(targetObject);
             }
 
             if (activateOnStart == true)
