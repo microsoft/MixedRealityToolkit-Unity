@@ -132,7 +132,7 @@ At each step in the configuration, you can chose to remove and create a new prof
 
 ![](/External/ReadMeImages/MRTK_CopyProfileOptions.png)
 
-### **[For more information on Configuring the Configuration Profiles]()**
+### **[For more information on Configuring the Configuration Profiles](/Documentation/MixedRealityConfigurationGuide.md)**
 Please check out the [Mixed Reality Configuration Guide](/Documentation/MixedRealityConfigurationGuide.md)
 
 ## TBC
