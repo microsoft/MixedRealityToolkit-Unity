@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         Pointer,
         ControllerMapping,
         InputActions,
+        InputActionRules,
         Speech,
         BoundaryVisualization,
         ControllerVisualization,
@@ -21,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         Gestures,
         TouchInput,
         Diagnostics,
-        RegisteredComponents,
+        RegisteredServiceProviders,
 
         Assembly = 99
     }
