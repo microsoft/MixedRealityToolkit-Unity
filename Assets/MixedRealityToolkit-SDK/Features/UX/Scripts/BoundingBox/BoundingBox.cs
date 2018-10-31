@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public class BoundingBox : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityInputHandler, IMixedRealityGestureHandler, IMixedRealitySpatialInputHandler, IMixedRealitySourceStateHandler
+    public class BoundingBox : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityGestureHandler, IMixedRealitySpatialInputHandler, IMixedRealitySourceStateHandler
     {
         #region Enums
 
@@ -1167,6 +1167,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         #endregion Private Methods
 
         #region Used Event Handlers
+
         public void OnInputDown(InputEventData eventData)
         {
             if (currentInputSource == null)
@@ -1247,6 +1248,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         #endregion Used Event Handlers
 
         #region Unused Event Handlers
+
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
         }
@@ -1283,6 +1285,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public void OnSourceDetected(SourceStateEventData eventData)
         {
         }
+
         #endregion Unused Event Handlers
     }
 }
