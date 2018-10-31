@@ -61,7 +61,7 @@ Once imported, the MRTK will attempt to setup your project automatically for bui
 
 This prompt will automatically set the above options for you and restart Unity (for the .NET update) ready to start building your MRTK project.
 
-Accepting these options is completely optional (except .NET 4), if you click **Later**, the MRTK will not ask you again and leave you to it.  You can then chose to set these options manually later as you see fit.
+Accepting these options is completely optional (except .NET 4), if you click **Later**, the MRTK will not ask you again and leave you to it.  You can then choose to set these options manually later as you see fit.
 
 ### 3. Configure your first Mixed Reality Toolkit scene
 
@@ -72,7 +72,7 @@ Configuring your scene is extremely simple by simply selecting the following fro
 
 ![](/External/ReadMeImages/MRTK_ConfigureScene.png)
 
-Once this completes, you will see the following in your Scene hierarchy :
+Once this completes, you will see the following in your Scene hierarchy:
 
 ![](/External/ReadMeImages/MRTK_SceneSetup.png)
 
@@ -121,14 +121,14 @@ From here you can navigate to all the configuration profiles for the MRTK, inclu
 
 As you can see there are lots of options available and more will come available as we progress through the beta.
 
-When you start a new project, we provide a default set of configuration with every option turned on, styled for a fully cross platform project.  These defaults are "Locked" to ensure you always have a common start point for your project and we encourage you to start defining your own settings as your project evolves.  For this we provide options to either:
+When you start a new project, we provide a default set of configurations with every option turned on, styled for a fully cross platform project.  These defaults are "Locked" to ensure you always have a common start point for your project and we encourage you to start defining your own settings as your project evolves.  For this we provide options to either:
 
 * Copy the defaults in to a new profile for you to start customizing it for your project
-* Start afresh with a brand new profile.
+* Start afresh with a brand-new profile.
 
 ![](/External/ReadMeImages/MRTK_CopyCreateConfigurationOptions.png)
 
-At each step in the configuration, you can chose to remove and create a new profile, or simply copy the existing settings and continue to customize:
+At each step in the configuration, you can choose to remove and create a new profile, or simply copy the existing settings and continue to customize:
 
 ![](/External/ReadMeImages/MRTK_CopyProfileOptions.png)
 

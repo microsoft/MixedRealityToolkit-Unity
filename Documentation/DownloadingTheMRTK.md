@@ -25,7 +25,7 @@ Feedback is welcome through the [Mixed Reality GitHub site](https://github.com/M
 
 ## GitHub submodule (advanced users)
 
-For advanced users (or indeed anyone who likes to live on the edge) there is another way to get access to the latest and greatest of the Mixed Reality Toolkit, be it the Release code or the in progress development of the project.
+For advanced users (or indeed anyone who likes to live on the edge) there is another way to get access to the latest and greatest of the Mixed Reality Toolkit, be it the Release code or the in-progress development of the project.
 
 [Stephen Hodgson has provided a full guide](https://www.rageagainstthepixel.com/expert-import-mrtk/) for how to use Git Submodules to download and synchronize the toolkit in to your project.
 Don't worry though, you still control about when and how you update your project and can even "Go back" to a previous version of the toolkit at any time.
