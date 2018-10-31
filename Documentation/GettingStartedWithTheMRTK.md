@@ -35,10 +35,12 @@ To get your first project up and running, the steps are as follows:
 
 ### 2. [Import the Mixed Reality Toolkit asset](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 Get the asset and import it in to your Unity project using  "Asset -> Import Package -> Custom Package" from the Unity Editor menu.
+
 ![](/External/ReadMeImages/Unity_ImportAssetOption.png)
 
 Accept all the content and continue.
-![]("/External/ReadMeImages/MRTK_AssetImportDialog.png)
+
+![](/External/ReadMeImages/MRTK_AssetImportDialog.png)
 
 > The Examples and SDK are optional but highly recommended for new users.  Once you have a feel for how the toolkit works, you can remove these safely if you are not using them.
 
@@ -71,6 +73,7 @@ Configuring your scene is extremely simple by simply selecting the following fro
 ![](/External/ReadMeImages/MRTK_ConfigureScene.png)
 
 Once this completes, you will see the following in your Scene hierarchy :
+
 ![](/External/ReadMeImages/MRTK_SceneSetup.png)
 
 Which contains the following:
@@ -91,9 +94,11 @@ Switch to other platforms (ensure they have XR enabled in their player settings)
 ## Configuring your project
 
 The Mixed Reality Toolkit configuration is all centralized on one place and attached to the MixedRealityToolkit object in your active scene.
+
 ![](/External/ReadMeImages/MRTK_ActiveConfiguration.png)
 
 Clicking on this profile will show the configuration screens for the Mixed Reality Toolkit:
+
 ![](/External/ReadMeImages/MRTK_MixedRealityToolkitConfigurationScreen.png)
 
 From here you can navigate to all the configuration profiles for the MRTK, including:
@@ -124,6 +129,7 @@ When you start a new project, we provide a default set of configuration with eve
 ![](/External/ReadMeImages/MRTK_CopyCreateConfigurationOptions.png)
 
 At each step in the configuration, you can chose to remove and create a new profile, or simply copy the existing settings and continue to customize:
+
 ![](/External/ReadMeImages/MRTK_CopyProfileOptions.png)
 
 ### **[For more information on Configuring the Configuration Profiles]()**
