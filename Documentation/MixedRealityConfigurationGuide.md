@@ -26,27 +26,29 @@ This houses the current active runtime configuration for the project.
 
 From here you can navigate to all the configuration profiles for the MRTK, including:
 
-* [Experience Settings](#)
-* [Camera Settings](#)
-* [Input System Settings](#)
-* [Boundary Settings](#)
-* [Teleporting Settings](#)
-* [Spatial Awareness Settings](#)
-* [Diagnostics Settings](#)
-* [Additional Services Settings](#)
-* [Input Actions Settings](#)
-* [Input Actions Rules](#)
-* [Pointer Configuration](#)
-* [Gestures Configuration](#)
-* [Speech Commands](#)
-* [Controller Mapping Configuration](#)
-* [Controller Visualization Settings](#)
+* [Experience Settings](#experience)
+* [Camera Settings](#camera)
+* [Input System Settings](#inputsystem)
+* [Boundary Settings](#boundary)
+* [Teleporting Settings](#teleportation)
+* [Spatial Awareness Settings](#spatialawareness)
+* [Diagnostics Settings](#diagnostic)
+* [Additional Services Settings](#services)
+* [Input Actions Settings](#inputactions)
+* [Input Actions Rules](#inputactionrules)
+* [Pointer Configuration](#pointer)
+* [Gestures Configuration](#gestures)
+* [Speech Commands](#speech)
+* [Controller Mapping Configuration](#mapping)
+* [Controller Visualization Settings](#visualization)
 
 These configuration profiles are detailed below in their relevant sections:
 
 From here you can navigate to all the configuration profiles for the MRTK, including:
 
 ---
+<a name="experience"/>
+
 ## Experience Settings
 
 Located on the main Mixed Reality Toolkit configuration page, this setting defines the default operation for the Mixed Reality environment for your project.
@@ -55,6 +57,8 @@ Located on the main Mixed Reality Toolkit configuration page, this setting defin
 
 
 ---
+<a name="camera"/>
+
 ## Camera Settings
 
 The camera settings define how the camera will be setup for your Mixed Reality project, defining the generic clipping, quality and transparency settings.
@@ -64,6 +68,8 @@ The camera settings define how the camera will be setup for your Mixed Reality p
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
 
 ---
+<a name="inputsystem"/>
+
 ## Input System Settings
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png)
@@ -73,17 +79,23 @@ The camera settings define how the camera will be setup for your Mixed Reality p
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
 ---
+<a name="boundary"/>
+
 ## Boundary Visualization Settings
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
 ---
+<a name="teleportation"/>
+
 ## Teleportation System Selection
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png)
 
 ---
+<a name="spatialawareness"/>
+
 ## Spatial Awareness Settings
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png)
@@ -92,6 +104,8 @@ The camera settings define how the camera will be setup for your Mixed Reality p
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
 ---
+<a name="diagnostic"/>
+
 ## Diagnostics Settings
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png)
@@ -100,42 +114,56 @@ The camera settings define how the camera will be setup for your Mixed Reality p
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
 ---
+<a name="services"/>
+
 ## Additional Services Settings
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
 ---
+<a name="inputactions"/>
+
 ## Input Actions Settings
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
 ---
+<a name="inputactionrules"/>
+
 ## Input Actions Rules
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
 ---
+<a name="pointer"/>
+
 ## Pointer Configuration
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
 ---
+<a name="gestures"/>
+
 ## Gestures Configuration
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
 ---
+<a name="speech"/>
+
 ## Speech Commands
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
 ---
+<a name="mapping"/>
+
 ## Controller Mapping Configuration
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png)
@@ -154,6 +182,8 @@ The MRTK provides the default configuration for the following controllers / syst
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
 ---
+<a name="visualization"/>
+
 ## Controller Visualization Settings
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png)

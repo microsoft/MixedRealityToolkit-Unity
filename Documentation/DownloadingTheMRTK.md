@@ -20,12 +20,13 @@ As soon as it's available, the MRTK team will be working with Unity to publish t
 
 ## Unity Asset Store (*under discussion*)
 
-It has been raised within the Mixed Reality Toolkit team that the package should be published to the Unity store.  Microsoft are in talks with Unity as to the best delivery options.  Likely this will be the Unity Package Manager.
-Feedback is welcome through the [Mixed Reality GitHub site](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) (raise an issue to offer an opinion) and the [HoloDevelopers Slack channel](https://join.slack.com/t/holodevelopers/shared_invite/enQtNDIwNTA4MzIyNDk4LTM3NmU3MTBlMWM4OGU0MGI5YmZmMzhiZmRkZDMxMDZhNzVhNTczYThiYTNhMmEyMTQ2MzA0ZDZhZTY1ZTU2OGQ) for the Mixed Reality Toolkit.
+It has been raised within the Mixed Reality Toolkit team that the package should be published to the Unity store, this is currently being investigated.  
+
+Feedback is welcome through the [Mixed Reality GitHub site](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) (raise an issue to offer an opinion) and the [HoloDevelopers Slack channel](https://holodevelopersslack.azurewebsites.net/) for the Mixed Reality Toolkit.
 
 ## GitHub submodule (advanced users)
 
-For advanced users (or indeed anyone who likes to live on the edge) there is another way to get access to the latest and greatest of the Mixed Reality Toolkit, be it the Release code or the in-progress development of the project.
+For those who would like to contribute to the MRTK or prefer to have the latest code in their project, there is another way to get access to the latest and greatest of the Mixed Reality Toolkit, be it the Release code or the in-progress development of the project.
 
 [Stephen Hodgson has provided a full guide](https://www.rageagainstthepixel.com/expert-import-mrtk/) for how to use Git Submodules to download and synchronize the toolkit in to your project.
 Don't worry though, you still control about when and how you update your project and can even "Go back" to a previous version of the toolkit at any time.
