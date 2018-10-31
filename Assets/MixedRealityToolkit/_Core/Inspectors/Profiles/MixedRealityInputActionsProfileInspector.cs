@@ -21,8 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private SerializedProperty inputActionList;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!CheckMixedRealityConfigured(false))
             {
                 return;
@@ -62,11 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.HelpBox("Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
                                     "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.", MessageType.Info);
 
-
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
 
             serializedObject.Update();
             RenderList(inputActionList);

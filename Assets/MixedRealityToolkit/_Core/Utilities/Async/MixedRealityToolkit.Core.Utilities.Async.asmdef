@@ -1,0 +1,8 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Core.Utilities.Async",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

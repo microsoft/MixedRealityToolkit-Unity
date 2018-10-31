@@ -19,13 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions
         /// <param name="scriptableObject"><see cref="ScriptableObject"/> you want to create an asset file for.</param>
         /// <param name="path">Optional path for the new asset.</param>
         /// <param name="fileName">Optional filename for the new asset.</param>
-        public static void CreateAsset(this ScriptableObject scriptableObject, string path = null, string fileName = null)
+        public static ScriptableObject CreateAsset(this ScriptableObject scriptableObject, string path = null, string fileName = null)
         {
             var name = string.IsNullOrEmpty(fileName) ? $"{scriptableObject.GetType().Name}" : fileName;
 
             if (string.IsNullOrEmpty(path))
             {
-                path = "Assets/MixedRealityToolkit-SDK/Profiles";
+                path = "Assets";
             }
 
             if (Path.GetExtension(path) != string.Empty)
@@ -47,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions
             EditorUtility.FocusProjectWindow();
             Selection.activeObject = scriptableObject;
             EditorGUIUtility.PingObject(scriptableObject);
+            return scriptableObject;
         }
 
         /// <summary>

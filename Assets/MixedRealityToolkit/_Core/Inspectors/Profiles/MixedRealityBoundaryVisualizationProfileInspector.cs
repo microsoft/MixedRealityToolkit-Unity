@@ -34,8 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private readonly GUIContent scaleContent = new GUIContent("Scale");
         private readonly GUIContent materialContent = new GUIContent("Material");
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!CheckMixedRealityConfigured(false))
             {
                 return;
@@ -84,10 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
             EditorGUILayout.Space();
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
 
             serializedObject.Update();
             EditorGUILayout.PropertyField(boundaryHeight);
