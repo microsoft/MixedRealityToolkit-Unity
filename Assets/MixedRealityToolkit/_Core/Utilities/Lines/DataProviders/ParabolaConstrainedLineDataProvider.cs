@@ -26,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         }
 
         [SerializeField]
-        [Tooltip("The direction of the apex of the parabola.")]
         [Vector3Range(-1f, 1f)]
         private Vector3 upDirection = Vector3.up;
 
@@ -42,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         }
 
         [SerializeField]
-        [Tooltip("Controls the extent to which the parabola's apex can be away from the end points.")]
         [Range(0.01f, 10f)]
         private float height = 1f;
 
@@ -81,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
                 case 1:
                     return endPoint.Position;
                 default:
-                    Debug.LogError("Invalid point index: " + pointIndex, this);
+                    Debug.LogError("Invalid point index!");
                     return Vector3.zero;
             }
         }
@@ -89,19 +87,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <inheritdoc />
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
-            switch (pointIndex)
+            if (pointIndex == 1)
             {
-                case 0:
-                    // We do nothing with this case. Parabola lines start at 0,0,0
-                    // Case 0's point is (0,0,0)
-					// 10/25/2018 - VNext Refactoring of Tooltips
-                    break;
-                case 1:
-                    endPoint.Position = point;
-                    break;
-                default:
-                    Debug.LogError("Invalid point index:" + pointIndex, this);
-                    break;
+                endPoint.Position = point;
+            }
+            else
+            {
+                Debug.LogError("Invalid point index!");
             }
         }
 

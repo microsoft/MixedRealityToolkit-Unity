@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
                 case 1:
                     return endPoint.Position;
                 default:
-                    Debug.LogError("Invalid point index:" + pointIndex, this);
+                    Debug.LogError("Invalid point index");
                     return Vector3.zero;
             }
         }
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
                     endPoint.Position = point;
                     break;
                 default:
-                    Debug.LogError("Invalid point index:" + pointIndex, this);
+                    Debug.LogError("Invalid point index");
                     break;
             }
         }
