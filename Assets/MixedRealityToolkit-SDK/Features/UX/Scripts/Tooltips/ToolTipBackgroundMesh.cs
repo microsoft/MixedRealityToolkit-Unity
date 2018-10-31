@@ -10,16 +10,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     /// </summary>
     public class ToolTipBackgroundMesh : ToolTipBackground
     {
-        /// <summary>
-        /// Transform that scale and offset will be applied to.
-        /// </summary>
         [SerializeField]
         [Tooltip("Transform that scale and offset will be applied to.")]
         private Transform backgroundTransform;
 
         private float depth = 1f;
 
-        protected Bounds localContentBounds;
+        private Bounds localContentBounds;
 
         /// <summary>
         /// Mesh renderer button for mesh background.
@@ -70,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 localContentSize.x /= meshBounds.size.x;
                 localContentSize.y /= meshBounds.size.y;
                 localContentSize.z = depth;
-               
+
                 //Don't use the mesh bounds for local content since an offset center may be used for design effect
                 if (localContentSize.x > 0 && localContentSize.y > 0)
                 {
@@ -81,18 +78,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         private void OnDrawGizmos()
         {
-            if (Application.isPlaying)
-                return;
+            if (Application.isPlaying) { return; }
 
             if (ToolTipContent == null)
+            {
                 ToolTipContent = gameObject.GetComponent<ToolTip>();
+            }
 
-            if (ToolTipContent == null)
-                return;
+            if (ToolTipContent == null) { return; }
 
             ScaleToFitContent();
         }
-
-
     }
 }

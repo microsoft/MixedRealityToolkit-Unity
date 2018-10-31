@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 {
     /// <summary>
     /// Static class providing useful functions for
-    /// finding ToolTip Attachpoint information.
+    /// finding ToolTip Attach point information.
     /// </summary>
     public static class ToolTipUtility
     {
@@ -24,8 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// <returns>Vector3 the point in localPivotPositions which is closest to the anchor position</returns>
         public static Vector3 FindClosestAttachPointToAnchor(Transform anchor, Transform contentParent, Vector3[] localPivotPositions, ToolTipAttachPointType pivotType)
         {
+            Vector3 currentPivot;
             Vector3 nearPivot = Vector3.zero;
-            Vector3 currentPivot = Vector3.zero;
             Vector3 anchorPosition = anchor.position;
             float nearDist = Mathf.Infinity;
 
@@ -83,20 +83,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
                 default:
                     // For all other types, just use the array position or contentParent
-                    //position if there is no array provided.
-                    if (localPivotPositions == null || localPivotPositions.Length == 0)
-                    {
-                        nearPivot = contentParent.position;
-                    }
-                    else
-                    {
-                        nearPivot = localPivotPositions[(int)pivotType];
-                    }
+                    // position if there is no array provided.
+                    nearPivot = localPivotPositions.Length == 0
+                        ? contentParent.position
+                        : localPivotPositions[(int)pivotType];
                     break;
             }
 
             return nearPivot;
         }
+
         /// <summary>
         /// gets an array of pivot positions
         /// </summary>
