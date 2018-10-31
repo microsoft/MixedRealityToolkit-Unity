@@ -1,6 +1,6 @@
 # Getting started with the Mixed Reality Toolkit
 
-![](External/ReadMeImages/MRTK_Logo_Rev.png)
+![](/External/ReadMeImages/MRTK_Logo_Rev.png)
 
 The Mixed Reality Toolkit (MRTK) is a new platform for building your Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR), aimed at accelerating your content production by removing any of the common complexities that complicate projects in a true multi-platform / multi-vr solution.
 The MRTK solves this by providing a common logical platform to build your dream, together with a rich set of services and SDK components for building your project.  Al these components are geared towards the new MRTK platform that abstracts out all the different ways that each platform delivers its experience.
@@ -35,17 +35,17 @@ To get your first project up and running, the steps are as follows:
 
 ### 2. [Import the Mixed Reality Toolkit asset](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 Get the asset and import it in to your Unity project using  "Asset -> Import Package -> Custom Package" from the Unity Editor menu.
-![](External/ReadMeImages/Unity_ImportAssetOption.png)
+![](/External/ReadMeImages/Unity_ImportAssetOption.png)
 
 Accept all the content and continue.
-![]("External/ReadMeImages/MRTK_AssetImportDialog.png)
+![]("/External/ReadMeImages/MRTK_AssetImportDialog.png)
 
 > The Examples and SDK are optional but highly recommended for new users.  Once you have a feel for how the toolkit works, you can remove these safely if you are not using them.
 
 > The Mixed Reality Toolkit is available via [multiple delivery mechanisms](/Documentation/DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
 
 ### 3. Accept the Setup prompt
-![](External/ReadMeImages/MRTK_UnitySetupPrompt.png)
+![](/External/ReadMeImages/MRTK_UnitySetupPrompt.png)
 
 Once imported, the MRTK will attempt to setup your project automatically for building Mixed Reality solutions, namely setting:
 
@@ -68,10 +68,10 @@ The toolkit has been designed so that there is just one object that is mandatory
 Configuring your scene is extremely simple by simply selecting the following from the Editor menu:
 > Mixed Reality Toolkit -> Configure
 
-![](External/ReadMeImages/MRTK_ConfigureScene.png)
+![](/External/ReadMeImages/MRTK_ConfigureScene.png)
 
 Once this completes, you will see the following in your Scene hierarchy :
-![](External/ReadMeImages/MRTK_SceneSetup.png)
+![](/External/ReadMeImages/MRTK_SceneSetup.png)
 
 Which contains the following:
 
@@ -91,10 +91,10 @@ Switch to other platforms (ensure they have XR enabled in their player settings)
 ## Configuring your project
 
 The Mixed Reality Toolkit configuration is all centralized on one place and attached to the MixedRealityToolkit object in your active scene.
-![](External/ReadMeImages/MRTK_ActiveConfiguration.png)
+![](/External/ReadMeImages/MRTK_ActiveConfiguration.png)
 
 Clicking on this profile will show the configuration screens for the Mixed Reality Toolkit:
-![](External/ReadMeImages/MRTK_MixedRealityToolkitConfigurationScreen.png)
+![](/External/ReadMeImages/MRTK_MixedRealityToolkitConfigurationScreen.png)
 
 From here you can navigate to all the configuration profiles for the MRTK, including:
 
@@ -121,13 +121,13 @@ When you start a new project, we provide a default set of configuration with eve
 * Copy the defaults in to a new profile for you to start customizing it for your project
 * Start afresh with a brand new profile.
 
-![](External/ReadMeImages/MRTK_CopyCreateConfigurationOptions.png)
+![](/External/ReadMeImages/MRTK_CopyCreateConfigurationOptions.png)
 
 At each step in the configuration, you can chose to remove and create a new profile, or simply copy the existing settings and continue to customize:
-![](External/ReadMeImages/MRTK_CopyProfileOptions.png)
+![](/External/ReadMeImages/MRTK_CopyProfileOptions.png)
 
 ### **[For more information on Configuring the Configuration Profiles]()**
-Please check out the [Mixed Reality Configuration Guide](Documentation/MixedRealityConfigurationGuide.md)
+Please check out the [Mixed Reality Configuration Guide](/Documentation/MixedRealityConfigurationGuide.md)
 
 ## TBC
 More?
