@@ -367,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 Vector3 newGrabbedPosition;
                 Vector3 newRemotePoint;
-                //TODO: this line gets the finger grab point in space in hololens
+
                 if (usingPose == false)
                 {
                     currentPointer.TryGetPointerPosition(out newRemotePoint);
@@ -725,7 +725,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
         private void SetMaterials()
         {
-            //ensure materials
             if (wireframeMaterial == null)
             {
                 float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
@@ -735,8 +734,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 wireframeMaterial = new Material(shader);
                 wireframeMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
-                wireframeMaterial.SetFloat("_InnerGlow", 1.0f);
-                wireframeMaterial.SetFloatArray("_InnerGlowColor", color);
             }
             if (handleMaterial == null && handleMaterial != wireframeMaterial)
             {
@@ -957,7 +954,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     {
                         links[i].transform.localScale = new Vector3(linkRadius, linkDimensions.y, linkRadius);
                     }
-                    else//Z
+                    else
                     {
                         links[i].transform.localScale = new Vector3(linkRadius, linkDimensions.z, linkRadius);
                     }
@@ -1117,36 +1114,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         #endregion Private Methods
 
         #region Used Event Handlers
-        public void OnPointerDown(MixedRealityPointerEventData eventData)
-        {
-            //Debug.Log("pointerDown");
-            //if (currentInputSource == null)
-            //{
-            //    if (eventData.Pointer is Pointers.LinePointer == true)
-            //    {
-            //        Ray ray;
-            //        if (true == eventData.Pointer.TryGetPointingRay(out ray))
-            //        {
-            //            handleMoveType = HandleMoveType.Ray;
-            //            float distance = 0;
-            //            Collider collider = GetGrabbedCollider(ray, out distance);
-            //            if (collider != null)
-            //            {
-            //                currentInputSource = eventData.InputSource;
-            //                currentPointer = eventData.Pointer;
-            //                grabbedHandle = collider.gameObject;
-            //                currentHandleType = GetHandleType(grabbedHandle);
-            //                currentRotationAxis = GetRotationAxis(grabbedHandle);
-            //                currentPointer.TryGetPointingRay(out initialGrabRay);
-            //                initialGrabMag = distance;
-            //                initialGrabbedPosition = grabbedHandle.transform.position;
-            //                initialScale = targetObject.transform.localScale;
-            //                ShowOneHandle(grabbedHandle);
-            //            }
-            //        }
-            //    }
-            //}
-        }
         public void OnInputDown(InputEventData eventData)
         {
             if (currentInputSource == null)
@@ -1208,9 +1175,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 usingPose = false;
             }
         }
+        public void OnSourceLost(SourceStateEventData eventData)
+        {
+            if (currentInputSource == eventData.InputSource)
+            {
+                currentInputSource = null;
+                currentHandleType = HandleType.none;
+                currentPointer = null;
+                grabbedHandle = null;
+                ResetHandleVisibility();
+            }
+        }
         #endregion Used Event Handlers
 
         #region Unused Event Handlers
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+        }
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
         }
@@ -1223,48 +1204,27 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public void OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
         }
-
         public void OnGestureStarted(InputEventData eventData)
         {
         }
-
         public void OnGestureUpdated(InputEventData eventData)
         {
         }
-
         public void OnGestureCompleted(InputEventData eventData)
         {
         }
-
         public void OnGestureCanceled(InputEventData eventData)
         {
         }
-
         public void OnPositionChanged(InputEventData<Vector3> eventData)
         {
         }
-
         public void OnRotationChanged(InputEventData<Quaternion> eventData)
         {
         }
-
         public void OnSourceDetected(SourceStateEventData eventData)
         {
         }
-
-        public void OnSourceLost(SourceStateEventData eventData)
-        {
-            if (currentInputSource == eventData.InputSource)
-            {
-                currentInputSource = null;
-                currentHandleType = HandleType.none;
-                currentPointer = null;
-                grabbedHandle = null;
-                ResetHandleVisibility();
-            }
-        }
-
-
         #endregion Unused Event Handlers
     }
 }
