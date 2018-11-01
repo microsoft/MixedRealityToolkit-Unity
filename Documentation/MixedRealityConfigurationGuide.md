@@ -72,16 +72,33 @@ The camera settings define how the camera will be setup for your Mixed Reality p
 
 ## Input System Settings
 
+The Mixed Reality Project provides a robust and well trained input system for routing all the input events around the project which is selected by default.
+
+> The MRTK also allows you to write your own Input System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide]() (Coming soon)
+
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png)
 
+Behind the Input System provided by the MRTK are several other systems, these help to drive and manage the complex inter-weaving's required to abstract out the complexities of a multi-platform / mixed reality framework.
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png)
+
+Each of the individual profiles are detailed below:
+
+* [Input Actions Settings](#inputactions)
+* [Input Actions Rules](#inputactionrules)
+* [Pointer Configuration](#pointer)
+* [Gestures Configuration](#gestures)
+* [Speech Commands](#speech)
+* [Controller Mapping Configuration](#mapping)
+* [Controller Visualization Settings](#visualization)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
 ---
 <a name="boundary"/>
 
 ## Boundary Visualization Settings
+
+The boundary system translates the perceived boundary reported by the underlying platforms boundary / guardian system.  The Boundary visualizer configuration gives you the ability to automatically show the recorded boundary within your scene relative to the users position.  The boundary will also react / update based on where the user teleports within the scene.
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png)
 
@@ -91,6 +108,10 @@ The camera settings define how the camera will be setup for your Mixed Reality p
 
 ## Teleportation System Selection
 
+The Mixed Reality Project provides a full featured Teleportation system for managing teleportation events in the project which is selected by default.
+
+> The MRTK also allows you to write your own Teleportation System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide]() (Coming soon)
+
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png)
 
 ---
@@ -98,9 +119,22 @@ The camera settings define how the camera will be setup for your Mixed Reality p
 
 ## Spatial Awareness Settings
 
+The Mixed Reality Project provides a rebuilt Spatial Awareness system for working with spatial scanning systems in the project which is selected by default.
+You can view the architecture behind the [MRTK Spatial Awareness system here](/Documentation/Architecture/SpatialAwarenessSystemArchitecture.md).
+
+> The MRTK also allows you to write your own Spatial Awareness System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide]() (Coming soon)
+
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png)
 
-![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png.png)
+The Mixed Reality Toolkit Spatial Awareness configuration lets you tailor how the system starts, whether it is automatically when the application starts or later programmatically as well as setting the extents for the Field of View.
+
+It also lets you configure the Mesh and surface settings, further customizing how your project understands the environment around you. 
+
+This is only applicable for devices that can provide a scanned environment, such as the HoloLens (and other devices in the future)
+
+> Note, the Spatial Awareness system is still in active development, please report any issues or requests in the [MRTK Issues section on GitHub](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues)
+
+![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
 ---
