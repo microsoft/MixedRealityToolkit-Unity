@@ -9,7 +9,7 @@ The MRTK solves this by providing a common logical platform to build your dream,
 
 To get started with the Mixed Reality Toolkit you will need:
 
-* [Unity 2018.2.13f1 +](https://unity3d.com/get-unity/update)
+* [Unity 2018.2.13f1 +](https://unity3d.com/get-unity/download/archive)
 * [Latest MRTK release (Beta)](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 * A dream
 
@@ -31,9 +31,12 @@ To get your first project up and running, the steps are as follows:
 
 ### 1. Create your new project (or start a new scene in your current project)
 
-> *Note* when creating a new project with Unity 2018, Unity gives you several templates to choose from.  Currently the **MRTK does not yet support the Scriptable Render Pipeline**, so the LWSRP, HDSRP and VRSRP projects are not compatible with MRTK projects.
+> *Note* when creating a new project with Unity 2018, Unity gives you several templates to choose from.  Currently the **MRTK does not yet support the Scriptable Render Pipeline**, so the LWSRP, HDSRP and VRSRP projects are not compatible with MRTK projects.  Please stay tuned to the MRTK GitHub site for future announcements on SRP support.
 
 ### 2. [Import the Mixed Reality Toolkit asset](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
+
+> The Mixed Reality Toolkit is available via [multiple delivery mechanisms](/Documentation/DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
+
 Get the asset and import it in to your Unity project using  "Asset -> Import Package -> Custom Package" from the Unity Editor menu.
 
 ![](/External/ReadMeImages/Unity_ImportAssetOption.png)
@@ -42,9 +45,9 @@ Accept all the content and continue.
 
 ![](/External/ReadMeImages/MRTK_AssetImportDialog.png)
 
-> The Examples and SDK are optional but highly recommended for new users.  Once you have a feel for how the toolkit works, you can remove these safely if you are not using them.
+> The SDK is optional but highly recommended for new users.  Once you have a feel for how the toolkit works, you can remove these safely if you are not using them.
 
-> The Mixed Reality Toolkit is available via [multiple delivery mechanisms](/Documentation/DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
+> The MRTK also provides a [separate "Examples" asset](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases), which currently contains demonstration scenes for current MRTK features.  In the future this will also contain educational "Example" scenes to aid with learning implementation tricks with the toolkit.
 
 ### 3. Accept the Setup prompt (optional)
 ![](/External/ReadMeImages/MRTK_UnitySetupPrompt.png)
@@ -76,9 +79,11 @@ Once this completes, you will see the following in your Scene hierarchy:
 
 ![](/External/ReadMeImages/MRTK_SceneSetup.png)
 
+> The MRTK will also select the configured profile, [click here for more details on this configuration screens](#configuring)
+
 Which contains the following:
 
-* Mixed Reality Toolkit - The toolkit itself, providing the central configuration and activation point for the entire framework.
+* Mixed Reality Toolkit - The toolkit itself, providing the central configuration entry point for the entire framework.
 * MixedRealityPlayspace - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.
 * The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDK's
 * UIRaycastCamera added as a child to the Main Camera - To enable seamless UI interactions through the toolkit
@@ -91,6 +96,8 @@ Which contains the following:
 You are now ready to start building your Mixed Reality Solution, just start adding content and get building.
 Switch to other platforms (ensure they have XR enabled in their player settings) and your project will still run as expected without change.
 
+<a name="configuring"/>
+
 ## Configuring your project
 
 The Mixed Reality Toolkit configuration is all centralized on one place and attached to the MixedRealityToolkit object in your active scene.
@@ -102,6 +109,8 @@ Clicking on this profile will show the configuration screens for the Mixed Reali
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png)
 
 From here you can navigate to all the configuration profiles for the MRTK, including:
+
+> The "Default" profiles provided by the Mixed Reality Toolkit are locked by default, so when you view these in the inspector they will appear greyed out.  This is to ensure you always have a common default for any project.  We recommend you create your own profiles (see below) when you need to customize the configuration for your project.
 
 * Main Mixed Reality Toolkit Configuration
 * Camera Settings
@@ -136,7 +145,7 @@ At each step in the configuration, you can choose to remove and create a new pro
 
 ![](/External/ReadMeImages/MRTK_CopyProfileOptions.png)
 
-### **[For more information on customising the Configuration Profiles](/Documentation/MixedRealityConfigurationGuide.md)**
+### **[For more information on customizing the Configuration Profiles](/Documentation/MixedRealityConfigurationGuide.md)**
 Please check out the [Mixed Reality Configuration Guide](/Documentation/MixedRealityConfigurationGuide.md)
 
 ## Get building your project

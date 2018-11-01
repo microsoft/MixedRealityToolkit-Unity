@@ -29,7 +29,7 @@ Feedback is welcome through the [Mixed Reality GitHub site](https://github.com/M
 For those who would like to contribute to the MRTK or prefer to have the latest code in their project, there is another way to get access to the latest and greatest of the Mixed Reality Toolkit, be it the Release code or the in-progress development of the project.
 
 [Stephen Hodgson has provided a full guide](https://www.rageagainstthepixel.com/expert-import-mrtk/) for how to use Git Submodules to download and synchronize the toolkit in to your project.
-Don't worry though, you still control about when and how you update your project and can even "Go back" to a previous version of the toolkit at any time.
+Don't worry though, you still have control on how you update your project and can even "Go back" to a previous version of the toolkit at any time by simply checking out a specific commit or tag.
 
 
 
