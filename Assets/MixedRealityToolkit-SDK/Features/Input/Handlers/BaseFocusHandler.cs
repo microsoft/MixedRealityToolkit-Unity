@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         private bool focusEnabled = true;
 
         /// <summary>
-        /// Is focus enabled for this <see cref="UnityEngine.Component"/>?
+        /// Is focus enabled for this <see cref="Component"/>?
         /// </summary>
         public virtual bool FocusEnabled
         {
@@ -29,20 +29,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         }
 
         /// <summary>
-        /// Does this object currently have focus by any <see cref="IMixedRealityPointer"/>?
-        /// </summary>
-        public bool HasFocus => FocusEnabled && Focusers.Count > 0;
-
-        /// <summary>
-        /// The list of <see cref="IMixedRealityPointer"/>s that are currently focused on this <see cref="UnityEngine.GameObject"/>
+        /// The list of <see cref="IMixedRealityPointer"/>s that are currently focused on this <see cref="GameObject"/>
         /// </summary>
         public List<IMixedRealityPointer> Focusers { get; } = new List<IMixedRealityPointer>(0);
+
+        #region IMixedRealityFocusHandler Implementation
+
+        /// <inheritdoc />
+        public virtual bool HasFocus => FocusEnabled && Focusers.Count > 0;
 
         /// <inheritdoc />
         public virtual void OnFocusEnter(FocusEventData eventData) { }
 
         /// <inheritdoc />
         public virtual void OnFocusExit(FocusEventData eventData) { }
+
+        #endregion IMixedRealityFocusHandler Implementation
+
+        #region IMixedRealityFocusChangedHandler Implementation
 
         /// <inheritdoc />
         public virtual void OnBeforeFocusChange(FocusEventData eventData)
@@ -71,5 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         /// <inheritdoc />
         public virtual void OnFocusChanged(FocusEventData eventData) { }
+
+        #endregion IMixedRealityFocusChangedHandler Implementation
     }
 }

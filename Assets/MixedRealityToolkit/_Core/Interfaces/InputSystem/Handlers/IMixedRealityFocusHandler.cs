@@ -11,6 +11,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
     public interface IMixedRealityFocusHandler : IMixedRealityFocusChangedHandler
     {
         /// <summary>
+        /// Does this object currently have focus by any <see cref="IMixedRealityPointer"/>?
+        /// </summary>
+        bool HasFocus { get; }
+
+        /// <summary>
         /// The Focus Enter event is raised on this <see cref="UnityEngine.GameObject"/> whenever a <see cref="IMixedRealityPointer"/>'s focus enters this <see cref="UnityEngine.GameObject"/>'s <see cref="UnityEngine.Collider"/>.
         /// </summary>
         /// <param name="eventData"></param>
