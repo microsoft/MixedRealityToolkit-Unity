@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         private DisplayModeType tipState;
 
         /// <summary>
-        /// Display the state of the tooltip.
+        /// The display the state of the tooltip.
         /// </summary>
         public DisplayModeType TipState
         {
