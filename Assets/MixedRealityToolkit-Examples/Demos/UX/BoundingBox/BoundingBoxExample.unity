@@ -247,7 +247,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.248
+      value: -0.120000005
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -311,7 +311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b81083f6e1e5d848a87fd2562328230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoxColliderToUse: {fileID: 306008945}
+  boxColliderToUse: {fileID: 306008945}
   activateOnStart: 1
   scaleMaximum: 5
   scaleMinimum: 0.2
@@ -348,7 +348,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 543097130}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0019764, y: 0.063, z: -0.887}
+  m_LocalPosition: {x: 0.0019764, y: 0.19099998, z: -0.887}
   m_LocalScale: {x: 0.4975738, y: 0.4975738, z: 0.4975738}
   m_Children:
   - {fileID: 792227568}
@@ -368,7 +368,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 284d5c2c421022e4f9056fb0a21ff91c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.131
+      value: -0.003000006
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 284d5c2c421022e4f9056fb0a21ff91c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -432,7 +432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b81083f6e1e5d848a87fd2562328230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoxColliderToUse: {fileID: 533096724}
+  boxColliderToUse: {fileID: 533096724}
   activateOnStart: 1
   scaleMaximum: 5
   scaleMinimum: 0.2
@@ -725,7 +725,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: f40914b49f8741e39df5b08d3db15497, type: 2}
+  - {fileID: 2100000, guid: 835cb4a58f172d7478801db95e510f56, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -759,7 +759,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 694962453}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.7141, y: -0.13879997, z: -1.434}
+  m_LocalPosition: {x: 0.7141, y: -0.010799974, z: -1.434}
   m_LocalScale: {x: 0.04091849, y: 0.01894535, z: 0.024780745}
   m_Children:
   - {fileID: 1114335114}
@@ -777,7 +777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b81083f6e1e5d848a87fd2562328230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoxColliderToUse: {fileID: 694962454}
+  boxColliderToUse: {fileID: 694962454}
   activateOnStart: 1
   scaleMaximum: 2
   scaleMinimum: 0.2
@@ -1078,7 +1078,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1229001241}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4}
+  m_LocalPosition: {x: 0, y: 1, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 392948878}
@@ -1325,7 +1325,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.131
+      value: -0.003
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1389,7 +1389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b81083f6e1e5d848a87fd2562328230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoxColliderToUse: {fileID: 1525675174}
+  boxColliderToUse: {fileID: 1525675174}
   activateOnStart: 1
   scaleMaximum: 5
   scaleMinimum: 0.2
