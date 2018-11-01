@@ -44,7 +44,7 @@ _Note: Be sure to include the Windows Store .NET scripting backend components._
 
 ![Unity Installer](/External/ReadMeImages/UnityInstaller.PNG "Unity Installer")
 
-# 2. Download the MixedRealityToolkit-Unity asset packages
+# 3. Download the MixedRealityToolkit-Unity asset packages
 You can download the latest unity package from [Releases](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases) folder.
 
 _Note: The latest release should work for both HoloLens and Windows Mixed Reality development._
@@ -68,7 +68,7 @@ If you've never cloned a repo before then you should consider using the GitHub d
 >
 > `Assets -> Export Package…`
 
-# 3. Adding the MixedRealityToolkit-Unity package in your project
+# 4. Adding the MixedRealityToolkit-Unity package in your project
 
 Open or create your project in Unity.
 
@@ -81,7 +81,7 @@ You should now have a `Mixed Reality Toolkit` menu item in the Unity editor.
 
 _Note: This process should be repeated for the examples and test asset packages as well._
 
-# 4. Preparing your project for Mixed Reality Content
+# 5. Preparing your project for Mixed Reality Content
 
 Select the "Apply Mixed Reality Project Settings" option in the Unity Editor: 
 
@@ -101,7 +101,7 @@ Check:
 > If you enable the **Enable Xbox Controller Support** option, this will download the ProjectSettings Input file and replace your current version in your project and override any existing input settings, the old file will be renamed to "*.Old*".
 > Else, you will have to setup all the MRTK input axis manually.
 
-# 5. Preparing a Scene for Mixed Reality Content
+# 6. Preparing a Scene for Mixed Reality Content
 
 Select the "Apply Mixed Reality Scene Settings" option in the Unity Editor: 
 
@@ -128,7 +128,7 @@ Alternatively, you can setup your scene manually as follows:
 > **For Hololens**
 > Optionally, if you wish to enable spatial mapping in your scene for HoloLens, you can add the `SpatialMapping.prefab` (found under HoloToolkit/SpatialMapping/Prefabs) to your 'Managers' object.  Be aware that you must also enable `Spatial Perception` Capabilities: `Edit/Project Settings/Player -> Inspector -> Publishing Settings/Capabilities`.
 
-# 5 Building your project 
+# 7. Building your project 
 The MRTK provides you a quick and easy way to generate your Unity project from a custom window, which can be found under:
 
 `Mixed Reality Toolkit -> Build Window`
@@ -145,7 +145,7 @@ This window offers many quick options to be able to:
 
 _Note: You should always target the lastest Windows SDK in all builds._
 
-## 5.1 Running your project for **Immersive Headsets**
+## 7.1 Running your project for **Immersive Headsets**
 Unity supports running your Immersive solution direct from the editor **BUT** Only when the Mixed Reality Portal is running.
 > Unity may resolve this in the future and auto-start the portal, but it is better to have it running beforehand!
 
@@ -159,7 +159,7 @@ Provided everything was good, you should now see your scene running in the heads
 
 Alternatively, either Use the Unity Build options or the MRTK Build window to generate the UWP package and run locally on your machine.
 
-## 5.2 Running your project for **HoloLens**
+## 7.2 Running your project for **HoloLens**
 
  1. Be sure to plug in your HoloLens via usb.
  2. Open the above Build Window: `Mixed Reality Toolkit -> Build Window`.
@@ -168,10 +168,10 @@ Alternatively, either Use the Unity Build options or the MRTK Build window to ge
 
 > Optionally, you can use the [default build steps if needed](https://docs.unity3d.com/Manual/windowsholographic-startup.html).
 
-# 6. Deploying your project
+# 8. Deploying your project
 Once you are ready to deploy to a platform and have built your UWP project, you need to get it on to the device to run, package and ship it to the store.
 
-## 6.1 Deploying your **Immersive** app using Visual Studio
+## 8.1 Deploying your **Immersive** app using Visual Studio
 
  1. Navigate to the Build Window: `Mixed Reality Toolkit -> Build Window`.
  2. Press `Open Project Solution` to open the project in Visual Studio.
@@ -182,7 +182,7 @@ Once you are ready to deploy to a platform and have built your UWP project, you 
  See the [Windows Developer site](https://developer.microsoft.com/en-us/store/publish-apps) for publishing to the Microsoft Store.
 
 
-## 6.2 Deploying your **HoloLens** app using Visual Studio
+## 8.2 Deploying your **HoloLens** app using Visual Studio
 
  1. Navigate to the Build Window: `Mixed Reality Toolkit -> Build Window`.
  2. Press `Open Project Solution` to open the project in Visual Studio.
