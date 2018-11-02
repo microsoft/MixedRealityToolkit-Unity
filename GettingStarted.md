@@ -75,7 +75,19 @@ If you've never cloned a repo before then you should consider using the GitHub d
 
 # 4. Adding the MixedRealityToolkit-Unity package in your project
 
+## 4.1 Launch Unity Editor
+
 Open or create your project in Unity.
+
+## 4.2 Install Unity's Universal Windows Platform integration
+
+`File -> Build Settings` select `Universal Windows Platform`
+
+If `Open Download Page` appears then save exe and install. Otherwise, dismiss modal window.
+
+![Unity Build Settings for UWP](/External/ReadMeImages/BuildSettingsUWP.png)
+
+## 4.3 Import MRTK asset
 
 Then import the MRTK asset using `Assets -> Import Package -> Custom Package…` [Navigate to the package 
 you have either downloaded or exported above].
@@ -105,6 +117,8 @@ Check:
 > **Note**
 > If you enable the **Enable Xbox Controller Support** option, this will download the ProjectSettings Input file and replace your current version in your project and override any existing input settings, the old file will be renamed to "*.Old*".
 > Else, you will have to setup all the MRTK input axis manually.
+
+Clicking `Apply` should result in a couple progress dialog windows and then the `Apply Mixed Reality Project Settings` window should eventually close itself. If that doesn't happen then verify `4.2 Install Unity's Universal Windows Platform integration` step above has been completed.
 
 # 6. Preparing a Scene for Mixed Reality Content
 
