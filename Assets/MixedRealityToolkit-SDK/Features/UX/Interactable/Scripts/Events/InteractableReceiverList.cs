@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public class InteractableReceiver : ReceiverBaseMonoBehavior
+    public class InteractableReceiverList : ReceiverBaseMonoBehavior
     {
         // list of events added to this interactable
         [HideInInspector]
@@ -20,28 +20,31 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         protected virtual void SetupEvents()
         {
-            if (Events.Count > 0)
+            InteractableEvent.EventLists lists = InteractableEvent.GetEventTypes();
+
+            for (int i = 0; i < Events.Count; i++)
             {
-                InteractableEvent.EventLists lists = InteractableEvent.GetEventTypes();
-                Events[0].Receiver = InteractableEvent.GetReceiver(Events[0], lists);
+                Events[i].Receiver = InteractableEvent.GetReceiver(Events[i], lists);
             }
         }
 
         /// <summary>
-        /// A state has changed
+        /// .A state has changed
         /// </summary>
         /// <param name="state"></param>
         /// <param name="source"></param>
         public override void OnStateChange(InteractableStates state, Interactable source)
         {
             base.OnStateChange(state, source);
-            if (Events.Count > 0)
+
+            for (int i = 0; i < Events.Count; i++)
             {
-                if (Events[0].Receiver != null)
+                if (Events[i].Receiver != null)
                 {
-                    Events[0].Receiver.OnUpdate(state, source);
+                    Events[i].Receiver.OnUpdate(state, source);
                 }
             }
+
         }
     }
 }

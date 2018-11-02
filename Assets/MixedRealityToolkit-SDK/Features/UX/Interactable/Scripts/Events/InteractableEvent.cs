@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -23,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public string ClassName;
         public ReceiverBase Receiver;
         public List<InspectorPropertySetting> Settings;
+        public bool HideUnityEvents;
 
         public struct EventLists
         {
@@ -33,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public struct ReceiverData
         {
             public string Name;
+            public bool HideUnityEvents;
             public List<InspectorFieldData> Fields;
         }
         
@@ -83,6 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             data.Fields = fields;
             data.Name = receiver.Name;
+            data.HideUnityEvents = receiver.HideUnityEvents;
 
             return data;
         }
@@ -95,32 +99,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             List<Type> eventTypes = new List<Type>();
             List<string> names = new List<string>();
-
-            Assembly assembly = typeof(ReceiverBase).GetTypeInfo().Assembly;
-            foreach (Type type in assembly.GetTypes())
+            
+            var assemblys = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblys)
             {
-                TypeInfo info = type.GetTypeInfo();
-                if (info.BaseType.Equals(typeof(ReceiverBase)))
+                foreach (Type type in assembly.GetTypes())
                 {
-                    eventTypes.Add(type);
-                    names.Add(type.Name);
-                }
-            }
-
-            /* works with IL2CPP but not with .NET
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var assembly in assemblies)
-            {
-                var types = assembly.GetTypes();
-                foreach (var type in types)
-                {
-                    if (type.IsSubclassOf(typeof(ReceiverBase)))
+                    TypeInfo info = type.GetTypeInfo();
+                    if (info.BaseType != null && info.BaseType.Equals(typeof(ReceiverBase)))
                     {
                         eventTypes.Add(type);
                         names.Add(type.Name);
                     }
                 }
-            }*/
+            }
 
             EventLists lists = new EventLists();
             lists.EventTypes = eventTypes;

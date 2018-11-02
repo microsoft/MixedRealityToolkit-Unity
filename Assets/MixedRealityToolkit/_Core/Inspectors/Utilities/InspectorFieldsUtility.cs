@@ -149,6 +149,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         }
 
         /// <summary>
+        /// Checks the type a property field and returns if it matches the passed in type
+        /// </summary>
+        /// <param name="prop"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsPropertyType(SerializedProperty prop, InspectorField.FieldTypes type)
+        {
+            SerializedProperty propType = prop.FindPropertyRelative("Type");
+            return (InspectorField.FieldTypes)propType.intValue == type;
+        }
+
+        /// <summary>
         /// Render a PropertySettings UI field based on the InspectorField Settings
         /// </summary>
         /// <param name="prop"></param>
