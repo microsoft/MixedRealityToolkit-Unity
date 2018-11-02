@@ -74,9 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
             setting.Label = attributes.Label;
             setting.Options = attributes.Options;
             setting.Name = fieldName;
-
-            UpdatePropertySetting(setting, fieldValue);
-
+            setting = UpdatePropertySetting(setting, fieldValue);
             return setting;
         }
 
@@ -150,7 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
                 default:
                     break;
             }
-
             return setting;
         }
         

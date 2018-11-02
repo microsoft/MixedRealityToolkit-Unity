@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
 {
     /// <summary>
     /// Place an object in space relative to another object's scale (See ButtonSize for more info)
@@ -16,16 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// Create a button and add an element, like an icon the needs to align to the left, even if the background changes size.
     /// </summary>
     [ExecuteInEditMode]
-    public class ButtonLayout : MonoBehaviour
+    public class Layout3DAlign : MonoBehaviour
     {
-        /// <summary>
-        /// A vector that sets the transform position from the Anchor's center point.
-        /// Vector3.right would aling this center point to the Anchor's right side, based on it's scale
-        /// </summary>
-        [Tooltip("Where to set this object's center point in relation to the Anchor's center point")]
-        [SerializeField]
-        private Vector3 Alignment;
-
         /// <summary>
         /// A scale factor for button layouts, default is based on 2048 pixels to 1 meter.
         /// Similar to values used in designer and 2D art programs and helps create consistancy across teams.
@@ -33,6 +25,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]
         [SerializeField]
         private float BasePixelSize = 2048;
+
+        /// <summary>
+        /// A vector that sets the transform position from the Anchor's center point.
+        /// Vector3.right would aling this center point to the Anchor's right side, based on it's scale
+        /// </summary>
+        [Tooltip("Where to set this object's center point in relation to the Anchor's center point")]
+        [SerializeField]
+        private Vector3 Alignment;
 
         /// <summary>
         /// The transform to offset from. 
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [Tooltip("Offset this object's position based on the same pixel based size ratio")]
         [SerializeField]
         private Vector3 AnchorOffset;
-
+        
         /// <summary>
         /// These positions are applied in Unity Editor only while doing layout.
         /// Turn off for responsive UI type results when editing ItemSize during runtime.
@@ -93,10 +93,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             // set the default directions
             Vector3 startPosition = Anchor.localPosition;
+            float scaleFactor = 0.5f;
 
             if (Anchor != this.transform)
             {
-                startPosition = Anchor.localPosition + (Vector3.Scale(Anchor.localScale * 0.5f, Alignment));
+                startPosition = Anchor.localPosition + Vector3.Scale(Anchor.localScale * scaleFactor, Alignment);
             }
 
             transform.localPosition = startPosition + (AnchorOffset / BasePixelSize);

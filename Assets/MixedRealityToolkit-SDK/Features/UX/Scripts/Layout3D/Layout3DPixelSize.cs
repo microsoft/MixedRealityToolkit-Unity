@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
 {
     /// <summary>
     /// The base layout component for a button or UI elements - easily build UI with Unity Primitives.
@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// The designer or engineer can take pixel based redlines and create UI at 1:1 scale.
     /// </summary>
     [ExecuteInEditMode]
-    public class ButtonSize : MonoBehaviour
+    public class Layout3DPixelSize : MonoBehaviour
     {
         /// <summary>
         /// A scale factor for button layouts, default is based on 2048 pixels to 1 meter.
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         [Tooltip("Size of the primitive using pixel values from our design program.")]
         [SerializeField]
-        private Vector3 ItemSize = new Vector3(594, 246, 15);
+        protected Vector3 ItemSize = new Vector3(594, 246, 15);
 
         /// <summary>
         /// These scales are applied in Unity Editor only while doing layout.
@@ -63,6 +63,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public Vector3 GetSize()
         {
             return ItemSize;
+        }
+
+        /// <summary>
+        /// Get the base pixel scale
+        /// </summary>
+        /// <returns></returns>
+        public float GetBasePixelScale()
+        {
+            return BasePixelScale;
+        }
+
+        /// <summary>
+        /// Set the base pixel scale
+        /// </summary>
+        /// <param name="scale"></param>
+        public void SetBasePixelScale(float scale)
+        {
+            BasePixelScale = scale;
         }
         
         /// <summary>

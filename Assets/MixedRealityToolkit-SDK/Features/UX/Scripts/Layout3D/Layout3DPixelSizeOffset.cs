@@ -5,21 +5,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
 {
     /// <summary>
-    /// Scales an object relative the scale of the AnchorTransform
-    /// Works best when using with ButtonSize, but not requied - See ButtonSize for more info
+    /// Scales an object relative the scale of the Anchor Transform
+    /// Works best when using with Layout3DPixelSize, but not requied - See LayoutPixelSize for more info
     /// Use Case:
     /// Create a button, then add another element who's size should maintain a consistent size relative to the Anchor.
     /// Like creating a button background using a Cube and ButtonSize. The add another Cube that is 40 pixels smaller than the background.
     ///     Event if the background changes size, this element will remain 40 pixels smaller.
     /// </summary>
     [ExecuteInEditMode]
-    public class ButtonSizeOffset : MonoBehaviour
+    public class Layout3DPixelSizeOffset : MonoBehaviour
     {
         /// <summary>
-        /// A scale factor for button layouts, default is based on 2048 pixels to 1 meter.
+        /// A scale factor for layout3D, default is based on 2048 pixels to 1 meter.
         /// Similar to values used in designer and 2D art programs and helps create consistancy across teams.
         /// </summary>
         [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]

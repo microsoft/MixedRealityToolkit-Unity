@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public List<InteractableThemeProperty> ThemeProperties = new List<InteractableThemeProperty>();
         public List<InteractableThemePropertyValue> CustomSettings = new List<InteractableThemePropertyValue>();
         public GameObject Host;
-        public InteractableThemeEaseSettings Ease;
+        public Easing Ease;
         public bool Loaded;
 
         private bool hasFirstState = false;
@@ -65,11 +65,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return Mathf.RoundToInt((e - s) * t) + s;
         }
 
-        protected InteractableThemeEaseSettings CopyEase(InteractableThemeEaseSettings ease)
+        protected Easing CopyEase(Easing ease)
         {
-            InteractableThemeEaseSettings newEase = new InteractableThemeEaseSettings();
+            Easing newEase = new Easing();
             newEase.Curve = ease.Curve;
-            newEase.EaseValues = ease.EaseValues;
+            newEase.Enabled = ease.Enabled;
             newEase.LerpTime = ease.LerpTime;
 
             return newEase;
@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 lastState = state;
             }
-            else if(Ease.EaseValues && Ease.IsPlaying())
+            else if(Ease.Enabled && Ease.IsPlaying())
             {
                 Ease.OnUpdate();
                 for (int i = 0; i < ThemeProperties.Count; i++)
