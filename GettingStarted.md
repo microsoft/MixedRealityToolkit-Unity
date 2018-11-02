@@ -14,16 +14,19 @@ Which will display a new window as follows:
 If you are not running the Windows 10 Fall Creators update, then you will need to Update your version of Windows.
 
 # 2. Setting up your development environment
-Be sure to enable Developer mode for Windows 10 via:
+
+## 2.1 Enable Developer mode for Windows 10
 
 `Action Center -> All Settings -> Update & Security -> For Developers -> Enable Developer mode`
 
 ![Enable Developer Mode](/External/ReadMeImages/EnableDevModeWin10.PNG "Enable Developer Mode for Windows 10")
 
+## 2.2 Install Visual Studio 2017
+
 If you have not already, download and install [Visual Studio 2017](https://www.visualstudio.com/vs/) and these required components:
 
 - Windows Universal Platform Development Workload
-- Windows SDK 10.16299.10
+- Windows SDK 10.16299.10 (or greater)
 - Visual Studio Tools for Unity
 - msbuild
 - Nuget Package Manager
@@ -32,31 +35,33 @@ If you have not already, download and install [Visual Studio 2017](https://www.v
 
 You can install more components and UWP SDK's as you wish.
 
-Make sure you are running the appropriate version of Unity 3D on your machine. You should [download and install the latest version](https://unity3d.com/get-unity/download/archive) this project says it supports on the [main readme page](/README.md).
+## 2.3 Install appropriate version of Unity 3D
 
 [unity-release]:             https://unity3d.com/unity/qa/patch-releases/2017.2.1p2
 [unity-version-badge]:       https://img.shields.io/badge/Unity%20Editor-2017.2.1p2-green.svg
 
-> The Mixed Reality Toolkit now recommends the following Unity 3D version:
-> [![Github Release][unity-version-badge]][unity-release] 
+The Mixed Reality Toolkit now recommends the following Unity 3D version:
+[![Github Release][unity-version-badge]][unity-release]
 
 _Note: Be sure to include the Windows Store .NET scripting backend components._
 
 ![Unity Installer](/External/ReadMeImages/UnityInstaller.PNG "Unity Installer")
 
 # 3. Download the MixedRealityToolkit-Unity asset packages
-You can download the latest unity package from [Releases](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases) folder.
 
-_Note: The latest release should work for both HoloLens and Windows Mixed Reality development._
+### Option1: Download the unity package
+
+The latest [Release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases) should work for both HoloLens and Windows Mixed Reality development.
 
 [unity-release1]:                https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
 [mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=Latest%20Master%20Branch%20Release&colorB=007ec6
 [![Github Release][mrtk-version-badge]][unity-release1]
 
-### Using the source code
-Optionally, If you'd like to build the Mixed Reality Toolkit from the source, you'll need to clone the GitHub repository from:
+### Option2: Use the source code
 
->  ## https://github.com/Microsoft/MixedRealityToolkit-Unity.git. 
+If you'd like to build the Mixed Reality Toolkit from the source, you'll need to clone the GitHub repository from:
+
+>  ## https://github.com/Microsoft/MixedRealityToolkit-Unity.git 
 
 If you've never cloned a repo before then you should consider using the GitHub desktop client, see https://desktop.github.com/ for more information.
 
