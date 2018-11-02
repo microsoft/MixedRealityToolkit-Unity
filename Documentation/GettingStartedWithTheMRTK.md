@@ -160,3 +160,6 @@ For more information on the rest of the toolkit, please check the following guid
 * [A walkthrough the UX components of the MRTK SDK]() (Coming Soon)
 * [Using Solvers to bind your objects together]() (Coming Soon)
 * [Creating interactions between the player and your project]() (Coming Soon)
+* [Configuration Profile Usage Guide]() (Coming Soon)
+* [Guide to building Registered Services]() (Coming Soon)
+* [Guide to Pointers documentation]() (Coming Soon)

@@ -8,7 +8,7 @@ The Mixed Reality Toolkit centralizes as much of the configuration required to m
 
 Configuration profiles provide reusable blocks of configuration that can be used and swapped out at runtime (with the exception of the InputActions profile) to meet the demands for most Mixed Reality projects.  This allows you to style your configuration for different input types (Driving vs Flying) or different behavior's your project needs.
 
-> For more details on profile use, please check the [Profile Usage Guide]() (Coming soon()
+> For more details on profile use, please check the [Configuration Profile Usage Guide]() (Coming soon()
 
 In some cases, we also allow you to swap out the underlying system that provides a capability with either your own service or an alternate implementation (e.g. swapping out the speech provider from an OS version to one on Azure)
 
@@ -86,7 +86,7 @@ The camera settings define how the camera will be setup for your Mixed Reality p
 
 The Mixed Reality Project provides a robust and well-trained input system for routing all the input events around the project which is selected by default.
 
-> The MRTK also allows you to write your own Input System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide]() (Coming soon)
+> The MRTK also allows you to write your own Input System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide to building Registered Services]() (Coming soon)
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png)
 
@@ -122,7 +122,7 @@ The boundary system translates the perceived boundary reported by the underlying
 
 The Mixed Reality Project provides a full featured Teleportation system for managing teleportation events in the project which is selected by default.
 
-> The MRTK also allows you to write your own Teleportation System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide]() (Coming soon)
+> The MRTK also allows you to write your own Teleportation System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide to building Registered Services]() (Coming soon)
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png)
 
@@ -134,7 +134,7 @@ The Mixed Reality Project provides a full featured Teleportation system for mana
 The Mixed Reality Project provides a rebuilt Spatial Awareness system for working with spatial scanning systems in the project which is selected by default.
 You can view the architecture behind the [MRTK Spatial Awareness system here](/Documentation/Architecture/SpatialAwarenessSystemArchitecture.md).
 
-> The MRTK also allows you to write your own Spatial Awareness System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide]() (Coming soon)
+> The MRTK also allows you to write your own Spatial Awareness System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide to building Registered Services]() (Coming soon)
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png)
 
@@ -156,7 +156,7 @@ This is only applicable for devices that can provide a scanned environment, such
 
 An optional but highly useful feature of the MRTK is the plugin Diagnostics functionality. This presents a style of debug log in to the scene
 
-> The MRTK also allows you to write your own Diagnostic System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide]() (Coming soon)
+> The MRTK also allows you to write your own Diagnostic System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide to building Registered Services]() (Coming soon)
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png)
 
@@ -176,7 +176,7 @@ One of the more advanced areas of the Mixed Reality Toolkit is its [service loca
 
 Any registered service still gets the full advantage of all of the Unity events, without the overhead and cost of implementing a MonoBehaviour or clunky singleton patterns.  This allows for pure C# components with no scene overhead for running both foreground and background processes, e.g. spawning systems, runtime gamelogic, or practically anything else.
 
-[Check out the supporting documentation for more details about creating your own Service Providers]() (Coming Soon)
+Check out the [Guide to building Registered Services]() (Coming Soon) for more details about creating your own services
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
 
