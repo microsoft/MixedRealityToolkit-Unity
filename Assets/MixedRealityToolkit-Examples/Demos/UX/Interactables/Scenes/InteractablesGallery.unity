@@ -848,6 +848,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1229001242}
     m_Modifications:
+    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c,
+        type: 2}
+      propertyPath: Events.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -885,6 +890,12 @@ Prefab:
       propertyPath: VoiceCommand
       value: Toggle Button
       objectReference: {fileID: 0}
+    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c,
+        type: 2}
+      propertyPath: Events.Array.data[0].Event.m_TypeName
+      value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 51cc6641d88b49d46bd38572540efe6c, type: 2}
   m_IsPrefabParent: 0
@@ -898,7 +909,7 @@ Prefab:
     - target: {fileID: 114818926546564510, guid: 02c524b22137b5449904f5395141cc73,
         type: 2}
       propertyPath: Events.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114818926546564510, guid: 02c524b22137b5449904f5395141cc73,
         type: 2}
@@ -1250,15 +1261,15 @@ MonoBehaviour:
   Interactable: {fileID: 712471527}
   InteractableSearchScope: 0
   Events:
-  - Name: 
+  - Name: CustomEvent
     Event:
       m_PersistentCalls:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-    ClassName: 
+    ClassName: CustomInteractablesReceiver
     Settings: []
-    HideUnityEvents: 0
+    HideUnityEvents: 1
 --- !u!4 &1030722024 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4607159678781596, guid: d5e0e8cc740eb134789fd1f6bb5bb80a,

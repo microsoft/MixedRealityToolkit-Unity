@@ -615,7 +615,7 @@ MonoBehaviour:
         Animation: {fileID: 0}
       ShaderName: 
     Easing:
-      EaseValues: 1
+      Enabled: 1
       Curve:
         serializedVersion: 2
         m_Curve:
@@ -643,5 +643,9 @@ MonoBehaviour:
       LerpTime: 0.3
     NoEasing: 0
     IsValid: 1
+    ThemeTarget:
+      Properties: []
+      Target: {fileID: 0}
+      States: []
   CustomSettings: []
   States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}

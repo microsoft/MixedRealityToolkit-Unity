@@ -56,14 +56,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             List<Type> stateTypes = new List<Type>();
             List<string> names = new List<string>();
 
-            Assembly assembly = typeof(InteractableStates).GetTypeInfo().Assembly;
-            foreach (Type type in assembly.GetTypes())
+
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
             {
-                TypeInfo info = type.GetTypeInfo();
-                if (info.BaseType.Equals(typeof(InteractableStates)) || type.Equals(typeof(InteractableStates)))
+                foreach (Type type in assembly.GetTypes())
                 {
-                    stateTypes.Add(type);
-                    names.Add(type.Name);
+                    TypeInfo info = type.GetTypeInfo();
+                    if (info.BaseType != null && (info.BaseType.Equals(typeof(InteractableStates)) || type.Equals(typeof(InteractableStates))))
+                    {
+                        stateTypes.Add(type);
+                        names.Add(type.Name);
+                    }
                 }
             }
 

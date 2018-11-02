@@ -37,15 +37,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             List<Type> themeTypes = new List<Type>();
             List<string> names = new List<string>();
-            
-            Assembly assembly = typeof(InteractableThemeBase).GetTypeInfo().Assembly;
-            foreach (Type type in assembly.GetTypes())
+
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
             {
-                TypeInfo info = type.GetTypeInfo();
-                if (info.BaseType.Equals(typeof(InteractableThemeBase)) || info.BaseType.Equals(typeof(InteractableShaderTheme)) || info.BaseType.Equals(typeof(InteractableColorTheme)))
+                foreach (Type type in assembly.GetTypes())
                 {
-                    themeTypes.Add(type);
-                    names.Add(type.Name);
+                    TypeInfo info = type.GetTypeInfo();
+                    if (info.BaseType != null && (info.BaseType.Equals(typeof(InteractableThemeBase)) || info.BaseType.Equals(typeof(InteractableShaderTheme)) || info.BaseType.Equals(typeof(InteractableColorTheme))))
+                    {
+                        themeTypes.Add(type);
+                        names.Add(type.Name);
+                    }
                 }
             }
             
