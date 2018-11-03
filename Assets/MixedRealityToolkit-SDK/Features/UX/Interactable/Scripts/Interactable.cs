@@ -5,12 +5,8 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
-using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
-using System;
-using System.Collections;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -21,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// Maintains a collection of themes that react to state changes and provide scensory feedback
     /// Passes state information and input data on to receivers that detect patterns and does stuff.
     /// </summary>
-    
+
     // TODO: How to handle cycle buttons
     // TODO: plumb for gestures
     // TODO: Add way to protect the defaultTheme from being edited and encourage users to create a new theme, maybe include a create/duplicate button
@@ -39,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// Setup the input system
         /// </summary>
         private static IMixedRealityInputSystem inputSystem = null;
-        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>());
         
         // list of pointers
         protected List<IMixedRealityPointer> pointers = new List<IMixedRealityPointer>();
@@ -125,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// <returns></returns>
         public static string[] GetInputActions()
         {
-            MixedRealityInputAction[] actions = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+            MixedRealityInputAction[] actions = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
 
             List<string> list = new List<string>();
             for (int i = 0; i < actions.Length; i++)
@@ -714,7 +710,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// <returns></returns>
         public static MixedRealityInputAction ResolveInputAction(int index)
         {
-            MixedRealityInputAction[] actions = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+            MixedRealityInputAction[] actions = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
             index = Mathf.Clamp(index, 0, actions.Length - 1);
             return actions[index];
         }

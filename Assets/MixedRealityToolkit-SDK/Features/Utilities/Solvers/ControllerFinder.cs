@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
@@ -78,13 +78,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             // Look if the controller was already loaded. This could happen if the
             // GameObject was instantiated at runtime and the model loaded event has already fired.
-            if (MixedRealityManager.InputSystem == null)
+            if (MixedRealityToolkit.InputSystem == null)
             {
                 // The InputSystem could not be found.
                 return;
             }
 
-            foreach (IMixedRealityController controller in MixedRealityManager.InputSystem.DetectedControllers)
+            foreach (IMixedRealityController controller in MixedRealityToolkit.InputSystem.DetectedControllers)
             {
                 if (controller.ControllerHandedness == handedness)
                 {
