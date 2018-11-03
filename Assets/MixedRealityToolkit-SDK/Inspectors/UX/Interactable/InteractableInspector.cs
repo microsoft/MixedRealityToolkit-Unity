@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System;
 using System.Collections;
@@ -678,7 +677,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (!String.IsNullOrEmpty(className.stringValue))
             {
-                int receiverIndex = InspectorUIUtility.ReverseLookup(className.stringValue, eventOptions);
                 InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventTypes[indexArray[1]]);
                 name.stringValue = data.Name;
                 hideEvents.boolValue = data.HideUnityEvents;

@@ -94,7 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             SerializedProperty events = serializedObject.FindProperty("Events");
             events.InsertArrayElementAtIndex(events.arraySize);
-
         }
 
         protected virtual void ChangeEvent(int[] indexArray, SerializedProperty prop = null)
@@ -106,7 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (!String.IsNullOrEmpty(className.stringValue))
             {
-                int receiverIndex = InspectorUIUtility.ReverseLookup(className.stringValue, eventOptions);
                 InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventTypes[indexArray[1]]);
                 name.stringValue = data.Name;
                 hideEvents.boolValue = data.HideUnityEvents;
@@ -127,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             int id = InspectorUIUtility.ReverseLookup(className.stringValue, options);
             int newId = EditorGUILayout.Popup("Select Event Type", id, options);
 
-            if (id != newId)
+            if (id != newId || String.IsNullOrEmpty(className.stringValue))
             {
                 className.stringValue = options[newId];
 
