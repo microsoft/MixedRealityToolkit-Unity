@@ -4,13 +4,19 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
 {
     /// <summary>
     /// Basic interface for synchronizing to a controller pose.
     /// </summary>
-    public interface IMixedRealityControllerPoseSynchronizer : IMixedRealitySpatialInputHandler
+    public interface IMixedRealityControllerPoseSynchronizer : IMixedRealitySourcePoseHandler,
+            IMixedRealityInputHandler<float>,
+            IMixedRealityInputHandler<Vector2>,
+            IMixedRealityInputHandler<Vector3>,
+            IMixedRealityInputHandler<Quaternion>,
+            IMixedRealityInputHandler<MixedRealityPose>
     {
         /// <summary>
         /// The controller handedness to synchronize with.
