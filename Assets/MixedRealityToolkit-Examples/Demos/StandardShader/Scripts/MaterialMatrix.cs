@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
             {
                 Transform child = children[i];
 
-                if (Application.isPlaying == true)
+                if (Application.isPlaying)
                 {
                     Destroy(child.gameObject);
                 }
