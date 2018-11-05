@@ -432,7 +432,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         {
             if (pointIndex < 0 || pointIndex >= PointCount)
             {
-                Debug.LogError("Invalid point index: " + pointIndex, this);
+                Debug.LogError("Invalid point index");
                 return Vector3.zero;
             }
 
@@ -449,7 +449,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         {
             if (pointIndex < 0 || pointIndex >= PointCount)
             {
-                Debug.LogError("Invalid point index: " + pointIndex, this);
+                Debug.LogError("Invalid point index");
                 return;
             }
 
