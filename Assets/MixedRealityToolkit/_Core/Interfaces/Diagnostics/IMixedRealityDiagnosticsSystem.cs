@@ -14,22 +14,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
         /// <summary>
         /// Enable / disable the diagnostic display
         /// </summary>
-        bool Visible { get; }
+        bool Visible { get; set; }
 
         /// <summary>
         /// Enable / disable cpu profiling when the diagnostic panel is visible. 
         /// </summary>
-        bool ShowCpu { get; }
+        bool ShowCpu { get; set; }
 
         /// <summary>
         /// Enable / disable fps profiling when the diagnostic panel is visible. 
         /// </summary>
-        bool ShowFps { get; }
+        bool ShowFps { get; set; }
 
         /// <summary>
         /// Enable / disable memory profiling when the diagnostic panel is visible. 
         /// </summary>
-        bool ShowMemory { get; }
+        bool ShowMemory { get; set; }
 
         /// <summary>
         /// Gets the <see cref="GameObject"/> that represents the diagnostic visualization

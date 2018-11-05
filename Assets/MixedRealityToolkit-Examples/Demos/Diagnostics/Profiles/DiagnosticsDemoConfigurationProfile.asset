@@ -9,14 +9,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7612acbc1a4a4ed0afa5f4ccbe42bee4, type: 3}
-  m_Name: DefaultMixedRealityToolkitConfigurationProfile
+  m_Name: DiagnosticsDemoConfigurationProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 0
+  isCustomProfile: 1
   targetExperienceScale: 3
   enableCameraProfile: 1
   cameraProfile: {fileID: 11400000, guid: 8089ccfdd4494cd38f676f9fc1f46a04, type: 2}
   enableInputSystem: 1
-  inputSystemProfile: {fileID: 11400000, guid: ad2080e8e71c35f4e8bcde94fa68f098, type: 2}
+  inputSystemProfile: {fileID: 11400000, guid: 5a8beea6d1fa636418d1d948c83d21e5, type: 2}
   inputSystemType:
     reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
       Microsoft.MixedReality.Toolkit.SDK
@@ -36,7 +36,7 @@ MonoBehaviour:
       Microsoft.MixedReality.Toolkit.SDK
   spatialAwarenessProfile: {fileID: 11400000, guid: 2a33d8426496c874ab1550069b7ccef8,
     type: 2}
-  diagnosticsSystemProfile: {fileID: 11400000, guid: 478436bd1083882479a52d067e98e537,
+  diagnosticsSystemProfile: {fileID: 11400000, guid: 38e8b0bdf2ec0d34abd98405adf2cd1f,
     type: 2}
   enableDiagnosticsSystem: 1
   diagnosticsSystemType:
