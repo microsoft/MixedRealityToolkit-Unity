@@ -5,11 +5,13 @@ using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
@@ -130,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// </summary>
         public bool IsBoundarySystemEnabled
         {
-            get { return boundarySystemType != null && boundarySystemType.Type != null && enableBoundarySystem; }
+            get { return boundarySystemType != null && boundarySystemType.Type != null && enableBoundarySystem && boundaryVisualizationProfile != null; }
             private set { enableInputSystem = value; }
         }
 
@@ -186,6 +188,46 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         {
             get { return teleportSystemType; }
             private set { teleportSystemType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable the Spatial Awareness system on Startup")]
+        private bool enableSpatialAwarenessSystem = false;
+
+        /// <summary>
+        /// Enable and configure the spatial awareness system.
+        /// </summary>
+        public bool IsSpatialAwarenessSystemEnabled
+        {
+            get { return spatialAwarenessSystemType != null && spatialAwarenessSystemType.Type != null && enableSpatialAwarenessSystem; }
+            private set { enableSpatialAwarenessSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Spatial Awareness System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealitySpatialAwarenessSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType spatialAwarenessSystemType;
+
+        /// <summary>
+        /// Boundary System Script File to instantiate at runtime.
+        /// </summary>
+        public SystemType SpatialAwarenessSystemSystemType
+        {
+            get { return spatialAwarenessSystemType; }
+            private set { spatialAwarenessSystemType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Profile for configuring the Spatial Awareness system.")]
+        private MixedRealitySpatialAwarenessProfile spatialAwarenessProfile;
+
+        /// <summary>
+        /// Active profile for spatial awareness configuration
+        /// </summary>
+        public MixedRealitySpatialAwarenessProfile SpatialAwarenessProfile
+        {
+            get { return spatialAwarenessProfile; }
+            private set { spatialAwarenessProfile = value; }
         }
 
         [SerializeField]
