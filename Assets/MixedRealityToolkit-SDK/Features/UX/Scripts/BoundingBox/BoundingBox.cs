@@ -15,6 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     {
         #region Enums
 
+        /// <summary>
+        /// Enum which describes how an object's boundingbox is to be flattened.
+        /// </summary>
         private enum FlattenModeType
         {
             DoNotFlatten = 0,
@@ -36,6 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             FlattenAuto,
         }
 
+        /// <summary>
+        /// Enum which describes whether a boundingbox handle which has been grabbed, is 
+        /// a Rotation Handle (sphere) or a Scale Handle( cube)
+        /// </summary>
         private enum HandleType
         {
             None = 0,
@@ -43,12 +50,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             Scale
         }
 
+        /// <summary>
+        /// This enum describes which primitive type the wireframe portion of the boundingbox
+        /// consists of. 
+        /// </summary>
+        /// <remarks>
+        /// Wireframe refers to the thin linkage between the handles. When the handles are invisible
+        /// the wireframe looks like an outline box around an object.
+        /// </remarks> 
         private enum WireframeType
         {
             Cubic = 0,
             Cylindrical
         }
 
+        /// <summary>
+        /// This enum defines which of the axes a given rotation handle revolves about.
+        /// </summary>
         private enum CardinalAxisType
         {
             X = 0,
@@ -56,6 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             Z
         }
 
+        /// <summary>
+        /// This enum is used interally to define how an object's bounds are calculated in order to fit the boundingbox
+        /// to it.
+        /// </summary>
         private enum BoundsCalculationMethod
         {
             Collider = 0,
@@ -64,6 +86,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             MeshFilters
         }
 
+        /// <summary>
+        /// This enum defines how a particular controller rotates an object when a Rotate handle has been grabbed.
+        /// </summary>
+        /// <remarks>
+        /// a Controller feels more natural when rotation of the controller rotates the object.
+        /// the wireframe looks like an outline box around an object.
+        /// </remarks> 
         private enum HandleMoveType
         {
             Ray = 0,
@@ -93,6 +122,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [SerializeField]
         private bool wireframeOnly = false;
 
+        /// <summary>
+        /// Public Property that displays simple wireframe around an object with no scale or rotate handles.
+        /// </summary>
+        /// <remarks>
+        /// this is useful when outlining an object without being able to edit it is desired.
+        /// </remarks>
         public bool WireframeOnly
         {
             get { return wireframeOnly; }
@@ -129,6 +164,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [SerializeField]
         private bool showScaleHandles = true;
 
+        /// <summary>
+        /// Public property to Set the visibility of the corner cube Scaling handles.
+        /// This property can be set independent of the Rotate handles.
+        /// </summary>
         public bool ShowScaleHandles
         {
             get
@@ -148,6 +187,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [SerializeField]
         private bool showRotateHandles = true;
 
+        /// <summary>
+        /// Public property to Set the visibility of the sphere rotating handles.
+        /// This property can be set independent of the Scaling handles.
+        /// </summary>
         public bool ShowRotateHandles
         {
             get
@@ -177,6 +220,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         private bool isActive = false;
 
+        /// <summary>
+        /// This Public property sets whether the BoundingBox is active (visible)
+        /// </summary>
         public bool IsActive
         {
             get
@@ -204,14 +250,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         #region Constants
 
-        private const int LTB = 0;
-        private const int LTF = 1;
-        private const int LBF = 2;
-        private const int LBB = 3;
-        private const int RTB = 4;
-        private const int RTF = 5;
-        private const int RBF = 6;
-        private const int RBB = 7;
+        private const int LeftTopBack = 0;
+        private const int LeftTopFront = 1;
+        private const int LeftBottomFront = 2;
+        private const int LeftBottomBack = 3;
+        private const int RightTopBack = 4;
+        private const int RightTopFront = 5;
+        private const int RightBottonFront = 6;
+        private const int RightBottomBack = 7;
         private const int CORNER_COUNT = 8;
 
         #endregion Constants
@@ -1124,14 +1170,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 positions = new Vector3[CORNER_COUNT];
             }
 
-            positions[LBF] = new Vector3(leftEdge, bottomEdge, frontEdge);
-            positions[LBB] = new Vector3(leftEdge, bottomEdge, backEdge);
-            positions[LTF] = new Vector3(leftEdge, topEdge, frontEdge);
-            positions[LTB] = new Vector3(leftEdge, topEdge, backEdge);
-            positions[RBF] = new Vector3(rightEdge, bottomEdge, frontEdge);
-            positions[RBB] = new Vector3(rightEdge, bottomEdge, backEdge);
-            positions[RTF] = new Vector3(rightEdge, topEdge, frontEdge);
-            positions[RTB] = new Vector3(rightEdge, topEdge, backEdge);
+            positions[LeftBottomFront] = new Vector3(leftEdge, bottomEdge, frontEdge);
+            positions[LeftBottomBack] = new Vector3(leftEdge, bottomEdge, backEdge);
+            positions[LeftTopFront] = new Vector3(leftEdge, topEdge, frontEdge);
+            positions[LeftTopBack] = new Vector3(leftEdge, topEdge, backEdge);
+            positions[RightBottonFront] = new Vector3(rightEdge, bottomEdge, frontEdge);
+            positions[RightBottomBack] = new Vector3(rightEdge, bottomEdge, backEdge);
+            positions[RightTopFront] = new Vector3(rightEdge, topEdge, frontEdge);
+            positions[RightTopBack] = new Vector3(rightEdge, topEdge, backEdge);
         }
 
         private static Vector3 PointToRay(Vector3 origin, Vector3 end, Vector3 closestPoint)
@@ -1142,26 +1188,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             float dotProduct = Vector3.Dot(originToPoint, originToEnd);
             float distance = dotProduct / magnitudeAb;
             return origin + (originToEnd * distance);
-        }
-
-        private static Vector3 GetSizeFromBoundsCorners(Vector3[] corners)
-        {
-            return new Vector3(Mathf.Abs(corners[0].x - corners[1].x),
-                                Mathf.Abs(corners[0].y - corners[3].y),
-                                Mathf.Abs(corners[0].z - corners[4].z));
-        }
-
-        private static Vector3 GetCenterFromBoundsCorners(Vector3[] corners)
-        {
-            Vector3 center = Vector3.zero;
-
-            for (int i = 0; i < corners.Length; i++)
-            {
-                center += corners[i];
-            }
-
-            center *= (1.0f / (float)corners.Length);
-            return center;
         }
 
         #endregion Private Methods
