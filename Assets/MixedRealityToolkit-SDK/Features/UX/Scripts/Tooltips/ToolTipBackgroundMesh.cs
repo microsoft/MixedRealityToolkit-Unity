@@ -16,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         private float depth = 1f;
 
-        private Bounds localContentBounds;
+        // TODO: Unused?
+        //private Bounds localContentBounds;
 
         /// <summary>
         /// Mesh renderer button for mesh background.
@@ -69,10 +70,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 localContentSize.z = depth;
 
                 //Don't use the mesh bounds for local content since an offset center may be used for design effect
-                if (localContentSize.x > 0 && localContentSize.y > 0)
-                {
-                    localContentBounds = new Bounds(localContentOffset, localContentSize);
-                }
+                // TODO: Unused?
+                //if (localContentSize.x > 0 && localContentSize.y > 0)
+                //{
+                //    localContentBounds = new Bounds(localContentOffset, localContentSize);
+                //}
             }
         }
 
