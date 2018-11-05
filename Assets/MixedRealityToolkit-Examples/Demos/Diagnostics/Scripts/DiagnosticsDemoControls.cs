@@ -16,9 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private IMixedRealityDiagnosticsSystem DiagnosticsSystem => diagnosticsSystem ?? (diagnosticsSystem = MixedRealityToolkit.DiagnosticsSystem);
 
-        private void Update()
-        { }
-
         /// <summary>
         /// Shows or hides the diagnostics information display.
         /// </summary>
