@@ -78,10 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             // Return if we do not have an animator
             if (TargetRenderer != null)
             {
-                MeshFilter mf = TargetRenderer.gameObject.GetComponent<MeshFilter>();
-                if (mf != null && stateDatum.CursorMesh != null)
+                var filter = TargetRenderer.gameObject.GetComponent<MeshFilter>();
+                if (filter != null && stateDatum.CursorMesh != null)
                 {
-                    mf.mesh = stateDatum.CursorMesh;
+                    filter.mesh = stateDatum.CursorMesh;
                 }
 
                 TargetRenderer.transform.localPosition = stateDatum.LocalOffset;

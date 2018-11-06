@@ -24,10 +24,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty speechCommands;
         private static GUIContent[] actionLabels;
         private static int[] actionIds;
-        private static int screenWidth;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!CheckMixedRealityConfigured(false))
             {
                 return;
@@ -68,10 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
             }
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);

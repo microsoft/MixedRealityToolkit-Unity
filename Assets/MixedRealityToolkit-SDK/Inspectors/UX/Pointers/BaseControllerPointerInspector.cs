@@ -51,6 +51,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
 
             if (basePointerFoldout)
             {
+                EditorGUI.indentLevel++;
+
                 EditorGUILayout.PropertyField(cursorPrefab);
                 EditorGUILayout.PropertyField(disableCursorOnStart);
                 EditorGUILayout.PropertyField(setCursorVisibilityOnSourceDetected);
@@ -69,7 +71,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
                     }
                 }
 
+                EditorGUI.indentLevel--;
             }
+
             serializedObject.ApplyModifiedProperties();
         }
     }
