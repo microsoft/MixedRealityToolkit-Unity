@@ -613,7 +613,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (service == null && showLogs)
             {
-                Debug.Log($"Unable to find {type.Name}.");
+                Debug.LogError($"Unable to find {type.Name}.");
             }
 
             return service;
