@@ -13,18 +13,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// <summary>
         /// The anchor will follow the target - pivot remains unaffected
         /// </summary>
-        AnchorOnly = 0x0,
+        AnchorOnly = 1 << 0,
         /// <summary>
         /// Anchor and pivot will follow target position, but not rotation
         /// </summary>
-        Position = 0x1,
+        Position = 1 << 1,
         /// <summary>
         /// Anchor and pivot will follow target like it's parented, but only on Y axis
         /// </summary>
-        YRotation = 0x2,
+        YRotation = 1 << 2,
         /// <summary>
         /// Anchor and pivot will follow target like it's parented
         /// </summary>
-        XRotation = 0x4,
+        XRotation = 1 << 3,
     }
 }
