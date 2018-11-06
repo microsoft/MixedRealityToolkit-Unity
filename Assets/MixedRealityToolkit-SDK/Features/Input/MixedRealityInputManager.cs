@@ -960,11 +960,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #region Input Pressed
 
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler> OnInputPressedEventHandler =
-            delegate (IMixedRealityInputHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler<float>> OnInputPressedEventHandler =
+            delegate (IMixedRealityInputHandler<float> handler, BaseEventData eventData)
             {
                 var casted = ExecuteEvents.ValidateEventData<InputEventData<float>>(eventData);
-                handler.OnInputPressed(casted);
+                handler.OnInputChanged(casted);
             };
 
         /// <inheritdoc />
@@ -1054,11 +1054,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #region Input Position Changed
 
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler> OnTwoDoFInputChanged =
-            delegate (IMixedRealityInputHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler<Vector2>> OnTwoDoFInputChanged =
+            delegate (IMixedRealityInputHandler<Vector2> handler, BaseEventData eventData)
             {
                 var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector2>>(eventData);
-                handler.OnPositionInputChanged(casted);
+                handler.OnInputChanged(casted);
             };
 
         /// <inheritdoc />
@@ -1085,11 +1085,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             HandleEvent(vector2InputEventData, OnTwoDoFInputChanged);
         }
 
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialInputHandler> OnPositionInputChanged =
-            delegate (IMixedRealitySpatialInputHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler<Vector3>> OnPositionInputChanged =
+            delegate (IMixedRealityInputHandler<Vector3> handler, BaseEventData eventData)
             {
                 var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector3>>(eventData);
-                handler.OnPositionChanged(casted);
+                handler.OnInputChanged(casted);
             };
 
         /// <inheritdoc />
@@ -1120,12 +1120,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #region Input Rotation Changed
 
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialInputHandler> OnRotationInputChanged =
-                delegate (IMixedRealitySpatialInputHandler handler, BaseEventData eventData)
-                {
-                    var casted = ExecuteEvents.ValidateEventData<InputEventData<Quaternion>>(eventData);
-                    handler.OnRotationChanged(casted);
-                };
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler<Quaternion>> OnRotationInputChanged =
+            delegate (IMixedRealityInputHandler<Quaternion> handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<Quaternion>>(eventData);
+                handler.OnInputChanged(casted);
+            };
 
         /// <inheritdoc />
         public void RaiseRotationInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Quaternion rotation)
@@ -1155,11 +1155,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #region Input Pose Changed
 
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialInputHandler> OnPoseInputChanged =
-            delegate (IMixedRealitySpatialInputHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler<MixedRealityPose>> OnPoseInputChanged =
+            delegate (IMixedRealityInputHandler<MixedRealityPose> handler, BaseEventData eventData)
             {
                 var casted = ExecuteEvents.ValidateEventData<InputEventData<MixedRealityPose>>(eventData);
-                handler.OnPoseInputChanged(casted);
+                handler.OnInputChanged(casted);
             };
 
         /// <inheritdoc />
