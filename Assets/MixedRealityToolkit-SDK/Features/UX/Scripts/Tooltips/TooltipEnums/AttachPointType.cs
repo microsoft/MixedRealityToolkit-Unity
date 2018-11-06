@@ -16,12 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     {
         #region Specific options
 
-        BotMiddle = 0,
+        BottomMiddle = 0,
         TopMiddle,
         RightMiddle,
         LeftMiddle,
-        BotRightCorner,
-        BotLeftCorner,
+        BottomRightCorner,
+        BottomLeftCorner,
         TopRightCorner,
         TopLeftCorner,
 

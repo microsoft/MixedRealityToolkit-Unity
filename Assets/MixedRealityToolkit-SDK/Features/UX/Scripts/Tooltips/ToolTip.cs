@@ -73,10 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             set
             {
                 showConnector = value;
-                //todo fix this
 
                 var lineScript = GetComponent<BaseMixedRealityLineDataProvider>();
-                lineScript.enabled = value;
+                if (lineScript)
+                { lineScript.enabled = value; }
             }
         }
 

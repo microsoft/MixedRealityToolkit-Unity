@@ -14,13 +14,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         Manual = 0,
         North,
-        NorthEast,
+        Northeast,
         East,
-        SouthEast,
+        Southeast,
         South,
-        SouthWest,
+        Southwest,
         West,
-        NorthWest,
+        Northwest,
         InFront,
     }
 }
