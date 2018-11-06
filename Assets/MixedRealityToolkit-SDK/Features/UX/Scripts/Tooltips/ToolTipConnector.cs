@@ -289,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                     dir = Vector3.up;
                     break;
 
-                case ConnectorPivotDirectionType.NorthEast:
+                case ConnectorPivotDirectionType.Northeast:
                     dir = Vector3.Lerp(Vector3.up, Vector3.right, 0.5f).normalized;
                     break;
 
@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                     dir = Vector3.right;
                     break;
 
-                case ConnectorPivotDirectionType.SouthEast:
+                case ConnectorPivotDirectionType.Southeast:
                     dir = Vector3.Lerp(Vector3.down, Vector3.right, 0.5f).normalized;
                     break;
 
@@ -305,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                     dir = Vector3.down;
                     break;
 
-                case ConnectorPivotDirectionType.SouthWest:
+                case ConnectorPivotDirectionType.Southwest:
                     dir = Vector3.Lerp(Vector3.down, Vector3.left, 0.5f).normalized;
                     break;
 
@@ -313,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                     dir = Vector3.left;
                     break;
 
-                case ConnectorPivotDirectionType.NorthWest:
+                case ConnectorPivotDirectionType.Northwest:
                     dir = Vector3.Lerp(Vector3.up, Vector3.left, 0.5f).normalized;
                     break;
 
