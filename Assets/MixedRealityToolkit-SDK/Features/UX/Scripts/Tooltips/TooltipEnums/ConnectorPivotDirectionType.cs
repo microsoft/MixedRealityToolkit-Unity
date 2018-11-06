@@ -9,7 +9,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     /// </summary>
     public enum ConnectorPivotDirectionType
     {
-        Manual = 0,         // Direction will be specified manually
+        /// <summary>
+        /// Direction will be specified manually
+        /// </summary>
+        Manual = 0,
         North,
         NorthEast,
         East,

@@ -7,15 +7,15 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 {
-    [RequireComponent(typeof(MeshFilter))]
-
     /// <summary>
     /// Connects a ToolTip to a target
     /// Maintains that connection even if the target moves
     /// </summary>
+    [RequireComponent(typeof(MeshFilter))]
     public class ToolTipConnector : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("The GameObject to which the tooltip is connected")]
         private GameObject target;
 
         /// <summary>
@@ -23,169 +23,131 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         public GameObject Target
         {
-            get
-            {
-                return target;
-            }
-            set
-            {
-                target = value;
-            }
+            get { return target; }
+            set { target = value; }
         }
 
         [SerializeField]
         private ToolTip toolTip;
 
+        private bool IsTooltipValid
+        {
+            get
+            {
+                toolTip = gameObject.EnsureComponent<ToolTip>();
+                return toolTip != null;
+            }
+        }
+
         [SerializeField]
+        [Tooltip("The follow style of the tooltip connector")]
         private ConnectorFollowType connectorFollowType = ConnectorFollowType.AnchorOnly;
-        /// <summary>
-        /// getter /setter for the follow style of the tooltip connector
-        /// </summary>
-        public ConnectorFollowType FollowingType
-        {
-            get
-            {
-                return connectorFollowType;
-            }
 
-            set
-            {
-                connectorFollowType = value;
-            }
+        /// <summary>
+        /// The follow style of the tooltip connector
+        /// </summary>
+        public ConnectorFollowType ConnectorFollowingType
+        {
+            get { return connectorFollowType; }
+            set { connectorFollowType = value; }
         }
 
         [SerializeField]
-        private ConnnectorPivotModeType pivotMode = ConnnectorPivotModeType.Manual;
-        /// <summary>
-        /// is the connector pivot set manually or automatically
-        /// </summary>
-        public ConnnectorPivotModeType PivotingMode
-        {
-            get
-            {
-                return pivotMode;
-            }
+        [Tooltip("Is the connector pivot set manually or automatically?")]
+        private ConnectorPivotModeType pivotMode = ConnectorPivotModeType.Manual;
 
-            set
-            {
-                pivotMode = value;
-            }
+        /// <summary>
+        /// Is the connector pivot set manually or automatically?
+        /// </summary>
+        public ConnectorPivotModeType PivotMode
+        {
+            get { return pivotMode; }
+            set { pivotMode = value; }
         }
 
         [SerializeField]
+        [Tooltip("The direction of the connector")]
         private ConnectorPivotDirectionType pivotDirection = ConnectorPivotDirectionType.North;
+
         /// <summary>
-        /// getter/setter for the direction of the connector
+        /// The direction of the connector
         /// </summary>
         public ConnectorPivotDirectionType PivotDirection
         {
-            get
-            {
-                return pivotDirection;
-            }
-
-            set
-            {
-                pivotDirection = value;
-            }
+            get { return pivotDirection; }
+            set { pivotDirection = value; }
         }
 
         [SerializeField]
+        [Tooltip("orientation style for connector")]
         private ConnectorOrientType pivotDirectionOrient = ConnectorOrientType.OrientToObject;
+
         /// <summary>
-        /// orientation style for connector
+        /// Orientation style for connector
         /// </summary>
         public ConnectorOrientType PivotDirectionOrient
         {
-            get
-            {
-                return pivotDirectionOrient;
-            }
-
-            set
-            {
-                pivotDirectionOrient = value;
-            }
+            get { return pivotDirectionOrient; }
+            set { pivotDirectionOrient = value; }
         }
 
         [SerializeField]
+        [Tooltip("The direction of the manual pivot.")]
         private Vector3 manualPivotDirection = Vector3.up;
+
         /// <summary>
-        /// getter/setter for direction of pivot manually set
+        /// The direction of the manual pivot.
         /// </summary>
         public Vector3 ManualPivotDirection
         {
-            get
-            {
-                return manualPivotDirection;
-            }
-
-            set
-            {
-                manualPivotDirection = value;
-            }
+            get { return manualPivotDirection; }
+            set { manualPivotDirection = value; }
         }
 
         [SerializeField]
         private Vector3 manualPivotLocalPosition = Vector3.up;
+
         /// <summary>
         /// getter/setter for local pivot position
         /// </summary>
         public Vector3 ManualPivotLocalPosition
         {
-            get
-            {
-                return manualPivotLocalPosition;
-            }
-
-            set
-            {
-                manualPivotLocalPosition = value;
-            }
+            get { return manualPivotLocalPosition; }
+            set { manualPivotLocalPosition = value; }
         }
 
         [SerializeField]
         [Range(0f, 2f)]
+        [Tooltip("Set Distance from object that Tooltip pivots around.")]
         private float pivotDistance = 0.25f;
+
         /// <summary>
         /// Set Distance from object that Tooltip pivots around.
         /// </summary>
         public float PivotDistance
         {
-            get
-            {
-                return pivotDistance;
-            }
-            set
-            {
-                pivotDistance = Mathf.Min( 2.0f, Mathf.Max( 0,value));
-            }
+            get { return pivotDistance; }
+            set { pivotDistance = Mathf.Min(2.0f, Mathf.Max(0, value)); }
         }
 
         private void OnEnable()
         {
-            if (!FindToolTip())
+            if (!IsTooltipValid)
             {
                 return;
             }
 
-            ManualPivotLocalPosition = transform.InverseTransformPoint (toolTip.PivotPosition);
-        }
-
-        private bool FindToolTip()
-        {
-            toolTip = gameObject.EnsureComponent<ToolTip>();
-            return toolTip != null;
+            ManualPivotLocalPosition = transform.InverseTransformPoint(toolTip.PivotPosition);
         }
 
         private void UpdatePosition()
         {
-            if (!FindToolTip())
+            if (!IsTooltipValid)
             {
                 return;
             }
 
-            if (Target == null)
+            if (target == null)
             {
                 return;
             }
@@ -196,15 +158,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 default:
                     // Set the position of the anchor to the target's position
                     // And do nothing else
-                    toolTip.Anchor.transform.position = Target.transform.position;
+                    toolTip.Anchor.transform.position = target.transform.position;
                     break;
 
                 case ConnectorFollowType.Position:
                     // Move the entire tooltip transform while maintaining the anchor position offset
-                    toolTip.transform.position = Target.transform.position;
-                    switch (PivotingMode)
+                    toolTip.transform.position = target.transform.position;
+                    switch (PivotMode)
                     {
-                        case ConnnectorPivotModeType.Automatic:
+                        case ConnectorPivotModeType.Automatic:
                             Transform relativeTo = null;
                             switch (PivotDirectionOrient)
                             {
@@ -213,16 +175,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                                     break;
 
                                 case ConnectorOrientType.OrientToObject:
-                                    relativeTo = Target.transform;
+                                    relativeTo = target.transform;
                                     break;
                             }
-                            toolTip.PivotPosition = Target.transform.position + GetDirectionFromPivotDirection(
+
+                            toolTip.PivotPosition = target.transform.position + GetDirectionFromPivotDirection(
                                 PivotDirection,
                                 ManualPivotDirection,
                                 relativeTo) * PivotDistance;
                             break;
 
-                        case ConnnectorPivotModeType.Manual:
+                        case ConnectorPivotModeType.Manual:
                             // Do nothing
                             break;
                     }
@@ -231,30 +194,31 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 case ConnectorFollowType.YRotation:
                     // Set the transform of the entire tool tip
                     // Set the pivot relative to target/camera
-                    toolTip.transform.position = Target.transform.position;
-                    Vector3 eulerAngles = Target.transform.eulerAngles;
+                    toolTip.transform.position = target.transform.position;
+                    Vector3 eulerAngles = target.transform.eulerAngles;
                     eulerAngles.x = 0f;
                     eulerAngles.z = 0f;
                     toolTip.transform.eulerAngles = eulerAngles;
-                    switch (PivotingMode)
+
+                    switch (PivotMode)
                     {
-                        case ConnnectorPivotModeType.Automatic:
+                        case ConnectorPivotModeType.Automatic:
                             Transform relativeTo = null;
                             switch (PivotDirectionOrient)
                             {
                                 case ConnectorOrientType.OrientToCamera:
-                                    relativeTo = Camera.main.transform;//Veil.Instance.HeadTransform;
+                                    relativeTo = CameraCache.Main.transform;
                                     break;
 
                                 case ConnectorOrientType.OrientToObject:
-                                    relativeTo = Target.transform;
+                                    relativeTo = target.transform;
                                     break;
                             }
                             Vector3 localPosition = GetDirectionFromPivotDirection(PivotDirection, ManualPivotDirection, relativeTo) * PivotDistance;
-                            toolTip.PivotPosition = Target.transform.position + localPosition;
+                            toolTip.PivotPosition = target.transform.position + localPosition;
                             break;
 
-                        case ConnnectorPivotModeType.Manual:
+                        case ConnectorPivotModeType.Manual:
                             // Do nothing
                             break;
                     }
@@ -263,29 +227,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 case ConnectorFollowType.XRotation:
                     // Set the transform of the entire tool tip
                     // Set the pivot relative to target/camera
-                    toolTip.transform.position = Target.transform.position;
-                    toolTip.transform.rotation = Target.transform.rotation;
-                    switch (PivotingMode)
+                    toolTip.transform.position = target.transform.position;
+                    toolTip.transform.rotation = target.transform.rotation;
+                    switch (PivotMode)
                     {
-                        case ConnnectorPivotModeType.Automatic:
+                        case ConnectorPivotModeType.Automatic:
                             Transform relativeTo = null;
                             switch (PivotDirectionOrient)
                             {
                                 case ConnectorOrientType.OrientToCamera:
-                                    relativeTo = Camera.main.transform;//Veil.Instance.HeadTransform;
+                                    relativeTo = CameraCache.Main.transform;
                                     break;
 
                                 case ConnectorOrientType.OrientToObject:
-                                    relativeTo = Target.transform;
+                                    relativeTo = target.transform;
                                     break;
                             }
-                            toolTip.PivotPosition = Target.transform.position + GetDirectionFromPivotDirection(
+                            toolTip.PivotPosition = target.transform.position + GetDirectionFromPivotDirection(
                                 PivotDirection,
                                 ManualPivotDirection,
                                 relativeTo) * PivotDistance;
                             break;
 
-                        case ConnnectorPivotModeType.Manual:
+                        case ConnectorPivotModeType.Manual:
                             // Do nothing
                             break;
                     }
@@ -304,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             {
                 return;
             }
-            
+
             UpdatePosition();
         }
 
@@ -315,9 +279,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// <param name="manualPivotDirection">is the pivot set manually</param>
         /// <param name="relativeTo">Transform that describes the frame of reference of the pivot</param>
         /// <returns>a vector describing the pivot direction in world space</returns>
-        public static Vector3 GetDirectionFromPivotDirection (ConnectorPivotDirectionType pivotDirection, Vector3 manualPivotDirection, Transform relativeTo)
+        public static Vector3 GetDirectionFromPivotDirection(ConnectorPivotDirectionType pivotDirection, Vector3 manualPivotDirection, Transform relativeTo)
         {
             Vector3 dir = Vector3.zero;
+
             switch (pivotDirection)
             {
                 case ConnectorPivotDirectionType.North:

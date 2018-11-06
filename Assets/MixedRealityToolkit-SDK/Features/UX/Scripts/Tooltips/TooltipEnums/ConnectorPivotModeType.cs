@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     /// <summary>
     /// Controls how the tooltip will pivot relative to the camera/other objects.
     /// </summary>
-    public enum ConnnectorPivotModeType
+    public enum ConnectorPivotModeType
     {
         /// <summary>
         /// Tooltip pivot will be set manually

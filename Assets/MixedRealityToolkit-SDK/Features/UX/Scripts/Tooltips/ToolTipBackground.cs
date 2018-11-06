@@ -3,47 +3,45 @@
 
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
-//using HoloToolkit.Unity;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 {
-    [RequireComponent(typeof(MeshFilter))]
 
     /// <summary>
     /// Base class for a tool tip background
     /// Automatically finds a ToolTip and subscribes to ContentChange action
     /// Resizes its content to match ToolTip's content in ScaleToFitContent()
     /// </summary>
+    [RequireComponent(typeof(MeshFilter))]
     public abstract class ToolTipBackground : MonoBehaviour
     {
         [SerializeField]
-        private ToolTip toolTip;
-        /// <summary>
-        /// getter/setter for display state of group of tooltips
-        /// </summary>
+        private ToolTip toolTipContent;
+
         public ToolTip ToolTipContent
         {
             set
             {
-                toolTip = ToolTipContent;
+                toolTipContent = value;
             }
             get
             {
-                return toolTip;
+                return toolTipContent;
             }
         }
+
         protected virtual void OnEnable()
         {
-            toolTip = gameObject.EnsureComponent<ToolTip>();
+            toolTipContent = gameObject.EnsureComponent<ToolTip>();
 
-            if (toolTip == null)
+            if (toolTipContent == null)
             {
                 Debug.LogError("No tooltip found in ToolTipMeshBackground");
                 enabled = false;
                 return;
             }
-            
-            toolTip.ContentChange += ContentChange;
+
+            toolTipContent.ContentChange += ContentChange;
         }
 
         protected virtual void ContentChange()

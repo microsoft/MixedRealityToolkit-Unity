@@ -25,18 +25,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [SerializeField]
         private Transform cornerTopLeft = null;
+
         [SerializeField]
         private Transform cornerTopRight = null;
+
         [SerializeField]
         private Transform cornerBotRight = null;
+
         [SerializeField]
         private Transform cornerBotLeft = null;
+
         [SerializeField]
         [Range(0.01f, 2f)]
         private float cornerScale = 1f;
+
         [SerializeField]
         private ScaleModeEnum scaleMode = ScaleModeEnum.World;
-        
+
         protected override void ContentChange()
         {
             ScaleToFitContent();
@@ -50,11 +55,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             // Multiply it by 0.5 to get extents
             localContentSize *= 0.5f;
             Vector3 localContentOffset = ToolTipContent.LocalContentOffset;
+
             // Put the corner objects at the corners
-            Vector3 topLeft = new Vector3(-localContentSize.x + localContentOffset.x, localContentSize.y + localContentOffset.y, localContentOffset.x);
-            Vector3 topRight = new Vector3(localContentSize.x + localContentOffset.x, localContentSize.y + localContentOffset.y, localContentOffset.x);
-            Vector3 botRight = new Vector3(localContentSize.x + localContentOffset.x, -localContentSize.y + localContentOffset.y, localContentOffset.x);
-            Vector3 botLeft = new Vector3(-localContentSize.x + localContentOffset.x, -localContentSize.y + localContentOffset.y, localContentOffset.x);
+            var topLeft = new Vector3(-localContentSize.x + localContentOffset.x, localContentSize.y + localContentOffset.y, localContentOffset.x);
+            var topRight = new Vector3(localContentSize.x + localContentOffset.x, localContentSize.y + localContentOffset.y, localContentOffset.x);
+            var botRight = new Vector3(localContentSize.x + localContentOffset.x, -localContentSize.y + localContentOffset.y, localContentOffset.x);
+            var botLeft = new Vector3(-localContentSize.x + localContentOffset.x, -localContentSize.y + localContentOffset.y, localContentOffset.x);
+
             if (cornerTopLeft != null)
             {
                 cornerTopLeft.localPosition = topLeft;
@@ -85,15 +92,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                     globalScale.y /= lossyScale.y;
                     globalScale.z /= lossyScale.z;
                     break;
-
                 case ScaleModeEnum.Local:
-                    Vector3 localScale = cornerTopLeft.lossyScale;
                     float smallestDimension = Mathf.Min(Mathf.Min(globalScale.x, globalScale.y), globalScale.z);
                     globalScale = Vector3.one * smallestDimension;
                     break;
-
                 default:
-                    throw new System.ArgumentOutOfRangeException("ScaleMode not set to valid enum value.");
+                    Debug.LogError($"Invalid scale mode {scaleMode}");
+                    break;
             }
 
             if (cornerTopLeft != null)

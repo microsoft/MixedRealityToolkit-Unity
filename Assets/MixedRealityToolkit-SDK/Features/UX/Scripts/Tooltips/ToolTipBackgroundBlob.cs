@@ -12,10 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     /// </summary>
     public class ToolTipBackgroundBlob : ToolTipBackground
     {
-        /// <summary>
-        /// Which transforms to use for each type of distortion
-        /// See the ToolTipBalloon prefab for an example of which transforms to target
-        /// </summary>
+        // Which transforms to use for each type of distortion
+        // See the ToolTipBalloon prefab for an example of which transforms to target
+        #region Transform Targets
+
         [Header("Transform targets")]
         [SerializeField]
         private Transform positionTarget = null;
@@ -29,13 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         [SerializeField]
         private Transform attachPointOffset = null;
 
+        #endregion Transform Targets
+
         [Header("Blob settings")]
         [SerializeField]
         [Range(0f, 5f)]
         private float blobInertia = 0.5f;
-        /// <summary>
-        /// getter/setter for inertia setting
-        /// </summary>
+
         public float BlobInertia
         {
             get
@@ -51,9 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         [SerializeField]
         [Range(0f, 1f)]
         private float blobDistortion = 0.1f;
-        /// <summary>
-        /// getter/setter for distortion setting
-        /// </summary>
+
         public float BlobDistortion
         {
             get
@@ -69,9 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         [SerializeField]
         [Range(0f, 1f)]
         private float blobRotation = 0.1f;
-        /// <summary>
-        /// getter/setter for rotation setting
-        /// </summary>
+
         public float BlobRotation
         {
             get
@@ -87,9 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         [SerializeField]
         [Range(0.1f, 5f)]
         private float positionCorrectionStrength = 1f;
-        /// <summary>
-        /// getter/setter for scalar on position correction.
-        /// </summary>
+
         public float PositionCorrectionStrength
         {
             get
@@ -105,9 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         [SerializeField]
         [Range(0.1f, 5f)]
         private float distortionCorrectionStrength = 1f;
-        /// <summary>
-        /// getter/setter for scalar on distortion correction.
-        /// </summary>
+
         public float DistortionCorrectionStrength
         {
             get
@@ -123,9 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         [SerializeField]
         [Range(0.1f, 5f)]
         private float rotationCorrectionStrength = 1f;
-        /// <summary>
-        /// getter/setter for scalar on rotation correction.
-        /// </summary>
+
         public float RotationCorrectionStrength
         {
             get
@@ -140,9 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [SerializeField]
         private Vector3 blobOffset;
-        /// <summary>
-        /// getter/setter for offset value
-        /// </summary>
+
         public Vector3 BlobOffset
         {
             get
@@ -165,7 +153,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         private const float maxDistortionCorrection = 5f;
         private const float maxRotationCorrection = 5f;
 
-        private Bounds defaultBounds = new Bounds(Vector3.zero, Vector3.one);
+        private readonly Bounds defaultBounds = new Bounds(Vector3.zero, Vector3.one);
+
         private MeshFilter backgroundRendererMeshFilter;
         private Vector3 lastPosition;
         private Vector3 velocity;
@@ -223,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             currentRotation.z = velocity.z * 360;
             currentRotation.y = velocity.y * 360;
             currentRotation = rotationTarget.TransformDirection(currentRotation);
-            rotation = Vector3.Lerp (rotation, currentRotation, 1f / blobRotation * Time.deltaTime);
+            rotation = Vector3.Lerp(rotation, currentRotation, 1f / blobRotation * Time.deltaTime);
 
             // Correct the center and size
             inertialContentBounds.center = Vector3.Lerp(inertialContentBounds.center, localContentBounds.center, Time.deltaTime * positionCorrectionStrength);
