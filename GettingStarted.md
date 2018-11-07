@@ -40,7 +40,7 @@ You can install more components and UWP SDK's as you wish.
 [unity-release]:             https://unity3d.com/unity/qa/lts-releases?version=2017.4
 [unity-version-badge]:       https://img.shields.io/badge/Unity%20Editor-2017.4_LTS-green.svg
 
-The Mixed Reality Toolkit now recommends the following Unity 3D version:
+The HoloToolkit now recommends the following Unity 3D version:
 [![Github Release][unity-version-badge]][unity-release]
 
 _Note: Be sure to include the Windows Store .NET scripting backend components._
@@ -51,7 +51,7 @@ _Note: Be sure to include the Windows Store .NET scripting backend components._
 
 ### Option1: Download the unity package
 
-The latest [Release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases) should work for both HoloLens and Windows Mixed Reality development.
+The latest [HoloToolkit Release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases) should work for both HoloLens and Windows Mixed Reality development.
 
 [unity-release1]:                https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
 [mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=Latest%20Master%20Branch%20Release&colorB=007ec6
@@ -59,7 +59,7 @@ The latest [Release](https://github.com/Microsoft/MixedRealityToolkit-Unity/rele
 
 ### Option2: Use the source code
 
-If you'd like to build the Mixed Reality Toolkit from the source, you'll need to clone the GitHub repository from:
+If you'd like to build the HoloToolkit from the source, you'll need to clone the GitHub repository from:
 
 >  ## https://github.com/Microsoft/MixedRealityToolkit-Unity.git 
 
