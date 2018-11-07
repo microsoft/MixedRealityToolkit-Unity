@@ -40,7 +40,7 @@ You can install more components and UWP SDK's as you wish.
 [unity-release]:             https://unity3d.com/unity/qa/lts-releases?version=2017.4
 [unity-version-badge]:       https://img.shields.io/badge/Unity%20Editor-2017.4_LTS-green.svg
 
-The HoloToolkit now recommends the following Unity 3D version:
+The HoloToolkit (HTK) now recommends the following Unity 3D version:
 [![Github Release][unity-version-badge]][unity-release]
 
 _Note: Be sure to include the Windows Store .NET scripting backend components._
@@ -54,8 +54,8 @@ _Note: Be sure to include the Windows Store .NET scripting backend components._
 The latest [HoloToolkit Release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases) should work for both HoloLens and Windows Mixed Reality development.
 
 [unity-release1]:                https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
-[mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=Latest%20Master%20Branch%20Release&colorB=007ec6
-[![Github Release][mrtk-version-badge]][unity-release1]
+[htk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=Latest%20Master%20Branch%20Release&colorB=007ec6
+[![Github Release][htk-version-badge]][unity-release1]
 
 ### Option2: Use the source code
 
@@ -87,9 +87,9 @@ If `Open Download Page` appears then save exe and install. Otherwise, dismiss mo
 
 ![Unity Build Settings for UWP](/External/ReadMeImages/BuildSettingsUWP.png)
 
-## 4.3 Import MRTK asset
+## 4.3 Import Package
 
-Then import the MRTK asset using `Assets -> Import Package -> Custom Package…` [Navigate to the package 
+Then import the HTK asset using `Assets -> Import Package -> Custom Package…` [Navigate to the package 
 you have either downloaded or exported above].
 
 > **NOTE**: If you've prepared the source code yourself, The HoloToolkit-Examples and HoloToolkit-Test folders (and all its content and subfolders) are optional when you import the custom package. You can uncheck those folders in the **Import Unity Package** window that shows all the contents of the package before performing the import.   
@@ -104,11 +104,11 @@ Select the "Apply Mixed Reality Project Settings" option in the Unity Editor:
 
 ` Mixed Reality Toolkit -> Configure -> Apply Mixed Reality Project Settings`
 
-![MRTK Editor Project Settings](/External/ReadMeImages/MixedRealityProjectEditorOption.png)
+![HTK Editor Project Settings](/External/ReadMeImages/MixedRealityProjectEditorOption.png)
 
 Select all the required options for your Project type:
 
-![MRTK Project Options](/External/ReadMeImages/MixedRealityProjectOptions.png)
+![HTK Project Options](/External/ReadMeImages/MixedRealityProjectOptions.png)
 
 Check:
 * For Immersive headsets, check the **Target Occluded Devices** option
@@ -116,7 +116,7 @@ Check:
 
 > **Note**
 > If you enable the **Enable Xbox Controller Support** option, this will download the ProjectSettings Input file and replace your current version in your project and override any existing input settings, the old file will be renamed to "*.Old*".
-> Else, you will have to setup all the MRTK input axis manually.
+> Else, you will have to setup all the HTK input axis manually.
 
 Clicking `Apply` should result in a couple progress dialog windows and then the `Apply Mixed Reality Project Settings` window should eventually close itself. If that doesn't happen then verify `4.2 Install Unity's Universal Windows Platform integration` step above has been completed.
 
@@ -126,11 +126,11 @@ Select the "Apply Mixed Reality Scene Settings" option in the Unity Editor:
 
 ` Mixed Reality Toolkit -> Configure -> Apply Mixed Reality Scene Settings`
 
-![MRTK Editor Scene Settings](/External/ReadMeImages/MixedRealityEditorSceneSettings.png)
+![HTK Editor Scene Settings](/External/ReadMeImages/MixedRealityEditorSceneSettings.png)
 
 Select all the required options for your Scene type:
 
-![MRTK Scene options](/External/ReadMeImages/MixedRealitySceneOptions.png)
+![HTK Scene options](/External/ReadMeImages/MixedRealitySceneOptions.png)
 
 Alternatively, you can setup your scene manually as follows:
 
@@ -148,11 +148,11 @@ Alternatively, you can setup your scene manually as follows:
 > Optionally, if you wish to enable spatial mapping in your scene for HoloLens, you can add the `SpatialMapping.prefab` (found under HoloToolkit/SpatialMapping/Prefabs) to your 'Managers' object.  Be aware that you must also enable `Spatial Perception` Capabilities: `Edit/Project Settings/Player -> Inspector -> Publishing Settings/Capabilities`.
 
 # 7. Building your project 
-The MRTK provides you a quick and easy way to generate your Unity project from a custom window, which can be found under:
+The HTK provides you a quick and easy way to generate your Unity project from a custom window, which can be found under:
 
 `Mixed Reality Toolkit -> Build Window`
 
-![MRTK Build Window](/External/ReadMeImages/MixedRealityEditorBuildWindow.png)
+![HTK Build Window](/External/ReadMeImages/MixedRealityEditorBuildWindow.png)
 
 This window offers many quick options to be able to:
 
@@ -176,7 +176,7 @@ Unity supports running your Immersive solution direct from the editor **BUT** On
 
 Provided everything was good, you should now see your scene running in the headset/simulator.
 
-Alternatively, either Use the Unity Build options or the MRTK Build window to generate the UWP package and run locally on your machine.
+Alternatively, either Use the Unity Build options or the HTK Build window to generate the UWP package and run locally on your machine.
 
 ## 7.2 Running your project for **HoloLens**
 
