@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using QRCodesTrackerPlugin;
 
 namespace HoloToolkit.Unity.QRTracking
 {
@@ -18,6 +16,7 @@ namespace HoloToolkit.Unity.QRTracking
         private bool updatedId = false;
 
         private SpatialGraphCoordinateSystem coordSystem = null;
+
         /// <summary>
         /// Data of the QR code to which we want to attach the game object."
         /// </summary>
@@ -39,9 +38,11 @@ namespace HoloToolkit.Unity.QRTracking
                     {
                         qRCodeData = string.Empty;
                     }
-                    
+
+#if UNITY_EDITOR || UNITY_WSA
                     qrCodeId = QRCodesManager.Instance.GetIdForQRCode(qRCodeData);
                     updatedId = true;
+#endif // UNITY_EDITOR || UNITY_WSA
                 }
             }
         }
@@ -50,9 +51,11 @@ namespace HoloToolkit.Unity.QRTracking
 
         private void Awake()
         {
+#if UNITY_EDITOR || UNITY_WSA
             QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
             QRCodesManager.Instance.QRCodeUpdated += Instance_QRCodeUpdated;
             QRCodesManager.Instance.QRCodeRemoved += Instance_QRCodeRemoved;
+#endif // UNITY_EDITOR || UNITY_WSA
         }
 
         private void Start()
@@ -62,10 +65,14 @@ namespace HoloToolkit.Unity.QRTracking
                 // default use the scripts object
                 gameObjectToAttach = gameObject;
             }
+
+#if UNITY_EDITOR || UNITY_WSA
             qrCodeId = QRCodesManager.Instance.GetIdForQRCode(qRCodeData);
             updatedId = true;
+#endif // UNITY_EDITOR || UNITY_WSA
         }
 
+#if UNITY_EDITOR || UNITY_WSA
         private void Instance_QRCodeAdded(object sender, QRCodeEventArgs<QRCodesTrackerPlugin.QRCode> e)
         {
             if (qrCodeId == System.Guid.Empty)
@@ -115,5 +122,6 @@ namespace HoloToolkit.Unity.QRTracking
                 updatedId = false;
             }
         }
+#endif // UNITY_EDITOR || UNITY_WSA
     }
 }

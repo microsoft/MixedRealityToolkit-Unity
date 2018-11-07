@@ -1,66 +1,70 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
 #endif
+
 namespace HoloToolkit.Unity
 {
     public class SpatialGraphCoordinateSystem : MonoBehaviour
     {
 #if WINDOWS_UWP
         private SpatialCoordinateSystem CoordinateSystem = null;
-#endif
-        private System.Guid id;
+#endif // WINDOWS_UWP
+
+#if UNITY_EDITOR || UNITY_WSA
         private UnityEngine.XR.WSA.PositionalLocatorState CurrentState { get; set; }
+#endif // UNITY_EDITOR || UNITY_WSA
+
+        private System.Guid id;
         public System.Guid Id
         {
-            get
-            {
-                return id;
-            }
-
+            get { return id; }
             set
             {
                 id = value;
 #if WINDOWS_UWP
                 CoordinateSystem = Windows.Perception.Spatial.Preview.SpatialGraphInteropPreview.CreateCoordinateSystemForNode(id);
-#endif
+#endif // WINDOWS_UWP
             }
         }
 
         private void Awake()
         {
+#if UNITY_EDITOR || UNITY_WSA
             CurrentState = UnityEngine.XR.WSA.PositionalLocatorState.Unavailable;
+#endif // UNITY_EDITOR || UNITY_WSA
         }
 
         private void Start()
         {
+#if UNITY_EDITOR || UNITY_WSA
             UnityEngine.XR.WSA.WorldManager.OnPositionalLocatorStateChanged += WorldManager_OnPositionalLocatorStateChanged;
             CurrentState = UnityEngine.XR.WSA.WorldManager.state;
+
 #if WINDOWS_UWP
             if (CoordinateSystem == null)
             {
                 CoordinateSystem = Windows.Perception.Spatial.Preview.SpatialGraphInteropPreview.CreateCoordinateSystemForNode(id);
             }
-#endif
+#endif // WINDOWS_UWP
+#endif // UNITY_EDITOR || UNITY_WSA
+        }
+
+        private void Update()
+        {
+#if UNITY_EDITOR || UNITY_WSA
+            UpdateLocation();
         }
 
         private void WorldManager_OnPositionalLocatorStateChanged(UnityEngine.XR.WSA.PositionalLocatorState oldState, UnityEngine.XR.WSA.PositionalLocatorState newState)
         {
             CurrentState = newState;
-            if (newState == UnityEngine.XR.WSA.PositionalLocatorState.Active)
-            {
-                // This simply activates/deactivates this object and all children when tracking changes
-                gameObject.SetActive(true);
-            }
-            else
-            {
-                gameObject.SetActive(false);
-            }
+            // This simply activates/deactivates this object and all children when tracking changes.
+            gameObject.SetActive(newState == UnityEngine.XR.WSA.PositionalLocatorState.Active);
         }
 
         private void UpdateLocation()
@@ -122,13 +126,9 @@ namespace HoloToolkit.Unity
                 {
                    gameObject.SetActive(false);
                 }
-#endif
+#endif // WINDOWS_UWP
             }
-        }
-
-        private void Update()
-        {
-            UpdateLocation();
+#endif // UNITY_EDITOR || UNITY_WSA
         }
     }
 }
