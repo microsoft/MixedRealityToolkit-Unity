@@ -37,8 +37,8 @@ You can install more components and UWP SDK's as you wish.
 
 ## 2.3 Install appropriate version of Unity 3D
 
-[unity-release]:             https://unity3d.com/unity/qa/patch-releases/2017.2.1p2
-[unity-version-badge]:       https://img.shields.io/badge/Unity%20Editor-2017.2.1p2-green.svg
+[unity-release]:             https://unity3d.com/unity/qa/lts-releases?version=2017.4
+[unity-version-badge]:       https://img.shields.io/badge/Unity%20Editor-2017.4_LTS-green.svg
 
 The Mixed Reality Toolkit now recommends the following Unity 3D version:
 [![Github Release][unity-version-badge]][unity-release]
