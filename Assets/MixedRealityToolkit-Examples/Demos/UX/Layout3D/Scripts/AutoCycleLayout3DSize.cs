@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
 {
-    public class AutoCycletLayout3DSize : MonoBehaviour
+    public class AutoCycleLayout3DSize : MonoBehaviour
     {
         public float AnimationTime = 3;
 
