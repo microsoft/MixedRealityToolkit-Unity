@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -56,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                 }
             }
         }
-
+        
         /// <summary>
         /// Update a property value in a serialized PropertySettings
         /// </summary>
@@ -148,6 +149,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         }
 
         /// <summary>
+        /// Checks the type a property field and returns if it matches the passed in type
+        /// </summary>
+        /// <param name="prop"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsPropertyType(SerializedProperty prop, InspectorField.FieldTypes type)
+        {
+            SerializedProperty propType = prop.FindPropertyRelative("Type");
+            return (InspectorField.FieldTypes)propType.intValue == type;
+        }
+
+        /// <summary>
         /// Render a PropertySettings UI field based on the InspectorField Settings
         /// </summary>
         /// <param name="prop"></param>
@@ -160,7 +173,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 
             SerializedProperty intValue = prop.FindPropertyRelative("IntValue");
             SerializedProperty stringValue = prop.FindPropertyRelative("StringValue");
-
             switch ((InspectorField.FieldTypes)type.intValue)
             {
                 case InspectorField.FieldTypes.Float:
@@ -187,10 +199,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                 case InspectorField.FieldTypes.DropdownString:
                     string[] stringOptions = InspectorUIUtility.GetOptions(options);
                     int selection = InspectorUIUtility.GetOptionsIndex(options, stringValue.stringValue);
-                    int newIndex = EditorGUILayout.Popup(label.stringValue, intValue.intValue, stringOptions);
+                    int newIndex = EditorGUILayout.Popup(label.stringValue, selection, stringOptions);
                     if (selection != newIndex)
                     {
                         stringValue.stringValue = stringOptions[newIndex];
+                        intValue.intValue = newIndex;
                     }
                     break;
                 case InspectorField.FieldTypes.GameObject:

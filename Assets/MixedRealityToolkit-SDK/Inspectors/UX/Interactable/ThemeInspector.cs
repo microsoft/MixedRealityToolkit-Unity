@@ -920,10 +920,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                     // show theme properties
                     SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
-                    SerializedProperty ease = easing.FindPropertyRelative("EaseValues");
+                    SerializedProperty enabled = easing.FindPropertyRelative("Enabled");
 
-                    ease.boolValue = EditorGUILayout.Toggle(new GUIContent("Easing", "should the theme animate state values"), ease.boolValue);
-                    if (ease.boolValue)
+                    enabled.boolValue = EditorGUILayout.Toggle(new GUIContent("Easing", "should the theme animate state values"), enabled.boolValue);
+                    if (enabled.boolValue)
                     {
                         EditorGUI.indentLevel = indentOnSectionStart + 1;
                         SerializedProperty time = easing.FindPropertyRelative("LerpTime");

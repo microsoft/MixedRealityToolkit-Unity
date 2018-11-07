@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System;
 using System.Collections;
@@ -493,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             for (int i = 0; i < events.arraySize; i++)
             {
                 SerializedProperty eventItem = events.GetArrayElementAtIndex(i);
-                RenderEventSettings(eventItem, i);
+                InteractableReceiverListInspector.RenderEventSettings(eventItem, i, eventOptions, ChangeEvent, RemoveEvent);
             }
 
             if (eventOptions.Length > 1)
@@ -669,60 +668,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         }
 
-        protected void ChangeEvent(int index)
+        protected void ChangeEvent(int[] indexArray, SerializedProperty prop = null)
         {
-            SerializedProperty events = serializedObject.FindProperty("Events");
-            SerializedProperty eventItem = events.GetArrayElementAtIndex(index);
-            SerializedProperty className = eventItem.FindPropertyRelative("ClassName");
-            SerializedProperty name = eventItem.FindPropertyRelative("Name");
-            SerializedProperty settings = eventItem.FindPropertyRelative("Settings");
-            
+            SerializedProperty className = prop.FindPropertyRelative("ClassName");
+            SerializedProperty name = prop.FindPropertyRelative("Name");
+            SerializedProperty settings = prop.FindPropertyRelative("Settings");
+            SerializedProperty hideEvents = prop.FindPropertyRelative("HideUnityEvents");
+
             if (!String.IsNullOrEmpty(className.stringValue))
             {
-                int receiverIndex = InspectorUIUtility.ReverseLookup(className.stringValue, eventOptions);
-                InteractableEvent.ReceiverData data = eventList[index].AddReceiver(eventTypes[receiverIndex]);
+                InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventTypes[indexArray[1]]);
                 name.stringValue = data.Name;
+                hideEvents.boolValue = data.HideUnityEvents;
 
                 InspectorFieldsUtility.PropertySettingsList(settings, data.Fields);
             }
         }
-
-        protected void RenderEventSettings(SerializedProperty eventItem, int index)
-        {
-            EditorGUILayout.BeginVertical("Box");
-            SerializedProperty uEvent = eventItem.FindPropertyRelative("Event");
-            SerializedProperty eventName = eventItem.FindPropertyRelative("Name");
-            SerializedProperty className = eventItem.FindPropertyRelative("ClassName");
-
-            // show event dropdown
-            int id = InspectorUIUtility.ReverseLookup(className.stringValue, eventOptions);
-            int newId = EditorGUILayout.Popup("Select Event Type", id, eventOptions);
-
-            if (id != newId)
-            {
-                className.stringValue = eventOptions[newId];
-
-                ChangeEvent(index);
-            }
-
-            EditorGUILayout.PropertyField(uEvent, new GUIContent(eventName.stringValue));
-
-            // show event properties
-            EditorGUI.indentLevel = indentOnSectionStart + 1;
-            SerializedProperty eventSettings = eventItem.FindPropertyRelative("Settings");
-            for (int j = 0; j < eventSettings.arraySize; j++)
-            {
-                InspectorFieldsUtility.DisplayPropertyField(eventSettings.GetArrayElementAtIndex(j));
-            }
-            EditorGUI.indentLevel = indentOnSectionStart;
-
-            EditorGUILayout.Space();
-
-            InspectorUIUtility.FlexButton(new GUIContent("Remove Event"), index, RemoveEvent);
-
-            EditorGUILayout.EndVertical();
-        }
-
+        
         protected void SetupEventOptions()
         {
             InteractableEvent.EventLists lists = InteractableEvent.GetEventTypes();

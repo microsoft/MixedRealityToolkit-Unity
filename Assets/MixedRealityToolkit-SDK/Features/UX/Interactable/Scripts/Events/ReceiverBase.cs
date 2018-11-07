@@ -14,6 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     public abstract class ReceiverBase
     {
         public string Name;
+
+        public bool HideUnityEvents;
         protected UnityEvent uEvent;
 
         public ReceiverBase(UnityEvent ev)
