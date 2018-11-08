@@ -177,9 +177,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
                     }
                     surfaceParent = null;
                 }
-
-                // Tell the observer to clean up
-                SpatialAwarenessObserver?.Destroy();
             }
         }
 
