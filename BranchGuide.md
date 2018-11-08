@@ -31,12 +31,12 @@ These should not be considered stable and main contain breaking features, **use 
 
 For example, here are some of the main area that are currently being worked on:
 
-* [feature/LuminPlatform](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/LuminPlatform) - (@StephenHodgson) Experimental Magic Leap device integration.
-* [feature/spatialAwarenessPlanes](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/spatialAwarenessPlanes) - (@davidkline-ms) - Extensions to the Spatial Awareness framework for  plane detection.
-* [feature/mrtk_interactable](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/mrtk_interactable) - (@killerantz) New SDK components / features and ported features from the HTK
-* [feature/mrtk_packageManager](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/mrtk_packageManager) - (@ryzngard) New MRTK delivery development (NuGet)
-* [feature_mrtk_state_sharing](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature_mrtk_state_sharing) - (@Railboy) Advanced networking / Sharing solution
-* [feature/mrtk_sharing](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/mrtk_sharing) - (@Sean0ng) Photon Based networking / sharing solution
+* [feature/LuminPlatform](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/LuminPlatform) - Experimental Magic Leap device integration.
+* [feature/spatialAwarenessPlanes](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/spatialAwarenessPlanes) - Extensions to the Spatial Awareness framework for  plane detection.
+* [feature/mrtk_interactable](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/mrtk_interactable) - New SDK components / features and ported features from the HTK
+* [feature/mrtk_packageManager](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/mrtk_packageManager) - New MRTK delivery development (NuGet)
+* [feature_mrtk_state_sharing](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature_mrtk_state_sharing) - Advanced networking / Sharing solution
+* [feature/mrtk_sharing](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/mrtk_sharing) - Photon Based networking / sharing solution
 * feature/SteamVR - (future) Adding native SteamVR support
 
 ## Other branches
