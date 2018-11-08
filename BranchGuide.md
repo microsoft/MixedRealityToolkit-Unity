@@ -37,6 +37,7 @@ For example, here are some of the main area that are currently being worked on:
 * [feature/mrtk_packageManager](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/mrtk_packageManager) - (@ryzngard) New MRTK delivery development (NuGet)
 * [feature_mrtk_state_sharing](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature_mrtk_state_sharing) - (@Railboy) Advanced networking / Sharing solution
 * [feature/mrtk_sharing](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/mrtk_sharing) - (@Sean0ng) Photon Based networking / sharing solution
+* feature/SteamVR - (future) Adding native SteamVR support
 
 ## Other branches
 Other branches are usually temporary or other experimental WIP.  occasionally you will see "Staging" or "Stabilization" branches which are used temporarily for the Mixed Reality Toolkit release process
