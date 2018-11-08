@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
     /// Configuration profile settings for setting up and consuming Input Actions.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input Actions Profile", fileName = "MixedRealityInputActionsProfile", order = (int)CreateProfileMenuItemIndices.InputActions)]
-    public class MixedRealityInputActionsProfile : ScriptableObject
+    public class MixedRealityInputActionsProfile : BaseMixedRealityProfile
     {
         private readonly string[] defaultInputActions =
         {

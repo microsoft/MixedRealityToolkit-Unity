@@ -4,8 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,23 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
 
         /// <summary>
-        /// The current Input System, if any.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
-                {
-                    inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
-                }
-
-                return inputSystem;
-            }
-        }
-        private IMixedRealityInputSystem inputSystem;
-
-        /// <summary>
         /// Request an array of pointers for the controller type.
         /// </summary>
         /// <param name="controllerType">The controller type making the request for pointers.</param>
@@ -81,13 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         {
             var pointers = new List<IMixedRealityPointer>();
 
-            if (MixedRealityManager.HasActiveProfile &&
-                MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
-                MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+            if (MixedRealityToolkit.HasActiveProfile &&
+                MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
             {
-                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
+                for (int i = 0; i < MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
                 {
-                    var pointerProfile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions[i];
+                    var pointerProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions[i];
 
                     if (!useSpecificType)
                     {
@@ -99,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
                         var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-                        pointerObject.transform.SetParent(CameraCache.Main.transform.parent);
+                        pointerObject.transform.SetParent(MixedRealityToolkit.Instance.MixedRealityPlayspace);
 
                         if (pointer != null)
                         {

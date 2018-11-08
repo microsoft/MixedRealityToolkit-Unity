@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
 {
     [CustomEditor(typeof(RectangleLineDataProvider))]
     public class RectangleLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector

@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
@@ -234,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             /// <param name="handedness">Optional handedness of the source that pressed the pointer.</param>
             public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
             {
-                InputSystem.RaisePointerDown(this, handedness, mixedRealityInputAction);
+                MixedRealityToolkit.InputSystem.RaisePointerDown(this, handedness, mixedRealityInputAction);
             }
 
             /// <summary>
@@ -244,8 +246,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             /// <param name="handedness">Optional handedness of the source that released the pointer.</param>
             public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
             {
-                InputSystem.RaisePointerClicked(this, handedness, mixedRealityInputAction, 0);
-                InputSystem.RaisePointerUp(this, handedness, mixedRealityInputAction);
+                MixedRealityToolkit.InputSystem.RaisePointerClicked(this, handedness, mixedRealityInputAction, 0);
+                MixedRealityToolkit.InputSystem.RaisePointerUp(this, handedness, mixedRealityInputAction);
             }
         }
 
@@ -269,15 +271,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
-        protected override void Start()
+        protected override async void Start()
         {
             base.Start();
+
+            await WaitUntilInputSystemValid;
 
             if (cursorPrefab != null)
             {
                 var cursorObj = Instantiate(cursorPrefab, transform.parent);
                 GazePointer.BaseCursor = cursorObj.GetComponent<IMixedRealityCursor>();
                 Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
+                GazePointer.BaseCursor.SetVisibilityOnSourceDetected = false;
                 GazePointer.BaseCursor.Pointer = GazePointer;
             }
 
@@ -338,7 +343,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             base.OnDisable();
             GazePointer.BaseCursor?.SetVisibility(false);
-            InputSystem?.RaiseSourceLost(GazeInputSource);
+            MixedRealityToolkit.InputSystem?.RaiseSourceLost(GazeInputSource);
         }
 
         #endregion MonoBehaviour Implementation
@@ -369,8 +374,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
+        [Obsolete]
         public void OnInputPressed(InputEventData<float> eventData) { }
 
+        [Obsolete]
         public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
         #endregion IMixedRealityInputHandler Implementation
@@ -391,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private async void RaiseSourceDetected()
         {
             await WaitUntilInputSystemValid;
-            InputSystem.RaiseSourceDetected(GazeInputSource);
+            MixedRealityToolkit.InputSystem.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
         }
 

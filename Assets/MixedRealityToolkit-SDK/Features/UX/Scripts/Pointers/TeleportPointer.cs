@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using System;
@@ -97,19 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-            BaseCursor?.SetVisibility(false);
-        }
-
-        /// <inheritdoc />
-        public override void SetCursor(GameObject newCursor = null)
-        {
-            base.SetCursor(newCursor);
-            BaseCursor?.SetVisibility(false);
-        }
-
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
@@ -180,7 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 // If we hit something
                 if (Result.CurrentPointerTarget != null)
                 {
-                    BaseCursor?.SetVisibility(true);
                     // Check if it's in our valid layers
                     if (((1 << Result.CurrentPointerTarget.layer) & ValidLayers.value) != 0)
                     {
@@ -236,6 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
                     // Clamp the end of the parabola to the result hit's point
                     LineBase.LineEndClamp = LineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
+                    BaseCursor?.SetVisibility(TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
                 }
                 else
                 {
@@ -260,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         #region IMixedRealityInputHandler Implementation
 
         /// <inheritdoc />
-        public override void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             // Don't process input if we've got an active teleport request in progress.
             if (IsTeleportRequestActive) { return; }
@@ -290,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     {
                         teleportEnabled = true;
 
-                        TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
+                        MixedRealityToolkit.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
                     }
                     else if (canMove)
                     {
@@ -315,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                             {
                                 canMove = false;
                                 // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
-                                CameraCache.Main.transform.parent.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
+                                MixedRealityToolkit.Instance.MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
                             }
                             else // We may be trying to strafe backwards.
                             {
@@ -329,10 +317,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                                 if (offsetStrafeAngle > 0 && offsetStrafeAngle < backStrafeActivationAngle)
                                 {
                                     canMove = false;
-                                    var height = CameraCache.Main.transform.parent.position.y;
-                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + CameraCache.Main.transform.parent.position;
+                                    var height = MixedRealityToolkit.Instance.MixedRealityPlayspace.position.y;
+                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityToolkit.Instance.MixedRealityPlayspace.position;
                                     newPosition.y = height;
-                                    CameraCache.Main.transform.parent.position = newPosition;
+                                    MixedRealityToolkit.Instance.MixedRealityPlayspace.position = newPosition;
                                 }
                             }
                         }
@@ -356,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                         TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                     {
-                        TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                        MixedRealityToolkit.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
                     }
                 }
 
@@ -364,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     canTeleport = false;
                     teleportEnabled = false;
-                    TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                    MixedRealityToolkit.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
                 }
             }
 

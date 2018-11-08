@@ -640,7 +640,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1289414260}
   m_Layer: 0
-  m_Name: Body
+  m_Name: MixedRealityPlayspace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -740,7 +740,7 @@ GameObject:
   - component: {fileID: 1485507613}
   - component: {fileID: 1485507612}
   m_Layer: 0
-  m_Name: MixedRealityManager
+  m_Name: MixedRealityToolkit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -785,7 +785,7 @@ GameObject:
   - component: {fileID: 1491404206}
   - component: {fileID: 1491404205}
   m_Layer: 0
-  m_Name: Head
+  m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

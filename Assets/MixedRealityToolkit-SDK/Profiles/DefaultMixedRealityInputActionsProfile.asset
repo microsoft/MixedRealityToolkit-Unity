@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1a15d870c8b4e52acc4643bd258ed6e, type: 3}
   m_Name: DefaultMixedRealityInputActionsProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   inputActions:
   - id: 1
     description: Select
@@ -39,3 +40,12 @@ MonoBehaviour:
   - id: 9
     description: Manipulate Action
     axisConstraint: 0
+  - id: 10
+    description: Navigation Action
+    axisConstraint: 0
+  - id: 11
+    description: Scroll
+    axisConstraint: 4
+  - id: 12
+    description: Mouse Delta
+    axisConstraint: 4

@@ -16,7 +16,49 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <summary>
         /// Returns a cached reference to the main camera and uses Camera.main if it hasn't been cached yet.
         /// </summary>
-        public static Camera Main => cachedCamera == null ? Refresh(Camera.main) : cachedCamera;
+        public static Camera Main
+        {
+            get
+            {
+                var mainCamera = cachedCamera == null ? Refresh(Camera.main) : cachedCamera;
+
+                if (mainCamera == null)
+                {
+                    // No camera in the scene tagged as main. Let's search the scene for a GameObject named Main Camera
+                    var cameras = Object.FindObjectsOfType<Camera>();
+
+                    switch (cameras.Length)
+                    {
+                        case 0:
+                            return null;
+                        case 1:
+                            mainCamera = Refresh(cameras[0]);
+                            break;
+                        default:
+                            // Search for main camera by name.
+                            for (int i = 0; i < cameras.Length; i++)
+                            {
+                                if (cameras[i].name == "Main Camera")
+                                {
+                                    mainCamera = Refresh(cameras[i]);
+                                    break;
+                                }
+                            }
+
+                            // If we still didn't find it, just set the first camera.
+                            if (mainCamera == null)
+                            {
+                                Debug.LogWarning($"No main camera found. The Mixed Reality Toolkit used {cameras[0].name} as your main.");
+                                mainCamera = Refresh(cameras[0]);
+                            }
+
+                            break;
+                    }
+                }
+
+                return mainCamera;
+            }
+        }
 
         /// <summary>
         /// Set the cached camera to a new reference and return it

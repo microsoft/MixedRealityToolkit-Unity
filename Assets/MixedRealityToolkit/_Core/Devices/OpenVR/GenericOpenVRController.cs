@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
@@ -195,22 +196,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
             // Raise input system events if it is enabled.
             if (lastState != TrackingState)
             {
-                InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
+                MixedRealityToolkit.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
             }
 
             if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
             {
                 if (IsPositionAvailable && IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
+                    MixedRealityToolkit.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
                 }
                 else if (IsPositionAvailable && !IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
+                    MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
                 }
                 else if (!IsPositionAvailable && IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
+                    MixedRealityToolkit.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
                 }
             }
         }

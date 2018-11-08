@@ -8,7 +8,7 @@ This document outlines the recommended coding guidelines for the Mixed Reality T
 
 All scripts posted to the MRTK should have the standard License header attached, exactly as shown below:
 
-```
+```c#
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 ```
@@ -19,7 +19,7 @@ Any script files submitted without the license header will be rejected
 
 All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to it's purpose and use, exactly as shown below:
 
-```
+```c#
     /// <summary>
     /// The Controller definition defines the Controller as defined by the SDK / Unity.
     /// </summary>
@@ -38,16 +38,17 @@ This ensures documentation is properly generated and disseminated for all all cl
 
 ## MRTK namespace rules
 
-The vNext structure adheres to a strict namespace culture of mapping the namespace 1-1 with the folder structure of the project.  This ensures that classes are easy to discover and maintain.  It also ensures the dependencies of any class are laid out in the beginning usings of the file.
+The vNext structure adheres to a strict namespace culture of mapping the namespace 1-1 with the folder structure of the project.  This ensures that classes are easy to discover and maintain.  It also ensures the dependencies of any class are laid out in the beginning using definitions of the file.
 
 ![](/External/ReadMeImages/MRTK-NameSpaceExample.png)
 
 ### Do:
-```
+
+```c#
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitons
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 {
     /// <summary>
     /// The ButtonAction defines the set of actions exposed by a controller.
@@ -68,8 +69,8 @@ Additionally, ensure that spaces are added for conditional / loop functions like
 
 ### Don't:
 
-```
-private Foo()
+```c#
+private Foo () // < - space between Foo and ()
 {
     if(Bar==null) // <- no space between if and ()
     {
@@ -85,7 +86,7 @@ private Foo()
 
 ### Do:
 
- ```
+ ```c#
 private Foo()
 {
     if (Bar==null)
@@ -100,6 +101,31 @@ private Foo()
 }
  ```
 
+## Spacing
+
+Do not to add additional spaces between square brackets and parenthesis:
+
+### Don't:
+
+```c#
+private Foo()
+{
+    int[ ] var = new int [ 9 ];
+    Vector2 vector = new Vector2 ( 0f, 10f );
+}
+
+```
+
+### Do:
+
+```c#
+private Foo()
+{
+    int[] var = new int[9];
+    Vector2 vector = new Vector2(0f, 10f);
+}
+```
+
 ## Naming Conventions
 
 Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private properties and fields.
@@ -107,14 +133,14 @@ Always use `PascalCase` for public / protected / virtual properties, and `camelC
 
 ### Don't:
 
-```
+```c#
 public string myProperty; // <- Starts with a lower case letter
 private string MyProperty; // <- Starts with an uppercase case letter
 ```
 
 ### Do:
 
- ```
+ ```c#
 public string MyProperty;
 protected string MyProperty;
 private string myProperty;
@@ -126,9 +152,19 @@ Always declare an access modifier for all fields, properties and methods.
 
 >All Unity API Methods should be `private` by default, unless you need to override them in a derived class. In this case `protected` should be used.
 
+>Fields should always be `private`, with `public` or `protected` property accessors.
+
+>Use [expression-bodied members](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#expression-bodied-function-members) and [auto properties](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#auto-property-enhancements) where possible
+
 ### Don't:
 
-```
+```c#
+// protected field should be private
+protected int myVariable = 0;
+
+// property should have protected setter
+public int MyVariable { get { return myVariable; } }
+
 // No public / private access modifiers
 void Foo() { }
 void Bar() { }
@@ -136,7 +172,9 @@ void Bar() { }
 
 ### Do:
 
- ```
+ ```c#
+public int MyVariable { get; protected set; } = 0;
+
 private void Foo() { }
 public void Bar() { }
 protected virtual void FooBar() { }
@@ -148,7 +186,7 @@ Always use braces after each statement block, and place them on the next line.
 
 ### Don't:
 
-```
+```c#
 private Foo()
 {
     if (Bar==null) // <- missing braces surrounding if action
@@ -160,7 +198,7 @@ private Foo()
 
 ### Don't:
 
-```
+```c#
 private Foo() { // <- Open bracket on same line
     if (Bar==null) DoThing(); <- if action on same line with no surrounding brackets 
     else DoTheOtherThing();
@@ -169,7 +207,7 @@ private Foo() { // <- Open bracket on same line
 
 ### Do:
 
-```
+```c#
 private Foo()
 {
     if (Bar==true)
@@ -189,7 +227,7 @@ If the class, struct, or enum can be made private then it's okay to be included 
 
 ### Don't:
 
-```
+```c#
 public class MyClass
 {
     public struct MyStruct() { }
@@ -200,7 +238,7 @@ public class MyClass
 
 ### Do:
 
- ```
+ ```c#
  // Private references for use inside the class only
 public class MyClass
 {
@@ -212,9 +250,9 @@ public class MyClass
 
  ### Do:
 
- ```
+ MyStruct.cs
+ ```c#
  // Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
-MyStruct.cs
 public struct MyStruct
 {
     public string Var1;
@@ -222,8 +260,8 @@ public struct MyStruct
 }
 ```
 
-```
 MyEnumType.cs
+```c#
 public enum MuEnumType
 {
     Value1,
@@ -231,8 +269,8 @@ public enum MuEnumType
 }
 ```
 
-```
 MyClass.cs
+```c#
 public class MyClass
 {
     private MyStruct myStructreference;
@@ -240,16 +278,16 @@ public class MyClass
 }
  ```
 
-## Initilize Enums.
+## Initialize Enums.
 
-To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initilize the enum by just adding the first (starter) value.
+To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value.
 
 > E.G. Value 1 = 0  (Remaining values are not required)
 
 ### Don't:
 
-```
-public enum MyEnum
+```c#
+public enum Value
 {
     Value1, <- no initializer
     Value2,
@@ -259,8 +297,8 @@ public enum MyEnum
 
 ### Do:
 
- ```
-public enum MyEnum
+ ```c#
+public enum ValueType
 {
     Value1 = 0,
     Value2,
@@ -274,7 +312,7 @@ It is critical that if an Enum is likely to be extended in the future, to order 
 
 ### Don't:
 
-```
+```c#
 public enum SDKType
 {
     WindowsMR,
@@ -287,7 +325,7 @@ public enum SDKType
 
 ### Do:
 
- ```
+ ```c#
     /// <summary>
     /// The SDKType lists the VR SDK's that are supported by the MRTK
     /// Initially, this lists proposed SDK's, not all may be implemented at this time (please see ReleaseNotes for more details)
@@ -303,7 +341,7 @@ public enum SDKType
         /// </summary>
         Other,
         /// <summary>
-        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and Hololens. 
+        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens. 
         /// </summary>
         WindowsMR,
         /// <summary>
@@ -317,6 +355,36 @@ public enum SDKType
     }
 ```
 
+## End Enum names with "Type"
+Enum names should clearly indicate their nature by using the Type suffix.
+### Don't:
+```c#
+public enum Ordering
+{
+    First,
+    Second,
+    Third
+}
+```
+```c#
+public enum OrderingEnum
+{
+    First,
+    Second,
+    Third
+}
+```
+### Do:
+```c#
+public enum OrderingType
+{
+    First = 0,
+    Second,
+    Third
+}
+```
+
+
 ## Review Enum use for Bitfields.
 
 If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left & Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly
@@ -325,8 +393,8 @@ If there is a possibility for an enum to require multiple states as a value, e.g
 
 ### Don't:
 
-```
-public enum MyEnum
+```c#
+public enum Handedness
 {
     None,
     Left,
@@ -336,9 +404,9 @@ public enum MyEnum
 
 ### Do:
 
- ```
+ ```c#
  [flags]
-public enum MyEnum
+public enum HandednessType
 {
     None = 0 << 0,
     Left = 1 << 0,
@@ -362,20 +430,20 @@ If you need to have the ability to edit your field in the inspector, it's best p
 
 ### Don't:
 
-```
+```c#
 public float MyValue;
 ```
 
 ### Do:
 
- ```
+ ```c#
  // private field, only accessible within script (field is not serialized in Unity)
  private float myValue;
   ```
 
 ### Do:
 
- ```
+ ```c#
  // Enable private field to be configurable only in editor (field is correctly serialized in Unity)
  [SerializeField] 
  private float myValue;
@@ -385,7 +453,7 @@ public float MyValue;
 
  ### Don't:
 
- ```
+ ```c#
  private float myValue1;
  private float myValue2;
  
@@ -404,10 +472,15 @@ public float MyValue;
 
  ### Do:
 
- ```
+ ```c#
  // Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
- [SerializeField] 
- private float myValue; // <- Notice we co-located the backing field above our corrisponding property.
+ [SerializeField]
+ [ToolTip("If using a tooltip, the text should match the public property's summary documentation, if appropriate.")]
+ private float myValue; // <- Notice we co-located the backing field above our corresponding property.
+
+ /// <summary>
+ /// If using a tooltip, the text should match the public property's summary documentation, if appropriate.
+ /// </summary>
  public float MyValue
  {
      get{ return myValue; }
@@ -421,13 +494,13 @@ In some cases a foreach is required, e.g. when looping over an IEnumerable.  But
 
 ### Don't:
 
-```
+```c#
 foreach(var item in items)
 ```
 
 ### Do:
 
- ```
+ ```c#
 int length = items.length; // cache reference to list/array length
 for(int i=0; i < length; i++)
  ```
@@ -438,7 +511,7 @@ With the HoloLens in mind, it's best to optimize for performance and cache refer
 
 ### Don't:
 
-```
+```c#
 void Update()
 {
     gameObject.GetComponent<Renderer>().Foo(Bar);
@@ -447,7 +520,7 @@ void Update()
 
 ### Do:
 
- ```
+ ```c#
 [SerializeField] // To enable setting the reference in the inspector.
 private Renderer myRenderer;
 
@@ -472,7 +545,7 @@ Unity will create a new material each time you use ".material", which will cause
 
 ### Don't:
 
-```
+```c#
 public class MyClass
 {
     void Update() 
@@ -485,7 +558,7 @@ public class MyClass
 
 ### Do:
 
- ```
+ ```c#
  // Private references for use inside the class only
 public class MyClass
 {
@@ -509,3 +582,19 @@ public class MyClass
  ```
 
 >Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
+
+## Use [platform dependent compilation](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html) to ensure the Toolkit won't break the build on another platform
+
+* Use `WINDOWS_UWP` in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to `UNITY_WSA && !UNITY_EDITOR` and should be used in favor of.
+* Use `UNITY_WSA` to use UWP-specific Unity APIs, such as the `UnityEngine.XR.WSA` namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.
+
+This chart can help you decide which `#if` to use, depending on your use cases and the build settings you expect.
+
+| | UWP IL2CPP | UWP .NET | Editor |
+| --- | --- | --- | --- |
+| `UNITY_EDITOR` | False | False | True |
+| `UNITY_WSA` | True | True | True |
+| `WINDOWS_UWP` | True | True | False |
+| `UNITY_WSA && !UNITY_EDITOR` | True | True | False |
+| `ENABLE_WINMD_SUPPORT` | True | True | False |
+| `NETFX_CORE` | False | True | False |

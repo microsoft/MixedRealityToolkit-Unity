@@ -10,8 +10,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
     /// Configuration profile settings for setting up boundary visualizations.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Boundary Visualization Profile", fileName = "MixedRealityBoundaryVisualizationProfile", order = (int)CreateProfileMenuItemIndices.BoundaryVisualization)]
-    public class MixedRealityBoundaryVisualizationProfile : ScriptableObject
+    public class MixedRealityBoundaryVisualizationProfile : BaseMixedRealityProfile
     {
+        [SerializeField]
+        [Tooltip("The approximate height of the play space, in meters.")]
+        private float boundaryHeight = 3.0f;
+
+        /// <summary>
+        /// The developer defined height of the boundary, in meters.
+        /// </summary>
+        /// <remarks>
+        /// The BoundaryHeight property is used to create a three dimensional volume for the play space.
+        /// </remarks>
+        public float BoundaryHeight => boundaryHeight;
+
         #region Floor settings
 
         [SerializeField]
@@ -41,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         /// <summary>
         /// The size at which to display the rectangular floor plane <see cref="GameObject"/>.
         /// </summary>
-        public Vector3 FloorScale => floorScale;
+        public Vector2 FloorScale => floorScale;
 
         #endregion Floor settings
 

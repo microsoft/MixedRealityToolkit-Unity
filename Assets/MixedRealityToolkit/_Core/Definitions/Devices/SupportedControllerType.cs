@@ -19,5 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         GenericUnity,
         Xbox,
         TouchScreen,
+        Mouse,
     }
 }
