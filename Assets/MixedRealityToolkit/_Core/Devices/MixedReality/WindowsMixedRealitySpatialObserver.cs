@@ -18,12 +18,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
     public class WindowsMixedRealitySpatialObserver : BaseSpatialObserver
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public WindowsMixedRealitySpatialObserver(string name, uint priority) : base(name, priority)
-        { }
+        public WindowsMixedRealitySpatialObserver(string name, uint priority) : base(name, priority) { }
 
         #region IMixedRealityToolkit implementation
 
