@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 DestroyAllServices();
             }
 
-            Initialize();
+            InitializeServiceLocator();
         }
 
         #endregion Mixed Reality Toolkit Profile configuration
@@ -120,11 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         #endregion Mixed Reality runtime component registry
 
         /// <summary>
-        /// Function called when the instance is assigned.
         /// Once all services are registered and properties updated, the Mixed Reality Toolkit will initialize all active services.
         /// This ensures all services can reference each other once started.
         /// </summary>
-        private void Initialize()
+        private void InitializeServiceLocator()
         {
             isInitializing = true;
 
@@ -302,22 +301,94 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
                 var objects = FindObjectsOfType<MixedRealityToolkit>();
                 searchForInstance = false;
+                MixedRealityToolkit newInstance;
 
                 switch (objects.Length)
                 {
                     case 0:
-                        instance = new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>();
+                        newInstance = new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>();
                         break;
                     case 1:
-                        instance = objects[0];
+                        newInstance = objects[0];
                         break;
                     default:
                         Debug.LogError($"Expected exactly 1 {nameof(MixedRealityToolkit)} but found {objects.Length}.");
                         return null;
                 }
 
-                instance.InitializeInternal();
+                Debug.Assert(newInstance != null);
+
+                if (!isApplicationQuitting)
+                {
+                    // Setup any additional things the instance needs.
+                    newInstance.InitializeInstance();
+                }
+                else
+                {
+                    // Don't do any additional setup because the app is quitting.
+                    instance = newInstance;
+                }
+
+                Debug.Assert(instance != null);
+
                 return instance;
+            }
+        }
+
+        /// <summary>
+        /// Lock property for the Mixed Reality Toolkit to prevent reinitialization
+        /// </summary>
+        private static readonly object initializedLock = new object();
+
+        private void InitializeInstance()
+        {
+            lock (initializedLock)
+            {
+                if (IsInitialized) { return; }
+
+                instance = this;
+
+                if (Application.isPlaying)
+                {
+                    DontDestroyOnLoad(instance.transform.root);
+                }
+
+                Application.quitting += () =>
+                {
+                    isApplicationQuitting = true;
+                };
+
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.playModeStateChanged += playModeState =>
+                {
+                    if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode ||
+                        playModeState == UnityEditor.PlayModeStateChange.EnteredEditMode)
+                    {
+                        isApplicationQuitting = false;
+                    }
+
+                    if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode && activeProfile == null)
+                    {
+                        UnityEditor.EditorApplication.isPlaying = false;
+                        UnityEditor.Selection.activeObject = Instance;
+                        UnityEditor.EditorGUIUtility.PingObject(Instance);
+                    }
+                };
+
+                UnityEditor.EditorApplication.hierarchyChanged += () =>
+                {
+                    if (instance != null)
+                    {
+                        Debug.Assert(instance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
+                        Debug.Assert(instance.transform.childCount == 0, "The MixedRealityToolkit should not have GameObject children!");
+                    }
+                };
+#endif // UNITY_EDITOR
+
+                if (HasActiveProfile)
+                {
+                    InitializeServiceLocator();
+                }
             }
         }
 
@@ -351,48 +422,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // Assigning the Instance to access is used Implicitly.
             MixedRealityToolkit access = Instance;
             return IsInitialized;
-        }
-
-        /// <summary>
-        /// Lock property for the Mixed Reality Toolkit to prevent reinitialization
-        /// </summary>
-        private readonly object initializedLock = new object();
-
-        private void InitializeInternal()
-        {
-            lock (initializedLock)
-            {
-                if (IsInitialized) { return; }
-
-                instance = this;
-
-                if (Application.isPlaying)
-                {
-                    DontDestroyOnLoad(instance.transform.root);
-                }
-
-                Application.quitting += ApplicationOnQuitting;
-
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.playModeStateChanged += playModeState =>
-                {
-                    if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode ||
-                        playModeState == UnityEditor.PlayModeStateChange.EnteredEditMode)
-                    {
-                        isApplicationQuitting = false;
-                    }
-
-                    if (playModeState == UnityEditor.PlayModeStateChange.ExitingEditMode && activeProfile == null)
-                    {
-                        UnityEditor.EditorApplication.isPlaying = false;
-                        UnityEditor.Selection.activeObject = Instance;
-                        UnityEditor.EditorGUIUtility.PingObject(Instance);
-                    }
-                };
-#endif // UNITY_EDITOR
-
-                Initialize();
-            }
         }
 
         private Transform mixedRealityPlayspace;
@@ -443,12 +472,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
         }
 
-        private void ApplicationOnQuitting()
+#if UNITY_EDITOR
+        private void OnValidate()
         {
-            isApplicationQuitting = true;
-            DisableAllServices();
-            DestroyAllServices();
+            if (!IsInitialized && !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                ConfirmInitialized();
+            }
         }
+#endif // UNITY_EDITOR
 
         private void Awake()
         {
@@ -467,8 +499,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
             else if (!IsInitialized)
             {
-                InitializeInternal();
-                searchForInstance = false;
+                InitializeInstance();
+            }
+            else
+            {
+                Debug.LogError("Failed to properly initialize the MixedRealityToolkit");
             }
         }
 
@@ -763,9 +798,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
             else
             {
-                foreach (var service in GetActiveServices(type))
+                var activeServices = GetActiveServices(type);
+
+                for (var i = 0; i < activeServices?.Count; i++)
                 {
-                    service.Disable();
+                    activeServices[i].Disable();
                 }
             }
         }
@@ -797,7 +834,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 var activeServices = GetActiveServices(type, serviceName);
 
-                for (var i = 0; i < activeServices.Count; i++)
+                for (var i = 0; i < activeServices?.Count; i++)
                 {
                     activeServices[i].Disable();
                 }
@@ -824,7 +861,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 var activeServices = GetActiveServices(type);
 
-                for (var i = 0; i < activeServices.Count; i++)
+                for (var i = 0; i < activeServices?.Count; i++)
                 {
                     activeServices[i].Enable();
                 }
@@ -858,7 +895,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 var activeServices = GetActiveServices(type, serviceName);
 
-                for (var i = 0; i < activeServices.Count; i++)
+                for (var i = 0; i < activeServices?.Count; i++)
                 {
                     activeServices[i].Enable();
                 }
@@ -1119,7 +1156,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (mixedRealityComponentsCount != MixedRealityComponents.Count)
             {
-                Initialize();
+                InitializeServiceLocator();
             }
 
             for (int i = 0; i < mixedRealityComponentsCount; i++)
