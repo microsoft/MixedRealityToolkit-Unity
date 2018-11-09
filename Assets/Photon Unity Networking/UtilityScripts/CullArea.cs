@@ -4,6 +4,7 @@ using UnityEngine;
 /// <summary>
 ///     Represents the cull area used for network culling.
 /// </summary>
+[HelpURL("https://doc.photonengine.com/en-us/pun/current/demos-and-tutorials/package-demos/culling-demo")]
 public class CullArea : MonoBehaviour
 {
     private const int MAX_NUMBER_OF_ALLOWED_CELLS = 250;
@@ -16,7 +17,7 @@ public class CullArea : MonoBehaviour
     ///     However increasing the first group ID decreases the maximum amount of allowed cells.
     ///     Allowed values are in range from 1 to 250.
     /// </summary>
-    public readonly int FIRST_GROUP_ID = 1;
+    public readonly byte FIRST_GROUP_ID = 1;
 
     /// <summary>
     ///     This represents the order in which updates are sent. 
@@ -51,7 +52,7 @@ public class CullArea : MonoBehaviour
     ///     who are in the same cell or interested in updates of the current cell.
     /// </summary>
     public readonly int[] SUBDIVISION_THIRD_LEVEL_ORDER = new int[12] { 0, 3, 2, 3, 1, 3, 2, 3, 1, 3, 2, 3 };
-    
+
     public Vector2 Center;
     public Vector2 Size = new Vector2(25.0f, 25.0f);
 
@@ -65,19 +66,19 @@ public class CullArea : MonoBehaviour
 
     public Dictionary<int, GameObject> Map { get; private set; }
 
-    public bool YIsUpAxis = true;
+    public bool YIsUpAxis = false;
     public bool RecreateCellHierarchy = false;
-        
-    private int idCounter;
-    
+
+    private byte idCounter;
+
     /// <summary>
     ///     Creates the cell hierarchy at runtime.
     /// </summary>
     private void Awake()
     {
-        idCounter = FIRST_GROUP_ID;
-        
-        CreateCellHierarchy();
+        this.idCounter = this.FIRST_GROUP_ID;
+
+        this.CreateCellHierarchy();
     }
 
     /// <summary>
@@ -85,14 +86,14 @@ public class CullArea : MonoBehaviour
     /// </summary>
     public void OnDrawGizmos()
     {
-        idCounter = FIRST_GROUP_ID;
-        
-        if (RecreateCellHierarchy)
+        this.idCounter = this.FIRST_GROUP_ID;
+
+        if (this.RecreateCellHierarchy)
         {
-            CreateCellHierarchy();
+            this.CreateCellHierarchy();
         }
-        
-        DrawCells();
+
+        this.DrawCells();
     }
 
     /// <summary>
@@ -100,47 +101,48 @@ public class CullArea : MonoBehaviour
     /// </summary>
     private void CreateCellHierarchy()
     {
-        if (!IsCellCountAllowed())
+        if (!this.IsCellCountAllowed())
         {
             if (Debug.isDebugBuild)
             {
-                Debug.LogError("There are too many cells created by your subdivision options. Maximum allowed number of cells is " + (MAX_NUMBER_OF_ALLOWED_CELLS - FIRST_GROUP_ID) + ". Current number of cells is " + CellCount + ".");
+                Debug.LogError("There are too many cells created by your subdivision options. Maximum allowed number of cells is " + (MAX_NUMBER_OF_ALLOWED_CELLS - this.FIRST_GROUP_ID) +
+                               ". Current number of cells is " + this.CellCount + ".");
                 return;
             }
             else
             {
                 Application.Quit();
-            }            
+            }
         }
-        
-        CellTreeNode rootNode = new CellTreeNode(idCounter++, CellTreeNode.ENodeType.Root, null);
 
-        if (YIsUpAxis)
+        CellTreeNode rootNode = new CellTreeNode(this.idCounter++, CellTreeNode.ENodeType.Root, null);
+
+        if (this.YIsUpAxis)
         {
-            Center = new Vector2(transform.position.x, transform.position.y);
-            Size = new Vector2(transform.localScale.x, transform.localScale.y);
+            this.Center = new Vector2(transform.position.x, transform.position.y);
+            this.Size = new Vector2(transform.localScale.x, transform.localScale.y);
 
-            rootNode.Center = new Vector3(Center.x, Center.y, 0.0f);
-            rootNode.Size = new Vector3(Size.x, Size.y, 0.0f);
-            rootNode.TopLeft = new Vector3((Center.x - (Size.x / 2.0f)), (Center.y - (Size.y / 2.0f)), 0.0f);
-            rootNode.BottomRight = new Vector3((Center.x + (Size.x / 2.0f)), (Center.y + (Size.y / 2.0f)), 0.0f);
+            rootNode.Center = new Vector3(this.Center.x, this.Center.y, 0.0f);
+            rootNode.Size = new Vector3(this.Size.x, this.Size.y, 0.0f);
+            rootNode.TopLeft = new Vector3((this.Center.x - (this.Size.x/2.0f)), (this.Center.y - (this.Size.y/2.0f)), 0.0f);
+            rootNode.BottomRight = new Vector3((this.Center.x + (this.Size.x/2.0f)), (this.Center.y + (this.Size.y/2.0f)), 0.0f);
         }
         else
         {
-            Center = new Vector2(transform.position.x, transform.position.z);
-            Size = new Vector2(transform.localScale.x, transform.localScale.z);
+            this.Center = new Vector2(transform.position.x, transform.position.z);
+            this.Size = new Vector2(transform.localScale.x, transform.localScale.z);
 
-            rootNode.Center = new Vector3(Center.x, 0.0f, Center.y);
-            rootNode.Size = new Vector3(Size.x, 0.0f, Size.y);
-            rootNode.TopLeft = new Vector3((Center.x - (Size.x / 2.0f)), 0.0f, (Center.y - (Size.y / 2.0f)));
-            rootNode.BottomRight = new Vector3((Center.x + (Size.x / 2.0f)), 0.0f, (Center.y + (Size.y / 2.0f)));
+            rootNode.Center = new Vector3(this.Center.x, 0.0f, this.Center.y);
+            rootNode.Size = new Vector3(this.Size.x, 0.0f, this.Size.y);
+            rootNode.TopLeft = new Vector3((this.Center.x - (this.Size.x/2.0f)), 0.0f, (this.Center.y - (this.Size.y/2.0f)));
+            rootNode.BottomRight = new Vector3((this.Center.x + (this.Size.x/2.0f)), 0.0f, (this.Center.y + (this.Size.y/2.0f)));
         }
 
-        CreateChildCells(rootNode, 1);
+        this.CreateChildCells(rootNode, 1);
 
-        CellTree = new CellTree(rootNode);
+        this.CellTree = new CellTree(rootNode);
 
-        RecreateCellHierarchy = false;
+        this.RecreateCellHierarchy = false;
     }
 
     /// <summary>
@@ -150,54 +152,53 @@ public class CullArea : MonoBehaviour
     /// <param name="cellLevelInHierarchy">The cell level within the current hierarchy.</param>
     private void CreateChildCells(CellTreeNode parent, int cellLevelInHierarchy)
     {
-        if (cellLevelInHierarchy > NumberOfSubdivisions)
+        if (cellLevelInHierarchy > this.NumberOfSubdivisions)
         {
             return;
         }
-        
-        int rowCount = (int) Subdivisions[(cellLevelInHierarchy - 1)].x;
-        int columnCount = (int) Subdivisions[(cellLevelInHierarchy - 1)].y;
 
-        float startX = parent.Center.x - (parent.Size.x / 2.0f);
-        float width = parent.Size.x / rowCount;
+        int rowCount = (int)this.Subdivisions[(cellLevelInHierarchy - 1)].x;
+        int columnCount = (int)this.Subdivisions[(cellLevelInHierarchy - 1)].y;
+
+        float startX = parent.Center.x - (parent.Size.x/2.0f);
+        float width = parent.Size.x/rowCount;
 
         for (int row = 0; row < rowCount; ++row)
         {
             for (int column = 0; column < columnCount; ++column)
             {
-                float xPos = startX + (row * width) + (width / 2.0f);
-                
-                CellTreeNode node = new CellTreeNode(idCounter++, (NumberOfSubdivisions == cellLevelInHierarchy) ? CellTreeNode.ENodeType.Leaf : CellTreeNode.ENodeType.Node, parent);
-                
-                if (YIsUpAxis)
+                float xPos = startX + (row*width) + (width/2.0f);
+
+                CellTreeNode node = new CellTreeNode(this.idCounter++, (this.NumberOfSubdivisions == cellLevelInHierarchy) ? CellTreeNode.ENodeType.Leaf : CellTreeNode.ENodeType.Node, parent);
+
+                if (this.YIsUpAxis)
                 {
-                    float startY = parent.Center.y - (parent.Size.y / 2.0f);
-                    float height = parent.Size.y / columnCount;
-                    float yPos = startY + (column * height) + (height / 2.0f);
+                    float startY = parent.Center.y - (parent.Size.y/2.0f);
+                    float height = parent.Size.y/columnCount;
+                    float yPos = startY + (column*height) + (height/2.0f);
 
                     node.Center = new Vector3(xPos, yPos, 0.0f);
                     node.Size = new Vector3(width, height, 0.0f);
-                    node.TopLeft = new Vector3(xPos - (width / 2.0f), yPos - (height / 2.0f), 0.0f);
-                    node.BottomRight = new Vector3(xPos + (width / 2.0f), yPos + (height / 2.0f), 0.0f);
+                    node.TopLeft = new Vector3(xPos - (width/2.0f), yPos - (height/2.0f), 0.0f);
+                    node.BottomRight = new Vector3(xPos + (width/2.0f), yPos + (height/2.0f), 0.0f);
                 }
                 else
                 {
-                    float startZ = parent.Center.z - (parent.Size.z / 2.0f);
-                    float depth = parent.Size.z / columnCount;
-                    float zPos = startZ + (column * depth) + (depth / 2.0f);
+                    float startZ = parent.Center.z - (parent.Size.z/2.0f);
+                    float depth = parent.Size.z/columnCount;
+                    float zPos = startZ + (column*depth) + (depth/2.0f);
 
                     node.Center = new Vector3(xPos, 0.0f, zPos);
                     node.Size = new Vector3(width, 0.0f, depth);
-                    node.TopLeft = new Vector3(xPos - (width / 2.0f), 0.0f, zPos - (depth / 2.0f));
-                    node.BottomRight = new Vector3(xPos + (width / 2.0f), 0.0f, zPos + (depth / 2.0f));
+                    node.TopLeft = new Vector3(xPos - (width/2.0f), 0.0f, zPos - (depth/2.0f));
+                    node.BottomRight = new Vector3(xPos + (width/2.0f), 0.0f, zPos + (depth/2.0f));
                 }
-                
+
                 parent.AddChild(node);
 
-                CreateChildCells(node, (cellLevelInHierarchy + 1));
+                this.CreateChildCells(node, (cellLevelInHierarchy + 1));
             }
         }
-
     }
 
     /// <summary>
@@ -205,13 +206,13 @@ public class CullArea : MonoBehaviour
     /// </summary>
     private void DrawCells()
     {
-        if ((CellTree != null) && (CellTree.RootNode != null))
+        if ((this.CellTree != null) && (this.CellTree.RootNode != null))
         {
-            CellTree.RootNode.Draw();
+            this.CellTree.RootNode.Draw();
         }
         else
         {
-            RecreateCellHierarchy = true;
+            this.RecreateCellHierarchy = true;
         }
     }
 
@@ -224,15 +225,15 @@ public class CullArea : MonoBehaviour
         int horizontalCells = 1;
         int verticalCells = 1;
 
-        foreach (Vector2 v in Subdivisions)
+        foreach (Vector2 v in this.Subdivisions)
         {
-            horizontalCells *= (int) v.x;
-            verticalCells *= (int) v.y;
+            horizontalCells *= (int)v.x;
+            verticalCells *= (int)v.y;
         }
 
-        CellCount = horizontalCells * verticalCells;
+        this.CellCount = horizontalCells*verticalCells;
 
-        return (CellCount <= (MAX_NUMBER_OF_ALLOWED_CELLS - FIRST_GROUP_ID));
+        return (this.CellCount <= (MAX_NUMBER_OF_ALLOWED_CELLS - this.FIRST_GROUP_ID));
     }
 
     /// <summary>
@@ -240,23 +241,12 @@ public class CullArea : MonoBehaviour
     /// </summary>
     /// <param name="position">The current position of the player.</param>
     /// <returns>A list containing all cell IDs the player is currently inside or nearby.</returns>
-    public List<int> GetActiveCells(Vector3 position)
+    public List<byte> GetActiveCells(Vector3 position)
     {
-        List<int> insideCells = new List<int>(0);
-        CellTree.RootNode.GetInsideCells(insideCells, YIsUpAxis, position);
+        List<byte> activeCells = new List<byte>(0);
+        this.CellTree.RootNode.GetActiveCells(activeCells, this.YIsUpAxis, position);
 
-        List<int> nearbyCells = new List<int>(0);
-        CellTree.RootNode.GetNearbyCells(nearbyCells, YIsUpAxis, position);
-        
-        foreach (int id in nearbyCells)
-        {
-            if (!insideCells.Contains(id))
-            {
-                insideCells.Add(id);
-            }
-        }
-
-        return insideCells;
+        return activeCells;
     }
 }
 
@@ -283,7 +273,7 @@ public class CellTree
     /// <param name="root">The root node of the tree.</param>
     public CellTree(CellTreeNode root)
     {
-        RootNode = root;
+        this.RootNode = root;
     }
 }
 
@@ -302,7 +292,7 @@ public class CellTreeNode
     /// <summary>
     ///     Represents the unique ID of the cell.
     /// </summary>
-    public int Id;
+    public byte Id;
 
     /// <summary>
     ///     Represents the center, top-left or bottom-right position of the cell
@@ -316,7 +306,7 @@ public class CellTreeNode
     public ENodeType NodeType;
 
     /// <summary>
-    ///     Reference tot he parent node.
+    ///     Reference to the parent node.
     /// </summary>
     public CellTreeNode Parent;
 
@@ -344,13 +334,13 @@ public class CellTreeNode
     /// <param name="id">The ID of the cell is used as the interest group.</param>
     /// <param name="nodeType">The node type of the cell tree node.</param>
     /// <param name="parent">The parent node of the cell tree node.</param>
-    public CellTreeNode(int id, ENodeType nodeType, CellTreeNode parent)
+    public CellTreeNode(byte id, ENodeType nodeType, CellTreeNode parent)
     {
-        Id = id;
+        this.Id = id;
 
-        NodeType = nodeType;
+        this.NodeType = nodeType;
 
-        Parent = parent;
+        this.Parent = parent;
     }
 
     /// <summary>
@@ -359,12 +349,12 @@ public class CellTreeNode
     /// <param name="child">The child which is added to the node.</param>
     public void AddChild(CellTreeNode child)
     {
-        if (Childs == null)
+        if (this.Childs == null)
         {
-            Childs = new List<CellTreeNode>(1);
+            this.Childs = new List<CellTreeNode>(1);
         }
 
-        Childs.Add(child);
+        this.Childs.Add(child);
     }
 
     /// <summary>
@@ -373,84 +363,56 @@ public class CellTreeNode
     public void Draw()
     {
 #if UNITY_EDITOR
-
-        if (Childs != null)
+        if (this.Childs != null)
         {
-            foreach (CellTreeNode node in Childs)
+            foreach (CellTreeNode node in this.Childs)
             {
                 node.Draw();
             }
         }
 
-        Gizmos.color = new Color((NodeType == ENodeType.Root) ? 1 : 0, (NodeType == ENodeType.Node) ? 1 : 0, (NodeType == ENodeType.Leaf) ? 1 : 0);
-        Gizmos.DrawWireCube(Center, Size);
+        Gizmos.color = new Color((this.NodeType == ENodeType.Root) ? 1 : 0, (this.NodeType == ENodeType.Node) ? 1 : 0, (this.NodeType == ENodeType.Leaf) ? 1 : 0);
+        Gizmos.DrawWireCube(this.Center, this.Size);
 
-        UnityEditor.Handles.Label(Center, Id.ToString(), new GUIStyle() { fontStyle = FontStyle.Bold });
-
+        UnityEditor.Handles.Label(this.Center, this.Id.ToString(), new GUIStyle() { fontStyle = FontStyle.Bold });
 #endif
     }
 
     /// <summary>
-    ///     Gathers all leaf nodes and adds them to a given list.
+    ///     Gathers all cell IDs the player is currently inside or nearby.
     /// </summary>
-    /// <param name="leafNodes">The list containing all gathered leaf nodes.</param>
-    public void GetAllLeafNodes(List<CellTreeNode> leafNodes)
+    /// <param name="activeCells">The list to add all cell IDs to the player is currently inside or nearby.</param>
+    /// <param name="yIsUpAxis">Describes if the y-axis is used as up-axis.</param>
+    /// <param name="position">The current position of the player.</param>
+    public void GetActiveCells(List<byte> activeCells, bool yIsUpAxis, Vector3 position)
     {
-        if (Childs != null)
+        if (this.NodeType != ENodeType.Leaf)
         {
-            foreach (CellTreeNode node in Childs)
+            foreach (CellTreeNode node in this.Childs)
             {
-                node.GetAllLeafNodes(leafNodes);
+                node.GetActiveCells(activeCells, yIsUpAxis, position);
             }
         }
         else
         {
-            leafNodes.Add(this);
-        }
-    }
-
-    /// <summary>
-    ///     Gathers all cell IDs the player is currently inside.
-    /// </summary>
-    /// <param name="insideCells">The list to add all cell IDs to the player is currently inside.</param>
-    /// <param name="yIsUpAxis">Describes if the y-axis is used as up-axis.</param>
-    /// <param name="position">The current position of the player</param>
-    public void GetInsideCells(List<int> insideCells, bool yIsUpAxis, Vector3 position)
-    {
-        if (IsPointInsideCell(yIsUpAxis, position))
-        {
-            insideCells.Add(Id);
-
-            if (Childs != null)
+            if (this.IsPointNearCell(yIsUpAxis, position))
             {
-                foreach (CellTreeNode node in Childs)
+                if (this.IsPointInsideCell(yIsUpAxis, position))
                 {
-                    node.GetInsideCells(insideCells, yIsUpAxis, position);
-                }
-            }
-        }
-    }
+                    activeCells.Insert(0, this.Id);
 
-    /// <summary>
-    ///     Gathers all cell IDs the palyer is currently nearby.
-    /// </summary>
-    /// <param name="nearbyCells">The list to add all cell IDs to the player is currently nearby.</param>
-    /// <param name="yIsUpAxis">Describes if the y-axis is used as up-axis.</param>
-    /// <param name="position">The current position of the player</param>
-    public void GetNearbyCells(List<int> nearbyCells, bool yIsUpAxis, Vector3 position)
-    {
-        if (IsPointNearCell(yIsUpAxis, position))
-        {
-            if (NodeType != ENodeType.Leaf)
-            {
-                foreach (CellTreeNode node in Childs)
-                {
-                    node.GetNearbyCells(nearbyCells, yIsUpAxis, position);
+                    CellTreeNode p = this.Parent;
+                    while (p != null)
+                    {
+                        activeCells.Insert(0, p.Id);
+
+                        p = p.Parent;
+                    }
                 }
-            }
-            else
-            {
-                nearbyCells.Add(Id);
+                else
+                {
+                    activeCells.Add(this.Id);
+                }
             }
         }
     }
@@ -463,21 +425,21 @@ public class CellTreeNode
     /// <returns>True if the point is inside the cell, false if the point is not inside the cell.</returns>
     public bool IsPointInsideCell(bool yIsUpAxis, Vector3 point)
     {
-        if ((point.x < TopLeft.x) || (point.x > BottomRight.x))
+        if ((point.x < this.TopLeft.x) || (point.x > this.BottomRight.x))
         {
             return false;
         }
 
         if (yIsUpAxis)
         {
-            if ((point.y >= TopLeft.y) && (point.y <= BottomRight.y))
+            if ((point.y >= this.TopLeft.y) && (point.y <= this.BottomRight.y))
             {
                 return true;
             }
         }
         else
         {
-            if ((point.z >= TopLeft.z) && (point.z <= BottomRight.z))
+            if ((point.z >= this.TopLeft.z) && (point.z <= this.BottomRight.z))
             {
                 return true;
             }
@@ -494,11 +456,11 @@ public class CellTreeNode
     /// <returns>True if the point is near the cell, false if the point is too far away.</returns>
     public bool IsPointNearCell(bool yIsUpAxis, Vector3 point)
     {
-        if (maxDistance == 0.0f)
+        if (this.maxDistance == 0.0f)
         {
-            maxDistance = (Size.x + Size.y + Size.z) / 2.0f;
+            this.maxDistance = (this.Size.x + this.Size.y + this.Size.z)/2.0f;
         }
 
-        return ((point - Center).sqrMagnitude <= (maxDistance * maxDistance));
+        return ((point - this.Center).sqrMagnitude <= (this.maxDistance*this.maxDistance));
     }
 }

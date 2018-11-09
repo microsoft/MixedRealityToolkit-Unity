@@ -5,7 +5,7 @@ using UnityEngine;
 [CustomEditor(typeof(CullArea))]
 public class CullAreaEditor : Editor
 {
-    private bool alignEditorCamera;
+    private bool alignEditorCamera, showHelpEntries;
 
     private CullArea cullArea;
     
@@ -145,6 +145,26 @@ public class CullAreaEditor : Editor
             cullArea.RecreateCellHierarchy = true;
 
             AlignEditorView();
+        }
+
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+
+        showHelpEntries = EditorGUILayout.Foldout(showHelpEntries, "Need help with this component?");
+        if (showHelpEntries)
+        {
+            EditorGUILayout.HelpBox("To find help you can either follow the tutorial or have a look at the forums by clicking on the buttons below.", MessageType.Info);
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Open the tutorial"))
+            {
+                Application.OpenURL("https://doc.photonengine.com/en-us/pun/current/demos-and-tutorials/package-demos/culling-demo");
+            }
+            if (GUILayout.Button("Take me to the forums"))
+            {
+                Application.OpenURL("https://forum.photonengine.com/categories/unity-networking-plugin-pun");
+            }
+            EditorGUILayout.EndHorizontal();
         }
     }
 

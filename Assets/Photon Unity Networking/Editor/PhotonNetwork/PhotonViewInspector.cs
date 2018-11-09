@@ -8,15 +8,17 @@
 // <author>developer@exitgames.com</author>
 // ----------------------------------------------------------------------------
 
-#if UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2
+#if UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2 || UNITY_5_4_OR_NEWER
 #define UNITY_MIN_5_3
 #endif
 
 
 using System;
-using Rotorz.ReorderableList.Internal;
 using UnityEditor;
 using UnityEngine;
+
+using Photon.Pun;
+
 
 [CustomEditor(typeof (PhotonView))]
 public class PhotonViewInspector : Editor
@@ -51,7 +53,7 @@ public class PhotonViewInspector : Editor
         else
         {
             PhotonPlayer owner = this.m_Target.owner;
-            string ownerInfo = (owner != null) ? owner.name : "<no PhotonPlayer found>";
+            string ownerInfo = (owner != null) ? owner.NickName : "<no PhotonPlayer found>";
 
             if (string.IsNullOrEmpty(ownerInfo))
             {
@@ -97,18 +99,12 @@ public class PhotonViewInspector : Editor
             }
         }
 
-
         // Locally Controlled
         if (EditorApplication.isPlaying)
         {
             string masterClientHint = PhotonNetwork.isMasterClient ? "(master)" : "";
             EditorGUILayout.Toggle("Controlled locally: " + masterClientHint, this.m_Target.isMine);
         }
-
-
-        //DrawOldObservedItem();
-        ConvertOldObservedItemToObservedList();
-
 
         // ViewSynchronization (reliability)
         if (this.m_Target.synchronization == ViewSynchronization.Off)
@@ -125,16 +121,6 @@ public class PhotonViewInspector : Editor
             GUILayout.Label("Setting the synchronization option only makes sense if you observe something.");
             GUILayout.EndVertical();
         }
-
-        /*ViewSynchronization vsValue = (ViewSynchronization)EditorGUILayout.EnumPopup("Observe option:", m_Target.synchronization);
-        if (vsValue != m_Target.synchronization)
-        {
-            m_Target.synchronization = vsValue;
-            if (m_Target.synchronization != ViewSynchronization.Off && m_Target.observed == null)
-            {
-                EditorUtility.DisplayDialog("Warning", "Setting the synchronization option only makes sense if you observe something.", "OK, I will fix it.");
-            }
-        }*/
 
         DrawSpecificTypeSerializationOptions();
 
@@ -158,106 +144,17 @@ public class PhotonViewInspector : Editor
 
     private void DrawSpecificTypeSerializationOptions()
     {
-        if (this.m_Target.ObservedComponents.FindAll(item => item != null && item.GetType() == typeof (Transform)).Count > 0 ||
-            (this.m_Target.observed != null && this.m_Target.observed.GetType() == typeof (Transform)))
+        if (this.m_Target.ObservedComponents.FindAll(item => item != null && item.GetType() == typeof (Transform)).Count > 0)
         {
             this.m_Target.onSerializeTransformOption = (OnSerializeTransform)EditorGUILayout.EnumPopup("Transform Serialization:", this.m_Target.onSerializeTransformOption);
         }
         else if (this.m_Target.ObservedComponents.FindAll(item => item != null && item.GetType() == typeof (Rigidbody)).Count > 0 ||
-                 (this.m_Target.observed != null && this.m_Target.observed.GetType() == typeof (Rigidbody)) ||
-                 this.m_Target.ObservedComponents.FindAll(item => item != null && item.GetType() == typeof (Rigidbody2D)).Count > 0 ||
-                 (this.m_Target.observed != null && this.m_Target.observed.GetType() == typeof (Rigidbody2D)))
+                 this.m_Target.ObservedComponents.FindAll(item => item != null && item.GetType() == typeof (Rigidbody2D)).Count > 0)
         {
             this.m_Target.onSerializeRigidBodyOption = (OnSerializeRigidBody)EditorGUILayout.EnumPopup("Rigidbody Serialization:", this.m_Target.onSerializeRigidBodyOption);
         }
     }
 
-    private void DrawSpecificTypeOptions()
-    {
-        if (this.m_Target.observed != null)
-        {
-            Type type = this.m_Target.observed.GetType();
-            if (type == typeof (Transform))
-            {
-                this.m_Target.onSerializeTransformOption = (OnSerializeTransform)EditorGUILayout.EnumPopup("Serialization:", this.m_Target.onSerializeTransformOption);
-            }
-            else if (type == typeof (Rigidbody))
-            {
-                this.m_Target.onSerializeRigidBodyOption = (OnSerializeRigidBody)EditorGUILayout.EnumPopup("Serialization:", this.m_Target.onSerializeRigidBodyOption);
-            }
-        }
-    }
-
-    private void ConvertOldObservedItemToObservedList()
-    {
-        if (Application.isPlaying)
-        {
-            return;
-        }
-
-        if (this.m_Target.observed != null)
-        {
-            Undo.RecordObject(this.m_Target, null);
-            if (this.m_Target.ObservedComponents.Contains(this.m_Target.observed) == false)
-            {
-                bool wasAdded = false;
-
-                for (int i = 0; i < this.m_Target.ObservedComponents.Count; ++i)
-                {
-                    if (this.m_Target.ObservedComponents[i] == null)
-                    {
-                        this.m_Target.ObservedComponents[i] = this.m_Target.observed;
-                        wasAdded = true;
-                    }
-                }
-
-                if (wasAdded == false)
-                {
-                    this.m_Target.ObservedComponents.Add(this.m_Target.observed);
-                }
-            }
-
-            this.m_Target.observed = null;
-            #if !UNITY_MIN_5_3
-            EditorUtility.SetDirty(this.m_Target);
-            #endif
-        }
-    }
-
-
-    private void DrawOldObservedItem()
-    {
-        EditorGUILayout.BeginHorizontal();
-
-        // Using a lower version then 3.4? Remove the TRUE in the next line to fix an compile error
-        string typeOfObserved = string.Empty;
-        if (this.m_Target.observed != null)
-        {
-            int firstBracketPos = this.m_Target.observed.ToString().LastIndexOf('(');
-            if (firstBracketPos > 0)
-            {
-                typeOfObserved = this.m_Target.observed.ToString().Substring(firstBracketPos);
-            }
-        }
-
-
-        Component componenValue = (Component)EditorGUILayout.ObjectField("Observe: " + typeOfObserved, this.m_Target.observed, typeof (Component), true);
-        if (this.m_Target.observed != componenValue)
-        {
-            if (this.m_Target.observed == null)
-            {
-                this.m_Target.synchronization = ViewSynchronization.UnreliableOnChange; // if we didn't observe anything yet. use unreliable on change as default
-            }
-            if (componenValue == null)
-            {
-                this.m_Target.synchronization = ViewSynchronization.Off;
-            }
-
-            this.m_Target.observed = componenValue;
-        }
-
-        EditorGUILayout.EndHorizontal();
-    }
 
     private int GetObservedComponentsCount()
     {
@@ -373,7 +270,7 @@ public class PhotonViewInspector : Editor
         return (EditorUtility.GetPrefabParent(mp) as GameObject);
         #else
         // Unity 3.5 uses PrefabUtility
-        return PrefabUtility.GetPrefabParent(mp) as GameObject;
+        return PrefabUtility.GetCorrespondingObjectFromSource(mp) as GameObject;
         #endif
     }
 }

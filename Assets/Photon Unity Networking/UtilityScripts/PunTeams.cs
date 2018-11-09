@@ -20,7 +20,7 @@ public class PunTeams : MonoBehaviour
     /// <summary>The main list of teams with their player-lists. Automatically kept up to date.</summary>
     /// <remarks>Note that this is static. Can be accessed by PunTeam.PlayersPerTeam. You should not modify this.</remarks>
     public static Dictionary<Team, List<PhotonPlayer>> PlayersPerTeam;
-    
+
     /// <summary>Defines the player custom property name to use for team affinity of "this" player.</summary>
     public const string TeamPlayerProp = "team";
 
@@ -46,7 +46,7 @@ public class PunTeams : MonoBehaviour
     /// <remarks>Called by PUN. See enum PhotonNetworkingMessage for an explanation.</remarks>
     public void OnJoinedRoom()
     {
-        
+
         this.UpdateTeams();
     }
 
@@ -61,7 +61,7 @@ public class PunTeams : MonoBehaviour
     {
         this.UpdateTeams();
     }
-    
+
 	public void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
 	{
 		this.UpdateTeams();
@@ -73,11 +73,10 @@ public class PunTeams : MonoBehaviour
 	}
 
     #endregion
-    
+
 
     public void UpdateTeams()
     {
-		//Debug.Log("PunTeams : UpdateTeams");
         Array enumVals = Enum.GetValues(typeof(Team));
         foreach (var enumVal in enumVals)
         {
@@ -101,7 +100,7 @@ public static class TeamExtensions
     public static PunTeams.Team GetTeam(this PhotonPlayer player)
     {
         object teamId;
-        if (player.customProperties.TryGetValue(PunTeams.TeamPlayerProp, out teamId))
+        if (player.CustomProperties.TryGetValue(PunTeams.TeamPlayerProp, out teamId))
         {
             return (PunTeams.Team)teamId;
         }

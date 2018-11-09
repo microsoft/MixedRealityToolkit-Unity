@@ -31,7 +31,7 @@ public class PickupItemSimple : Photon.MonoBehaviour
             // skip sending more pickups until the original pickup-RPC got back to this client
             return;
         }
-        
+
         this.SentPickup = true;
         this.photonView.RPC("PunPickupSimple", PhotonTargets.AllViaServer);
     }
@@ -41,7 +41,7 @@ public class PickupItemSimple : Photon.MonoBehaviour
     {
         // one of the messages might be ours
         // note: you could check "active" first, if you're not interested in your own, failed pickup-attempts.
-        if (this.SentPickup && msgInfo.sender.isLocal)
+        if (this.SentPickup && msgInfo.sender.IsLocal)
         {
             if (this.gameObject.GetActive())
             {
@@ -60,7 +60,7 @@ public class PickupItemSimple : Photon.MonoBehaviour
             Debug.Log("Ignored PU RPC, cause item is inactive. " + this.gameObject);
             return;
         }
-        
+
 
         // how long it is until this item respanws, depends on the pickup time and the respawn time
         double timeSinceRpcCall = (PhotonNetwork.time - msgInfo.timestamp);
@@ -69,7 +69,7 @@ public class PickupItemSimple : Photon.MonoBehaviour
 
         if (timeUntilRespawn > 0)
         {
-            // this script simply disables the GO for a while until it respawns. 
+            // this script simply disables the GO for a while until it respawns.
             this.gameObject.SetActive(false);
             Invoke("RespawnAfter", timeUntilRespawn);
         }

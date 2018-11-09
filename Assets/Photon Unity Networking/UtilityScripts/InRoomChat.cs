@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
@@ -75,9 +75,9 @@ public class InRoomChat : Photon.MonoBehaviour
 
         if (mi.sender != null)
         {
-            if (!string.IsNullOrEmpty(mi.sender.name))
+            if (!string.IsNullOrEmpty(mi.sender.NickName))
             {
-                senderName = mi.sender.name;
+                senderName = mi.sender.NickName;
             }
             else
             {

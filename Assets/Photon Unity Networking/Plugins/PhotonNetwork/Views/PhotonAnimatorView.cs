@@ -73,7 +73,7 @@ public class PhotonAnimatorView : MonoBehaviour, IPunObservable
 
     private PhotonStreamQueue m_StreamQueue;
 
-    //These fields are only used in the CustomEditor for this script and would trigger a 
+    //These fields are only used in the CustomEditor for this script and would trigger a
     //"this variable is never used" warning, which I am suppressing here
 #pragma warning disable 0414
     [HideInInspector]
@@ -123,7 +123,7 @@ public class PhotonAnimatorView : MonoBehaviour, IPunObservable
             this.m_Animator.applyRootMotion = false;
         }
 
-        if (PhotonNetwork.inRoom == false || PhotonNetwork.room.playerCount <= 1)
+        if (PhotonNetwork.inRoom == false || PhotonNetwork.room.PlayerCount <= 1)
         {
             this.m_StreamQueue.Reset();
             return;

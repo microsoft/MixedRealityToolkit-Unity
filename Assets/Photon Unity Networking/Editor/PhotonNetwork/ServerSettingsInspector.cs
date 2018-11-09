@@ -8,33 +8,53 @@
 // <author>developer@exitgames.com</author>
 // ----------------------------------------------------------------------------
 
-#define PHOTON_VOICE
-
 using System;
 using ExitGames.Client.Photon;
 using UnityEditor;
 using UnityEngine;
 
+
 [CustomEditor(typeof (ServerSettings))]
 public class ServerSettingsInspector : Editor
 {
-    public enum ProtocolChoices
-    {
-        Udp = ConnectionProtocol.Udp,
-        Tcp = ConnectionProtocol.Tcp
-    } // has to be extended when rHTTP becomes available
-
     private bool showMustHaveRegion;
-    private bool showAppIdHint;
-#if PHOTON_VOICE
-    private bool showVoiceAppIdHint;
-#endif
+	private CloudRegionCode lastUsedRegion;
+    private ServerConnection lastServer;
+
+
+    public void OnEnable()
+    {
+		this.lastUsedRegion = ServerSettings.BestRegionCodeInPreferences;
+		EditorApplication.update += this.OnUpdate;
+	}
+
+
+	public void OnDisable()
+	{
+		EditorApplication.update -= this.OnUpdate;
+	}
+
+
+	private void OnUpdate()
+	{
+        if (this.lastUsedRegion != ServerSettings.BestRegionCodeInPreferences)
+		{
+            this.lastUsedRegion = ServerSettings.BestRegionCodeInPreferences;
+			Repaint();
+		}
+        // this won't repaint when we disconnect but it's "good enough" to update when we connect and switch servers.
+	    if (Application.isPlaying && this.lastServer != PhotonNetwork.Server)
+	    {
+	        this.lastServer = PhotonNetwork.Server;
+	        Repaint();
+	    }
+	}
+
 
     public override void OnInspectorGUI()
     {
         ServerSettings settings = (ServerSettings) target;
         Undo.RecordObject(settings, "Edit PhotonServerSettings");
-
         settings.HostType = (ServerSettings.HostingOption) EditorGUILayout.EnumPopup("Hosting", settings.HostType);
         EditorGUI.indentLevel = 1;
 
@@ -47,36 +67,96 @@ public class ServerSettingsInspector : Editor
                 {
                     settings.PreferredRegion = (CloudRegionCode)EditorGUILayout.EnumPopup("Region", settings.PreferredRegion);
                 }
-                else
+		else // Bestregion
                 {
-                    CloudRegionFlag valRegions = (CloudRegionFlag)EditorGUILayout.EnumMaskField("Enabled Regions", settings.EnabledRegions);
+                    string _regionFeedback = "Prefs:"+ServerSettings.BestRegionCodeInPreferences.ToString();
 
-                    if (valRegions != settings.EnabledRegions)
-                    {
-                        settings.EnabledRegions = valRegions;
-                        this.showMustHaveRegion = valRegions == 0;
-                    }
-                    if (this.showMustHaveRegion)
-                    {
-                        EditorGUILayout.HelpBox("You should enable at least two regions for 'Best Region' hosting.", MessageType.Warning);
-                    }
+                    // the NameServer does not have a region itself. it's global (although it has regional instances)
+					if (PhotonNetwork.connected && PhotonNetwork.Server != ServerConnection.NameServer)
+					{
+					    _regionFeedback = "Current:" + PhotonNetwork.CloudRegion + " " + _regionFeedback;
+					}
+
+					EditorGUILayout.BeginHorizontal ();
+					EditorGUILayout.PrefixLabel (" ");
+					Rect rect = GUILayoutUtility.GetRect(new GUIContent(_regionFeedback),"Label");
+					int indentLevel = EditorGUI.indentLevel;
+					EditorGUI.indentLevel = 0;
+					EditorGUI.LabelField (rect, _regionFeedback);
+					EditorGUI.indentLevel = indentLevel;
+
+					rect.x += rect.width-39;
+					rect.width = 39;
+
+					rect.height -=2;
+					if (GUI.Button(rect,"Reset",EditorStyles.miniButton))
+					{
+						ServerSettings.ResetBestRegionCodeInPreferences();
+					}
+					EditorGUILayout.EndHorizontal ();
+
+
+				// Dashboard region settings
+				EditorGUILayout.BeginHorizontal ();
+				EditorGUILayout.PrefixLabel ("Regions");
+				Rect rect2 = GUILayoutUtility.GetRect(new GUIContent("Online WhiteList"),"Label");
+				if (!string.IsNullOrEmpty(settings.AppID))
+				{
+				int indentLevel2 = EditorGUI.indentLevel;
+				EditorGUI.indentLevel = 0;
+				EditorGUI.LabelField (rect2, "Online WhiteList");
+				EditorGUI.indentLevel = indentLevel2;
+
+				rect2.x += rect2.width-80;
+				rect2.width = 80;
+
+				rect2.height -=2;
+				if (GUI.Button(rect2,"Dashboard",EditorStyles.miniButton))
+				{
+					Application.OpenURL("https://www.photonengine.com/en-US/Dashboard/Manage/"+settings.AppID);
+				}
+				}else{
+					GUI.Label(rect2,"n/a");
+				}
+
+				EditorGUILayout.EndHorizontal ();
+
+
+				EditorGUI.indentLevel ++;
+				#if UNITY_2017_3_OR_NEWER
+				CloudRegionFlag valRegions = (CloudRegionFlag)EditorGUILayout.EnumFlagsField(" ", settings.EnabledRegions);
+				#else
+				CloudRegionFlag valRegions = (CloudRegionFlag)EditorGUILayout.EnumMaskField(" ", settings.EnabledRegions);
+				#endif
+
+                if (valRegions != settings.EnabledRegions)
+                {
+                    settings.EnabledRegions = valRegions;
+                    this.showMustHaveRegion = valRegions == 0;
+                }
+                if (this.showMustHaveRegion)
+                {
+                    EditorGUILayout.HelpBox("You should enable at least two regions for 'Best Region' hosting.", MessageType.Warning);
+                }
+
+				EditorGUI.indentLevel --;
+
                 }
 
                 // appid
                 string valAppId = EditorGUILayout.TextField("AppId", settings.AppID);
                 if (valAppId != settings.AppID)
                 {
-                    settings.AppID = valAppId;
-                    this.showAppIdHint = !IsAppId(settings.AppID);
+                    settings.AppID = valAppId.Trim();
                 }
-                if (this.showAppIdHint)
+                if (!ServerSettings.IsAppId(settings.AppID))
                 {
-                    EditorGUILayout.HelpBox("The Photon Cloud needs an AppId (GUID) set.\nYou can find it online in your Dashboard.", MessageType.Warning);
+                    EditorGUILayout.HelpBox("PUN needs an AppId (GUID).\nFind it online in the Dashboard.", MessageType.Warning);
                 }
 
                 // protocol
-                ProtocolChoices valProtocol = settings.Protocol == ConnectionProtocol.Tcp ? ProtocolChoices.Tcp : ProtocolChoices.Udp;
-                valProtocol = (ProtocolChoices) EditorGUILayout.EnumPopup("Protocol", valProtocol);
+                ConnectionProtocol valProtocol = settings.Protocol;
+                valProtocol = (ConnectionProtocol) EditorGUILayout.EnumPopup("Protocol", valProtocol);
                 settings.Protocol = (ConnectionProtocol) valProtocol;
                 #if UNITY_WEBGL
                 EditorGUILayout.HelpBox("WebGL always use Secure WebSockets as protocol.\nThis setting gets ignored in current export.", MessageType.Warning);
@@ -108,15 +188,16 @@ public class ServerSettingsInspector : Editor
                     settings.ServerPort = EditorGUILayout.IntField("Server Port", settings.ServerPort);
                 }
                 // protocol
-                valProtocol = settings.Protocol == ConnectionProtocol.Tcp ? ProtocolChoices.Tcp : ProtocolChoices.Udp;
-                valProtocol = (ProtocolChoices) EditorGUILayout.EnumPopup("Protocol", valProtocol);
-                settings.Protocol = (ConnectionProtocol) valProtocol;
+                valProtocol = settings.Protocol;
+                valProtocol = (ConnectionProtocol)EditorGUILayout.EnumPopup("Protocol", valProtocol);
+                settings.Protocol = (ConnectionProtocol)valProtocol;
                 #if UNITY_WEBGL
                 EditorGUILayout.HelpBox("WebGL always use Secure WebSockets as protocol.\nThis setting gets ignored in current export.", MessageType.Warning);
                 #endif
 
                 // appid
                 settings.AppID = EditorGUILayout.TextField("AppId", settings.AppID);
+                settings.AppID = settings.AppID.Trim();
                 break;
 
             case ServerSettings.HostingOption.OfflineMode:
@@ -134,15 +215,102 @@ public class ServerSettingsInspector : Editor
                 break;
         }
 
+        if (PhotonEditor.CheckPunPlus())
+        {
+            settings.Protocol = ConnectionProtocol.Udp;
+            EditorGUILayout.HelpBox("You seem to use PUN+.\nPUN+ only supports reliable UDP so the protocol is locked.", MessageType.Info);
+        }
+
+
+
+        // CHAT SETTINGS
+        if (PhotonEditorUtils.HasChat)
+        {
+            GUILayout.Space(5);
+            EditorGUI.indentLevel = 0;
+            EditorGUILayout.LabelField("Photon Chat Settings");
+            EditorGUI.indentLevel = 1;
+            string valChatAppid = EditorGUILayout.TextField("Chat AppId", settings.ChatAppID);
+            if (valChatAppid != settings.ChatAppID)
+            {
+                settings.ChatAppID = valChatAppid.Trim();
+            }
+            if (!ServerSettings.IsAppId(settings.ChatAppID))
+            {
+                EditorGUILayout.HelpBox("Photon Chat needs an AppId (GUID).\nFind it online in the Dashboard.", MessageType.Warning);
+            }
+
+            EditorGUI.indentLevel = 0;
+        }
+
+
+
+        // VOICE SETTINGS
+        if (PhotonEditorUtils.HasVoice)
+        {
+            GUILayout.Space(5);
+            EditorGUI.indentLevel = 0;
+            EditorGUILayout.LabelField("Photon Voice Settings");
+            EditorGUI.indentLevel = 1;
+            switch (settings.HostType)
+            {
+                case ServerSettings.HostingOption.BestRegion:
+                case ServerSettings.HostingOption.PhotonCloud:
+                    // voice appid
+                    string valVoiceAppId = EditorGUILayout.TextField("Voice AppId", settings.VoiceAppID);
+                    if (valVoiceAppId != settings.VoiceAppID)
+                    {
+                        settings.VoiceAppID = valVoiceAppId.Trim();
+                    }
+                    if (!ServerSettings.IsAppId(settings.VoiceAppID))
+                    {
+                        EditorGUILayout.HelpBox("Photon Voice needs an AppId (GUID).\nFind it online in the Dashboard.", MessageType.Warning);
+                    }
+                    break;
+                case ServerSettings.HostingOption.SelfHosted:
+                    if (settings.VoiceServerPort == 0)
+                    {
+                        settings.VoiceServerPort = 5055;
+                    }
+                    settings.VoiceServerPort = EditorGUILayout.IntField("Server Port UDP", settings.VoiceServerPort);
+                    break;
+                case ServerSettings.HostingOption.OfflineMode:
+                case ServerSettings.HostingOption.NotSet:
+                    break;
+            }
+            EditorGUI.indentLevel = 0;
+        }
+
+
+
+        // PUN Client Settings
+        GUILayout.Space(5);
         EditorGUI.indentLevel = 0;
         EditorGUILayout.LabelField("Client Settings");
         EditorGUI.indentLevel = 1;
         //EditorGUILayout.LabelField("game version");
         settings.JoinLobby = EditorGUILayout.Toggle("Auto-Join Lobby", settings.JoinLobby);
         settings.EnableLobbyStatistics = EditorGUILayout.Toggle("Enable Lobby Stats", settings.EnableLobbyStatistics);
+
+		// Pun Logging Level
+		PhotonLogLevel _PunLogging = (PhotonLogLevel)EditorGUILayout.EnumPopup("Pun Logging", settings.PunLogging);
+		if (EditorApplication.isPlaying && PhotonNetwork.logLevel!=_PunLogging)
+		{
+			PhotonNetwork.logLevel = _PunLogging;
+		}
+		settings.PunLogging = _PunLogging;
+
+		// Network Logging Level
+		DebugLevel _DebugLevel = (DebugLevel)EditorGUILayout.EnumPopup("Network Logging", settings.NetworkLogging);
+		if (EditorApplication.isPlaying && settings.NetworkLogging!=_DebugLevel)
+		{
+			settings.NetworkLogging = _DebugLevel;
+		}
+		settings.NetworkLogging = _DebugLevel;
+
+
         //EditorGUILayout.LabelField("automaticallySyncScene");
         //EditorGUILayout.LabelField("autoCleanUpPlayerObjects");
-        //EditorGUILayout.LabelField("log level");
         //EditorGUILayout.LabelField("lobby stats");
         //EditorGUILayout.LabelField("sendrate / serialize rate");
         //EditorGUILayout.LabelField("quick resends");
@@ -150,16 +318,17 @@ public class ServerSettingsInspector : Editor
         //EditorGUILayout.LabelField("enable crc checking");
 
 
-        if (PhotonEditor.CheckPunPlus())
-        {
-            settings.Protocol = ConnectionProtocol.Udp;
-            EditorGUILayout.HelpBox("You seem to use PUN+.\nPUN+ only supports reliable UDP so the protocol is locked.", MessageType.Info);
-        }
+		// Application settings
+		GUILayout.Space(5);
+		EditorGUI.indentLevel = 0;
+		EditorGUILayout.LabelField("Build Settings");
+		EditorGUI.indentLevel = 1;
 
-        settings.AppID = settings.AppID.Trim();
+		settings.RunInBackground = EditorGUILayout.Toggle("Run In Background", settings.RunInBackground);
 
 
         // RPC-shortcut list
+        GUILayout.Space(5);
         EditorGUI.indentLevel = 0;
         SerializedObject sObj = new SerializedObject(target);
         SerializedProperty sRpcs = sObj.FindProperty("RpcList");
@@ -184,38 +353,6 @@ public class ServerSettingsInspector : Editor
         GUILayout.Space(20);
         GUILayout.EndHorizontal();
 
-#if PHOTON_VOICE
-        GUILayout.Space(20);
-        EditorGUILayout.LabelField("Photon Voice Settings");
-        switch (settings.HostType)
-        {
-            case ServerSettings.HostingOption.BestRegion:
-            case ServerSettings.HostingOption.PhotonCloud:
-                // voice appid
-                string valVoiceAppId = EditorGUILayout.TextField("Voice AppId", settings.VoiceAppID);
-                if (valVoiceAppId != settings.VoiceAppID)
-                {
-                    settings.VoiceAppID = valVoiceAppId;
-                    this.showVoiceAppIdHint = !IsAppId(settings.VoiceAppID);
-                }
-                if (this.showVoiceAppIdHint)
-                {
-                    EditorGUILayout.HelpBox("The Photon Voice needs an AppId (GUID) set.\nYou can find it online in your Dashboard.", MessageType.Warning);
-                }
-                break;
-            case ServerSettings.HostingOption.SelfHosted:
-                if (settings.VoiceServerPort == 0)
-                {
-                    settings.VoiceServerPort = 5055;
-                }
-                settings.VoiceServerPort = EditorGUILayout.IntField("Voice Server Port", settings.VoiceServerPort);
-                break;
-            case ServerSettings.HostingOption.OfflineMode:
-            case ServerSettings.HostingOption.NotSet:
-                break;
-        }
-        
-#endif
 
         //SerializedProperty sp = serializedObject.FindProperty("RpcList");
         //EditorGUILayout.PropertyField(sp, true);
@@ -237,21 +374,5 @@ public class ServerSettingsInspector : Editor
         }
 
         return hashCode;
-    }
-
-    /// <summary>Checks if a string is a Guid by attempting to create one.</summary>
-    /// <param name="val">The potential guid to check.</param>
-    /// <returns>True if new Guid(val) did not fail.</returns>
-    public static bool IsAppId(string val)
-    {
-        try
-        {
-            new Guid(val);
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
     }
 }

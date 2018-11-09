@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using Rotorz.ReorderableList.Internal;
+
+using Photon.Pun;
 
 public class PhotonGUI
 {

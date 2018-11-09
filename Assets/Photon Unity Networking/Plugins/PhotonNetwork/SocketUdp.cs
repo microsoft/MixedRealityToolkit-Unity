@@ -32,7 +32,7 @@ namespace ExitGames.Client.Photon
                 this.Listener.DebugReturn(DebugLevel.ALL, "CSharpSocket: UDP, Unity3d.");
             }
 
-            this.Protocol = ConnectionProtocol.Udp;
+            //this.Protocol = ConnectionProtocol.Udp;
             this.PollReceive = false;
         }
 
@@ -145,24 +145,26 @@ namespace ExitGames.Client.Photon
             IPAddress ipAddress = null;
             try
             {
+                ipAddress = IPhotonSocket.GetIpAddress(this.ServerAddress);
+                if (ipAddress == null)
+                {
+                    // this covers cases of failed DNS lookup and bad addresses.
+                    throw new ArgumentException("Invalid IPAddress. Address: " + this.ServerAddress);
+                }
+
                 lock (this.syncer)
                 {
-                    ipAddress = IPhotonSocket.GetIpAddress(this.ServerAddress);
-                    if (ipAddress == null)
+                    if (this.State == PhotonSocketState.Disconnecting || this.State == PhotonSocketState.Disconnected)
                     {
-                        throw new ArgumentException("Invalid IPAddress. Address: " + this.ServerAddress);
-                    }
-                    if (ipAddress.AddressFamily != AddressFamily.InterNetwork && ipAddress.AddressFamily != AddressFamily.InterNetworkV6)
-                    {
-                        throw new ArgumentException("AddressFamily '" + ipAddress.AddressFamily + "' not supported. Address: " + this.ServerAddress);
+                        return;
                     }
 
                     this.sock = new Socket(ipAddress.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
                     this.sock.Connect(ipAddress, this.ServerPort);
 
-                    this.AddressResolvedAsIpv6 = (ipAddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6);
+                    this.AddressResolvedAsIpv6 = this.IsIpv6SimpleCheck(ipAddress);
                     this.State = PhotonSocketState.Connected;
-                    
+
                     this.peerBase.OnConnect();
                 }
             }

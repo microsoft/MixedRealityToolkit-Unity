@@ -9,12 +9,12 @@ using UnityEngine;
 
 
 /// <summary>
-/// Basic GUI to show traffic and health statistics of the connection to Photon, 
+/// Basic GUI to show traffic and health statistics of the connection to Photon,
 /// toggled by shift+tab.
 /// </summary>
 /// <remarks>
 /// The shown health values can help identify problems with connection losses or performance.
-/// Example: 
+/// Example:
 /// If the time delta between two consecutive SendOutgoingCommands calls is a second or more,
 /// chances rise for a disconnect being caused by this (because acknowledgements to the server
 /// need to be sent in due time).
@@ -92,10 +92,10 @@ public class PhotonStatsGui : MonoBehaviour
         this.healthStatsVisible = GUILayout.Toggle(this.healthStatsVisible, "health");
         this.trafficStatsOn = GUILayout.Toggle(this.trafficStatsOn, "traffic");
         GUILayout.EndHorizontal();
-        
-        string total = string.Format("Out|In|Sum:\t{0,4} | {1,4} | {2,4}", gls.TotalOutgoingMessageCount, gls.TotalIncomingMessageCount, gls.TotalMessageCount);
+
+        string total = string.Format("Out {0,4} | In {1,4} | Sum {2,4}", gls.TotalOutgoingMessageCount, gls.TotalIncomingMessageCount, gls.TotalMessageCount);
         string elapsedTime = string.Format("{0}sec average:", elapsedMs);
-        string average = string.Format("Out|In|Sum:\t{0,4} | {1,4} | {2,4}", gls.TotalOutgoingMessageCount / elapsedMs, gls.TotalIncomingMessageCount / elapsedMs, gls.TotalMessageCount / elapsedMs);
+        string average = string.Format("Out {0,4} | In {1,4} | Sum {2,4}", gls.TotalOutgoingMessageCount / elapsedMs, gls.TotalIncomingMessageCount / elapsedMs, gls.TotalMessageCount / elapsedMs);
         GUILayout.Label(total);
         GUILayout.Label(elapsedTime);
         GUILayout.Label(average);
@@ -117,8 +117,9 @@ public class PhotonStatsGui : MonoBehaviour
         string trafficStatsOut = string.Empty;
         if (this.trafficStatsOn)
         {
-            trafficStatsIn = "Incoming: " + PhotonNetwork.networkingPeer.TrafficStatsIncoming.ToString();
-            trafficStatsOut = "Outgoing: " + PhotonNetwork.networkingPeer.TrafficStatsOutgoing.ToString();
+            GUILayout.Box("Traffic Stats");
+            trafficStatsIn = "Incoming: \n" + PhotonNetwork.networkingPeer.TrafficStatsIncoming.ToString();
+            trafficStatsOut = "Outgoing: \n" + PhotonNetwork.networkingPeer.TrafficStatsOutgoing.ToString();
             GUILayout.Label(trafficStatsIn);
             GUILayout.Label(trafficStatsOut);
         }
@@ -126,8 +127,9 @@ public class PhotonStatsGui : MonoBehaviour
         string healthStats = string.Empty;
         if (this.healthStatsVisible)
         {
+            GUILayout.Box("Health Stats");
             healthStats = string.Format(
-                "ping: {6}[+/-{7}]ms resent:{8}\nmax ms between\nsend: {0,4} dispatch: {1,4}\nlongest dispatch for:\nev({3}):{2,3}ms op({5}):{4,3}ms",
+                "ping: {6}[+/-{7}]ms resent:{8} \n\nmax ms between\nsend: {0,4} \ndispatch: {1,4} \n\nlongest dispatch for: \nev({3}):{2,3}ms \nop({5}):{4,3}ms",
                 gls.LongestDeltaBetweenSending,
                 gls.LongestDeltaBetweenDispatching,
                 gls.LongestEventCallback,

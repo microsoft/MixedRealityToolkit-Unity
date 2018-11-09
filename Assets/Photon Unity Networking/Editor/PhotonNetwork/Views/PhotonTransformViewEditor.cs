@@ -9,7 +9,7 @@
 // ----------------------------------------------------------------------------
 
 
-#if UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2
+#if UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2 || UNITY_5_4_OR_NEWER
 #define UNITY_MIN_5_3
 #endif
 
@@ -52,8 +52,8 @@ public class PhotonTransformViewEditor : Editor
         "the GameObject behaves very predictable (for example for vehicles). Other times it can be very hard because the user input is translated directly to the game "
         + "and you cannot really predict what the user is going to do (for example in fighting games)";
 
-    private const string INTERPOLATE_HELP_URL = "http://doc.exitgames.com/en/pun/current/tutorials/rpg-movement";
-    private const string EXTRAPOLATE_HELP_URL = "http://doc.exitgames.com/en/pun/current/tutorials/rpg-movement";
+    private const string INTERPOLATE_HELP_URL = "https://doc.photonengine.com/en-us/pun/current/demos-and-tutorials/package-demos/rpg-movement#interpolate_options";
+    private const string EXTRAPOLATE_HELP_URL = "https://doc.photonengine.com/en-us/pun/current/demos-and-tutorials/package-demos/rpg-movement#extrapolate_options";
 
     public void OnEnable()
     {

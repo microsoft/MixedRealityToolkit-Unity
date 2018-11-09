@@ -22,16 +22,16 @@ using SupportClassPun = ExitGames.Client.Photon.SupportClass;
 public static class Extensions
 {
 
-    public static Dictionary<MethodInfo, ParameterInfo[]> parametersOfMethods = new Dictionary<MethodInfo, ParameterInfo[]>();
+    public static Dictionary<MethodInfo, ParameterInfo[]> ParametersOfMethods = new Dictionary<MethodInfo, ParameterInfo[]>();
     public static ParameterInfo[] GetCachedParemeters(this MethodInfo mo)
     {
         ParameterInfo[] result;
-        bool cached= parametersOfMethods.TryGetValue(mo, out result);
+        bool cached= ParametersOfMethods.TryGetValue(mo, out result);
 
         if (!cached)
         {
             result =  mo.GetParameters();
-            parametersOfMethods[mo] = result;
+            ParametersOfMethods[mo] = result;
         }
 
         return result;
@@ -114,16 +114,34 @@ public static class Extensions
         }
     }
 
-    /// <summary>
-    /// Returns a string-representation of the IDictionary's content, inlcuding type-information.
-    /// Note: This might turn out a "heavy-duty" call if used frequently but it's usfuly to debug Dictionary or Hashtable content.
-    /// </summary>
+    /// <summary>Helper method for debugging of IDictionary content, inlcuding type-information. Using this is not performant.</summary>
+    /// <remarks>Should only be used for debugging as necessary.</remarks>
     /// <param name="origin">Some Dictionary or Hashtable.</param>
     /// <returns>String of the content of the IDictionary.</returns>
     public static string ToStringFull(this IDictionary origin)
     {
         return SupportClassPun.DictionaryToString(origin, false);
     }
+
+
+    /// <summary>Helper method for debugging of object[] content. Using this is not performant.</summary>
+    /// <remarks>Should only be used for debugging as necessary.</remarks>
+    /// <param name="data">Any object[].</param>
+    /// <returns>A comma-separated string containing each value's ToString().</returns>
+    public static string ToStringFull(this object[] data)
+    {
+        if (data == null) return "null";
+
+        string[] sb = new string[data.Length];
+        for (int i = 0; i < data.Length; i++)
+        {
+            object o = data[i];
+            sb[i] = (o != null) ? o.ToString() : "null";
+        }
+
+        return string.Join(", ", sb);
+    }
+
 
     /// <summary>
     /// This method copies all string-typed keys of the original into a new Hashtable.

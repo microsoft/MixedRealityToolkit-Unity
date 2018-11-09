@@ -1,4 +1,4 @@
-#if UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2
+#if UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2 || UNITY_5_4_OR_NEWER
 #define UNITY_MIN_5_3
 #endif
 
@@ -20,7 +20,11 @@ public class PhotonViewHandler : EditorWindow
     {
         // hierarchyWindowChanged is called on hierarchy changed and on save. It's even called when hierarchy-window is closed and if a prefab with instances is changed.
         // this is not called when you edit a instance's value but: on save
-        EditorApplication.hierarchyWindowChanged += HierarchyChange;
+		#if UNITY_2018
+		EditorApplication.hierarchyChanged += HierarchyChange;
+		#else
+		EditorApplication.hierarchyWindowChanged += HierarchyChange;
+		#endif
     }
 
     // this method corrects the IDs for photonviews in the scene and in prefabs
@@ -51,9 +55,9 @@ public class PhotonViewHandler : EditorWindow
         //Debug.Log("HierarchyChange. PV Count: " + pvObjects.Length);
 
         string levelName = SceneManagerHelper.ActiveSceneName;
-        //#if UNITY_EDITOR
+        #if UNITY_EDITOR
         levelName = SceneManagerHelper.EditorActiveSceneName;
-        //#endif
+        #endif
         int minViewIdInThisScene = PunSceneSettings.MinViewIdForScene(levelName);
         //Debug.Log("Level '" + Application.loadedLevelName + "' has a minimum ViewId of: " + minViewIdInThisScene);
 
@@ -183,12 +187,11 @@ public class PhotonViewHandler : EditorWindow
 
         foreach (string scene in scenes)
         {
-            //EditorSceneManager.OpenScene(scene);
+            EditorSceneManager.OpenScene(scene);
             PhotonViewHandler.HierarchyChange();//NOTE: most likely on load also triggers a hierarchy change
-            //EditorSceneManager.SaveOpenScenes();
+            EditorSceneManager.SaveOpenScenes();
         }
 
         Debug.Log("Corrected scene views where needed.");
     }
 }
-

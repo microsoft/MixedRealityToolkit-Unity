@@ -60,11 +60,11 @@ public class ShowInfoOfPlayer : Photon.MonoBehaviour
             return;
         }
 
-        
+
         PhotonPlayer owner = this.photonView.owner;
         if (owner != null)
         {
-            tm.text = (string.IsNullOrEmpty(owner.name)) ? "player"+owner.ID : owner.name;
+            tm.text = (string.IsNullOrEmpty(owner.NickName)) ? "player"+owner.ID : owner.NickName;
         }
         else if (this.photonView.isSceneView)
         {

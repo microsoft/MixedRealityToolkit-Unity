@@ -9,7 +9,7 @@
 // ----------------------------------------------------------------------------
 
 
-#if UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2
+#if UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2 || UNITY_5_4_OR_NEWER
 #define UNITY_MIN_5_3
 #endif
 
@@ -18,12 +18,11 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-//#if UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
-//using UnityEditorInternal;
-//#elif UNITY_5 || UNITY_5_0
+#if UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
+using UnityEditorInternal;
+#elif UNITY_5 || UNITY_5_0 || UNITY_5_3_OR_NEWER 
 using UnityEditor.Animations;
-//#endif
-
+#endif
 
 [CustomEditor(typeof (PhotonAnimatorView))]
 public class PhotonAnimatorViewEditor : Editor
@@ -31,11 +30,9 @@ public class PhotonAnimatorViewEditor : Editor
     private Animator m_Animator;
     private PhotonAnimatorView m_Target;
 
-//#if UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5 || UNITY_5_0
+	#if UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5 || UNITY_5_0 || UNITY_5_3_OR_NEWER
     private AnimatorController m_Controller;
-//#endif
-
-	private const string TRIGGER_HELP_URL = "https://doc.photonengine.com/en/pun/current/reference/animatorviewtriggerhelp";
+#endif
 
     public override void OnInspectorGUI()
     {
@@ -76,15 +73,15 @@ public class PhotonAnimatorViewEditor : Editor
 	 
     private int GetLayerCount()
     {
-		//#if UNITY_5 || UNITY_5_0
+		#if UNITY_5 || UNITY_5_0 || UNITY_5_3_OR_NEWER
 		return (this.m_Controller == null) ? 0 : this.m_Controller.layers.Length;
-		//#else
-		//return (this.m_Controller == null) ? 0 : this.m_Controller.layerCount;
-		//#endif
+		#else
+		return (this.m_Controller == null) ? 0 : this.m_Controller.layerCount;
+		#endif
     }
 
 
-//#if UNITY_5 || UNITY_5_0
+	#if UNITY_5 || UNITY_5_0 || UNITY_5_3_OR_NEWER
     private RuntimeAnimatorController GetEffectiveController(Animator animator)
     {
         RuntimeAnimatorController controller = animator.runtimeAnimatorController;
@@ -98,7 +95,7 @@ public class PhotonAnimatorViewEditor : Editor
 
         return controller;
     }
-//#endif
+#endif
 
 
     private void OnEnable()
@@ -106,11 +103,11 @@ public class PhotonAnimatorViewEditor : Editor
         this.m_Target = (PhotonAnimatorView) target;
         this.m_Animator = this.m_Target.GetComponent<Animator>();
 
-//#if UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
-//        this.m_Controller = AnimatorController.GetEffectiveAnimatorController(this.m_Animator);
-//#elif UNITY_5 || UNITY_5_0
+#if UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
+        this.m_Controller = AnimatorController.GetEffectiveAnimatorController(this.m_Animator);
+		#elif UNITY_5 || UNITY_5_0 || UNITY_5_3_OR_NEWER
         this.m_Controller = this.GetEffectiveController(this.m_Animator) as AnimatorController;
-//#endif
+#endif
 
         CheckIfStoredParametersExist();
     }
@@ -171,7 +168,7 @@ public class PhotonAnimatorViewEditor : Editor
     {
         #if UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
         return (this.m_Controller == null) ? 0 : this.m_Controller.parameterCount;
-        #elif UNITY_5 || UNITY_5_0
+		#elif UNITY_5 || UNITY_5_0 || UNITY_5_3_OR_NEWER
         return (this.m_Controller == null) ? 0 : this.m_Controller.parameters.Length;
         #else
         return (m_Animator == null) ? 0 : m_Animator.parameters.Length;
@@ -182,7 +179,7 @@ public class PhotonAnimatorViewEditor : Editor
     {
         #if UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
         return this.m_Controller.GetParameter(i);
-        #elif UNITY_5 || UNITY_5_0
+		#elif UNITY_5 || UNITY_5_0 || UNITY_5_3_OR_NEWER
         return this.m_Controller.parameters[i];
         #else
         return m_Animator.parameters[i];
@@ -339,10 +336,6 @@ public class PhotonAnimatorViewEditor : Editor
 		{
 			GUILayout.BeginHorizontal(GUI.skin.box);
 			GUILayout.Label("When using triggers, make sure this component is last in the stack");
-			if (GUILayout.Button(PhotonGUI.HelpIcon,GUIStyle.none,GUILayout.Width(16)) )
-			{
-				Application.OpenURL(TRIGGER_HELP_URL);
-			}
 			GUILayout.EndHorizontal();
 		}
 

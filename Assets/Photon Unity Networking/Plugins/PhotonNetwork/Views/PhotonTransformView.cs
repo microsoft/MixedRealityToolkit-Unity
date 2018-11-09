@@ -1,4 +1,4 @@
-﻿// ----------------------------------------------------------------------------
+﻿	// ----------------------------------------------------------------------------
 // <copyright file="PhotonTransformView.cs" company="Exit Games GmbH">
 //   PhotonNetwork Framework for Unity - Copyright (C) 2016 Exit Games GmbH
 // </copyright>
@@ -28,17 +28,17 @@ public class PhotonTransformView : MonoBehaviour, IPunObservable
     //the object and calculating all the inter- and extrapolation
 
     [SerializeField]
-    PhotonTransformViewPositionModel m_PositionModel = new PhotonTransformViewPositionModel();
+	public  PhotonTransformViewPositionModel m_PositionModel = new PhotonTransformViewPositionModel();
 
     [SerializeField]
-    PhotonTransformViewRotationModel m_RotationModel = new PhotonTransformViewRotationModel();
+	public PhotonTransformViewRotationModel m_RotationModel = new PhotonTransformViewRotationModel();
 
     [SerializeField]
-    PhotonTransformViewScaleModel m_ScaleModel = new PhotonTransformViewScaleModel();
+	public PhotonTransformViewScaleModel m_ScaleModel = new PhotonTransformViewScaleModel();
 
-    PhotonTransformViewPositionControl m_PositionControl;
-    PhotonTransformViewRotationControl m_RotationControl;
-    PhotonTransformViewScaleControl m_ScaleControl;
+	PhotonTransformViewPositionControl m_PositionControl;
+	PhotonTransformViewRotationControl m_RotationControl;
+	PhotonTransformViewScaleControl m_ScaleControl;
 
     PhotonView m_PhotonView;
 
@@ -120,7 +120,7 @@ public class PhotonTransformView : MonoBehaviour, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-       this.m_PositionControl.OnPhotonSerializeView(transform.localPosition, stream, info);
+        this.m_PositionControl.OnPhotonSerializeView(transform.localPosition, stream, info);
         this.m_RotationControl.OnPhotonSerializeView(transform.localRotation, stream, info);
         this.m_ScaleControl.OnPhotonSerializeView(transform.localScale, stream, info);
 
@@ -137,9 +137,22 @@ public class PhotonTransformView : MonoBehaviour, IPunObservable
 			if (m_firstTake)
 			{
 				m_firstTake = false;
-				this.transform.localPosition = this.m_PositionControl.GetNetworkPosition();
-				this.transform.localRotation = this.m_RotationControl.GetNetworkRotation();
-				this.transform.localScale = this.m_ScaleControl.GetNetworkScale();
+
+				if (this.m_PositionModel.SynchronizeEnabled)
+				{
+					this.transform.localPosition = this.m_PositionControl.GetNetworkPosition();
+				}
+
+				if (this.m_RotationModel.SynchronizeEnabled)
+				{
+					this.transform.localRotation = this.m_RotationControl.GetNetworkRotation();
+				}
+
+				if (this.m_ScaleModel.SynchronizeEnabled)
+				{
+					this.transform.localScale = this.m_ScaleControl.GetNetworkScale();
+				}
+
 			}
 
         }
@@ -160,9 +173,15 @@ public class PhotonTransformView : MonoBehaviour, IPunObservable
     {
         Vector3 targetPosition = this.m_PositionControl.GetNetworkPosition();
 
-        Debug.DrawLine(targetPosition, transform.position, Color.red, 2f);
+		// we are synchronizing the localPosition, so we need to add the parent position for a proper positioning.
+		if (transform.parent != null)
+		{
+			targetPosition = transform.parent.position + targetPosition ;
+		}
+
+		Debug.DrawLine(targetPosition, transform.position, Color.red, 2f);
         Debug.DrawLine(transform.position, transform.position + Vector3.up, Color.green, 2f);
-        Debug.DrawLine(targetPosition, targetPosition + Vector3.up, Color.red, 2f);
+		Debug.DrawLine(targetPosition , targetPosition + Vector3.up, Color.red, 2f);
     }
 
     //void DoDrawNetworkPositionGizmo()

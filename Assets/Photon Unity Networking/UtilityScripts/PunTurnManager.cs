@@ -17,7 +17,7 @@ using UnityEngine;
 using ExitGames = ExitGames.Client.Photon.Hashtable;
 
 /// <summary>
-/// Pun turnBased Game manager. 
+/// Pun turnBased Game manager.
 /// Provides an Interface (IPunTurnManagerCallbacks) for the typical turn flow and logic, between players
 /// Provides Extensions for PhotonPlayer, Room and RoomInfo to feature dedicated api for TurnBased Needs
 /// </summary>
@@ -30,11 +30,11 @@ public class PunTurnManager : PunBehaviour
     public int Turn
     {
         get { return PhotonNetwork.room.GetTurn(); }
-        private set { 
-			
+        private set {
+
 			_isOverCallProcessed = false;
 
-			PhotonNetwork.room.SetTurn(value, true); 
+			PhotonNetwork.room.SetTurn(value, true);
 		}
     }
 
@@ -43,7 +43,7 @@ public class PunTurnManager : PunBehaviour
 	/// The duration of the turn in seconds.
 	/// </summary>
     public float TurnDuration = 20f;
-	
+
 	/// <summary>
 	/// Gets the elapsed time in the current turn in seconds
 	/// </summary>
@@ -70,7 +70,7 @@ public class PunTurnManager : PunBehaviour
 	/// <value><c>true</c> if this turn is completed by all; otherwise, <c>false</c>.</value>
     public bool IsCompletedByAll
     {
-        get { return PhotonNetwork.room != null && Turn > 0 && this.finishedPlayers.Count == PhotonNetwork.room.playerCount; }
+        get { return PhotonNetwork.room != null && Turn > 0 && this.finishedPlayers.Count == PhotonNetwork.room.PlayerCount; }
     }
 
 	/// <summary>
@@ -81,7 +81,7 @@ public class PunTurnManager : PunBehaviour
     {
         get { return this.finishedPlayers.Contains(PhotonNetwork.player); }
     }
-	
+
 	/// <summary>
 	/// Gets a value indicating whether the current turn is over. That is the ElapsedTimeinTurn is greater or equal to the TurnDuration
 	/// </summary>
@@ -98,7 +98,7 @@ public class PunTurnManager : PunBehaviour
 
 
 	/// <summary>
-	/// The finished players. 
+	/// The finished players.
 	/// </summary>
     private readonly HashSet<PhotonPlayer> finishedPlayers = new HashSet<PhotonPlayer>();
 
@@ -124,7 +124,7 @@ public class PunTurnManager : PunBehaviour
 	/// </summary>
     void Start()
     {
-        PhotonNetwork.OnEventCall = OnEvent;
+        PhotonNetwork.OnEventCall += OnEvent;
     }
 
 	void Update()
@@ -176,11 +176,11 @@ public class PunTurnManager : PunBehaviour
             PhotonNetwork.player.SetFinishedTurn(Turn);
         }
 
-        // the server won't send the event back to the origin (by default). to get the event, call it locally 
+        // the server won't send the event back to the origin (by default). to get the event, call it locally
         // (note: the order of events might be mixed up as we do this locally)
         OnEvent(evCode, moveHt, PhotonNetwork.player.ID);
     }
-	
+
 	/// <summary>
 	/// Gets if the player finished the current turn.
 	/// </summary>
@@ -215,7 +215,7 @@ public class PunTurnManager : PunBehaviour
                 int turn = (int)evTable["turn"];
                 object move = evTable["move"];
                 this.TurnManagerListener.OnPlayerMove(sender, turn, move);
-             
+
                 break;
             }
             case EvFinalMove:
@@ -227,9 +227,9 @@ public class PunTurnManager : PunBehaviour
                 if (turn == this.Turn)
                 {
                     this.finishedPlayers.Add(sender);
-                    
+
                         this.TurnManagerListener.OnPlayerFinished(sender, turn, move);
-                    
+
                 }
 
                 if (IsCompletedByAll)
@@ -275,7 +275,7 @@ public interface IPunTurnManagerCallbacks
 	/// </summary>
 	/// <param name="turn">Turn Index</param>
     void OnTurnCompleted(int turn);
-	
+
 	/// <summary>
 	/// Called when a player moved (but did not finish the turn)
 	/// </summary>
@@ -283,7 +283,7 @@ public interface IPunTurnManagerCallbacks
 	/// <param name="turn">Turn Index</param>
 	/// <param name="move">Move Object data</param>
     void OnPlayerMove(PhotonPlayer player, int turn, object move);
-	
+
 	/// <summary>
 	/// When a player finishes a turn (includes the action/move of that player)
 	/// </summary>
@@ -326,7 +326,7 @@ public static class TurnExtensions
 	/// <param name="setStartTime">If set to <c>true</c> set start time.</param>
     public static void SetTurn(this Room room, int turn, bool setStartTime = false)
     {
-        if (room == null || room.customProperties == null)
+        if (room == null || room.CustomProperties == null)
         {
             return;
         }
@@ -348,12 +348,12 @@ public static class TurnExtensions
 	/// <param name="room">RoomInfo reference</param>
     public static int GetTurn(this RoomInfo room)
     {
-        if (room == null || room.customProperties == null || !room.customProperties.ContainsKey(TurnPropKey))
+        if (room == null || room.CustomProperties == null || !room.CustomProperties.ContainsKey(TurnPropKey))
         {
             return 0;
         }
 
-        return (int)room.customProperties[TurnPropKey];
+        return (int)room.CustomProperties[TurnPropKey];
     }
 
 
@@ -364,14 +364,14 @@ public static class TurnExtensions
 	/// <param name="room">Room.</param>
     public static int GetTurnStart(this RoomInfo room)
     {
-        if (room == null || room.customProperties == null || !room.customProperties.ContainsKey(TurnStartPropKey))
+        if (room == null || room.CustomProperties == null || !room.CustomProperties.ContainsKey(TurnStartPropKey))
         {
             return 0;
         }
 
-        return (int)room.customProperties[TurnStartPropKey];
+        return (int)room.CustomProperties[TurnStartPropKey];
     }
-	
+
 	/// <summary>
 	/// gets the player's finished turn (from the ROOM properties)
 	/// </summary>
@@ -380,13 +380,13 @@ public static class TurnExtensions
     public static int GetFinishedTurn(this PhotonPlayer player)
     {
         Room room = PhotonNetwork.room;
-        if (room == null || room.customProperties == null || !room.customProperties.ContainsKey(TurnPropKey))
+        if (room == null || room.CustomProperties == null || !room.CustomProperties.ContainsKey(TurnPropKey))
         {
             return 0;
         }
 
         string propKey = FinishedTurnPropKey + player.ID;
-        return (int)room.customProperties[propKey];
+        return (int)room.CustomProperties[propKey];
     }
 
 	/// <summary>
@@ -397,7 +397,7 @@ public static class TurnExtensions
     public static void SetFinishedTurn(this PhotonPlayer player, int turn)
     {
         Room room = PhotonNetwork.room;
-        if (room == null || room.customProperties == null)
+        if (room == null || room.CustomProperties == null)
         {
             return;
         }

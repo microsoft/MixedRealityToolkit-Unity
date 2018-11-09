@@ -64,9 +64,17 @@ public class PhotonView : Photon.MonoBehaviour
 
     public int ownerId;
 
-    public int group = 0;
+    public byte group = 0;
 
     protected internal bool mixedModeIsReliable = false;
+
+
+	/// <summary>
+	/// Flag to check if ownership of this photonView was set during the lifecycle. Used for checking when joining late if event with mismatched owner and sender needs addressing.
+	/// </summary>
+	/// <value><c>true</c> if owner ship was transfered; otherwise, <c>false</c>.</value>
+	public bool OwnerShipWasTransfered;
+
 
     // NOTE: this is now an integer because unity won't serialize short (needed for instantiation). we SEND only a short though!
     // NOTE: prefabs have a prefixBackup of -1. this is replaced with any currentLevelPrefix that's used at runtime. instantiated GOs get their prefix set pre-instantiation (so those are not -1 anymore)
@@ -115,8 +123,6 @@ public class PhotonView : Photon.MonoBehaviour
     /// For internal use only, don't use
     /// </summary>
     protected internal object[] lastOnSerializeDataReceived = null;
-
-    public Component observed;
 
     public ViewSynchronization synchronization;
 
@@ -236,6 +242,12 @@ public class PhotonView : Photon.MonoBehaviour
         }
     }
 
+	/// <summary>
+	/// The current master ID so that we can compare when we receive OnMasterClientSwitched() callback
+	/// It's public so that we can check it during ownerId assignments in networkPeer script
+	/// TODO: Maybe we can have the networkPeer always aware of the previous MasterClient?
+	/// </summary>
+	public int currentMasterID = -1;
     protected internal bool didAwake;
 
     [SerializeField]
@@ -298,6 +310,21 @@ public class PhotonView : Photon.MonoBehaviour
         this.ownerId = newOwnerId;  // immediately switch ownership locally, to avoid more updates sent from this client.
     }
 
+	/// <summary>
+	///Check ownerId assignment for sceneObjects to keep being owned by the MasterClient.
+	/// </summary>
+	/// <param name="newMasterClient">New master client.</param>
+	public void OnMasterClientSwitched(PhotonPlayer newMasterClient)
+	{
+		if (this.CreatorActorNr == 0 && !this.OwnerShipWasTransfered && (this.currentMasterID== -1 || this.ownerId==this.currentMasterID))
+		{
+			this.ownerId = newMasterClient.ID;
+		}
+
+		this.currentMasterID = newMasterClient.ID;
+	}
+
+
     protected internal void OnDestroy()
     {
         if (!this.removedFromLocalViewList)
@@ -305,7 +332,7 @@ public class PhotonView : Photon.MonoBehaviour
             bool wasInList = PhotonNetwork.networkingPeer.LocalCleanPhotonView(this);
             bool loading = false;
 
-            #if !UNITY_5 || UNITY_5_0 || UNITY_5_1
+			#if (!UNITY_5 || UNITY_5_0 || UNITY_5_1) && !UNITY_5_3_OR_NEWER
             loading = Application.isLoadingLevel;
             #endif
 
@@ -318,8 +345,6 @@ public class PhotonView : Photon.MonoBehaviour
 
     public void SerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        SerializeComponent(this.observed, stream, info);
-
         if (this.ObservedComponents != null && this.ObservedComponents.Count > 0)
         {
             for (int i = 0; i < this.ObservedComponents.Count; ++i)
@@ -331,8 +356,6 @@ public class PhotonView : Photon.MonoBehaviour
 
     public void DeserializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        DeserializeComponent(this.observed, stream, info);
-
         if (this.ObservedComponents != null && this.ObservedComponents.Count > 0)
         {
             for (int i = 0; i < this.ObservedComponents.Count; ++i)

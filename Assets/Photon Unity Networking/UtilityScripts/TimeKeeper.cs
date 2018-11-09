@@ -42,7 +42,7 @@ namespace ExitGames.Client.DemoParticle
         }
 
         /// <summary>
-        /// Creates a new TimeKeeper and sets it's interval.
+        /// Creates a new, enabled TimeKeeper and sets it's interval.
         /// </summary>
         /// <param name="interval"></param>
         public TimeKeeper(int interval)

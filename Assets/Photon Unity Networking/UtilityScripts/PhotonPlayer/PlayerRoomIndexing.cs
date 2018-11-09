@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlayerRoomIndexing.cs" company="Exit Games GmbH">
-//   Part of: Photon Unity Utilities, 
+//   Part of: Photon Unity Utilities,
 // </copyright>
 // <summary>
 //  Assign numbers to Players in a room. Uses Room custom Properties
@@ -26,12 +26,12 @@ namespace ExitGames.UtilityScripts
 	/// </summary>
 	/// <remarks>
 	/// indexing ranges from 0 to the maximum number of Players.
-	/// indexing remains for the player while in room. 
+	/// indexing remains for the player while in room.
 	/// If a Player is indexed 2 and player indexes 1 leaves, index 1 become vacant and will assigned to the future player joining (the first available vacant index is assigned when joining)
 	/// </remarks>
-	public class PlayerRoomIndexing : PunBehaviour 
+	public class PlayerRoomIndexing : PunBehaviour
 	{
-		 
+
 		#region Public Properties
 
 		/// <summary>
@@ -40,9 +40,9 @@ namespace ExitGames.UtilityScripts
 		public static PlayerRoomIndexing instance;
 
 		/// <summary>
-		/// OnRoomIndexingChanged delegate. Use 
+		/// OnRoomIndexingChanged delegate. Use
 		/// </summary>
-		public delegate void RoomIndexingChanged(); 
+		public delegate void RoomIndexingChanged();
 		/// <summary>
 		/// Called everytime the room Indexing was updated. Use this for discrete updates. Always better than brute force calls every frame.
 		/// </summary>
@@ -85,6 +85,12 @@ namespace ExitGames.UtilityScripts
 				Debug.LogError("Existing instance of PlayerRoomIndexing found. Only One instance is required at the most. Please correct and have only one at any time.");
 			}
 			instance = this;
+
+			// check if we are already in room, likely if component was added at runtime or came late into scene
+			if (PhotonNetwork.room!=null)
+			{
+				SanitizeIndexing(true);
+			}
 		}
 
 		#endregion
@@ -113,9 +119,9 @@ namespace ExitGames.UtilityScripts
 			{
 				AssignIndex(newPlayer);
 			}
-			
+
 		}
-		
+
 		public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
 		{
 			if (PhotonNetwork.isMasterClient)
@@ -123,12 +129,21 @@ namespace ExitGames.UtilityScripts
 				UnAssignIndex(otherPlayer);
 			}
 		}
-		
+
 		public override void OnPhotonCustomRoomPropertiesChanged(Hashtable propertiesThatChanged)
 		{
 			if (propertiesThatChanged.ContainsKey(PlayerRoomIndexing.RoomPlayerIndexedProp))
 			{
 				RefreshData();
+			}
+		}
+
+
+		public override void OnMasterClientSwitched(PhotonPlayer newMasterClient)
+		{
+			if (PhotonNetwork.isMasterClient)
+			{
+				SanitizeIndexing();
 			}
 		}
 
@@ -145,6 +160,45 @@ namespace ExitGames.UtilityScripts
 			return -1;
 		}
 
+
+		/// <summary>
+		/// Sanitizes the indexing incase a player join while masterclient was changed and missed it.
+		/// </summary>
+		void SanitizeIndexing(bool forceIndexing = false)
+		{
+			if (!forceIndexing && !PhotonNetwork.isMasterClient)
+			{
+				return;
+			}
+
+			if (PhotonNetwork.room==null)
+			{
+				return;
+			}
+
+			// attempt to access index props.
+			Dictionary<int,int> _indexesLUT_local = new Dictionary<int, int>();
+			if(PhotonNetwork.room.CustomProperties.TryGetValue(PlayerRoomIndexing.RoomPlayerIndexedProp, out _indexes))
+			{
+				_indexesLUT_local = _indexes as Dictionary<int,int>;
+			}
+
+			// check if we need to assign
+			if (_indexesLUT_local.Count != PhotonNetwork.room.PlayerCount)
+			{
+			 	foreach(PhotonPlayer _p in	PhotonNetwork.playerList)
+				{
+					if (!_indexesLUT_local.ContainsKey(_p.ID))
+					{
+						//	Debug.Log("Sanitizing Index for "+_p);
+						AssignIndex(_p);
+					}
+				}
+
+			}
+
+		}
+
 		/// <summary>
 		/// Internal call Refresh the cached data and call the OnRoomIndexingChanged delegate.
 		/// </summary>
@@ -152,11 +206,11 @@ namespace ExitGames.UtilityScripts
 		{
 			if (PhotonNetwork.room!=null)
 			{
-				_playerIds = new int[PhotonNetwork.room.maxPlayers];
-				if (PhotonNetwork.room.customProperties.TryGetValue(PlayerRoomIndexing.RoomPlayerIndexedProp, out _indexes))
+				_playerIds = new int[PhotonNetwork.room.MaxPlayers];
+				if (PhotonNetwork.room.CustomProperties.TryGetValue(PlayerRoomIndexing.RoomPlayerIndexedProp, out _indexes))
 				{
 					_indexesLUT = _indexes as Dictionary<int,int>;
-					
+
 					foreach(KeyValuePair<int,int> _entry in _indexesLUT)
 					{
 						//Debug.Log("Entry; "+_entry.Key+":"+_entry.Value);
@@ -169,22 +223,21 @@ namespace ExitGames.UtilityScripts
 			}
 
 
-
 			if (OnRoomIndexingChanged!=null) OnRoomIndexingChanged();
 		}
 
 
 		void AssignIndex(PhotonPlayer player)
 		{
-			if (PhotonNetwork.room.customProperties.TryGetValue(PlayerRoomIndexing.RoomPlayerIndexedProp, out _indexes))
+			if (PhotonNetwork.room.CustomProperties.TryGetValue(PlayerRoomIndexing.RoomPlayerIndexedProp, out _indexes))
 			{
 				_indexesLUT = _indexes as Dictionary<int,int>;
-				
+
 			}else{
 				_indexesLUT = new Dictionary<int, int>();
 			}
 
-			List<bool> _indexesPool = new List<bool>( new bool[PhotonNetwork.room.maxPlayers] );
+			List<bool> _indexesPool = new List<bool>( new bool[PhotonNetwork.room.MaxPlayers] );
 			foreach(KeyValuePair<int,int> _entry in _indexesLUT)
 			{
 				_indexesPool[_entry.Value] = true;
@@ -200,7 +253,7 @@ namespace ExitGames.UtilityScripts
 
 		void UnAssignIndex(PhotonPlayer player)
 		{
-			if (PhotonNetwork.room.customProperties.TryGetValue(PlayerRoomIndexing.RoomPlayerIndexedProp, out _indexes))
+			if (PhotonNetwork.room.CustomProperties.TryGetValue(PlayerRoomIndexing.RoomPlayerIndexedProp, out _indexes))
 			{
 				_indexesLUT = _indexes as Dictionary<int,int>;
 
@@ -209,7 +262,7 @@ namespace ExitGames.UtilityScripts
 			}else{
 
 			}
-			
+
 			RefreshData();
 		}
 

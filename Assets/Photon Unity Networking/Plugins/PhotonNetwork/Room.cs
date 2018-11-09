@@ -20,10 +20,8 @@ using UnityEngine;
 /// \ingroup publicApi
 public class Room : RoomInfo
 {
-
-
     /// <summary>The name of a room. Unique identifier (per Loadbalancing group) for a room/match.</summary>
-    public new string name
+    public new string Name
     {
         get
         {
@@ -44,7 +42,7 @@ public class Room : RoomInfo
     /// Simply re-connect to master and find another.
     /// Use property "visible" to not list the room.
     /// </summary>
-    public new bool open
+    public new bool IsOpen
     {
         get
         {
@@ -72,7 +70,7 @@ public class Room : RoomInfo
     /// Rooms can be created invisible, or changed to invisible.
     /// To change if a room can be joined, use property: open.
     /// </summary>
-    public new bool visible
+    public new bool IsVisible
     {
         get
         {
@@ -98,12 +96,12 @@ public class Room : RoomInfo
     /// <summary>
     /// A list of custom properties that should be forwarded to the lobby and listed there.
     /// </summary>
-    public string[] propertiesListedInLobby { get; private set; }
+    public string[] PropertiesListedInLobby { get; private set; }
 
     /// <summary>
     /// Gets if this room uses autoCleanUp to remove all (buffered) RPCs and instantiated GameObjects when a player leaves.
     /// </summary>
-    public bool autoCleanUp
+    public bool AutoCleanUp
     {
         get
         {
@@ -111,12 +109,11 @@ public class Room : RoomInfo
         }
     }
 
-
     /// <summary>
     /// Sets a limit of players to this room. This property is shown in lobby, too.
     /// If the room is full (players count == maxplayers), joining this room will fail.
     /// </summary>
-    public new int maxPlayers
+    public new int MaxPlayers
     {
         get
         {
@@ -145,9 +142,8 @@ public class Room : RoomInfo
         }
     }
 
-
     /// <summary>Count of players in this room.</summary>
-    public new int playerCount
+    public new int PlayerCount
     {
         get
         {
@@ -169,14 +165,54 @@ public class Room : RoomInfo
     /// The corresponding feature in Photon is called "Slot Reservation" and can be found in the doc pages.
     /// Define expected players in the PhotonNetwork methods: CreateRoom, JoinRoom and JoinOrCreateRoom.
     /// </remarks>
-    public string[] expectedUsers
+    public string[] ExpectedUsers
     {
         get { return this.expectedUsersField; }
     }
 
-	/// <summary>The ID (actorNumber) of the current Master Client of this room.</summary>
+    /// <summary>Player Time To Live. How long any player can be inactive (due to disconnect or leave) before the user gets removed from the playerlist (freeing a slot).</summary>
+    public int PlayerTtl
+    {
+        get { return this.playerTtlField; }
+        set
+        {
+            if (!this.Equals(PhotonNetwork.room))
+            {
+                UnityEngine.Debug.LogWarning("Can't set PlayerTtl when not in a room.");
+            }
+
+            if (value != this.playerTtlField && !PhotonNetwork.offlineMode)
+            {
+                PhotonNetwork.networkingPeer.OpSetPropertyOfRoom(GamePropertyKey.PlayerTtl, value);
+            }
+
+            this.playerTtlField = value;
+        }
+    }
+
+    /// <summary>Room Time To Live. How long a room stays available (and in server-memory), after the last player becomes inactive. After this time, the room gets persisted or destroyed.</summary>
+    public int EmptyRoomTtl
+    {
+        get { return this.emptyRoomTtlField; }
+        set
+        {
+            if (!this.Equals(PhotonNetwork.room))
+            {
+                UnityEngine.Debug.LogWarning("Can't set EmptyRoomTtl when not in a room.");
+            }
+
+            if (value != this.emptyRoomTtlField && !PhotonNetwork.offlineMode)
+            {
+                PhotonNetwork.networkingPeer.OpSetPropertyOfRoom(GamePropertyKey.EmptyRoomTtl, value);
+            }
+
+            this.emptyRoomTtlField = value;
+        }
+    }
+
+    /// <summary>The ID (actorNumber) of the current Master Client of this room.</summary>
     /// <remarks>See also: PhotonNetwork.masterClient.</remarks>
-    protected internal int masterClientId
+    protected internal int MasterClientId
     {
         get
         {
@@ -199,10 +235,10 @@ public class Room : RoomInfo
         this.visibleField = options.IsVisible;
         this.openField = options.IsOpen;
         this.maxPlayersField = (byte)options.MaxPlayers;
-        this.autoCleanUpField = false;  // defaults to false, unless set to true when room gets created.
+        this.autoCleanUpField = options.CleanupCacheOnLeave;
 
         this.InternalCacheProperties(options.CustomRoomProperties);
-        this.propertiesListedInLobby = options.CustomRoomPropertiesForLobby;
+        this.PropertiesListedInLobby = options.CustomRoomPropertiesForLobby;
     }
 
 
@@ -268,16 +304,19 @@ public class Room : RoomInfo
         // no expected values -> set and callback
         bool noCas = customPropsToCheck == null || customPropsToCheck.Count == 0;
 
-
+        if (PhotonNetwork.offlineMode || noCas)
+        {
+            this.CustomProperties.Merge(customProps);   // the customProps are already stripped to string-keys-only (custom-props keys)
+            this.CustomProperties.StripKeysWithNullValues();
+        }
 
         if (!PhotonNetwork.offlineMode)
         {
-            PhotonNetwork.networkingPeer.OpSetPropertiesOfRoom(customProps, customPropsToCheck, webForward);
+            PhotonNetwork.networkingPeer.OpSetPropertiesOfRoom(customProps, customPropsToCheck, webForward);    // as the customProps are stripped already, this equals OpSetCustomPropertiesOfRoom()
         }
 
         if (PhotonNetwork.offlineMode || noCas)
         {
-            this.InternalCacheProperties(customProps);
             NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnPhotonCustomRoomPropertiesChanged, customProps);
         }
     }
@@ -295,7 +334,7 @@ public class Room : RoomInfo
         customProps[GamePropertyKey.PropsListedInLobby] = propsListedInLobby;
         PhotonNetwork.networkingPeer.OpSetPropertiesOfRoom(customProps, expectedProperties: null, webForward: false);
 
-        this.propertiesListedInLobby = propsListedInLobby;
+        this.PropertiesListedInLobby = propsListedInLobby;
     }
 
     /// <summary>
@@ -314,7 +353,29 @@ public class Room : RoomInfo
         Hashtable props = new Hashtable();
         props[GamePropertyKey.ExpectedUsers] = new string[0];
         Hashtable expected = new Hashtable();
-        expected[GamePropertyKey.ExpectedUsers] = this.expectedUsers;
+        expected[GamePropertyKey.ExpectedUsers] = this.ExpectedUsers;
+        PhotonNetwork.networkingPeer.OpSetPropertiesOfRoom(props, expected, webForward: false);
+    }
+
+    /// <summary>
+    /// Attempts to set the current expected users list.
+    /// </summary>
+    /// <remarks>
+    /// Note that this operation can conflict with new/other users joining. They might be
+    /// adding users to the list of expected users before or after this client called SetExpectedUsers.
+    /// If the list changes before this operation arrives, the server will not modify the list and
+    /// SetExpectedUsers() fails.
+    ///
+    /// This room's expectedUsers value will be sent by the server.
+    ///
+    /// Internals: This methods wraps up setting the ExpectedUsers property of a room.
+    /// </remarks>
+    public void SetExpectedUsers(string[] expectedUsers)
+    {
+        Hashtable props = new Hashtable();
+        props[GamePropertyKey.ExpectedUsers] = expectedUsers;
+        Hashtable expected = new Hashtable();
+        expected[GamePropertyKey.ExpectedUsers] = this.ExpectedUsers;
         PhotonNetwork.networkingPeer.OpSetPropertiesOfRoom(props, expected, webForward: false);
     }
 
@@ -323,13 +384,45 @@ public class Room : RoomInfo
     /// <returns>Summary of this Room instance.</returns>
     public override string ToString()
     {
-        return string.Format("Room: '{0}' {1},{2} {4}/{3} players.", this.nameField, this.visibleField ? "visible" : "hidden", this.openField ? "open" : "closed", this.maxPlayersField, this.playerCount);
+        return string.Format("Room: '{0}' {1},{2} {4}/{3} players.", this.nameField, this.visibleField ? "visible" : "hidden", this.openField ? "open" : "closed", this.maxPlayersField, this.PlayerCount);
     }
 
     /// <summary>Returns a summary of this Room instance as longer string, including Custom Properties.</summary>
     /// <returns>Summary of this Room instance.</returns>
     public new string ToStringFull()
     {
-        return string.Format("Room: '{0}' {1},{2} {4}/{3} players.\ncustomProps: {5}", this.nameField, this.visibleField ? "visible" : "hidden", this.openField ? "open" : "closed", this.maxPlayersField, this.playerCount, this.customProperties.ToStringFull());
+        return string.Format("Room: '{0}' {1},{2} {4}/{3} players.\ncustomProps: {5}", this.nameField, this.visibleField ? "visible" : "hidden", this.openField ? "open" : "closed", this.maxPlayersField, this.PlayerCount, this.CustomProperties.ToStringFull());
     }
+
+
+    #region Obsoleted variable names
+
+    [Obsolete("Please use Name (updated case for naming).")]
+    public new string name { get { return this.Name; } internal set { this.Name = value; } }
+
+    [Obsolete("Please use IsOpen (updated case for naming).")]
+    public new bool open { get { return this.IsOpen; } set { this.IsOpen = value; } }
+
+    [Obsolete("Please use IsVisible (updated case for naming).")]
+    public new bool visible { get { return this.IsVisible; } set { this.IsVisible = value; } }
+
+    [Obsolete("Please use PropertiesListedInLobby (updated case for naming).")]
+    public string[] propertiesListedInLobby { get { return this.PropertiesListedInLobby; } private set { this.PropertiesListedInLobby = value; } }
+
+    [Obsolete("Please use AutoCleanUp (updated case for naming).")]
+    public bool autoCleanUp { get { return this.AutoCleanUp; } }
+
+    [Obsolete("Please use MaxPlayers (updated case for naming).")]
+    public new int maxPlayers { get { return this.MaxPlayers; } set { this.MaxPlayers = value; } }
+
+    [Obsolete("Please use PlayerCount (updated case for naming).")]
+    public new int playerCount { get { return this.PlayerCount; } }
+
+    [Obsolete("Please use ExpectedUsers (updated case for naming).")]
+    public string[] expectedUsers { get { return this.ExpectedUsers; } }
+
+    [Obsolete("Please use MasterClientId (updated case for naming).")]
+    protected internal int masterClientId { get { return this.MasterClientId; } set { this.MasterClientId = value; } }
+
+    #endregion
 }

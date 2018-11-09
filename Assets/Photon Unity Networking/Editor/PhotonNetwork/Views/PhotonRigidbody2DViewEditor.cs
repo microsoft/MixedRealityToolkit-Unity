@@ -15,5 +15,7 @@ public class PhotonRigidbody2DViewEditor : Editor
 
         propertyRect.y += EditorGUIUtility.singleLineHeight;
         EditorGUI.PropertyField(propertyRect, serializedObject.FindProperty("m_SynchronizeAngularVelocity"), new GUIContent("Synchronize Angular Velocity"));
+
+        serializedObject.ApplyModifiedProperties();
     }
 }
