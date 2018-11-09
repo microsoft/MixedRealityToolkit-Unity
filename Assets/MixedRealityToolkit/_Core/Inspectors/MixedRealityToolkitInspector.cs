@@ -90,10 +90,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
         }
 
         [MenuItem("Mixed Reality Toolkit/Configure...")]
-        public static void CreateMixedRealityOrchestratorObject()
+        public static void CreateMixedRealityToolkitGameObject()
         {
             Selection.activeObject = MixedRealityToolkit.Instance;
+            Debug.Assert(MixedRealityToolkit.IsInitialized);
             var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+            Debug.Assert(playspace != null);
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
         }
     }

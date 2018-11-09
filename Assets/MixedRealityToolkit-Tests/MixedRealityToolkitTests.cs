@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
 using NUnit.Framework;
-using System;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -45,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test03_CreateMixedRealityOrchestrator()
+        public void Test03_CreateMixedRealityToolkit()
         {
             InitializeMixedRealityToolkitScene();
 
@@ -113,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test08_CreateMixedRealityComponent()
+        public void Test08_CreateMixedRealityExtensionServices()
         {
             InitializeMixedRealityToolkitScene();
 
@@ -128,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test09_TestMixedRealityComponentExists()
+        public void Test09_TestMixedRealityExtensionServiceExists()
         {
             InitializeMixedRealityToolkitScene();
 
@@ -146,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test10_TestMixedRealityComponents()
+        public void Test10_TestMixedRealityExtensionServices()
         {
             InitializeMixedRealityToolkitScene();
 
@@ -167,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test11_TestMixedRealityComponent2DoesNotReturn()
+        public void Test11_TestMixedRealityExtensionService2DoesNotReturn()
         {
             InitializeMixedRealityToolkitScene();
 
@@ -183,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test12_TestMixedRealityComponent2DoesNotExist()
+        public void Test12_TestMixedRealityExtensionService2DoesNotExist()
         {
             InitializeMixedRealityToolkitScene();
 
@@ -201,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test13_CreateMixedRealityComponentNameWithInput()
+        public void Test13_CreateMixedRealityExtensionServiceNameWithInput()
         {
             InitializeMixedRealityToolkitScene();
 
@@ -251,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test15_GetMixedRealityComponentsCollection()
+        public void Test15_GetMixedRealityExtensionServiceCollection()
         {
             InitializeMixedRealityToolkitScene();
 
@@ -273,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test16_GetAllMixedRealityComponents()
+        public void Test16_GetAllMixedRealityExtensionServices()
         {
             InitializeMixedRealityToolkitScene();
 
@@ -296,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test17_CleanupMixedRealityOrchestrator()
+        public void Test17_CleanupMixedRealityToolkit()
         {
             CleanupScene();
         }
@@ -312,9 +311,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             // Setup
             CleanupScene();
+            Assert.IsTrue(!MixedRealityToolkit.IsInitialized);
             InitializeMixedRealityToolkit();
 
             // Tests
+            Assert.IsTrue(MixedRealityToolkit.IsInitialized);
             Assert.IsNotNull(MixedRealityToolkit.Instance);
             var configuration = ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
             MixedRealityToolkit.Instance.ActiveProfile = configuration;
