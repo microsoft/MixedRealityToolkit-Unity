@@ -1221,7 +1221,7 @@ MonoBehaviour:
   scaleMinimum: 0.2
   wireframeOnly: 0
   wireframePadding: {x: 0, y: 0, z: 0}
-  flattenAxis: 4
+  flattenAxis: 0
   wireframeShape: 0
   wireframeMaterial: {fileID: 2100000, guid: 55745f61582d02148a240adc2186ebc5, type: 2}
   handleMaterial: {fileID: 2100000, guid: c760e0a251f2d554d81f3615e9c010e8, type: 2}
@@ -1518,7 +1518,7 @@ MonoBehaviour:
   scaleMinimum: 0.2
   wireframeOnly: 0
   wireframePadding: {x: 0, y: 0, z: 0}
-  flattenAxis: 4
+  flattenAxis: 0
   wireframeShape: 0
   wireframeMaterial: {fileID: 2100000, guid: 55745f61582d02148a240adc2186ebc5, type: 2}
   handleMaterial: {fileID: 2100000, guid: c760e0a251f2d554d81f3615e9c010e8, type: 2}
@@ -1685,7 +1685,7 @@ MonoBehaviour:
   scaleMinimum: 0.2
   wireframeOnly: 0
   wireframePadding: {x: 0, y: 0, z: 0}
-  flattenAxis: 4
+  flattenAxis: 0
   wireframeShape: 0
   wireframeMaterial: {fileID: 2100000, guid: 55745f61582d02148a240adc2186ebc5, type: 2}
   handleMaterial: {fileID: 2100000, guid: c760e0a251f2d554d81f3615e9c010e8, type: 2}
