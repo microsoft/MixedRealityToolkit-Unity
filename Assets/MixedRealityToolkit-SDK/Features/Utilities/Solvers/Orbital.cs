@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 
@@ -11,37 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
     /// </summary>
     public class Orbital : Solver
     {
-        public enum Orientation
-        {
-            /// <summary>
-            /// Use the tracked object's pitch, yaw, and roll
-            /// </summary>
-            FollowTrackedObject,
-            /// <summary>
-            /// Face toward the tracked object
-            /// </summary>
-            FaceTrackedObject,
-            /// <summary>
-            /// Orient towards SolverHandler's tracked object or TargetTransform
-            /// </summary>
-            YawOnly,
-            /// <summary>
-            /// Leave the object's rotation alone
-            /// </summary>
-            Unmodified,
-            /// <summary>
-            /// Orient toward Camera.main instead of SolverHandler's properties.
-            /// </summary>
-            CameraFacing,
-            /// <summary>
-            /// Align parallel to the direction the camera is facing 
-            /// </summary>
-            CameraAligned,
-        }
-
         [SerializeField]
         [Tooltip("The desired orientation of this object. Default sets the object to face the TrackedObject/TargetTransform. CameraFacing sets the object to always face the user.")]
-        private Orientation orientationType = Orientation.FollowTrackedObject;
+        private SolverOrientationType orientationType = SolverOrientationType.FollowTrackedObject;
 
         /// <summary>
         /// The desired orientation of this object.
@@ -49,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// <remarks>
         /// Default sets the object to face the TrackedObject/TargetTransform. CameraFacing sets the object to always face the user.
         /// </remarks>
-        public Orientation OrientationType
+        public SolverOrientationType OrientationType
         {
             get { return orientationType; }
             set { orientationType = value; }
@@ -113,18 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             get { return tetherAngleSteps; }
             set
             {
-                if (value < 2)
-                {
-                    tetherAngleSteps = 2;
-                }
-                else if (value > 24)
-                {
-                    tetherAngleSteps = 24;
-                }
-                else
-                {
-                    tetherAngleSteps = value;
-                }
+                tetherAngleSteps =  Mathf.Clamp(value, 2, 24);
             }
         }
 
@@ -155,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             }
 
             float stepAngle = 360f / tetherAngleSteps;
-            int numberOfSteps = Mathf.RoundToInt(SolverHandler.TransformTarget.transform.localEulerAngles.y / stepAngle);
+            int numberOfSteps = Mathf.RoundToInt(SolverHandler.TransformTarget.transform.eulerAngles.y / stepAngle);
 
             float newAngle = stepAngle * numberOfSteps;
 
@@ -168,33 +130,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
             switch (orientationType)
             {
-                case Orientation.YawOnly:
-                    float targetYRotation;
-
-                    if (SolverHandler.TransformTarget != null)
-                    {
-                        targetYRotation = SolverHandler.TransformTarget.eulerAngles.y;
-                    }
-                    else
-                    {
-                        targetYRotation = 1;
-                    }
-
+                case SolverOrientationType.YawOnly:
+                    float targetYRotation = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.eulerAngles.y : 1;
                     desiredRot = Quaternion.Euler(0f, targetYRotation, 0f);
                     break;
-                case Orientation.Unmodified:
+                case SolverOrientationType.Unmodified:
                     desiredRot = transform.rotation;
                     break;
-                case Orientation.CameraAligned:
+                case SolverOrientationType.CameraAligned:
                     desiredRot = CameraCache.Main.transform.rotation;
                     break;
-                case Orientation.FaceTrackedObject:
+                case SolverOrientationType.FaceTrackedObject:
                     desiredRot = Quaternion.LookRotation(SolverHandler.TransformTarget.position - desiredPos);
                     break;
-                case Orientation.CameraFacing:
+                case SolverOrientationType.CameraFacing:
                     desiredRot = Quaternion.LookRotation(CameraCache.Main.transform.position - desiredPos);
                     break;
-                case Orientation.FollowTrackedObject:
+                case SolverOrientationType.FollowTrackedObject:
                     desiredRot = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.rotation : Quaternion.identity;
                     break;
                 default:

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
@@ -14,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
     /// <summary>
     /// Waits for a controller to be initialized, then synchronizes its transform position to a specified handedness.
     /// </summary>
-    public class ControllerPoseSynchronizer : InputSystemGlobalListener, IMixedRealitySourcePoseHandler, IMixedRealityControllerPoseSynchronizer
+    public class ControllerPoseSynchronizer : InputSystemGlobalListener, IMixedRealityControllerPoseSynchronizer
     {
         #region IMixedRealityControllerPoseSynchronizer Implementation
 
@@ -96,14 +97,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <inheritdoc />
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            if (Controller == null ||
-                eventData.Controller == null ||
-                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
-            {
-                return;
-            }
-
-            if (eventData.Controller?.ControllerHandedness == Handedness)
+            if (eventData.SourceId == Controller?.InputSource.SourceId &&
+                eventData.Controller?.ControllerHandedness == Handedness)
             {
                 IsTracked = false;
                 TrackingState = TrackingState.NotTracked;
@@ -125,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <inheritdoc />
         public virtual void OnSourcePoseChanged(SourcePoseEventData<TrackingState> eventData)
         {
-            if (eventData.SourceData != TrackingState)
+            if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
                 IsTracked = eventData.SourceData == TrackingState.Tracked;
                 TrackingState = eventData.SourceData;
@@ -144,17 +139,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <inheritdoc />
         public virtual void OnSourcePoseChanged(SourcePoseEventData<MixedRealityPose> eventData)
         {
-            if (Controller == null ||
-                eventData.Controller == null ||
-                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
+            if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
-                return;
-            }
-
-            if (UseSourcePoseData && TrackingState == TrackingState.Tracked)
-            {
-                transform.localPosition = eventData.SourceData.Position;
-                transform.localRotation = eventData.SourceData.Rotation;
+                if (UseSourcePoseData && TrackingState == TrackingState.Tracked)
+                {
+                    transform.localPosition = eventData.SourceData.Position;
+                    transform.localRotation = eventData.SourceData.Rotation;
+                }
             }
         }
 
@@ -162,20 +153,27 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         #region IMixedRealityInputHandler Implementation
 
+        /// <inheritdoc />
         public virtual void OnInputUp(InputEventData eventData) { }
 
+        /// <inheritdoc />
         public virtual void OnInputDown(InputEventData eventData) { }
 
+        /// <inheritdoc />
+        [Obsolete("Use ControllerPoseSynchronizer.OnInputChanged(InputEventData<float> eventData)")]
         public virtual void OnInputPressed(InputEventData<float> eventData) { }
 
+        /// <inheritdoc />
+        public virtual void OnInputChanged(InputEventData<float> eventData) { }
+
+        [Obsolete("Use ControllerPoseSynchronizer.OnInputChanged(InputEventData<Vector2> eventData)")]
         public virtual void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
-        #endregion  IMixedRealityInputHandler Implementation
-
-        #region IMixedRealitySpatialInputHandler Implementation
+        /// <inheritdoc />
+        public virtual void OnInputChanged(InputEventData<Vector2> eventData) { }
 
         /// <inheritdoc />
-        public virtual void OnPositionChanged(InputEventData<Vector3> eventData)
+        public virtual void OnInputChanged(InputEventData<Vector3> eventData)
         {
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
@@ -190,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         }
 
         /// <inheritdoc />
-        public virtual void OnRotationChanged(InputEventData<Quaternion> eventData)
+        public virtual void OnInputChanged(InputEventData<Quaternion> eventData)
         {
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
@@ -205,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         }
 
         /// <inheritdoc />
-        public virtual void OnPoseInputChanged(InputEventData<MixedRealityPose> eventData)
+        public virtual void OnInputChanged(InputEventData<MixedRealityPose> eventData)
         {
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
@@ -219,6 +217,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 }
             }
         }
+
+        #endregion  IMixedRealityInputHandler Implementation
+
+        #region IMixedRealitySpatialInputHandler Implementation
+
+        [Obsolete("Use ControllerPoseSynchronizer.OnInputChanged(InputEventData<Vector3> eventData)")]
+        public virtual void OnPositionChanged(InputEventData<Vector3> eventData) { }
+
+        [Obsolete("Use ControllerPoseSynchronizer.OnInputChanged(InputEventData<Quaternion> eventData)")]
+        public virtual void OnRotationChanged(InputEventData<Quaternion> eventData) { }
+
+        [Obsolete("Use ControllerPoseSynchronizer.OnInputChanged(InputEventData<MixedRealityPose> eventData)")]
+        public virtual void OnPoseInputChanged(InputEventData<MixedRealityPose> eventData) { }
 
         #endregion IMixedRealitySpatialInputHandler Implementation 
     }

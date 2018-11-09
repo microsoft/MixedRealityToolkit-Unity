@@ -34,6 +34,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         HashSet<IMixedRealityInputSource> DetectedInputSources { get; }
 
         /// <summary>
+        /// List of <see cref="IMixedRealityController"/>s currently detected by the input manager.
+        /// </summary>
+        /// <remarks>
+        /// This property is similar to <see cref="DetectedInputSources"/>, as this is a subset of those <see cref="IMixedRealityInputSource"/>s in that list.
+        /// </remarks>
+        HashSet<IMixedRealityController> DetectedControllers { get; }
+
+        /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.
         /// </summary>
         IMixedRealityFocusProvider FocusProvider { get; }
@@ -520,191 +528,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         void RaiseGestureCanceled(IMixedRealityController controller, MixedRealityInputAction action);
 
         #endregion
-
-        #region Hold Events
-
-        /// <summary>
-        /// Raise the hold started input event.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldStarted(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// Raise the hold started input event.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldStarted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// Raise the hold completed input event.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldCompleted(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// Raise the hold completed input event.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldCompleted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// Raise the hold canceled input event.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldCanceled(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// Raise the hold canceled input event.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseHoldCanceled(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        #endregion Hold Events
-
-        #region Navigation Events
-
-        /// <summary>
-        /// Raise the navigation started input event.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseNavigationStarted(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// Raise the navigation started input event.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseNavigationStarted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="normalizedOffset"></param>
-        void RaiseNavigationUpdated(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 normalizedOffset);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="normalizedOffset"></param>
-        void RaiseNavigationUpdated(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 normalizedOffset);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="normalizedOffset"></param>
-        void RaiseNavigationCompleted(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 normalizedOffset);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="normalizedOffset"></param>
-        void RaiseNavigationCompleted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 normalizedOffset);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseNavigationCanceled(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseNavigationCanceled(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        #endregion Navigation Events
-
-        #region Manipulation Events
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseManipulationStarted(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseManipulationStarted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="cumulativeDelta"></param>
-        void RaiseManipulationUpdated(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 cumulativeDelta);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="cumulativeDelta"></param>
-        void RaiseManipulationUpdated(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 cumulativeDelta);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="cumulativeDelta"></param>
-        void RaiseManipulationCompleted(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 cumulativeDelta);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="handedness"></param>
-        /// <param name="cumulativeDelta"></param>
-        void RaiseManipulationCompleted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 cumulativeDelta);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseManipulationCanceled(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseManipulationCanceled(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        #endregion Manipulation Events
 
         #region Speech Keyword Events
 

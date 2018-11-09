@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -11,6 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fd6338e77774badb73a2b1320b41caf, type: 3}
   m_Name: DefaultMixedRealityBoundaryVisualizationProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  boundaryHeight: 3
   showFloor: 1
   floorMaterial: {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   floorScale: {x: 10, y: 10}

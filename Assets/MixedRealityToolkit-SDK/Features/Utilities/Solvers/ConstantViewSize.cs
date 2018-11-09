@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 {
     /// <summary>
-    ///   ConstantViewSize solver scales to maintain a constant size relative to the view (currently tied to the Camera)
+    /// ConstantViewSize solver scales to maintain a constant size relative to the view (currently tied to the Camera)
     /// </summary>
     public class ConstantViewSize : Solver
     {
@@ -35,23 +36,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         private float maxScale = 100f;
 
         [SerializeField]
+        [Tooltip("Used for dead zone for scaling")]
+        private float scaleBuffer = 0.01f;
+
+        [SerializeField]
         [Tooltip("If you don't trust or don't like the auto size calculation, specify a manual size here. 0 is ignored")]
         private float manualObjectSize = 0;
 
+        public ScaleStateType ScaleState { get; private set; } = ScaleStateType.Static;
+
         /// <summary>
-        /// 0 to 1 between MinScale and MaxScale.  If current is less than max, then scaling is being applied.
-        /// This value is subject to inaccuracies due to smoothing/interpolation/momentum
+        /// 0 to 1 between MinScale and MaxScale. If current is less than max, then scaling is being applied.
+        /// This value is subject to inaccuracies due to smoothing/interpolation/momentum.
         /// </summary>
         public float CurrentScalePercent { get; private set; } = 1f;
 
         /// <summary>
-        /// 0 to 1 between MinDistance and MaxDistance.  If current is less than max, object is potentially on a surface [or some other condition like interpolating] (since it may still be on surface, but scale percent may be clamped at max)
-        /// This value is subject to inaccuracies due to smoothing/interpolation/momentum
+        /// 0 to 1 between MinDistance and MaxDistance. If current is less than max, object is potentially on a surface [or some other condition like interpolating] (since it may still be on surface, but scale percent may be clamped at max).
+        /// This value is subject to inaccuracies due to smoothing/interpolation/momentum.
         /// </summary>
         public float CurrentDistancePercent { get; private set; } = 1f;
 
         /// <summary>
-        /// Returns the scale to be applied based on the FOV.  This scale will be multiplied by distance as part of
+        /// Returns the scale to be applied based on the FOV. This scale will be multiplied by distance as part of
         /// the final scale calculation, so this is the ratio of vertical fov to distance.
         /// </summary>
         public float FovScale
@@ -71,6 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             float baseSize;
 
+            // Attempts to calculate the size of the bounds which contains all child renderers.
+            // This may be tricky to use, as this happens during initialization, while the app may
+            // be undergoing scaling by other solvers/components. Thus, the size calculation might
+            // be inaccurate. It's probably a better idea to use manualObjectSize just to be sure.
             if (manualObjectSize > 0)
             {
                 baseSize = manualObjectSize;
@@ -107,10 +118,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// <inheritdoc />
         public override void SolverUpdate()
         {
+            float lastScalePct = CurrentScalePercent;
+
             if (SolverHandler.TransformTarget != null)
             {
                 // Get current fov each time instead of trying to cache it.  Can never count on init order these days
                 fovScalar = FovScale;
+
+                // Set the linked alt scale ahead of our work. This is an attempt to minimize jittering by having solvers work with an interpolated scale.
+                SolverHandler.AltScale.SetGoal(transform.localScale);
 
                 // Calculate scale based on distance from view.  Do not interpolate so we can appear at a constant size if possible.  Borrowed from greybox.
                 Vector3 targetPosition = SolverHandler.TransformTarget.position;
@@ -123,6 +139,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 CurrentScalePercent = Mathf.InverseLerp(minScale, maxScale, scale);
 
                 UpdateWorkingScaleToGoal();
+            }
+
+            float scaleDifference = (CurrentScalePercent - lastScalePct) / SolverHandler.DeltaTime;
+
+            if (scaleDifference > scaleBuffer)
+            {
+                ScaleState = ScaleStateType.Growing;
+            }
+            else if (scaleDifference < -scaleBuffer)
+            {
+                ScaleState = ScaleStateType.Shrinking;
+            }
+            else
+            {
+                ScaleState = ScaleStateType.Static;
             }
         }
     }
