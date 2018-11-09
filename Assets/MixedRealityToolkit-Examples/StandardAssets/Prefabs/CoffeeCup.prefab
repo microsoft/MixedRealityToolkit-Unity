@@ -54,7 +54,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4093692037292836}
   - component: {fileID: 65660317952228020}
-  - component: {fileID: 114250016361141146}
   m_Layer: 0
   m_Name: CoffeeCup
   m_TagString: Untagged
@@ -199,31 +198,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.4645143, y: 2.253526, z: 2.0358305}
   m_Center: {x: 0.23581156, y: 1.0983852, z: -0.023423307}
---- !u!114 &114250016361141146
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1815094408320666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b81083f6e1e5d848a87fd2562328230, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boxColliderToUse: {fileID: 65660317952228020}
-  activateOnStart: 1
-  scaleMaximum: 5
-  scaleMinimum: 0.2
-  wireframeOnly: 0
-  wireframePadding: {x: 0, y: 0, z: 0}
-  flattenAxis: 0
-  wireframeShape: 0
-  wireframeMaterial: {fileID: 2100000, guid: 55745f61582d02148a240adc2186ebc5, type: 2}
-  handleMaterial: {fileID: 2100000, guid: c760e0a251f2d554d81f3615e9c010e8, type: 2}
-  handleGrabbedMaterial: {fileID: 2100000, guid: b4ef46d59a9cf3d42b1c6e426c87b01a,
-    type: 2}
-  showScaleHandles: 1
-  showRotateHandles: 1
-  linkRadius: 0.005
-  ballRadius: 0.035
-  cornerRadius: 0.03
