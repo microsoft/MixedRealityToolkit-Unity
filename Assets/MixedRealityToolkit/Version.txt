@@ -1,1 +1,1 @@
-Mixed Reality Toolkit 2018.7.0.0-ALPHA
+Mixed Reality Toolkit 2018.9.0 (BETA)

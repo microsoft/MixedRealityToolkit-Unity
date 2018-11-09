@@ -234,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             return string.Empty;
         }
 
-        private static async Task<bool> RestoreNugetPackagesAsync(string nugetPath, string storePath)
+        public static async Task<bool> RestoreNugetPackagesAsync(string nugetPath, string storePath)
         {
             Debug.Assert(File.Exists(nugetPath));
             Debug.Assert(Directory.Exists(storePath));

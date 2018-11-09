@@ -4,8 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,41 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
     /// <summary>
     /// Base Device manager to inherit from.
     /// </summary>
-    public class BaseDeviceManager : IMixedRealityDeviceManager
+    public class BaseDeviceManager : BaseExtensionService, IMixedRealityDeviceManager
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public BaseDeviceManager(string name, uint priority)
-        {
-            Name = name;
-            Priority = priority;
-        }
-
-        public string Name { get; }
-
-        /// <inheritdoc />
-        public uint Priority { get; }
-
-        /// <inheritdoc />
-        public virtual void Initialize() { }
-
-        /// <inheritdoc />
-        public virtual void Reset() { }
-
-        /// <inheritdoc />
-        public virtual void Enable() { }
-
-        /// <inheritdoc />
-        public virtual void Update() { }
-
-        /// <inheritdoc />
-        public virtual void Disable() { }
-
-        /// <inheritdoc />
-        public virtual void Destroy() { }
+        public BaseDeviceManager(string name, uint priority) : base(name, priority) { }
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
@@ -64,13 +36,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         {
             var pointers = new List<IMixedRealityPointer>();
 
-            if (MixedRealityManager.HasActiveProfile &&
-                MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
-                MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+            if (MixedRealityToolkit.HasActiveProfile &&
+                MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
             {
-                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
+                for (int i = 0; i < MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
                 {
-                    var pointerProfile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions[i];
+                    var pointerProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions[i];
 
                     if (!useSpecificType)
                     {
@@ -82,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
                         var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-                        pointerObject.transform.SetParent(MixedRealityManager.Instance.MixedRealityPlayspace);
+                        pointerObject.transform.SetParent(MixedRealityToolkit.Instance.MixedRealityPlayspace);
 
                         if (pointer != null)
                         {
