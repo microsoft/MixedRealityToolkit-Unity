@@ -57,7 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
             for (int i = 0; i < NodeList.Count; i++)
             {
-                if (NodeList[i].Transform == null || (IgnoreInactiveTransforms && !NodeList[i].Transform.gameObject.activeSelf) || NodeList[i].Transform.parent == null || !(NodeList[i].Transform.parent.gameObject == gameObject))
+                if (NodeList[i].Transform == null ||
+                    NodeList[i].Transform.parent == null ||
+                    !NodeList[i].Transform.IsChildOf(transform) ||
+                    (IgnoreInactiveTransforms && !NodeList[i].Transform.gameObject.activeSelf))
                 {
                     emptyNodes.Add(NodeList[i]);
                 }
