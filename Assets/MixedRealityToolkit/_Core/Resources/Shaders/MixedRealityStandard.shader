@@ -536,6 +536,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 float2 uvY = i.triplanarPosition.xz * _MainTex_ST.xy + _MainTex_ST.zw;
                 float2 uvZ = i.triplanarPosition.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 
+                // Ternary operator is 2 instructions faster than sign() when we don't care about zero returning a zero sign.
                 float3 axisSign = i.triplanarNormal < 0 ? -1 : 1;
                 uvX.x *= axisSign.x;
                 uvY.x *= axisSign.y;
