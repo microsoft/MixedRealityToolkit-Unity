@@ -380,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     if (instance != null)
                     {
                         Debug.Assert(instance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
-                        Debug.Assert(instance.transform.childCount == 0, "The MixedRealityToolkit should not have GameObjects children!");
+                        Debug.Assert(instance.transform.childCount == 0, "The MixedRealityToolkit should not have GameObject children!");
                     }
                 };
 #endif // UNITY_EDITOR
