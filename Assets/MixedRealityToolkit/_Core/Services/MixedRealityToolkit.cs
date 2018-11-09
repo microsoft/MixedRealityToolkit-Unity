@@ -916,7 +916,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (type == null)
             {
                 Debug.LogWarning("Unable to get managers with a type of null.");
-                return null;
+                return new List<IMixedRealityService>();
             }
 
             return GetActiveServices(type, string.Empty);
@@ -933,13 +933,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (ActiveProfile == null)
             {
                 Debug.LogWarning($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile");
-                return null;
+                return new List<IMixedRealityService>();
             }
 
             if (type == null)
             {
                 Debug.LogWarning("Unable to get managers with a type of null.");
-                return null;
+                return new List<IMixedRealityService>();
             }
 
             var services = new List<IMixedRealityService>();
