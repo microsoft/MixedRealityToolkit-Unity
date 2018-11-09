@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1());
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
 
             // Tests
             Assert.AreEqual(1, MixedRealityToolkit.Instance.MixedRealityComponents.Count);
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1());
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
 
             // Retrieve Component1
             var component1 = MixedRealityToolkit.Instance.GetService(typeof(ITestComponent1));
@@ -154,9 +154,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1());
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2());
-            MixedRealityToolkit.Instance.RegisterService(typeof(IFailComponent), new TestFailComponent());
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2("Test Component 2", 10));
+            MixedRealityToolkit.Instance.RegisterService(typeof(IFailComponent), new TestFailComponent("Fail Component", 10));
             LogAssert.Expect(LogType.Error, $"Unable to register {typeof(IFailComponent)}. Concrete type does not implement the IMixedRealityExtensionService implementation.");
 
             // Retrieve all registered IMixedRealityExtensionServices
@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1());
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
 
             // Validate non-existent component
             MixedRealityToolkit.Instance.GetService(typeof(ITestComponent2), "Test2");
@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component 1
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1());
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
 
             // Validate non-existent component
             var component2 = MixedRealityToolkit.Instance.IsServiceRegistered<ITestComponent2>();
@@ -209,10 +209,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             //Add test component 1
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1());
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
 
             //Add test component 2
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2 { Name = "Test2-1" });
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2("Test Component 2", 10));
 
             // Tests
             Assert.IsNotNull(MixedRealityToolkit.Instance.ActiveProfile);
@@ -230,10 +230,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component 1
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1 { Name = "Test14-1" });
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test14-1", 10));
 
             // Add test component 2
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2 { Name = "Test14-2" });
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2("Test14-2", 10));
 
             // Retrieve Test component 2-2
             TestComponent2 component2 = (TestComponent2)MixedRealityToolkit.Instance.GetService(typeof(ITestComponent2), "Test14-2");
@@ -259,11 +259,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component 1
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1 { Name = "Test15-1" });
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test15-1", 10));
 
             // Add test components 2
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2 { Name = "Test15-2.1" });
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2 { Name = "Test15-2.2" });
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2("Test15-2.1", 10));
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2("Test15-2.2", 10));
 
             // Retrieve Component2
             var components = MixedRealityToolkit.Instance.GetActiveServices(typeof(ITestComponent2));
@@ -281,12 +281,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Add test component 1
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1 { Name = "Test16-1.1" });
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1 { Name = "Test16-1.2" });
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test16-1.1", 10));
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test16-1.2", 10));
 
             // Add test components 2
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2 { Name = "Test16-2.1" });
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2 { Name = "Test16-2.2" });
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2("Test16-2.1", 10));
+            MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2("Test16-2.2", 10));
 
             // Retrieve Component1
             var allComponents = MixedRealityToolkit.Instance.MixedRealityComponents;
@@ -330,9 +330,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
     public interface ITestComponent2 : IMixedRealityExtensionService { }
 
-    internal class TestComponent1 : BaseService, ITestComponent1
+    internal class TestComponent1 : BaseExtensionService, ITestComponent1
     {
         public IMixedRealityInputSystem InputSystem = null;
+
+        public TestComponent1(string name, uint priority) : base(name, priority) { }
 
         /// <summary>
         /// The initialize function is used to setup the service once created.
@@ -344,9 +346,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
     }
 
-    internal class TestComponent2 : BaseService, ITestComponent2
+    internal class TestComponent2 : BaseExtensionService, ITestComponent2
     {
         public IMixedRealityInputSystem InputSystem = null;
+
+        public TestComponent2(string name, uint priority) : base(name, priority) { }
 
         /// <summary>
         /// The initialize function is used to setup the service once created.
@@ -360,7 +364,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
     internal interface IFailComponent : IMixedRealityService { }
 
-    internal class TestFailComponent : BaseService, IFailComponent { }
+    internal class TestFailComponent : BaseExtensionService, IFailComponent
+    {
+        public TestFailComponent(string name, uint priority) : base(name, priority) { }
+    }
 
     #endregion Test Components
 }
