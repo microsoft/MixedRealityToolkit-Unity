@@ -2,53 +2,21 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices
 {
-    public class BaseSpatialObserver : IMixedRealitySpatialAwarenessObserver
+    public class BaseSpatialObserver : BaseExtensionService, IMixedRealitySpatialAwarenessObserver
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public BaseSpatialObserver(string name, uint priority)
-        {
-            Name = name;
-            Priority = priority;
-        }
-
-        #region IMixedRealityToolkit implementation
-
-        public string Name { get; }
-
-        /// <inheritdoc />
-        public uint Priority { get; }
-
-        /// <inheritdoc />
-        public virtual void Initialize() { }
-
-        /// <inheritdoc />
-        public virtual void Reset() { }
-
-        /// <inheritdoc />
-        public virtual void Enable() { }
-
-        /// <inheritdoc />
-        public virtual void Update() { }
-
-        /// <inheritdoc />
-        public virtual void Disable() { }
-
-        /// <inheritdoc />
-        public virtual void Destroy() { }
-
-        #endregion IMixedRealityToolkit implementation
+        public BaseSpatialObserver(string name, uint priority) : base(name, priority) { }
 
         /// <summary>
         /// Is the observer running (actively accumulating spatial data)?
@@ -63,14 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <summary>
         /// Start the observer.
         /// </summary>
-        public virtual void StartObserving()
-        { }
+        public virtual void StartObserving() { }
 
         /// <summary>
         /// Stop the observer.
         /// </summary>
-        public virtual void StopObserving()
-        { }
+        public virtual void StopObserving() { }
 
         /// <summary>
         /// When a mesh is created we will need to create a game object with a minimum 

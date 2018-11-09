@@ -13,41 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
     /// <summary>
     /// Base Device manager to inherit from.
     /// </summary>
-    public class BaseDeviceManager : IMixedRealityDeviceManager
+    public class BaseDeviceManager : BaseExtensionService, IMixedRealityDeviceManager
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public BaseDeviceManager(string name, uint priority)
-        {
-            Name = name;
-            Priority = priority;
-        }
-
-        public string Name { get; }
-
-        /// <inheritdoc />
-        public uint Priority { get; }
-
-        /// <inheritdoc />
-        public virtual void Initialize() { }
-
-        /// <inheritdoc />
-        public virtual void Reset() { }
-
-        /// <inheritdoc />
-        public virtual void Enable() { }
-
-        /// <inheritdoc />
-        public virtual void Update() { }
-
-        /// <inheritdoc />
-        public virtual void Disable() { }
-
-        /// <inheritdoc />
-        public virtual void Destroy() { }
+        public BaseDeviceManager(string name, uint priority) : base(name, priority) { }
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
