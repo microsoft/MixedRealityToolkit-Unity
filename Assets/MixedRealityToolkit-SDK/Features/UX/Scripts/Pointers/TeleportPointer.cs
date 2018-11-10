@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using System;
@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         #region IMixedRealityInputHandler Implementation
 
         /// <inheritdoc />
-        public override void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             // Don't process input if we've got an active teleport request in progress.
             if (IsTeleportRequestActive) { return; }
@@ -278,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     {
                         teleportEnabled = true;
 
-                        MixedRealityManager.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
+                        MixedRealityToolkit.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
                     }
                     else if (canMove)
                     {
@@ -303,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                             {
                                 canMove = false;
                                 // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
-                                MixedRealityManager.Instance.MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
+                                MixedRealityToolkit.Instance.MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
                             }
                             else // We may be trying to strafe backwards.
                             {
@@ -317,10 +317,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                                 if (offsetStrafeAngle > 0 && offsetStrafeAngle < backStrafeActivationAngle)
                                 {
                                     canMove = false;
-                                    var height = MixedRealityManager.Instance.MixedRealityPlayspace.position.y;
-                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityManager.Instance.MixedRealityPlayspace.position;
+                                    var height = MixedRealityToolkit.Instance.MixedRealityPlayspace.position.y;
+                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityToolkit.Instance.MixedRealityPlayspace.position;
                                     newPosition.y = height;
-                                    MixedRealityManager.Instance.MixedRealityPlayspace.position = newPosition;
+                                    MixedRealityToolkit.Instance.MixedRealityPlayspace.position = newPosition;
                                 }
                             }
                         }
@@ -344,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                         TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                     {
-                        MixedRealityManager.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                        MixedRealityToolkit.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
                     }
                 }
 
@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     canTeleport = false;
                     teleportEnabled = false;
-                    MixedRealityManager.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                    MixedRealityToolkit.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
                 }
             }
 

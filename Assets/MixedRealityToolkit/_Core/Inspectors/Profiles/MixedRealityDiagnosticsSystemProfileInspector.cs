@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,9 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty showMemory;
         private SerializedProperty visible;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            if (!CheckMixedRealityManager(false))
+            base.OnEnable();
+
+            if (!CheckMixedRealityConfigured(false))
             {
                 return;
             }
@@ -33,20 +35,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            if (!CheckMixedRealityManager())
+            if (!CheckMixedRealityConfigured())
             {
                 return;
             }
 
             if (GUILayout.Button("Back to Configuration Profile"))
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
             }
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
+
+            serializedObject.Update();
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Diagnostic Visualization Options", EditorStyles.boldLabel);
@@ -59,6 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(showCpu);
             EditorGUILayout.PropertyField(showFps);
             EditorGUILayout.PropertyField(showMemory);
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

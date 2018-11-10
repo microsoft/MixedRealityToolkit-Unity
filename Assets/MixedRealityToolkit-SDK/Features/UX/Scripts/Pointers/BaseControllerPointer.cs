@@ -10,7 +10,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Physics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System.Collections;
@@ -29,6 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [SerializeField]
         private bool disableCursorOnStart = false;
+
+        protected bool DisableCursorOnStart => disableCursorOnStart;
 
         [SerializeField]
         private bool setCursorVisibilityOnSourceDetected = false;
@@ -127,9 +129,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.OnEnable();
 
-            if (MixedRealityManager.IsInitialized && MixedRealityManager.TeleportSystem != null && !lateRegisterTeleport)
+            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.TeleportSystem != null && !lateRegisterTeleport)
             {
-                MixedRealityManager.TeleportSystem.Register(gameObject);
+                MixedRealityToolkit.TeleportSystem.Register(gameObject);
             }
         }
 
@@ -139,9 +141,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (lateRegisterTeleport)
             {
-                await new WaitUntil(() => MixedRealityManager.TeleportSystem != null);
+                await new WaitUntil(() => MixedRealityToolkit.TeleportSystem != null);
                 lateRegisterTeleport = false;
-                MixedRealityManager.TeleportSystem.Register(gameObject);
+                MixedRealityToolkit.TeleportSystem.Register(gameObject);
             }
 
             await WaitUntilInputSystemValid;
@@ -151,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected override void OnDisable()
         {
             base.OnDisable();
-            MixedRealityManager.TeleportSystem?.Unregister(gameObject);
+            MixedRealityToolkit.TeleportSystem?.Unregister(gameObject);
 
             IsHoldPressed = false;
             IsSelectPressed = false;
@@ -163,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #region IMixedRealityPointer Implementation
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IMixedRealityController" />
         public override IMixedRealityController Controller
         {
             get { return base.Controller; }
@@ -183,18 +185,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             {
                 if (pointerId == 0)
                 {
-                    pointerId = MixedRealityManager.InputSystem.FocusProvider.GenerateNewPointerId();
+                    pointerId = MixedRealityToolkit.InputSystem.FocusProvider.GenerateNewPointerId();
                 }
 
                 return pointerId;
             }
         }
 
+        private string pointerName = string.Empty;
+
         /// <inheritdoc />
         public string PointerName
         {
-            get { return gameObject.name; }
-            set { gameObject.name = value; }
+            get { return pointerName; }
+            set
+            {
+                pointerName = value;
+                gameObject.name = value;
+            }
         }
 
         /// <inheritdoc />
@@ -245,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public float PointerExtent
         {
-            get { return overrideGlobalPointerExtent ? MixedRealityManager.InputSystem.FocusProvider.GlobalPointingExtent : pointerExtent; }
+            get { return overrideGlobalPointerExtent ? MixedRealityToolkit.InputSystem.FocusProvider.GlobalPointingExtent : pointerExtent; }
             set { pointerExtent = value; }
         }
 
@@ -391,8 +399,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 if (eventData.MixedRealityInputAction == pointerAction)
                 {
                     IsSelectPressed = false;
-                    MixedRealityManager.InputSystem.RaisePointerClicked(this, Handedness, pointerAction, 0);
-                    MixedRealityManager.InputSystem.RaisePointerUp(this, Handedness, pointerAction);
+                    MixedRealityToolkit.InputSystem.RaisePointerClicked(this, Handedness, pointerAction, 0);
+                    MixedRealityToolkit.InputSystem.RaisePointerUp(this, Handedness, pointerAction);
                 }
             }
         }
@@ -413,7 +421,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsSelectPressed = true;
                     HasSelectPressedOnce = true;
-                    MixedRealityManager.InputSystem.RaisePointerDown(this, Handedness, pointerAction);
+                    MixedRealityToolkit.InputSystem.RaisePointerDown(this, Handedness, pointerAction);
                 }
             }
         }

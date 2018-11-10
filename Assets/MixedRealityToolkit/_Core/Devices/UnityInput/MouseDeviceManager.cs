@@ -5,13 +5,13 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 {
-    public class MouseDeviceManager : BaseDeviceManager, IMixedRealityComponent
+    public class MouseDeviceManager : BaseDeviceManager, IMixedRealityExtensionService
     {
         public MouseDeviceManager(string name, uint priority) : base(name, priority) { }
 
@@ -30,7 +30,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             }
 
 #if UNITY_EDITOR
-            UnityEditor.EditorWindow.focusedWindow.ShowNotification(new GUIContent("Press \"ESC\" to regain mouse control"));
+            if (UnityEditor.EditorWindow.focusedWindow != null)
+            {
+                UnityEditor.EditorWindow.focusedWindow.ShowNotification(new GUIContent("Press \"ESC\" to regain mouse control"));
+            }
 #endif
 
             Cursor.visible = false;
@@ -40,10 +43,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 
             MixedRealityRaycaster.DebugEnabled = true;
 
-            if (MixedRealityManager.InputSystem != null)
+            if (MixedRealityToolkit.InputSystem != null)
             {
                 var pointers = RequestPointers(new SystemType(typeof(MouseController)), Handedness.Any, true);
-                mouseInputSource = MixedRealityManager.InputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
+                mouseInputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
             }
 
             Controller = new MouseController(TrackingState.NotApplicable, Handedness.Any, mouseInputSource);
@@ -57,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             }
 
             Controller.SetupConfiguration(typeof(MouseController));
-            MixedRealityManager.InputSystem?.RaiseSourceDetected(Controller.InputSource, Controller);
+            MixedRealityToolkit.InputSystem?.RaiseSourceDetected(Controller.InputSource, Controller);
         }
 
         /// <inheritdoc />
@@ -73,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         {
             if (Controller != null)
             {
-                MixedRealityManager.InputSystem?.RaiseSourceLost(Controller.InputSource, Controller);
+                MixedRealityToolkit.InputSystem?.RaiseSourceLost(Controller.InputSource, Controller);
             }
         }
     }
