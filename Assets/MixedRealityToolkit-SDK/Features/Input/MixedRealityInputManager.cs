@@ -88,12 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public override void Initialize()
         {
             CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
-            InitializeInternal();
-            InputEnabled?.Invoke();
-        }
 
-        private void InitializeInternal()
-        {
             gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
 
             bool addedComponents = false;
@@ -159,18 +154,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         }
 
         /// <inheritdoc />
-        public override void Reset()
+        public override void Enable()
         {
-            InputDisabled?.Invoke();
-            InitializeInternal();
+            var gazeCursor = UnityEngine.Object.Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.GazeCursorPrefab);
+            gazeProvider.GazeCursor = gazeCursor;
             InputEnabled?.Invoke();
         }
 
         /// <inheritdoc />
-        public override void Destroy()
+        public override void Reset()
         {
-            InputDisabled?.Invoke();
+            Disable();
+            Initialize();
+            Enable();
+        }
 
+        /// <inheritdoc />
+        public override void Disable()
+        {
             gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
             gazeProvider.enabled = false;
 
@@ -182,6 +183,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 UnityEngine.Object.DestroyImmediate(gazeProvider);
             }
+
+            InputDisabled?.Invoke();
         }
 
         #endregion IMixedRealityManager Implementation

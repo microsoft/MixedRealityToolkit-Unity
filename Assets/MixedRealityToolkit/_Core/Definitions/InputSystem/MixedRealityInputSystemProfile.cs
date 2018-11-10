@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 
@@ -15,6 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input System Profile", fileName = "MixedRealityInputSystemProfile", order = (int)CreateProfileMenuItemIndices.Input)]
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
+        [SerializeField]
+        private GameObject gazeCursorPrefab;
+
+        public GameObject GazeCursorPrefab => gazeCursorPrefab;
+
         [SerializeField]
         [Tooltip("Input System Focus profile for configuring focus settings")]
         private MixedRealityFocusProfile focusProfile;

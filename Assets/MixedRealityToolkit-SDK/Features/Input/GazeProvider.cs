@@ -29,8 +29,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private const float MovementThreshold = 0.01f;
 
         [SerializeField]
-        [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
+        [Tooltip("(Optional) Cursor Prefab to use.")]
         private GameObject cursorPrefab = null;
+
+        /// <summary>
+        /// Current Instanced Gaze Cursor.
+        /// </summary>
+        public GameObject GazeCursor
+        {
+            get { return cursorPrefab; }
+            set
+            {
+                cursorPrefab = value;
+                value.transform.parent = transform.parent;
+                GazePointer.BaseCursor = value.GetComponent<IMixedRealityCursor>();
+                Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
+                GazePointer.BaseCursor.SetVisibilityOnSourceDetected = false;
+                GazePointer.BaseCursor.Pointer = GazePointer;
+            }
+        }
 
         [SerializeField]
         [Tooltip("Maximum distance at which the gaze can hit a GameObject.")]
@@ -279,11 +296,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             if (cursorPrefab != null)
             {
-                var cursorObj = Instantiate(cursorPrefab, transform.parent);
-                GazePointer.BaseCursor = cursorObj.GetComponent<IMixedRealityCursor>();
-                Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
-                GazePointer.BaseCursor.SetVisibilityOnSourceDetected = false;
-                GazePointer.BaseCursor.Pointer = GazePointer;
+                var cursorObj = Instantiate(cursorPrefab);
+                GazeCursor = cursorObj;
             }
 
             if (delayInitialization)
