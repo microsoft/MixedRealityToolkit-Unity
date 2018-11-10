@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
     /// Based on those values, you can customize your camera and quality settings.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = (int)CreateProfileMenuItemIndices.Camera)]
-    public class MixedRealityCameraProfile : ScriptableObject
+    public class MixedRealityCameraProfile : BaseMixedRealityProfile
     {
         private enum DisplayType
         {
@@ -63,9 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         [Tooltip("Set the desired quality for your application for HoloLens.")]
         private int holoLensQualityLevel = 0;
 
-        private static DisplayType currentDisplayType;
+        [HideInInspector]
+        private DisplayType currentDisplayType;
 
-        public static bool IsOpaque
+        /// <summary>
+        /// Is the current camera displaying on an Opaque (AR) device or a VR / immersive device
+        /// </summary>
+        public bool IsOpaque
         {
             get
             {

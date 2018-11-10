@@ -21,17 +21,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             /// </summary>
             FacingWorldUp,
             /// <summary>
-            /// Orient towards the head movement direction
-            /// </summary>
-            HeadMoveDirection,
-            /// <summary>
             /// Orient towards head but remain vertical or gravity aligned
             /// </summary>
             GravityAligned
         }
 
         [SerializeField]
-        [Tooltip("Which direction to position the element relative to: HeadOriented rolls with the head, HeadFacingWorldUp view dir but ignores head roll, and HeadMoveDirection uses the direction the head last moved without roll")]
+        [Tooltip("Which direction to position the element relative to: HeadOriented rolls with the head, HeadFacingWorldUp view direction but ignores head roll, and HeadMoveDirection uses the direction the head last moved without roll")]
         private ReferenceDirectionEnum referenceDirection = ReferenceDirectionEnum.FacingWorldUp;
 
         [SerializeField]
@@ -63,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         private bool ignoreDistanceClamp = false;
 
         [SerializeField]
-        [Tooltip("If true, element will orient to ReferenceDirection, otherwise it will orient to ref pos (the head is the only option currently)")]
+        [Tooltip("If true, element will orient to ReferenceDirection, otherwise it will orient to ref position.")]
         private bool orientToReferenceDirection = false;
 
         /// <summary>
@@ -73,14 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             get
             {
-                Vector3 direction = Vector3.one;
-
-                if (referenceDirection == ReferenceDirectionEnum.HeadMoveDirection)
-                {
-                    direction = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.forward : Vector3.forward;
-                }
-
-                return direction;
+                return SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.forward : Vector3.forward;
             }
         }
 
@@ -128,26 +117,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
             // Element orientation
             Vector3 refDirUp = UpReference;
-            Quaternion desiredRot;
+            Quaternion goalRotation;
 
             if (orientToReferenceDirection)
             {
-                desiredRot = Quaternion.LookRotation(ReferenceDirection, refDirUp);
+                goalRotation = Quaternion.LookRotation(ReferenceDirection, refDirUp);
             }
             else
             {
-                Vector3 refPoint = ReferencePoint;
-                desiredRot = Quaternion.LookRotation(goalPosition - refPoint, refDirUp);
+                goalRotation = Quaternion.LookRotation(goalPosition - ReferencePoint, refDirUp);
             }
 
             // If gravity aligned then zero out the x and z axes on the rotation
             if (referenceDirection == ReferenceDirectionEnum.GravityAligned)
             {
-                desiredRot.x = desiredRot.z = 0f;
+                goalRotation.x = goalRotation.z = 0f;
             }
 
             GoalPosition = goalPosition;
-            GoalRotation = desiredRot;
+            GoalRotation = goalRotation;
 
             UpdateWorkingPositionToGoal();
             UpdateWorkingRotationToGoal();
@@ -186,7 +174,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             Vector3 elementDelta = elementPoint - referencePoint;
             float elementDist = elementDelta.magnitude;
             Vector3 elementDir = elementDist > 0 ? elementDelta / elementDist : Vector3.one;
-            float flip = Vector3.Dot(elementDelta, direction);
 
             // Generate basis: First get axis perpendicular to reference direction pointing toward element
             Vector3 perpendicularDirection = (elementDir - direction);
@@ -205,11 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             float clampedDistance = ignoreDistanceClamp ? elementDist : Mathf.Clamp(elementDist, minDistance, maxDistance);
 
             // If the angle was clamped, do some special update stuff
-            if (flip < 0)
-            {
-                desiredPos = referencePoint + direction;
-            }
-            else if (!currentAngle.Equals(currentAngleClamped))
+            if (currentAngle != currentAngleClamped)
             {
                 float angRad = currentAngleClamped * Mathf.Deg2Rad;
 
