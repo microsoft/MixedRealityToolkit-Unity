@@ -468,7 +468,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceDetectedEventHandler);
-
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceDetectedEventHandler =
