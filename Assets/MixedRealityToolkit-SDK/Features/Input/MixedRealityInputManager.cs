@@ -36,9 +36,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public HashSet<IMixedRealityController> DetectedControllers { get; } = new HashSet<IMixedRealityController>();
 
+        private IMixedRealityFocusProvider focusProvider = null;
+
         /// <inheritdoc />
-        public IMixedRealityFocusProvider FocusProvider => focusProvider;
-        private FocusProvider focusProvider;
+        public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = MixedRealityToolkit.Instance.GetService<IMixedRealityFocusProvider>());
 
         /// <inheritdoc />
         public IMixedRealityGazeProvider GazeProvider => gazeProvider;
@@ -86,7 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public override void Initialize()
         {
-            base.Initialize();
             CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
             InitializeInternal();
             InputEnabled?.Invoke();
@@ -94,47 +94,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void InitializeInternal()
         {
-            focusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
             gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
 
             bool addedComponents = false;
 
-#if UNITY_EDITOR
-            if (!UnityEditor.EditorApplication.isPlaying)
+            if (!Application.isPlaying)
             {
-                var eventSystems = UnityEngine.Object.FindObjectsOfType<EventSystem>();
                 var standaloneInputModules = UnityEngine.Object.FindObjectsOfType<StandaloneInputModule>();
 
                 CameraCache.Main.transform.position = Vector3.zero;
                 CameraCache.Main.transform.rotation = Quaternion.identity;
 
-                if (eventSystems.Length == 0)
-                {
-                    focusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
-                    addedComponents = true;
-                }
-                else
-                {
-                    bool raiseWarning;
-
-                    if (eventSystems.Length == 1)
-                    {
-                        raiseWarning = eventSystems[0].gameObject != FocusProvider.UIRaycastCamera.gameObject;
-                    }
-                    else
-                    {
-                        raiseWarning = true;
-                    }
-
-                    if (raiseWarning)
-                    {
-                        Debug.LogWarning("Found an existing event system in your scene. The Mixed Reality Input System requires only one, and must be found on the UIRaycastCamera.");
-                    }
-                }
-
                 if (standaloneInputModules.Length == 0)
                 {
-                    focusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+                    CameraCache.Main.gameObject.EnsureComponent<StandaloneInputModule>();
                     addedComponents = true;
                 }
                 else
@@ -143,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (standaloneInputModules.Length == 1)
                     {
-                        raiseWarning = standaloneInputModules[0].gameObject != FocusProvider.UIRaycastCamera.gameObject;
+                        raiseWarning = standaloneInputModules[0].gameObject != CameraCache.Main.gameObject;
                     }
                     else
                     {
@@ -152,17 +125,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (raiseWarning)
                     {
-                        Debug.LogWarning("Found an existing Standalone Input Module in your scene. The Mixed Reality Input System requires only one, and must be found on the UIRaycastCamera.");
+                        Debug.LogWarning("Found an existing Standalone Input Module in your scene. The Mixed Reality Input System requires only one, and must be found on the main camera.");
                     }
                 }
             }
 
-#endif // Unity Editor
-
             if (!addedComponents)
             {
-                focusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
-                focusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+                CameraCache.Main.gameObject.EnsureComponent<StandaloneInputModule>();
             }
 
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
@@ -192,59 +162,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public override void Reset()
         {
             InputDisabled?.Invoke();
-            base.Reset();
             InitializeInternal();
             InputEnabled?.Invoke();
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
             InputDisabled?.Invoke();
 
-            if (Application.isPlaying)
-            {
-                base.Destroy();
-                return;
-            }
-
-            focusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
             gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
-
-            focusProvider.enabled = false;
-
-            if (FocusProvider.UIRaycastCamera != null)
-            {
-                if (Application.isEditor)
-                {
-                    UnityEngine.Object.DestroyImmediate(FocusProvider.UIRaycastCamera.gameObject);
-                }
-                else
-                {
-                    UnityEngine.Object.Destroy(FocusProvider.UIRaycastCamera.gameObject);
-                }
-            }
-
-            if (Application.isEditor)
-            {
-                UnityEngine.Object.DestroyImmediate(focusProvider);
-            }
-            else
-            {
-                UnityEngine.Object.Destroy(focusProvider);
-            }
-
             gazeProvider.enabled = false;
 
-            if (Application.isEditor)
-            {
-                UnityEngine.Object.DestroyImmediate(gazeProvider);
-            }
-            else
+            if (Application.isPlaying)
             {
                 UnityEngine.Object.Destroy(gazeProvider);
             }
-
-            base.Destroy();
+            else
+            {
+                UnityEngine.Object.DestroyImmediate(gazeProvider);
+            }
         }
 
         #endregion IMixedRealityManager Implementation
@@ -383,7 +320,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             if (disabledRefCount == 1)
             {
                 InputDisabled?.Invoke();
-                focusProvider.enabled = false;
                 gazeProvider.enabled = false;
             }
         }
@@ -400,7 +336,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             if (disabledRefCount == 0)
             {
                 InputEnabled?.Invoke();
-                focusProvider.enabled = true;
                 gazeProvider.enabled = true;
             }
         }
@@ -416,7 +351,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             if (wasInputDisabled)
             {
                 InputEnabled?.Invoke();
-                focusProvider.enabled = true;
                 gazeProvider.enabled = true;
             }
         }
@@ -530,8 +464,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 DetectedControllers.Add(controller);
             }
 
+            FocusProvider?.OnSourceDetected(sourceStateEventData);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceDetectedEventHandler);
+
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceDetectedEventHandler =
@@ -555,6 +492,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 DetectedControllers.Remove(controller);
             }
+
+            FocusProvider?.OnSourceLost(sourceStateEventData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);

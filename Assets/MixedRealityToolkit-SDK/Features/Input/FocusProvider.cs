@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using System;
 using System.Collections.Generic;
@@ -20,9 +19,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// The focus provider handles the focused objects per input source.
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
-    [DisallowMultipleComponent]
-    public class FocusProvider : InputSystemGlobalListener, IMixedRealityFocusProvider
+    public class FocusProvider : BaseExtensionService, IMixedRealityFocusProvider
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="priority"></param>
+        public FocusProvider(string name, uint priority) : base(name, priority) { }
+
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
@@ -30,15 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #region IFocusProvider Properties
 
-        [SerializeField]
-        [Tooltip("Maximum distance at which all pointers can collide with a GameObject, unless it has an override extent.")]
-        private float pointingExtent = 10f;
-
         /// <inheritdoc />
-        float IMixedRealityFocusProvider.GlobalPointingExtent => pointingExtent;
+        float IMixedRealityFocusProvider.GlobalPointingExtent => MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.FocusProfile?.PointingExtent ?? 10f;
 
-        [SerializeField]
-        [Tooltip("Camera to use for raycasting uGUI pointer events.")]
         private Camera uiRaycastCamera = null;
 
         /// <inheritdoc />
@@ -48,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 if (uiRaycastCamera == null)
                 {
-                    CreateUiRaycastCamera();
+                    EnsureUiRaycastCameraSetup();
                 }
 
                 return uiRaycastCamera;
@@ -59,27 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public GameObject OverrideFocusedObject { get; set; }
 
         #endregion IFocusProvider Properties
-
-        /// <summary>
-        /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
-        /// <example>
-        /// Allow the cursor to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)
-        /// <code language="csharp"><![CDATA[
-        /// int sr = LayerMask.GetMask("SR");
-        /// int nonSR = Physics.DefaultRaycastLayers &amp; ~sr;
-        /// GazeProvider.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };
-        /// ]]></code>
-        /// </example>
-        /// </summary>
-        [SerializeField]
-        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.")]
-        private LayerMask[] pointingRaycastLayerMasks = { Physics.DefaultRaycastLayers };
-
-        [SerializeField]
-        private bool debugDrawPointingRays = false;
-
-        [SerializeField]
-        private Color[] debugDrawPointingRayColors = null;
 
         /// <summary>
         /// GazeProvider is a little special, so we keep track of it even if it's not a registered pointer. For the sake
@@ -220,18 +198,33 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
-        #region MonoBehaviour Implementation
+        #region IMixedRealityService Implementation
 
-        private async void Awake()
+        /// <inheritdoc />
+        public override void Initialize()
         {
             if (uiRaycastCamera == null)
             {
-                Debug.LogWarning("No UIRaycastCamera assigned! Creating a new UIRaycastCamera.\n" +
-                                 "To create a UIRaycastCamera in your scene, find this Focus Provider GameObject and add one there.");
-                CreateUiRaycastCamera();
+                EnsureUiRaycastCameraSetup();
             }
 
-            await WaitUntilInputSystemValid;
+            if (MixedRealityToolkit.InputSystem == null)
+            {
+                Debug.LogError($"Unable to start {Name}. An Input System is required for this feature.");
+                return;
+            }
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
+            {
+                Debug.LogError($"Unable to start {Name}. An Input System Profile is required for this feature.");
+                return;
+            }
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.FocusProfile == null)
+            {
+                Debug.LogError($"Unable to start {Name}. An Focus Profile is required for this feature.");
+                return;
+            }
 
             foreach (var inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
             {
@@ -239,15 +232,47 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
-        private void Update()
+        /// <inheritdoc />
+        public override void Update()
         {
-            if (MixedRealityToolkit.InputSystem == null) { return; }
+            if (MixedRealityToolkit.InputSystem == null)
+            {
+                Debug.LogError($"Unable to start {Name}. An Input System is required for this feature.");
+                return;
+            }
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
+            {
+                Debug.LogError($"Unable to start {Name}. An Input System Profile is required for this feature.");
+                return;
+            }
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.FocusProfile == null)
+            {
+                Debug.LogError($"Unable to start {Name}. An Focus Profile is required for this feature.");
+                return;
+            }
 
             UpdatePointers();
             UpdateFocusedObjects();
         }
 
-        #endregion MonoBehaviour Implementation
+        public override void Destroy()
+        {
+            if (uiRaycastCamera != null)
+            {
+                if (Application.isEditor)
+                {
+                    UnityEngine.Object.DestroyImmediate(uiRaycastCamera.gameObject);
+                }
+                else
+                {
+                    UnityEngine.Object.Destroy(uiRaycastCamera.gameObject);
+                }
+            }
+        }
+
+        #endregion IMixedRealityService Implementation
 
         #region Focus Details by IMixedRealityPointer
 
@@ -323,18 +348,27 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         }
 
         /// <summary>
-        /// Utility for creating the UIRaycastCamera.
+        /// Utility for validating the UIRaycastCamera.
         /// </summary>
         /// <returns>The UIRaycastCamera</returns>
-        private void CreateUiRaycastCamera()
+        private void EnsureUiRaycastCameraSetup()
         {
-            if (!enabled) { return; }
+            GameObject cameraObject;
 
-            var cameraObject = new GameObject { name = "UIRaycastCamera" };
-            cameraObject.transform.parent = transform;
+            if (CameraCache.Main.transform.childCount == 0)
+            {
+                cameraObject = new GameObject { name = "UIRaycastCamera" };
+                cameraObject.transform.parent = CameraCache.Main.transform;
+            }
+            else
+            {
+                cameraObject = CameraCache.Main.transform.Find("UIRaycastCamera").gameObject;
+                Debug.Assert(cameraObject.transform.parent == CameraCache.Main.transform);
+            }
+
             cameraObject.transform.localPosition = Vector3.zero;
             cameraObject.transform.localRotation = Quaternion.identity;
-            uiRaycastCamera = cameraObject.AddComponent<Camera>();
+            uiRaycastCamera = cameraObject.EnsureComponent<Camera>();
             uiRaycastCamera.enabled = false;
             uiRaycastCamera.clearFlags = CameraClearFlags.Depth;
             uiRaycastCamera.cullingMask = CameraCache.Main.cullingMask;
@@ -475,15 +509,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 UpdatePointer(pointer);
 
-                if (debugDrawPointingRays)
+                var focusProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.FocusProfile;
+
+                if (focusProfile.DebugDrawPointingRays)
                 {
-                    MixedRealityRaycaster.DebugEnabled = debugDrawPointingRays;
+                    MixedRealityRaycaster.DebugEnabled = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.FocusProfile.DebugDrawPointingRays;
 
                     Color rayColor;
 
-                    if ((debugDrawPointingRayColors != null) && (debugDrawPointingRayColors.Length > 0))
+                    if ((focusProfile.DebugDrawPointingRayColors != null) && (focusProfile.DebugDrawPointingRayColors.Length > 0))
                     {
-                        rayColor = debugDrawPointingRayColors[pointerCount++ % debugDrawPointingRayColors.Length];
+                        rayColor = focusProfile.DebugDrawPointingRayColors[pointerCount++ % focusProfile.DebugDrawPointingRayColors.Length];
                     }
                     else
                     {
@@ -517,7 +553,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 if (!pointer.Pointer.IsFocusLocked)
                 {
                     // Otherwise, continue
-                    var prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
+                    var prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.FocusProfile?.PointingRaycastLayerMasks);
 
                     // Perform raycast to determine focused object
                     RaycastPhysics(pointer, prioritizedLayerMasks);

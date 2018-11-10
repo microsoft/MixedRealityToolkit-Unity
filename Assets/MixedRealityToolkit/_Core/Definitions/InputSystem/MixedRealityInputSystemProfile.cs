@@ -16,6 +16,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
         [SerializeField]
+        [Tooltip("Input System Focus profile for configuring focus settings")]
+        private MixedRealityFocusProfile focusProfile;
+
+        /// <summary>
+        /// Input System Focus profile for configuring focus settings
+        /// </summary>
+        public MixedRealityFocusProfile FocusProfile
+        {
+            get { return focusProfile; }
+            private set { focusProfile = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
         private MixedRealityInputActionsProfile inputActionsProfile;
 
@@ -27,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             get { return inputActionsProfile; }
             private set { inputActionsProfile = value; }
         }
-
 
         [SerializeField]
         [Tooltip("Input Action Rules Profile for raising actions based on specific criteria.")]
