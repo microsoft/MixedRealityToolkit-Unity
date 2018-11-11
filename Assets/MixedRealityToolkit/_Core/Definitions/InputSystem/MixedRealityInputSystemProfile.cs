@@ -115,21 +115,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// </summary>
         public bool IsControllerMappingEnabled
         {
-            get { return controllerMappingProfile != null && enableControllerMapping; }
+            get { return controllerMappingProfiles != null && enableControllerMapping; }
             private set { enableControllerMapping = value; }
         }
 
         [SerializeField]
         [Tooltip("Device profile for wiring up physical inputs to Actions.")]
-        private MixedRealityControllerMappingProfile controllerMappingProfile;
+        private MixedRealityControllerMappingProfiles controllerMappingProfiles;
 
         /// <summary>
         /// Active profile for controller mapping configuration
         /// </summary>
-        public MixedRealityControllerMappingProfile ControllerMappingProfile
+        public MixedRealityControllerMappingProfiles ControllerMappingProfiles
         {
-            get { return controllerMappingProfile; }
-            private set { controllerMappingProfile = value; }
+            get { return controllerMappingProfiles; }
+            private set { controllerMappingProfiles = value; }
         }
 
         [SerializeField]

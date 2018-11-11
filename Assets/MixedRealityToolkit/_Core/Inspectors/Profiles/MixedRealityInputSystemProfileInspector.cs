@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
@@ -18,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty gesturesProfile;
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty enableControllerMapping;
-        private SerializedProperty controllerMappingProfile;
+        private SerializedProperty controllerMappingProfiles;
         private SerializedProperty controllerVisualizationProfile;
 
         protected override void OnEnable()
@@ -40,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             pointerProfile = serializedObject.FindProperty("pointerProfile");
             gesturesProfile = serializedObject.FindProperty("gesturesProfile");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
+            controllerMappingProfiles = serializedObject.FindProperty("controllerMappingProfiles");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerVisualizationProfile = serializedObject.FindProperty("controllerVisualizationProfile");
         }
@@ -77,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             changed |= RenderProfile(gesturesProfile);
             changed |= RenderProfile(speechCommandsProfile);
             EditorGUILayout.PropertyField(enableControllerMapping);
-            changed |= RenderProfile(controllerMappingProfile);
+            changed |= RenderProfile(controllerMappingProfiles);
             changed |= RenderProfile(controllerVisualizationProfile);
 
             if (!changed)

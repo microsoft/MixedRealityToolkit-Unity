@@ -81,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
         private static Vector2 horizontalScrollPosition;
 
+        private bool isLocked = false;
         private SerializedProperty currentInteractionList;
 
         private ControllerPopupWindow thisWindow;
@@ -192,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             #endregion  Interaction Constraint Setup
         }
 
-        public static void Show(SupportedControllerType controllerType, SerializedProperty interactionsList, Handedness handedness = Handedness.None)
+        public static void Show(SupportedControllerType controllerType, SerializedProperty interactionsList, Handedness handedness = Handedness.None, bool isLocked = false)
         {
             window = (ControllerPopupWindow)GetWindow(typeof(ControllerPopupWindow));
             window.Close();
@@ -202,6 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             window.titleContent = new GUIContent($"{controllerType} {handednessTitleText}Input Action Assignment");
             window.currentControllerType = controllerType;
             window.currentHandedness = handedness;
+            window.isLocked = isLocked;
             window.currentInteractionList = interactionsList;
             isMouseInRects = new bool[interactionsList.arraySize];
 
@@ -286,6 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
         private void RenderInteractionList(SerializedProperty interactionList, bool useCustomInteractionMapping)
         {
+            GUI.enabled = !isLocked;
             if (interactionList == null) { throw new Exception(); }
 
             bool noInteractions = interactionList.arraySize == 0;
