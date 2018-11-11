@@ -581,29 +581,38 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <summary>
         /// Perform a Unity physics Raycast to determine which scene objects with a collider is currently being gazed at, if any.
         /// </summary>
-        /// <param name="pointer"></param>
+        /// <param name="pointerData"></param>
         /// <param name="prioritizedLayerMasks"></param>
-        private static void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
+        private static void RaycastPhysics(PointerData pointerData, LayerMask[] prioritizedLayerMasks)
         {
             bool isHit = false;
             int rayStepIndex = 0;
             RayStep rayStep = default(RayStep);
             RaycastHit physicsHit = default(RaycastHit);
 
-            Debug.Assert(pointer.Pointer.Rays != null, "No valid rays for pointer");
-            Debug.Assert(pointer.Pointer.Rays.Length > 0, "No valid rays for pointer");
+            if (pointerData.Pointer.Rays == null)
+            {
+                Debug.LogError($"No valid rays for {pointerData.Pointer.PointerName} pointer.");
+                return;
+            }
+
+            if (pointerData.Pointer.Rays.Length <= 0)
+            {
+                Debug.LogError($"No valid rays for {pointerData.Pointer.PointerName} pointer");
+                return;
+            }
 
             // Check raycast for each step in the pointing source
-            for (int i = 0; i < pointer.Pointer.Rays.Length; i++)
+            for (int i = 0; i < pointerData.Pointer.Rays.Length; i++)
             {
-                switch (pointer.Pointer.RaycastMode)
+                switch (pointerData.Pointer.RaycastMode)
                 {
                     case RaycastModeType.Simple:
-                        if (MixedRealityRaycaster.RaycastSimplePhysicsStep(pointer.Pointer.Rays[i], prioritizedLayerMasks, out physicsHit))
+                        if (MixedRealityRaycaster.RaycastSimplePhysicsStep(pointerData.Pointer.Rays[i], prioritizedLayerMasks, out physicsHit))
                         {
                             // Set the pointer source's origin ray to this step
                             isHit = true;
-                            rayStep = pointer.Pointer.Rays[i];
+                            rayStep = pointerData.Pointer.Rays[i];
                             rayStepIndex = i;
                         }
                         break;
@@ -611,16 +620,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                         Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
                         break;
                     case RaycastModeType.Sphere:
-                        if (MixedRealityRaycaster.RaycastSpherePhysicsStep(pointer.Pointer.Rays[i], pointer.Pointer.SphereCastRadius, prioritizedLayerMasks, out physicsHit))
+                        if (MixedRealityRaycaster.RaycastSpherePhysicsStep(pointerData.Pointer.Rays[i], pointerData.Pointer.SphereCastRadius, prioritizedLayerMasks, out physicsHit))
                         {
                             // Set the pointer source's origin ray to this step
                             isHit = true;
-                            rayStep = pointer.Pointer.Rays[i];
+                            rayStep = pointerData.Pointer.Rays[i];
                             rayStepIndex = i;
                         }
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        Debug.LogError($"Invalid raycast mode {pointerData.Pointer.RaycastMode} for {pointerData.Pointer.PointerName} pointer.");
+                        break;
                 }
 
                 if (isHit) { break; }
@@ -628,11 +638,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             if (isHit)
             {
-                pointer.UpdateHit(physicsHit, rayStep, rayStepIndex);
+                pointerData.UpdateHit(physicsHit, rayStep, rayStepIndex);
             }
             else
             {
-                pointer.UpdateHit();
+                pointerData.UpdateHit();
             }
         }
 
@@ -643,33 +653,42 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <summary>
         /// Perform a Unity Graphics Raycast to determine which uGUI element is currently being gazed at, if any.
         /// </summary>
-        /// <param name="pointer"></param>
+        /// <param name="pointerData"></param>
         /// <param name="prioritizedLayerMasks"></param>
-        private void RaycastGraphics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
+        private void RaycastGraphics(PointerData pointerData, LayerMask[] prioritizedLayerMasks)
         {
-            Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusProvider before you can process uGUI raycasting.");
+            Debug.Assert(UIRaycastCamera != null, "Missing UIRaycastCamera!");
 
             RaycastResult raycastResult = default(RaycastResult);
             bool overridePhysicsRaycast = false;
             RayStep rayStep = default(RayStep);
             int rayStepIndex = 0;
 
-            Debug.Assert(pointer.Pointer.Rays != null, "No valid rays for pointer");
-            Debug.Assert(pointer.Pointer.Rays.Length > 0, "No valid rays for pointer");
+            if (pointerData.Pointer.Rays == null)
+            {
+                Debug.LogError($"No valid rays for {pointerData.Pointer.PointerName} pointer.");
+                return;
+            }
+
+            if (pointerData.Pointer.Rays.Length <= 0)
+            {
+                Debug.LogError($"No valid rays for {pointerData.Pointer.PointerName} pointer");
+                return;
+            }
 
             // Cast rays for every step until we score a hit
-            for (int i = 0; i < pointer.Pointer.Rays.Length; i++)
+            for (int i = 0; i < pointerData.Pointer.Rays.Length; i++)
             {
-                if (RaycastGraphicsStep(pointer, pointer.Pointer.Rays[i], prioritizedLayerMasks, out overridePhysicsRaycast, out raycastResult))
+                if (RaycastGraphicsStep(pointerData, pointerData.Pointer.Rays[i], prioritizedLayerMasks, out overridePhysicsRaycast, out raycastResult))
                 {
                     rayStepIndex = i;
-                    rayStep = pointer.Pointer.Rays[i];
+                    rayStep = pointerData.Pointer.Rays[i];
                     break;
                 }
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointer.CurrentPointerTarget == null || overridePhysicsRaycast) && raycastResult.isValid &&
+            if ((pointerData.CurrentPointerTarget == null || overridePhysicsRaycast) && raycastResult.isValid &&
                  raycastResult.module != null && raycastResult.module.eventCamera == UIRaycastCamera)
             {
                 newUiRaycastPosition.x = raycastResult.screenPosition.x;
@@ -684,20 +703,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                     normal = -raycastResult.gameObject.transform.forward
                 };
 
-                pointer.UpdateHit(raycastResult, hitInfo, rayStep, rayStepIndex);
+                pointerData.UpdateHit(raycastResult, hitInfo, rayStep, rayStepIndex);
             }
         }
 
         /// <summary>
         /// Raycasts each graphic <see cref="RayStep"/>
         /// </summary>
-        /// <param name="pointer"></param>
+        /// <param name="pointerData"></param>
         /// <param name="step"></param>
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="overridePhysicsRaycast"></param>
         /// <param name="uiRaycastResult"></param>
         /// <returns></returns>
-        private bool RaycastGraphicsStep(PointerData pointer, RayStep step, LayerMask[] prioritizedLayerMasks, out bool overridePhysicsRaycast, out RaycastResult uiRaycastResult)
+        private bool RaycastGraphicsStep(PointerData pointerData, RayStep step, LayerMask[] prioritizedLayerMasks, out bool overridePhysicsRaycast, out RaycastResult uiRaycastResult)
         {
             Debug.Assert(step.Direction != Vector3.zero, "RayStep Direction is Invalid.");
 
@@ -706,25 +725,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             UIRaycastCamera.transform.forward = step.Direction;
 
             // We always raycast from the center of the camera.
-            pointer.GraphicEventData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
+            pointerData.GraphicEventData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
 
             // Graphics raycast
-            uiRaycastResult = EventSystem.current.Raycast(pointer.GraphicEventData, prioritizedLayerMasks);
-            pointer.GraphicEventData.pointerCurrentRaycast = uiRaycastResult;
+            uiRaycastResult = EventSystem.current.Raycast(pointerData.GraphicEventData, prioritizedLayerMasks);
+            pointerData.GraphicEventData.pointerCurrentRaycast = uiRaycastResult;
 
             overridePhysicsRaycast = false;
 
             // If we have a raycast result, check if we need to overwrite the physics raycast info
             if (uiRaycastResult.gameObject != null)
             {
-                if (pointer.CurrentPointerTarget != null)
+                if (pointerData.CurrentPointerTarget != null)
                 {
                     // Check layer prioritization
                     if (prioritizedLayerMasks.Length > 1)
                     {
                         // Get the index in the prioritized layer masks
                         int uiLayerIndex = uiRaycastResult.gameObject.layer.FindLayerListIndex(prioritizedLayerMasks);
-                        int threeDLayerIndex = pointer.Details.LastRaycastHit.collider.gameObject.layer.FindLayerListIndex(prioritizedLayerMasks);
+                        int threeDLayerIndex = pointerData.Details.LastRaycastHit.collider.gameObject.layer.FindLayerListIndex(prioritizedLayerMasks);
 
                         if (threeDLayerIndex > uiLayerIndex)
                         {
@@ -732,7 +751,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                         }
                         else if (threeDLayerIndex == uiLayerIndex)
                         {
-                            if (pointer.Details.LastRaycastHit.distance > uiRaycastResult.distance)
+                            if (pointerData.Details.LastRaycastHit.distance > uiRaycastResult.distance)
                             {
                                 overridePhysicsRaycast = true;
                             }
@@ -740,7 +759,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                     }
                     else
                     {
-                        if (pointer.Details.LastRaycastHit.distance > uiRaycastResult.distance)
+                        if (pointerData.Details.LastRaycastHit.distance > uiRaycastResult.distance)
                         {
                             overridePhysicsRaycast = true;
                         }
