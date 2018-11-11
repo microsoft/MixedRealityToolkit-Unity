@@ -14,6 +14,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Cursors;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
@@ -288,10 +289,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             await WaitUntilInputSystemValid;
 
-            if (cursorObject == null)
+            if (cursorObject != null)
             {
-                var cursorObj = Instantiate(cursorObject);
-                GazeCursor = cursorObj;
+                GazePointer.BaseCursor?.SetVisibility(true);
             }
 
             if (delayInitialization)
