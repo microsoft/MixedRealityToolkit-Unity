@@ -79,11 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(enableControllerMapping);
             changed |= RenderProfile(controllerMappingProfile);
             changed |= RenderProfile(controllerVisualizationProfile);
-
-            if (!changed)
-            {
-                changed = EditorGUI.EndChangeCheck();
-            }
+            changed |= EditorGUI.EndChangeCheck();
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
