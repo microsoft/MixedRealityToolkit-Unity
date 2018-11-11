@@ -170,7 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             if (newActionId != actionId.intValue)
             {
                 actionId.intValue = newActionId;
-                Debug.Log(actionId.intValue);
             }
 
             //selected.enumValueIndex = (int)(MixedRealityInputAction)EditorGUILayout.EnumPopup(new GUIContent("Input Action", "Input source for this Interactable, Default: Select"), (MixedRealityInputAction)selected.enumValueIndex);

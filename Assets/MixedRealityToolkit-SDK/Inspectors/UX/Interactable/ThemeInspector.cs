@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         protected static int indentOnSectionStart = 0;
 
         protected GUIStyle boxStyle;
+        protected bool layoutComplete = false;
 
         protected virtual void OnEnable()
         {
@@ -58,12 +59,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             //base.OnInspectorGUI();
             serializedObject.Update();
 
-            boxStyle = InspectorUIUtility.Box(0);
+            bool hasStates = false;
+            if (layoutComplete || Event.current.type == EventType.Layout)
+            {
+                boxStyle = InspectorUIUtility.Box(0);
 
-            GUILayout.BeginVertical(boxStyle);
-            bool hasStates = RenderStates();
+                GUILayout.BeginVertical(boxStyle);
+                hasStates = RenderStates();
 
-            GUILayout.EndVertical();
+                GUILayout.EndVertical();
+            }
 
             if (!hasStates)
             {
@@ -82,13 +87,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 AddThemeProperty(new int[] { 0 });
             }
-            
-            RenderThemeSettings(settings, null, themeOptions, null, new int[] { 0, -1, 0 }, GetStates());
 
-            InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), new int[] { 0 }, AddThemeProperty);
+            if (layoutComplete || Event.current.type == EventType.Layout)
+            {
 
-            // render a list of all the properties from the theme based on state
-            RenderThemeStates(settings, GetStates(), 0);
+                RenderThemeSettings(settings, null, themeOptions, null, new int[] { 0, -1, 0 }, GetStates());
+
+                InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), new int[] { 0 }, AddThemeProperty);
+
+                // render a list of all the properties from the theme based on state
+                RenderThemeStates(settings, GetStates(), 0);
+
+                layoutComplete = true;
+            }
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -111,6 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
                 showStates = InspectorUIUtility.DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart, prefsShowStates, FontStyle.Normal, false);
                 drawerStarted = true;
+                
                 if (showStates != prefsShowStates)
                 {
                     EditorPrefs.SetBool(statesPrefKey, showStates);

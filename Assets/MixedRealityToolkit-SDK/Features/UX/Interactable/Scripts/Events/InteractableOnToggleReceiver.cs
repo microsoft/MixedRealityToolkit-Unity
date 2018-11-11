@@ -1,4 +1,5 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
+﻿using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
 using System.Collections;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
@@ -26,11 +27,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
+            // using onClick 
+        }
+
+        public override void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
+        {
             int currentIndex = source.GetDimensionIndex();
 
             if (currentIndex != lastIndex)
             {
-                if (currentIndex%2 == 0)
+                if (currentIndex % 2 == 0)
                 {
                     OnDeselect.Invoke();
                 }

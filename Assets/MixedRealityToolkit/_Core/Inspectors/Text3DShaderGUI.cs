@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
     /// <summary>
     /// A custom shader inspector for the "Mixed Reality Toolkit/TextShader3D".
     /// </summary>
-    public class Text3DShader : ShaderGUI
+    public class Text3DShaderGUI : ShaderGUI
     {
         protected bool firstTimeApply = true;
         protected MaterialProperty cullMode;

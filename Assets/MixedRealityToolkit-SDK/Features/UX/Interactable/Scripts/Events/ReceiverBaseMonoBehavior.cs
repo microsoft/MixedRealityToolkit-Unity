@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,14 +10,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     /// <summary>
     /// A base class for detecting hand handling state changes from an Interactable
+    /// Extend this class to build new events or receivers from Interactables
+    /// 
+    /// InteractableReceiver or InteractableReceiverList can be used with ReceiverBase - built-in receivers
     /// </summary>
-    public class ReceiverBaseMonoBehavior : MonoBehaviour
+    public class ReceiverBaseMonoBehavior : MonoBehaviour, IInteractableHandler
     {
         public enum SearchScopes { Self, Parent, Children};
         public Interactable Interactable;
         public SearchScopes InteractableSearchScope;
         protected State lastState;
 
+        /// <summary>
+        /// look for an Interactable if not assigned
+        /// </summary>
         protected virtual void OnEnable()
         {
             if (Interactable == null)
@@ -35,6 +42,37 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     default:
                         break;
                 }
+            }
+
+            if (Interactable != null)
+            {
+                Interactable.AddHandler(this);
+            }
+        }
+
+        /// <summary>
+        /// Add an interactable and add it as a handler
+        /// </summary>
+        /// <param name="interactable"></param>
+        public void AddInteractable(Interactable interactable)
+        {
+            if(Interactable != null)
+            {
+                Interactable.RemoveHandler(this);
+            }
+
+            Interactable = interactable;
+            Interactable.AddHandler(this);
+        }
+
+        /// <summary>
+        /// Remove itself as a handler
+        /// </summary>
+        protected virtual void OnDisable()
+        {
+            if (Interactable == null)
+            {
+                Interactable.RemoveHandler(this);
             }
         }
 
@@ -86,8 +124,32 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             bool hasCollistion = state.GetState(InteractableStates.InteractableStateEnum.Collision).Value > 0;
 
+            bool hasCollistion = state.GetState(InteractableStates.InteractableStateEnum.VoiceCommand).Value > 0;
+
             bool hasCustom = state.GetState(InteractableStates.InteractableStateEnum.Custom).Value > 0;
             */
+        }
+
+        /// <summary>
+        /// A voice command was called
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="source"></param>
+        /// <param name="command"></param>
+        public virtual void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1)
+        {
+            // Voice Command Happened
+        }
+
+        /// <summary>
+        /// A click event happened
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="source"></param>
+        /// <param name="command"></param>
+        public virtual void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
+        {
+            // Click Happened
         }
     }
 }

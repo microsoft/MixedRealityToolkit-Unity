@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: 3DTextSelawikSemilight
+  m_Name: Text3DSelawikSemilight
   m_Shader: {fileID: 4800000, guid: 80c006b91733f1a4991c49af89321ecd, type: 3}
   m_ShaderKeywords: _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT _HOVER_LIGHT
     _SPECULAR_HIGHLIGHTS

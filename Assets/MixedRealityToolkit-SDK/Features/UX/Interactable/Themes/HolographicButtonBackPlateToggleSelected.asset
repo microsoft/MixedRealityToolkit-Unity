@@ -453,7 +453,7 @@ MonoBehaviour:
         Animation: {fileID: 0}
       ShaderName: 
     Easing:
-      EaseValues: 1
+      Enabled: 1
       Curve:
         serializedVersion: 2
         m_Curve:

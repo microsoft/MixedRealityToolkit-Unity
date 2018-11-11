@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// A way to test button state feedback while in the editor
     /// </summary>
     
-    public class InteractableFinger : MonoBehaviour
+    public class InteractablePointerSimulator : MonoBehaviour
     {
         public Interactable Button;
         public bool Focus;
