@@ -28,19 +28,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private const float MovementThreshold = 0.01f;
 
-        [SerializeField]
-        [Tooltip("(Optional) Cursor Prefab to use.")]
-        private GameObject cursorPrefab = null;
+        private GameObject cursorObject;
 
         /// <summary>
         /// Current Instanced Gaze Cursor.
         /// </summary>
         public GameObject GazeCursor
         {
-            get { return cursorPrefab; }
+            get { return cursorObject; }
             set
             {
-                cursorPrefab = value;
+                cursorObject = value;
                 value.transform.parent = transform.parent;
                 GazePointer.BaseCursor = value.GetComponent<IMixedRealityCursor>();
                 Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
@@ -93,10 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         [Range(0.1f, 5f)]
         [Tooltip("Maximum head velocity threshold")]
         private float maxHeadVelocityThreshold = 2f;
-
-        [SerializeField]
-        [Tooltip("True to draw a debug view of the ray.")]
-        private bool debugDrawRay = false;
 
         /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
@@ -294,9 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             await WaitUntilInputSystemValid;
 
-            if (cursorPrefab != null)
+            if (cursorObject == null)
             {
-                var cursorObj = Instantiate(cursorPrefab);
+                var cursorObj = Instantiate(cursorObject);
                 GazeCursor = cursorObj;
             }
 
@@ -309,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void Update()
         {
-            if (debugDrawRay && gazeTransform != null)
+            if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
             }
@@ -346,7 +340,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             HeadMovementDirection = Vector3.Slerp(HeadMovementDirection, newHeadMoveDirection, directionAdjustmentRate);
 
-            if (debugDrawRay && gazeTransform != null)
+            if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
             {
                 Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadMovementDirection * 10f, Color.Lerp(Color.red, Color.green, multiplier));
                 Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadVelocity, Color.yellow);

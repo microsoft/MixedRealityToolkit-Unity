@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -68,6 +69,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(pointingRaycastLayerMasks, true);
             EditorGUILayout.PropertyField(debugDrawPointingRays);
             EditorGUILayout.PropertyField(debugDrawPointingRayColors, true);
+
+            EditorGUILayout.HelpBox("The gaze provider uses the default settings above, but further customization of the gaze can be done on the Gaze Provider.", MessageType.Info);
+
+            if (GUILayout.Button("Customize Gaze Provider Settings"))
+            {
+                Selection.activeObject = CameraCache.Main.gameObject;
+            }
 
             serializedObject.ApplyModifiedProperties();
         }

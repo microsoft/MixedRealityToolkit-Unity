@@ -18,4 +18,4 @@ MonoBehaviour:
     m_Bits: 4294967291
   debugDrawPointingRays: 1
   debugDrawPointingRayColors:
-  - {r: 0, g: 1, b: 0.00427413, a: 0}
+  - {r: 0, g: 1, b: 0.00427413, a: 1}
