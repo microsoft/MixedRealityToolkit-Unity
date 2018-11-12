@@ -35,8 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private static GUIContent[] actionLabels;
         private static int[] actionIds;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!CheckMixedRealityConfigured(false)) { return; }
 
             gestures = serializedObject.FindProperty("gestures");
@@ -116,10 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
 
             serializedObject.Update();
             EditorGUILayout.Space();

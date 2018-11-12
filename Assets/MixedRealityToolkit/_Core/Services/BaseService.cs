@@ -9,10 +9,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
     public class BaseService : Interfaces.IMixedRealityService
     {
         /// <inheritdoc />
-        public virtual string Name { get; set; }
+        public virtual string Name { get; protected set; }
 
         /// <inheritdoc />
-        public virtual uint Priority { get; set; } = 5;
+        public virtual uint Priority { get; protected set; } = 5;
 
         /// <inheritdoc />
         public virtual void Initialize() { }

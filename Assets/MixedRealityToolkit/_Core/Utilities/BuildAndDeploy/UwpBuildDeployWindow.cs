@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
         private readonly string[] deviceNames = { "Any Device", "PC", "Mobile", "HoloLens" };
 
-        private readonly List<string> builds = new List<string>(0);
+        private static readonly List<string> builds = new List<string>(0);
 
         private static readonly List<string> AppPackageDirectories = new List<string>(0);
 
@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
         private const float HalfWidth = 256f;
 
-        private float timeLastUpdatedBuilds;
+        private static float timeLastUpdatedBuilds;
 
         private string[] targetIps;
         private string[] windowsSdkPaths;
@@ -1002,7 +1002,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             }
         }
 
-        private static void BuildUnityProject()
+        public static void BuildUnityProject()
         {
             Debug.Assert(!isBuilding);
             isBuilding = true;
@@ -1010,7 +1010,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             isBuilding = false;
         }
 
-        private static async void BuildAppx()
+        public static async void BuildAppx()
         {
             Debug.Assert(!isBuilding);
             isBuilding = true;
@@ -1026,7 +1026,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             isBuilding = false;
         }
 
-        private async void BuildAll(bool install = true)
+        public static async void BuildAll(bool install = true)
         {
             Debug.Assert(!isBuilding);
             isBuilding = true;
@@ -1063,7 +1063,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             isBuilding = false;
         }
 
-        private void UpdateBuilds()
+        private static void UpdateBuilds()
         {
             builds.Clear();
 
@@ -1098,7 +1098,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             timeLastUpdatedBuilds = Time.realtimeSinceStartup;
         }
 
-        private string CalcMostRecentBuild()
+        private static string CalcMostRecentBuild()
         {
             UpdateBuilds();
             DateTime mostRecent = DateTime.MinValue;
