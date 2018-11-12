@@ -16,7 +16,8 @@ MonoBehaviour:
     type: 2}
   touchScreenControllerMappingProfile: {fileID: 11400000, guid: 36b2b4f68fb3c7846b12a588a1c7663d,
     type: 2}
-  xboxControllerMappingProfile: {fileID: 0}
+  xboxControllerMappingProfile: {fileID: 11400000, guid: ceec9d3d32e411b45a4777f784eb5885,
+    type: 2}
   windowsMixedRealityControllerMappingProfile: {fileID: 11400000, guid: 348b933cef585af4bbd40e38a6d41d92,
     type: 2}
   viveWandControllerMappingProfile: {fileID: 11400000, guid: d6976c62b5fe7114591a222dd4a43157,

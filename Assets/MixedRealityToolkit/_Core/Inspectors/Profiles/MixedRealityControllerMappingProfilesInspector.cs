@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private static readonly GUIContent MouseProfileContent = new GUIContent("Mouse Devices");
         private static readonly GUIContent TouchProfileContent = new GUIContent("Touch Devices");
+        private static readonly GUIContent XboxControllerProfileContent = new GUIContent("Xbox Device");
         private static readonly GUIContent WmrProfileContent = new GUIContent("WMR Devices");
         private static readonly GUIContent ViveWandProfileContent = new GUIContent("Vive Devices");
         private static readonly GUIContent OculusTouchProfileContent = new GUIContent("Oculus Touch Devices");
@@ -25,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private SerializedProperty mouseControllerMappingProfile;
         private SerializedProperty touchScreenControllerMappingProfile;
+        private SerializedProperty xboxControllerMappingProfile;
         private SerializedProperty windowsMixedRealityControllerMappingProfile;
         private SerializedProperty viveWandControllerMappingProfile;
         private SerializedProperty oculusTouchControllerMappingProfile;
@@ -50,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             mouseControllerMappingProfile = serializedObject.FindProperty("mouseControllerMappingProfile");
             touchScreenControllerMappingProfile = serializedObject.FindProperty("touchScreenControllerMappingProfile");
+            xboxControllerMappingProfile = serializedObject.FindProperty("xboxControllerMappingProfile");
             windowsMixedRealityControllerMappingProfile = serializedObject.FindProperty("windowsMixedRealityControllerMappingProfile");
             viveWandControllerMappingProfile = serializedObject.FindProperty("viveWandControllerMappingProfile");
             oculusTouchControllerMappingProfile = serializedObject.FindProperty("oculusTouchControllerMappingProfile");
@@ -108,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             changed |= RenderProfile(mouseControllerMappingProfile, MouseProfileContent);
             changed |= RenderProfile(touchScreenControllerMappingProfile, TouchProfileContent);
+            changed |= RenderProfile(xboxControllerMappingProfile, XboxControllerProfileContent);
             changed |= RenderProfile(windowsMixedRealityControllerMappingProfile, WmrProfileContent);
             changed |= RenderProfile(viveWandControllerMappingProfile, ViveWandProfileContent);
             changed |= RenderProfile(oculusTouchControllerMappingProfile, OculusTouchProfileContent);
