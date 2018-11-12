@@ -67,14 +67,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
         {
             bufferView.Buffer = gltfObject.buffers[bufferView.buffer];
 
-            if (!string.IsNullOrEmpty(gltfObject.Uri) && !string.IsNullOrEmpty(bufferView.Buffer.uri))
+            if (bufferView.Buffer.BufferData == null &&
+                !string.IsNullOrEmpty(gltfObject.Uri) &&
+                !string.IsNullOrEmpty(bufferView.Buffer.uri))
             {
                 var parentDirectory = Directory.GetParent(gltfObject.Uri).FullName;
                 bufferView.Buffer.BufferData = File.ReadAllBytes($"{parentDirectory}\\{bufferView.Buffer.uri}");
-            }
-            else
-            {
-                bufferView.Buffer.BufferData = gltfObject.buffers[bufferView.buffer].BufferData;
             }
         }
 

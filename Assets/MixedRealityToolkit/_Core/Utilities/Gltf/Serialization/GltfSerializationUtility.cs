@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
 
             string jsonChunk = Encoding.ASCII.GetString(glbData, stride * 5, (int)chunk0Length);
 
-            var gltfObject = JsonUtility.FromJson<GltfObject>(jsonChunk);
+            var gltfObject = GetGltfObjectFromJson(jsonChunk);
 
             var chunk1Length = BitConverter.ToUInt32(glbData, stride * 5 + (int)chunk0Length);
             var chunk1Type = BitConverter.ToUInt32(glbData, stride * 6 + (int)chunk0Length);
@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
             Debug.Assert(gltfObject.buffers[0].byteLength == chunk1Length, "chunk 1 & buffer 0 length mismatch");
 
             gltfObject.buffers[0].BufferData = new byte[(int)chunk1Length];
-            Array.Copy(glbData, stride * 6 + (int)chunk0Length, gltfObject.buffers[0].BufferData, 0, (int)chunk1Length);
+            Array.Copy(glbData, stride * 7 + (int)chunk0Length, gltfObject.buffers[0].BufferData, 0, (int)chunk1Length);
 
             return gltfObject;
         }
