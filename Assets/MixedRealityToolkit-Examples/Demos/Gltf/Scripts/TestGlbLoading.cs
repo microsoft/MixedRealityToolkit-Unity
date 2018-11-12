@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
         {
             await new WaitForSeconds(5f);
 
-            var gltfObject = await GltfSerializationUtility.GetGltfObjectFromPathAsync(uri);
+            var gltfObject = await GltfSerializationUtility.GetGltfObjectFromPathAsync($"{Application.dataPath}{uri}");
 
             if (gltfObject != null)
             {
