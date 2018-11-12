@@ -1,0 +1,11 @@
+{
+    "name": "MixedRealityToolkit.Core.Utilities.Gltf",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Core.Utilities.Async"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
