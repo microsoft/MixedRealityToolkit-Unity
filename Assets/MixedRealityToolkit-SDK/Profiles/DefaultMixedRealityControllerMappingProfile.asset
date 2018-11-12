@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -17,7 +17,7 @@ MonoBehaviour:
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.MouseController,
         Microsoft.MixedReality.Toolkit
-    handedness: 0
+    handedness: 7
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -38,9 +38,9 @@ MonoBehaviour:
       axisType: 4
       inputType: 4
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 12
+        description: Mouse Delta
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -51,7 +51,7 @@ MonoBehaviour:
       axisType: 4
       inputType: 50
       inputAction:
-        id: 10
+        id: 11
         description: Scroll
         axisConstraint: 4
       keyCode: 0
@@ -154,7 +154,7 @@ MonoBehaviour:
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityTouchController,
         Microsoft.MixedReality.Toolkit
-    handedness: 0
+    handedness: 7
     useCustomInteractionMappings: 0
     interactions:
     - id: 0

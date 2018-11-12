@@ -56,8 +56,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private readonly List<ControllerRenderProfile> controllerRenderList = new List<ControllerRenderProfile>();
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!CheckMixedRealityConfigured(false))
             {
                 return;
@@ -112,10 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
 
             if (controllerButtonStyle == null)
             {
