@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     /// <summary>
     /// The base layout component for a button or UI elements - easily build UI with Unity Primitives.
@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
     /// The designer or engineer can take pixel based redlines and create UI at 1:1 scale.
     /// </summary>
     [ExecuteInEditMode]
-    public class Layout3DPixelSize : MonoBehaviour
+    public class ButtonBackgroundSize : MonoBehaviour
     {
         /// <summary>
         /// A scale factor for button layouts, default is based on 2048 pixels to 1 meter.

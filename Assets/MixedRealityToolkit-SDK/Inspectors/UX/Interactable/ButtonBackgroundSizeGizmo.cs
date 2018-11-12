@@ -6,14 +6,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    [CustomEditor(typeof(Layout3DPixelSize))]
-    public class Layout3DPixelSizeGizmo : Editor
+    [CustomEditor(typeof(ButtonBackgroundSize))]
+    public class ButtonBackgroundSizeGizmo : Editor
     {
         public void OnSceneGUI()
         {
-            Layout3DPixelSize pixelSize = (Layout3DPixelSize)target;
+            ButtonBackgroundSize pixelSize = (ButtonBackgroundSize)target;
 
             float size = HandleUtility.GetHandleSize(pixelSize.transform.position) * 1f;
 

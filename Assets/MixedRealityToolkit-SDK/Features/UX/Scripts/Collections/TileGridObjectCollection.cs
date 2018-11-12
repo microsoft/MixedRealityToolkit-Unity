@@ -5,27 +5,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 {
     /// <summary>
     /// A basic grid layout for game objects of a consistant size
     /// </summary>
     /// 
     [ExecuteInEditMode]
-    public class Layout3DGridList : MonoBehaviour
+    public class TileGridObjectCollection : MonoBehaviour
     {
         /// <summary>
         /// structure elements of a grid layout
         /// </summary>
         public enum GridDivisions { Rows, Columns};
-
-        /// <summary>
-        /// A scale factor for button layouts, default is based on 2048 pixels to 1 meter.
-        /// Similar to values used in designer and 2D art programs and helps create consistancy across teams.
-        /// </summary>
-        [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]
-        [SerializeField]
-        protected float BasePixelScale = 2048;
 
         /// <summary>
         /// How many columns should the grid have
@@ -39,14 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
         /// </summary>
         [Tooltip("The size of the tile or grid cell")]
         [SerializeField]
-        protected Vector3 TileSize = new Vector3(200, 200, 0);
+        protected Vector3 TileSize = new Vector3(0.1f, 0.1f, 0);
 
         /// <summary>
         /// The space between tiles in pixels
         /// </summary>
         [Tooltip("Additional space between tiles")]
         [SerializeField]
-        protected Vector3 Gutters = new Vector3(10, 10, 10);
+        protected Vector3 Gutters = new Vector3(0.005f, 0.005f, 0.005f);
 
         /// <summary>
         /// The layout direction as a normalized vector
@@ -153,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
                 for (int i = 0; i < childCount; i++)
                 {
                     Transform item = transform.GetChild(i);
-                    item.localPosition = StartPosition + offSet / BasePixelScale + (Vector3.Scale(TileSize, LayoutDireciton) * 0.5f) / BasePixelScale + GetListPosition(i) / BasePixelScale;
+                    item.localPosition = StartPosition + offSet + (Vector3.Scale(TileSize, LayoutDireciton) * 0.5f) + GetListPosition(i);
                 }
 
                 editorUpdated = false;

@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     /// <summary>
     /// Use a Unity primitive Cube or cylindar as a border segment relative to the scale of the AnchorTransform
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
     /// Works best when using with ButtonSize, but not requied - See ButtonSize for more info.
     /// </summary>
     [ExecuteInEditMode]
-    public class Layout3DBorder : MonoBehaviour
+    public class ButtonBorder : MonoBehaviour
     {
         /// <summary>
         /// A scale factor for button layouts, default is based on 2048 pixels to 1 meter.

@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     /// <summary>
     /// Scales an object relative the scale of the Anchor Transform
@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Layout3D
     ///     Event if the background changes size, this element will remain 40 pixels smaller.
     /// </summary>
     [ExecuteInEditMode]
-    public class Layout3DPixelSizeOffset : MonoBehaviour
+    public class ButtonBackgroundSizeOffset : MonoBehaviour
     {
         /// <summary>
         /// A scale factor for layout3D, default is based on 2048 pixels to 1 meter.
