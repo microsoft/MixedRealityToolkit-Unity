@@ -319,7 +319,7 @@ All of the mapping values used in this profile are created and used in conjuncti
     - **Three DOF:** Rotation: Quaternion data representing rotation data.
     - **Six DOF:** Pose data that represents both positional and rotational data.
 - **Action:** The action defined in the Action Profile that this input will raise through the MRTK's input system.
-- **Keycode:** The keyboard input that will trigger this input if the Axis Type is Digital.
+- **Keycode:** The keycode that will trigger this input if the Axis Type is Digital.
     - Note: Single & Dual Axis types will also use this area to render options to invert the axis data.
 - **X Axis:** The input axis that the X axis should represent.
 - **Y Axis:** The input axis that the Y axis should represent.
