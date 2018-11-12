@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
     public class MixedRealityDiagnosticsManager : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
         #region IMixedRealityService
+
         private DiagnosticsEventData eventData;
         private GameObject diagnosticVisualization;
 
@@ -81,7 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
         #endregion IMixedRealityService
 
-        #region IMixedRealityDiagnosticsManager
+        #region IMixedRealityDiagnosticsSystem
+
         private bool visible;
 
         /// <inheritdoc />
@@ -187,9 +189,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
                 return diagnosticVisualization;
             }
         }
-        #endregion IMixedRealityDiagnosticsManager
+
+        #endregion IMixedRealityDiagnosticsSystem
 
         #region IMixedRealityEventSource
+
         /// <inheritdoc />
         public uint SourceId => (uint)SourceName.GetHashCode();
 
@@ -201,6 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
         /// <inheritdoc />
         public int GetHashCode(object obj) => SourceName.GetHashCode();
+
         #endregion IMixedRealityEventSource
     }
 }
