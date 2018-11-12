@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            if (GUILayout.Button("Back to Controller Mapping List"))
+            if (GUILayout.Button("Back to device list"))
             {
                 Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfiles;
             }
