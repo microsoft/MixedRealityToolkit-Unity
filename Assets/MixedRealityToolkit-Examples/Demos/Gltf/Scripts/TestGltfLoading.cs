@@ -17,9 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
         {
             if (string.IsNullOrEmpty(uri))
             {
-                uri = $"{Application.dataPath}\\MixedRealityToolkit-Examples\\Demos\\Gltf\\Models\\Lantern\\glTF\\Lantern.gltf";
-                uri = uri.Replace("/", "\\");
-                Debug.Assert(File.Exists(uri));
+                uri = "\\MixedRealityToolkit-Examples\\Demos\\Gltf\\Models\\Lantern\\glTF\\Lantern.gltf";
+                var path = $"{Application.dataPath}{uri}";
+                path = path.Replace("/", "\\");
+                Debug.Assert(File.Exists(path));
             }
         }
 

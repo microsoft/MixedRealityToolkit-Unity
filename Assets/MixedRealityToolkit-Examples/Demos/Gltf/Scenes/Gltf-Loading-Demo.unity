@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e590584d704ce8849b9ad603087f6a01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uri: C:\Valorem Projects\External\MixedRealityToolkit-Unity\Assets\MixedRealityToolkit-Examples\Demos\Gltf\Models\Lantern\glTF\Lantern.gltf
+  uri: \MixedRealityToolkit-Examples\Demos\Gltf\Models\Lantern\glTF\Lantern.gltf
 --- !u!1 &964159275
 GameObject:
   m_ObjectHideFlags: 1
