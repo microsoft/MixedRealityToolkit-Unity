@@ -111,6 +111,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {
                     list.DeleteArrayElementAtIndex(i);
+                    serializedObject.ApplyModifiedProperties();
+                    MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
                     EditorGUILayout.EndHorizontal();
                     GUILayout.EndVertical();
                     break;
