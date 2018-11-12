@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
 using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEditor;
@@ -85,7 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField($"{profile.name.ToProperCase()}", EditorStyles.boldLabel);
+            var deviceName = profile.ControllerType == SupportedControllerType.None ? "Custom Device" : profile.ControllerType.ToString();
+            EditorGUILayout.LabelField($"{deviceName} Mappings", EditorStyles.boldLabel);
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
@@ -110,6 +110,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             controllerItems.Clear();
 
             GUILayout.BeginVertical();
+
+            if (controllerMappings.arraySize == 0)
+            {
+                EditorGUILayout.HelpBox("You must override the controller mappings in your custom implementation to see a list of mappings for your device.", MessageType.Error);
+            }
 
             for (int i = 0; i < controllerMappings?.arraySize; i++)
             {

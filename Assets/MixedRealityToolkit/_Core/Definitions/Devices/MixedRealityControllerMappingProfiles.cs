@@ -11,31 +11,34 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
     public class MixedRealityControllerMappingProfiles : BaseMixedRealityProfile
     {
         [SerializeField]
-        private MouseControllerMappingProfile mouseControllerMappingProfile;
+        private MouseControllerMappingProfile mouseControllerMappingProfile = null;
 
         [SerializeField]
-        private TouchScreenControllerMappingProfile touchScreenControllerMappingProfile;
+        private TouchScreenControllerMappingProfile touchScreenControllerMappingProfile = null;
 
         [SerializeField]
-        private XboxControllerMappingProfile xboxControllerMappingProfile;
+        private XboxControllerMappingProfile xboxControllerMappingProfile = null;
 
         [SerializeField]
-        private WindowsMixedRealityMotionControllerMappingProfile windowsMixedRealityControllerMappingProfile;
+        private WindowsMixedRealityMotionControllerMappingProfile windowsMixedRealityControllerMappingProfile = null;
 
         [SerializeField]
-        private ViveWandControllerMappingProfile viveWandControllerMappingProfile;
+        private ViveWandControllerMappingProfile viveWandControllerMappingProfile = null;
 
         [SerializeField]
-        private OculusTouchControllerMappingProfile oculusTouchControllerMappingProfile;
+        private OculusTouchControllerMappingProfile oculusTouchControllerMappingProfile = null;
 
         [SerializeField]
-        private OculusRemoteControllerMappingProfile oculusRemoteControllerMappingProfile;
+        private OculusRemoteControllerMappingProfile oculusRemoteControllerMappingProfile = null;
 
         [SerializeField]
-        private GenericUnityControllerMappingProfile genericUnityControllerMappingProfile;
+        private GenericUnityControllerMappingProfile genericUnityControllerMappingProfile = null;
 
         [SerializeField]
-        private GenericOpenVRControllerMappingProfile genericOpenVRControllerMappingProfile;
+        private GenericOpenVRControllerMappingProfile genericOpenVRControllerMappingProfile = null;
+
+        [SerializeField]
+        private List<CustomMixedRealityControllerMappingProfile> customControllerProfiles = null;
 
         public List<MixedRealityControllerMapping> MixedRealityControllerMappings
         {
@@ -43,49 +46,87 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 var mappings = new List<MixedRealityControllerMapping>();
 
-                for (int i = 0; i < mouseControllerMappingProfile?.ControllerMappings?.Length; i++)
+                if (mouseControllerMappingProfile != null)
                 {
-                    mappings.Add(mouseControllerMappingProfile.ControllerMappings[i]);
+                    for (int i = 0; i < mouseControllerMappingProfile.ControllerMappings?.Length; i++)
+                    {
+                        mappings.Add(mouseControllerMappingProfile.ControllerMappings[i]);
+                    }
                 }
 
-                for (int i = 0; i < touchScreenControllerMappingProfile?.ControllerMappings?.Length; i++)
+                if (touchScreenControllerMappingProfile != null)
                 {
-                    mappings.Add(touchScreenControllerMappingProfile.ControllerMappings[i]);
+                    for (int i = 0; i < touchScreenControllerMappingProfile.ControllerMappings?.Length; i++)
+                    {
+                        mappings.Add(touchScreenControllerMappingProfile.ControllerMappings[i]);
+                    }
                 }
 
-                for (int i = 0; i < xboxControllerMappingProfile?.ControllerMappings?.Length; i++)
+                if (xboxControllerMappingProfile != null)
                 {
-                    mappings.Add(xboxControllerMappingProfile.ControllerMappings[i]);
+                    for (int i = 0; i < xboxControllerMappingProfile.ControllerMappings?.Length; i++)
+                    {
+                        mappings.Add(xboxControllerMappingProfile.ControllerMappings[i]);
+                    }
                 }
 
-                for (int i = 0; i < windowsMixedRealityControllerMappingProfile?.ControllerMappings?.Length; i++)
+                if (windowsMixedRealityControllerMappingProfile != null)
                 {
-                    mappings.Add(windowsMixedRealityControllerMappingProfile.ControllerMappings[i]);
+                    for (int i = 0; i < windowsMixedRealityControllerMappingProfile.ControllerMappings?.Length; i++)
+                    {
+                        mappings.Add(windowsMixedRealityControllerMappingProfile.ControllerMappings[i]);
+                    }
                 }
 
-                for (int i = 0; i < viveWandControllerMappingProfile?.ControllerMappings?.Length; i++)
+                if (viveWandControllerMappingProfile != null)
                 {
-                    mappings.Add(viveWandControllerMappingProfile.ControllerMappings[i]);
+                    for (int i = 0; i < viveWandControllerMappingProfile.ControllerMappings?.Length; i++)
+                    {
+                        mappings.Add(viveWandControllerMappingProfile.ControllerMappings[i]);
+                    }
                 }
 
-                for (int i = 0; i < oculusTouchControllerMappingProfile?.ControllerMappings?.Length; i++)
+                if (oculusTouchControllerMappingProfile != null)
                 {
-                    mappings.Add(oculusTouchControllerMappingProfile.ControllerMappings[i]);
+                    for (int i = 0; i < oculusTouchControllerMappingProfile.ControllerMappings?.Length; i++)
+                    {
+                        mappings.Add(oculusTouchControllerMappingProfile.ControllerMappings[i]);
+                    }
                 }
 
-                for (int i = 0; i < oculusRemoteControllerMappingProfile?.ControllerMappings?.Length; i++)
+                if (oculusRemoteControllerMappingProfile != null)
                 {
-                    mappings.Add(oculusRemoteControllerMappingProfile.ControllerMappings[i]);
+                    for (int i = 0; i < oculusRemoteControllerMappingProfile.ControllerMappings?.Length; i++)
+                    {
+                        mappings.Add(oculusRemoteControllerMappingProfile.ControllerMappings[i]);
+                    }
                 }
 
-                for (int i = 0; i < genericUnityControllerMappingProfile?.ControllerMappings?.Length; i++)
+                if (genericUnityControllerMappingProfile != null)
                 {
-                    mappings.Add(genericUnityControllerMappingProfile.ControllerMappings[i]);
+                    for (int i = 0; i < genericUnityControllerMappingProfile.ControllerMappings?.Length; i++)
+                    {
+                        mappings.Add(genericUnityControllerMappingProfile.ControllerMappings[i]);
+                    }
                 }
 
-                for (int i = 0; i < genericOpenVRControllerMappingProfile?.ControllerMappings?.Length; i++)
+                if (genericOpenVRControllerMappingProfile != null)
                 {
-                    mappings.Add(genericOpenVRControllerMappingProfile.ControllerMappings[i]);
+                    for (int i = 0; i < genericOpenVRControllerMappingProfile.ControllerMappings?.Length; i++)
+                    {
+                        mappings.Add(genericOpenVRControllerMappingProfile.ControllerMappings[i]);
+                    }
+                }
+
+                for (int i = 0; i < customControllerProfiles?.Count; i++)
+                {
+                    if (customControllerProfiles[i] != null)
+                    {
+                        for (int j = 0; j < customControllerProfiles[i].ControllerMappings?.Length; j++)
+                        {
+                            mappings.Add(customControllerProfiles[i].ControllerMappings[j]);
+                        }
+                    }
                 }
 
                 return mappings;

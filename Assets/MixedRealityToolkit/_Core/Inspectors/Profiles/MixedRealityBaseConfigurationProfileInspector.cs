@@ -124,11 +124,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
         }
 
-        protected static bool RenderProfile(SerializedProperty property)
+        protected static bool RenderProfile(SerializedProperty property, GUIContent guiContent = null)
         {
             bool changed = false;
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(property);
+
+            if (guiContent == null)
+            {
+                EditorGUILayout.PropertyField(property);
+            }
+            else
+            {
+                EditorGUILayout.PropertyField(property, guiContent);
+            }
 
             if (property.objectReferenceValue == null)
             {

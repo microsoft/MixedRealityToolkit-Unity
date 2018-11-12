@@ -29,3 +29,4 @@ MonoBehaviour:
     type: 2}
   genericOpenVRControllerMappingProfile: {fileID: 11400000, guid: 038d8a4d4f3a61a46b389e09a3596cfa,
     type: 2}
+  customControllerProfiles: []
