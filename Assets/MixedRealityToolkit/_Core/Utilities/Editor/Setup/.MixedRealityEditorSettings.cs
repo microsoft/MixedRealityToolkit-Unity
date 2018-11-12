@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                     message += "- Enable XR Settings for your current platform\n";
                 }
 
-                message += "\nWould you like to make this change";
+                message += "\nWould you like to make this change?";
 
                 if (!forceTextSerialization || !il2Cpp || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
                 {
