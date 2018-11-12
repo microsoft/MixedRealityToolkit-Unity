@@ -38,7 +38,7 @@ For example, here are some of the main area that are currently being worked on:
 * [feature/mrtk_interactable](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/mrtk_interactable) - New SDK components / features and ported features from the HTK
 * [feature/mrtk_packageManager](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/mrtk_packageManager) - New MRTK delivery development (NuGet)
 * [feature_mrtk_state_sharing](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature_mrtk_state_sharing) - Advanced networking / Sharing solution
-* [feature/mrtk_sharing](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/mrtk_sharing) - Photon Based networking / sharing solution
+* [feature/sharing_photon_preview](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/feature/sharing_photon_preview) - Photon Based networking / sharing solution
 * feature/SteamVR - (future) Adding native SteamVR support
 
 ## Other branches
