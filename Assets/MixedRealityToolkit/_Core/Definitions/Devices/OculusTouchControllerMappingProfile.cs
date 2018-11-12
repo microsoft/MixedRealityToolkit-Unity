@@ -15,11 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
         protected override void Awake()
         {
-            ControllerMappings = new[]
+            if (!HasSetupDefaults)
             {
-                new MixedRealityControllerMapping("Oculus Touch Controller Left", typeof(OculusTouchController), Handedness.Left),
-                new MixedRealityControllerMapping("Oculus Touch Controller Right", typeof(OculusTouchController), Handedness.Right),
-            };
+                ControllerMappings = new[]
+                {
+                    new MixedRealityControllerMapping("Oculus Touch Controller Left", typeof(OculusTouchController), Handedness.Left),
+                    new MixedRealityControllerMapping("Oculus Touch Controller Right", typeof(OculusTouchController), Handedness.Right),
+                };
+            }
 
             base.Awake();
         }

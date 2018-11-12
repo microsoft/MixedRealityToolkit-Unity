@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: DefaultXboxControllerMappingProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  hasSetupDefaults: 1
   controllerMappings:
   - description: Xbox Controller
     controllerType:

@@ -14,10 +14,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
         protected override void Awake()
         {
-            ControllerMappings = new[]
+            if (!HasSetupDefaults)
             {
-                new MixedRealityControllerMapping("Oculus Remote Controller", typeof(OculusRemoteController)),
-            };
+                ControllerMappings = new[]
+                {
+                    new MixedRealityControllerMapping("Oculus Remote Controller", typeof(OculusRemoteController)),
+                };
+            }
 
             base.Awake();
         }

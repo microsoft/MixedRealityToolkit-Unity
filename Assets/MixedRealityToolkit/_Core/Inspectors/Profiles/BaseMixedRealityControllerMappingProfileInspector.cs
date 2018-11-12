@@ -204,6 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                 if (GUILayout.Button(buttonContent, controllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32f), GUILayout.ExpandWidth(true)))
                 {
+                    serializedObject.ApplyModifiedProperties();
                     ControllerPopupWindow.Show(profile.ControllerType, interactions, handedness, MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile);
                 }
 

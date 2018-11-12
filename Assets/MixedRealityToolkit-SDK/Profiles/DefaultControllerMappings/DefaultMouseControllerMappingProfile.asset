@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: DefaultMouseControllerMappingProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  hasSetupDefaults: 1
   controllerMappings:
   - description: Mouse Input
     controllerType:

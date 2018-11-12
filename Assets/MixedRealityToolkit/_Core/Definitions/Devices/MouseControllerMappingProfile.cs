@@ -15,10 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
         protected override void Awake()
         {
-            ControllerMappings = new[]
+            if (!HasSetupDefaults)
             {
-                new MixedRealityControllerMapping("Mouse Input", typeof(MouseController), Handedness.Any)
-            };
+                ControllerMappings = new[]
+                {
+                    new MixedRealityControllerMapping("Mouse Input", typeof(MouseController), Handedness.Any)
+                };
+            }
 
             base.Awake();
         }

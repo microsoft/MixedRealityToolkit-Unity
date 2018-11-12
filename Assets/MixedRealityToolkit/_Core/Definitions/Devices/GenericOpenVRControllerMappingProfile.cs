@@ -15,11 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
         protected override void Awake()
         {
-            ControllerMappings = new[]
+            if (!HasSetupDefaults)
             {
+                ControllerMappings = new[]
+                {
                     new MixedRealityControllerMapping("Generic OpenVR Controller Left", typeof(GenericOpenVRController), Handedness.Left, true),
                     new MixedRealityControllerMapping("Generic OpenVR Controller Right", typeof(GenericOpenVRController), Handedness.Right, true),
-            };
+                };
+            }
 
             base.Awake();
         }

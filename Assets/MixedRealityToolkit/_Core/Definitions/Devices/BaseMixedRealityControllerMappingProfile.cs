@@ -10,6 +10,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
     /// </summary>
     public abstract class BaseMixedRealityControllerMappingProfile : BaseMixedRealityProfile
     {
+        [SerializeField]
+        private bool hasSetupDefaults = false;
+
+        /// <summary>
+        /// Has this controller profile setup the default interactions?
+        /// </summary>
+        protected bool HasSetupDefaults => hasSetupDefaults;
+
         /// <summary>
         /// The supported controller type for this profile.
         /// </summary>
@@ -29,9 +37,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
         protected virtual void Awake()
         {
-            for (int i = 0; i < controllerMappings?.Length; i++)
+            if (!hasSetupDefaults)
             {
-                controllerMappings[i].SetDefaultInteractionMapping();
+                for (int i = 0; i < controllerMappings?.Length; i++)
+                {
+                    controllerMappings[i].SetDefaultInteractionMapping();
+                }
+
+                hasSetupDefaults = true;
             }
         }
     }

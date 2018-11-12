@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: DefaultViveWandControllerMappingProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  hasSetupDefaults: 1
   controllerMappings:
   - description: Vive Wand Controller Left
     controllerType:

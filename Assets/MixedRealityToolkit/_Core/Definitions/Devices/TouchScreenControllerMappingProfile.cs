@@ -15,10 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
         protected override void Awake()
         {
-            ControllerMappings = new[]
+            if (!HasSetupDefaults)
             {
-                new MixedRealityControllerMapping("Touch Screen Input", typeof(UnityTouchController), Handedness.Any)
-            };
+                ControllerMappings = new[]
+                {
+                    new MixedRealityControllerMapping("Touch Screen Input", typeof(UnityTouchController), Handedness.Any)
+                };
+            }
 
             base.Awake();
         }

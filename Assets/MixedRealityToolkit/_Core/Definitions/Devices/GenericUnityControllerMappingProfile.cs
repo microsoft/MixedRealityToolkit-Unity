@@ -9,12 +9,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
     {
         /// <inheritdoc />
         public override SupportedControllerType ControllerType => SupportedControllerType.GenericUnity;
+
         protected override void Awake()
         {
-            ControllerMappings = new[]
+            if (!HasSetupDefaults)
             {
-                new MixedRealityControllerMapping("Generic Unity Controller", typeof(JoystickController), Handedness.None, true),
-            };
+                ControllerMappings = new[]
+                {
+                    new MixedRealityControllerMapping("Generic Unity Controller", typeof(JoystickController), Handedness.None, true),
+                };
+            }
 
             base.Awake();
         }

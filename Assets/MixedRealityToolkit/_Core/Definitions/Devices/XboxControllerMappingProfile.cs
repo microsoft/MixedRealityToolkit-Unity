@@ -14,10 +14,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
         protected override void Awake()
         {
-            ControllerMappings = new[]
+            if (!HasSetupDefaults)
             {
-                new MixedRealityControllerMapping("Xbox Controller", typeof(XboxController))
-            };
+                ControllerMappings = new[]
+                {
+                    new MixedRealityControllerMapping("Xbox Controller", typeof(XboxController))
+                };
+            }
 
             base.Awake();
         }

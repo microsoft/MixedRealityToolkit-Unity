@@ -15,11 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
         protected override void Awake()
         {
-            ControllerMappings = new[]
+            if (!HasSetupDefaults)
             {
-                new MixedRealityControllerMapping("Vive Wand Controller Left", typeof(ViveWandController), Handedness.Left),
-                new MixedRealityControllerMapping("Vive Wand Controller Right", typeof(ViveWandController), Handedness.Right),
-            };
+                ControllerMappings = new[]
+                {
+                    new MixedRealityControllerMapping("Vive Wand Controller Left", typeof(ViveWandController), Handedness.Left),
+                    new MixedRealityControllerMapping("Vive Wand Controller Right", typeof(ViveWandController), Handedness.Right),
+                };
+            }
 
             base.Awake();
         }
