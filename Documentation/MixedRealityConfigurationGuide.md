@@ -298,8 +298,6 @@ Clicking on the Image for any of the controllers allows you to configure a singl
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png)
 
-There is also an advanced screen for configuring other OpenVR or Unity input controllers that are not identified above.
-
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
 
 ## Advanced Controller Mapping Setup
