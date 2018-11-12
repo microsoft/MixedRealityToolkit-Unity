@@ -1,5 +1,5 @@
 {
-    "name": "MixedRealityToolkit.Core.Utilities.Gltf",
+    "name": "Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Core.Utilities.Async"

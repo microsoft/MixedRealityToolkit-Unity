@@ -1,8 +1,8 @@
 {
-    "name": "MixedRealityToolkit.Examples.Demos.Gltf",
+    "name": "Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf",
     "references": [
-        "MixedRealityToolkit.Core.Utilities.Gltf",
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Async"
+        "Microsoft.MixedReality.Toolkit.Core.Utilities.Async",
+        "Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
