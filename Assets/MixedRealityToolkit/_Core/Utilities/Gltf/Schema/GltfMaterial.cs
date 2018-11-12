@@ -82,6 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Schema
         /// </summary>
         public bool doubleSided;
 
-        public Material Material { get; set; }
+        public Material Material { get; internal set; }
     }
 }

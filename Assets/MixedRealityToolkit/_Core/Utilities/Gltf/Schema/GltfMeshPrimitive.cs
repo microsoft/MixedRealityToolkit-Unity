@@ -45,12 +45,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Schema
         /// in the Morph Target (index of the accessor containing the attribute
         /// displacements' data).
         /// </summary>
-        public List<Dictionary<string, int>> Targets;
+        public List<Dictionary<string, int>> Targets { get; internal set; }
 
         /// <summary>
         /// A dictionary object, where each key corresponds to mesh attribute semantic
         /// and each value is the index of the accessor containing attribute's data.
         /// </summary>
-        public GltfMeshPrimitiveAttributes Attributes;
+        public GltfMeshPrimitiveAttributes Attributes { get; internal set; }
     }
 }

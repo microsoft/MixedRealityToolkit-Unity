@@ -93,6 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Schema
         /// </summary>
         public GltfAccessorSparse sparse;
 
-        public GltfBufferView BufferView { get; set; }
+        public GltfBufferView BufferView { get; internal set; }
     }
 }

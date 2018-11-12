@@ -22,8 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Schema
         /// The length of the buffer in bytes.
         /// <minimum>0</minimum>
         /// </summary>
-        public int byteLength;
+        public int byteLength = -1;
 
-        public byte[] BufferData { get; set; }
+        public byte[] BufferData { get; internal set; }
     }
 }

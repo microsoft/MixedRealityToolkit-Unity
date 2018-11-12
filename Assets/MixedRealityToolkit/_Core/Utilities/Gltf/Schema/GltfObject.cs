@@ -112,11 +112,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Schema
         public string Uri { get; internal set; }
 
         /// <summary>
-        /// The raw binary data of the glTF object. Usually created from glb binary chunk.
-        /// </summary>
-        public byte[] BinaryData { get; internal set; }
-
-        /// <summary>
         /// The <see cref="GameObject"/> reference for the gltf Object.
         /// </summary>
         public GameObject GameObjectReference { get; internal set; }

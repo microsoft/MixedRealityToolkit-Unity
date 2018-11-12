@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Schema;
@@ -32,9 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
             gltfObject.GameObjectReference = new GameObject($"glTF Scene {gltfObject.Name}");
             await BackgroundThread;
 
-            for (int i = 0; i < gltfObject.buffers?.Length; i++)
+            for (int i = 0; i < gltfObject.bufferViews?.Length; i++)
             {
-                gltfObject.ConstructBuffer(gltfObject.buffers[i]);
+                gltfObject.ConstructBufferView(gltfObject.bufferViews[i]);
             }
 
             for (int i = 0; i < gltfObject.textures?.Length; i++)
@@ -62,12 +63,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
             return gltfObject.GameObjectReference;
         }
 
-        private static void ConstructBuffer(this GltfObject gltfObject, GltfBuffer gltfBuffer)
+        private static void ConstructBufferView(this GltfObject gltfObject, GltfBufferView bufferView)
         {
-            if (!string.IsNullOrEmpty(gltfObject.Uri))
+            bufferView.Buffer = gltfObject.buffers[bufferView.buffer];
+
+            if (!string.IsNullOrEmpty(gltfObject.Uri) && !string.IsNullOrEmpty(bufferView.Buffer.uri))
             {
                 var parentDirectory = Directory.GetParent(gltfObject.Uri).FullName;
-                gltfBuffer.BufferData = File.ReadAllBytes($"{parentDirectory}\\{gltfBuffer.uri}");
+                bufferView.Buffer.BufferData = File.ReadAllBytes($"{parentDirectory}\\{bufferView.Buffer.uri}");
+            }
+            else
+            {
+                bufferView.Buffer.BufferData = gltfObject.buffers[bufferView.buffer].BufferData;
             }
         }
 
@@ -93,7 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
                 }
                 else
                 {
-                    imageData = gltfObject.bufferViews[gltfImage.bufferView].Buffer.BufferData;
+                    var imageBufferView = gltfObject.bufferViews[gltfImage.bufferView];
+                    imageData = new byte[imageBufferView.byteLength];
+                    Array.Copy(imageBufferView.Buffer.BufferData, imageBufferView.byteOffset, imageData, 0, imageData.Length);
                 }
 
                 await Update;

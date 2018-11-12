@@ -43,6 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Schema
         /// </summary>
         public GltfBufferViewTarget target = GltfBufferViewTarget.None;
 
-        public GltfBuffer Buffer { get; set; }
+        public GltfBuffer Buffer { get; internal set; }
     }
 }

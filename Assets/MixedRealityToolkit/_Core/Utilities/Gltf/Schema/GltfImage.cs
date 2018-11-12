@@ -36,6 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Schema
 
         #endregion Serialized Fields
 
-        public Texture2D Texture { get; set; }
+        public Texture2D Texture { get; internal set; }
     }
 }
