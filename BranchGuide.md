@@ -17,7 +17,9 @@ This ensures whether you download the asset or the code, there are no difference
 
 Development branches relate to the current active and tested development state of the product.  These should be considered "stable", however bugs may be introduced during the course of development.
 
-* **Dev_Working_Branch/[htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development)** - Legacy HoloToolkit development / fixes.
+* **[htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development)** - HoloToolkit development branch, active for fixes needed by existing customers.
+
+* **[Dev_Working_Branch](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch)** - Obsolete. Persists for reference purposes as vNext is completed.
 
 * **[mrtk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_development)** - Current Mixed Reality Toolkit (vNext) active development
 
