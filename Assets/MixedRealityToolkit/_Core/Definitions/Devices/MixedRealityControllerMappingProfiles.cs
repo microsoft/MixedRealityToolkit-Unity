@@ -2,11 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 {
+    [Obsolete("Profile was renamed to MixedRealityControllerMappingProfiles")]
+    public class MixedRealityControllerMappingProfile { }
+
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Mapping Profiles", fileName = "MixedRealityControllerMappingProfiles", order = (int)CreateProfileMenuItemIndices.ControllerMapping)]
     public class MixedRealityControllerMappingProfiles : BaseMixedRealityProfile
     {

@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
@@ -122,6 +123,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         [SerializeField]
         [Tooltip("Device profile for wiring up physical inputs to Actions.")]
         private MixedRealityControllerMappingProfiles controllerMappingProfiles;
+
+        [Obsolete("Property renamed to ControllerMappingProfiles")]
+        public MixedRealityControllerMappingProfile ControllerMappingProfile = null;
 
         /// <summary>
         /// Active profile for controller mapping configuration
