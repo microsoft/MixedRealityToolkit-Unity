@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Schema;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
