@@ -2,13 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
-
 using System.Collections.Generic;
-
 using UnityEngine;
 
+#if UNITY_EDITOR || UNITY_WSA
 using QRCodesTrackerPlugin;
+#endif // UNITY_EDITOR || UNITY_WSA
+
 namespace HoloToolkit.Unity.QRTracking
 {
     public static class QRCodeEventArgs
@@ -36,18 +36,19 @@ namespace HoloToolkit.Unity.QRTracking
         public bool AutoStartQRTracking = true;
 
         public bool IsTrackerRunning { get; private set; }
-        public QRCodesTrackerPlugin.QRTrackerStartResult StartResult { get; private set; }
 
+#if UNITY_EDITOR || UNITY_WSA
+        public QRTrackerStartResult StartResult { get; private set; }
 
         public event EventHandler<QRCodeEventArgs<QRCodesTrackerPlugin.QRCode>> QRCodeAdded;
         public event EventHandler<QRCodeEventArgs<QRCodesTrackerPlugin.QRCode>> QRCodeUpdated;
         public event EventHandler<QRCodeEventArgs<QRCodesTrackerPlugin.QRCode>> QRCodeRemoved;
 
-        private System.Collections.Generic.SortedDictionary<System.Guid, QRCodesTrackerPlugin.QRCode> qrCodesList = new SortedDictionary<System.Guid, QRCodesTrackerPlugin.QRCode>();
+        private SortedDictionary<Guid, QRCodesTrackerPlugin.QRCode> qrCodesList = new SortedDictionary<Guid, QRCodesTrackerPlugin.QRCode>();
 
         private QRTracker qrTracker;
 
-        public System.Guid GetIdForQRCode(string qrCodeData)
+        public Guid GetIdForQRCode(string qrCodeData)
         {
             lock (qrCodesList)
             {
@@ -59,16 +60,17 @@ namespace HoloToolkit.Unity.QRTracking
                     }
                 }
             }
-            return System.Guid.Empty;
+            return Guid.Empty;
         }
 
-        public System.Collections.Generic.IList<QRCodesTrackerPlugin.QRCode> GetList()
+        public IList<QRCodesTrackerPlugin.QRCode> GetList()
         {
             lock (qrCodesList)
             {
                 return new List<QRCodesTrackerPlugin.QRCode>(qrCodesList.Values);
             }
         }
+#endif // UNITY_EDITOR || UNITY_WSA
 
         protected override void Awake()
         {
@@ -78,6 +80,7 @@ namespace HoloToolkit.Unity.QRTracking
 
         protected virtual void Start()
         {
+#if UNITY_EDITOR || UNITY_WSA
             qrTracker = new QRTracker();
             qrTracker.Added += QrTracker_Added;
             qrTracker.Updated += QrTracker_Updated;
@@ -87,8 +90,10 @@ namespace HoloToolkit.Unity.QRTracking
             {
                 StartQRTracking();
             }
+#endif // UNITY_EDITOR || UNITY_WSA
         }
 
+#if UNITY_EDITOR || UNITY_WSA
         public QRTrackerStartResult StartQRTracking()
         {
             if (!IsTrackerRunning)
@@ -150,7 +155,6 @@ namespace HoloToolkit.Unity.QRTracking
                 handlers(this, QRCodeEventArgs.Create(args.Code));
             }
         }
-
+#endif // UNITY_EDITOR || UNITY_WSA
     }
-
 }

@@ -1,22 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-#if WINDOWS_UWP
-using Windows.Perception.Spatial;
-#endif
 
 namespace HoloToolkit.Unity.QRTracking
 {
-    [RequireComponent(typeof(HoloToolkit.Unity.SpatialGraphCoordinateSystem))]
+    [RequireComponent(typeof(SpatialGraphCoordinateSystem))]
     public class QRCode : MonoBehaviour
     {
+#if UNITY_EDITOR || UNITY_WSA
         public QRCodesTrackerPlugin.QRCode qrCode;
-        private GameObject qrCodeCube;
-
+#endif // UNITY_EDITOR || UNITY_WSA
         public float PhysicalSize;
         public string CodeText { get; set; }
 
@@ -26,6 +20,7 @@ namespace HoloToolkit.Unity.QRTracking
         private TextMesh QRTimeStamp;
         private TextMesh QRSize;
         private GameObject QRInfo;
+        private GameObject qrCodeCube;
 
         private long lastTimeStamp = 0;
 
@@ -33,6 +28,8 @@ namespace HoloToolkit.Unity.QRTracking
         {
             PhysicalSize = 0.1f;
             CodeText = "Dummy";
+
+#if UNITY_EDITOR || UNITY_WSA
             if (qrCode == null)
             {
                 throw new System.Exception("QR Code Empty");
@@ -55,7 +52,15 @@ namespace HoloToolkit.Unity.QRTracking
             QRSize.text = "Size:" + qrCode.PhysicalSizeMeters.ToString("F04") + "m";
             QRTimeStamp.text = "Time:" + qrCode.LastDetectedQPCTicks;
             Debug.Log("Id= " + qrCode.Id + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + qrCode.LastDetectedQPCTicks + " QRVersion = " + qrCode.Version + " QRData = " + CodeText);
+#endif // UNITY_EDITOR || UNITY_WSA
         }
+
+        private void Update()
+        {
+#if UNITY_EDITOR || UNITY_WSA
+            UpdatePropertiesDisplay();
+        }
+
         private void UpdatePropertiesDisplay()
         {
             // Update properties that change
@@ -79,11 +84,7 @@ namespace HoloToolkit.Unity.QRTracking
                 lastTimeStamp = qrCode.LastDetectedQPCTicks;
                 QRInfo.transform.localScale = new Vector3(PhysicalSize/0.2f, PhysicalSize / 0.2f, PhysicalSize / 0.2f);
             }
-        }
-
-        private void Update()
-        {
-            UpdatePropertiesDisplay();
+#endif // UNITY_EDITOR || UNITY_WSA
         }
     }
 }

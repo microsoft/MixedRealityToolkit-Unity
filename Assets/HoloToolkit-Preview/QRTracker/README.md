@@ -13,6 +13,8 @@ reg add "HKLM\SOFTWARE\Microsoft\HoloLensSensors" /v EnableQRTrackerDefault /t R
 When not using this feature it should be turned off if performace is of concern
 reg add "HKLM\SOFTWARE\Microsoft\HoloLensSensors" /v EnableQRTrackerDefault /t REG_DWORD /d 0 /F
 
+You may need to reboot for these changes to take effect.
+
 # Requirements and Notes
 Note: You are unable to test this feature in the Unity editor. You must built to a UWP application and test using a Windows Mixed Reality VR headset. It is not yet compatible with Microsoft HoloLens.
 

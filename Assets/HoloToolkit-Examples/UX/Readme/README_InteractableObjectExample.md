@@ -80,7 +80,7 @@ protected override void InputDown(GameObject obj, InputEventData eventData) {
 
 ![Holographic button](/External/ReadMeImages/MRTK_InteractableObject_HolographicButton.jpg)
 
-This is an example of Holographic button used in the Start menu and App Bar. This example uses Unity's Animation Controller and Animation Clips. This prefab is also available under MixedRealityToolkit's main folder: [HoloToolkit/UX/Prefab](/Assets/HoloToolkit/UX/Prefabs/Buttons/SquareButton.prefab)
+This is an example of Holographic button used in the Start menu and App Bar. This example uses Unity's Animation Controller and Animation Clips. This prefab is also available under MixedRealityToolkit's main folder: [HoloToolkit/UX/Prefab](/Assets/HoloToolkit/UX/Prefabs/Buttons/HolographicButton.prefab)
 
 ### Mesh button ###
 

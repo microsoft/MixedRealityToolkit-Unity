@@ -1,11 +1,11 @@
 # Contributing
 
-HoloToolkit welcomes contributions from the community. 
-If you have any questions, please reach out on the [HoloLens forums](https://forums.hololens.com/).
+HoloToolkit welcomes contributions from the community.
+If you have any questions, please reach out on the [HoloLens forums](https://forums.hololens.com/) or the [HoloDevelopers slack](https://holodevelopers.slack.com/). You can easily be granted access to the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
 
 # Process
 
-1. [Make a proposal](https://github.com/Microsoft/HoloToolkit-Unity/issues) (either new, or for one of the elements in our backlog)
+1. [Make a proposal](https://github.com/Microsoft/HoloToolkit-Unity/issues) (either new or for one of the elements in our backlog)
 2. Identify the appropriate development branch
 3. Implement the proposal and its tests.
 4. Ensure that your implementation meets the [coding guidelines](CodingGuidelines.md).
@@ -16,15 +16,15 @@ If you have any questions, please reach out on the [HoloLens forums](https://for
 
 For things like fixing typos and small bug fixes, you can skip this step.
 
-If your change is more than a simple fix, please don't just create a big pull request. 
+If your change is more than a simple fix, please don't just create a big pull request.
 Instead, start by [opening an issue](https://github.com/Microsoft/HoloToolkit-Unity/issues) describing the problem you want to solve and how you plan to approach the problem. 
 This will let us have a brief discussion about the problem and, hopefully, identify some potential pitfalls before too much time is spent.
 
 Note:  If you wish to work on something that already exists on our backlog, you can use that work item as your proposal.  
 
-# Identifing the development branch
+# Identifying the development branch
 
-The master branch does not accept direct pull requests. Each change must be submitted through an appropriate developement branch. Each upcoming MRTK release has its own development branch (ex: may18_dev).
+The master branch does not accept direct pull requests. Each change must be submitted through an appropriate development branch. Each upcoming MRTK release has its own development branch (ex: may18_dev).
 
 To identify the appropriate development branch:
 
@@ -33,7 +33,7 @@ To identify the appropriate development branch:
 3. If the **Status** is not **Accepting changes**, select the next release
 4. Note the **Development branch** for Pull Request submission.
 
-Any pull request made directly to master will be retargetted to a development branches by a project maintainer.
+Any pull request made directly to master will be retargeted to a development branches by a project maintainer.
 
 NOTE: A project maintainer may retarget your PR to a different development branch based on the release priorities.
 
@@ -46,7 +46,7 @@ NOTE: A project maintainer may retarget your PR to a different development branc
 5. Make sure that all the tests continue to pass.
 6. Ensure the code is [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; Store -> Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
 7. Ensure you update the [README](https://github.com/Microsoft/HoloToolkit-Unity/blob/master/README.md) with additional documentation as needed.
-8. Also update the [HoloToolkit-Unity wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) if you think it will be useful for other developers.
+8. Also, update the [HoloToolkit-Unity wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) if you think it will be useful for other developers.
 
 # Pull request
 

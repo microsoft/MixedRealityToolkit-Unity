@@ -196,9 +196,18 @@ namespace HoloToolkit.Unity
 
                     foreach (var scale in scales)
                     {
-                        PlayerSettings.WSA.SetVisualAssetsImage(CloneAndResizeToFile(type, scale), type, scale);
-
-                        progress++;
+                        try
+                        {
+                            PlayerSettings.WSA.SetVisualAssetsImage(CloneAndResizeToFile(type, scale), type, scale);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogWarning(e.Message);
+                        }
+                        finally
+                        {
+                            progress++;
+                        }
                         if (EditorUtility.DisplayCancelableProgressBar("Generating images", string.Format("Generating resized images {0} of {1}", progress, progressTotal), progress / progressTotal))
                         {
                             canceled = true;

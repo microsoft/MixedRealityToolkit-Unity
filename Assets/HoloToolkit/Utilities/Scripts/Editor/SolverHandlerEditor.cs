@@ -50,13 +50,13 @@ namespace HoloToolkit.Unity.UX
 
             serializedObject.ApplyModifiedProperties();
 
-            if (trackedObjectChanged)
+            if (Application.isPlaying && trackedObjectChanged)
             {
                 solverHandler.TransformTarget = null;
                 solverHandler.AttachToNewTrackedObject();
             }
 
-            if (additionalOffsetChanged)
+            if (Application.isPlaying && additionalOffsetChanged)
             {
                 solverHandler.AdditionalOffset = additionalOffsetProperty.vector3Value;
                 solverHandler.AdditionalRotation = additionalRotationProperty.vector3Value;

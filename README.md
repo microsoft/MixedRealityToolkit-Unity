@@ -4,6 +4,8 @@
 The Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.
 The project is aimed at reducing barriers to entry to create mixed reality applications and contribute back to the community as we all grow.
 
+> ### For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](/BranchGuide.md).
+
 MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://github.com/Microsoft/MixedRealityToolkit) and makes it easier to consume in [Unity](https://unity3d.com/).
 
 <img src="External/ReadMeImages/MixedRealityStack-Apps.png" width="600"><img src="External/ReadMeImages/MixedRealityStack-MRTK-Unity.png" width="600"><img src="External/ReadMeImages/MixedRealityStack-MRTK.png" width="600"><img src="External/ReadMeImages/MixedRealityStack-UWP.png" width="600">
