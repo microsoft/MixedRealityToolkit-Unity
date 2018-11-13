@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 #elif UNITY_EDITOR_WIN
             StopHaptics(interactionSource.id);
 #endif // WINDOWS_UWP
-#endif //UNITY_WSA
         }
+#endif //UNITY_WSA
     }
 }
