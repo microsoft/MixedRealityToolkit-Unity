@@ -9,11 +9,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
     internal static class MixedRealityPreferences
     {
-        private static readonly GUIContent LockContent = new GUIContent("Lock SDK Profiles", "Locks the SDK profiles from being edited.");
-
-        private static bool prefsLoaded;
-
+        private static readonly GUIContent LockContent = new GUIContent("Lock SDK Profiles", "Locks the SDK profiles from being edited.\n\nThis setting only applies to the currently running project.");
+        private const string LockKey = "_LockProfiles";
+        private static bool lockPrefLoaded;
         private static bool lockProfiles = true;
+
+        private static readonly GUIContent IgnoreContent = new GUIContent("Ignore Settings Prompt on Startup", "Prevents settings dialog popup from showing on startup.\n\nThis setting applies to all projects using MRTK.");
+        private const string IgnoreKey = "_MixedRealityToolkit_Editor_IgnoreSettingsPrompts";
+        private static bool ignorePrefLoaded;
+        private static bool ignoreSettingsPrompt = false;
 
         /// <summary>
         /// Should the default profile inspectors be disabled to prevent editing?
@@ -23,10 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             get
             {
                 // Load the preferences
-                if (!prefsLoaded)
+                if (!lockPrefLoaded)
                 {
-                    lockProfiles = EditorPrefsUtility.GetEditorPref("_LockProfiles", true);
-                    prefsLoaded = true;
+                    lockProfiles = EditorPrefsUtility.GetEditorPref(LockKey, true);
+                    lockPrefLoaded = true;
                 }
 
                 return lockProfiles;
@@ -34,6 +38,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             private set
             {
                 lockProfiles = value;
+            }
+        }
+
+        public static bool IgnoreSettingsPrompt
+        {
+            get
+            {
+                // Load the preferences
+                if (!ignorePrefLoaded)
+                {
+                    ignoreSettingsPrompt = EditorPrefs.GetBool(IgnoreKey, false);
+                    ignorePrefLoaded = true;
+                }
+
+                return ignoreSettingsPrompt;
+            }
+            set
+            {
+                ignoreSettingsPrompt = value;
             }
         }
 
@@ -47,12 +70,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             // Save the preferences
             if (EditorGUI.EndChangeCheck())
             {
-                EditorPrefsUtility.SetEditorPref("_LockProfiles", LockProfiles);
+                EditorPrefsUtility.SetEditorPref(LockKey, LockProfiles);
             }
 
             if (!LockProfiles)
             {
                 EditorGUILayout.HelpBox("This is only to be used to update the default SDK profiles. If any edits are made, and not checked into the MRTK's Github, the changes may be lost next time you update your local copy.", MessageType.Warning);
+            }
+
+            EditorGUI.BeginChangeCheck();
+            IgnoreSettingsPrompt = EditorGUILayout.Toggle(IgnoreContent, IgnoreSettingsPrompt);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                EditorPrefs.SetBool(IgnoreKey, IgnoreSettingsPrompt);
             }
         }
     }

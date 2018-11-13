@@ -248,10 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.LabelField("Additional Service Providers", EditorStyles.boldLabel);
             changed |= RenderProfile(registeredServiceProvidersProfile);
 
-            if (!changed)
-            {
-                changed = EditorGUI.EndChangeCheck();
-            }
+            changed |= EditorGUI.EndChangeCheck();
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();

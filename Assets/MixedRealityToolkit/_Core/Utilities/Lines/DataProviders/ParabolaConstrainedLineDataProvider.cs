@@ -90,9 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
             switch (pointIndex)
             {
                 case 0:
-                    // We do nothing with this case. Parabola lines start at 0,0,0
-                    // Case 0's point is (0,0,0)
-                    // 10/25/2018 - VNext Refactoring of Tooltips
                     break;
                 case 1:
                     endPoint.Position = point;

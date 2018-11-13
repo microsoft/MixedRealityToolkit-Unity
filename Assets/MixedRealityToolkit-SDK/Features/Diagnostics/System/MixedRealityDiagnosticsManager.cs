@@ -12,17 +12,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
     public class MixedRealityDiagnosticsManager : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
         #region IMixedRealityService
+
         private DiagnosticsEventData eventData;
         private GameObject diagnosticVisualization;
 
         public override void Initialize()
         {
-            base.Initialize();
-            InitializeInternal();
-        }
+            if (!Application.isPlaying) { return; }
 
-        private void InitializeInternal()
-        {
             eventData = new DiagnosticsEventData(EventSystem.current);
 
             Visible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.Visible;
@@ -33,42 +30,32 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
             RaiseDiagnosticsChanged();
         }
 
-        /// <inheritdoc />
-        public override void Reset()
-        {
-            base.Reset();
-            InitializeInternal();
-        }
-
         public override void Destroy()
         {
-            base.Destroy();
+            if (!Application.isPlaying) { return; }
 
-            if (Application.isPlaying)
+            if (diagnosticVisualization != null)
             {
-                if (diagnosticVisualization != null)
+                Unregister(diagnosticVisualization);
+
+                if (Application.isEditor)
                 {
-                    Unregister(diagnosticVisualization);
-
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(diagnosticVisualization);
-                    }
-                    else
-                    {
-                        Object.Destroy(diagnosticVisualization);
-                    }
-
-                    diagnosticVisualization = null;
+                    Object.DestroyImmediate(diagnosticVisualization);
+                }
+                else
+                {
+                    Object.Destroy(diagnosticVisualization);
                 }
 
-                visible = false;
-                showCpu = false;
-                showFps = false;
-                showMemory = false;
-
-                RaiseDiagnosticsChanged();
+                diagnosticVisualization = null;
             }
+
+            visible = false;
+            showCpu = false;
+            showFps = false;
+            showMemory = false;
+
+            RaiseDiagnosticsChanged();
         }
 
         private void RaiseDiagnosticsChanged()
@@ -89,13 +76,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealityDiagnosticsHandler> OnDiagnosticsChanged =
             delegate (IMixedRealityDiagnosticsHandler handler, BaseEventData eventData)
             {
-                DiagnosticsEventData diagnosticsEventsData = ExecuteEvents.ValidateEventData<DiagnosticsEventData>(eventData);
+                var diagnosticsEventsData = ExecuteEvents.ValidateEventData<DiagnosticsEventData>(eventData);
                 handler.OnDiagnosticSettingsChanged(diagnosticsEventsData);
             };
 
         #endregion IMixedRealityService
 
-        #region IMixedRealityDiagnosticsManager
+        #region IMixedRealityDiagnosticsSystem
+
         private bool visible;
 
         /// <inheritdoc />
@@ -201,9 +189,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
                 return diagnosticVisualization;
             }
         }
-        #endregion IMixedRealityDiagnosticsManager
+
+        #endregion IMixedRealityDiagnosticsSystem
 
         #region IMixedRealityEventSource
+
         /// <inheritdoc />
         public uint SourceId => (uint)SourceName.GetHashCode();
 
@@ -215,6 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
         /// <inheritdoc />
         public int GetHashCode(object obj) => SourceName.GetHashCode();
+
         #endregion IMixedRealityEventSource
     }
 }

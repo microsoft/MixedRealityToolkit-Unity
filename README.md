@@ -3,6 +3,8 @@
 # What is MixedRealityToolkit-vNext
 The V1 Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.
 
+> ### For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](/BranchGuide.md).
+
 This new version of the MixedRealityToolkit aims to further extend the capabilities of the toolkit and also introduce new features, including the capability to support more VR/AR/XR platforms beyond Microsoft's own Mixed Reality setup.
 
 The vNext branch is taking all the best lessons learned from the original Mixed Reality Toolkit and refactoring / restructuring it to both:

@@ -137,19 +137,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 #if UNITY_EDITOR
             if (ActiveProfile.ActiveServices.Count > 0)
             {
-                if (!Application.isPlaying)
-                {
-                    DisableAllServices();
-                    DestroyAllServices();
-                }
-                else
-                {
-                    mixedRealityComponentsCount = 0;
-                    MixedRealityComponents.Clear();
-                    ActiveProfile.ActiveServices.Clear();
-                }
+                mixedRealityComponentsCount = 0;
+                MixedRealityComponents.Clear();
+                ActiveProfile.ActiveServices.Clear();
             }
 #endif
+            ClearCoreSystemCache();
             EnsureMixedRealityRequirements();
 
             if (ActiveProfile.IsCameraProfileEnabled)
@@ -195,7 +188,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     Debug.LogError("Failed to start the Boundary System!");
                 }
             }
-
 
             // If the Spatial Awareness system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsSpatialAwarenessSystemEnabled)
@@ -525,6 +517,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private void OnDestroy()
         {
             DestroyAllServices();
+            ClearCoreSystemCache();
 
             if (instance == this)
             {
@@ -1099,7 +1092,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             return service != null;
         }
 
-        private bool IsCoreSystem(Type type)
+        private static bool IsCoreSystem(Type type)
         {
             if (type == null)
             {
@@ -1112,6 +1105,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type);
+        }
+
+        private static void ClearCoreSystemCache()
+        {
+            inputSystem = null;
+            teleportSystem = null;
+            boundarySystem = null;
+            spatialAwarenessSystem = null;
+            diagnosticsSystem = null;
         }
 
         /// <summary>
