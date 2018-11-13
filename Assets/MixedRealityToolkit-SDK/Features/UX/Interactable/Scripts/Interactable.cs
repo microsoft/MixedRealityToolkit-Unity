@@ -7,6 +7,10 @@ using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +19,7 @@ using UnityEngine.Events;
 using UnityEngine.Windows.Speech;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 {
     /// <summary>
     /// Uses input and action data to declare a set of states
@@ -45,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // is the interactable enabled?
         public bool Enabled = true;
         // a collection of states and basic state logic
-        public States States;
+        public States.States States;
         // the state logic for comparing state
         public InteractableStates StateManager;
         // which action is this interactable listening for
@@ -65,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // a voice command to fire a click event
         public string VoiceCommand = "";
         // does the voice command require this to have focus?
-        public bool RequiresGaze = true;
+        public bool RequiresFocus = true;
 
         /// <summary>
         /// Does this interactable require focus
@@ -592,7 +596,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
             // let the Input Handlers know what the pointer action is
-            pointerInputAction = eventData.MixedRealityInputAction;
+            if (eventData != null)
+            {
+                pointerInputAction = eventData.MixedRealityInputAction;
+            }
 
             // check to see if is global or focus - or - if is global, pointer event does not fire twice  - or - input event is not taking these actions already
             if (!CanInteract() || (IsGlobal && (inputTimer != null || GlobalClickOrder[1] == 1)))
@@ -1016,7 +1023,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// <param name="args"></param>
         protected void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
-            if (args.text == VoiceCommand && (!RequiresGaze || HasFocus) && CanInteract())
+            if (args.text == VoiceCommand && (!RequiresFocus || HasFocus) && CanInteract())
             {
                 
                 if (CanInteract())
@@ -1024,7 +1031,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     StartGlobalVisual(true);
 
                     int index = GetVoiceCommandIndex(args.text);
-                    if (voiceCommands.Length < 2)
+                    if (voiceCommands.Length < 2 || Dimensions < 2)
                     {
                         IncreaseDimensionIndex();
                     }

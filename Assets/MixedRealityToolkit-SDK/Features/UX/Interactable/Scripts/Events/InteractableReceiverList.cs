@@ -4,9 +4,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
 {
     /// <summary>
     /// An example of building an Interactable receiver that uses built-in receivers that extend ReceiverBase

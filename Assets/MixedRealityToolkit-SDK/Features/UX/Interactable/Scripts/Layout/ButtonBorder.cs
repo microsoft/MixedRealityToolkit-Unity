@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
 {
     /// <summary>
     /// Use a Unity primitive Cube or cylindar as a border segment relative to the scale of the AnchorTransform

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
 {
     [CustomEditor(typeof(ButtonBackgroundSize))]
     public class ButtonBackgroundSizeGizmo : Editor

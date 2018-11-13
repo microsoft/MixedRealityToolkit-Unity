@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 {
     /// <summary>
     /// Inspector for themes, and used by Interactable
@@ -136,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     for (int k = 0; k < stateLocations.Length; k++)
                     {
                         string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
-                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
+                        States.States defaultStates = (States.States)AssetDatabase.LoadAssetAtPath(path, typeof(States.States));
                         if (defaultStates != null)
                         {
                             states.objectReferenceValue = defaultStates;

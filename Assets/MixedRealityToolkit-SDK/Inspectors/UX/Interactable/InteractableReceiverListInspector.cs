@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
 {
     [CustomEditor(typeof(InteractableReceiverList))]
     public class InteractableReceiverListInspector : Editor
