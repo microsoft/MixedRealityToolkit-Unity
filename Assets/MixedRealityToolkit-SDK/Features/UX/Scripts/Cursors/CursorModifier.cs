@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
@@ -16,9 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
     /// </summary>
     public class CursorModifier : MonoBehaviour, ICursorModifier
     {
-        private static IMixedRealityInputSystem inputSystem = null;
-        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-
         #region ICursorModifier Implementation
 
         [SerializeField]
@@ -168,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             }
 
             FocusDetails focusDetails;
-            if (InputSystem.FocusProvider.TryGetFocusDetails(cursor.Pointer, out focusDetails))
+            if (MixedRealityToolkit.InputSystem != null && MixedRealityToolkit.InputSystem.FocusProvider.TryGetFocusDetails(cursor.Pointer, out focusDetails))
             {
                 // Else, consider the modifiers on the cursor modifier, but don't snap
                 return focusDetails.Point + HostTransform.TransformVector(CursorPositionOffset);

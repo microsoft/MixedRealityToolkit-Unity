@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
     /// Configuration profile settings for setting up controller pointers.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Pointer Profile", fileName = "MixedRealityInputPointerProfile", order = (int)CreateProfileMenuItemIndices.Pointer)]
-    public class MixedRealityPointerProfile : ScriptableObject
+    public class MixedRealityPointerProfile : BaseMixedRealityProfile
     {
         [SerializeField]
         private PointerOption[] pointerOptions = new PointerOption[0];

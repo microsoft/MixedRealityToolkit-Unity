@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1c93114e9437cb75d8b3ee4e0e1ba, type: 3}
   m_Name: DefaultMixedRealityCameraProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   isCameraPersistent: 0
   nearClipPlaneOpaqueDisplay: 0.1
   cameraClearFlagsOpaqueDisplay: 1

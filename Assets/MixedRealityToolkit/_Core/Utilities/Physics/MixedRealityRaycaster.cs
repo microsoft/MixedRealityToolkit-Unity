@@ -12,28 +12,40 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         public static bool DebugEnabled = false;
 
         /// <summary>
-        /// Simple raycasts each physics <see cref="RayStep"/>
+        /// Simple raycasts each physics <see cref="RayStep"/>.
         /// </summary>
         /// <param name="step"></param>
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
-        /// <returns></returns>
+        /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
         {
-            Debug.Assert(step.Length > 0, "Length must be longer than zero!");
+            return RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, out physicsHit);
+        }
+
+        /// <summary>
+        /// Simple raycasts each physics <see cref="RayStep"/> within a specified maximum distance.
+        /// </summary>
+        /// <param name="step"></param>
+        /// <param name="prioritizedLayerMasks"></param>
+        /// <param name="physicsHit"></param>
+        /// <returns>Whether or not the raycast hit something.</returns>
+        public static bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
+        {
+            Debug.Assert(maxDistance > 0, "Length must be longer than zero!");
             Debug.Assert(step.Direction != Vector3.zero, "Invalid step direction!");
 
             return prioritizedLayerMasks.Length == 1
                 // If there is only one priority, don't prioritize
-                ? UnityEngine.Physics.Raycast(step.Origin, step.Direction, out physicsHit, step.Length, prioritizedLayerMasks[0])
+                ? UnityEngine.Physics.Raycast(step.Origin, step.Direction, out physicsHit, maxDistance, prioritizedLayerMasks[0])
                 // Raycast across all layers and prioritize
-                : TryGetPrioritizedPhysicsHit(UnityEngine.Physics.RaycastAll(step.Origin, step.Direction, step.Length, UnityEngine.Physics.AllLayers), prioritizedLayerMasks, out physicsHit);
+                : TryGetPrioritizedPhysicsHit(UnityEngine.Physics.RaycastAll(step.Origin, step.Direction, maxDistance, UnityEngine.Physics.AllLayers), prioritizedLayerMasks, out physicsHit);
         }
 
         /// <summary>
-        /// Box raycasts each physics <see cref="RayStep"/>
+        /// Box raycasts each physics <see cref="RayStep"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastBoxPhysicsStep(RayStep step, Vector3 extents, Vector3 targetPosition, Matrix4x4 matrix, float maxDistance, LayerMask[] prioritizedLayerMasks, int raysPerEdge, bool isOrthographic, out Vector3[] points, out Vector3[] normals, out bool[] hits)
         {
             if (Application.isEditor && DebugEnabled)
@@ -69,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
                     }
 
                     RaycastHit rayHit;
-                    hits[index] = RaycastSimplePhysicsStep(new RayStep(origin, direction * maxDistance), prioritizedLayerMasks, out rayHit);
+                    hits[index] = RaycastSimplePhysicsStep(new RayStep(origin, direction.normalized * maxDistance), prioritizedLayerMasks, out rayHit);
 
                     if (hits[index])
                     {
@@ -98,31 +110,44 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         }
 
         /// <summary>
-        /// Sphere raycasts each physics <see cref="RayStep"/>
+        /// Sphere raycasts each physics <see cref="RayStep"/>.
         /// </summary>
         /// <param name="step"></param>
         /// <param name="radius"></param>
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
-        /// <returns></returns>
+        /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastSpherePhysicsStep(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
+        {
+            return RaycastSpherePhysicsStep(step, radius, step.Length, prioritizedLayerMasks, out physicsHit);
+        }
+
+        /// <summary>
+        /// Sphere raycasts each physics <see cref="RayStep"/> within a specified maximum distance.
+        /// </summary>
+        /// <param name="step"></param>
+        /// <param name="radius"></param>
+        /// <param name="prioritizedLayerMasks"></param>
+        /// <param name="physicsHit"></param>
+        /// <returns>Whether or not the raycast hit something.</returns>
+        public static bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
         {
             return prioritizedLayerMasks.Length == 1
                 // If there is only one priority, don't prioritize
-                ? UnityEngine.Physics.SphereCast(step.Origin, radius, step.Direction, out physicsHit, step.Length, prioritizedLayerMasks[0])
+                ? UnityEngine.Physics.SphereCast(step.Origin, radius, step.Direction, out physicsHit, maxDistance, prioritizedLayerMasks[0])
                 // Raycast across all layers and prioritize
-                : TryGetPrioritizedPhysicsHit(UnityEngine.Physics.SphereCastAll(step.Origin, radius, step.Direction, step.Length, UnityEngine.Physics.AllLayers), prioritizedLayerMasks, out physicsHit);
+                : TryGetPrioritizedPhysicsHit(UnityEngine.Physics.SphereCastAll(step.Origin, radius, step.Direction, maxDistance, UnityEngine.Physics.AllLayers), prioritizedLayerMasks, out physicsHit);
         }
 
 
         /// <summary>
-        /// Tries to ge the prioritized physics raycast hit based on the prioritized layer masks.
-        /// <para><remarks>Sorts all hit objects first by layerMask, then by distance.</remarks></para>
+        /// Tries to get the prioritized physics raycast hit based on the prioritized layer masks.
         /// </summary>
+        /// <remarks>Sorts all hit objects first by layerMask, then by distance.</remarks>
         /// <param name="hits"></param>
         /// <param name="priorityLayers"></param>
         /// <param name="raycastHit"></param>
-        /// <returns>The minimum distance hit within the first layer that has hits</returns>
+        /// <returns>The minimum distance hit within the first layer that has hits.</returns>
         public static bool TryGetPrioritizedPhysicsHit(RaycastHit[] hits, LayerMask[] priorityLayers, out RaycastHit raycastHit)
         {
             raycastHit = default(RaycastHit);

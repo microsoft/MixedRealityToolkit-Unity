@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -11,6 +11,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7554812f08ec49e694a8d9d4ee235a9c, type: 3}
   m_Name: DefaultMixedRealityGesturesProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  manipulationGestures: 12
+  navigationGestures: 112
+  useRailsNavigation: 0
+  railsNavigationGestures: 896
+  windowsGestureAutoStart: 0
   gestures:
   - description: Hold
     gestureType: 1
@@ -21,8 +27,8 @@ MonoBehaviour:
   - description: Navigation
     gestureType: 2
     action:
-      id: 0
-      description: None
+      id: 10
+      description: Navigation Action
       axisConstraint: 0
   - description: Manipulation
     gestureType: 3
