@@ -6,7 +6,9 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices
@@ -90,11 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         {
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled)
             {
-                if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.RenderMotionControllers)
-                {
-                    TryRenderControllerModel(controllerType);
-                }
-
                 // We can only enable controller profiles if mappings exist.
                 var controllerMappings = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
 
@@ -157,33 +154,74 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             Interactions = mappings;
         }
 
-        private void TryRenderControllerModel(Type controllerType)
+        /// <summary>
+        /// Attempts to load the controller model render settings from the <see cref="MixedRealityControllerVisualizationProfile"/>
+        /// to render the controllers in the scene.
+        /// </summary>
+        /// <param name="controllerType">The controller type.</param>
+        /// <param name="glbData">The raw binary glb data of the controller model, typically loaded from the driver.</param>
+        /// <returns>True, if controller model is being properly rendered.</returns>
+        internal async void TryRenderControllerModel(Type controllerType, byte[] glbData = null)
         {
+            await TryRenderControllerModelAsync(controllerType, glbData);
+        }
+
+        /// <summary>
+        /// Attempts to load the controller model render settings from the <see cref="MixedRealityControllerVisualizationProfile"/>
+        /// to render the controllers in the scene.
+        /// </summary>
+        /// <param name="controllerType">The controller type.</param>
+        /// <param name="glbData">The raw binary glb data of the controller model, typically loaded from the driver.</param>
+        /// <returns>True, if controller model is being properly rendered.</returns>
+        internal async Task TryRenderControllerModelAsync(Type controllerType, byte[] glbData = null)
+        {
+            var visualizationProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile;
+
+            if (visualizationProfile == null)
+            {
+                Debug.LogError("Missing ControllerVisualizationProfile!");
+                return;
+            }
+
+            if (!visualizationProfile.RenderMotionControllers) { return; }
+
             GameObject controllerModel = null;
 
-            if (!MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.RenderMotionControllers) { return; }
-
             // If a specific controller template wants to override the global model, assign that instead.
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled &&
-                !MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.UseDefaultModels)
+            if (!visualizationProfile.UseDefaultModels)
             {
-                controllerModel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
+                controllerModel = visualizationProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
             }
 
             // Get the global controller model for each hand.
             if (controllerModel == null)
             {
-                if (ControllerHandedness == Handedness.Left && MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalLeftHandModel != null)
+                if (ControllerHandedness == Handedness.Left && visualizationProfile.GlobalLeftHandModel != null)
                 {
-                    controllerModel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalLeftHandModel;
+                    controllerModel = visualizationProfile.GlobalLeftHandModel;
                 }
-                else if (ControllerHandedness == Handedness.Right && MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalRightHandModel != null)
+                else if (ControllerHandedness == Handedness.Right && visualizationProfile.GlobalRightHandModel != null)
                 {
-                    controllerModel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalRightHandModel;
+                    controllerModel = visualizationProfile.GlobalRightHandModel;
                 }
             }
 
-            // TODO: add default model assignment here if no prefabs were found, or if settings specified to use them.
+            if (controllerModel == null && visualizationProfile.UseDefaultModels)
+            {
+                var gltfObject = GltfUtility.GetGltfObjectFromGlb(glbData);
+                await gltfObject.ConstructAsync();
+                controllerModel = gltfObject.GameObjectReference;
+                controllerModel.AddComponent(visualizationProfile.ControllerVisualizationType.Type);
+                Visualizer = controllerModel.GetComponent<IMixedRealityControllerVisualizer>();
+
+                if (Visualizer != null)
+                {
+                    Visualizer.Controller = this;
+                    return; // Nothing left to do;
+                }
+
+                Debug.LogError("Failed to load controller model from driver!");
+            }
 
             // If we've got a controller model prefab, then place it in the scene.
             if (controllerModel != null)

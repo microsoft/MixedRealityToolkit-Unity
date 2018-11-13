@@ -1,6 +1,9 @@
-﻿using System.IO;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization;
+using System.IO;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
@@ -25,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
         {
             await new WaitForSeconds(5f);
 
-            var gltfObject = await GltfSerializationUtility.GetGltfObjectFromPathAsync($"{Application.dataPath}{uri}");
+            var gltfObject = await GltfUtility.ImportGltfObjectFromPathAsync($"{Application.dataPath}{uri}");
 
             if (gltfObject != null)
             {

@@ -11,11 +11,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
 {
-    public static class GltfSerializationUtility
+    public static class GltfUtility
     {
         public const uint GltfMagicNumber = 0x46546C67;
 
@@ -23,11 +22,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
         private static readonly WaitForBackgroundThread BackgroundThread = new WaitForBackgroundThread();
 
         /// <summary>
-        /// Gets and imports a glTF object from the provided uri
+        /// Imports a glTF object from the provided uri
         /// </summary>
         /// <param name="uri">the path to the file to load</param>
-        /// <returns><see cref="GltfObject"/></returns>
-        public static async Task<GltfObject> GetGltfObjectFromPathAsync(string uri)
+        /// <returns>New <see cref="GltfObject"/> imported from uri.</returns>
+        public static async Task<GltfObject> ImportGltfObjectFromPathAsync(string uri)
         {
             if (string.IsNullOrWhiteSpace(uri))
             {
@@ -54,7 +53,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
             else if (uri.Contains(".glb"))
             {
                 isGlb = true;
-                gltfObject = await GetGltfObjectFromGlb(uri);
+                byte[] glbData;
+
+                using (FileStream stream = File.Open(uri, FileMode.Open))
+                {
+                    glbData = new byte[stream.Length];
+                    await stream.ReadAsync(glbData, 0, (int)stream.Length);
+                }
+
+                gltfObject = GetGltfObjectFromGlb(glbData);
 
                 if (gltfObject == null)
                 {
@@ -73,9 +80,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
             int nameLength = uri.Length - nameStart;
             gltfObject.Name = uri.Substring(nameStart, nameLength).Replace(isGlb ? ".glb" : ".gltf", string.Empty);
 
-            await ImportGltf.ImportGltfObjectAsync(gltfObject);
+            await gltfObject.ConstructAsync();
 
-            if (gltfObject?.GameObjectReference == null)
+            if (gltfObject.GameObjectReference == null)
             {
                 Debug.LogError("Failed to construct Gltf Object.");
             }
@@ -89,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
         /// </summary>
         /// <param name="jsonString">String defining a glTF Object.</param>
         /// <returns><see cref="GltfObject"/></returns>
+        /// <remarks>Returned <see cref="GltfObject"/> still needs to be initialized using <see cref="ConstructGltf.ConstructAsync"/>.</remarks>
         public static GltfObject GetGltfObjectFromJson(string jsonString)
         {
             var gltfObject = JsonUtility.FromJson<GltfObject>(jsonString);
@@ -167,17 +175,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
         /// <summary>
         /// Gets a glTF object from the provided path
         /// </summary>
-        /// <param name="path">Path to glb file.</param>
+        /// <param name="glbData">Raw glb byte data.</param>
         /// <returns><see cref="GltfObject"/></returns>
-        public static async Task<GltfObject> GetGltfObjectFromGlb(string path)
+        /// <remarks>Returned <see cref="GltfObject"/> still needs to be initialized using <see cref="ConstructGltf.ConstructAsync"/>.</remarks>
+        public static GltfObject GetGltfObjectFromGlb(byte[] glbData)
         {
-            byte[] glbData;
-            using (FileStream stream = File.Open(path, FileMode.Open))
-            {
-                glbData = new byte[stream.Length];
-                await stream.ReadAsync(glbData, 0, (int)stream.Length);
-            }
-
             const int stride = sizeof(uint);
 
             var magicNumber = BitConverter.ToUInt32(glbData, 0);

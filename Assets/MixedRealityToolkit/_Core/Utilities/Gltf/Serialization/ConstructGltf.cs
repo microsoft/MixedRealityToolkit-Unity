@@ -12,16 +12,27 @@ using UnityEngine.Rendering;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
 {
-    public static class ImportGltf
+    public static class ConstructGltf
     {
         private static readonly WaitForUpdate Update = new WaitForUpdate();
         private static readonly WaitForBackgroundThread BackgroundThread = new WaitForBackgroundThread();
 
         /// <summary>
-        /// Imports the glTF Object and returns a new <see cref="GameObject"/> of the final constructed <see cref="GltfScene"/>.
+        /// Constructs the glTF Object.
         /// </summary>
         /// <param name="gltfObject"></param>
-        public static async Task<GameObject> ImportGltfObjectAsync(GltfObject gltfObject)
+        /// <returns>The new <see cref="GameObject"/> of the final constructed <see cref="GltfScene"/></returns>
+        public static async void Construct(this GltfObject gltfObject)
+        {
+            await gltfObject.ConstructAsync();
+        }
+
+        /// <summary>
+        /// Constructs the glTF Object.
+        /// </summary>
+        /// <param name="gltfObject"></param>
+        /// <returns>The new <see cref="GameObject"/> of the final constructed <see cref="GltfScene"/></returns>
+        public static async Task<GameObject> ConstructAsync(this GltfObject gltfObject)
         {
             if (!gltfObject.asset.version.Contains("2.0"))
             {
@@ -106,6 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Gltf.Serialization
                 await Update;
 
                 gltfImage.Texture = new Texture2D(2, 2);
+                // TODO Load texture async
                 gltfImage.Texture.LoadImage(imageData);
 
                 await BackgroundThread;

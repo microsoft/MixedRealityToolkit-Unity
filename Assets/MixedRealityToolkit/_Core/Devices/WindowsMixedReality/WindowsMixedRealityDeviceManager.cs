@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-
 #if UNITY_WSA
+using Application = UnityEngine.Application;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
@@ -15,11 +14,20 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
+
+#if WINDOWS_UWP
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using System;
+using Windows.ApplicationModel.Core;
+using Windows.Perception;
+using Windows.Storage.Streams;
+using Windows.UI.Input.Spatial;
+#endif // WINDOWS_UWP
 #endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 {
-    public class WindowsMixedRealityDeviceManager : BaseDeviceManager, IMixedRealityExtensionService
+    public class WindowsMixedRealityDeviceManager : BaseDeviceManager
     {
         /// <summary>
         /// Constructor.
@@ -38,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <summary>
         /// Cache of the states captured from the Unity InteractionManager for UWP
         /// </summary>
-        InteractionSourceState[] interactionmanagerStates;
+        private InteractionSourceState[] interactionManagerStates;
 
         /// <summary>
         /// The current source state reading for the Unity InteractionManager for UWP
@@ -255,16 +263,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
 
-            interactionmanagerStates = InteractionManager.GetCurrentReading();
+            interactionManagerStates = InteractionManager.GetCurrentReading();
 
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
-            for (var i = 0; i < interactionmanagerStates?.Length; i++)
+            for (var i = 0; i < interactionManagerStates?.Length; i++)
             {
-                var controller = GetController(interactionmanagerStates[i].source);
+                var controller = GetController(interactionManagerStates[i].source);
 
                 if (controller != null)
                 {
-                    controller.UpdateController(interactionmanagerStates[i]);
+                    controller.UpdateController(interactionManagerStates[i]);
                     MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                 }
             }
@@ -282,19 +290,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         {
             base.Update();
 
-            interactionmanagerStates = InteractionManager.GetCurrentReading();
+            interactionManagerStates = InteractionManager.GetCurrentReading();
 
-            for (var i = 0; i < interactionmanagerStates?.Length; i++)
+            for (var i = 0; i < interactionManagerStates?.Length; i++)
             {
-                var controller = GetController(interactionmanagerStates[i].source);
-
-                if (controller != null)
-                {
-                    controller.UpdateController(interactionmanagerStates[i]);
-                }
+                var controller = GetController(interactionManagerStates[i].source);
+                controller?.UpdateController(interactionManagerStates[i]);
             }
 
-            LastInteractionManagerStateReading = interactionmanagerStates;
+            LastInteractionManagerStateReading = interactionManagerStates;
         }
 
         private void RegisterGestureEvents()
@@ -422,8 +426,50 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
 
+            TryRenderControllerModel(interactionSource, detectedController);
+
             activeControllers.Add(interactionSource.id, detectedController);
             return detectedController;
+        }
+
+        private async void TryRenderControllerModel(InteractionSource interactionSource, WindowsMixedRealityController controller)
+        {
+            byte[] glbModelData = null;
+
+#if WINDOWS_UWP
+            IRandomAccessStreamWithContentType stream = null;
+            var now = DateTimeOffset.Now;
+
+            if (WindowsApiChecker.UniversalApiContractV5_IsAvailable)
+            {
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                {
+                    var sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(now));
+
+                    for (var i = 0; i < sources?.Count; i++)
+                    {
+                        if (sources[i].Source.Id.Equals(interactionSource.id))
+                        {
+                            stream = await sources[i].Source.Controller.TryGetRenderableModelAsync().AsTask();
+                            break;
+                        }
+                    }
+                });
+            }
+
+            if (stream != null)
+            {
+                glbModelData = new byte[stream.Size];
+
+                using (var reader = new DataReader(stream))
+                {
+                    await reader.LoadAsync((uint)stream.Size);
+                    reader.ReadBytes(glbModelData);
+                }
+            }
+#endif
+
+            await controller.TryRenderControllerModelAsync(typeof(WindowsMixedRealityController), glbModelData);
         }
 
         /// <summary>

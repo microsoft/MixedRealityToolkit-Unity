@@ -3,21 +3,17 @@
 
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using UnityEngine;
 using UnityEngine.XR.WSA.Input;
-
-#if !UNITY_EDITOR
+using Application = UnityEngine.Application;
+#if WINDOWS_UWP
 using System;
 using System.Collections.Generic;
 using Windows.Devices.Haptics;
-using Windows.Foundation;
 using Windows.Perception;
-using Windows.Storage.Streams;
 using Windows.UI.Input.Spatial;
 #elif UNITY_EDITOR_WIN
 using System.Runtime.InteropServices;
 #endif
-
 #endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.Core.Extensions
@@ -51,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
                 return;
             }
 
-#if !UNITY_EDITOR
+#if WINDOWS_UWP
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -81,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             }, true);
 #elif UNITY_EDITOR_WIN
             StartHaptics(interactionSource.id, intensity, durationInSeconds);
-#endif // !UNITY_EDITOR
+#endif // WINDOWS_UWP
         }
 
         public static void StopHaptics(this InteractionSource interactionSource)
@@ -91,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
                 return;
             }
 
-#if !UNITY_EDITOR
+#if WINDOWS_UWP
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -106,33 +102,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             }, true);
 #elif UNITY_EDITOR_WIN
             StopHaptics(interactionSource.id);
-#endif // !UNITY_EDITOR
+#endif // WINDOWS_UWP
+#endif //UNITY_WSA
         }
-
-#if !UNITY_EDITOR
-        public static IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(this InteractionSource interactionSource)
-        {
-            IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
-
-            if (WindowsApiChecker.UniversalApiContractV5_IsAvailable)
-            {
-                UnityEngine.WSA.Application.InvokeOnUIThread(() =>
-                {
-                    IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
-
-                    for (var i = 0; i < sources.Count; i++)
-                    {
-                        if (sources[i].Source.Id.Equals(interactionSource.id))
-                        {
-                            returnValue = sources[i].Source.Controller.TryGetRenderableModelAsync();
-                        }
-                    }
-                }, true);
-            }
-
-            return returnValue;
-        }
-#endif // !UNITY_EDITOR
-#endif // UNITY_WSA
     }
 }

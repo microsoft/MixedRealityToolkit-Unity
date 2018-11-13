@@ -100,6 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
 
+            detectedController.TryRenderControllerModel(controllerType);
+
             ActiveControllers.Add(joystickName, detectedController);
             return detectedController;
         }
