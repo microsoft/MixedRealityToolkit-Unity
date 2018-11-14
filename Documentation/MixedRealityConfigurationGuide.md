@@ -304,7 +304,7 @@ Clicking on the Image for any of the controllers allows you to configure a singl
 
 For advanced users who want to add custom input mappings through Unity's input system, you can use the generic Unity device or generic Open VR device profiles.
 
-![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_AdvancedControllerMapping.png)
+![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_AdvancedControllerMapping.PNG)
 
 All of the mapping values used in this profile are created and used in conjunction with Unity's Input Manager.
 
