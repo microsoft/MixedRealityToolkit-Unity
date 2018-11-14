@@ -19,6 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         float GlobalPointingExtent { get; }
 
         /// <summary>
+        /// The layer masks for the focus pointers to raycast against.
+        /// </summary>
+        LayerMask[] FocusLayerMasks { get; }
+
+        /// <summary>
         /// The Camera the <see cref="UnityEngine.EventSystems.EventSystem"/> uses to raycast against.
         /// <para><remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks></para>
         /// </summary>

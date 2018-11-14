@@ -36,7 +36,43 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         #region IFocusProvider Properties
 
         /// <inheritdoc />
-        float IMixedRealityFocusProvider.GlobalPointingExtent => MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.FocusProfile?.PointingExtent ?? 10f;
+        float IMixedRealityFocusProvider.GlobalPointingExtent
+        {
+            get
+            {
+                if (MixedRealityToolkit.HasActiveProfile &&
+                    MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
+                    MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.FocusProfile != null)
+                {
+                    return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.FocusProfile.PointingExtent;
+                }
+
+                return 10f;
+            }
+        }
+
+        private LayerMask[] focusLayerMasks = null;
+
+        /// <inheritdoc />
+        public LayerMask[] FocusLayerMasks
+        {
+            get
+            {
+                if (focusLayerMasks == null)
+                {
+                    if (MixedRealityToolkit.HasActiveProfile &&
+                        MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
+                        MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.FocusProfile != null)
+                    {
+                        return focusLayerMasks = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.FocusProfile.PointingRaycastLayerMasks;
+                    }
+
+                    return focusLayerMasks = new LayerMask[] { Physics.DefaultRaycastLayers };
+                }
+
+                return focusLayerMasks;
+            }
+        }
 
         private Camera uiRaycastCamera = null;
 
@@ -231,6 +267,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             foreach (var inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
             {
                 RegisterPointers(inputSource);
+            }
+
+            if (Application.isEditor && !Application.isPlaying)
+            {
+                UpdateCanvasEventSystems();
             }
         }
 
@@ -557,7 +598,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 if (!pointer.Pointer.IsFocusLocked)
                 {
                     // Otherwise, continue
-                    var prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.FocusProfile?.PointingRaycastLayerMasks);
+                    LayerMask[] prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
 
                     // Perform raycast to determine focused object
                     RaycastPhysics(pointer, prioritizedLayerMasks);

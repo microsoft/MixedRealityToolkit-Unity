@@ -21,14 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
 
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
-        /// <example>
-        /// Allow the cursor to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)
-        /// <code language="csharp"><![CDATA[
-        /// int sr = LayerMask.GetMask("SR");
-        /// int nonSR = Physics.DefaultRaycastLayers &amp; ~sr;
-        /// GazeProvider.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };
-        /// ]]></code>
-        /// </example>
         /// </summary>
         public LayerMask[] PointingRaycastLayerMasks => pointingRaycastLayerMasks;
 
