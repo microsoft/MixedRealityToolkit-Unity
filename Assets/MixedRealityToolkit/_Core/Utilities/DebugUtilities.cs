@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// </remarks>
         public static void LogCriticalError(string message)
         {
-//            LogCriticalError(MixedRealityToolkitLoggingLevel, message);
+            LogCriticalError(MixedRealityToolkitLoggingLevel, message);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <param name="message">The message to display.</param>
         public static void LogError(string message)
         {
-//            LogError(MixedRealityToolkitLoggingLevel, message);
+            LogError(MixedRealityToolkitLoggingLevel, message);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <param name="message">The message to display.</param>
         public static void LogInformation(string message)
         {
-//            LogInformation(MixedRealityToolkitLoggingLevel, message);
+            LogInformation(MixedRealityToolkitLoggingLevel, message);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <param name="message">The message to display.</param>
         public static void LogWarning(string message)
         {
-//            LogWarning(MixedRealityToolkitLoggingLevel, message);
+            LogWarning(MixedRealityToolkitLoggingLevel, message);
         }
 
         /// <summary>
