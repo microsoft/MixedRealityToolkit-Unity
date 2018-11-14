@@ -395,6 +395,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         // ReSharper disable once StaticMemberInGenericType
         private static bool searchForInstance = true;
 
+        /// <summary> 
+        /// Expose an assertion whether the MixedRealityToolkit class is initialized. 
+        /// </summary> 
+        public static void AssertIsInitialized()
+        {
+            DebugUtilities.Assert(IsInitialized, "The MixedRealityToolkit has not been initialized.");
+        }
+
         /// <summary>
         /// Returns whether the instance has been initialized or not.
         /// </summary>
@@ -421,7 +429,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             get
             {
-                DebugUtilities.Assert(IsInitialized, "The MixedRealityToolkit has not been initialized.");
+                AssertIsInitialized();
 
                 if (mixedRealityPlayspace)
                 {
