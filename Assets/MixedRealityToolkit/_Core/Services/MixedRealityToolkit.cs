@@ -69,6 +69,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             get
             {
+                if (activeProfile == null)
+                {
+                    DebugUtilities.LogCriticalError("The MixedRealityToolkit is not configured with an active profile.");
+                }
 #if UNITY_EDITOR
                 if (!Application.isPlaying && activeProfile == null)
                 {
@@ -129,11 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             isInitializing = true;
 
             //If the Mixed Reality Toolkit is not configured, stop.
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit");
-                return;
-            }
+            if (ActiveProfile == null) { return; }
 
 #if UNITY_EDITOR
             if (ActiveProfile.ActiveServices.Count > 0)
@@ -544,11 +544,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="service">The Instance of the service class to register</param>
         public bool RegisterService(Type type, IMixedRealityService service)
         {
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError($"Unable to add a new {type.Name} Service as the Mixed Reality Toolkit has to Active Profile");
-                return false;
-            }
+            if (ActiveProfile == null) { return false; }
 
             if (type == null)
             {
@@ -615,11 +611,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 return null;
             }
 
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile.");
-                return null;
-            }
+            if (ActiveProfile == null) { return null; }
 
             if (!IsInitialized)
             {
@@ -661,16 +653,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <returns>The Mixed Reality Toolkit of the specified type</returns>
         public IMixedRealityService GetService(Type type, string serviceName, bool showLogs = true)
         {
-            if (isApplicationQuitting)
-            {
-                return null;
-            }
+            if (isApplicationQuitting) { return null; }
 
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError($"Unable to get {serviceName} Manager as the Mixed Reality Manager has no Active Profile.");
-                return null;
-            }
+            if (ActiveProfile == null) { return null; }
 
             if (type == null)
             {
@@ -709,11 +694,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="type">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
         public void UnregisterService(Type type)
         {
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError($"Unable to remove {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile.");
-                return;
-            }
+            if (ActiveProfile == null) { return; }
 
             if (type == null)
             {
@@ -745,11 +726,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="serviceName">The name of the service to be removed. (Only for runtime components) </param>
         public void UnregisterService(Type type, string serviceName)
         {
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError($"Unable to remove {serviceName} Manager as the Mixed Reality Manager has no Active Profile.");
-                return;
-            }
+            if (ActiveProfile == null) { return; }
 
             if (type == null)
             {
@@ -928,11 +905,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <returns>An array of services that meet the search criteria</returns>
         public List<IMixedRealityService> GetActiveServices(Type type, string serviceName)
         {
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogWarning($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile");
-                return new List<IMixedRealityService>();
-            }
+            if (ActiveProfile == null) { return new List<IMixedRealityService>(); }
 
             if (type == null)
             {
@@ -971,11 +944,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private void InitializeAllServices()
         {
             //If the Mixed Reality Toolkit is not configured, stop.
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError("Unable to intialize services. There is no active profile configured.");
-                return;
-            }
+            if (ActiveProfile == null) { return; }
 
             //Initialize all services
             foreach (var service in activeProfile.ActiveServices)
@@ -993,11 +962,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private void ResetAllServices()
         {
             //If the Mixed Reality Toolkit is not configured, stop.
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError("Unable to reset services. There is no active profile configured.");
-                return;
-            }
+            if (ActiveProfile == null) { return; }
 
             // Reset all active services in the registry
             foreach (var service in activeProfile.ActiveServices)
@@ -1015,11 +980,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private void EnableAllServices()
         {
             //If the Mixed Reality Toolkit is not configured, stop.
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError("Unable to enable services. There is no active profile configured.");
-                return;
-            }
+            if (ActiveProfile == null) { return; }
 
             // Enable all active services in the registry
             foreach (var service in activeProfile.ActiveServices)
@@ -1037,11 +998,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private void UpdateAllServices()
         {
             //If the Mixed Reality Toolkit is not configured, stop.
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError("Unable to update services. There is no active profile configured.");
-                return;
-            }
+            if (ActiveProfile == null) { return; }
 
             // Update service registry
             foreach (var service in activeProfile.ActiveServices)
@@ -1059,11 +1016,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private void DisableAllServices()
         {
             //If the Mixed Reality Toolkit is not configured, stop.
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError("Unable to disable services. There is no active profile configured.");
-                return;
-            }
+            if (ActiveProfile == null) { return; }
 
             // Disable all active services in the registry
             foreach (var service in activeProfile.ActiveServices)
@@ -1081,11 +1034,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private void DestroyAllServices()
         {
             //If the Mixed Reality Toolkit is not configured, stop.
-            if (ActiveProfile == null)
-            {
-                DebugUtilities.LogCriticalError("Unable to destroy services. There is no active profile configured.");
-                return;
-            }
+            if (ActiveProfile == null) { return; }
 
             // Destroy all active services in the registry
             foreach (var service in activeProfile.ActiveServices)
