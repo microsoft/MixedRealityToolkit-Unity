@@ -1,39 +1,24 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using System;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityControllerMappingProfiles))]
     public class MixedRealityControllerMappingProfilesInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private static readonly GUIContent CustomControllerButtonContent = new GUIContent("+ Add a Custom Device Definition");
+        private static readonly GUIContent CustomControllerButtonContent = new GUIContent("+ Add a Device Definition");
         private static readonly GUIContent ControllerMinusButtonContent = new GUIContent("-", "Remove Device Definition");
 
-        private static readonly GUIContent MouseProfileContent = new GUIContent("Mouse Devices");
-        private static readonly GUIContent TouchProfileContent = new GUIContent("Touch Devices");
-        private static readonly GUIContent XboxControllerProfileContent = new GUIContent("Xbox Device");
-        private static readonly GUIContent WmrProfileContent = new GUIContent("WMR Devices");
-        private static readonly GUIContent ViveWandProfileContent = new GUIContent("Vive Devices");
-        private static readonly GUIContent OculusTouchProfileContent = new GUIContent("Oculus Touch Devices");
-        private static readonly GUIContent OculusRemoteProfileContent = new GUIContent("Oculus Remote Devices");
-        private static readonly GUIContent GenericUnityProfileContent = new GUIContent("Generic Unity Devices");
-        private static readonly GUIContent GenericOpenVrProfileContent = new GUIContent("Generic Open VR Devices");
-
-        private SerializedProperty mouseControllerMappingProfile;
-        private SerializedProperty touchScreenControllerMappingProfile;
-        private SerializedProperty xboxControllerMappingProfile;
-        private SerializedProperty windowsMixedRealityControllerMappingProfile;
-        private SerializedProperty viveWandControllerMappingProfile;
-        private SerializedProperty oculusTouchControllerMappingProfile;
-        private SerializedProperty oculusRemoteControllerMappingProfile;
-        private SerializedProperty genericUnityControllerMappingProfile;
-        private SerializedProperty genericOpenVRControllerMappingProfile;
-        private SerializedProperty customControllerProfiles;
+        private SerializedProperty controllerMappingProfiles;
 
         protected override void OnEnable()
         {
@@ -50,16 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            mouseControllerMappingProfile = serializedObject.FindProperty("mouseControllerMappingProfile");
-            touchScreenControllerMappingProfile = serializedObject.FindProperty("touchScreenControllerMappingProfile");
-            xboxControllerMappingProfile = serializedObject.FindProperty("xboxControllerMappingProfile");
-            windowsMixedRealityControllerMappingProfile = serializedObject.FindProperty("windowsMixedRealityControllerMappingProfile");
-            viveWandControllerMappingProfile = serializedObject.FindProperty("viveWandControllerMappingProfile");
-            oculusTouchControllerMappingProfile = serializedObject.FindProperty("oculusTouchControllerMappingProfile");
-            oculusRemoteControllerMappingProfile = serializedObject.FindProperty("oculusRemoteControllerMappingProfile");
-            genericUnityControllerMappingProfile = serializedObject.FindProperty("genericUnityControllerMappingProfile");
-            genericOpenVRControllerMappingProfile = serializedObject.FindProperty("genericOpenVRControllerMappingProfile");
-            customControllerProfiles = serializedObject.FindProperty("customControllerProfiles");
+            controllerMappingProfiles = serializedObject.FindProperty("controllerMappingProfiles");
         }
 
         public override void OnInspectorGUI()
@@ -91,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.LabelField("Controller Input Mappings", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Use this profile to define all the controllers and their inputs your users will be able to use in your application.\n\n" +
                                     "You'll want to define all your Input Actions first, then you can then wire them up to hardware sensors, controllers, gestures, and other input devices.\n\n" +
-                                    "Note: These profiles can be empty if controller support is not reqiured.", MessageType.Info);
+                                    "Note: These profiles can be empty if controller support is not required.", MessageType.Info);
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
@@ -109,42 +85,69 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             bool changed = false;
 
-            changed |= RenderProfile(mouseControllerMappingProfile, MouseProfileContent);
-            changed |= RenderProfile(touchScreenControllerMappingProfile, TouchProfileContent);
-            changed |= RenderProfile(xboxControllerMappingProfile, XboxControllerProfileContent);
-            changed |= RenderProfile(windowsMixedRealityControllerMappingProfile, WmrProfileContent);
-            changed |= RenderProfile(viveWandControllerMappingProfile, ViveWandProfileContent);
-            changed |= RenderProfile(oculusTouchControllerMappingProfile, OculusTouchProfileContent);
-            changed |= RenderProfile(oculusRemoteControllerMappingProfile, OculusRemoteProfileContent);
-            changed |= RenderProfile(genericUnityControllerMappingProfile, GenericUnityProfileContent);
-            changed |= RenderProfile(genericOpenVRControllerMappingProfile, GenericOpenVrProfileContent);
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.LabelField("Custom Devices", EditorStyles.boldLabel);
-
-            EditorGUILayout.HelpBox("Custom Devices can be added by creating your own profile and extending the CustomMixedRealityControllerMappingProfile.\n\n" +
-                                    "Note: You'll also need to create your own device manager and register it in the extension services profile.", MessageType.Info);
-
-            EditorGUILayout.Space();
-
             if (GUILayout.Button(CustomControllerButtonContent, EditorStyles.miniButton))
             {
-                customControllerProfiles.arraySize += 1;
-                var newItem = customControllerProfiles.GetArrayElementAtIndex(customControllerProfiles.arraySize - 1);
+                controllerMappingProfiles.arraySize += 1;
+                var newItem = controllerMappingProfiles.GetArrayElementAtIndex(controllerMappingProfiles.arraySize - 1);
                 newItem.objectReferenceValue = null;
                 changed = true;
             }
 
-            for (int i = 0; i < customControllerProfiles.arraySize; i++)
+            EditorGUILayout.Space();
+
+            for (int i = 0; i < controllerMappingProfiles.arraySize; i++)
             {
-                var customControllerProfile = customControllerProfiles.GetArrayElementAtIndex(i);
+                var profileChanged = false;
+                var controllerProfile = controllerMappingProfiles.GetArrayElementAtIndex(i);
+                var profileObject = controllerProfile.objectReferenceValue;
+                var profileName = "Assign or create a profile";
+
+                if (profileObject != null)
+                {
+                    profileName = controllerProfile.objectReferenceValue.name.ToProperCase().Replace("Default ", string.Empty);
+                }
+
                 EditorGUILayout.BeginHorizontal();
-                changed |= RenderProfile(customControllerProfile, new GUIContent($"Custom Device {i + 1}"));
+                profileChanged |= RenderProfile(controllerProfile, new GUIContent(profileName), false);
+
+                if (profileChanged && controllerProfile.objectReferenceValue != null)
+                {
+                    var knownProfiles = new List<Object>();
+
+                    for (int j = 0; j < controllerMappingProfiles.arraySize; j++)
+                    {
+                        var knownProfile = controllerMappingProfiles.GetArrayElementAtIndex(j);
+
+                        if (knownProfile.objectReferenceValue != null)
+                        {
+                            knownProfiles.Add(knownProfile.objectReferenceValue);
+                        }
+                    }
+
+                    var count = 0;
+
+                    for (int j = 0; j < knownProfiles.Count; j++)
+                    {
+                        if (knownProfiles[j] == controllerProfile.objectReferenceValue)
+                        {
+                            count++;
+                        }
+                    }
+
+                    if (count >= 2)
+                    {
+                        Debug.LogWarning($"{controllerProfile.objectReferenceValue.name} is already registered!");
+                        controllerProfile.objectReferenceValue = null;
+                        serializedObject.ApplyModifiedProperties();
+                        break;
+                    }
+                }
+
+                changed |= profileChanged;
 
                 if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {
-                    customControllerProfiles.DeleteArrayElementAtIndex(i);
+                    controllerMappingProfiles.DeleteArrayElementAtIndex(i);
                     changed = true;
                 }
 

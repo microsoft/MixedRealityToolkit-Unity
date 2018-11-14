@@ -12,22 +12,13 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityControllerMappingProfiles
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  mouseControllerMappingProfile: {fileID: 11400000, guid: e2a9abb2aa64b0e4cb8fbb35126f0322,
-    type: 2}
-  touchScreenControllerMappingProfile: {fileID: 11400000, guid: 36b2b4f68fb3c7846b12a588a1c7663d,
-    type: 2}
-  xboxControllerMappingProfile: {fileID: 11400000, guid: ceec9d3d32e411b45a4777f784eb5885,
-    type: 2}
-  windowsMixedRealityControllerMappingProfile: {fileID: 11400000, guid: 348b933cef585af4bbd40e38a6d41d92,
-    type: 2}
-  viveWandControllerMappingProfile: {fileID: 11400000, guid: d6976c62b5fe7114591a222dd4a43157,
-    type: 2}
-  oculusTouchControllerMappingProfile: {fileID: 11400000, guid: fd53131ac5414b74d93915bc1216526a,
-    type: 2}
-  oculusRemoteControllerMappingProfile: {fileID: 11400000, guid: bdd0faeb01530ad40b3cfa0e000e12e7,
-    type: 2}
-  genericUnityControllerMappingProfile: {fileID: 11400000, guid: 968c4c192bee3184f8dc0b7bc6d8fa8e,
-    type: 2}
-  genericOpenVRControllerMappingProfile: {fileID: 11400000, guid: 038d8a4d4f3a61a46b389e09a3596cfa,
-    type: 2}
-  customControllerProfiles: []
+  controllerMappingProfiles:
+  - {fileID: 11400000, guid: e2a9abb2aa64b0e4cb8fbb35126f0322, type: 2}
+  - {fileID: 11400000, guid: 36b2b4f68fb3c7846b12a588a1c7663d, type: 2}
+  - {fileID: 11400000, guid: ceec9d3d32e411b45a4777f784eb5885, type: 2}
+  - {fileID: 11400000, guid: 038d8a4d4f3a61a46b389e09a3596cfa, type: 2}
+  - {fileID: 11400000, guid: fd53131ac5414b74d93915bc1216526a, type: 2}
+  - {fileID: 11400000, guid: bdd0faeb01530ad40b3cfa0e000e12e7, type: 2}
+  - {fileID: 11400000, guid: 348b933cef585af4bbd40e38a6d41d92, type: 2}
+  - {fileID: 11400000, guid: 968c4c192bee3184f8dc0b7bc6d8fa8e, type: 2}
+  - {fileID: 11400000, guid: d6976c62b5fe7114591a222dd4a43157, type: 2}
