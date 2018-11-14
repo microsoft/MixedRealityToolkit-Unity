@@ -398,6 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <summary> 
         /// Expose an assertion whether the MixedRealityToolkit class is initialized. 
         /// </summary> 
+        [Obsolete("This method obsolete and will be removed in a future release of the MixedRealityToolkit.")]
         public static void AssertIsInitialized()
         {
             DebugUtilities.Assert(IsInitialized, "The MixedRealityToolkit has not been initialized.");
@@ -429,7 +430,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             get
             {
-                AssertIsInitialized();
+                DebugUtilities.Assert(IsInitialized, "The MixedRealityToolkit has not been initialized.");
 
                 if (mixedRealityPlayspace)
                 {
