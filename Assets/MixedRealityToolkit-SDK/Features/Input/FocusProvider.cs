@@ -203,6 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public override void Initialize()
         {
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled) { return; }
+
             if (uiRaycastCamera == null)
             {
                 EnsureUiRaycastCameraSetup();
@@ -235,6 +237,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public override void Update()
         {
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled) { return; }
+
             if (MixedRealityToolkit.InputSystem == null)
             {
                 Debug.LogError($"Unable to start {Name}. An Input System is required for this feature.");
