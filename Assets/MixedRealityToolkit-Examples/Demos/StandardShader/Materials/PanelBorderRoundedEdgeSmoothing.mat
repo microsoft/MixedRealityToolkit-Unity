@@ -6,16 +6,16 @@ Material:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: ShaderBallClippingPlaneInner
+  m_Name: PanelBorderRoundedEdgeSmoothing
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _CLIPPING_PLANE_BORDER _DIRECTIONAL_LIGHT _EMISSION _HOVER_LIGHT
-    _REFLECTIONS _SPECULAR_HIGHLIGHTS
+  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT _BORDER_LIGHT_USES_HOVER_COLOR _HOVER_COLOR_OVERRIDE
+    _HOVER_LIGHT _ROUND_CORNERS
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 3000
   stringTagMap:
-    RenderType: Opaque
+    RenderType: Transparent
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 32c57306df745a147a2e02f8827a8cdc, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7b551659cf4349242ba72d82b4f9cdc7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -73,30 +73,29 @@ Material:
     - _AlbedoAlphaSmoothness: 0
     - _AlbedoAssignedAtRuntime: 0
     - _BlendOp: 0
-    - _BorderLight: 0
+    - _BorderLight: 1
     - _BorderLightOpaque: 0
-    - _BorderLightUsesHoverColor: 0
-    - _BorderMinValue: 0.02
+    - _BorderLightUsesHoverColor: 1
+    - _BorderMinValue: 1
     - _BorderWidth: 0.1
-    - _BorderWidthHorizontal: 0.1
+    - _BorderWidthHorizontal: 0.048
     - _BorderWidthVertical: 0.1
     - _BumpScale: 1
     - _ClippingPlane: 0
-    - _ClippingPlaneBorder: 1
-    - _ClippingPlaneBorderWidth: 0.02
+    - _ClippingPlaneBorder: 0
+    - _ClippingPlaneBorderWidth: 0.025
     - _ColorWriteMask: 15
-    - _Cull: 2
-    - _CullMode: 1
-    - _CustomMode: 0
+    - _CullMode: 0
+    - _CustomMode: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DirectionalLight: 1
-    - _DstBlend: 0
-    - _EdgeSmoothingValue: 0.002
+    - _DirectionalLight: 0
+    - _DstBlend: 10
+    - _EdgeSmoothingValue: 0.01
     - _EnableChannelMap: 0
-    - _EnableEmission: 1
+    - _EnableEmission: 0
     - _EnableHoverColorOpaqueOverride: 0
-    - _EnableHoverColorOverride: 0
+    - _EnableHoverColorOverride: 1
     - _EnableLightMap: 0
     - _EnableLocalSpaceTriplanarMapping: 0
     - _EnableNormalMap: 0
@@ -113,27 +112,26 @@ Material:
     - _HoverLightOpaque: 0
     - _InnerGlow: 0
     - _InstancedColor: 0
-    - _Metallic: 0.036
-    - _Mode: 0
-    - _MyCullVariable: 1
+    - _Metallic: 0
+    - _Mode: 2
     - _NearPlaneFade: 0
     - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Reflections: 1
+    - _Reflections: 0
     - _Refraction: 0
     - _RefractiveIndex: 1.1
     - _RenderQueueOverride: -1
     - _RimLight: 0
     - _RimPower: 3
-    - _RoundCornerMargin: 0
+    - _RoundCornerMargin: 0.25
     - _RoundCornerPower: 0.4
-    - _RoundCornerRadius: 0.25
-    - _RoundCorners: 0
+    - _RoundCornerRadius: 0.01
+    - _RoundCorners: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
+    - _SpecularHighlights: 0
+    - _SrcBlend: 5
     - _Stencil: 0
     - _StencilComparison: 0
     - _StencilOperation: 0
@@ -141,18 +139,18 @@ Material:
     - _TriplanarMappingBlendSharpness: 4
     - _UVSec: 0
     - _ZTest: 4
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
     - _ClipPlane: {r: 0, g: 1, b: 0, a: 0}
     - _ClippingPlaneBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 1, g: 0.6827586, b: 0, a: 1}
+    - _Color: {r: 0.9921907, g: 0.43382353, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissiveColor: {r: 0.9411765, g: 0, b: 0, a: 1}
+    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColor: {r: 1, g: 0, b: 0, a: 1}
     - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
-    - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
-    - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
-    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HoverColorOverride: {r: 0, g: 0.4852941, b: 0.44532874, a: 1}
+    - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+    - _RimColor: {r: 0.33088237, g: 0.33088237, b: 0.33088237, a: 1}
