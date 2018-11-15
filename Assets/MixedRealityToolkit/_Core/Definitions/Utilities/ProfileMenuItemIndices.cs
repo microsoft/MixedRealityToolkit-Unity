@@ -13,7 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         Input,
         Pointer,
         ControllerMapping,
-        Focus,
         InputActions,
         InputActionRules,
         Speech,
