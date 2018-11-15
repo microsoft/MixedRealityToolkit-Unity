@@ -11,8 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityInputSystemProfile))]
     public class MixedRealityInputSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private SerializedProperty gazeCursorPrefab;
-        private SerializedProperty focusProfile;
         private SerializedProperty inputActionsProfile;
         private SerializedProperty inputActionRulesProfile;
         private SerializedProperty pointerProfile;
@@ -36,8 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            gazeCursorPrefab = serializedObject.FindProperty("gazeCursorPrefab");
-            focusProfile = serializedObject.FindProperty("focusProfile");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
@@ -74,8 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUI.BeginChangeCheck();
             bool changed = false;
 
-            EditorGUILayout.PropertyField(gazeCursorPrefab);
-            changed |= RenderProfile(focusProfile);
             changed |= RenderProfile(inputActionsProfile);
             changed |= RenderProfile(inputActionRulesProfile);
             changed |= RenderProfile(pointerProfile);

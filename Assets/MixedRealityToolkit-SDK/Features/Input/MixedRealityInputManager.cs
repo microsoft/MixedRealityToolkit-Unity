@@ -156,8 +156,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public override void Enable()
         {
-            var gazeCursor = UnityEngine.Object.Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.GazeCursorPrefab);
-            gazeProvider.GazeCursor = gazeCursor;
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+            {
+                var gazeCursor = UnityEngine.Object.Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab);
+                gazeProvider.GazeCursor = gazeCursor;
+            }
+
             InputEnabled?.Invoke();
         }
 
