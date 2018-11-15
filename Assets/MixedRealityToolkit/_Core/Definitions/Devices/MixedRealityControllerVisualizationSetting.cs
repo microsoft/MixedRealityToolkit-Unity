@@ -75,5 +75,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// The controller model prefab to be rendered.
         /// </summary>
         public GameObject OverrideControllerModel => overrideModel;
+
+        [SerializeField]
+        [Implements(typeof(IMixedRealityControllerVisualizer), TypeGrouping.ByNamespaceFlat)]
+        [Tooltip("The concrete Controller Visualizer component to use on the rendered controller model.")]
+        private SystemType controllerVisualizationType;
+
+        /// <summary>
+        /// The concrete Controller Visualizer component to use on the rendered controller model
+        /// </summary>
+        public SystemType ControllerVisualizationType
+        {
+            get { return controllerVisualizationType; }
+            private set { controllerVisualizationType = value; }
+        }
     }
 }

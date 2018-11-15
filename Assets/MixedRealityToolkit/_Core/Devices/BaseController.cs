@@ -175,6 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <returns>True, if controller model is being properly rendered.</returns>
         internal async Task TryRenderControllerModelAsync(Type controllerType, byte[] glbData = null)
         {
+            Debug.Log("Attempting to render controller models...");
             var visualizationProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile;
 
             if (visualizationProfile == null)
@@ -190,27 +191,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             // If a specific controller template wants to override the global model, assign that instead.
             if (!visualizationProfile.UseDefaultModels)
             {
+                Debug.Log("Getting the override models");
                 controllerModel = visualizationProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
             }
 
-            // Get the global controller model for each hand.
-            if (controllerModel == null)
+            // Attempt to load the controller model from glbData.
+            if (controllerModel == null && glbData != null)
             {
-                if (ControllerHandedness == Handedness.Left && visualizationProfile.GlobalLeftHandModel != null)
-                {
-                    controllerModel = visualizationProfile.GlobalLeftHandModel;
-                }
-                else if (ControllerHandedness == Handedness.Right && visualizationProfile.GlobalRightHandModel != null)
-                {
-                    controllerModel = visualizationProfile.GlobalRightHandModel;
-                }
-            }
-
-            if (controllerModel == null && visualizationProfile.UseDefaultModels)
-            {
+                Debug.Log("Attempting to load glb data...");
                 var gltfObject = GltfUtility.GetGltfObjectFromGlb(glbData);
                 await gltfObject.ConstructAsync();
                 controllerModel = gltfObject.GameObjectReference;
+                controllerModel.transform.SetParent(MixedRealityToolkit.Instance.MixedRealityPlayspace.transform);
                 controllerModel.AddComponent(visualizationProfile.ControllerVisualizationType.Type);
                 Visualizer = controllerModel.GetComponent<IMixedRealityControllerVisualizer>();
 
@@ -223,9 +215,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
                 Debug.LogError("Failed to load controller model from driver!");
             }
 
+            // If we didn't get an override model, and we didn't load the driver model,
+            // then get the global controller model for each hand.
+            if (controllerModel == null)
+            {
+                Debug.Log("Setting the fallback models");
+                if (ControllerHandedness == Handedness.Left && visualizationProfile.GlobalLeftHandModel != null)
+                {
+                    controllerModel = visualizationProfile.GlobalLeftHandModel;
+                }
+                else if (ControllerHandedness == Handedness.Right && visualizationProfile.GlobalRightHandModel != null)
+                {
+                    controllerModel = visualizationProfile.GlobalRightHandModel;
+                }
+            }
+
             // If we've got a controller model prefab, then place it in the scene.
             if (controllerModel != null)
             {
+                Debug.Log("Attempting to Instantiate Model Prefab...");
                 var controllerObject = UnityEngine.Object.Instantiate(controllerModel, MixedRealityToolkit.Instance.MixedRealityPlayspace);
                 controllerObject.name = $"{ControllerHandedness}_{controllerObject.name}";
                 Visualizer = controllerObject.GetComponent<IMixedRealityControllerVisualizer>();
@@ -238,6 +246,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
                 {
                     Debug.LogError($"{controllerObject.name} is missing a IMixedRealityControllerVisualizer component!");
                 }
+            }
+
+            if (Visualizer == null)
+            {
+                Debug.LogError("Failed to render controller model!");
             }
         }
     }

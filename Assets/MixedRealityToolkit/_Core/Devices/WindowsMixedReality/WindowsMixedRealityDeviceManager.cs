@@ -9,6 +9,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,7 +18,6 @@ using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 
 #if WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using System;
 using Windows.ApplicationModel.Core;
 using Windows.Perception;
 using Windows.Storage.Streams;
@@ -438,19 +438,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
 #if WINDOWS_UWP
             IRandomAccessStreamWithContentType stream = null;
-            var now = DateTimeOffset.Now;
 
             if (WindowsApiChecker.UniversalApiContractV5_IsAvailable)
             {
                 await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
                 {
-                    var sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(now));
+                    var sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
 
                     for (var i = 0; i < sources?.Count; i++)
                     {
                         if (sources[i].Source.Id.Equals(interactionSource.id))
                         {
-                            stream = await sources[i].Source.Controller.TryGetRenderableModelAsync().AsTask();
+                            stream = await sources[i].Source.Controller.TryGetRenderableModelAsync();
                             break;
                         }
                     }
@@ -466,6 +465,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                     await reader.LoadAsync((uint)stream.Size);
                     reader.ReadBytes(glbModelData);
                 }
+            }
+            else
+            {
+                Debug.LogError("Failed to load model data!");
             }
 #endif
 
