@@ -12,9 +12,6 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityInputSystemProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  gazeCursorPrefab: {fileID: 1000012072213228, guid: 5b3e2856904e43c680f84f326861032a,
-    type: 2}
-  focusProfile: {fileID: 11400000, guid: beeececedae57b145bd5ecc515d501c5, type: 2}
   inputActionsProfile: {fileID: 11400000, guid: 723eb97b02944311b92861f473eee53e,
     type: 2}
   inputActionRulesProfile: {fileID: 11400000, guid: 03945385d89102f41855bc8f5116b199,
