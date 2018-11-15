@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                 if (profileObject != null)
                 {
-                    profileName = controllerProfile.objectReferenceValue.name.ToProperCase().Replace("Default ", string.Empty);
+                    profileName = controllerProfile.objectReferenceValue.name.ToProperCase().Replace("Default ", string.Empty).Replace(" Controller Mapping Profile", string.Empty);
                 }
 
                 EditorGUILayout.BeginHorizontal();
