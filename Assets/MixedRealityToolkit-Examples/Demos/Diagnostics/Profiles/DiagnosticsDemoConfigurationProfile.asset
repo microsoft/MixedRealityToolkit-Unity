@@ -28,8 +28,8 @@ MonoBehaviour:
     type: 2}
   enableTeleportSystem: 1
   teleportSystemType:
-    reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
-      Microsoft.MixedReality.Toolkit.SDK
+    reference: Microsoft.MixedReality.Toolkit.Core.Services.Teleportation.MixedRealityTeleportSystem,
+      Microsoft.MixedReality.Toolkit
   enableSpatialAwarenessSystem: 1
   spatialAwarenessSystemType:
     reference: Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.MixedRealitySpatialAwarenessSystem,
