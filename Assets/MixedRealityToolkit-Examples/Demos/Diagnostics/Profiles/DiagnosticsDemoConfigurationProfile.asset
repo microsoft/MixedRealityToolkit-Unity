@@ -22,8 +22,8 @@ MonoBehaviour:
       Microsoft.MixedReality.Toolkit.SDK
   enableBoundarySystem: 1
   boundarySystemType:
-    reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
-      Microsoft.MixedReality.Toolkit.SDK
+    reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundarySystem,
+      Microsoft.MixedReality.Toolkit
   boundaryVisualizationProfile: {fileID: 11400000, guid: 6d28cce596b44bd3897ca86f8b24e076,
     type: 2}
   enableTeleportSystem: 1

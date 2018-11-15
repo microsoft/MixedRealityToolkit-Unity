@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,12 +13,12 @@ using UnityEngine.EventSystems;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
 {
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
     /// </summary>
-    public class MixedRealityBoundaryManager : BaseEventSystem, IMixedRealityBoundarySystem
+    public class MixedRealityBoundarySystem : BaseEventSystem, IMixedRealityBoundarySystem
     {
         #region IMixedRealityService Implementation
 
@@ -530,8 +529,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             currentFloorObject.name = "Boundary System Floor";
             currentFloorObject.transform.localScale = new Vector3(floorScale.x, boundaryObjectThickness, floorScale.y);
             currentFloorObject.transform.Translate(new Vector3(
-                MixedRealityToolkit.Instance.MixedRealityPlayspace.position.x, 
-                FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f), 
+                MixedRealityToolkit.Instance.MixedRealityPlayspace.position.x,
+                FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f),
                 MixedRealityToolkit.Instance.MixedRealityPlayspace.position.z));
             currentFloorObject.GetComponent<Renderer>().sharedMaterial = MixedRealityToolkit.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorMaterial;
 
