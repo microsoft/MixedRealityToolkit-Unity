@@ -56,8 +56,8 @@ MonoBehaviour:
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness.WindowsMixedRealitySpatialObserver,
-        Microsoft.MixedReality.Toolkit
+      reference: Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.WindowsMixedRealitySpatialObserver,
+        Microsoft.MixedReality.Toolkit.SDK
     componentName: Windows Mixed Reality Spatial Observer
     priority: 10
     runtimePlatform: 8
