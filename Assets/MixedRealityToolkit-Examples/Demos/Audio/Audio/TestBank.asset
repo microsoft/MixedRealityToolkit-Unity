@@ -1,0 +1,150 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9d501b83c3a5d45b5deffcc726951f, type: 3}
+  m_Name: TestBank
+  m_EditorClassIdentifier: 
+  audioEvents:
+  - {fileID: 114717895165520328}
+  parameters: []
+--- !u!114 &114201643887863698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563994e88e1b8414890b10d6bac7a456, type: 3}
+  m_Name: Audio File
+  m_EditorClassIdentifier: 
+  nodeRect:
+    serializedVersion: 2
+    x: 9639
+    y: 9999.5
+    width: 300
+    height: 100
+  input: {fileID: 0}
+  output: {fileID: 114843396409377286}
+  file: {fileID: 8300000, guid: b11f08112e7059542ae51c208db0af7c, type: 3}
+  volumeOffset: 0
+  pitchOffset: 0
+--- !u!114 &114271397928448162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a81b464ba9745e44be8820ad1c8cfd6, type: 3}
+  m_Name: OutputInput
+  m_EditorClassIdentifier: 
+  Window:
+    serializedVersion: 2
+    x: 9980
+    y: 10092.5
+    width: 20
+    height: 20
+  parentNode: {fileID: 114879697348027618}
+  connectedNodes:
+  - {fileID: 114843396409377286}
+  forceSingleConnection: 0
+--- !u!114 &114717895165520328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d6a001556e463478b5c476e3e6195c, type: 3}
+  m_Name: Vocals
+  m_EditorClassIdentifier: 
+  instanceLimit: 0
+  fadeIn: 0
+  fadeOut: 0
+  group: 0
+  nodes:
+  - {fileID: 114879697348027618}
+  - {fileID: 114201643887863698}
+  output: {fileID: 114879697348027618}
+  parameters: []
+--- !u!114 &114843396409377286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f45cf000cc6667c4e9ad0ade0cfc82a7, type: 3}
+  m_Name: Audio FileOutput
+  m_EditorClassIdentifier: 
+  Window:
+    serializedVersion: 2
+    x: 9939
+    y: 10049.5
+    width: 20
+    height: 20
+  parentNode: {fileID: 114201643887863698}
+--- !u!114 &114879697348027618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feb3210b711af0f4ab76fc3bff926f11, type: 3}
+  m_Name: Output
+  m_EditorClassIdentifier: 
+  nodeRect:
+    serializedVersion: 2
+    x: 10000
+    y: 10000
+    width: 300
+    height: 185
+  input: {fileID: 114271397928448162}
+  output: {fileID: 0}
+  mixerGroup: {fileID: 0}
+  MinVolume: 1
+  MaxVolume: 1
+  MinPitch: 1
+  MaxPitch: 1
+  loop: 1
+  spatialBlend: 1
+  HRTF: 1
+  MaxDistance: 10
+  attenuationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.06653696
+      outSlope: 0.06653696
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.9407377
+      outSlope: -1.9407377
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  dopplerLevel: 0
