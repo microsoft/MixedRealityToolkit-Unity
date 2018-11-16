@@ -174,16 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                bool registrationSucceeded = false;
-                try
-                {
-                    registrationSucceeded = RegisterService(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
-                }
-                catch (Exception e)
-                {
-                    DebugUtilities.LogCriticalError($"Registering the Input System threw: {e.GetType().ToString()} - {e.Message}.");
-                }
-                if (!registrationSucceeded || InputSystem == null)
+                if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType) || InputSystem == null)
                 {
                     DebugUtilities.LogCriticalError("Failed to start the Input System!");
                 }
@@ -192,16 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
-                bool registrationSucceeded = false;
-                try
-                {
-                    registrationSucceeded = RegisterService(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
-                }
-                catch (Exception e)
-                {
-                    DebugUtilities.LogCriticalError($"Registering the Boundary System threw: {e.GetType().ToString()} - {e.Message}.");
-                }
-                if (!registrationSucceeded || BoundarySystem == null)
+                if (!RegisterService<IMixedRealityBoundarySystem>(ActiveProfile.BoundarySystemSystemType) || BoundarySystem == null)
                 {
                     DebugUtilities.LogCriticalError("Failed to start the Boundary System!");
                 }
@@ -210,16 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Spatial Awareness system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsSpatialAwarenessSystemEnabled)
             {
-                bool registrationSucceeded = false;
-                try
-                {
-                    registrationSucceeded = RegisterService(typeof(IMixedRealitySpatialAwarenessSystem), Activator.CreateInstance(ActiveProfile.SpatialAwarenessSystemSystemType) as IMixedRealitySpatialAwarenessSystem);
-                }
-                catch (Exception e)
-                {
-                    DebugUtilities.LogCriticalError($"Registering the Spatial Awareness System threw: {e.GetType().ToString()} - {e.Message}.");
-                }
-                if (!registrationSucceeded || SpatialAwarenessSystem == null)
+                if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) || SpatialAwarenessSystem == null)
                 {
                     DebugUtilities.LogCriticalError("Failed to start the Spatial Awareness System!");
                 }
@@ -228,16 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
-                bool registrationSucceeded = false;
-                try
-                {
-                    registrationSucceeded = RegisterService(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
-                }
-                catch (Exception e)
-                {
-                    DebugUtilities.LogCriticalError($"Registering the Teleport System threw: {e.GetType().ToString()} - {e.Message}.");
-                }
-                if (!registrationSucceeded || TeleportSystem == null)
+                if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType) || TeleportSystem == null)
                 {
                     DebugUtilities.LogCriticalError("Failed to start the Teleport System!");
                 }
@@ -245,16 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (ActiveProfile.IsDiagnosticsSystemEnabled)
             {
-                bool registrationSucceeded = false;
-                try
-                {
-                    registrationSucceeded = RegisterService(typeof(IMixedRealityDiagnosticsSystem), Activator.CreateInstance(ActiveProfile.DiagnosticsSystemSystemType) as IMixedRealityDiagnosticsSystem);
-                }
-                catch (Exception e)
-                {
-                    DebugUtilities.LogCriticalError($"Registering the Diagnostics System threw: {e.GetType().ToString()} - {e.Message}.");
-                }
-                if (!registrationSucceeded || DiagnosticsSystem == null)
+                if (!RegisterService<IMixedRealityDiagnosticsSystem>(ActiveProfile.DiagnosticsSystemSystemType) || DiagnosticsSystem == null)
                 {
                     DebugUtilities.LogCriticalError("Failed to start the Diagnostics System!");
                 }
@@ -273,16 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     {
                         if (configuration.ComponentType.Type != null)
                         {
-                            bool registrationSucceeded = false;
-                            try
-                            {
-                                registrationSucceeded = RegisterService(typeof(IMixedRealityExtensionService), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityExtensionService);
-                            }
-                            catch (Exception e)
-                            {
-                                DebugUtilities.LogCriticalError($"Registering the {configuration.ComponentType.Type} Extension Service threw: {e.GetType().ToString()} - {e.Message}\n{e.StackTrace}");
-                            }
-                            if (!registrationSucceeded)
+                            if (!RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.ComponentName, configuration.Priority))
                             {
                                 DebugUtilities.LogCriticalError($"Failed to register the {configuration.ComponentType.Type} Extension Service!");
                             }
@@ -590,7 +536,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <summary>
         /// Add a new service to the Mixed Reality Toolkit active service registry.
         /// </summary>
-        /// <param name="type">The interface type for the system to be managed.  E.G. InputSystem, BoundarySystem</param>
+        /// <param name="type">The interface type for the system to be registered.  E.G. InputSystem, BoundarySystem</param>
         /// <param name="service">The Instance of the service class to register</param>
         public bool RegisterService(Type type, IMixedRealityService service)
         {
@@ -608,30 +554,78 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 return false;
             }
 
-            if (IsCoreSystem(type))
+            return RegisterServiceInternal(type, service);
+        }
+
+        /// <summary>
+        /// Add a new service to the Mixed Reality Toolkit active service registry.
+        /// </summary>
+        /// <typeparam name="T">The interface type for the system to be registered.</typeparam>
+        /// <param name="concreteType">The concrete type to instantiate.</param>
+        /// <param name="args">Optional arguments used when instantiating the concrete type.</param>
+        /// <returns></returns>
+        public bool RegisterService<T>(Type concreteType, params object[] args)
+        {
+            if (ActiveProfile == null) { return false; }
+
+            if (concreteType == null)
+            {
+                DebugUtilities.LogError("Unable to register a service with a null concrete type.");
+                return false;
+            }
+
+            if (!typeof(IMixedRealityService).IsAssignableFrom(concreteType))
+            {
+                DebugUtilities.LogCriticalError($"Unable to register the {concreteType.GetType()} service. It does not implement the IMixedRealityToolkitService interface.");
+                return false;
+            }
+
+            T serviceInstance = default(T);
+            try
+            {
+                serviceInstance = (T)Activator.CreateInstance(concreteType, args);
+            }
+            catch (Exception e)
+            {
+                DebugUtilities.LogCriticalError($"Unable to register the {concreteType.GetType()} service: {e.GetType().ToString()} - {e.Message}");
+                return false;
+            }
+
+            return RegisterServiceInternal(typeof(T), serviceInstance as IMixedRealityService);
+        }
+
+        /// <summary>
+        /// Internal service registration.
+        /// </summary>
+        /// <param name="interfaceType">The interface type for the system to be registered.</typeparam>
+        /// <param name="serviceInstance">Instance of the service.</param>
+        /// <returns>True if registration is successful, false otherwise.</returns>
+        private bool RegisterServiceInternal(Type interfaceType, IMixedRealityService serviceInstance)
+        {
+            if (IsCoreSystem(interfaceType))
             {
                 IMixedRealityService preExistingService;
 
-                ActiveProfile.ActiveServices.TryGetValue(type, out preExistingService);
+                ActiveProfile.ActiveServices.TryGetValue(interfaceType, out preExistingService);
 
                 if (preExistingService == null)
                 {
-                    ActiveProfile.ActiveServices.Add(type, service);
+                    ActiveProfile.ActiveServices.Add(interfaceType, serviceInstance);
                     return true;
                 }
 
-                DebugUtilities.LogWarning($"There's already a {type.Name} registered.");
+                DebugUtilities.LogWarning($"There's already a {interfaceType.Name} registered.");
                 return false;
             }
 
-            if (!typeof(IMixedRealityExtensionService).IsAssignableFrom(type))
+            if (!typeof(IMixedRealityExtensionService).IsAssignableFrom(interfaceType))
             {
-                DebugUtilities.LogError($"Unable to register {type}. Concrete type does not implement the IMixedRealityExtensionService implementation.");
+                DebugUtilities.LogError($"Unable to register {interfaceType}. Concrete type does not implement the IMixedRealityExtensionService implementation.");
                 return false;
             }
 
-            MixedRealityComponents.Add(new Tuple<Type, IMixedRealityExtensionService>(type, (IMixedRealityExtensionService)service));
-            if (!isInitializing) { service.Initialize(); }
+            MixedRealityComponents.Add(new Tuple<Type, IMixedRealityExtensionService>(interfaceType, serviceInstance as IMixedRealityExtensionService));
+            if (!isInitializing) { serviceInstance.Initialize(); }
             mixedRealityComponentsCount = MixedRealityComponents.Count;
             return true;
         }
