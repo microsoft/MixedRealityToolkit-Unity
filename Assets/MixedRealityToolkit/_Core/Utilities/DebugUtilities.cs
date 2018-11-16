@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <param name="message">Message to display if the condition is not satisfied.</param>
         public static void Assert(LoggingLevels logLevel, bool condition, string message)
         {
-            if ((logLevel & LoggingLevels.Assert) != 0)
+            if (ShouldWriteLog(logLevel, LoggingLevels.Assert))
             {
                 Debug.Assert(condition, message);
             }
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// </remarks>
         public static void LogCriticalError(LoggingLevels logLevel, string message)
         {
-            if ((logLevel & LoggingLevels.CriticalError) != 0)
+            if (ShouldWriteLog(logLevel, LoggingLevels.CriticalError))
             {
                 Debug.LogError($"Critical: {message}");
             }
@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <param name="message">The message to display.</param>
         public static void LogError(LoggingLevels logLevel, string message)
         {
-            if ((logLevel & LoggingLevels.Error) != 0)
+            if (ShouldWriteLog(logLevel, LoggingLevels.Error))
             {
                 Debug.LogError(message);
             }
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <param name="message">The message to display.</param>
         public static void LogInformation(LoggingLevels logLevel, string message)
         {
-            if ((logLevel & LoggingLevels.Informational) != 0)
+            if (ShouldWriteLog(logLevel, LoggingLevels.Informational))
             {
                 Debug.Log(message);
             }
@@ -159,10 +159,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <param name="message">The message to display.</param>
         public static void LogWarning(LoggingLevels logLevel, string message)
         {
-            if ((logLevel & LoggingLevels.Warning) != 0)
+            if (ShouldWriteLog(logLevel, LoggingLevels.Warning))
             {
                 Debug.LogWarning(message);
             }
+        }
+
+        /// <summary>
+        /// Checks to see if a log message should be written, using the Mixed Reality Toolkit
+        /// object's currently configured logging level.
+        /// </summary>
+        /// <param name="messageType">The type of log message being checked.</param>
+        private static bool ShouldWriteLog(LoggingLevels messageType)
+        {
+            return ShouldWriteLog(MixedRealityToolkitLoggingLevel, messageType);
+        }
+
+        /// <summary>
+        /// Checks to see if a log message should be written.
+        /// </summary>
+        /// <param name="logLevel">The logging level used to filter debug output.</param>
+        /// <param name="messageType">The type of log message being checked.</param>
+        private static bool ShouldWriteLog(LoggingLevels logLevel, LoggingLevels messageType)
+        {
+            return (logLevel & messageType) != 0;
         }
     }
 }
