@@ -4,9 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
-using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
-using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEditor;
@@ -118,51 +115,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             for (int i = 0; i < controllerMappings?.arraySize; i++)
             {
-                var controllerType = profile.ControllerMappings[i].ControllerType.Type;
-                var supportedControllerType = SupportedControllerType.None;
+                var supportedControllerType = profile.ControllerType;
                 var controllerMapping = controllerMappings.GetArrayElementAtIndex(i);
                 var handednessValue = controllerMapping.FindPropertyRelative("handedness");
                 var handedness = (Handedness)handednessValue.intValue;
                 var description = controllerMapping.FindPropertyRelative("description");
                 var interactions = controllerMapping.FindPropertyRelative("interactions");
-
-                if (controllerType == typeof(XboxController))
-                {
-                    supportedControllerType = SupportedControllerType.Xbox;
-                }
-                else if (controllerType == typeof(WindowsMixedRealityController) ||
-                         controllerType == typeof(WindowsMixedRealityOpenVRMotionController))
-                {
-                    supportedControllerType = SupportedControllerType.WindowsMixedReality;
-                }
-                else if (controllerType == typeof(OculusTouchController))
-                {
-                    supportedControllerType = SupportedControllerType.OculusTouch;
-                }
-                else if (controllerType == typeof(OculusRemoteController))
-                {
-                    supportedControllerType = SupportedControllerType.OculusRemote;
-                }
-                else if (controllerType == typeof(ViveWandController))
-                {
-                    supportedControllerType = SupportedControllerType.ViveWand;
-                }
-                else if (controllerType == typeof(GenericOpenVRController))
-                {
-                    supportedControllerType = SupportedControllerType.GenericOpenVR;
-                }
-                else if (controllerType == typeof(GenericJoystickController))
-                {
-                    supportedControllerType = SupportedControllerType.GenericUnity;
-                }
-                else if (controllerType == typeof(UnityTouchController))
-                {
-                    supportedControllerType = SupportedControllerType.TouchScreen;
-                }
-                else if (controllerType == typeof(MouseController))
-                {
-                    supportedControllerType = SupportedControllerType.Mouse;
-                }
 
                 bool skip = false;
 

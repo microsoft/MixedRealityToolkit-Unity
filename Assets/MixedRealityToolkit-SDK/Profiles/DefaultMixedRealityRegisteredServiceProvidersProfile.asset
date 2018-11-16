@@ -14,49 +14,49 @@ MonoBehaviour:
   isCustomProfile: 0
   configurations:
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityJoystickManager,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.UnityInput.UnityJoystickManager,
         Microsoft.MixedReality.Toolkit
     componentName: Unity Joystick Manager
     priority: 10
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OpenVRDeviceManager,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.OpenVR.OpenVRDeviceManager,
         Microsoft.MixedReality.Toolkit
     componentName: Unity Open VR Device Manager
     priority: 10
     runtimePlatform: 7
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityDeviceManager,
-        Microsoft.MixedReality.Toolkit
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.WindowsMixedReality.WindowsMixedRealityDeviceManager,
+        Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.WindowsMixedReality
     componentName: Mixed Reality Device Manager
     priority: 10
     runtimePlatform: 8
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.WindowsSpeechInputDeviceManager,
-        Microsoft.MixedReality.Toolkit
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.WindowsMixedReality.WindowsSpeechInputDeviceManager,
+        Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.WindowsMixedReality
     componentName: Windows Speech Input Manager
     priority: 10
     runtimePlatform: 9
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.WindowsDictationInputDeviceManager,
-        Microsoft.MixedReality.Toolkit
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.WindowsMixedReality.WindowsDictationInputDeviceManager,
+        Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.WindowsMixedReality
     componentName: Windows Dictation Input Manager
     priority: 10
     runtimePlatform: 9
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityTouchDeviceManager,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.UnityInput.UnityTouchDeviceManager,
         Microsoft.MixedReality.Toolkit
     componentName: Unity Touch Input Manger
     priority: 10
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.MouseDeviceManager,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.UnityInput.MouseDeviceManager,
         Microsoft.MixedReality.Toolkit
     componentName: Mouse Input Manager
     priority: 10
