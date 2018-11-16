@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
+namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem.Utilities
 {
     /// <summary>
     /// Since the InteractionSourcePose is internal to UnityEngine.VR.WSA.Input,

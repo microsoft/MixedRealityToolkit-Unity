@@ -8,11 +8,11 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Core.Services.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.Core.Services.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using System;
 using UnityEngine;
 
@@ -111,6 +111,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         /// <inheritdoc />
         public IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
+
+        private IMixedRealityCursor gazeCursor = null;
+
+        IMixedRealityCursor IMixedRealityGazeProvider.GazeCursor
+        {
+            get
+            {
+                if (gazeCursor == null &&
+                    MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                    MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+                {
+                    cursorObject = Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab);
+                    gazeCursor = cursorObject.GetComponent<IMixedRealityCursor>();
+                }
+
+                return gazeCursor;
+            }
+        }
+
         private InternalGazePointer gazePointer = null;
 
         /// <inheritdoc />
@@ -136,6 +155,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         /// <inheritdoc />
         public Vector3 HeadMovementDirection { get; private set; }
+
+        /// <inheritdoc />
+        public GameObject GameObjectReference => gameObject;
 
         private float lastHitDistance = 2.0f;
 

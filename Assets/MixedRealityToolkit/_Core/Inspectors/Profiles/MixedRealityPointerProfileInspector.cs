@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty debugDrawPointingRays;
         private SerializedProperty debugDrawPointingRayColors;
         private SerializedProperty gazeCursorPrefab;
+        private SerializedProperty gazeProviderType;
         private SerializedProperty pointerOptions;
         private ReorderableList pointerOptionList;
 
@@ -39,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             debugDrawPointingRays = serializedObject.FindProperty("debugDrawPointingRays");
             debugDrawPointingRayColors = serializedObject.FindProperty("debugDrawPointingRayColors");
             gazeCursorPrefab = serializedObject.FindProperty("gazeCursorPrefab");
+            gazeProviderType = serializedObject.FindProperty("gazeProviderType");
             pointerOptions = serializedObject.FindProperty("pointerOptions");
 
             pointerOptionList = new ReorderableList(serializedObject, pointerOptions, false, false, true, true)
@@ -83,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(gazeCursorPrefab);
+            EditorGUILayout.PropertyField(gazeProviderType);
 
             EditorGUILayout.Space();
             if (GUILayout.Button("Customize Gaze Provider Settings"))

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Extensions
@@ -38,20 +39,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Ensure that a component of type <typeparamref name="T"/> exists on the game object.
         /// If it doesn't exist, creates it.
-        /// *Note, this extension has to remain in this class as it is required by the EnsureComponent<Component> method
         /// </summary>
         /// <typeparam name="T">Type of the component.</typeparam>
         /// <param name="gameObject">Game object on which component should be.</param>
         /// <returns>The component that was retrieved or created.</returns>
+        /// <remarks>
+        /// This extension has to remain in this class as it is required by the <see cref="EnsureComponent{T}(Component)"/> method
+        /// </remarks>
         public static T EnsureComponent<T>(this GameObject gameObject) where T : Component
         {
             T foundComponent = gameObject.GetComponent<T>();
-            if (foundComponent == null)
-            {
-                return gameObject.AddComponent<T>();
-            }
+            return foundComponent == null ? gameObject.AddComponent<T>() : foundComponent;
+        }
 
-            return foundComponent;
+        /// <summary>
+        /// Ensure that a component of type exists on the game object.
+        /// If it doesn't exist, creates it.
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="component">A component on the game object for which a component of type should exist.</param>
+        /// <returns>The component that was retrieved or created.</returns>
+        public static Component EnsureComponent(this GameObject gameObject, Type component)
+        {
+            var foundComponent = gameObject.GetComponent(component);
+            return foundComponent == null ? gameObject.AddComponent(component) : foundComponent;
         }
     }
 }

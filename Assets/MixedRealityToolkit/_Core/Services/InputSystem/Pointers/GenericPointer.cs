@@ -7,11 +7,10 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Physics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
+namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem.Pointers
 {
     /// <summary>
     /// Base Class for pointers that don't inherit from MonoBehaviour.

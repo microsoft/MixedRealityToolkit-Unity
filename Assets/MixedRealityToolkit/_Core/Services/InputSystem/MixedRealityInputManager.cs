@@ -9,15 +9,14 @@ using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Core.Services.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Input
+namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
 {
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityInputSystem"/>
@@ -42,8 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = MixedRealityToolkit.Instance.GetService<IMixedRealityFocusProvider>());
 
         /// <inheritdoc />
-        public IMixedRealityGazeProvider GazeProvider => gazeProvider;
-        private GazeProvider gazeProvider;
+        public IMixedRealityGazeProvider GazeProvider { get; private set; }
 
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
@@ -87,9 +85,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public override void Initialize()
         {
-            CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
+            {
+                Debug.LogError("The Input system is missing the required Input System Profile");
+                return;
+            }
 
-            gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile != null)
+            {
+                CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
+            }
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+            {
+                GazeProvider = CameraCache.Main.gameObject.EnsureComponent(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+            }
 
             bool addedComponents = false;
 
@@ -156,12 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public override void Enable()
         {
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
-            {
-                var gazeCursor = UnityEngine.Object.Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab);
-                gazeProvider.GazeCursor = gazeCursor;
-            }
-
             InputEnabled?.Invoke();
         }
 
@@ -176,18 +180,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public override void Disable()
         {
-            gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
-            gazeProvider.enabled = false;
+            GazeProvider.GameObjectReference.SetActive(false);
 
             if (Application.isPlaying)
             {
-                UnityEngine.Object.Destroy(gazeProvider);
+                UnityEngine.Object.Destroy(GazeProvider.GameObjectReference);
             }
             else
             {
-                UnityEngine.Object.DestroyImmediate(gazeProvider);
+                UnityEngine.Object.DestroyImmediate(GazeProvider.GameObjectReference);
             }
 
+            GazeProvider = null;
             InputDisabled?.Invoke();
         }
 
@@ -327,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             if (disabledRefCount == 1)
             {
                 InputDisabled?.Invoke();
-                gazeProvider.enabled = false;
+                GazeProvider.GameObjectReference.SetActive(false);
             }
         }
 
@@ -343,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             if (disabledRefCount == 0)
             {
                 InputEnabled?.Invoke();
-                gazeProvider.enabled = true;
+                GazeProvider.GameObjectReference.SetActive(true);
             }
         }
 
@@ -358,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             if (wasInputDisabled)
             {
                 InputEnabled?.Invoke();
-                gazeProvider.enabled = true;
+                GazeProvider.GameObjectReference.SetActive(true);
             }
         }
 

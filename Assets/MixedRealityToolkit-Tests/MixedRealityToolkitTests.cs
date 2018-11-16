@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.SDK.Input;
+using Microsoft.MixedReality.Toolkit.Core.Services.InputSystem;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
