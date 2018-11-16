@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.Controllers
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 {
     /// <summary>
     /// Base Device manager to inherit from.
