@@ -3,10 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers
 {
     /// <summary>
     /// Base class for spatial awareness observers.

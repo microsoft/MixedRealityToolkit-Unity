@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +13,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
-namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMixedReality
 {
     /// <summary>
     /// The Windows Mixed Reality Spatial Observer.

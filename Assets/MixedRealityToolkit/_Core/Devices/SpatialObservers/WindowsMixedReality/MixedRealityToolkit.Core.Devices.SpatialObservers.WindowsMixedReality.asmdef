@@ -1,10 +1,11 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem.WindowsMixedReality",
+    "name": "Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMixedReality",
     "references": [
         "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
+        "Editor",
         "WSA"
     ],
     "excludePlatforms": [],
