@@ -72,6 +72,6 @@ MonoBehaviour:
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.SDK.Input.FocusProvider, Microsoft.MixedReality.Toolkit.SDK
     componentName: Focus Provider
-    priority: 10
+    priority: 2
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
