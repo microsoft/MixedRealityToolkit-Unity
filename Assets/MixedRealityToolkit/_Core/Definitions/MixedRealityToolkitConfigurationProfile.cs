@@ -36,6 +36,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 
         #region Mixed Reality Toolkit configurable properties
 
+        [EnumFlags]
+        [SerializeField]
+        [Tooltip("The types of debug messages to log to the output window.")]
+        private LoggingLevels loggingLevel = (LoggingLevels)(-1);
+
+        /// <summary>
+        /// The desired types of debug messages to log to the output window.
+        /// </summary>
+        public LoggingLevels LoggingLevel
+        {
+            get { return loggingLevel; }
+            set { loggingLevel = value; }
+        }
+
         [SerializeField]
         [Tooltip("The scale of the Mixed Reality experience.")]
         private ExperienceScale targetExperienceScale = ExperienceScale.Room;

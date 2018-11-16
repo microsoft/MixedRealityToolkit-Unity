@@ -15,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     {
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
 
+        // Debug options
+        private SerializedProperty loggingLevel;
         // Experience properties
         private SerializedProperty targetExperienceScale;
         // Camera properties
@@ -87,6 +89,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
+            // Degbug options
+            loggingLevel = serializedObject.FindProperty("loggingLevel");
             // Experience configuration
             targetExperienceScale = serializedObject.FindProperty("targetExperienceScale");
             // Camera configuration
@@ -160,7 +164,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUI.BeginChangeCheck();
             bool changed = false;
 
+            // Logging level
+            GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Debug Options", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(loggingLevel);
+
             // Experience configuration
+            GUILayout.Space(12f);
             EditorGUILayout.LabelField("Experience Settings", EditorStyles.boldLabel);
 
             EditorGUILayout.PropertyField(targetExperienceScale, TargetScaleContent);
