@@ -180,15 +180,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
         /// <inheritdoc />
         public override void Disable()
         {
-            GazeProvider.GameObjectReference.SetActive(false);
+            if (GazeProvider != null)
+            {
+                GazeProvider.Enabled = false;
+                var component = GazeProvider.GameObjectReference.GetComponent<IMixedRealityGazeProvider>() as Component;
 
-            if (Application.isPlaying)
-            {
-                UnityEngine.Object.Destroy(GazeProvider.GameObjectReference);
-            }
-            else
-            {
-                UnityEngine.Object.DestroyImmediate(GazeProvider.GameObjectReference);
+                if (Application.isPlaying)
+                {
+                    UnityEngine.Object.Destroy(component);
+                }
+                else
+                {
+                    UnityEngine.Object.DestroyImmediate(component);
+                }
             }
 
             GazeProvider = null;
@@ -331,7 +335,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
             if (disabledRefCount == 1)
             {
                 InputDisabled?.Invoke();
-                GazeProvider.GameObjectReference.SetActive(false);
+
+                if (GazeProvider != null)
+                {
+                    GazeProvider.Enabled = false;
+                }
             }
         }
 
@@ -347,7 +355,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
             if (disabledRefCount == 0)
             {
                 InputEnabled?.Invoke();
-                GazeProvider.GameObjectReference.SetActive(true);
+
+                if (GazeProvider != null)
+                {
+                    GazeProvider.Enabled = true;
+                }
             }
         }
 
@@ -362,7 +374,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
             if (wasInputDisabled)
             {
                 InputEnabled?.Invoke();
-                GazeProvider.GameObjectReference.SetActive(true);
+
+                if (GazeProvider != null)
+                {
+                    GazeProvider.Enabled = true;
+                }
             }
         }
 

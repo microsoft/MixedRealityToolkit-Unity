@@ -93,6 +93,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private float maxHeadVelocityThreshold = 2f;
 
         /// <inheritdoc />
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
+        }
+
+        /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
         {
             get
@@ -114,6 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private IMixedRealityCursor gazeCursor = null;
 
+        /// <inheritdoc />
         IMixedRealityCursor IMixedRealityGazeProvider.GazeCursor
         {
             get

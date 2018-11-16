@@ -11,6 +11,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
     public interface IMixedRealityGazeProvider
     {
         /// <summary>
+        /// Enable or disable the <see cref="Component"/> attached to the <see cref="GameObjectReference"/>
+        /// </summary>
+        bool Enabled { get; set; }
+
+        /// <summary>
         /// The Gaze Input Source for the provider.
         /// </summary>
         IMixedRealityInputSource GazeInputSource { get; }
