@@ -11,13 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityDiagnosticsProfile))]
     public class MixedRealityDiagnosticsSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
+        private SerializedProperty visible;
+        private SerializedProperty handlerType;
         private SerializedProperty showFps;
         private SerializedProperty fpsBuffer;
         private SerializedProperty showCpu;
         private SerializedProperty cpuBuffer;
         private SerializedProperty showMemory;
         private SerializedProperty memoryBuffer;
-        private SerializedProperty visible;
 
         protected override void OnEnable()
         {
@@ -28,13 +29,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
+            visible = serializedObject.FindProperty("visible");
+            handlerType = serializedObject.FindProperty("handlerType");
             showCpu = serializedObject.FindProperty("showCpu");
             cpuBuffer = serializedObject.FindProperty("cpuBuffer");
             showFps = serializedObject.FindProperty("showFps");
             fpsBuffer = serializedObject.FindProperty("fpsBuffer");
             showMemory = serializedObject.FindProperty("showMemory");
             memoryBuffer = serializedObject.FindProperty("memoryBuffer");
-            visible = serializedObject.FindProperty("visible");
         }
 
         public override void OnInspectorGUI()
@@ -60,6 +62,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(visible);
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(handlerType);
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(showCpu);

@@ -182,11 +182,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
                 diagnosticVisualization = GameObject.CreatePrimitive(PrimitiveType.Quad);
                 diagnosticVisualization.name = "Diagnostics";
                 diagnosticVisualization.layer = Physics.IgnoreRaycastLayer;
+                var handlerType = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.HandlerType;
 
-                //diagnosticVisualization.AddComponent<IMixedRealityDiagnosticsHandler>();
-                Register(diagnosticVisualization);
+                if (handlerType.Type != null)
+                {
+                    diagnosticVisualization.AddComponent(handlerType.Type);
 
-                return diagnosticVisualization;
+                    Register(diagnosticVisualization);
+                    return diagnosticVisualization;
+                }
+
+                Debug.LogError("A handler type must be assigned to the diagnostics profile.");
+                return null;
             }
         }
 
