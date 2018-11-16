@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -40,6 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
         /// <inheritdoc />
         public override void Destroy()
         {
+            diagnosticsHandler = null;
+
             if (diagnosticVisualization != null)
             {
                 if (Application.isEditor)
