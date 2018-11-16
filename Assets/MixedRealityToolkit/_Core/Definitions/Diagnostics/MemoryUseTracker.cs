@@ -4,7 +4,7 @@
 using System;
 using System.Linq;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
 {
     /// <summary>
     /// The Mixed Reality Toolkit's Memory Use Tracker.

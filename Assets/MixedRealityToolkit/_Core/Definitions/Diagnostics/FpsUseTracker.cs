@@ -4,7 +4,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
 {
     /// <summary>
     /// The Mixed Reality Toolkit's Fps use tracker.

@@ -3,10 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using System.Globalization;
 using System.Text;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
