@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
@@ -12,9 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityDiagnosticsProfile))]
     public class MixedRealityDiagnosticsSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private SerializedProperty showCpu;
         private SerializedProperty showFps;
+        private SerializedProperty fpsBuffer;
+        private SerializedProperty showCpu;
+        private SerializedProperty cpuBuffer;
         private SerializedProperty showMemory;
+        private SerializedProperty memoryBuffer;
         private SerializedProperty visible;
 
         protected override void OnEnable()
@@ -27,8 +29,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             showCpu = serializedObject.FindProperty("showCpu");
+            cpuBuffer = serializedObject.FindProperty("cpuBuffer");
             showFps = serializedObject.FindProperty("showFps");
+            fpsBuffer = serializedObject.FindProperty("fpsBuffer");
             showMemory = serializedObject.FindProperty("showMemory");
+            memoryBuffer = serializedObject.FindProperty("memoryBuffer");
             visible = serializedObject.FindProperty("visible");
         }
 
@@ -58,8 +63,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(showCpu);
+            EditorGUILayout.PropertyField(cpuBuffer);
             EditorGUILayout.PropertyField(showFps);
+            EditorGUILayout.PropertyField(fpsBuffer);
             EditorGUILayout.PropertyField(showMemory);
+            EditorGUILayout.PropertyField(memoryBuffer);
 
             serializedObject.ApplyModifiedProperties();
         }

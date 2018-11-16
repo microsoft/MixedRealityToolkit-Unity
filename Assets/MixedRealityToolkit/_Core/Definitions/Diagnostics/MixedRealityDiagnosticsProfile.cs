@@ -13,15 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
     public class MixedRealityDiagnosticsProfile : BaseMixedRealityProfile
     {
         [SerializeField]
-        [Tooltip("Should show fps?")]
-        private bool showFps = true;
-
-        /// <summary>
-        /// Should the fps diagnostic be visible?
-        /// </summary>
-        public bool ShowFps => showFps;
-
-        [SerializeField]
         [Tooltip("Should show cpu?")]
         private bool showCpu = true;
 
@@ -31,6 +22,33 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
         public bool ShowCpu => showCpu;
 
         [SerializeField]
+        [Tooltip("How many samples should the cpu use tracker use?")]
+        private int cpuBuffer = 20;
+
+        /// <summary>
+        /// The number of samples the cpu use tracker should use.
+        /// </summary>
+        public int CpuBuffer => cpuBuffer;
+
+        [SerializeField]
+        [Tooltip("Should show fps?")]
+        private bool showFps = true;
+
+        /// <summary>
+        /// Should the fps diagnostic be visible?
+        /// </summary>
+        public bool ShowFps => showFps;
+
+        [SerializeField]
+        [Tooltip("How many samples should the fps use tracker use?")]
+        private int fpsBuffer = 10;
+
+        /// <summary>
+        /// The number of samples the Fps use tracker should use.
+        /// </summary>
+        public int FpsBuffer => fpsBuffer;
+
+        [SerializeField]
         [Tooltip("Should show memory?")]
         private bool showMemory = true;
 
@@ -38,6 +56,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
         /// How to show the memory diagnostic
         /// </summary>
         public bool ShowMemory => showMemory;
+
+        [SerializeField]
+        [Tooltip("How many samples should the memory use tracker use?")]
+        private int memoryBuffer = 10;
+
+        /// <summary>
+        /// The number of samples the memory use tracker should use.
+        /// </summary>
+        public int MemoryBuffer => memoryBuffer;
 
         [SerializeField]
         [Tooltip("Show diagnostics?")]

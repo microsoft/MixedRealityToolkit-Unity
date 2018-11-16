@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Name: DiagnosticsDemoDiagnosticsProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
-  showFps: 1
   showCpu: 1
+  cpuBuffer: 20
+  showFps: 1
+  fpsBuffer: 10
   showMemory: 1
+  memoryBuffer: 10
   visible: 1

@@ -3,37 +3,41 @@
 
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
 {
-    public class MixedRealityDiagnosticsManager : BaseEventSystem, IMixedRealityDiagnosticsSystem
+    /// <summary>
+    /// The default implementation of the <see cref="IMixedRealityDiagnosticsSystem"/>
+    /// </summary>
+    public class MixedRealityDiagnosticsSystem : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
         #region IMixedRealityService
 
-        private DiagnosticsEventData eventData;
-        private GameObject diagnosticVisualization;
-
+        /// <inheritdoc />
         public override void Initialize()
         {
             if (!Application.isPlaying) { return; }
 
             eventData = new DiagnosticsEventData(EventSystem.current);
 
-            Visible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.Visible;
             ShowCpu = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowCpu;
+            CpuUseTracker = new CpuUseTracker(MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.CpuBuffer);
             ShowFps = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowFps;
+            FpsUseTracker = new FpsUseTracker(MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.FpsBuffer);
             ShowMemory = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowMemory;
+            MemoryUseTracker = new MemoryUseTracker(MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.MemoryBuffer);
+
+            // Setting the visibility creates our GameObject reference, so set it last after we've configured our settings.
+            Visible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.Visible;
 
             RaiseDiagnosticsChanged();
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
-            if (!Application.isPlaying) { return; }
-
             if (diagnosticVisualization != null)
             {
                 Unregister(diagnosticVisualization);
@@ -57,28 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
             RaiseDiagnosticsChanged();
         }
-
-        private void RaiseDiagnosticsChanged()
-        {
-            eventData.Initialize(this,
-                visible: Visible,
-                showCpu: ShowCpu,
-                showFps: ShowFps,
-                showMemory: ShowMemory
-                );
-
-            HandleEvent(eventData, OnDiagnosticsChanged);
-        }
-
-        /// <summary>
-        /// Event sent whenever the diagnostics visualization changes.
-        /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityDiagnosticsHandler> OnDiagnosticsChanged =
-            delegate (IMixedRealityDiagnosticsHandler handler, BaseEventData eventData)
-            {
-                var diagnosticsEventsData = ExecuteEvents.ValidateEventData<DiagnosticsEventData>(eventData);
-                handler.OnDiagnosticSettingsChanged(diagnosticsEventsData);
-            };
 
         #endregion IMixedRealityService
 
@@ -121,10 +103,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
                 if (value != showCpu)
                 {
                     showCpu = value;
+
+                    if (!value)
+                    {
+                        CpuUseTracker.Reset();
+                    }
+
                     RaiseDiagnosticsChanged();
                 }
             }
         }
+
+        /// <inheritdoc />
+        public CpuUseTracker CpuUseTracker { get; private set; }
 
         private bool showFps;
 
@@ -145,6 +136,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
             }
         }
 
+        /// <inheritdoc />
+        public FpsUseTracker FpsUseTracker { get; private set; }
+
         private bool showMemory;
 
         /// <inheritdoc />
@@ -164,6 +158,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
             }
         }
 
+        /// <inheritdoc />
+        public MemoryUseTracker MemoryUseTracker { get; private set; }
+
+        private GameObject diagnosticVisualization;
+
+        /// <inheritdoc />
         public GameObject DiagnosticVisualization
         {
             get
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
                 diagnosticVisualization.name = "Diagnostics";
                 diagnosticVisualization.layer = Physics.IgnoreRaycastLayer;
 
-                diagnosticVisualization.AddComponent<DiagnosticsHandler>();
+                //diagnosticVisualization.AddComponent<IMixedRealityDiagnosticsHandler>();
                 Register(diagnosticVisualization);
 
                 return diagnosticVisualization;
@@ -193,6 +193,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         #endregion IMixedRealityDiagnosticsSystem
 
         #region IMixedRealityEventSource
+
+        private DiagnosticsEventData eventData;
 
         /// <inheritdoc />
         public uint SourceId => (uint)SourceName.GetHashCode();
@@ -205,6 +207,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
         /// <inheritdoc />
         public int GetHashCode(object obj) => SourceName.GetHashCode();
+
+        private void RaiseDiagnosticsChanged()
+        {
+            eventData.Initialize(this, Visible, ShowCpu, ShowFps, ShowMemory);
+
+            HandleEvent(eventData, OnDiagnosticsChanged);
+        }
+
+        /// <summary>
+        /// Event sent whenever the diagnostics visualization changes.
+        /// </summary>
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityDiagnosticsHandler> OnDiagnosticsChanged =
+            delegate (IMixedRealityDiagnosticsHandler handler, BaseEventData eventData)
+            {
+                var diagnosticsEventsData = ExecuteEvents.ValidateEventData<DiagnosticsEventData>(eventData);
+                handler.OnDiagnosticSettingsChanged(diagnosticsEventsData);
+            };
 
         #endregion IMixedRealityEventSource
     }
