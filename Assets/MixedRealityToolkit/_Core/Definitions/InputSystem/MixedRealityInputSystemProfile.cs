@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
@@ -27,7 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             get { return inputActionsProfile; }
             private set { inputActionsProfile = value; }
         }
-
 
         [SerializeField]
         [Tooltip("Input Action Rules Profile for raising actions based on specific criteria.")]
@@ -115,21 +115,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// </summary>
         public bool IsControllerMappingEnabled
         {
-            get { return controllerMappingProfile != null && enableControllerMapping; }
+            get { return controllerMappingProfiles != null && enableControllerMapping; }
             private set { enableControllerMapping = value; }
         }
 
         [SerializeField]
         [Tooltip("Device profile for wiring up physical inputs to Actions.")]
-        private MixedRealityControllerMappingProfile controllerMappingProfile;
+        private MixedRealityControllerMappingProfiles controllerMappingProfiles;
+
+        [Obsolete("Property renamed to ControllerMappingProfiles")]
+        public MixedRealityControllerMappingProfile ControllerMappingProfile = null;
 
         /// <summary>
         /// Active profile for controller mapping configuration
         /// </summary>
-        public MixedRealityControllerMappingProfile ControllerMappingProfile
+        public MixedRealityControllerMappingProfiles ControllerMappingProfiles
         {
-            get { return controllerMappingProfile; }
-            private set { controllerMappingProfile = value; }
+            get { return controllerMappingProfiles; }
+            private set { controllerMappingProfiles = value; }
         }
 
         [SerializeField]

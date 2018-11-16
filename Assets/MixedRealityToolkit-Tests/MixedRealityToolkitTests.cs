@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.SDK.Input;
+using Microsoft.MixedReality.Toolkit.Core.Services.InputSystem;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             // Tests
             Assert.IsNotNull(MixedRealityToolkit.Instance.ActiveProfile);
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             // Retrieve Input System
             var inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             // Check for Input System
             var inputSystemExists = MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealityInputSystem>();
@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             // Add test component
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             // Add test component
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             // Add test component
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             // Add test component
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             // Add test component 1
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             //Add test component 1
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
@@ -226,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             // Add test component 1
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test14-1", 10));
@@ -255,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             // Add test component 1
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test15-1", 10));
@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
 
             // Add test component 1
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test16-1.1", 10));

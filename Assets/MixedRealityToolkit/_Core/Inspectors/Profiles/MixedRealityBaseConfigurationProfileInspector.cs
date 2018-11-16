@@ -124,23 +124,47 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
         }
 
-        protected static bool RenderProfile(SerializedProperty property)
+        protected static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true)
+        {
+            return RenderProfileInternal(property, guiContent, showAddButton);
+        }
+
+        protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true)
+        {
+            return RenderProfileInternal(property, null, showAddButton);
+        }
+
+        private static bool RenderProfileInternal(SerializedProperty property, GUIContent guiContent, bool showAddButton)
         {
             bool changed = false;
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(property);
+
+            var oldObject = property.objectReferenceValue;
+
+            if (guiContent == null)
+            {
+                EditorGUILayout.PropertyField(property);
+            }
+            else
+            {
+                EditorGUILayout.PropertyField(property, guiContent);
+            }
 
             if (property.objectReferenceValue == null)
             {
-                if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton, GUILayout.Width(20f)))
+                if (showAddButton)
                 {
-                    var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
-                    Debug.Assert(profileTypeName != null, "No Type Found");
-                    ScriptableObject instance = CreateInstance(profileTypeName);
-                    var newProfile = instance.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject)) as BaseMixedRealityProfile;
-                    property.objectReferenceValue = newProfile;
-                    property.serializedObject.ApplyModifiedProperties();
-                    changed = true;
+                    if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton, GUILayout.Width(20f)))
+                    {
+                        var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
+                        Debug.Assert(profileTypeName != null, "No Type Found");
+
+                        ScriptableObject instance = CreateInstance(profileTypeName);
+                        var newProfile = instance.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject)) as BaseMixedRealityProfile;
+                        property.objectReferenceValue = newProfile;
+                        property.serializedObject.ApplyModifiedProperties();
+                        changed = true;
+                    }
                 }
             }
             else
@@ -164,6 +188,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                         changed = true;
                     }
                 }
+            }
+
+            if (oldObject != property.objectReferenceValue)
+            {
+                changed = true;
             }
 
             EditorGUILayout.EndHorizontal();

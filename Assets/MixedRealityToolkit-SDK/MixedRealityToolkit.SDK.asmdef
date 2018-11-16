@@ -2,8 +2,10 @@
     "name": "Microsoft.MixedReality.Toolkit.SDK",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.InputSystem",
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Async"
+        "Microsoft.MixedReality.Toolkit.Core.Services.InputSystem",
+        "Microsoft.MixedReality.Toolkit.Core.Utilities.Async",
+        "Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMixedReality",
+        "Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.WindowsMixedReality"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

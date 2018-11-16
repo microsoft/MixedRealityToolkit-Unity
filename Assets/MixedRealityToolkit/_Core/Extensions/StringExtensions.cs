@@ -52,21 +52,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             // Add the remaining characters.
             for (int i = 1; i < value.Length; i++)
             {
-                var wasLastCharacterUpper = false;
+                var wasLastCharUpper = char.IsUpper(value[i - 1]);
+                var nextIsLower = i + 1 < value.Length && char.IsLower(value[i + 1]);
+                var isUpper = char.IsLetter(value[i]) && char.IsUpper(value[i]);
 
-                if (i < value.Length && i != 0)
-                {
-                    wasLastCharacterUpper = char.IsLetter(result[i - 1]) && char.IsUpper(result[i - 1]);
-                }
-
-                if (char.IsLetter(value[i]) &&
-                    char.IsUpper(value[i]) &&
-                    !wasLastCharacterUpper)
+                if (isUpper && !wasLastCharUpper && nextIsLower)
                 {
                     result += " ";
                 }
 
                 result += value[i];
+
+                if (isUpper && wasLastCharUpper && !nextIsLower)
+                {
+                    result += " ";
+                }
             }
 
             return result;

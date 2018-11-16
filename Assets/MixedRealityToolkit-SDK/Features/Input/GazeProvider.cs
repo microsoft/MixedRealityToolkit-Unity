@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
@@ -9,11 +8,12 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Core.Services.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.Core.Services.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
@@ -28,9 +28,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private const float MovementThreshold = 0.01f;
 
-        [SerializeField]
-        [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
-        private GameObject cursorPrefab = null;
+        private GameObject cursorObject;
+
+        /// <summary>
+        /// Current Instanced Gaze Cursor.
+        /// </summary>
+        public GameObject GazeCursor
+        {
+            get { return cursorObject; }
+            set
+            {
+                cursorObject = value;
+                value.transform.parent = transform.parent;
+                GazePointer.BaseCursor = value.GetComponent<IMixedRealityCursor>();
+                Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
+                GazePointer.BaseCursor.SetVisibilityOnSourceDetected = false;
+                GazePointer.BaseCursor.Pointer = GazePointer;
+            }
+        }
 
         [SerializeField]
         [Tooltip("Maximum distance at which the gaze can hit a GameObject.")]
@@ -77,9 +92,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         [Tooltip("Maximum head velocity threshold")]
         private float maxHeadVelocityThreshold = 2f;
 
-        [SerializeField]
-        [Tooltip("True to draw a debug view of the ray.")]
-        private bool debugDrawRay = false;
+        /// <inheritdoc />
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
+        }
 
         /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
@@ -100,6 +118,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         /// <inheritdoc />
         public IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
+
+        private IMixedRealityCursor gazeCursor = null;
+
+        /// <inheritdoc />
+        IMixedRealityCursor IMixedRealityGazeProvider.GazeCursor
+        {
+            get
+            {
+                if (gazeCursor == null &&
+                    MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                    MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+                {
+                    cursorObject = Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab);
+                    gazeCursor = cursorObject.GetComponent<IMixedRealityCursor>();
+                }
+
+                return gazeCursor;
+            }
+        }
+
         private InternalGazePointer gazePointer = null;
 
         /// <inheritdoc />
@@ -125,6 +163,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         /// <inheritdoc />
         public Vector3 HeadMovementDirection { get; private set; }
+
+        /// <inheritdoc />
+        public GameObject GameObjectReference => gameObject;
 
         private float lastHitDistance = 2.0f;
 
@@ -277,13 +318,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             await WaitUntilInputSystemValid;
 
-            if (cursorPrefab != null)
+            if (cursorObject != null)
             {
-                var cursorObj = Instantiate(cursorPrefab, transform.parent);
-                GazePointer.BaseCursor = cursorObj.GetComponent<IMixedRealityCursor>();
-                Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
-                GazePointer.BaseCursor.SetVisibilityOnSourceDetected = false;
-                GazePointer.BaseCursor.Pointer = GazePointer;
+                GazePointer.BaseCursor?.SetVisibility(true);
             }
 
             if (delayInitialization)
@@ -295,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void Update()
         {
-            if (debugDrawRay && gazeTransform != null)
+            if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
             }
@@ -332,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             HeadMovementDirection = Vector3.Slerp(HeadMovementDirection, newHeadMoveDirection, directionAdjustmentRate);
 
-            if (debugDrawRay && gazeTransform != null)
+            if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
             {
                 Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadMovementDirection * 10f, Color.Lerp(Color.red, Color.green, multiplier));
                 Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadVelocity, Color.yellow);

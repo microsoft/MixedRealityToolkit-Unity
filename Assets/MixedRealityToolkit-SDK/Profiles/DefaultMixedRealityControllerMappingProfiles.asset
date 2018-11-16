@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1cf5fd47e548e6a23bdd3ddcc00cf6, type: 3}
+  m_Name: DefaultMixedRealityControllerMappingProfiles
+  m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  controllerMappingProfiles:
+  - {fileID: 11400000, guid: e2a9abb2aa64b0e4cb8fbb35126f0322, type: 2}
+  - {fileID: 11400000, guid: 36b2b4f68fb3c7846b12a588a1c7663d, type: 2}
+  - {fileID: 11400000, guid: ceec9d3d32e411b45a4777f784eb5885, type: 2}
+  - {fileID: 11400000, guid: 038d8a4d4f3a61a46b389e09a3596cfa, type: 2}
+  - {fileID: 11400000, guid: fd53131ac5414b74d93915bc1216526a, type: 2}
+  - {fileID: 11400000, guid: bdd0faeb01530ad40b3cfa0e000e12e7, type: 2}
+  - {fileID: 11400000, guid: 968c4c192bee3184f8dc0b7bc6d8fa8e, type: 2}
+  - {fileID: 11400000, guid: d6976c62b5fe7114591a222dd4a43157, type: 2}
+  - {fileID: 11400000, guid: eab2f09952f26bb43b548bde7145683b, type: 2}
