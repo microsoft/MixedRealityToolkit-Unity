@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityInputSystem"/>
     /// </summary>
-    public class MixedRealityInputManager : BaseEventSystem, IMixedRealityInputSystem
+    public class MixedRealityInputSystem : BaseEventSystem, IMixedRealityInputSystem
     {
         /// <inheritdoc />
         public event Action InputEnabled;
