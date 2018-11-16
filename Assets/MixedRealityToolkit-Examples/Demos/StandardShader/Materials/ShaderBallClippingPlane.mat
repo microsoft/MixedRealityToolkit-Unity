@@ -4,12 +4,12 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ShaderBallClippingPlane
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _CLIPPING_PLANE_BORDER _DIRECTIONAL_LIGHT _HOVER_LIGHT _REFLECTIONS
-    _SPECULAR_HIGHLIGHTS
+    m_ShaderKeywords: _CLIPPING_PLANE _CLIPPING_PLANE_BORDER _DIRECTIONAL_LIGHT _HOVER_LIGHT
+    _REFLECTIONS _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -80,7 +80,7 @@ Material:
     - _BorderWidthHorizontal: 0.1
     - _BorderWidthVertical: 0.1
     - _BumpScale: 1
-    - _ClippingPlane: 0
+    - _ClippingPlane: 1
     - _ClippingPlaneBorder: 1
     - _ClippingPlaneBorderWidth: 0.02
     - _ColorWriteMask: 15
