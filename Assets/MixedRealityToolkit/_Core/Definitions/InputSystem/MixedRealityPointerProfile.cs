@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
@@ -56,6 +57,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// The gaze cursor prefab to use on the Gaze pointer.
         /// </summary>
         public GameObject GazeCursorPrefab => gazeCursorPrefab;
+
+        [SerializeField]
+        [Tooltip("The concrete type of IMixedRealityGazeProvider to use.")]
+        [Implements(typeof(IMixedRealityGazeProvider), TypeGrouping.ByNamespaceFlat)]
+        private SystemType gazeProviderType;
+
+        /// <summary>
+        /// The concrete type of <see cref="IMixedRealityGazeProvider"/> to use.
+        /// </summary>
+        public SystemType GazeProviderType => gazeProviderType;
 
         [SerializeField]
         private PointerOption[] pointerOptions = new PointerOption[0];

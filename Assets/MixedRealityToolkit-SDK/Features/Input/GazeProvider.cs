@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
@@ -14,7 +13,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Cursors;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
@@ -94,6 +93,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private float maxHeadVelocityThreshold = 2f;
 
         /// <inheritdoc />
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
+        }
+
+        /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
         {
             get
@@ -112,6 +118,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         /// <inheritdoc />
         public IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
+
+        private IMixedRealityCursor gazeCursor = null;
+
+        /// <inheritdoc />
+        IMixedRealityCursor IMixedRealityGazeProvider.GazeCursor
+        {
+            get
+            {
+                if (gazeCursor == null &&
+                    MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                    MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+                {
+                    cursorObject = Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab);
+                    gazeCursor = cursorObject.GetComponent<IMixedRealityCursor>();
+                }
+                return gazeCursor;
+            }
+        }
+
         private InternalGazePointer gazePointer = null;
 
         /// <inheritdoc />
@@ -137,6 +162,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         /// <inheritdoc />
         public Vector3 HeadMovementDirection { get; private set; }
+
+        /// <inheritdoc />
+        public GameObject GameObjectReference => gameObject;
 
         private float lastHitDistance = 2.0f;
 
