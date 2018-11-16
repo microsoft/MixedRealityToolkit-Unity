@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -41,8 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
         {
             if (diagnosticVisualization != null)
             {
-                Unregister(diagnosticVisualization);
-
                 if (Application.isEditor)
                 {
                     Object.DestroyImmediate(diagnosticVisualization);
@@ -162,6 +161,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
         /// <inheritdoc />
         public MemoryUseTracker MemoryUseTracker { get; private set; }
 
+        private IMixedRealityDiagnosticsHandler diagnosticsHandler;
+
         private GameObject diagnosticVisualization;
 
         /// <inheritdoc />
@@ -183,13 +184,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
                 diagnosticVisualization = GameObject.CreatePrimitive(PrimitiveType.Quad);
                 diagnosticVisualization.name = "Diagnostics";
                 diagnosticVisualization.layer = Physics.IgnoreRaycastLayer;
+
+                // Place it 2 meters in front of the user.
+                //diagnosticVisualization.transform.position = CameraCache.Main.transform.forward * 2f;
+
                 var handlerType = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.HandlerType;
+
+                // TODO: Possibly add a collider and a solver to keep it in front of the users face?
 
                 if (handlerType.Type != null)
                 {
-                    diagnosticVisualization.AddComponent(handlerType.Type);
-
-                    Register(diagnosticVisualization);
+                    diagnosticsHandler = diagnosticVisualization.AddComponent(handlerType.Type) as IMixedRealityDiagnosticsHandler;
                     return diagnosticVisualization;
                 }
 
@@ -219,6 +224,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
         private void RaiseDiagnosticsChanged()
         {
             eventData.Initialize(this, Visible, ShowCpu, ShowFps, ShowMemory);
+
+            // Manually send it to our diagnostics handler, no matter who's listening.
+            diagnosticsHandler?.OnDiagnosticSettingsChanged(eventData);
 
             HandleEvent(eventData, OnDiagnosticsChanged);
         }
