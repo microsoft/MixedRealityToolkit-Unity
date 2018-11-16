@@ -7,8 +7,11 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices
+namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers
 {
+    /// <summary>
+    /// Base class for spatial awareness observers.
+    /// </summary>
     public class BaseSpatialObserver : BaseExtensionService, IMixedRealitySpatialAwarenessObserver
     {
         /// <summary>
@@ -18,31 +21,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <param name="priority"></param>
         public BaseSpatialObserver(string name, uint priority) : base(name, priority) { }
 
-        /// <summary>
-        /// Is the observer running (actively accumulating spatial data)?
-        /// </summary>
+        /// <inheritdoc />
         public bool IsRunning { get; protected set; }
 
-        /// <summary>
-        /// The collection of mesh <see cref="GameObject"/>s that have been observed.
-        /// </summary>
+        /// <inheritdoc />
         public virtual IDictionary<int, GameObject> Meshes => new Dictionary<int, GameObject>();
 
-        /// <summary>
-        /// Start the observer.
-        /// </summary>
+        /// <inheritdoc />
         public virtual void StartObserving() { }
 
-        /// <summary>
-        /// Stop the observer.
-        /// </summary>
+        /// <inheritdoc />
         public virtual void StopObserving() { }
 
         /// <summary>
         /// When a mesh is created we will need to create a game object with a minimum 
         /// set of components to contain the mesh.  These are the required component types.
         /// </summary>
-        private System.Type[] requiredMeshComponents =
+        private readonly System.Type[] requiredMeshComponents =
         {
             typeof(MeshFilter),
             typeof(MeshRenderer),

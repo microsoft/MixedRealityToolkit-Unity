@@ -6,15 +6,18 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMixedReality
 {
+    /// <summary>
+    /// The Windows Mixed Reality Spatial Observer.
+    /// </summary>
     public class WindowsMixedRealitySpatialObserver : BaseSpatialObserver
     {
         /// <summary>
@@ -24,6 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// <param name="priority"></param>
         public WindowsMixedRealitySpatialObserver(string name, uint priority) : base(name, priority) { }
 
+#if UNITY_WSA
+
         #region IMixedRealityToolkit implementation
 
         /// <inheritdoc />
@@ -32,49 +37,29 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             // Only initialize if the Spatial Awareness system has been enabled in the configuration profile.
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled) { return; }
 
-#if UNITY_WSA
             CreateObserver();
 
             // Apply the initial observer volume settings.
             ConfigureObserverVolume();
-#endif // UNITY_WSA
         }
 
         /// <inheritdoc />
         public override void Reset()
         {
-#if UNITY_WSA
             CleanupObserver();
-#endif // UNITY_WSA
             Initialize();
-        }
-
-        /// <inheritdoc />
-        public override void Enable()
-        {
-            // todo
         }
 
         /// <inheritdoc />
         public override void Update()
         {
-#if UNITY_WSA
             UpdateObserver();
-#endif // UNITY_WSA
-        }
-
-        /// <inheritdoc />
-        public override void Disable()
-        {
-            // todo
         }
 
         /// <inheritdoc />
         public override void Destroy()
         {
-#if UNITY_WSA
             CleanupObserver();
-#endif // UNITY_WSA
         }
 
         #endregion IMixedRealityToolkit implementation
@@ -88,7 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 
-#if UNITY_WSA
         /// <summary>
         /// The surface observer providing the spatial data.
         /// </summary>
@@ -121,20 +105,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// one as a spare for use in outstanding mesh requests. That way, we'll have fewer
         /// game object create/destroy cycles, which should help performance.
         /// </summary>
-        protected SpatialMeshObject? spareMeshObject = null;
+        private SpatialMeshObject? spareMeshObject = null;
 
         /// <summary>
         /// The time at which the surface observer was last asked for updated data.
         /// </summary>
         private float lastUpdated = 0;
-#endif // UNITY_WSA
 
         /// <inheritdoc />
         public override IDictionary<int, GameObject> Meshes
         {
             get
             {
-                Dictionary<int, GameObject> meshes = new Dictionary<int, GameObject>();
+                var meshes = new Dictionary<int, GameObject>();
                 // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
                 foreach (int id in meshObjects.Keys)
                 {
@@ -147,7 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// <inheritdoc/>
         public override void StartObserving()
         {
-#if UNITY_WSA
             if (IsRunning)
             {
                 Debug.LogWarning("The Windows Mixed Reality spatial observer is currently running.");
@@ -159,14 +141,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
             // UpdateObserver keys off of this value to start observing.
             IsRunning = true;
-
-#endif // UNITY_WSA
         }
 
         /// <inheritdoc/>
         public override void StopObserving()
         {
-#if UNITY_WSA
             if (!IsRunning)
             {
                 Debug.LogWarning("The Windows Mixed Reality spatial observer is currently stopped.");
@@ -178,10 +157,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
             // Clear any pending work.
             meshWorkQueue.Clear();
-#endif // UNITY_WSA
         }
 
-#if UNITY_WSA
         /// <summary>
         /// Creates the surface observer and handles the desired startup behavior.
         /// </summary>
@@ -489,8 +466,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, meshObject.GameObject);
             }
         }
-#endif // UNITY_WSA
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
+
+#endif // UNITY_WSA
     }
 }

@@ -32,8 +32,8 @@ MonoBehaviour:
       Microsoft.MixedReality.Toolkit.SDK
   enableSpatialAwarenessSystem: 1
   spatialAwarenessSystemType:
-    reference: Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.MixedRealitySpatialAwarenessSystem,
-      Microsoft.MixedReality.Toolkit.SDK
+    reference: Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem.MixedRealitySpatialAwarenessSystem,
+      Microsoft.MixedReality.Toolkit
   spatialAwarenessProfile: {fileID: 11400000, guid: 2a33d8426496c874ab1550069b7ccef8,
     type: 2}
   diagnosticsSystemProfile: {fileID: 11400000, guid: 478436bd1083882479a52d067e98e537,
