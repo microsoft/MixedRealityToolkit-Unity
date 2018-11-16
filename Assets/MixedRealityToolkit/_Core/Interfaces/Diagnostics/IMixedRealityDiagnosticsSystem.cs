@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
 {
     /// <summary>
-    /// 
+    /// The interface contract that defines the Diagnostics system in the Mixed Reality Toolkit
     /// </summary>
     public interface IMixedRealityDiagnosticsSystem : IMixedRealityEventSystem, IMixedRealityEventSource
     {

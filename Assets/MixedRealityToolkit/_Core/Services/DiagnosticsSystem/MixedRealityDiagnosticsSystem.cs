@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
 
                 if (!Visible)
                 {
-                    // Don't create a gameobject if it's not needed
+                    // Don't create a GameObject if it's not needed
                     return null;
                 }
 

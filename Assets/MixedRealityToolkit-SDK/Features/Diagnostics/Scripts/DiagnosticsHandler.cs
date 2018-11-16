@@ -27,7 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         private Rect rect = new Rect();
         private GUIStyle style = null;
 
-
         private void Awake()
         {
             style = new GUIStyle
@@ -35,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
                 alignment = TextAnchor.UpperLeft,
                 normal = new GUIStyleState
                 {
-                    textColor = new Color(0, 0, 0.5f, 1)
+                    textColor = new Color(0, 1f, 0, 1)
                 }
             };
         }

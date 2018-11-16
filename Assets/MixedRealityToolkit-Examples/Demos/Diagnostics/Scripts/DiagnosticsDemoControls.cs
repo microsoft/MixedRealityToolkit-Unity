@@ -1,28 +1,34 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     public class DiagnosticsDemoControls : MonoBehaviour
     {
-        private IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
+        private async void Start()
+        {
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsDiagnosticsSystemEnabled)
+            {
+                Debug.LogWarning("Diagnostics system is disabled. To run this demo, it needs to be enabled. Check your configuration settings.");
+                return;
+            }
 
-        /// <summary>
-        /// Provides the instance, if enabled, of the diagnostics system.
-        /// </summary>
-        private IMixedRealityDiagnosticsSystem DiagnosticsSystem => diagnosticsSystem ?? (diagnosticsSystem = MixedRealityToolkit.DiagnosticsSystem);
+            await new WaitUntil(() => MixedRealityToolkit.DiagnosticsSystem != null);
+
+            // Turn on the diagnostics for this demo.
+            MixedRealityToolkit.DiagnosticsSystem.Visible = true;
+        }
 
         /// <summary>
         /// Shows or hides the diagnostics information display.
         /// </summary>
         public void OnToggleDiagnostics()
         {
-            if (DiagnosticsSystem == null) { return; }
-            DiagnosticsSystem.Visible = !(DiagnosticsSystem.Visible);
+            MixedRealityToolkit.DiagnosticsSystem.Visible = !MixedRealityToolkit.DiagnosticsSystem.Visible;
         }
 
         /// <summary>
@@ -30,8 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void OnToggleFrameRate()
         {
-            if (DiagnosticsSystem == null) { return; }
-            DiagnosticsSystem.ShowFps = !(DiagnosticsSystem.ShowFps);
+            MixedRealityToolkit.DiagnosticsSystem.ShowFps = !MixedRealityToolkit.DiagnosticsSystem.ShowFps;
         }
 
         /// <summary>
@@ -39,8 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void OnToggleMemory()
         {
-            if (DiagnosticsSystem == null) { return; }
-            DiagnosticsSystem.ShowMemory = !(DiagnosticsSystem.ShowMemory);
+            MixedRealityToolkit.DiagnosticsSystem.ShowMemory = !MixedRealityToolkit.DiagnosticsSystem.ShowMemory;
         }
 
         /// <summary>
@@ -48,8 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void OnToggleProcessor()
         {
-            if (DiagnosticsSystem == null) { return; }
-            DiagnosticsSystem.ShowCpu = !(DiagnosticsSystem.ShowCpu);
+            MixedRealityToolkit.DiagnosticsSystem.ShowCpu = !MixedRealityToolkit.DiagnosticsSystem.ShowCpu;
         }
     }
 }
