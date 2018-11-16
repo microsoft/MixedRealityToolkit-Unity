@@ -69,16 +69,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             get
             {
-                if (activeProfile == null)
-                {
-                    // NOTE: To avoid a circular reference, this message must not be controlled by the DebugUtilties class.
-                    Debug.LogError("Critical: The MixedRealityToolkit is not configured with a profile.");
-                }
 #if UNITY_EDITOR
                 if (!Application.isPlaying && activeProfile == null)
                 {
                     UnityEditor.Selection.activeObject = Instance;
                     UnityEditor.EditorGUIUtility.PingObject(Instance);
+                }
+#else
+                // If there is no active profile, the system cannot function. _Always_ display this message in the debug output.
+                if (activeProfile == null)
+                {
+                    Debug.LogError("Critical: The MixedRealityToolkit is not configured with a profile.");
                 }
 #endif // UNITY_EDITOR
                 return activeProfile;
