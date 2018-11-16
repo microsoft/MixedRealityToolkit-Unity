@@ -21,49 +21,45 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 
         private Canvas canvas;
 
+        private bool hasUtility = false;
+
+        private static bool IsUtilityValid => MixedRealityToolkit.HasActiveProfile && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && MixedRealityToolkit.InputSystem?.FocusProvider != null;
+
         private void OnEnable()
         {
             canvas = (Canvas)target;
 
-            if (MixedRealityToolkit.HasActiveProfile &&
-                MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            var utility = canvas.GetComponent<CanvasUtility>();
+
+            hasUtility = utility != null;
+
+            if (hasUtility && !IsUtilityValid ||
+                !hasUtility && IsUtilityValid)
             {
-                CheckCanvasSettings();
+                UpdateCanvasSettings();
             }
         }
 
         public override void OnInspectorGUI()
         {
-            if (!MixedRealityToolkit.HasActiveProfile ||
-                !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
-            {
-                base.OnInspectorGUI();
-                return;
-            }
-
-            if (MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && MixedRealityToolkit.InputSystem == null)
-            {
-                EditorGUILayout.HelpBox("No Input System Profile found in the Mixed Reality Toolkit's Active Profile.", MessageType.Error);
-                base.OnInspectorGUI();
-                return;
-            }
-
             EditorGUI.BeginChangeCheck();
             base.OnInspectorGUI();
 
-            // We will only ask if we have a focus manager in our scene.
             if (EditorGUI.EndChangeCheck())
             {
-                CheckCanvasSettings();
+                UpdateCanvasSettings();
             }
         }
 
-        private void CheckCanvasSettings()
+        private void UpdateCanvasSettings()
         {
-            bool removeHelper = false;
+            bool removeUtility = false;
 
             // Update the world camera if we need to.
-            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera)
+            if (IsUtilityValid &&
+                canvas.isRootCanvas &&
+                canvas.renderMode == RenderMode.WorldSpace &&
+                canvas.worldCamera != MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera)
             {
                 if (EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel"))
                 {
@@ -71,34 +67,49 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                 }
                 else
                 {
-                    removeHelper = true;
+                    removeUtility = true;
                 }
             }
 
             // Add the Canvas Helper if we need it.
-            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera == MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera)
+            if (IsUtilityValid &&
+                canvas.isRootCanvas &&
+                canvas.renderMode == RenderMode.WorldSpace &&
+                canvas.worldCamera == MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera)
             {
                 var helper = canvas.gameObject.EnsureComponent<CanvasUtility>();
                 helper.Canvas = canvas;
             }
 
             // Reset the world canvas if we need to.
-            if (canvas.isRootCanvas && canvas.renderMode != RenderMode.WorldSpace && canvas.worldCamera == MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera)
+            if (IsUtilityValid &&
+                canvas.isRootCanvas &&
+                canvas.renderMode != RenderMode.WorldSpace &&
+                canvas.worldCamera == MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera)
             {
                 // Sets it back to MainCamera default.
                 canvas.worldCamera = null;
-                removeHelper = true;
+                removeUtility = true;
             }
 
+            var utility = canvas.GetComponent<CanvasUtility>();
+
             // Remove the helper if we don't need it.
-            if (removeHelper)
+            if (removeUtility || !IsUtilityValid)
             {
-                // Remove the helper if needed.
-                var helper = canvas.GetComponent<CanvasUtility>();
-                if (helper != null)
+
+                if (utility != null)
                 {
-                    DestroyImmediate(helper);
+                    canvas.worldCamera = null;
+                    DestroyImmediate(utility);
                 }
+
+                hasUtility = false;
+            }
+            else
+            {
+                Debug.Assert(utility != null);
+                hasUtility = true;
             }
         }
     }

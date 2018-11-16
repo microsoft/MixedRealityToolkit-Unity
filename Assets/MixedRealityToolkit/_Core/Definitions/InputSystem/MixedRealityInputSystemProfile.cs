@@ -29,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             private set { inputActionsProfile = value; }
         }
 
-
         [SerializeField]
         [Tooltip("Input Action Rules Profile for raising actions based on specific criteria.")]
         private MixedRealityInputActionRulesProfile inputActionRulesProfile;

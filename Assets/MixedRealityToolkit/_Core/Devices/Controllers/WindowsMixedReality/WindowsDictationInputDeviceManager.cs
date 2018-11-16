@@ -73,11 +73,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.WindowsMixedRe
 
             if (MixedRealityToolkit.InputSystem == null)
             {
-                Debug.LogWarning("Unable to start Windows Dictation Device Manager. An Input System is required for this feature.");
+                Debug.LogError($"Unable to start {Name}. An Input System is required for this feature.");
                 return;
             }
 
-            inputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource("Dictation Recognizer");
+            inputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource(Name);
             dictationResult = string.Empty;
 
             if (dictationRecognizer == null)

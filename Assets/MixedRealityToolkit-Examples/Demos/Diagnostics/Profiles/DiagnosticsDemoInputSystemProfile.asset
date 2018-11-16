@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: DiagnosticsDemoInputSystemProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
+  focusProfile: {fileID: 11400000, guid: beeececedae57b145bd5ecc515d501c5, type: 2}
   inputActionsProfile: {fileID: 11400000, guid: 1cb83b83ddbd33f4a8e2d9257636f8f8,
     type: 2}
   inputActionRulesProfile: {fileID: 11400000, guid: 03945385d89102f41855bc8f5116b199,

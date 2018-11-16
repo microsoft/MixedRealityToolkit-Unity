@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
             }
             else
             {
-                EditorGUI.LabelField(position, label.text, "Use Vector3Range with Vector3 only.");
+                EditorGUI.LabelField(position, label.text, "Use Vector3Range with Vector3 fields only.");
             }
         }
     }
