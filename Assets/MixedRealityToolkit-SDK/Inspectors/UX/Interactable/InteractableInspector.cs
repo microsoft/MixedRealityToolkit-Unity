@@ -4,6 +4,9 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +18,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(Interactable))]
@@ -129,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     for (int i = 0; i < stateLocations.Length; i++)
                     {
                         string path = AssetDatabase.GUIDToAssetPath(stateLocations[i]);
-                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
+                        States.States defaultStates = (States.States)AssetDatabase.LoadAssetAtPath(path, typeof(States.States));
                         if(defaultStates != null)
                         {
                             states.objectReferenceValue = defaultStates;
@@ -170,7 +173,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             if (newActionId != actionId.intValue)
             {
                 actionId.intValue = newActionId;
-                Debug.Log(actionId.intValue);
             }
 
             //selected.enumValueIndex = (int)(MixedRealityInputAction)EditorGUILayout.EnumPopup(new GUIContent("Input Action", "Input source for this Interactable, Default: Select"), (MixedRealityInputAction)selected.enumValueIndex);
@@ -188,8 +190,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
 
-                SerializedProperty requireGaze = serializedObject.FindProperty("RequiresGaze");
-                requireGaze.boolValue = EditorGUILayout.Toggle(new GUIContent("Requires Gaze", "Does the voice command require gazing at this interactable?"), requireGaze.boolValue);
+                SerializedProperty requireGaze = serializedObject.FindProperty("RequiresFocus");
+                requireGaze.boolValue = EditorGUILayout.Toggle(new GUIContent("Requires Focus", "Does the voice command require gazing at this interactable?"), requireGaze.boolValue);
 
                 EditorGUI.indentLevel = indentOnSectionStart;
             }
@@ -362,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                                 int[] location = new int[] { i, t, 0 };
 
-                                State[] iStates = GetStates();
+                                States.State[] iStates = GetStates();
 
                                 ThemeInspector.RenderThemeSettings(themeObjSettings, themeObj, themeOptions, gameObject, location, iStates);
 
@@ -506,7 +508,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             serializedObject.ApplyModifiedProperties();
         }
 
-        protected virtual State[] GetStates()
+        protected virtual States.State[] GetStates()
         {
             return instance.GetStates();
         }

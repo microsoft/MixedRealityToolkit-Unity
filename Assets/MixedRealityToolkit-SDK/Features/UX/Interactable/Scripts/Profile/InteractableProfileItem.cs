@@ -2,13 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile
 {
     /// <summary>
     /// The foundation of profiles that exist on an Interactable

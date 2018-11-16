@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Iteractable
 {
     /// <summary>
     /// A way to control a list of radial type buttons or tabs
@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     public class InteractableToggleCollection : MonoBehaviour
     {
         [Tooltip("Interactables that will be managed by this controller")]
-        public Interactable[] ToggleList;
+        public Interactable.Interactable[] ToggleList;
 
         [Tooltip("Currently selected index or default starting index")]
         public int CurrentIndex;

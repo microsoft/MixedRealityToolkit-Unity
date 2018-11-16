@@ -2,15 +2,24 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+using UnityEngine.Windows.Speech;
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 {
     /// <summary>
     /// Uses input and action data to declare a set of states
@@ -22,14 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     // TODO: plumb for gestures
     // TODO: Add way to protect the defaultTheme from being edited and encourage users to create a new theme, maybe include a create/duplicate button
     // TODO: Make sure all shader values are batched by theme
-    // TODO: Setup pointer and pointer data and list of actions to handle pointer action combos, like grip and stick input
-
-    // BUG: Adding dimensions resets all themes to use default them
-    // BUG: Removing events or themes removes the wrong one
 
     [System.Serializable]
 
-    public class Interactable : MonoBehaviour, IMixedRealityInputHandler, IMixedRealityFocusHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
+    public class Interactable : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
     {
         /// <summary>
         /// Setup the input system
@@ -44,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // is the interactable enabled?
         public bool Enabled = true;
         // a collection of states and basic state logic
-        public States States;
+        public States.States States;
         // the state logic for comparing state
         public InteractableStates StateManager;
         // which action is this interactable listening for
@@ -64,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // a voice command to fire a click event
         public string VoiceCommand = "";
         // does the voice command require this to have focus?
-        public bool RequiresGaze = true;
+        public bool RequiresFocus = true;
 
         /// <summary>
         /// Does this interactable require focus
@@ -85,6 +90,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // directly manipulate a theme value, skip blending
         protected bool forceUpdate = false;
 
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        protected KeywordRecognizer keywordRecognizer;
+        protected RecognitionConfidenceLevel recognitionConfidenceLevel { get; set; }
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+
         // basic button states
         public bool HasFocus { get; private set; }
         public bool HasPress { get; private set; }
@@ -100,6 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public bool HasGesture { get; private set; }
         public bool HasGestureMax { get; private set; }
         public bool HasCollision { get; private set; }
+        public bool HasVoiceCommand { get; private set; }
         public bool HasCustom { get; private set; }
 
         // internal cached states
@@ -113,6 +124,36 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // for advanced controls like drop-downs
         protected float rollOffTime = 0.25f;
         protected float rollOffTimer = 0.25f;
+
+        // cache voice commands
+        protected string[] voiceCommands;
+
+        // IInteractableEvents
+        protected List<IInteractableHandler> handlers = new List<IInteractableHandler>();
+        protected Coroutine globalTimer;
+        protected float clickTime = 0.3f;
+        protected Coroutine inputTimer;
+
+        protected MixedRealityInputAction pointerInputAction;
+
+        // order = pointer , input
+        protected int[] GlobalClickOrder = new int[] { 0, 0 };
+
+        public void AddHandler(IInteractableHandler handler)
+        {
+            if (!handlers.Contains(handler))
+            {
+                handlers.Add(handler);
+            }
+        }
+
+        public void RemoveHandler(IInteractableHandler handler)
+        {
+            if (handlers.Contains(handler))
+            {
+                handlers.Remove(handler);
+            }
+        }
 
         #region InspectorHelpers
         /// <summary>
@@ -164,14 +205,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 InputSystem.Register(gameObject);
             }
-        }
 
+            SetupVoiceCommand();
+        }
+        
         private void OnDisable()
         {
             if (IsGlobal)
             {
                 InputSystem.Unregister(gameObject);
             }
+            
+            StopVoiceCommand();
         }
         
         protected virtual void Update()
@@ -204,7 +249,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (lastState != StateManager.CurrentState())
             {
-                //print(name + " - State Change: " + StateManager.CurrentState());
+                for (int i = 0; i < handlers.Count; i++)
+                {
+                    if (handlers[i] != null)
+                    {
+                        handlers[i].OnStateChange(StateManager, this);
+                    }
+                }
             }
 
             if (forceUpdate)
@@ -242,6 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             for (int i = 0; i < Events.Count; i++)
             {
                 Events[i].Receiver = InteractableEvent.GetReceiver(Events[i], lists);
+                Events[i].Receiver.Host = this;
                 //Events[i].Settings = InteractableEvent.GetSettings(Events[i].Receiver);
                 // apply settings
             }
@@ -409,7 +461,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Custom, custom ? 1 : 0);
             UpdateState();
         }
-        
+
+        public virtual void SetVoiceCommand(bool voice)
+        {
+            HasVoiceCommand = voice;
+            StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Custom, voice ? 1 : 0);
+            UpdateState();
+        }
+
         /// <summary>
         /// a public way to set state directly
         /// </summary>
@@ -496,77 +555,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         #endregion MixedRealityFocusHandlers
 
-        #region MixedRealityInputHandlers
-
-        public void OnInputUp(InputEventData eventData)
-        {
-            //ignore for now - waiting to finalize how actions, input and pointer events should work together.
-            
-            if ((!CanInteract() && !HasPress) || true)
-            {
-                return;
-            }
-            
-            if (ShouldListen(eventData.MixedRealityInputAction))
-            {
-                SetPress(false);
-            }
-            
-        }
-
-        public void OnInputDown(InputEventData eventData)
-        {
-            //ignore for now - waiting to finalize how actions, input and pointer events should work together.
-            
-            if (!CanInteract() || true)
-            {
-                return;
-            }
-            
-            if(ShouldListen(eventData.MixedRealityInputAction))
-            {
-                SetPress(true);
-            }
-        }
-
-        public void OnInputPressed(InputEventData<float> eventData)
-        {
-            // ignore for now - using pointer events,
-            // but may need to come back to these events for menu and trigger filtering
-
-            if (!CanInteract() || true)
-            {
-                return;
-            }
-
-            if (StateManager != null)
-            {
-                if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
-                {
-                    StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
-                    IncreaseDimensionIndex();
-                    OnClick.Invoke();
-                }
-                else if (eventData != null && ShouldListen(eventData.MixedRealityInputAction))
-                {
-                    StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
-                    IncreaseDimensionIndex();
-                    OnClick.Invoke();
-                }
-            }
-        }
-
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData)
-        {
-            //not yet
-        }
-
-        #endregion MixedRealityInputHandlers
-
         #region MixedRealityPointerHandlers
-
+        
+        /// <summary>
+        /// pointer up event has fired
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
+            pointerInputAction = eventData.MixedRealityInputAction;
             if ((!CanInteract() && !HasPress))
             {
                 return;
@@ -578,8 +575,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        /// <summary>
+        /// Pointer down event has fired
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
+            pointerInputAction = eventData.MixedRealityInputAction;
             if (!CanInteract())
             {
                 return;
@@ -593,32 +595,135 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
-            if (!CanInteract())
+            // let the Input Handlers know what the pointer action is
+            if (eventData != null)
+            {
+                pointerInputAction = eventData.MixedRealityInputAction;
+            }
+
+            // check to see if is global or focus - or - if is global, pointer event does not fire twice  - or - input event is not taking these actions already
+            if (!CanInteract() || (IsGlobal && (inputTimer != null || GlobalClickOrder[1] == 1)))
             {
                 return;
             }
-
-            //print(eventData.MixedRealityInputAction.Description);
 
             if (StateManager != null)
             {
                 if (eventData != null && ShouldListen(eventData.MixedRealityInputAction))
                 {
-                    StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
+                    if (GlobalClickOrder[1] == 0)
+                    {
+                        GlobalClickOrder[0] = 1;
+                    }
                     IncreaseDimensionIndex();
-                    print("CLICK invoked!");
-                    OnClick.Invoke();
+                    SendOnClick(eventData.Pointer);
+                    SetVisited(true);
+                    StartInputTimer(false);
                 }
                 else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
                 {
-                    StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
+                    if (GlobalClickOrder[1] == 0)
+                    {
+                        GlobalClickOrder[0] = 1;
+                    }
                     IncreaseDimensionIndex();
-                    OnClick.Invoke();
+                    StartGlobalVisual(false);
+                    SendOnClick(null);
+                    SetVisited(true);
+                    StartInputTimer(false);
                 }
             }
         }
 
+        /// <summary>
+        /// Starts a timer to check if input is in progress
+        ///  - Make sure global pointer events are not double firing
+        ///  - Make sure Global Input events are not double firing
+        ///  - Make sure pointer events are not duplicating an input event
+        /// </summary>
+        /// <param name="isInput"></param>
+        protected void StartInputTimer(bool isInput = false)
+        {
+            if (IsGlobal || isInput)
+            {
+                if (inputTimer != null)
+                {
+                    StopCoroutine(inputTimer);
+                    inputTimer = null;
+                }
+
+                inputTimer = StartCoroutine(InputDownTimer(clickTime));
+            }
+        }
+
         #endregion MixedRealityPointerHandlers
+
+        #region MixedRealityInputHandlers
+
+        /// <summary>
+        /// Used for click events for actions not processed by pointer events
+        /// </summary>
+        /// <param name="eventData"></param>
+        public void OnInputUp(InputEventData eventData)
+        {
+            // check global and focus
+            if (!CanInteract())
+            {
+                return;
+            }
+
+            if (StateManager != null)
+            {
+                // check if the InputAction matches - and - if the pointer event did not fire first or is handling these actions, 
+                if (eventData != null && ShouldListen(eventData.MixedRealityInputAction) && inputTimer != null && (eventData.MixedRealityInputAction != pointerInputAction || pointerInputAction == MixedRealityInputAction.None))
+                {
+                    if (GlobalClickOrder[0] == 0)
+                    {
+                        GlobalClickOrder[1] = 1;
+                    }
+                    StopCoroutine(inputTimer);
+                    inputTimer = null;
+                    SetPress(false);
+
+                    IncreaseDimensionIndex();
+                    SendOnClick(null);
+                    SetVisited(true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Used to handle global events really, using pointer events for most things
+        /// </summary>
+        /// <param name="eventData"></param>
+        public void OnInputDown(InputEventData eventData)
+        {
+            if (!CanInteract())
+            {
+                return;
+            }
+            
+            if (StateManager != null)
+            {
+                if (eventData != null && ShouldListen(eventData.MixedRealityInputAction) && (eventData.MixedRealityInputAction != pointerInputAction || pointerInputAction == MixedRealityInputAction.None))
+                {
+                    StartInputTimer(true);
+                    SetPress(true);
+                }
+            }
+        }
+
+        public void OnInputPressed(InputEventData<float> eventData)
+        {
+            // ignore
+        }
+
+        public void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        {
+            // ignore
+        }
+
+        #endregion MixedRealityInputHandlers
 
         #region DimensionsUtilities
 
@@ -763,18 +868,229 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return true;
         }
 
-        #endregion InteractableUtilities
-        
         /// <summary>
-        /// Voice commands, keyword recognized
+        /// call onClick methods on receivers or IInteractableHandlers
+        /// </summary>
+        protected void SendOnClick(IMixedRealityPointer pointer)
+        {
+            OnClick.Invoke();
+
+            for (int i = 0; i < Events.Count; i++)
+            {
+                if (Events[i].Receiver != null)
+                {
+                    Events[i].Receiver.OnClick(StateManager, this, pointer);
+                }
+            }
+
+            for (int i = 0; i < handlers.Count; i++)
+            {
+                if (handlers[i] != null)
+                {
+                    handlers[i].OnClick(StateManager, this, pointer);
+                }
+            }
+        }
+
+        /// <summary>
+        /// sets some visual states for automating button events like clicks from a keyword
+        /// </summary>
+        /// <param name="voiceCommand"></param>
+        protected void StartGlobalVisual(bool voiceCommand = false)
+        {
+            if (voiceCommand)
+            {
+                StateManager.SetStateValue(InteractableStates.InteractableStateEnum.VoiceCommand, 1);
+            }
+
+            SetVisited(true);
+            StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Focus, 1);
+            StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Pressed, 1);
+            UpdateState();
+
+            if (globalTimer != null)
+            {
+                StopCoroutine(globalTimer);
+            }
+
+            globalTimer = StartCoroutine(GlobalVisualReset(clickTime));
+        }
+
+        /// <summary>
+        /// Clears up any automated visual states
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        protected IEnumerator GlobalVisualReset(float time)
+        {
+            yield return new WaitForSeconds(time);
+            
+            StateManager.SetStateValue(InteractableStates.InteractableStateEnum.VoiceCommand, 0);
+            if (!HasFocus) {
+                StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Focus, 0);
+            }
+
+            if (!HasPress)
+            {
+                StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Pressed, 0);
+            }
+
+            UpdateState();
+
+            globalTimer = null;
+        }
+
+        /// <summary>
+        /// A timer for the MixedRealityInputHandlers, clicks should occur within a certain time.
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        protected IEnumerator InputDownTimer(float time)
+        {
+            yield return new WaitForSeconds(time);
+            inputTimer = null;
+        }
+
+        #endregion InteractableUtilities
+
+        #region VoiceCommands
+
+        /// <summary>
+        /// Voice commands from MixedRealitySpeechCommandProfile, keyword recognized
+        /// requires isGlobal
         /// </summary>
         /// <param name="eventData"></param>
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
-            if (eventData.RecognizedText == VoiceCommand && (!RequiresGaze || HasFocus) && Enabled)
+            if (Enabled && ShouldListen(eventData.MixedRealityInputAction))
             {
-                OnPointerClicked(null);
+                StartGlobalVisual(true);
+                
+                IncreaseDimensionIndex();
+                SendVoiceCommands(eventData.RecognizedText, 0, 1);
+
+                SendOnClick(null);
             }
         }
+
+        /// <summary>
+        /// Setup voice commands from component VoiceCommand input field
+        /// Supports toggles using a comma to seperate keywords, no spaces please
+        /// </summary>
+        protected void SetupVoiceCommand()
+        {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+            if (!string.IsNullOrEmpty(VoiceCommand) && VoiceCommand.Length > 2)
+            {
+                voiceCommands = new string[] { VoiceCommand }; 
+                if (VoiceCommand.IndexOf(",") > -1)
+                {
+                    voiceCommands = VoiceCommand.Split(',');
+                }
+
+                recognitionConfidenceLevel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
+
+                if(keywordRecognizer == null)
+                {
+                    keywordRecognizer = new KeywordRecognizer(voiceCommands, (ConfidenceLevel)recognitionConfidenceLevel);
+                    keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+                    keywordRecognizer.Start();
+                }
+            }
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        }
+
+        protected void StopVoiceCommand()
+        {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+            if (keywordRecognizer != null)
+            {
+                if (keywordRecognizer.IsRunning)
+                {
+                    keywordRecognizer.Stop();
+                }
+                keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
+                keywordRecognizer.Dispose();
+                keywordRecognizer = null;
+            }
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        }
+
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        /// <summary>
+        /// Local voice commands registered on the interactable Voice Command Field
+        /// </summary>
+        /// <param name="args"></param>
+        protected void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
+        {
+            if (args.text == VoiceCommand && (!RequiresFocus || HasFocus) && CanInteract())
+            {
+                
+                if (CanInteract())
+                {
+                    StartGlobalVisual(true);
+
+                    int index = GetVoiceCommandIndex(args.text);
+                    if (voiceCommands.Length < 2 || Dimensions < 2)
+                    {
+                        IncreaseDimensionIndex();
+                    }
+                    else
+                    {
+                        SetDimensionIndex(index);
+                    }
+                    SendVoiceCommands(args.text, index, voiceCommands.Length);
+
+                    SendOnClick(null);
+                }
+            }
+        }
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+
+        /// <summary>
+        /// call OnVoinceCommand methods on receivers or IInteractableHandlers
+        /// </summary>
+        protected void SendVoiceCommands(string command, int index, int length)
+        {
+            for (int i = 0; i < Events.Count; i++)
+            {
+                if (Events[i].Receiver != null)
+                {
+                    Events[i].Receiver.OnVoiceCommand(StateManager, this, command, index, length);
+                }
+            }
+
+            for (int i = 0; i < handlers.Count; i++)
+            {
+                if (handlers[i] != null)
+                {
+                    handlers[i].OnVoiceCommand(StateManager, this, command, index, length);
+                }
+            }
+        }
+
+        /// <summary>
+        /// checks the voiceCommand array for a keyword and returns it's index
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        protected int GetVoiceCommandIndex(string command)
+        {
+            if(voiceCommands.Length > 1)
+            {
+                for (int i = 0; i < voiceCommands.Length; i++)
+                {
+                    if(command == voiceCommands[i])
+                    {
+                        return i;
+                    }
+                }
+            }
+
+            return 0;
+        }
+        
+        #endregion VoiceCommands
+
     }
 }

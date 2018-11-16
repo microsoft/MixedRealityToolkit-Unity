@@ -371,7 +371,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                 headerName = headerName.ToUpper();
             }
 
-            bool drawSection = EditorGUILayout.Foldout(open, headerName, true, sectionStyle);
+            bool drawSection = false;
+            drawSection = EditorGUILayout.Foldout(open, headerName, true, sectionStyle);
             EditorGUILayout.BeginVertical();
             GUI.color = tColor;
             EditorGUI.indentLevel = indent;

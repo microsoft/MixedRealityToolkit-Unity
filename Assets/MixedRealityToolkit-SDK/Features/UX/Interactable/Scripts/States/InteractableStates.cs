@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
 {
     /// <summary>
     /// list of Interactable states and basic comparison
@@ -65,10 +65,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             /// There is a collision
             /// </summary>
             Collision,
+            /// /// <summary>
+            /// Voice command happened
+            /// </summary>
+            VoiceCommand,
             /// <summary>
             /// Custom placeholder for anything
             /// </summary>
             Custom
+
         }
 
         protected new State[] allStates = new State[14]
