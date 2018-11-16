@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                 if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile == null)
                 {
-                    Debug.LogError($"Unable to start {Name}. An Focus Profile is required for this feature.");
+                    Debug.LogError($"Unable to start {Name}. An Pointer Profile is required for this feature.");
                     return false;
                 }
 
