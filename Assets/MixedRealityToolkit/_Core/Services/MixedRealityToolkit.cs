@@ -871,7 +871,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
                 {
-                    Debug.LogError("Unable to disable null manager type.");
+                    Debug.LogError("Unable to disable null service type.");
                 }
                 return;
             }
