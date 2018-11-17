@@ -178,7 +178,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 if (!RegisterService(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem) ||
                     InputSystem == null)
                 {
-                    DebugUtilities.LogCriticalError("Failed to start the Input System!");
+                    if ((ActiveProfile.LoggingLevel & LoggingLevels.CriticalError) != 0)
+                    {
+                        Debug.LogError("Critical: Failed to start the Input System!");
+                    }
                 }
             }
 
@@ -188,7 +191,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 if (!RegisterService(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem) ||
                     BoundarySystem == null)
                 {
-                    DebugUtilities.LogCriticalError("Failed to start the Boundary System!");
+                    if ((ActiveProfile.LoggingLevel & LoggingLevels.CriticalError) != 0)
+                    {
+                        Debug.LogError("Critical: Failed to start the Boundary System!");
+                    }
                 }
             }
 
@@ -198,7 +204,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 if (!RegisterService(typeof(IMixedRealitySpatialAwarenessSystem), Activator.CreateInstance(ActiveProfile.SpatialAwarenessSystemSystemType) as IMixedRealitySpatialAwarenessSystem) ||
                     SpatialAwarenessSystem == null)
                 {
-                    DebugUtilities.LogCriticalError("Failed to start the Spatial Awareness System!");
+                    if ((ActiveProfile.LoggingLevel & LoggingLevels.CriticalError) != 0)
+                    {
+                        Debug.LogError("Critical: Failed to start the Spatial Awareness System!");
+                    }
                 }
             }
 
@@ -208,7 +217,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 if (!RegisterService(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem) ||
                     TeleportSystem == null)
                 {
-                    DebugUtilities.LogCriticalError("Failed to start the Teleport System!");
+                    if ((ActiveProfile.LoggingLevel & LoggingLevels.CriticalError) != 0)
+                    {
+                        Debug.LogError("Critical: Failed to start the Teleport System!");
+                    }
                 }
             }
 
@@ -217,7 +229,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 if (!RegisterService(typeof(IMixedRealityDiagnosticsSystem), Activator.CreateInstance(ActiveProfile.DiagnosticsSystemSystemType) as IMixedRealityDiagnosticsSystem) ||
                     DiagnosticsSystem == null)
                 {
-                    DebugUtilities.LogCriticalError("Failed to start the Diagnostics System!");
+                    if ((ActiveProfile.LoggingLevel & LoggingLevels.CriticalError) != 0)
+                    {
+                        Debug.LogError("Critical: Failed to start the Diagnostics System!");
+                    }
                 }
             }
 
@@ -236,7 +251,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                         {
                             if (!RegisterService(typeof(IMixedRealityExtensionService), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityExtensionService))
                             {
-                                DebugUtilities.LogCriticalError($"Failed to register the {configuration.ComponentType.Type} Extension Service!");
+                                if ((ActiveProfile.LoggingLevel & LoggingLevels.CriticalError) != 0)
+                                {
+                                    Debug.LogError($"Critical: Failed to register the {configuration.ComponentType.Type} Extension Service!");
+                                }
                             }
                         }
                     }
@@ -377,8 +395,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 {
                     if (instance != null)
                     {
-                        DebugUtilities.Assert(instance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
-                        DebugUtilities.Assert(instance.transform.childCount == 0, "The MixedRealityToolkit should not have GameObject children!");
+                        if ((ActiveProfile.LoggingLevel & LoggingLevels.Assert) != 0)
+                        {
+
+                            Debug.Assert(instance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
+                            Debug.Assert(instance.transform.childCount == 0, "The MixedRealityToolkit should not have GameObject children!");
+                        }
                     }
                 };
 #endif // UNITY_EDITOR
@@ -403,8 +425,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         [Obsolete("This method obsolete and will be removed in a future release of the MixedRealityToolkit.")]
         public static void AssertIsInitialized()
         {
-            DebugUtilities.Assert(IsInitialized, "The MixedRealityToolkit has not been initialized.");
-        }
+            Debug.Assert(IsInitialized, "The MixedRealityToolkit has not been initialized.");
+       }
 
         /// <summary>
         /// Returns whether the instance has been initialized or not.
@@ -432,7 +454,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             get
             {
-                DebugUtilities.Assert(IsInitialized, "The MixedRealityToolkit has not been initialized.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Assert) != 0)
+                {
+                    Debug.Assert(IsInitialized, "The MixedRealityToolkit has not been initialized.");
+                }
 
                 if (mixedRealityPlayspace)
                 {
@@ -453,7 +478,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                         // something else. We print a warning to call out the fact that we're 
                         // co-opting this object for use with teleporting and such, since that
                         // might cause conflicts with the parent's intended purpose.
-                        DebugUtilities.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {MixedRealityPlayspaceName}. The existing parent will be renamed and used instead.");
+                        if ((ActiveProfile.LoggingLevel & LoggingLevels.Warning) != 0)
+                        {
+                            Debug.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {MixedRealityPlayspaceName}. The existing parent will be renamed and used instead.");
+                        }
                         // If we rename it, we make it clearer that why it's being teleported around at runtime.
                         CameraCache.Main.transform.parent.name = MixedRealityPlayspaceName;
                     }
@@ -494,7 +522,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     Destroy(this);
                 }
 
-                DebugUtilities.LogWarning("Trying to instantiate a second instance of the Mixed Reality Toolkit. Additional Instance was destroyed");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Warning) != 0)
+                {
+                    Debug.LogWarning("Trying to instantiate a second instance of the Mixed Reality Toolkit. Additional Instance was destroyed");
+                }
             }
             else if (!IsInitialized)
             {
@@ -502,7 +533,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
             else
             {
-                DebugUtilities.LogCriticalError("Failed to properly initialize the MixedRealityToolkit");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.CriticalError) != 0)
+                {
+                    Debug.LogError("Critical: Failed to properly initialize the MixedRealityToolkit");
+                }
             }
         }
 
@@ -550,13 +584,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (type == null)
             {
-                DebugUtilities.LogError("Unable to add a manager of type null.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to add a manager of type null.");
+                }
                 return false;
             }
 
             if (service == null)
             {
-                DebugUtilities.LogError("Unable to add a manager with a null instance.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to add a manager with a null instance.");
+                }
                 return false;
             }
 
@@ -572,13 +612,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     return true;
                 }
 
-                DebugUtilities.LogWarning($"There's already a {type.Name} registered.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Warning) != 0)
+                {
+                    Debug.LogWarning($"There's already a {type.Name} registered.");
+                }
                 return false;
             }
 
             if (!typeof(IMixedRealityExtensionService).IsAssignableFrom(type))
             {
-                DebugUtilities.LogError($"Unable to register {type}. Concrete type does not implement the IMixedRealityExtensionService implementation.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError($"Unable to register {type}. Concrete type does not implement the IMixedRealityExtensionService implementation.");
+                }
                 return false;
             }
 
@@ -617,13 +663,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (!IsInitialized)
             {
-                DebugUtilities.LogCriticalError($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has not been initialized!");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.CriticalError) != 0)
+                {
+                    Debug.LogError($"Critical: Unable to get {nameof(type)} Manager as the Mixed Reality Manager has not been initialized!");
+                }
                 return null;
             }
 
             if (type == null)
             {
-                DebugUtilities.LogError("Unable to get null manager type.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to get null manager type.");
+                }
                 return null;
             }
 
@@ -640,7 +692,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (service == null && showLogs)
             {
-                DebugUtilities.LogWarning($"Unable to find {type.Name}.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Warning) != 0)
+                {
+                    Debug.LogWarning($"Unable to find {type.Name}.");
+                }
             }
 
             return service;
@@ -661,13 +716,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (type == null)
             {
-                DebugUtilities.LogError("Unable to get null manager type.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to get null manager type.");
+                }
                 return null;
             }
 
             if (string.IsNullOrEmpty(serviceName))
             {
-                DebugUtilities.LogError("Unable to get manager by name without the name being specified.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to get manager by name without the name being specified.");
+                }
                 return null;
             }
 
@@ -684,7 +745,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (service == null && showLogs)
             {
-                DebugUtilities.LogWarning($"Unable to find {serviceName} Manager.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Warning) != 0)
+                {
+                    Debug.LogWarning($"Unable to find {serviceName} Manager.");
+                }
             }
 
             return service;
@@ -700,7 +764,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (type == null)
             {
-                DebugUtilities.LogCriticalError("Unable to remove null manager type.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to remove null manager type.");
+                }
                 return;
             }
 
@@ -732,13 +799,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (type == null)
             {
-                DebugUtilities.LogCriticalError("Unable to remove null manager type.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to remove null manager type.");
+                }
                 return;
             }
 
             if (string.IsNullOrEmpty(serviceName))
             {
-                DebugUtilities.LogCriticalError("Unable to remove manager by name without the name being specified.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to remove manager by name without the name being specified.");
+                }
                 return;
             }
 
@@ -765,7 +838,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (type == null)
             {
-                DebugUtilities.LogError("Unable to disable null manager type.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to disable null manager type.");
+                }
                 return;
             }
 
@@ -793,13 +869,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (type == null)
             {
-                DebugUtilities.LogError("Unable to disable null manager type.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to disable null manager type.");
+                }
                 return;
             }
 
             if (string.IsNullOrEmpty(serviceName))
             {
-                DebugUtilities.LogError("Unable to disable manager by name without the name being specified.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to disable manager by name without the name being specified.");
+                }
                 return;
             }
 
@@ -826,7 +908,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (type == null)
             {
-                DebugUtilities.LogError("Unable to enable null manager type.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to enable null manager type.");
+                }
                 return;
             }
 
@@ -854,13 +939,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (type == null)
             {
-                DebugUtilities.LogError("Unable to enable null manager type.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to enable null manager type.");
+                }
                 return;
             }
 
             if (string.IsNullOrEmpty(serviceName))
             {
-                DebugUtilities.LogError("Unable to enable manager by name without the name being specified.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to enable manager by name without the name being specified.");
+                }
                 return;
             }
 
@@ -892,7 +983,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (type == null)
             {
-                DebugUtilities.LogWarning("Unable to get managers with a type of null.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to get managers with a type of null.");
+                }
                 return new List<IMixedRealityService>();
             }
 
@@ -911,7 +1005,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (type == null)
             {
-                DebugUtilities.LogWarning("Unable to get managers with a type of null.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to get managers with a type of null.");
+                }
                 return new List<IMixedRealityService>();
             }
 
@@ -1076,7 +1173,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (type == null)
             {
-                DebugUtilities.LogWarning("Null cannot be a core manager.");
+                if ((Instance?.ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Null cannot be a core manager.");
+                }
                 return false;
             }
 
@@ -1105,7 +1205,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (type == null)
             {
-                DebugUtilities.LogWarning("Unable to get a component with a type of null.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to get a component with a type of null.");
+                }
                 service = null;
                 return;
             }
@@ -1123,7 +1226,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (type == null)
             {
-                DebugUtilities.LogWarning("Unable to get a component with a type of null.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to get a component with a type of null.");
+                }
                 service = null;
                 return false;
             }
@@ -1132,7 +1238,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (isInitializing)
             {
-                DebugUtilities.LogWarning("Unable to get a service while initializing!");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Warning) != 0)
+                {
+                    Debug.LogWarning("Unable to get a service while initializing!");
+                }
                 return false;
             }
 
@@ -1157,7 +1266,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (type == null)
             {
-                DebugUtilities.LogWarning("Unable to get components with a type of null.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to get components with a type of null.");
+                }
                 return;
             }
 
@@ -1168,7 +1280,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (type == null)
             {
-                DebugUtilities.LogWarning("Unable to get components with a type of null.");
+                if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
+                {
+                    Debug.LogError("Unable to get components with a type of null.");
+                }
                 return;
             }
 
