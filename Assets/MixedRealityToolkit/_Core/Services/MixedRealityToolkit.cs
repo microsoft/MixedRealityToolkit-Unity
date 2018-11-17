@@ -595,7 +595,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
                 {
-                    Debug.LogError("Unable to add a manager with a null instance.");
+                    Debug.LogError("Unable to add a service with a null instance.");
                 }
                 return false;
             }
