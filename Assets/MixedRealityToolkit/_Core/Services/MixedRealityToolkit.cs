@@ -880,7 +880,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
                 {
-                    Debug.LogError("Unable to disable manager by name without the name being specified.");
+                    Debug.LogError("Unable to disable service by name without the name being specified.");
                 }
                 return;
             }
