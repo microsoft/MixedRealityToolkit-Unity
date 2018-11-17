@@ -665,7 +665,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 if ((ActiveProfile.LoggingLevel & LoggingLevels.CriticalError) != 0)
                 {
-                    Debug.LogError($"Critical: Unable to get {nameof(type)} Manager as the Mixed Reality Manager has not been initialized!");
+                    Debug.LogError($"Critical: Unable to get {nameof(type)} service as the Mixed Reality Toolkit has not been initialized!");
                 }
                 return null;
             }
