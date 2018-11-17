@@ -39,10 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             Debug.Assert(!string.IsNullOrEmpty(scriptAssemblyData.name));
             Debug.Assert(fromAssemblyName == assetPath, "Failed to get the proper assembly name!");
 
-            success |= CompilationPipeline.GetAssemblies(AssembliesType.Editor).ReplaceSourceWithAssembly(ref scriptAssemblyData, directoryPath);
-            success |= CompilationPipeline.GetAssemblies(AssembliesType.Player).ReplaceSourceWithAssembly(ref scriptAssemblyData, directoryPath);
-
-            if (success)
+            if (CompilationPipeline.GetAssemblies(AssembliesType.Editor).ReplaceSourceWithAssembly(ref scriptAssemblyData, directoryPath) ||
+                CompilationPipeline.GetAssemblies(AssembliesType.Player).ReplaceSourceWithAssembly(ref scriptAssemblyData, directoryPath))
             {
                 File.WriteAllText(assetPath, CustomScriptAssemblyData.ToJson(scriptAssemblyData));
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
@@ -55,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         {
             foreach (Assembly assembly in assemblies)
             {
-                if (assembly.name == assemblyData.name) { continue; }
+                if (assembly.name != assemblyData.name) { continue; }
 
                 Debug.Assert(assembly.sourceFiles != null);
                 Debug.Assert(assembly.sourceFiles.Length > 0);
