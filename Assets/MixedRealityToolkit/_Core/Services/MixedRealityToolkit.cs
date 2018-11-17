@@ -1007,7 +1007,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
                 {
-                    Debug.LogError("Unable to get managers with a type of null.");
+                    Debug.LogError("Unable to get service with a type of null.");
                 }
                 return new List<IMixedRealityService>();
             }
