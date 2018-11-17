@@ -694,7 +694,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 if ((ActiveProfile.LoggingLevel & LoggingLevels.Warning) != 0)
                 {
-                    Debug.LogWarning($"Unable to find {type.Name}.");
+                    Debug.LogWarning($"Unable to find {type.Name} service.");
                 }
             }
 
@@ -747,7 +747,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 if ((ActiveProfile.LoggingLevel & LoggingLevels.Warning) != 0)
                 {
-                    Debug.LogWarning($"Unable to find {serviceName} Manager.");
+                    Debug.LogWarning($"Unable to find {serviceName} service.");
                 }
             }
 
