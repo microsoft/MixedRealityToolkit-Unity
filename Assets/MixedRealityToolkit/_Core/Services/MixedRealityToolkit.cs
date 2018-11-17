@@ -1175,7 +1175,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 if ((Instance?.ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
                 {
-                    Debug.LogError("Null cannot be a core manager.");
+                    Debug.LogError("Null cannot be a core system!");
                 }
                 return false;
             }
