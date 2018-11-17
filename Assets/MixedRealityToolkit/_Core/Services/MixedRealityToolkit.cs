@@ -1207,7 +1207,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
                 if ((ActiveProfile.LoggingLevel & LoggingLevels.Error) != 0)
                 {
-                    Debug.LogError("Unable to get a component with a type of null.");
+                    Debug.LogError("Unable to get a service with a type of null.");
                 }
                 service = null;
                 return;
