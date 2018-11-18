@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         {
             Debug.Assert(Selection.activeObject != null);
 
-            EditorUtility.DisplayProgressBar("Updating source with assembly", "Getting things ready...", 0);
+            EditorUtility.DisplayProgressBar("Replacing source with assembly", "Getting things ready...", 0);
 
             var assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
             var directoryPath = new FileInfo(assetPath).Directory?.FullName;
@@ -86,26 +86,27 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             if (CompilationPipeline.GetAssemblies(AssembliesType.Editor).ReplaceSourceWithAssembly(ref scriptAssemblyData, directoryPath) ||
                 CompilationPipeline.GetAssemblies(AssembliesType.Player).ReplaceSourceWithAssembly(ref scriptAssemblyData, directoryPath))
             {
+                EditorUtility.DisplayProgressBar("Replacing source with assembly", "Saving source meta data for later...", 0.95f);
                 File.WriteAllText(assetPath, CustomScriptAssemblyData.ToJson(scriptAssemblyData));
                 File.WriteAllText($"{Path.GetFullPath(assetPath).Hide()}{JSON}", JsonUtility.ToJson(scriptAssemblyData.Source, true));
-                AssetDatabase.ImportAsset(assetPath);
             }
             else
             {
                 Debug.LogError("Failed to replace source code with assembly!");
             }
 
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             EditorUtility.ClearProgressBar();
         }
 
         private static bool ReplaceSourceWithAssembly(this Assembly[] assemblies, ref CustomScriptAssemblyData assemblyData, string directoryPath)
         {
-            EditorUtility.DisplayProgressBar("Updating source with assembly", "Gathering assembly information...", 0.1f);
+            EditorUtility.DisplayProgressBar("Replacing source with assembly", "Gathering assembly information...", 0.1f);
 
             for (var i = 0; i < assemblies.Length; i++)
             {
                 Assembly assembly = assemblies[i];
-                EditorUtility.DisplayProgressBar("Updating source with assembly", $"Processing assembly {assembly.name}", i / (float)assemblies.Length);
+                EditorUtility.DisplayProgressBar("Replacing source with assembly", $"Processing assembly {assembly.name}", i / (float)assemblies.Length);
 
                 if (assembly.name != assemblyData.name) { continue; }
 
@@ -121,29 +122,29 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                     var fullPath = Path.GetFullPath(assembly.sourceFiles[j]);
                     var newPath = fullPath.Hide();
 
-                    EditorUtility.DisplayProgressBar("Updating source with assembly", $"Processing file {Path.GetFileName(fullPath)}", j / (float)assembly.sourceFiles.Length);
+                    EditorUtility.DisplayProgressBar("Replacing source with assembly", $"Processing file {Path.GetFileName(fullPath)}", j / (float)assembly.sourceFiles.Length);
 
-                    File.Copy(fullPath, newPath);
-                    File.Copy($"{fullPath}{META}", $"{newPath}{META}");
-                    AssetDatabase.DeleteAsset(fullPath.GetUnityProjectRelativePath());
+                    File.Move(fullPath, newPath);
+                    File.Move($"{fullPath}{META}", $"{newPath}{META}");
                 }
 
                 var assemblyPath = $"{directoryPath}\\{assembly.name}{DLL}";
 
-                EditorUtility.DisplayProgressBar("Updating source with assembly", "Copying assembly into project...", 0.5f);
+                EditorUtility.DisplayProgressBar("Replacing source with assembly", "Copying assembly into project...", 0.5f);
 
                 File.Copy(assembly.outputPath, assemblyPath);
 
-                EditorUtility.DisplayProgressBar("Updating source with assembly", "Updating plugin settings...", 0.75f);
+                EditorUtility.DisplayProgressBar("Replacing source with assembly", "Importing plugin...", 0.625f);
 
                 AssetDatabase.ImportAsset(assemblyPath.GetUnityProjectRelativePath());
+
+                EditorUtility.DisplayProgressBar("Replacing source with assembly", "Updating plugin settings...", 0.75f);
 
                 var importedAssembly = (PluginImporter)AssetImporter.GetAtPath(assemblyPath.GetUnityProjectRelativePath());
 
                 if (importedAssembly == null)
                 {
                     Debug.LogError("Failed to get plugin importer!");
-                    EditorUtility.ClearProgressBar();
                     return true;
                 }
 
@@ -152,7 +153,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                 {
                     Selection.activeObject = importedAssembly;
                     Debug.LogError("Unable to update plugin import settings, as both exclude and include platforms have been enabled.");
-                    EditorUtility.ClearProgressBar();
                     return true;
                 }
 
@@ -185,6 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                     }
                 }
 
+                EditorUtility.DisplayProgressBar("Replacing source with assembly", "Saving and re-importing with updated settings...", 0.8f);
+
                 importedAssembly.SaveAndReimport();
                 Selection.activeObject = importedAssembly;
 
@@ -210,6 +212,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         {
             Debug.Assert(Selection.activeObject != null);
 
+            EditorUtility.DisplayProgressBar("Replacing assembly with source", "Getting things ready...", 0);
+
             var builtAssemblyPath = string.Empty;
             var assemblyDefinitionPath = string.Empty;
             var assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
@@ -224,6 +228,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                 assemblyDefinitionPath = assetPath;
                 builtAssemblyPath = assetPath.FindSiblingFileByExtension(DLL);
             }
+
+            EditorUtility.DisplayProgressBar("Replacing assembly with source", "Getting source file data...", .25f);
 
             Debug.Assert(!string.IsNullOrEmpty(builtAssemblyPath), "No Assembly found for this Assembly Definition!");
             Debug.Assert(!string.IsNullOrEmpty(assemblyDefinitionPath), "No Assembly Definition found for this Assembly!");
@@ -240,8 +246,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             Debug.Assert(scriptAssemblyData != null);
             Debug.Assert(scriptAssemblyData.Source?.Files != null, "Fatal Error: Missing meta data to re-import source files. You'll need to manually do it by removing the '.' in front of each file.");
 
-            foreach (var sourceFile in scriptAssemblyData.Source.Files)
+            for (var i = 0; i < scriptAssemblyData.Source.Files.Length; i++)
             {
+                var sourceFile = scriptAssemblyData.Source.Files[i];
                 var fullHiddenPath = Path.GetFullPath(sourceFile).Hide();
 
                 if (!File.Exists(fullHiddenPath))
@@ -252,12 +259,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 
                 var sourcePath = fullHiddenPath.UnHide();
 
+                EditorUtility.DisplayProgressBar("Replacing assembly with source", $"Processing file {Path.GetFileName(fullHiddenPath).UnHide()}", i / (float)scriptAssemblyData.Source.Files.Length);
+
                 File.Move(fullHiddenPath, sourcePath);
                 File.Move($"{fullHiddenPath}{META}", $"{sourcePath}{META}");
             }
 
-            AssetDatabase.DeleteAsset(builtAssemblyPath.GetUnityProjectRelativePath());
+            EditorUtility.DisplayProgressBar("Replacing assembly with source", "Deleting assembly...", .75f);
+
+            File.Delete(builtAssemblyPath);
+            File.Delete($"{builtAssemblyPath}{META}");
+
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+            EditorUtility.ClearProgressBar();
         }
 
         private static string Hide(this string path)
