@@ -72,6 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         {
             Debug.Assert(Selection.activeObject != null);
 
+            EditorUtility.DisplayProgressBar("Updating source with assembly", "Getting things ready...", 0);
+
             var assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
             var directoryPath = new FileInfo(assetPath).Directory?.FullName;
             var assemblyDefinitionText = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(assetPath).text;
@@ -92,61 +94,95 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             {
                 Debug.LogError("Failed to replace source code with assembly!");
             }
+
+            EditorUtility.ClearProgressBar();
         }
 
         private static bool ReplaceSourceWithAssembly(this Assembly[] assemblies, ref CustomScriptAssemblyData assemblyData, string directoryPath)
         {
-            foreach (Assembly assembly in assemblies)
+            EditorUtility.DisplayProgressBar("Updating source with assembly", "Gathering assembly information...", 0.1f);
+
+            for (var i = 0; i < assemblies.Length; i++)
             {
+                Assembly assembly = assemblies[i];
+                EditorUtility.DisplayProgressBar("Updating source with assembly", $"Processing assembly {assembly.name}", i / (float)assemblies.Length);
+
                 if (assembly.name != assemblyData.name) { continue; }
 
                 Debug.Assert(assembly.sourceFiles != null);
                 Debug.Assert(assembly.sourceFiles.Length > 0);
+                Debug.Assert(File.Exists(assembly.outputPath));
 
                 assemblyData.Source.Files = assembly.sourceFiles;
+                AssetDatabase.ReleaseCachedFileHandles();
 
-                foreach (string sourceFile in assembly.sourceFiles)
+                for (var j = 0; j < assembly.sourceFiles.Length; j++)
                 {
-                    var fullPath = Path.GetFullPath(sourceFile);
+                    var fullPath = Path.GetFullPath(assembly.sourceFiles[j]);
                     var newPath = fullPath.Hide();
 
-                    File.Move(fullPath, newPath);
-                    File.Move($"{fullPath}{META}", $"{newPath}{META}");
+                    EditorUtility.DisplayProgressBar("Updating source with assembly", $"Processing file {Path.GetFileName(fullPath)}", j / (float)assembly.sourceFiles.Length);
+
+                    File.Copy(fullPath, newPath);
+                    File.Copy($"{fullPath}{META}", $"{newPath}{META}");
+                    AssetDatabase.DeleteAsset(fullPath.GetUnityProjectRelativePath());
                 }
 
                 var assemblyPath = $"{directoryPath}\\{assembly.name}{DLL}";
 
+                EditorUtility.DisplayProgressBar("Updating source with assembly", "Copying assembly into project...", 0.5f);
+
                 File.Copy(assembly.outputPath, assemblyPath);
 
-                try
-                {
-                    AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e.Message);
-                }
+                EditorUtility.DisplayProgressBar("Updating source with assembly", "Updating plugin settings...", 0.75f);
+
+                AssetDatabase.ImportAsset(assemblyPath.GetUnityProjectRelativePath());
 
                 var importedAssembly = (PluginImporter)AssetImporter.GetAtPath(assemblyPath.GetUnityProjectRelativePath());
 
                 if (importedAssembly == null)
                 {
                     Debug.LogError("Failed to get plugin importer!");
+                    EditorUtility.ClearProgressBar();
                     return true;
                 }
 
-                importedAssembly.SetCompatibleWithAnyPlatform(assemblyData.includePlatforms.Length == 0);
-
-                for (int i = 0; i < assemblyData.includePlatforms?.Length; i++)
+                if (assemblyData.excludePlatforms != null && assemblyData.excludePlatforms.Length > 0 &&
+                    assemblyData.includePlatforms != null && assemblyData.includePlatforms.Length > 0)
                 {
-                    importedAssembly.SetCompatibleWithAnyPlatform(assemblyData.includePlatforms[i].Contains("Editor"));
-                    importedAssembly.SetCompatibleWithPlatform(assemblyData.includePlatforms[i], true);
+                    Selection.activeObject = importedAssembly;
+                    Debug.LogError("Unable to update plugin import settings, as both exclude and include platforms have been enabled.");
+                    EditorUtility.ClearProgressBar();
+                    return true;
                 }
-                
-                for (int i = 0; i < assemblyData.excludePlatforms?.Length; i++)
+
+                BuildTarget buildTarget;
+                importedAssembly.SetCompatibleWithAnyPlatform(assemblyData.includePlatforms == null || assemblyData.includePlatforms.Length == 0);
+
+                if (assemblyData.includePlatforms != null && assemblyData.includePlatforms.Length > 0)
                 {
-                    importedAssembly.SetExcludeEditorFromAnyPlatform(assemblyData.excludePlatforms[i].Contains("Editor"));
-                    importedAssembly.SetExcludeFromAnyPlatform(assemblyData.excludePlatforms[i], true);
+                    importedAssembly.SetCompatibleWithEditor(assemblyData.includePlatforms.Contains("Editor"));
+
+                    for (int j = 0; j < assemblyData.includePlatforms?.Length; j++)
+                    {
+                        if (assemblyData.includePlatforms[j].TryGetBuildTarget(out buildTarget))
+                        {
+                            importedAssembly.SetCompatibleWithPlatform(buildTarget, true);
+                        }
+                    }
+                }
+
+                if (assemblyData.excludePlatforms != null && assemblyData.excludePlatforms.Length > 0)
+                {
+                    importedAssembly.SetCompatibleWithEditor(!assemblyData.excludePlatforms.Contains("Editor"));
+
+                    for (int j = 0; j < assemblyData.excludePlatforms?.Length; j++)
+                    {
+                        if (assemblyData.excludePlatforms[j].TryGetBuildTarget(out buildTarget))
+                        {
+                            importedAssembly.SetExcludeFromAnyPlatform(buildTarget, true);
+                        }
+                    }
                 }
 
                 importedAssembly.SaveAndReimport();
@@ -198,6 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             var assemblySourcePath = $"{Path.GetFullPath(assemblyDefinitionPath).Hide()}{JSON}";
             Debug.Assert(File.Exists(assemblySourcePath), "Fatal Error: Missing meta data to re-import source files. You'll need to manually do it by removing the '.' in front of each file.");
             string sourceFilesText = File.ReadAllText(assemblySourcePath);
+            File.Delete(assemblySourcePath);
             scriptAssemblyData.Source = JsonUtility.FromJson<AsmDefSourceFiles>(sourceFilesText);
 
             Debug.Assert(scriptAssemblyData != null);
@@ -219,9 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                 File.Move($"{fullHiddenPath}{META}", $"{sourcePath}{META}");
             }
 
-            File.Delete(builtAssemblyPath);
-            File.Delete($"{builtAssemblyPath}{META}");
-
+            AssetDatabase.DeleteAsset(builtAssemblyPath.GetUnityProjectRelativePath());
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
 
@@ -287,5 +322,64 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             return string.Empty;
         }
 
+        private static bool TryGetBuildTarget(this string platform, out BuildTarget buildTarget)
+        {
+            switch (platform)
+            {
+                case "Editor":
+                    buildTarget = BuildTarget.NoTarget;
+                    return false;
+                case "Android":
+                    buildTarget = BuildTarget.Android;
+                    return true;
+                case "iOS":
+                    buildTarget = BuildTarget.iOS;
+                    return true;
+                case "LinuxStandalone32":
+                    buildTarget = BuildTarget.StandaloneLinux;
+                    return true;
+                case "LinuxStandalone64":
+                    buildTarget = BuildTarget.StandaloneLinux64;
+                    return true;
+                case "LinuxStandaloneUniversal":
+                    buildTarget = BuildTarget.StandaloneLinuxUniversal;
+                    return true;
+                case "macOSStandalone":
+                    buildTarget = BuildTarget.StandaloneOSX;
+                    return true;
+                case "Nintendo3DS":
+                    buildTarget = BuildTarget.N3DS;
+                    return true;
+                case "PS4":
+                    buildTarget = BuildTarget.PS4;
+                    return true;
+                case "Switch":
+                    buildTarget = BuildTarget.Switch;
+                    return true;
+                case "tvOS":
+                    buildTarget = BuildTarget.tvOS;
+                    return true;
+                case "WSA":
+                    buildTarget = BuildTarget.WSAPlayer;
+                    return true;
+                case "WebGL":
+                    buildTarget = BuildTarget.WebGL;
+                    return true;
+                case "WindowsStandalone32":
+                    buildTarget = BuildTarget.StandaloneWindows;
+                    return true;
+                case "WindowsStandalone64":
+                    buildTarget = BuildTarget.StandaloneWindows64;
+                    return true;
+                case "XboxOne":
+                    buildTarget = BuildTarget.XboxOne;
+                    return true;
+                default:
+                    // If unsupported then it needs to be added to the switch statement above.
+                    Debug.LogError($"{platform} unsupported!");
+                    buildTarget = BuildTarget.NoTarget;
+                    return false;
+            }
+        }
     }
 }
