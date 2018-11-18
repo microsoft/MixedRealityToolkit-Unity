@@ -148,8 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                         importedAssembly.SetCompatibleWithPlatform(assemblyData.includePlatforms[i], true);
                     }
                 }
-
-                if (assemblyData.excludePlatforms != null)
+                else if (assemblyData.excludePlatforms != null)
                 {
                     importedAssembly.SetCompatibleWithAnyPlatform(true);
                     importedAssembly.SetExcludeEditorFromAnyPlatform(false);
