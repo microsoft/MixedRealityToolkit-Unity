@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                 if (scriptAssemblyData == null) { throw new Exception("Json file does not contain an assembly definition"); }
                 if (string.IsNullOrEmpty(scriptAssemblyData.name)) { throw new Exception("Required property 'name' not set"); }
                 if (scriptAssemblyData.excludePlatforms != null && scriptAssemblyData.excludePlatforms.Length > 0 &&
-                    (scriptAssemblyData.includePlatforms != null && scriptAssemblyData.includePlatforms.Length > 0))
+                   (scriptAssemblyData.includePlatforms != null && scriptAssemblyData.includePlatforms.Length > 0))
                 {
                     throw new Exception("Both 'excludePlatforms' and 'includePlatforms' are set.");
                 }
@@ -135,33 +135,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                     return true;
                 }
 
-                var isEditorCompatible = false;
+                importedAssembly.SetCompatibleWithAnyPlatform(assemblyData.includePlatforms.Length == 0);
 
-                if (assemblyData.includePlatforms != null)
+                for (int i = 0; i < assemblyData.includePlatforms?.Length; i++)
                 {
-                    importedAssembly.SetCompatibleWithAnyPlatform(false);
-                    importedAssembly.SetExcludeEditorFromAnyPlatform(true);
-
-                    for (int i = 0; i < assemblyData.includePlatforms.Length; i++)
-                    {
-                        isEditorCompatible |= assemblyData.includePlatforms[i].Contains("Editor");
-                        importedAssembly.SetCompatibleWithPlatform(assemblyData.includePlatforms[i], true);
-                    }
+                    importedAssembly.SetCompatibleWithAnyPlatform(assemblyData.includePlatforms[i].Contains("Editor"));
+                    importedAssembly.SetCompatibleWithPlatform(assemblyData.includePlatforms[i], true);
+                }
+                
+                for (int i = 0; i < assemblyData.excludePlatforms?.Length; i++)
+                {
+                    importedAssembly.SetExcludeEditorFromAnyPlatform(assemblyData.excludePlatforms[i].Contains("Editor"));
+                    importedAssembly.SetExcludeFromAnyPlatform(assemblyData.excludePlatforms[i], true);
                 }
 
-                if (assemblyData.excludePlatforms != null)
-                {
-                    importedAssembly.SetCompatibleWithAnyPlatform(true);
-                    importedAssembly.SetExcludeEditorFromAnyPlatform(false);
-
-                    for (int i = 0; i < assemblyData.excludePlatforms.Length; i++)
-                    {
-                        isEditorCompatible |= assemblyData.excludePlatforms[i].Contains("Editor");
-                        importedAssembly.SetExcludeFromAnyPlatform(assemblyData.excludePlatforms[i], true);
-                    }
-                }
-
-                importedAssembly.SetCompatibleWithEditor(isEditorCompatible);
                 importedAssembly.SaveAndReimport();
                 Selection.activeObject = importedAssembly;
 
