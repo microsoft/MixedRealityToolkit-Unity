@@ -574,7 +574,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (!typeof(IMixedRealityService).IsAssignableFrom(concreteType))
             {
-                Debug.LogError($"Unable to register the {concreteType.GetType()} service. It does not implement the IMixedRealityToolkitService interface.");
+                Debug.LogError($"Unable to register the {concreteType.GetType()} service. It does not implement the IMixedRealityService interface.");
                 return false;
             }
 
