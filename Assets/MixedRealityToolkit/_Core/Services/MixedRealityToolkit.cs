@@ -224,8 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     if (Application.platform.IsPlatformSupported(configuration.RuntimePlatform))
 #endif
                     {
-                        if (configuration.ComponentType.Type != null &&
-                            !RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.ComponentName, configuration.Priority))
+                        if (!RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.ComponentName, configuration.Priority))
                         {
                             Debug.LogError($"Failed to register the {configuration.ComponentType.Type} Extension Service!");
                         }
