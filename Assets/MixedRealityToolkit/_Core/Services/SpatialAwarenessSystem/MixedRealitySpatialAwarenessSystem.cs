@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
 using System.Collections;
@@ -453,7 +454,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
 
         /// <inheritdoc />
         /// <remarks>The observer manages the mesh collection.</remarks>
-        public IDictionary<int, GameObject> Meshes => SpatialAwarenessObserver.Meshes;
+        public IReadOnlyDictionary<int, SpatialMeshObject> Meshes => SpatialAwarenessObserver.Meshes;
 
         #endregion Mesh Handling implementation
 

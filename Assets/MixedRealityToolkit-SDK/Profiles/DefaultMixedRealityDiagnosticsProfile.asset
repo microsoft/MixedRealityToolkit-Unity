@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityDiagnosticsProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  showFps: 1
-  showCpu: 1
-  showMemory: 1
   visible: 0
+  showCpu: 1
+  handlerType:
+    reference: Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem.DiagnosticsHandler,
+      Microsoft.MixedReality.Toolkit.SDK
+  cpuBuffer: 20
+  showFps: 1
+  fpsBuffer: 10
+  showMemory: 1
+  memoryBuffer: 10
