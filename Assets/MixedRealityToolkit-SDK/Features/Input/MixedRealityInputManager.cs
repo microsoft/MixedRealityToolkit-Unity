@@ -198,13 +198,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                 var component = GazeProvider.GameObjectReference.GetComponent<IMixedRealityGazeProvider>() as Component;
 
-                if (Application.isPlaying)
+                if (component != null)
                 {
-                    UnityEngine.Object.Destroy(component);
-                }
-                else
-                {
-                    UnityEngine.Object.DestroyImmediate(component);
+                    if (Application.isPlaying)
+                    {
+                        UnityEngine.Object.Destroy(component);
+                    }
+                    else
+                    {
+                        UnityEngine.Object.DestroyImmediate(component);
+                    }
                 }
             }
 
