@@ -44,7 +44,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             set { spectatorView = value; }
         }
 
-        private void Awake()
+        private void Start()
         {
             string[] errors;
             if (!DependenciesValid(out errors))

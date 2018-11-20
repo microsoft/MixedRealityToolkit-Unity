@@ -1,10 +1,10 @@
 # Breaking Changes
 
 - **Renaming HoloToolkit-Unity repository to MixedRealityToolkit-Unity** to align with product direction.
-- Technically **all your checkins and redirect links will continue to work as-is** but we wanted to give a better heads up on this.
+- Technically **all your check-ins and redirect links will continue to work as-is** but we wanted to give a better heads up on this.
 - All other dependent repositories will undergo a similar name change.
 - We are **not breaking toolkit folder names and namespaces at this time.**
-- Instead we are taking a staggered approach for breaking changes based on developer feedback.
+- Instead, we are taking a staggered approach for breaking changes based on developer feedback.
 
 | Breaking change description | Notes |
 | --- |  --- |

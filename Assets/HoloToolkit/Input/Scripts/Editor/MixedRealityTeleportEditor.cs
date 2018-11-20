@@ -119,7 +119,7 @@ namespace HoloToolkit.Unity.InputModule
                 EditorGUILayout.PropertyField(horizontalStrafeProperty, new GUIContent("Horizontal Strafe"));
                 EditorGUILayout.PropertyField(forwardMovementProperty, new GUIContent("Forward Movement"));
                 EditorGUILayout.PropertyField(horizontalRotationProperty, new GUIContent("Horizontal Rotation"));
-                EditorGUILayout.PropertyField(verticalRotationProperty, new GUIContent("Verizontal Rotation"));
+                EditorGUILayout.PropertyField(verticalRotationProperty, new GUIContent("Vertical Rotation"));
             }
 
             serializedObject.ApplyModifiedProperties();

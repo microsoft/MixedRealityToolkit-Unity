@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 33593916934430290}
   - component: {fileID: 23858733919230106}
   - component: {fileID: 114044496379295336}
-  - component: {fileID: 114688496070629772}
+  - component: {fileID: 114675429442830900}
   m_Layer: 0
   m_Name: Menu Location (Solver Offset Y by -0.05)
   m_TagString: Untagged
@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 33783976222696682}
   - component: {fileID: 23880422844486784}
   - component: {fileID: 114148732877180316}
-  - component: {fileID: 114723358753009546}
+  - component: {fileID: 114065663948585220}
   m_Layer: 0
   m_Name: Wrist Indicator (No Solver Offset)
   m_TagString: EditorOnly
@@ -202,15 +202,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1142712698810798}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.583, y: 1.09, z: 1.54}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4739880715010660}
   - {fileID: 4502422720436818}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90.328, z: 0}
 --- !u!4 &4502422720436818
 Transform:
   m_ObjectHideFlags: 1
@@ -589,11 +589,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   element: 6
-  handedness: 1
+  handedness: 0
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}
+  updateSolvers: 1
+--- !u!114 &114065663948585220
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1686793508533188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68820e3426fe974bbd59ecb919d17fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpdateLinkedTransform: 0
+  MoveLerpTime: 0.1
+  RotateLerpTime: 0.1
+  ScaleLerpTime: 0
+  MaintainScale: 1
+  GoalPosition: {x: 0, y: 0, z: 0}
+  GoalRotation: {x: 0, y: 0, z: 0, w: 0}
+  GoalScale: {x: 0, y: 0, z: 0}
+  Smoothing: 1
+  Lifetime: 0
+  orientation: 0
+  localOffset: {x: 0, y: 0, z: 0}
+  worldOffset: {x: 0, y: 0, z: 0}
+  useAngleSteppingForWorldOffset: 0
+  tetherAngleSteps: 6
 --- !u!114 &114148732877180316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -606,12 +633,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   element: 6
-  handedness: 1
-  trackedObjectToReference: 2
+  handedness: 0
+  trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}
---- !u!114 &114688496070629772
+  updateSolvers: 1
+--- !u!114 &114675429442830900
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -619,7 +647,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1516960382809286}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5d497bc39a2e294b86ffe2fdab27cef, type: 3}
+  m_Script: {fileID: 11500000, guid: a68820e3426fe974bbd59ecb919d17fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   UpdateLinkedTransform: 0
@@ -632,35 +660,11 @@ MonoBehaviour:
   GoalScale: {x: 0, y: 0, z: 0}
   Smoothing: 1
   Lifetime: 0
-  Orientation: 0
-  offset: {x: 0, y: 0.05, z: -0.05}
-  RotationTether: 0
-  TetherAngleSteps: 12
---- !u!114 &114723358753009546
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1686793508533188}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5d497bc39a2e294b86ffe2fdab27cef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.1
-  RotateLerpTime: 0.1
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: 0, y: 0, z: 0}
-  GoalRotation: {x: 0, y: 0, z: 0, w: 0}
-  GoalScale: {x: 0, y: 0, z: 0}
-  Smoothing: 1
-  Lifetime: 0
-  Orientation: 0
-  offset: {x: 0, y: 0, z: 0}
-  RotationTether: 0
-  TetherAngleSteps: 6
+  orientation: 0
+  localOffset: {x: 0, y: 0.05, z: -0.05}
+  worldOffset: {x: 0, y: 0, z: 0}
+  useAngleSteppingForWorldOffset: 0
+  tetherAngleSteps: 6
 --- !u!114 &114857077558514046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -700,9 +704,9 @@ MonoBehaviour:
   IgnoreInactiveTransforms: 1
   Radius: 0.05
   radialRange: 180
-  rows: 3
-  cellWidth: 0.5
-  cellHeight: 0.5
+  Rows: 3
+  CellWidth: 0.5
+  CellHeight: 0.5
   horizontalMargin: 0.2
   verticalMargin: 0.2
   depthMargin: 0.2

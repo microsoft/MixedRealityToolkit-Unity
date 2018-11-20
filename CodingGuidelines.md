@@ -32,7 +32,7 @@ All public classes, structs, enums, functions, properties, fields posted to the 
     }
 ```
 
-This ensures documentation is properly generated and disseminated for all all classes, methods, and properties.
+This ensures documentation is properly generated and disseminated for all classes, methods, and properties.
 
 >Any script files submitted without proper summary tags will be rejected.
 
@@ -185,7 +185,7 @@ private Foo()
 
 ## Public classes, structs, and enums should all go in their own files
 
-If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoid compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.
+If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoids compilation issues with Unity and ensures that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.
 
 ### Don't:
 
