@@ -88,16 +88,28 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
             {
-                Debug.LogError("The Input system is missing the required Input System Profile");
+                Debug.LogError("The Input system is missing the required Input System Profile!");
                 return;
             }
+
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile != null)
             {
                 CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
             }
+            else
+            {
+                Debug.LogError("The Input system is missing the required Input Action Rules Profile!");
+                return;
+            }
+
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
             {
                 GazeProvider = CameraCache.Main.gameObject.EnsureComponent(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+            }
+            else
+            {
+                Debug.LogError("The Input system is missing the required Pointer Profile!");
+                return;
             }
 
             bool addedComponents = false;
@@ -179,9 +191,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public override void Disable()
         {
-            if (GazeProvider != null)
+            if (GazeProvider != null &&
+                GazeProvider.GameObjectReference != null)
             {
                 GazeProvider.Enabled = false;
+
                 var component = GazeProvider.GameObjectReference.GetComponent<IMixedRealityGazeProvider>() as Component;
 
                 if (Application.isPlaying)

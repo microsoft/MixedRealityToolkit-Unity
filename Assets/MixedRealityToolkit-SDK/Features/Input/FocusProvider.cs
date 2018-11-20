@@ -19,21 +19,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// The focus provider handles the focused objects per input source.
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
-    public class FocusProvider : BaseExtensionService, IMixedRealityFocusProvider
+    public class FocusProvider : BaseService, IMixedRealityFocusProvider
     {
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="priority"></param>
-        public FocusProvider(string name, uint priority) : base(name, priority) { }
-
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
         private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
 
         #region IFocusProvider Properties
+
+        /// <inheritdoc />
+        public override string Name => "Focus Provider";
+
+        /// <inheritdoc />
+        public override uint Priority => 2;
 
         /// <inheritdoc />
         float IMixedRealityFocusProvider.GlobalPointingExtent
