@@ -18,8 +18,8 @@ MonoBehaviour:
   enableInputSystem: 1
   inputSystemProfile: {fileID: 11400000, guid: 5a8beea6d1fa636418d1d948c83d21e5, type: 2}
   inputSystemType:
-    reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
-      Microsoft.MixedReality.Toolkit.SDK
+    reference: Microsoft.MixedReality.Toolkit.Core.Services.InputSystem.MixedRealityInputSystem,
+      Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
   enableBoundarySystem: 1
   boundarySystemType:
     reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,

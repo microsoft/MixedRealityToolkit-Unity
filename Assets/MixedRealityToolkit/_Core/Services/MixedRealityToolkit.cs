@@ -178,6 +178,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 {
                     Debug.LogError("Failed to start the Input System!");
                 }
+
+                if (!RegisterService<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType))
+                {
+                    Debug.LogError("Failed to register the focus provider! The input system will not function without it.");
+                    return;
+                }
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
@@ -1179,6 +1185,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
 
             return typeof(IMixedRealityInputSystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityFocusProvider).IsAssignableFrom(type) ||
                    typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type) ||
