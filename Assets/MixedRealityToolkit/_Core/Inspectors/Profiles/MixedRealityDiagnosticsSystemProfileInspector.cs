@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
@@ -12,10 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityDiagnosticsProfile))]
     public class MixedRealityDiagnosticsSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private SerializedProperty showCpu;
-        private SerializedProperty showFps;
-        private SerializedProperty showMemory;
         private SerializedProperty visible;
+        private SerializedProperty handlerType;
+        private SerializedProperty showFps;
+        private SerializedProperty fpsBuffer;
+        private SerializedProperty showCpu;
+        private SerializedProperty cpuBuffer;
+        private SerializedProperty showMemory;
+        private SerializedProperty memoryBuffer;
 
         protected override void OnEnable()
         {
@@ -26,10 +29,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            showCpu = serializedObject.FindProperty("showCpu");
-            showFps = serializedObject.FindProperty("showFps");
-            showMemory = serializedObject.FindProperty("showMemory");
             visible = serializedObject.FindProperty("visible");
+            handlerType = serializedObject.FindProperty("handlerType");
+            showCpu = serializedObject.FindProperty("showCpu");
+            cpuBuffer = serializedObject.FindProperty("cpuBuffer");
+            showFps = serializedObject.FindProperty("showFps");
+            fpsBuffer = serializedObject.FindProperty("fpsBuffer");
+            showMemory = serializedObject.FindProperty("showMemory");
+            memoryBuffer = serializedObject.FindProperty("memoryBuffer");
         }
 
         public override void OnInspectorGUI()
@@ -57,9 +64,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(visible);
             EditorGUILayout.Space();
 
+            EditorGUILayout.PropertyField(handlerType);
+            EditorGUILayout.Space();
+
             EditorGUILayout.PropertyField(showCpu);
+            EditorGUILayout.PropertyField(cpuBuffer);
             EditorGUILayout.PropertyField(showFps);
+            EditorGUILayout.PropertyField(fpsBuffer);
             EditorGUILayout.PropertyField(showMemory);
+            EditorGUILayout.PropertyField(memoryBuffer);
 
             serializedObject.ApplyModifiedProperties();
         }
