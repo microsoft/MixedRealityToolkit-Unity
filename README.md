@@ -1,5 +1,8 @@
 <img src="External/ReadMeImages/MRTK_Logo_Rev.png">
 
+## Please note that on December 5, 2018, the default branch for this repository will change (from [master](https://github.com/microsoft/mixedrealitytoolkit-Unity/tree/master) to [mrtk_release](https://github.com/microsoft/mixedrealitytoolkit-Unity/tree/mrtk_release)) as we transition from the HoloToolkit to the Mixed Reality Toolkit.
+
+
 # What is MixedRealityToolkit-Unity?
 The Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.
 The project is aimed at reducing barriers to entry to create mixed reality applications and contribute back to the community as we all grow.
