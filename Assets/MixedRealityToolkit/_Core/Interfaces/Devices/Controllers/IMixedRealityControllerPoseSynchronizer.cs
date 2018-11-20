@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices.Controllers
 {
     /// <summary>
     /// Basic interface for synchronizing to a controller pose.
