@@ -1,0 +1,14 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality.Profiles.Inspectors",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality",
+        "Microsoft.MixedReality.Toolkit.Core.Inspectors",
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

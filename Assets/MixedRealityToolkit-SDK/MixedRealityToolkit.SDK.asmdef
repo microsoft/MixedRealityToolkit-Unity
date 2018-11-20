@@ -5,7 +5,7 @@
         "Microsoft.MixedReality.Toolkit.Core.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.Core.Utilities.Async",
         "Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMixedReality",
-        "Microsoft.MixedReality.Toolkit.Core.Devices.Controllers.WindowsMixedReality"
+        "Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
