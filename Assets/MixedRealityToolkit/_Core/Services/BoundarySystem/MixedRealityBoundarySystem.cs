@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,12 +13,12 @@ using UnityEngine.EventSystems;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
 {
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
     /// </summary>
-    public class MixedRealityBoundaryManager : BaseEventSystem, IMixedRealityBoundarySystem
+    public class MixedRealityBoundarySystem : BaseEventSystem, IMixedRealityBoundarySystem
     {
         #region IMixedRealityService Implementation
 
@@ -28,15 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// <inheritdoc/>
         public override void Initialize()
         {
-            base.Initialize();
-            InitializeInternal();
-        }
+            if (!Application.isPlaying) { return; }
 
-        /// <summary>
-        /// Performs initialization tasks for the BoundaryManager.
-        /// </summary>
-        private void InitializeInternal()
-        {
             boundaryEventData = new BoundaryEventData(EventSystem.current);
 
             Scale = MixedRealityToolkit.Instance.ActiveProfile.TargetExperienceScale;
@@ -76,122 +68,99 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             RaiseBoundaryVisualizationChanged();
         }
 
-        /// <inheritdoc/>
-        public override void Reset()
-        {
-            base.Reset();
-            InitializeInternal();
-        }
-
         public override void Destroy()
         {
-            // Cleanup game objects created during execution.
-            if (Application.isPlaying)
+            // First, detach the child objects (we are tracking them separately)
+            // and clean up the parent.
+            if (boundaryVisualizationParent != null)
             {
-                // First, detach the child objects (we are tracking them separately)
-                // and clean up the parent.
-                if (boundaryVisualizationParent != null)
+                boundaryVisualizationParent.transform.DetachChildren();
+
+                if (Application.isEditor)
                 {
-                    boundaryVisualizationParent.transform.DetachChildren();
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(boundaryVisualizationParent);
-                    }
-                    else
-                    {
-                        Object.Destroy(boundaryVisualizationParent);
-                    }
-                    boundaryVisualizationParent = null;
+                    Object.DestroyImmediate(boundaryVisualizationParent);
+                }
+                else
+                {
+                    Object.Destroy(boundaryVisualizationParent);
                 }
 
-                // Next, clean up the detached children.
-                if (currentFloorObject != null)
-                {
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(currentFloorObject);
-                    }
-                    else
-                    {
-                        Object.Destroy(currentFloorObject);
-                    }
-                    currentFloorObject = null;
-                }
-
-                if (currentPlayAreaObject != null)
-                {
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(currentPlayAreaObject);
-                    }
-                    else
-                    {
-                        Object.Destroy(currentPlayAreaObject);
-                    }
-                    currentPlayAreaObject = null;
-                }
-
-                if (currentTrackedAreaObject != null)
-                {
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(currentTrackedAreaObject);
-                    }
-                    else
-                    {
-                        Object.Destroy(currentTrackedAreaObject);
-                    }
-                    currentTrackedAreaObject = null;
-                }
-
-                if (currentBoundaryWallObject != null)
-                {
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(currentBoundaryWallObject);
-                    }
-                    else
-                    {
-                        Object.Destroy(currentBoundaryWallObject);
-                    }
-                    currentBoundaryWallObject = null;
-                }
-
-                if (currentCeilingObject != null)
-                {
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(currentCeilingObject);
-                    }
-                    else
-                    {
-                        Object.Destroy(currentCeilingObject);
-                    }
-                    currentCeilingObject = null;
-                }
-
-                showFloor = false;
-                showPlayArea = false;
-                showTrackedArea = false;
-                showBoundaryWalls = false;
-                showCeiling = false;
-
-                RaiseBoundaryVisualizationChanged();
+                boundaryVisualizationParent = null;
             }
-        }
 
-        /// <summary>
-        /// Creates the parent for boundary visualization objects that need to teleport with the user.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="GameObject"/> to which boundary visualizations will be parented.
-        /// </returns>
-        private GameObject CreateBoundaryVisualizationParent()
-        {
-            GameObject visualizationParent = new GameObject("Boundary System Visualizations");
-            visualizationParent.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+            // Next, clean up the detached children.
+            if (currentFloorObject != null)
+            {
+                if (Application.isEditor)
+                {
+                    Object.DestroyImmediate(currentFloorObject);
+                }
+                else
+                {
+                    Object.Destroy(currentFloorObject);
+                }
+                currentFloorObject = null;
+            }
 
-            return visualizationParent;
+            if (currentPlayAreaObject != null)
+            {
+                if (Application.isEditor)
+                {
+                    Object.DestroyImmediate(currentPlayAreaObject);
+                }
+                else
+                {
+                    Object.Destroy(currentPlayAreaObject);
+                }
+                currentPlayAreaObject = null;
+            }
+
+            if (currentTrackedAreaObject != null)
+            {
+                if (Application.isEditor)
+                {
+                    Object.DestroyImmediate(currentTrackedAreaObject);
+                }
+                else
+                {
+                    Object.Destroy(currentTrackedAreaObject);
+                }
+                currentTrackedAreaObject = null;
+            }
+
+            if (currentBoundaryWallObject != null)
+            {
+                if (Application.isEditor)
+                {
+                    Object.DestroyImmediate(currentBoundaryWallObject);
+                }
+                else
+                {
+                    Object.Destroy(currentBoundaryWallObject);
+                }
+                currentBoundaryWallObject = null;
+            }
+
+            if (currentCeilingObject != null)
+            {
+                if (Application.isEditor)
+                {
+                    Object.DestroyImmediate(currentCeilingObject);
+                }
+                else
+                {
+                    Object.Destroy(currentCeilingObject);
+                }
+                currentCeilingObject = null;
+            }
+
+            showFloor = false;
+            showPlayArea = false;
+            showTrackedArea = false;
+            showBoundaryWalls = false;
+            showCeiling = false;
+
+            RaiseBoundaryVisualizationChanged();
         }
 
         /// <summary>
@@ -199,6 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// </summary>
         private void RaiseBoundaryVisualizationChanged()
         {
+            if (!Application.isPlaying) { return; }
             boundaryEventData.Initialize(this, ShowFloor, ShowPlayArea, ShowTrackedArea, ShowBoundaryWalls, ShowBoundaryCeiling);
             HandleEvent(boundaryEventData, OnVisualizationChanged);
         }
@@ -286,7 +256,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// <summary>
         /// Parent <see cref="GameObject"/> which will encapsulate all of the teleportable boundary visualizations.
         /// </summary>
-        private GameObject BoundaryVisualizationParent => boundaryVisualizationParent ?? (boundaryVisualizationParent = CreateBoundaryVisualizationParent());
+        private GameObject BoundaryVisualizationParent
+        {
+            get
+            {
+                if (boundaryVisualizationParent != null)
+                {
+                    return boundaryVisualizationParent;
+                }
+
+                var visualizationParent = new GameObject("Boundary System Visualizations");
+                visualizationParent.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+                return boundaryVisualizationParent = visualizationParent;
+            }
+        }
 
         /// <summary>
         /// Layer used to tell the (non-floor) boundary objects to not accept raycasts
@@ -512,6 +495,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// <inheritdoc/>
         public GameObject GetFloorVisualization()
         {
+            if (!Application.isPlaying) { return null; }
+
             if (currentFloorObject != null)
             {
                 return currentFloorObject;
@@ -530,8 +515,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             currentFloorObject.name = "Boundary System Floor";
             currentFloorObject.transform.localScale = new Vector3(floorScale.x, boundaryObjectThickness, floorScale.y);
             currentFloorObject.transform.Translate(new Vector3(
-                MixedRealityToolkit.Instance.MixedRealityPlayspace.position.x, 
-                FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f), 
+                MixedRealityToolkit.Instance.MixedRealityPlayspace.position.x,
+                FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f),
                 MixedRealityToolkit.Instance.MixedRealityPlayspace.position.z));
             currentFloorObject.GetComponent<Renderer>().sharedMaterial = MixedRealityToolkit.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorMaterial;
 
@@ -541,6 +526,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// <inheritdoc/>
         public GameObject GetPlayAreaVisualization()
         {
+            if (!Application.isPlaying) { return null; }
+
             if (currentPlayAreaObject != null)
             {
                 return currentPlayAreaObject;
@@ -581,6 +568,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// <inheritdoc/>
         public GameObject GetTrackedAreaVisualization()
         {
+            if (!Application.isPlaying) { return null; }
+
             if (currentTrackedAreaObject != null)
             {
                 return currentTrackedAreaObject;
@@ -625,9 +614,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             return currentTrackedAreaObject;
         }
 
-        /// <inheritdoc/>
         public GameObject GetBoundaryWallVisualization()
         {
+            if (!Application.isPlaying) { return null; }
+
             if (currentBoundaryWallObject != null)
             {
                 return currentBoundaryWallObject;
@@ -674,6 +664,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// <inheritdoc/>
         public GameObject GetBoundaryCeilingVisualization()
         {
+            if (!Application.isPlaying) { return null; }
+
             if (currentCeilingObject != null)
             {
                 return currentCeilingObject;
