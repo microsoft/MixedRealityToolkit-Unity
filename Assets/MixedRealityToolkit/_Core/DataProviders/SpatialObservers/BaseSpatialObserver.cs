@@ -2,30 +2,30 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices.SpatialObservers;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers
+namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
 {
     /// <summary>
     /// Base class for spatial awareness observers.
     /// </summary>
-    public class BaseSpatialObserver : BaseExtensionService, IMixedRealitySpatialAwarenessObserver
+    public abstract class BaseSpatialObserver : BaseDataProvider, IMixedRealitySpatialAwarenessObserver
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public BaseSpatialObserver(string name, uint priority) : base(name, priority) { }
+        protected BaseSpatialObserver(string name, uint priority) : base(name, priority) { }
 
         /// <inheritdoc />
         public bool IsRunning { get; protected set; }
 
         /// <inheritdoc />
-        public virtual IDictionary<int, GameObject> Meshes => new Dictionary<int, GameObject>();
+        public virtual IReadOnlyDictionary<int, SpatialMeshObject> Meshes => new Dictionary<int, SpatialMeshObject>();
 
         /// <inheritdoc />
         public virtual void StartObserving() { }
@@ -107,14 +107,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers
         /// <param name="meshObject">The <see cref="SpatialMeshObject"/> whose resources will be cleaned up.</param>
         /// <param name="destroyGameObject"></param>
         /// <param name="destroyMeshes"></param>
-        protected void CleanupMeshObject(
-            SpatialMeshObject meshObject,
-            bool destroyGameObject = true,
-            bool destroyMeshes = true)
+        protected void CleanupMeshObject(SpatialMeshObject meshObject, bool destroyGameObject = true, bool destroyMeshes = true)
         {
             if (destroyGameObject && (meshObject.GameObject != null))
             {
-                Object.Destroy(meshObject.GameObject);
+                UnityEngine.Object.Destroy(meshObject.GameObject);
                 meshObject.GameObject = null;
             }
 
@@ -125,13 +122,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers
             {
                 if (filterMesh != null)
                 {
-                    Object.Destroy(filterMesh);
+                    UnityEngine.Object.Destroy(filterMesh);
                     meshObject.Filter.sharedMesh = null;
                 }
 
                 if ((colliderMesh != null) && (colliderMesh != filterMesh))
                 {
-                    Object.Destroy(colliderMesh);
+                    UnityEngine.Object.Destroy(colliderMesh);
                     meshObject.Collider.sharedMesh = null;
                 }
             }
