@@ -191,8 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public override void Disable()
         {
-            if (GazeProvider != null &&
-                GazeProvider.GameObjectReference != null)
+            if (GazeProvider?.GameObjectReference != null)
             {
                 GazeProvider.Enabled = false;
 
