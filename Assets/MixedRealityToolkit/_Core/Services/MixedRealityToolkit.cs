@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// Local component registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="IMixedRealityService"/>.
         /// </summary>
         [Obsolete("Use RegisteredMixedRealityServices instead.")]
-        public List<Tuple<Type, IMixedRealityService>> MixedRealityComponents => (List<Tuple<Type, IMixedRealityService>>)RegisteredMixedRealityServices;
+        public List<Tuple<Type, IMixedRealityExtensionService>> MixedRealityComponents => null;
 
         private int mixedRealityComponentsCount = 0;
 
