@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices.SpatialObservers
 {
     public interface IMixedRealitySpatialAwarenessObserver : IMixedRealityExtensionService
     {
