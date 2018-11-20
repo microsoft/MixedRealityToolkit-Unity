@@ -1,12 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices.SpatialObservers
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers
 {
-    public interface IMixedRealitySpatialAwarenessObserver : IMixedRealityExtensionService
+    /// <summary>
+    /// The interface contract for Mixed Reality spatial observers.
+    /// </summary>
+    public interface IMixedRealitySpatialAwarenessObserver : IMixedRealityDataProvider
     {
         /// <summary>
         /// Is the observer running (actively accumulating spatial data)?
@@ -26,6 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices.SpatialObserver
         /// <summary>
         /// The collection of mesh <see cref="GameObject"/>s that have been observed.
         /// </summary>
-        IDictionary<int, GameObject> Meshes { get; }
+        IReadOnlyDictionary<int, SpatialMeshObject> Meshes { get; }
     }
 }

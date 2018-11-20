@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
@@ -13,6 +14,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     public class MixedRealitySpatialAwarenessProfile : BaseMixedRealityProfile
     {
         #region General settings
+
+        [SerializeField]
+        [Tooltip("The list of registered spatial observer data providers.")]
+        private MixedRealitySpatialObserverDataProvidersProfile spatialObserverDataProviders;
+
+        /// <summary>
+        /// The list of registered <see cref="IMixedRealitySpatialAwarenessObserver"/>s.
+        /// </summary>
+        public MixedRealitySpatialObserverDataProvidersProfile SpatialObserverDataProviders => spatialObserverDataProviders;
 
         [SerializeField]
         [Tooltip("How should the spatial awareness observer behave at startup?")]

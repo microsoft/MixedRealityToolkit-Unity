@@ -128,9 +128,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         Material MeshOcclusionMaterial { get; set; }
 
         /// <summary>
-        /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness mesh subsystem.
+        /// Gets the collection of <see cref="SpatialMeshObject"/>s being managed by the spatial awareness mesh subsystem.
         /// </summary>
-        IDictionary<int, GameObject> Meshes { get; }
+        IReadOnlyDictionary<int, SpatialMeshObject> Meshes { get; }
 
         #region Mesh Events
 

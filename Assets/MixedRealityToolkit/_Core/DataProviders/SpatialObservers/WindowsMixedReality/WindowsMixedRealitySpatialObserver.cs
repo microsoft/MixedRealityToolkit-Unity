@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
@@ -8,12 +9,10 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
-
-#if UNITY_WSA
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMixedReality
+namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.WindowsMixedReality
 {
     /// <summary>
     /// The Windows Mixed Reality Spatial Observer.
@@ -113,19 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMi
         private float lastUpdated = 0;
 
         /// <inheritdoc />
-        public override IDictionary<int, GameObject> Meshes
-        {
-            get
-            {
-                var meshes = new Dictionary<int, GameObject>();
-                // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
-                foreach (int id in meshObjects.Keys)
-                {
-                    meshes.Add(id, meshObjects[id].GameObject);
-                }
-                return meshes;
-            }
-        }
+        public override IReadOnlyDictionary<int, SpatialMeshObject> Meshes => meshObjects;
 
         /// <inheritdoc/>
         public override void StartObserving()
@@ -195,8 +182,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMi
 
             if (Application.isPlaying)
             {
-                // Cleanup the mesh objects that are being manaaged by this observer.
-                base.CleanupMeshes();
+                // Cleanup the mesh objects that are being managed by this observer.
+                CleanupMeshes();
 
                 // Cleanup the outstanding mesh object.
                 if (outstandingMeshObject.HasValue)
@@ -260,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMi
         /// <param name="surfaceId">ID of the mesh to bake.</param>
         private void RequestMesh(SurfaceId surfaceId)
         {
-            string meshName = ("SpatialMesh - " + surfaceId.handle);
+            string meshName = $"SpatialMesh_{surfaceId.handle}";
 
             SpatialMeshObject newMesh;
             WorldAnchor worldAnchor;
@@ -365,6 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMi
             {
                 return;
             }
+
             observer.SetVolumeAsAxisAlignedBox(newOrigin, newExtents);
 
             currentObserverExtents = newExtents;
@@ -447,6 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMi
 
             // Add / update the mesh to our collection
             bool sendUpdatedEvent = false;
+
             if (meshObjects.ContainsKey(cookedData.id.handle))
             {
                 // Reclaim the old mesh object for future use.
@@ -455,6 +444,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMi
 
                 sendUpdatedEvent = true;
             }
+
             meshObjects.Add(cookedData.id.handle, meshObject);
 
             if (sendUpdatedEvent)
