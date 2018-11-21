@@ -108,6 +108,11 @@ namespace HoloToolkit.Unity.InputModule
             InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
             Application.onBeforeRender -= Application_onBeforeRender;
+
+            foreach (MotionControllerInfo controllerInfo in controllerDictionary.Values)
+            {
+                Destroy(controllerInfo.ControllerParent);
+            }
 #endif
         }
 
