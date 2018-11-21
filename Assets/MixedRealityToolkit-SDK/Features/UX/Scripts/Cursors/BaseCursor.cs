@@ -287,9 +287,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// </summary>
         protected virtual void UnregisterManagers()
         {
-            MixedRealityToolkit.InputSystem.InputEnabled -= OnInputEnabled;
-            MixedRealityToolkit.InputSystem.InputDisabled -= OnInputDisabled;
-            MixedRealityToolkit.InputSystem.Unregister(gameObject);
+            if (MixedRealityToolkit.InputSystem != null)
+            {
+                MixedRealityToolkit.InputSystem.InputEnabled -= OnInputEnabled;
+                MixedRealityToolkit.InputSystem.InputDisabled -= OnInputDisabled;
+                MixedRealityToolkit.InputSystem.Unregister(gameObject);
+            }
         }
 
         /// <summary>
