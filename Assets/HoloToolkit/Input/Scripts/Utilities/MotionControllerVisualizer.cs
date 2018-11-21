@@ -62,6 +62,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public event Action<MotionControllerInfo> OnControllerModelLoaded;
         public event Action<MotionControllerInfo> OnControllerModelUnloaded;
+
+        private bool leftModelIsAlternate = false;
+        private bool rightModelIsAlternate = false;
 #endif
 
 #if UNITY_EDITOR_WIN
@@ -246,7 +249,8 @@ namespace HoloToolkit.Unity.InputModule
             if (source.kind == InteractionSourceKind.Controller)
             {
                 MotionControllerInfo controllerInfo;
-                if (controllerDictionary != null && controllerDictionary.TryGetValue(GenerateKey(source), out controllerInfo))
+                string key = GenerateKey(source);
+                if (controllerDictionary != null && controllerDictionary.TryGetValue(key, out controllerInfo))
                 {
                     if (OnControllerModelUnloaded != null)
                     {
@@ -256,10 +260,22 @@ namespace HoloToolkit.Unity.InputModule
                     if (controllerInfo.Handedness == InteractionSourceHandedness.Left)
                     {
                         leftControllerModel = null;
+
+                        if (!AlwaysUseAlternateLeftModel && leftModelIsAlternate)
+                        {
+                            controllerDictionary.Remove(key);
+                            Destroy(controllerInfo.ControllerParent);
+                        }
                     }
                     else if (controllerInfo.Handedness == InteractionSourceHandedness.Right)
                     {
                         rightControllerModel = null;
+
+                        if (!AlwaysUseAlternateRightModel && rightModelIsAlternate)
+                        {
+                            controllerDictionary.Remove(key);
+                            Destroy(controllerInfo.ControllerParent);
+                        }
                     }
 
                     controllerInfo.ControllerParent.SetActive(false);
@@ -390,6 +406,15 @@ namespace HoloToolkit.Unity.InputModule
 
             yield return sceneImporter.Load();
 
+            if (source.handedness == InteractionSourceHandedness.Left)
+            {
+                leftModelIsAlternate = false;
+            }
+            else if (source.handedness == InteractionSourceHandedness.Right)
+            {
+                rightModelIsAlternate = false;
+            }
+
             FinishControllerSetup(controllerModelGameObject, source.handedness, GenerateKey(source));
         }
 
@@ -399,10 +424,12 @@ namespace HoloToolkit.Unity.InputModule
             if (source.handedness == InteractionSourceHandedness.Left && AlternateLeftController != null)
             {
                 controllerModelGameObject = Instantiate(AlternateLeftController);
+                leftModelIsAlternate = true;
             }
             else if (source.handedness == InteractionSourceHandedness.Right && AlternateRightController != null)
             {
                 controllerModelGameObject = Instantiate(AlternateRightController);
+                rightModelIsAlternate = true;
             }
             else
             {
