@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent1), new TestComponent1("Test Component 1", 10));
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestComponent2), new TestComponent2("Test Component 2", 10));
             MixedRealityToolkit.Instance.RegisterService(typeof(IFailComponent), new TestFailComponent("Fail Component", 10));
-            LogAssert.Expect(LogType.Error, $"Unable to register {typeof(IFailComponent)}. Concrete type does not implement IMixedRealityExtensionService nor IMixedRealityDataProvider.");
+            LogAssert.Expect(LogType.Error, $"Unable to register {typeof(IFailComponent)}. Concrete type does not implement IMixedRealityExtensionService or IMixedRealityDataProvider.");
 
             // Retrieve all registered IMixedRealityExtensionServices
             var components = MixedRealityToolkit.Instance.GetActiveServices(typeof(IMixedRealityExtensionService));
