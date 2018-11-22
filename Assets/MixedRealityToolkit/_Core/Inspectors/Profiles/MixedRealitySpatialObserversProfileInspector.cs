@@ -77,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 var spatialObserverName = spatialObserverConfiguration.FindPropertyRelative("spatialObserverName");
                 var priority = spatialObserverConfiguration.FindPropertyRelative("priority");
                 var runtimePlatform = spatialObserverConfiguration.FindPropertyRelative("runtimePlatform");
-                serializedObject.ApplyModifiedProperties();
 
                 spatialObserverType.FindPropertyRelative("reference").stringValue = string.Empty;
                 spatialObserverName.stringValue = "New Spatial Observer Data Provider";
