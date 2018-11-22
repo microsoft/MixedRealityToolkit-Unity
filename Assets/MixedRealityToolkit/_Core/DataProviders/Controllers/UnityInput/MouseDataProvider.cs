@@ -6,13 +6,25 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInput
 {
-    public class MouseDeviceManager : BaseDeviceManager
+    [Obsolete("Use MouseDataProvider instead.")]
+    public class MouseDeviceManager { }
+
+    /// <summary>
+    /// The mouse data provider.
+    /// </summary>
+    public class MouseDataProvider : BaseControllerDataProvider
     {
-        public MouseDeviceManager(string name, uint priority) : base(name, priority) { }
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="priority"></param>
+        public MouseDataProvider(string name, uint priority) : base(name, priority) { }
 
         /// <summary>
         /// Current Mouse Controller.

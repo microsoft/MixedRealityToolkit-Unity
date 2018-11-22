@@ -5,22 +5,27 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.Controllers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers
 {
+    [Obsolete("Use BaseControllerDataProvider instead.")]
+    public class BaseDeviceManager { }
+
     /// <summary>
-    /// Base Device manager to inherit from.
+    /// Base controller data provider to inherit from when implementing <see cref="IMixedRealityControllerDataProvider"/>s
     /// </summary>
-    public class BaseDeviceManager : BaseExtensionService, IMixedRealityDeviceManager
+    public abstract class BaseControllerDataProvider : BaseDataProvider, IMixedRealityControllerDataProvider
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public BaseDeviceManager(string name, uint priority) : base(name, priority) { }
+        public BaseControllerDataProvider(string name, uint priority) : base(name, priority) { }
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];

@@ -115,12 +115,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             GUILayout.Space(12f);
         }
 
-        protected static void CheckProfileLock(Object target)
+        /// <summary>
+        /// Checks if the profile is locked and displays a warning.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="lockProfile"></param>
+        protected static void CheckProfileLock(Object target, bool lockProfile = true)
         {
             if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
             {
                 EditorGUILayout.HelpBox("This profile is part of the default set from the Mixed Reality Toolkit SDK. You can make a copy of this profile, and customize it if needed.", MessageType.Warning);
-                GUI.enabled = false;
+                GUI.enabled = !lockProfile;
             }
         }
 

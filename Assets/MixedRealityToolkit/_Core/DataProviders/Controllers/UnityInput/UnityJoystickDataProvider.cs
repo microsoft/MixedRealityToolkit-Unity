@@ -12,17 +12,20 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInput
 {
+    [Obsolete("Use UnityJoystickDataProvider instead.")]
+    public class UnityJoystickManager { }
+
     /// <summary>
     /// Manages joysticks using unity input system.
     /// </summary>
-    public class UnityJoystickManager : BaseDeviceManager
+    public class UnityJoystickDataProvider : BaseControllerDataProvider
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public UnityJoystickManager(string name, uint priority) : base(name, priority) { }
+        public UnityJoystickDataProvider(string name, uint priority) : base(name, priority) { }
 
         private const float DeviceRefreshInterval = 3.0f;
 

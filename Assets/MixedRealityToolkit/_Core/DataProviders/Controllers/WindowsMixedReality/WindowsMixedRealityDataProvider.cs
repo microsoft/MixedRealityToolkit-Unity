@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.Controllers;
-
 #if UNITY_WSA
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.Controllers;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
@@ -18,17 +17,20 @@ using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality
 {
+    [System.Obsolete("Use WindowsMixedRealityDataProvider instead.")]
+    public class WindowsMixedRealityDeviceManager { }
+
     /// <summary>
     /// The device manager for Windows Mixed Reality controllers.
     /// </summary>
-    public class WindowsMixedRealityDeviceManager : BaseDeviceManager
+    public class WindowsMixedRealityDataProvider : BaseControllerDataProvider
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public WindowsMixedRealityDeviceManager(string name, uint priority) : base(name, priority) { }
+        public WindowsMixedRealityDataProvider(string name, uint priority) : base(name, priority) { }
 
 #if UNITY_WSA
 

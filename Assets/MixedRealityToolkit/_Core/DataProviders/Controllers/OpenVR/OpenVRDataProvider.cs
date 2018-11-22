@@ -10,17 +10,20 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.OpenVR
 {
+    [Obsolete("Use OpenVRDataProvider instead.")]
+    public class OpenVRDeviceManager { }
+
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
     /// </summary>
-    public class OpenVRDeviceManager : UnityJoystickManager
+    public class OpenVRDataProvider : UnityJoystickDataProvider
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public OpenVRDeviceManager(string name, uint priority) : base(name, priority) { }
+        public OpenVRDataProvider(string name, uint priority) : base(name, priority) { }
 
         #region Controller Utilities
 

@@ -22,8 +22,9 @@ MonoBehaviour:
   gesturesProfile: {fileID: 11400000, guid: bd7829a9b29409045a745b5a18299291, type: 2}
   speechCommandsProfile: {fileID: 11400000, guid: e8d0393e66374dae9646851a57dc6bc1,
     type: 2}
-  enableControllerMapping: 1
-  controllerMappingProfiles: {fileID: 11400000, guid: 39ded1fd0711a0c448413d0e1ec4f7f3,
+  controllerDataProvidersProfile: {fileID: 11400000, guid: 3047f05af3f72c2438c0e290d61c9678,
     type: 2}
-  controllerVisualizationProfile: {fileID: 11400000, guid: 345c06fdf3732db46b96299bd3cba653,
+  controllerMappingProfiles: {fileID: 11400000, guid: 9d7676e68329f1b44be1fc7556ef2543,
+    type: 2}
+  controllerVisualizationProfile: {fileID: 11400000, guid: a60792c3532c3f24ab014da0bdff8555,
     type: 2}

@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.Controllers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -16,18 +15,25 @@ using UnityEngine.Windows.Speech;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality
 {
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-    public class WindowsDictationInputDeviceManager : BaseDeviceManager, IMixedRealityDictationSystem
+    [Obsolete("Use WindowsDictationDataProvider instead.")]
+    public class WindowsDictationInputDeviceManager { }
+
+    /// <summary>
+    /// Dictation data provider for Windows 10 based platforms.
+    /// </summary>
+    public class WindowsDictationDataProvider : BaseDictationDataProvider
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public WindowsDictationInputDeviceManager(string name, uint priority) : base(name, priority) { }
+        public WindowsDictationDataProvider(string name, uint priority) : base(name, priority) { }
+
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         /// <inheritdoc />
-        public bool IsListening { get; private set; } = false;
+        public override bool IsListening { get; protected set; } = false;
 
         private bool hasFailed;
         private bool hasListener;
@@ -132,13 +138,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsM
         }
 
         /// <inheritdoc />
-        public async void StartRecording(GameObject listener, float initialSilenceTimeout = 5, float autoSilenceTimeout = 20, int recordingTime = 10, string micDeviceName = "")
+        public override async void StartRecording(GameObject listener, float initialSilenceTimeout = 5, float autoSilenceTimeout = 20, int recordingTime = 10, string micDeviceName = "")
         {
             await StartRecordingAsync(listener, initialSilenceTimeout, autoSilenceTimeout, recordingTime, micDeviceName);
         }
 
         /// <inheritdoc />
-        public async Task StartRecordingAsync(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10, string micDeviceName = "")
+        public override async Task StartRecordingAsync(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10, string micDeviceName = "")
         {
             if (IsListening || isTransitioning || MixedRealityToolkit.InputSystem == null || !Application.isPlaying)
             {
@@ -189,13 +195,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsM
         }
 
         /// <inheritdoc />
-        public async void StopRecording()
+        public override async void StopRecording()
         {
             await StopRecordingAsync();
         }
 
         /// <inheritdoc />
-        public async Task<AudioClip> StopRecordingAsync()
+        public override async Task<AudioClip> StopRecordingAsync()
         {
             if (!IsListening || isTransitioning || !Application.isPlaying)
             {

@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInp
     /// <summary>
     /// Manages Touch devices using unity input system.
     /// </summary>
-    public class UnityTouchDeviceManager : BaseDeviceManager
+    public class UnityTouchDeviceManager : BaseControllerDataProvider
     {
         /// <summary>
         /// Constructor.

@@ -73,13 +73,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 registeredSpatialObserverDataProviders.arraySize++;
                 var spatialObserverConfiguration = registeredSpatialObserverDataProviders.GetArrayElementAtIndex(registeredSpatialObserverDataProviders.arraySize - 1);
+                var spatialObserverType = spatialObserverConfiguration.FindPropertyRelative("spatialObserverType");
                 var spatialObserverName = spatialObserverConfiguration.FindPropertyRelative("spatialObserverName");
                 var priority = spatialObserverConfiguration.FindPropertyRelative("priority");
                 var runtimePlatform = spatialObserverConfiguration.FindPropertyRelative("runtimePlatform");
                 serializedObject.ApplyModifiedProperties();
 
-                var observerType = ((MixedRealitySpatialObserverDataProvidersProfile)serializedObject.targetObject).RegisteredSpatialObserverDataProviders[registeredSpatialObserverDataProviders.arraySize - 1].SpatialObserverType;
-                observerType.Type = null;
+                spatialObserverType.FindPropertyRelative("reference").stringValue = string.Empty;
                 spatialObserverName.stringValue = "New Spatial Observer Data Provider";
                 priority.intValue = 5;
                 runtimePlatform.intValue = 0;

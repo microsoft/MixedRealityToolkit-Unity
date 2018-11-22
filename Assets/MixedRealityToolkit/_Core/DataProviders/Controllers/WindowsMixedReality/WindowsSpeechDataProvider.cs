@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.Controllers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
@@ -16,10 +14,17 @@ using UnityEngine.Windows.Speech;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality
 {
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-    public class WindowsSpeechInputDeviceManager : BaseDeviceManager, IMixedRealitySpeechSystem
+    [Obsolete("Use WindowsSpeechDataProvider instead.")]
+    public class WindowsSpeechInputDeviceManager { }
+
+    /// <summary>
+    /// Speech data provider for windows 10 based platforms.
+    /// </summary>
+    public class WindowsSpeechDataProvider : BaseSpeechDataProvider
     {
-        public WindowsSpeechInputDeviceManager(string name, uint priority) : base(name, priority) { }
+        public WindowsSpeechDataProvider(string name, uint priority) : base(name, priority) { }
+
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
@@ -34,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsM
         private KeywordRecognizer keywordRecognizer;
 
         /// <inheritdoc />
-        public bool IsRecognitionActive => keywordRecognizer != null && keywordRecognizer.IsRunning;
+        public override bool IsRecognitionActive => keywordRecognizer != null && keywordRecognizer.IsRunning;
 
         public RecognitionConfidenceLevel RecognitionConfidenceLevel { get; set; }
 
@@ -89,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsM
         }
 
         /// <inheritdoc />
-        public void StartRecognition()
+        public override void StartRecognition()
         {
             if (keywordRecognizer != null && !keywordRecognizer.IsRunning)
             {
@@ -98,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsM
         }
 
         /// <inheritdoc />
-        public void StopRecognition()
+        public override void StopRecognition()
         {
             if (keywordRecognizer != null && keywordRecognizer.IsRunning)
             {

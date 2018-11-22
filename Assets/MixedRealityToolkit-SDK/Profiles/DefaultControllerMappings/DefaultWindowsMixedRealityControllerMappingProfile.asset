@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96c394c6e64c483797b55641fe33d6b7, type: 3}
   m_Name: DefaultWindowsMixedRealityControllerMappingProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   hasSetupDefaults: 1
   controllerMappings:
   - description: Windows Mixed Reality HoloLens Hand Input

@@ -1,12 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.Controllers
 {
+    [Obsolete("use IMixedRealityDictationDataProvider instead.")]
+    public interface IMixedRealitySpeechSystem { }
+
     /// <summary>
     /// Mixed Reality Toolkit controller definition, used to manage a specific controller type
     /// </summary>
-    public interface IMixedRealitySpeechSystem : IMixedRealityDeviceManager, IMixedRealityExtensionService
+    public interface IMixedRealitySpeechDataProvider : IMixedRealityControllerDataProvider
     {
         /// <summary>
         /// Query whether or not the speech system is active
