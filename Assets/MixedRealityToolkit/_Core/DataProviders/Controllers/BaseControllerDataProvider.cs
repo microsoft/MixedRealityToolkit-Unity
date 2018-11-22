@@ -49,12 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers
                 {
                     var pointerProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions[i];
 
-                    if (!useSpecificType)
-                    {
-                        useSpecificType = pointerProfile.ControllerType.Type != null;
-                    }
-
-                    if ((!useSpecificType || pointerProfile.ControllerType.Type == controllerType.Type) &&
+                    if (((useSpecificType && pointerProfile.ControllerType.Type == controllerType.Type) || (!useSpecificType && pointerProfile.ControllerType.Type == null)) &&
                         (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
