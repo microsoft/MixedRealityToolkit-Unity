@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         private SystemType dataProviderType;
 
         /// <summary>
-        /// The concrete type to use for this spatial observer.
+        /// The concrete type to use for this controller data provider.
         /// </summary>
         public SystemType DataProviderType => dataProviderType;
 
