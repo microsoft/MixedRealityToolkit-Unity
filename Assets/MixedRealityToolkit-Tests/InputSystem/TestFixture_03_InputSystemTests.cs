@@ -20,8 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Tests
             Assert.IsNotNull(MixedRealityToolkit.Instance.ActiveProfile);
-            Assert.IsNotEmpty(MixedRealityToolkit.Instance.ActiveProfile.ActiveServices);
-            Assert.AreEqual(1, MixedRealityToolkit.Instance.ActiveProfile.ActiveServices.Count);
+            Assert.IsNotEmpty(MixedRealityToolkit.Instance.ActiveSystems);
+            Assert.AreEqual(1, MixedRealityToolkit.Instance.ActiveSystems.Count);
             Assert.AreEqual(0, MixedRealityToolkit.Instance.RegisteredMixedRealityServices.Count);
         }
 
