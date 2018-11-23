@@ -5,9 +5,9 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
 using NUnit.Framework;
 
-namespace Microsoft.MixedReality.Toolkit.Tests
+namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
-    public class UnityInputManagerHelperTests
+    public class TestFixture_01_UnityInputManagerHelperTests
     {
         [Test]
         public void Test01_TestAddCustomMappings()
