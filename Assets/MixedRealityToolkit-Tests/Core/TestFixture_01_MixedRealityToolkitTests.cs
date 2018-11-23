@@ -123,10 +123,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestExtensionService1), new TestExtensionService1("Test ExtensionService 1", 10));
 
             // Validate non-existent ExtensionService
-            var extensionService2 = MixedRealityToolkit.Instance.IsServiceRegistered<ITestExtensionService2>();
+            var isServiceRegistered = MixedRealityToolkit.Instance.IsServiceRegistered<ITestExtensionService2>();
 
             // Tests
-            Assert.IsFalse(extensionService2);
+            Assert.IsFalse(isServiceRegistered);
         }
 
         [Test]
