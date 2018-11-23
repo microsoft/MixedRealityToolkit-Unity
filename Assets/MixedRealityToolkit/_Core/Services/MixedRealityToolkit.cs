@@ -646,7 +646,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 return true;
             }
 
-            Debug.LogError($"Unable to register {interfaceType}. Concrete type does not implement IMixedRealityExtensionService nor IMixedRealityDataProvider.");
+            Debug.LogError($"Unable to register {interfaceType}. Concrete type does not implement IMixedRealityExtensionService or IMixedRealityDataProvider.");
             return false;
         }
 
