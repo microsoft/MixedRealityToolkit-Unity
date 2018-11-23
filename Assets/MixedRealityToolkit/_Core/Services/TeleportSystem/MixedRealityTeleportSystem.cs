@@ -4,17 +4,16 @@
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
+namespace Microsoft.MixedReality.Toolkit.Core.Services.Teleportation
 {
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityTeleportSystem"/>
     /// </summary>
-    public class MixedRealityTeleportManager : BaseEventSystem, IMixedRealityTeleportSystem
+    public class MixedRealityTeleportSystem : BaseEventSystem, IMixedRealityTeleportSystem
     {
         private TeleportEventData teleportEventData;
 
