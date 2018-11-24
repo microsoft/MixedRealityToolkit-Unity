@@ -112,12 +112,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         #region Mixed Reality runtime component registry
 
-        private readonly List<Tuple<Type, IMixedRealityService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityService>>();
+        private static readonly List<Tuple<Type, IMixedRealityService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityService>>();
 
         /// <summary>
         /// Local component registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="IMixedRealityService"/>.
         /// </summary>
-        public IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => registeredMixedRealityServices;
+        public static IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => registeredMixedRealityServices;
 
         /// <summary>
         /// Local component registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="IMixedRealityService"/>.
