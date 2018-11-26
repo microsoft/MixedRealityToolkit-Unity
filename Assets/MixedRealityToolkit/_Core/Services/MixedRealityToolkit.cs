@@ -740,6 +740,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             EnableAllServicesByType(interfaceType, string.Empty);
         }
 
+        [Obsolete("Use EnableAllServicesByType instead.")]
+        public void EnableService(Type interfaceType, string serviceName)
+        {
+            EnableAllServicesByType(interfaceType, serviceName);
+        }
+
         /// <summary>
         /// Enable all services in the Mixed Reality Toolkit active service registry for a given type and name
         /// </summary>
@@ -769,6 +775,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         public static void DisableAllServicesByType(Type interfaceType)
         {
             DisableAllServicesByType(interfaceType, string.Empty);
+        }
+
+
+        [Obsolete("Use DisableAllServicesByType instead.")]
+        public void DisableService(Type interfaceType, string serviceName)
+        {
+            DisableAllServicesByType(interfaceType, serviceName);
         }
 
         /// <summary>
