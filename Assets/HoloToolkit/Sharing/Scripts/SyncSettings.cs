@@ -1,7 +1,5 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using System;
 using System.Collections.Generic;
@@ -17,7 +15,7 @@ namespace HoloToolkit.Sharing.SyncModel
     /// </summary>
     public class SyncSettings
     {
-#if UNITY_METRO && !UNITY_EDITOR
+#if UNITY_WSA && !UNITY_EDITOR
         private readonly Dictionary<TypeInfo, string> dataModelTypeToName = new Dictionary<TypeInfo, string>();
         private readonly Dictionary<string, TypeInfo> dataModelNameToType = new Dictionary<string, TypeInfo>();
 #else
@@ -46,7 +44,7 @@ namespace HoloToolkit.Sharing.SyncModel
             return retVal;
         }
 
-#if UNITY_METRO && !UNITY_EDITOR
+#if UNITY_WSA && !UNITY_EDITOR
         public TypeInfo GetDataModelType(string name)
         {
             TypeInfo retVal;

@@ -1,17 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
-using System.Runtime.InteropServices;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Encapsulates the primary dll functions, including marshalling helper functions.
-    /// The dll functions are organized into four parts - in this behavior, 
+    /// Encapsulates the primary DLL functions, including marshalling helper functions.
+    /// The DLL functions are organized into four parts - in this behavior, 
     /// SpatialUnderstandingDllTopology, SpatialUnderstandingDllShapes, and
     /// SpatialUnderstandingDllObjectPlacement. The scan flow, raycast, and alignment
     /// functions are included in this class.
@@ -19,7 +18,7 @@ namespace HoloToolkit.Unity
     public class SpatialUnderstandingDll
     {
         /// <summary>
-        /// Representation of the mesh data to be passed to the understanding dll.
+        /// Representation of the mesh data to be passed to the understanding DLL.
         /// Used by SpatialUnderstandingSourceMesh to store local copies of the mesh data.
         /// </summary>
         public struct MeshData
@@ -41,6 +40,7 @@ namespace HoloToolkit.Unity
                 Normals = meshFilter.sharedMesh.normals;
                 Indices = meshFilter.sharedMesh.triangles;
             }
+
             public void CopyFrom(MeshFilter meshFilter, int meshID = 0, int lastUpdateID = 0)
             {
                 MeshID = meshID;
@@ -88,7 +88,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Pins the string, converting to the format expected by the dll. See PinObject for
+        /// Pins the string, converting to the format expected by the DLL. See PinObject for
         /// additional details.
         /// </summary>
         public IntPtr PinString(string str)
@@ -160,7 +160,7 @@ namespace HoloToolkit.Unity
             return reusedRaycastResultPtr;
         }
         /// <summary>
-        /// Resuable raycast result object. Can be used for inline raycast calls.
+        /// Reusable raycast result object. Can be used for inline raycast calls.
         /// </summary>
         /// <returns>Raycast result structure</returns>
         public Imports.RaycastResult GetStaticRaycastResult()
@@ -169,7 +169,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Resuable playspace statistics pointer. Can be used for inline playspace statistics calls.
+        /// Reusable playspace statistics pointer. Can be used for inline playspace statistics calls.
         /// </summary>
         /// <returns>playspace statistics pointer</returns>
         public IntPtr GetStaticPlayspaceStatsPtr()
@@ -182,7 +182,7 @@ namespace HoloToolkit.Unity
             return reusedPlayspaceStatsPtr;
         }
         /// <summary>
-        /// Resuable playspace statistics. Can be used for inline playspace statistics calls.
+        /// Reusable playspace statistics. Can be used for inline playspace statistics calls.
         /// </summary>
         /// <returns>playspace statistics structure</returns>
         public Imports.PlayspaceStats GetStaticPlayspaceStats()
@@ -191,7 +191,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Resuable playspace alignment pointer. Can be used for inline playspace alignment query calls.
+        /// Reusable playspace alignment pointer. Can be used for inline playspace alignment query calls.
         /// </summary>
         /// <returns>playspace alignment pointer</returns>
         public IntPtr GetStaticPlayspaceAlignmentPtr()
@@ -204,7 +204,7 @@ namespace HoloToolkit.Unity
             return reusedPlayspaceAlignmentPtr;
         }
         /// <summary>
-        /// Resuable playspace alignment. Can be used for inline playspace alignment query calls.
+        /// Reusable playspace alignment. Can be used for inline playspace alignment query calls.
         /// </summary>
         /// <returns>playspace alignment structure</returns>
         public Imports.PlayspaceAlignment GetStaticPlayspaceAlignment()
@@ -213,7 +213,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Resuable object placement results pointer. Can be used for inline object placement queries.
+        /// Reusable object placement results pointer. Can be used for inline object placement queries.
         /// </summary>
         /// <returns>Object placement result pointer</returns>
         public IntPtr GetStaticObjectPlacementResultPtr()
@@ -226,14 +226,14 @@ namespace HoloToolkit.Unity
             return reusedObjectPlacementResultPtr;
         }
         /// <summary>
-        /// Resuable object placement results. Can be used for inline object placement queries.
+        /// Reusable object placement results. Can be used for inline object placement queries.
         /// </summary>
         /// <returns>Object placement result structure</returns>
         public SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult GetStaticObjectPlacementResult()
         {
             return reusedObjectPlacementResult;
         }
-        
+
         /// <summary>
         /// Marshals BoundedPlane data returned from a DLL API call into a managed BoundedPlane array
         /// and then frees the memory that was allocated within the DLL.
@@ -276,7 +276,7 @@ namespace HoloToolkit.Unity
         public class Imports
         {
             /// <summary>
-            /// Mesh input data passed to the dll
+            /// Mesh input data passed to the DLL
             /// </summary>
             [StructLayout(LayoutKind.Sequential, Pack = 1)]
             public struct MeshData
@@ -296,7 +296,7 @@ namespace HoloToolkit.Unity
             [StructLayout(LayoutKind.Sequential, Pack = 1)]
             public class PlayspaceStats
             {
-                public int IsWorkingOnStats;				// 0 if still working on creating the stats
+                public int IsWorkingOnStats;                // 0 if still working on creating the stats
 
                 public float HorizSurfaceArea;              // In m2 : All horizontal faces UP between Ground – 0.15 and Ground + 1.f (include Ground and convenient horiz surface)
                 public float TotalSurfaceArea;              // In m2 : All !
@@ -345,29 +345,29 @@ namespace HoloToolkit.Unity
                     Other,
                     Floor,
                     FloorLike,          // Not part of the floor topology, but close to the floor and looks like the floor
-                    Platform,			// Horizontal platform between the ground and the ceiling
+                    Platform,           // Horizontal platform between the ground and the ceiling
                     Ceiling,
                     WallExternal,
                     WallLike,           // Not part of the external wall surface
                 };
                 public SurfaceTypes SurfaceType;
-                float SurfaceArea;		// Zero if unknown (not part of the topology analysis)
+                float SurfaceArea;      // Zero if unknown (not part of the topology analysis)
                 public Vector3 IntersectPoint;
                 public Vector3 IntersectNormal;
             };
 
             // Functions
             /// <summary>
-            /// Initialize the spatial understanding dll. Function must be called
-            /// before any other dll function.
+            /// Initialize the spatial understanding DLL. Function must be called
+            /// before any other DLL function.
             /// </summary>
             /// <returns>Zero if fails, one if success</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int SpatialUnderstanding_Init();
             /// <summary>
-            /// Terminate the spatial understanding dll. 
+            /// Terminate the spatial understanding DLL. 
             /// </summary>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern void SpatialUnderstanding_Term();
 
             /// <summary>
@@ -383,8 +383,8 @@ namespace HoloToolkit.Unity
             /// <param name="camUp_Y">The user's camera/view unit up vector, y value</param>
             /// <param name="camUp_Z">The user's camera/view unit up vector, z value</param>
             /// <param name="searchDst">Suggested search distance for playspace center</param>
-            /// <param name="optimalSize">Optimal room size. Used to determind the playspace size</param>
-            [DllImport("SpatialUnderstanding")]
+            /// <param name="optimalSize">Optimal room size. Used to determined the playspace size</param>
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern void GeneratePlayspace_InitScan(
                 [In] float camPos_X, [In] float camPos_Y, [In] float camPos_Z,
                 [In] float camFwd_X, [In] float camFwd_Y, [In] float camFwd_Z,
@@ -407,7 +407,7 @@ namespace HoloToolkit.Unity
             /// <param name="camUp_Z">The user's camera/view unit up vector, z value</param>
             /// <param name="deltaTime">Time since last update</param>
             /// <returns>One if scanning has been finalized, zero if more updates are required.</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int GeneratePlayspace_UpdateScan(
                 [In] int meshCount, [In] IntPtr meshes,
                 [In] float camPos_X, [In] float camPos_Y, [In] float camPos_Z,
@@ -420,25 +420,25 @@ namespace HoloToolkit.Unity
             /// finalized. This should be called once the user is happy with the currently
             /// scanned in playspace.
             /// </summary>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern void GeneratePlayspace_RequestFinish();
 
             /// <summary>
             /// Extracting the mesh is a two step process, the first generates the mesh for extraction & saves it off.
-            ///	The caller is able to see vertex counts, etc. so they can allocate the proper amount of memory.
+            /// The caller is able to see vertex counts, etc. so they can allocate the proper amount of memory.
             /// The second call, the caller provides buffers of the appropriate size (or larger), passing in the 
             /// buffer sizes for validation.
             /// </summary>
             /// <param name="vertexCount">Filled in with the number of vertices to be returned in the subsequent extract call</param>
             /// <param name="indexCount">Filled in with the number of indices to be returned in the subsequent extract call</param>
             /// <returns>Zero if fails, one if success</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int GeneratePlayspace_ExtractMesh_Setup(
                 [Out] out int vertexCount,
                 [Out] out int indexCount);
 
             /// <summary>
-            /// Call to receive the dll's custom generated mesh data. Use GeneratePlayspace_ExtractMesh_Setup to
+            /// Call to receive the DLL's custom generated mesh data. Use GeneratePlayspace_ExtractMesh_Setup to
             /// query the minimum size of the vertex positions, normals, and indices.
             /// </summary>
             /// <param name="bufferVertexCount">Size of vericesPos & verticesNormal, in number Vector3 elements in each array</param>
@@ -447,7 +447,7 @@ namespace HoloToolkit.Unity
             /// <param name="bufferIndexCount">Size of indices, in number of elements</param>
             /// <param name="indices">Array to receive the mesh indices</param>
             /// <returns>Zero if fails, one if success</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int GeneratePlayspace_ExtractMesh_Extract(
                 [In] int bufferVertexCount,
                 [In] IntPtr verticesPos,        // (vertexCount) DirectX::XMFLOAT3*
@@ -460,7 +460,7 @@ namespace HoloToolkit.Unity
             /// </summary>
             /// <param name="playspaceStats">playspace stats structure to receive the statistics data</param>
             /// <returns>Zero if fails, one if success</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int QueryPlayspaceStats(
                 [In] IntPtr playspaceStats);    // PlayspaceStats
 
@@ -469,12 +469,12 @@ namespace HoloToolkit.Unity
             /// </summary>
             /// <param name="playspaceAlignment">playspace alignment structure to receive the alignment data</param>
             /// <returns>Zero if fails, one if success</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int QueryPlayspaceAlignment(
                 [In] IntPtr playspaceAlignment); // PlayspaceAlignment
 
             /// <summary>
-            /// Perform a raycast against the internal world representation of the understanding dll. 
+            /// Perform a raycast against the internal world representation of the understanding DLL. 
             /// This will not be valid until after scanning is finalized.
             /// </summary>
             /// <param name="rayPos_X">Ray origin, x component</param>
@@ -485,7 +485,7 @@ namespace HoloToolkit.Unity
             /// <param name="rayVec_Z">Ray direction vector, z component. Length of ray indicates the length of the ray cast query.</param>
             /// <param name="result">Structure to receive the results of the raycast</param>
             /// <returns>Zero if fails or no intersection, one if an intersection is detected</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int PlayspaceRaycast(
                 [In] float rayPos_X, [In] float rayPos_Y, [In] float rayPos_Z,
                 [In] float rayVec_X, [In] float rayVec_Y, [In] float rayVec_Z,

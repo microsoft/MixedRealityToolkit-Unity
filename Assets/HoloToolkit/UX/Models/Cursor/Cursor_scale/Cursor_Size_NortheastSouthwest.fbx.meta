@@ -1,0 +1,932 @@
+fileFormatVersion: 2
+guid: f76d5867ddbee9c4daff05b004090922
+timeCreated: 1442349477
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Cursor_Cross
+    100002: cursor_cross_ring
+    100004: cursor_cross_ring_interaction
+    100006: cursor_cross_ring_interaction_root
+    100008: cursor_cross_ring_observation
+    100010: cursor_cross_ring_observation_scale
+    100012: cursor_cross_ring_press
+    100014: cursor_cross_ring_press_scale
+    100016: //RootNode
+    100018: cursor_sizeNortheastSouthwest_arrows
+    100020: cursor_sizeNortheastSouthwest_root
+    100022: polySurface10
+    100024: polySurface15
+    100026: polySurface16
+    100028: polySurface17
+    100030: polySurface18
+    100032: polySurface23
+    100034: polySurface24
+    100036: polySurface25
+    100038: polySurface26
+    100040: polySurface27
+    100042: polySurface28
+    100044: polySurface9
+    100046: rotate_root
+    400000: Cursor_Cross
+    400002: cursor_cross_ring
+    400004: cursor_cross_ring_interaction
+    400006: cursor_cross_ring_interaction_root
+    400008: cursor_cross_ring_observation
+    400010: cursor_cross_ring_observation_scale
+    400012: cursor_cross_ring_press
+    400014: cursor_cross_ring_press_scale
+    400016: //RootNode
+    400018: cursor_sizeNortheastSouthwest_arrows
+    400020: cursor_sizeNortheastSouthwest_root
+    400022: polySurface10
+    400024: polySurface15
+    400026: polySurface16
+    400028: polySurface17
+    400030: polySurface18
+    400032: polySurface23
+    400034: polySurface24
+    400036: polySurface25
+    400038: polySurface26
+    400040: polySurface27
+    400042: polySurface28
+    400044: polySurface9
+    400046: rotate_root
+    2300000: polySurface10
+    2300002: polySurface15
+    2300004: polySurface16
+    2300006: polySurface17
+    2300008: polySurface18
+    2300010: polySurface23
+    2300012: polySurface24
+    2300014: polySurface25
+    2300016: polySurface26
+    2300018: polySurface27
+    2300020: polySurface28
+    2300022: polySurface9
+    3300000: polySurface10
+    3300002: polySurface15
+    3300004: polySurface16
+    3300006: polySurface17
+    3300008: polySurface18
+    3300010: polySurface23
+    3300012: polySurface24
+    3300014: polySurface25
+    3300016: polySurface26
+    3300018: polySurface27
+    3300020: polySurface28
+    3300022: polySurface9
+    4300000: polySurface23
+    4300002: polySurface24
+    4300004: polySurface25
+    4300006: polySurface9
+    4300008: polySurface10
+    4300010: polySurface26
+    4300012: polySurface27
+    4300014: polySurface28
+    4300016: polySurface15
+    4300018: polySurface16
+    4300020: polySurface17
+    4300022: polySurface18
+    7400000: Cursor_Cross_Observation_In_NortheastSouthwest
+    7400002: Cursor_Cross_Observation_Out_NortheastSouthwest
+    7400004: Cursor_Cross_Interaction_In_NortheastSouthwest
+    7400006: Cursor_Cross_Interaction_Out_NortheastSouthwest
+    7400008: Cursor_Cross_Hold_In_NortheastSouthwest
+    7400010: Cursor_Cross_Hold_Out_NortheastSouthwest
+    7400012: Cursor_Cross_Observation_NortheastSouthwest
+    7400014: Cursor_Cross_Interaction_From_Observation_NortheastSouthwest
+    7400016: Cursor_Cross_Interaction_From_Hold_NortheastSouthwest
+    7400018: Cursor_Cross_Hold_NortheastSouthwest
+    9500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Cursor_Cross_Observation_In_NortheastSouthwest
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 6
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Cross
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface26
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface27
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface28
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface9
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface10
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface23
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface24
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface25
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/rotate_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface15
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface16
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface17
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface18
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Cross_Observation_Out_NortheastSouthwest
+      takeName: Take 001
+      firstFrame: 20
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Cross
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface26
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface27
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface28
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface9
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface10
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface23
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface24
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface25
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/rotate_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface15
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface16
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface17
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface18
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Cross_Interaction_In_NortheastSouthwest
+      takeName: Take 001
+      firstFrame: 40
+      lastFrame: 45
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Cross
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface26
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface27
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface28
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface9
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface10
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface23
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface24
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface25
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/rotate_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface15
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface16
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface17
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface18
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Cross_Interaction_Out_NortheastSouthwest
+      takeName: Take 001
+      firstFrame: 60
+      lastFrame: 65
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Cross
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface26
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface27
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface28
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface9
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface10
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface23
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface24
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface25
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/rotate_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface15
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface16
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface17
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface18
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Cross_Hold_In_NortheastSouthwest
+      takeName: Take 001
+      firstFrame: 70
+      lastFrame: 75
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Cross
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface26
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface27
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface28
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface9
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface10
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface23
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface24
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface25
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/rotate_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface15
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface16
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface17
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface18
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Cross_Hold_Out_NortheastSouthwest
+      takeName: Take 001
+      firstFrame: 80
+      lastFrame: 85
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Cross
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface26
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface27
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface28
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface9
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface10
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface23
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface24
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface25
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/rotate_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface15
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface16
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface17
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface18
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Cross_Observation_NortheastSouthwest
+      takeName: Take 001
+      firstFrame: 100
+      lastFrame: 104
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Cross
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface26
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface27
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface28
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface9
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface10
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface23
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface24
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface25
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/rotate_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface15
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface16
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface17
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface18
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Cross_Interaction_From_Observation_NortheastSouthwest
+      takeName: Take 001
+      firstFrame: 109
+      lastFrame: 113
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Cross
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface26
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface27
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface28
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface9
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface10
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface23
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface24
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface25
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/rotate_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface15
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface16
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface17
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface18
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Cross_Interaction_From_Hold_NortheastSouthwest
+      takeName: Take 001
+      firstFrame: 119
+      lastFrame: 122
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Cross
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface26
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface27
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface28
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface9
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface10
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface23
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface24
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface25
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/rotate_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface15
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface16
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface17
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface18
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Cross_Hold_NortheastSouthwest
+      takeName: Take 001
+      firstFrame: 129
+      lastFrame: 132
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Cross
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface26
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface27
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_interaction_root/cursor_cross_ring_interaction/polySurface28
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface9
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_observation_scale/cursor_cross_ring_observation/polySurface10
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface23
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface24
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/cursor_cross_ring_press_scale/cursor_cross_ring_press/polySurface25
+        weight: 1
+      - path: Cursor_Cross/cursor_cross_ring/rotate_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface15
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface16
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface17
+        weight: 1
+      - path: Cursor_Cross/cursor_sizeNortheastSouthwest_root/cursor_sizeNortheastSouthwest_arrows/polySurface18
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -25,7 +25,7 @@ namespace HoloToolkit.Examples.Prototyping
 
             if (mTextMesh == null && mText == null)
             {
-                Debug.LogError("Textmesh or Text is not set in CycleText!");
+                Debug.LogError("TextMesh or Text is not set in CycleText!");
                 Destroy(this);
             }
         }

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Encapsulates the topology queries of the understanding dll.
+    /// Encapsulates the topology queries of the understanding DLL.
     /// These queries will not be valid until after scanning is finalized.
     /// </summary>
     public static class SpatialUnderstandingDllTopology
@@ -40,7 +40,7 @@ namespace HoloToolkit.Unity
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
         // Queries (topology)
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindPositionsOnWalls(
             [In] float minHeightOfWallSpace,
             [In] float minWidthOfWallSpace,
@@ -59,7 +59,7 @@ namespace HoloToolkit.Unity
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindLargePositionsOnWalls(
             [In] float minHeightOfWallSpace,
             [In] float minWidthOfWallSpace,
@@ -73,7 +73,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="wall">Pointer to a TopologyResult structure, to be filled with the found wall</param>
         /// <returns>Zero if fails, one if success</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindLargestWall(
             [In, Out] IntPtr wall);             // TopologyResult
 
@@ -85,7 +85,7 @@ namespace HoloToolkit.Unity
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindPositionsOnFloor(
             [In] float minLengthOfFloorSpace,
             [In] float minWidthOfFloorSpace,
@@ -98,7 +98,7 @@ namespace HoloToolkit.Unity
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindLargestPositionsOnFloor(
             [In] int locationCount,             // Pass in the space allocated in locationData
             [In, Out] IntPtr locationData);     // TopologyResult
@@ -112,13 +112,32 @@ namespace HoloToolkit.Unity
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindPositionsSittable(
             [In] float minHeight,
             [In] float maxHeight,
             [In] float minFacingClearance,
             [In] int locationCount,             // Pass in the space allocated in locationData
             [In, Out] IntPtr locationData);     // TopologyResult
-    }
+
+        /// <summary>
+        /// Finds only large spaces on platforms meeting the criteria specified by the parameters.
+        /// </summary>
+        /// <param name="minHeight">Minimum height above the floor for a space</param>
+        /// <param name="maxHeight">Maximum height above the floor for a space</param>
+        /// <param name="minFacingClearance">Minimum clearance for the space above the placement surface (minimum space height)</param>
+        /// <param name="minWidth">Minimum required width on placement surface</param>
+        /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
+        /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
+        /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
+        [DllImport("SpatialUnderstanding")]
+        public static extern int QueryTopology_FindLargePositionsSittable(
+            [In] float minHeight,
+            [In] float maxHeight,
+            [In] float minFacingClearance,
+            [In] float minWidth,
+            [In] int locationCount,             // Pass in the space allocated in locationData
+            [In, Out] IntPtr locationData);     // TopologyResult
+  }
 
 }

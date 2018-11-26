@@ -27,7 +27,7 @@ namespace HoloToolkit.Examples.Prototyping
         void MoveNext();
 
         /// <summary>
-        /// Move to the previsou item in the array
+        /// Move to the previous item in the array
         /// </summary>
         void MovePrevious();
 

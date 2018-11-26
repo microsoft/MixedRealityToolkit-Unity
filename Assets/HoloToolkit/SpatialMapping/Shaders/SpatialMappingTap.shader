@@ -1,4 +1,6 @@
-Shader "Spatial Mapping/Spatial Mappping Tap"
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+Shader "Spatial Mapping/Spatial Mapping Tap"
 {
 	Properties
 	{
@@ -54,11 +56,14 @@ Shader "Spatial Mapping/Spatial Mappping Tap"
 			{
 				half4 viewPos : SV_POSITION;
 				half  pulse : COLOR;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			v2g vert(appdata_base v)
 			{
 				v2g o;
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_TRANSFER_INSTANCE_ID(v, o);
 
 				o.viewPos = UnityObjectToClipPos(v.vertex);
 
@@ -76,6 +81,8 @@ Shader "Spatial Mapping/Spatial Mappping Tap"
 				float4 viewPos : SV_POSITION;
 				half3  bary    : COLOR;
 				half   pulse   : COLOR1;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			[maxvertexcount(3)]
@@ -93,6 +100,9 @@ Shader "Spatial Mapping/Spatial Mappping Tap"
 				[unroll]
 				for (uint idx = 0; idx < 3; ++idx)
 				{
+					UNITY_SETUP_INSTANCE_ID(i[idx]);
+					UNITY_TRANSFER_INSTANCE_ID(i[idx], o);
+					UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 					o.viewPos = i[idx].viewPos;
 					o.bary = barys[idx];
 					o.pulse = i[idx].pulse;
@@ -102,6 +112,8 @@ Shader "Spatial Mapping/Spatial Mappping Tap"
 
 			half4 frag(g2f i) : COLOR
 			{
+				UNITY_SETUP_INSTANCE_ID(i);
+
 				half3 result = i.pulse * _PulseColor;
 
 				if (!_UseWireframe)

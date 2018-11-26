@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using UnityEngine;
 
-namespace HoloToolkit.Examples.SharingWithUNET
+namespace HoloToolkit.Unity.SharingWithUNET
 {
     /// <summary>
     /// It is nice to know what is going on with the networking scene sometimes.

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace HoloToolkit.Examples.Prototyping
 {
     /// <summary>
-    /// Adds margins or buffers using size values, similar to RectTransorm size values or pixel values used in desiger tools.
+    /// Adds margins or buffers using size values, similar to RectTransorm size values or pixel values used in designer tools.
     /// 
     /// A quick way to size and position sub elements in a UI mock up.
     /// Use to stack elements and create more interesting designs.
@@ -55,7 +55,7 @@ namespace HoloToolkit.Examples.Prototyping
         }
 
         /// <summary>
-        /// Set the size based on the Achor's size and the buffers
+        /// Set the size based on the Anchor's size and the buffers
         /// </summary>
         private void UpdateSize()
         {

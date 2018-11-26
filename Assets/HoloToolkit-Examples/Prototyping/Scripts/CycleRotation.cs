@@ -8,8 +8,8 @@ using HoloToolkit.Unity;
 namespace HoloToolkit.Examples.Prototyping
 {
     /// <summary>
-    /// sets the rotation (eulerAngles) of an object to the selected value in the array.
-    /// Add RotateToValue for animaiton and easing, auto detected.
+    /// Sets the rotation (eulerAngles) of an object to the selected value in the array.
+    /// Add RotateToValue for animation and easing, auto detected.
     /// </summary>
     public class CycleRotation : CycleArray<Vector3>
     {
@@ -26,7 +26,7 @@ namespace HoloToolkit.Examples.Prototyping
         }
 
         /// <summary>
-        /// set the rotation from the vector 3 euler angle
+        /// Set the rotation from the Vector3 Euler angles
         /// </summary>
         /// <param name="index"></param>
         public override void SetIndex(int index)

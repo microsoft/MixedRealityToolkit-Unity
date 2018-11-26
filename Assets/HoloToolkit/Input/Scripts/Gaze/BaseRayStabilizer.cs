@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// A base class for a stabilizer that takes an input position and orientation, and performs operations on them
+    /// A base class for a stabilizer that takes an input position and rotation, and performs operations on them
     /// to stabilize, or smooth deltas, in the data. 
     /// </summary>
     public abstract class BaseRayStabilizer : MonoBehaviour
@@ -22,15 +22,25 @@ namespace HoloToolkit.Unity.InputModule
         public abstract Quaternion StableRotation { get; }
 
         /// <summary>
-        /// A ray representing the stable position and orientation
+        /// A ray representing the stable position and rotation
         /// </summary>
         public abstract Ray StableRay { get; }
 
         /// <summary>
-        /// Call this each frame to smooth out changes to a position and orientation.
+        /// Call this each frame to smooth out changes to a position and rotation, if supported.
         /// </summary>
         /// <param name="position">Input position to smooth.</param>
-        /// <param name="rotation">Input orientation to smooth.</param>
-        public abstract void UpdateStability(Vector3 position, Quaternion rotation);
+        /// <param name="rotation">Input rotation to smooth.</param>
+        public virtual void UpdateStability(Vector3 position, Quaternion rotation)
+        {
+            UpdateStability(position, (rotation * Vector3.forward));
+        }
+
+        /// <summary>
+        /// Call this each frame to smooth out changes to a position and direction, if supported.
+        /// </summary>
+        /// <param name="position">Input position to smooth.</param>
+        /// <param name="direction">Input direction to smooth.</param>
+        public abstract void UpdateStability(Vector3 position, Vector3 direction);
     }
 }

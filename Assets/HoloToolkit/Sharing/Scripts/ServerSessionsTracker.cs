@@ -1,7 +1,5 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using System;
 using System.Collections.Generic;
@@ -50,7 +48,6 @@ namespace HoloToolkit.Sharing
             if (sessionManager != null)
             {
                 sessionManagerAdapter = new SessionManagerAdapter();
-                sessionManager.AddListener(sessionManagerAdapter);
                 sessionManagerAdapter.ServerConnectedEvent += OnServerConnected;
                 sessionManagerAdapter.ServerDisconnectedEvent += OnServerDisconnected;
                 sessionManagerAdapter.SessionClosedEvent += OnSessionClosed;
@@ -60,6 +57,7 @@ namespace HoloToolkit.Sharing
                 sessionManagerAdapter.UserChangedEvent += OnUserChanged;
                 sessionManagerAdapter.UserJoinedSessionEvent += OnUserJoined;
                 sessionManagerAdapter.UserLeftSessionEvent += OnUserLeft;
+                sessionManager.AddListener(sessionManagerAdapter);
             }
         }
 
@@ -166,8 +164,14 @@ namespace HoloToolkit.Sharing
 
         private void OnSessionClosed(Session session)
         {
-            SessionClosed.RaiseEvent(session);
-            Sessions.Remove(session);
+            for (int i = 0; i < Sessions.Count; i++)
+            {
+                if (Sessions[i].GetName().ToString().Equals(session.GetName().ToString()))
+                {
+                    SessionClosed.RaiseEvent(Sessions[i]);
+                    Sessions.Remove(Sessions[i]);
+                }
+            }
         }
 
         private void OnServerDisconnected()

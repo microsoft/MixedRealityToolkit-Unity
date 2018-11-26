@@ -26,7 +26,7 @@ namespace HoloToolkit.Examples.Prototyping
         [Tooltip("starting position based on 360 degrees")]
         public float StartAngle = 0;
 
-        [Tooltip("Limit the amount or revolutions, set to zero for infinit")]
+        [Tooltip("Limit the amount or revolutions, set to zero for infinite")]
         public float Revolutions = 0;
 
         [Tooltip("Orbit the other way")]

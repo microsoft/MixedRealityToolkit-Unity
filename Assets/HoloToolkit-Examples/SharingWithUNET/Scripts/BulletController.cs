@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Examples.SharingWithUNET
+namespace HoloToolkit.Unity.SharingWithUNET
 {
     /// <summary>
     /// Controls little bullets fired into the world.

@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 235c7917337f78f4b853694125a79865, type: 3}
+  m_Name: DefaultButtonIconProfileTexture
+  m_EditorClassIdentifier: Assembly-CSharp:HUX.Buttons:ButtonIconProfileTexture
+  _IconNotFound: {fileID: 0}
+  AlphaTransitionSpeed: 0.25
+  IconMaterial: {fileID: 2100000, guid: 4f37668d794e3694c9ee36b62447d99b, type: 2}
+  IconMesh: {fileID: 4300010, guid: c68a88ae5c5b91f41b94c83aa4c4196e, type: 3}
+  AlphaColorProperty: _Color
+  GlobalNavButton: {fileID: 0}
+  ChevronUp: {fileID: 0}
+  ChevronDown: {fileID: 0}
+  ChevronLeft: {fileID: 0}
+  ChevronRight: {fileID: 0}
+  Forward: {fileID: 0}
+  Back: {fileID: 0}
+  PageLeft: {fileID: 0}
+  PageRight: {fileID: 0}
+  Add: {fileID: 0}
+  Remove: {fileID: 0}
+  Clear: {fileID: 0}
+  Cancel: {fileID: 0}
+  Zoom: {fileID: 0}
+  Refresh: {fileID: 0}
+  Lock: {fileID: 0}
+  Accept: {fileID: 0}
+  OpenInNewWindow: {fileID: 0}
+  Completed: {fileID: 0}
+  Error: {fileID: 0}
+  Contact: {fileID: 0}
+  Volume: {fileID: 0}
+  KeyboardClassic: {fileID: 0}
+  Camera: {fileID: 0}
+  Video: {fileID: 0}
+  Microphone: {fileID: 0}
+  Ready: {fileID: 0}
+  AirTap: {fileID: 0}
+  PressHold: {fileID: 0}
+  Drag: {fileID: 0}
+  TapToPlaceArt: {fileID: 0}
+  AdjustWithHand: {fileID: 0}
+  AdjustHologram: {fileID: 0}
+  RemoveHologram: {fileID: 0}
+  CustomIcons:
+  - {fileID: 2800000, guid: 30699e294936bf6489bb1984d770e07e, type: 3}
+  - {fileID: 2800000, guid: 844c611d8989e904cba0fd67b9536d11, type: 3}
+  - {fileID: 2800000, guid: fa5e3c121495d23458245aacbc4cc29b, type: 3}
+  - {fileID: 2800000, guid: e2d1418e284d6a84791331a768e88c69, type: 3}
+  - {fileID: 2800000, guid: 517a5268112b8854e8d807547081e670, type: 3}
+  - {fileID: 2800000, guid: fdac2bce952169d46986bf702e00f2e6, type: 3}
+  - {fileID: 2800000, guid: 5cf198fae044fae47bde3da22d5de95a, type: 3}
+  - {fileID: 2800000, guid: 8867ef317bf86c142897904dbb7a1ac6, type: 3}
+  - {fileID: 2800000, guid: 1756676fd64b61e4a914ffa70233b9a6, type: 3}
+  - {fileID: 2800000, guid: 7029cbbbce5f0ac4dbc4e93267bfddf4, type: 3}

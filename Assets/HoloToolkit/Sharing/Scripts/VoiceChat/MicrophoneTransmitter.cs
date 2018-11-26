@@ -165,7 +165,7 @@ namespace HoloToolkit.Sharing.VoiceChat
                 audioDataMutex.ReleaseMutex();
             }
 
-            #region debuginfo
+            #region DebugInfo
             if (SaveTestClip && testCircularBuffer.UsedCapacity == testCircularBuffer.TotalCapacity)
             {
                 float[] testBuffer = new float[testCircularBuffer.UsedCapacity / 4];
@@ -210,7 +210,7 @@ namespace HoloToolkit.Sharing.VoiceChat
 
                 if (ShowInterPacketTime)
                 {
-                    Debug.LogFormat("Microphone: Millisecs since last sent: {0}, Worst: {1}",
+                    Debug.LogFormat("Microphone: Milliseconds since last sent: {0}, Worst: {1}",
                         (seconds * 1000.0).ToString(CultureInfo.InvariantCulture),
                         (worstTimeBetweenPackets * 1000.0).ToString(CultureInfo.InvariantCulture));
                 }
@@ -252,14 +252,14 @@ namespace HoloToolkit.Sharing.VoiceChat
             if (GlobalAnchorTransform != null)
             {
                 cameraPosRelativeToGlobalAnchor = MathUtils.TransformPointFromTo(
-                     null,
-                     GlobalAnchorTransform,
-                     Camera.main.transform.position);
+                    null,
+                    GlobalAnchorTransform,
+                    CameraCache.Main.transform.position);
 
                 cameraDirectionRelativeToGlobalAnchor = MathUtils.TransformDirectionFromTo(
                     null,
                     GlobalAnchorTransform,
-                    Camera.main.transform.position);
+                    CameraCache.Main.transform.position);
             }
 
             cameraPosRelativeToGlobalAnchor.Normalize();

@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity
     // object according to that assumption.
     public class HeadsUpDirectionIndicator : MonoBehaviour
     {
-        // Use as a named indexer for Unity's frustum planes. The order follows that layed
+        // Use as a named indexer for Unity's frustum planes. The order follows that laid
         // out in the API documentation. DO NOT CHANGE ORDER unless a corresponding change
         // has been made in the Unity API.
         private enum FrustumPlanes
@@ -61,7 +61,7 @@ namespace HoloToolkit.Unity
 
         private void Start()
         {
-            Depth = Mathf.Clamp(Depth, Camera.main.nearClipPlane, Camera.main.farClipPlane);
+            Depth = Mathf.Clamp(Depth, CameraCache.Main.nearClipPlane, CameraCache.Main.farClipPlane);
 
             if (PointerPrefab == null)
             {
@@ -92,25 +92,23 @@ namespace HoloToolkit.Unity
         // Update the direction indicator's position and orientation every frame.
         private void Update()
         {
-            // No object to track?
-            if (TargetObject == null || pointer == null)
-            {
-                // bail out early.
-                return;
-            }
-            else
-            {
-                int currentFrameCount = UnityEngine.Time.frameCount;
-                if (currentFrameCount != frustumLastUpdated)
-                {
-                    // Collect the updated camera information for the current frame
-                    CacheCameraTransform(Camera.main);
+            if (!HasObjectsToTrack()) { return; }
 
-                    frustumLastUpdated = currentFrameCount;
-                }
+            int currentFrameCount = Time.frameCount;
+            if (currentFrameCount != frustumLastUpdated)
+            {
+                // Collect the updated camera information for the current frame
+                CacheCameraTransform(CameraCache.Main);
 
-                UpdatePointerTransform(Camera.main, indicatorVolume, TargetObject.transform.position);
+                frustumLastUpdated = currentFrameCount;
             }
+
+            UpdatePointerTransform(CameraCache.Main, indicatorVolume, TargetObject.transform.position);
+        }
+
+        private bool HasObjectsToTrack()
+        {
+            return TargetObject != null && pointer != null;
         }
 
         // Cache data from the camera state that are costly to retrieve.
@@ -151,7 +149,7 @@ namespace HoloToolkit.Unity
             Vector3 farRight = far * tanFovx * cameraRight;
             Vector3 farLeft = -farRight;
 
-            // Caclulate the center point of the near plane and the far plane as offsets from the
+            // Calculate the center point of the near plane and the far plane as offsets from the
             // camera in world space.
             Vector3 nearBase = near * cameraForward;
             Vector3 farBase = far * cameraForward;
@@ -173,7 +171,7 @@ namespace HoloToolkit.Unity
 #if UNITY_EDITOR
             if (DebugDrawPointerOrientationPlanes)
             {
-                // Debug draw a tringale coplanar with 'd'
+                // Debug draw a triangle coplanar with 'd'
                 Debug.DrawLine(nearUpperLeft, nearLowerRight);
                 Debug.DrawLine(nearLowerRight, farUpperLeft);
                 Debug.DrawLine(farUpperLeft, nearUpperLeft);
@@ -211,27 +209,24 @@ namespace HoloToolkit.Unity
                 if (eDistance > 0.0f)
                 {
                     return FrustumPlanes.Left;
-                }
-                else
+                } else
                 {
                     return FrustumPlanes.Bottom;
                 }
-            }
-            else
+            } else
             {
                 if (eDistance > 0.0f)
                 {
                     return FrustumPlanes.Top;
-                }
-                else
+                } else
                 {
                     return FrustumPlanes.Right;
                 }
             }
         }
- 
+
         // given a frustum wall we wish to snap the pointer to, this function returns a ray
-        // along which the pointer should be placed to appear at the appropiate point along
+        // along which the pointer should be placed to appear at the appropriate point along
         // the edge of the indicator field.
         private bool TryGetIndicatorPosition(Vector3 targetPosition, Plane frustumWall, out Ray r)
         {
@@ -245,7 +240,7 @@ namespace HoloToolkit.Unity
             Vector3 normal = Vector3.Cross(cameraToTarget.normalized, cameraForward);
 
             // In the case that the three points are colinear we cannot form a plane but we'll
-            // assume the target is directly behind us and we'll use a prechosen plane.
+            // assume the target is directly behind us and we'll use a pre-chosen plane.
             if (normal == Vector3.zero)
             {
                 normal = -Vector3.right;
@@ -268,8 +263,7 @@ namespace HoloToolkit.Unity
                     (Vector3.Cross(p.normal, rNormal) * q.distance)) / det;
                 intersection = new Ray(rPoint, rNormal);
                 return true;
-            }
-            else
+            } else
             {
                 intersection = new Ray();
                 return false;
@@ -299,7 +293,7 @@ namespace HoloToolkit.Unity
                     break;
                 }
             }
-            
+
             // if the target object appears outside the indicator area...
             if (pointNotInsideIndicatorField)
             {
@@ -331,7 +325,7 @@ namespace HoloToolkit.Unity
             Vector3 indicatorFieldCenter = cameraPosition + indicatorFieldOffset;
             Vector3 pointerDirection = (indicatorPosition - indicatorFieldCenter).normalized;
 
-            // allign this object's up vector with the pointerDirection
+            // Align this object's up vector with the pointerDirection
             this.transform.rotation = Quaternion.LookRotation(cameraForward, pointerDirection);
         }
 

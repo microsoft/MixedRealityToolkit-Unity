@@ -7,10 +7,17 @@ namespace HoloToolkit.Unity
 {
     public enum PivotAxis
     {
-        // Rotate about all axes.
-        Free,
+        // Most common options, preserving current functionality with the same enum order.
+        XY,
+        Y,
         // Rotate about an individual axis.
-        Y
+        X,
+        Z,
+        // Rotate about a pair of axes.
+        XZ,
+        YZ,
+        // Rotate about all axes.
+        Free
     }
 
     /// <summary>
@@ -22,38 +29,86 @@ namespace HoloToolkit.Unity
         /// The axis about which the object will rotate.
         /// </summary>
         [Tooltip("Specifies the axis about which the object will rotate.")]
-        public PivotAxis PivotAxis = PivotAxis.Free;
+        [SerializeField]
+        private PivotAxis pivotAxis = PivotAxis.XY;
+        public PivotAxis PivotAxis
+        {
+            get { return pivotAxis; }
+            set { pivotAxis = value; }
+        }
 
-        [Tooltip("Specifies the target we will orient to. If no Target is specified the main camera will be used.")]
-        public Transform TargetTransform;
+        /// <summary>
+        /// The target we will orient to. If no target is specified, the main camera will be used.
+        /// </summary>
+        [Tooltip("Specifies the target we will orient to. If no target is specified, the main camera will be used.")]
+        [SerializeField]
+        private Transform targetTransform;
+        public Transform TargetTransform
+        {
+            get { return targetTransform; }
+            set { targetTransform = value; }
+        }
 
         private void OnEnable()
         {
             if (TargetTransform == null)
             {
-                TargetTransform = Camera.main.transform;
+                if (CameraCache.Main != null)
+                {
+                    TargetTransform = CameraCache.Main.transform;
+                }
             }
-
-            Update();
         }
 
         /// <summary>
         /// Keeps the object facing the camera.
         /// </summary>
-        private void Update()
+        private void LateUpdate()
         {
             if (TargetTransform == null)
             {
-                return;
+                if (CameraCache.Main != null)
+                {
+                    TargetTransform = CameraCache.Main.transform;
+                }
+                else
+                {
+                    return;
+                }
             }
 
             // Get a Vector that points from the target to the main camera.
             Vector3 directionToTarget = TargetTransform.position - transform.position;
 
+            bool useCameraAsUpVector = true;
+
             // Adjust for the pivot axis.
             switch (PivotAxis)
             {
+                case PivotAxis.X:
+                    directionToTarget.x = 0.0f;
+                    useCameraAsUpVector = false;
+                    break;
+
                 case PivotAxis.Y:
+                    directionToTarget.y = 0.0f;
+                    useCameraAsUpVector = false;
+                    break;
+
+                case PivotAxis.Z:
+                    directionToTarget.x = 0.0f;
+                    directionToTarget.y = 0.0f;
+                    break;
+
+                case PivotAxis.XY:
+                    useCameraAsUpVector = false;
+                    break;
+
+                case PivotAxis.XZ:
+                    directionToTarget.x = 0.0f;
+                    break;
+
+                case PivotAxis.YZ:
                     directionToTarget.y = 0.0f;
                     break;
 
@@ -70,7 +125,14 @@ namespace HoloToolkit.Unity
             }
 
             // Calculate and apply the rotation required to reorient the object
-            transform.rotation = Quaternion.LookRotation(-directionToTarget);
+            if (useCameraAsUpVector)
+            {
+                transform.rotation = Quaternion.LookRotation(-directionToTarget, CameraCache.Main.transform.up);
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(-directionToTarget);
+            }
         }
     }
 }

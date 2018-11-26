@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 4768146f072b50149a922df192dfb58f
+timeCreated: 1519946350
+licenseType: Pro
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+      type: 2}
+  - appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
+      type: 2}
+  - scaleHandleMaterial: {fileID: 2100000, guid: 4a9072a0d8623aa44abf31f02d209a09,
+      type: 2}
+  - rotateHandleMaterial: {fileID: 2100000, guid: 4a9072a0d8623aa44abf31f02d209a09,
+      type: 2}
+  - interactingMaterial: {fileID: 2100000, guid: b614a09bc429623478e946d8170b15ae,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

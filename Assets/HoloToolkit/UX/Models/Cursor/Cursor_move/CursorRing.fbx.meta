@@ -1,0 +1,1311 @@
+fileFormatVersion: 2
+guid: 24bdd28d56f824a41a06a31704fc5612
+timeCreated: 1442357229
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Cursor_Ring
+    100002: //RootNode
+    100004: hold_transition
+    100006: hold_transition_drag
+    100008: hold_transition_hand
+    100010: hold_transition_shadow
+    100012: hold_transition_zoom
+    100014: ring_interaction_geo
+    100016: ring_interaction_root
+    100018: ring_interaction_shadow
+    100020: ring_observation_geo
+    100022: ring_observation_scale
+    100024: ring_observation_shadow
+    100026: ring_press_geo
+    100028: ring_press_scale
+    100030: ring_press_shadow
+    400000: Cursor_Ring
+    400002: //RootNode
+    400004: hold_transition
+    400006: hold_transition_drag
+    400008: hold_transition_hand
+    400010: hold_transition_shadow
+    400012: hold_transition_zoom
+    400014: ring_interaction_geo
+    400016: ring_interaction_root
+    400018: ring_interaction_shadow
+    400020: ring_observation_geo
+    400022: ring_observation_scale
+    400024: ring_observation_shadow
+    400026: ring_press_geo
+    400028: ring_press_scale
+    400030: ring_press_shadow
+    2300000: hold_transition_drag
+    2300002: hold_transition_hand
+    2300004: hold_transition_shadow
+    2300006: hold_transition_zoom
+    2300008: ring_interaction_geo
+    2300010: ring_interaction_shadow
+    2300012: ring_observation_geo
+    2300014: ring_observation_shadow
+    2300016: ring_press_geo
+    2300018: ring_press_shadow
+    3300000: hold_transition_drag
+    3300002: hold_transition_hand
+    3300004: hold_transition_shadow
+    3300006: hold_transition_zoom
+    3300008: ring_interaction_geo
+    3300010: ring_interaction_shadow
+    3300012: ring_observation_geo
+    3300014: ring_observation_shadow
+    3300016: ring_press_geo
+    3300018: ring_press_shadow
+    4300000: ring_press_shadow
+    4300002: ring_press_geo
+    4300004: ring_observation_geo
+    4300006: ring_observation_shadow
+    4300008: ring_interaction_geo
+    4300010: ring_interaction_shadow
+    4300012: hold_transition_hand
+    4300014: hold_transition_drag
+    4300016: hold_transition_shadow
+    4300018: hold_transition_zoom
+    7400000: Cursor_Ring_Observation
+    7400002: Cursor_Ring_Interaction_From_Observation
+    7400004: Cursor_Ring_Interaction_From_Hold
+    7400006: Cursor_Ring_Hold
+    7400008: Cursor_Ring_Hold_From_Observation
+    7400010: Cursor_Ring_Hold_GestureFOV
+    7400012: Cursor_Ring_GestureFOV_off
+    7400014: Cursor_Ring_Observation_In
+    7400016: Cursor_Ring_Observation_Out
+    7400018: Cursor_Ring_Interaction_In
+    7400020: Cursor_Ring_Interaction_Out
+    7400022: Cursor_Ring_Hold_In
+    7400024: Cursor_Ring_Hold_Out
+    7400026: Cursor_Ring_Scroll_From_Hold
+    7400028: Cursor_Ring_Zoom_From_Hold
+    7400030: Cursor_Ring_Drag_From_Hold
+    7400032: Cursor_Ring_Interaction_From_PressHold
+    7400034: Cursor_Ring_Observation_From_PressHold
+    7400036: Cursor_Ring_Scroll_Enter
+    7400038: Cursor_Ring_Drag_Enter
+    7400040: Cursor_Ring_Zoom_Enter
+    7400042: Cursor
+    7400044: Cursor
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Cursor_Ring_Observation
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Interaction_From_Observation
+      takeName: Take 001
+      firstFrame: 10
+      lastFrame: 14
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Interaction_From_Hold
+      takeName: Take 001
+      firstFrame: 20
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Hold
+      takeName: Take 001
+      firstFrame: 30
+      lastFrame: 33
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Hold_From_Observation
+      takeName: Take 001
+      firstFrame: 40
+      lastFrame: 43
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Hold_GestureFOV
+      takeName: Take 001
+      firstFrame: 120
+      lastFrame: 121
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_GestureFOV_off
+      takeName: Take 001
+      firstFrame: 122
+      lastFrame: 123
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Observation_In
+      takeName: Take 001
+      firstFrame: 200
+      lastFrame: 201
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Observation_Out
+      takeName: Take 001
+      firstFrame: 205
+      lastFrame: 206
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Interaction_In
+      takeName: Take 001
+      firstFrame: 210
+      lastFrame: 211
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Interaction_Out
+      takeName: Take 001
+      firstFrame: 215
+      lastFrame: 216
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Hold_In
+      takeName: Take 001
+      firstFrame: 220
+      lastFrame: 221
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Hold_Out
+      takeName: Take 001
+      firstFrame: 225
+      lastFrame: 226
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Scroll_From_Hold
+      takeName: Take 001
+      firstFrame: 500
+      lastFrame: 504
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Zoom_From_Hold
+      takeName: Take 001
+      firstFrame: 505
+      lastFrame: 509
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Drag_From_Hold
+      takeName: Take 001
+      firstFrame: 510
+      lastFrame: 514
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Interaction_From_PressHold
+      takeName: Take 001
+      firstFrame: 520
+      lastFrame: 524
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor_Ring_Observation_From_PressHold
+      takeName: Take 001
+      firstFrame: 530
+      lastFrame: 534
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor
+      takeName: Take 001
+      firstFrame: 5
+      lastFrame: 5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

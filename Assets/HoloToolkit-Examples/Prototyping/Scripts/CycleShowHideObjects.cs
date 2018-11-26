@@ -7,7 +7,7 @@ using System.Collections;
 namespace HoloToolkit.Examples.Prototyping
 {
     /// <summary>
-    /// Active and detactivate objects based on the selected item in the array.
+    /// Activate and deactivate objects based on the selected item in the array.
     /// Only shows the currently selected item.
     /// </summary>
     public class CycleShowHideObjects : CycleArray<GameObject>

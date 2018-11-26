@@ -8,9 +8,9 @@ using UnityEngine;
 namespace HoloToolkit.Examples.Prototyping
 {
     /// <summary>
-    /// Takes size values, similar to RectTransorm size values or pixel values used in desiger tools and applies them to primitive objects.
+    /// Takes size values, similar to RectTransorm size values or pixel values used in designer tools and applies them to primitive objects.
     /// 
-    /// Turns Unity premitive shapes, like the Quad or Cube, into panels, buttons and other basic UI elements.
+    /// Turns Unity primitive shapes, like the Quad or Cube, into panels, buttons and other basic UI elements.
     /// It's a solution to mocking up UI and building click-throughs.
     /// 
     /// For prototyping, a designer can export some art as a texture (PNG/TIFF/TRG) and apply it to a quad.

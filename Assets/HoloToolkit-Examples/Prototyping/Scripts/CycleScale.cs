@@ -9,7 +9,7 @@ namespace HoloToolkit.Examples.Prototyping
 {
     /// <summary>
     /// scales an object based on the selected value in the array
-    /// Supports ScaletoValue for animaiton and easing, ...auto detected.
+    /// Supports ScaleToValue for animation and easing, ...auto detected.
     /// </summary>
     public class CycleScale : CycleArray<Vector3>
     {

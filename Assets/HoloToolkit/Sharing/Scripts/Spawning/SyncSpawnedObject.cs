@@ -1,7 +1,5 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using UnityEngine;
 using HoloToolkit.Sharing.SyncModel;
@@ -16,7 +14,7 @@ namespace HoloToolkit.Sharing.Spawning
     public class SyncSpawnedObject : SyncObject
     {
         /// <summary>
-        /// Transform (position, orientation and scale) for the object.
+        /// Transform (position, rotation, and scale) for the object.
         /// </summary>
         [SyncData] public SyncTransform Transform;
 

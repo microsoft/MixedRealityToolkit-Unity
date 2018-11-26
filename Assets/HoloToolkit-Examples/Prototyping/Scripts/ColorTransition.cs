@@ -43,7 +43,7 @@ namespace HoloToolkit.Examples.Prototyping
         
         private void Awake()
         {
-            // set the tartget game object if not set already
+            // set the target game object if not set already
             if (TargetObject == null)
             {
                 TargetObject = this.gameObject;

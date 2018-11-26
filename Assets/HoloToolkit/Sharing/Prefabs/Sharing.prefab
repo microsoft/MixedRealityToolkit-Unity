@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - component: {fileID: 475158}
   - component: {fileID: 114000012667812730}
-  - component: {fileID: 114000013602799446}
+  - component: {fileID: 114835164397381706}
   m_Layer: 0
   m_Name: Sharing
   m_TagString: Untagged
@@ -23,7 +23,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 163528}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -54,13 +54,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ClientRole: 0
   ServerAddress: localhost
+  defaultSessionName: DefaultSession
+  defaultRoomName: DefaultRoom
+  KeepRoomAlive: 0
   ServerPort: 20602
   connectOnAwake: 1
   AutoDiscoverServer: 0
   PingIntervalSec: 2
   IsAudioEndpoint: 1
-  ShowDetailedLogs: 0
---- !u!114 &114000013602799446
+  ShowDetailedLogs: 1
+--- !u!114 &114835164397381706
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -68,7 +71,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 163528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fa5da1314a4aa745a5be3f0f6ab6bd6, type: 3}
+  m_Script: {fileID: 11500000, guid: 07ae3de54e484bf46a26fc8f28d3fff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SessionName: Default
+  AnchorDebugText: {fileID: 0}
+  ShowDetailedLogs: 1

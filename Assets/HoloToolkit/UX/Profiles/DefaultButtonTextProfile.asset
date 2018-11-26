@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f11a8b8dbf461c45a0626706323d743, type: 3}
+  m_Name: DefaultButtonTextProfile
+  m_EditorClassIdentifier: 
+  Alignment: 1
+  Anchor: 7
+  Style: 0
+  Size: 48
+  Color: {r: 1, g: 1, b: 1, a: 1}
+  Font: {fileID: 12800000, guid: 86574c70442309b45be5a1c37a37a40b, type: 3}
+  AnchorLowerCenterOffset: {x: 0, y: -0.035, z: -0.0075}
+  AnchorLowerLeftOffset: {x: 0, y: -0.035, z: -0.0075}
+  AnchorLowerRightOffset: {x: 0, y: -0.035, z: -0.0075}
+  AnchorMiddleCenterOffset: {x: 0, y: 0, z: -0.0075}
+  AnchorMiddleLeftOffset: {x: 0, y: 0, z: -0.0075}
+  AnchorMiddleRightOffset: {x: 0, y: 0, z: -0.0075}
+  AnchorUpperCenterOffset: {x: 0, y: 0.035, z: -0.0075}
+  AnchorUpperLeftOffset: {x: 0, y: 0.035, z: -0.0075}
+  AnchorUpperRightOffset: {x: 0, y: 0.035, z: -0.0075}

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Encapsulates the shape detection queries of the understanding dll.
+    /// Encapsulates the shape detection queries of the understanding DLL.
     /// Shapes are defined by the user with AddShape and the analysis is 
     /// initiated with ActivateShapeAnalysis. These queries will not be 
     /// valid until after scanning is finalized.
@@ -743,7 +743,7 @@ namespace HoloToolkit.Unity
 
             /// <summary>
             /// Constructs a constraint requiring the components shapes longest edges to
-            /// have the same length, within the difference difference parameter. 
+            /// have the same length, within the difference parameter. 
             /// 
             /// The difference is defined as the ratio of the longest edges of the two components.
             /// </summary>
@@ -838,7 +838,7 @@ namespace HoloToolkit.Unity
         /// <param name="shapeData">An array of ShapeResult structures to receive the results of the query</param>
         /// <returns>Number of positions found. This number will never exceed shapeCount (the space provided for the results in shapeData).</returns>
         // Queries (shapes)
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryShape_FindPositionsOnShape(
             [In, MarshalAs(UnmanagedType.LPStr)] string shapeName,          // char*
             [In] float minRadius,
@@ -853,7 +853,7 @@ namespace HoloToolkit.Unity
         /// <param name="shapeCount">Length of the array passed in shapeData, the return value will never exceed this value</param>
         /// <param name="shapeData">An array of ShapeResult structures to receive the results of the query</param>
         /// <returns>Number of shapes found. This number will never exceed shapeCount (the space provided for the results in shapeData).</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryShape_FindShapeHalfDims(
             [In, MarshalAs(UnmanagedType.LPStr)] string shapeName,         // char*
             [In] int shapeCount,                                            // Pass in the space allocated in shapeData
@@ -870,7 +870,7 @@ namespace HoloToolkit.Unity
         /// <param name="shapeConstraints">Length of the shape constraint array passed in the constraints parameter</param>
         /// <param name="constraints">Array of ShapeConstraint structures</param>
         /// <returns></returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int AddShape(
             [In, MarshalAs(UnmanagedType.LPStr)] string shapeName,
             [In] int componentCount,
@@ -882,13 +882,13 @@ namespace HoloToolkit.Unity
         /// Runs the shape analysis. This should be called after scanning has been 
         /// finalized and shapes have been defined with AddShape.
         /// </summary>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern void ActivateShapeAnalysis();
 
         /// <summary>
         /// Removes all shapes defined by AddShape.
         /// </summary>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern void RemoveAllShapes();
     }
 }

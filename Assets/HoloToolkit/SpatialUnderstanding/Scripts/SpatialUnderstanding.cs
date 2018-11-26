@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Reference to the SpatialUnderstandingDLL class (wraps the understanding dll functions).
+        /// Reference to the SpatialUnderstandingDLL class (wraps the understanding DLL functions).
         /// </summary>
         public SpatialUnderstandingDll UnderstandingDLL { get; private set; }
         /// <summary>
@@ -82,7 +82,7 @@ namespace HoloToolkit.Unity
             }
         }
         /// <summary>
-        /// Indicates the the scanning statistics are still being processed.
+        /// Indicates the scanning statistics are still being processed.
         /// Request finish should not be called when this is true. 
         /// </summary>
         public bool ScanStatsReportStillWorking
@@ -215,9 +215,10 @@ namespace HoloToolkit.Unity
                 (AllowSpatialUnderstanding))
             {
                 // Camera
-                Vector3 camPos = Camera.main.transform.position;
-                Vector3 camFwd = Camera.main.transform.forward;
-                Vector3 camUp = Camera.main.transform.up;
+                Transform cameraTransform = CameraCache.Main.transform;
+                Vector3 camPos = cameraTransform.position;
+                Vector3 camFwd = cameraTransform.forward;
+                Vector3 camUp = cameraTransform.up;
 
                 // If not yet initialized, do that now
                 if (ScanState == ScanStates.ReadyToScan)

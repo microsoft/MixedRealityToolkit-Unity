@@ -13,7 +13,7 @@ namespace HoloToolkit.Examples.Prototyping
     /// </summary>
     public class CycleStatusDisplay : MonoBehaviour
     {
-        [Tooltip("A GameObject containing a component that impliments ICycle")]
+        [Tooltip("A GameObject containing a component that implements ICycle")]
         public GameObject CycleHost;
 
         private ICycle mCycleHost;

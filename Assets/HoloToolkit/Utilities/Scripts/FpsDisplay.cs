@@ -9,19 +9,28 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// Simple Behaviour which calculates the average frames per second over a number of frames and shows the FPS in a referenced Text control.
     /// </summary>
-    [RequireComponent(typeof(TextMesh))]
     public class FpsDisplay : MonoBehaviour
     {
+        /// <summary>
+        /// Reference to TextMesh component where the FPS should be displayed.
+        /// </summary>
         [Tooltip("Reference to TextMesh component where the FPS should be displayed.")]
         [SerializeField]
         private TextMesh textMesh;
 
+        /// <summary>
+        /// Reference to uGUI text component where the FPS should be displayed.
+        /// </summary>
         [Tooltip("Reference to uGUI text component where the FPS should be displayed.")]
         [SerializeField]
         private Text uGUIText;
 
+        /// <summary>
+        /// How many frames should we consider into our average calculation?
+        /// </summary>
         [Tooltip("How many frames should we consider into our average calculation?")]
         [SerializeField]
+        [Range(1, 300)]
         private int frameRange = 60;
 
         private int averageFps;
@@ -43,19 +52,22 @@ namespace HoloToolkit.Unity
             "90", "91", "92", "93", "94", "95", "96", "97", "98", "99"
         };
 
+        private void Start()
+        {
+            InitBuffer();
+        }
+
         private void Update()
         {
-            if (fpsBuffer == null || fpsBuffer.Length != frameRange || textMesh == null)
-            {
-                InitBuffer();
-            }
-
             UpdateFrameBuffer();
             CalculateFps();
 
             UpdateTextDisplay(averageFps);
         }
 
+        /// <summary>
+        /// Initializes the frame timing buffer and gets attached text components.
+        /// </summary>
         private void InitBuffer()
         {
             if (textMesh == null)
@@ -77,6 +89,10 @@ namespace HoloToolkit.Unity
             fpsBufferIndex = 0;
         }
 
+        /// <summary>
+        /// Updates the available text components to display the calculated frame rate.
+        /// </summary>
+        /// <param name="fps">The currently calculated FPS.</param>
         private void UpdateTextDisplay(int fps)
         {
             string displayString = StringsFrom00To99[Mathf.Clamp(fps, 0, 99)];
@@ -92,6 +108,9 @@ namespace HoloToolkit.Unity
             }
         }
 
+        /// <summary>
+        /// Updates the contents of the frame timing buffer.
+        /// </summary>
         private void UpdateFrameBuffer()
         {
             fpsBuffer[fpsBufferIndex++] = (int)(1f / Time.unscaledDeltaTime);
@@ -102,6 +121,9 @@ namespace HoloToolkit.Unity
             }
         }
 
+        /// <summary>
+        /// Calculates the frame rate from the frame timing buffer.
+        /// </summary>
         private void CalculateFps()
         {
             int sum = 0;

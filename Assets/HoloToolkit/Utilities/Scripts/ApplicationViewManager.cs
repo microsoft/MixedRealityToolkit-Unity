@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections;
 using UnityEngine;
-#if WINDOWS_UWP
+
+#if !UNITY_EDITOR && UNITY_WSA && !(ENABLE_IL2CPP && NET_STANDARD_2_0)
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
@@ -25,7 +27,7 @@ namespace HoloToolkit.Unity
     {
         private void Start()
         {
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA && !(ENABLE_IL2CPP && NET_STANDARD_2_0)
             UnityEngine.WSA.Application.InvokeOnUIThread(
                 () =>
                 {
@@ -34,7 +36,7 @@ namespace HoloToolkit.Unity
 #endif
         }
 
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA && !(ENABLE_IL2CPP && NET_STANDARD_2_0)
         static int Full3DViewId { get; set; }
         static System.Collections.Concurrent.ConcurrentDictionary<int, Action<object>> CallbackDictionary
             = new System.Collections.Concurrent.ConcurrentDictionary<int, Action<object>>();
@@ -43,8 +45,8 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Call this method with Application View Dispatcher， or in Application View Thread, will return to Full3D View and close Application View
         /// </summary>
-        /// <param name="returnValue">The return value of the Xaml View Execution</param>
-#if WINDOWS_UWP
+        /// <param name="returnValue">The return value of the XAML View Execution</param>
+#if !UNITY_EDITOR && UNITY_WSA && !(ENABLE_IL2CPP && NET_STANDARD_2_0)
         public static async void CallbackReturnValue(object returnValue)
         {
             var viewId = ApplicationView.GetForCurrentView().Id;
@@ -65,11 +67,11 @@ namespace HoloToolkit.Unity
         }
 #else
         public static void CallbackReturnValue(object returnValue)
-        {  
+        {
         }
 #endif
         /// <summary>
-        /// Call this method in Unity App Thread can switch to Plan View, create and show a new Xaml View. 
+        /// Call this method in Unity App Thread can switch to Plan View, create and show a new XAML View. 
         /// </summary>
         /// <typeparam name="TReturnValue"></typeparam>
         /// <param name="xamlPageName"></param>
@@ -78,7 +80,7 @@ namespace HoloToolkit.Unity
         public IEnumerator OnLaunchXamlView<TReturnValue>(string xamlPageName, Action<TReturnValue> callback, object pageNavigateParameter = null)
         {
             bool isCompleted = false;
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA && !(ENABLE_IL2CPP && NET_STANDARD_2_0)
             object returnValue = null;
             CoreApplicationView newView = CoreApplication.CreateNewView();
             int newViewId = 0;

@@ -6,14 +6,14 @@ using UnityEditor;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    [CustomPropertyDrawer(typeof(SpeechInputSource.KeywordAndKeyCode))]
+    [CustomPropertyDrawer(typeof(KeywordAndKeyCode))]
     public class KeywordAndKeyCodeDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent content)
         {
             EditorGUI.BeginProperty(rect, content, property);
 
-            // calculate field reactangle with half of total drawer length for each
+            // calculate field rectangle with half of total drawer length for each
             float fieldWidth = rect.width * 0.5f;
             Rect keywordRect = new Rect(rect.x, rect.y, fieldWidth, rect.height);
             Rect keyCodeRect = new Rect(rect.x + fieldWidth, rect.y, fieldWidth, rect.height);

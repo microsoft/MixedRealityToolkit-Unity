@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using SysDiag = System.Diagnostics;
 using System.IO;
 using UnityEngine;
+using SysDiag = System.Diagnostics;
 
 namespace HoloToolkit.Unity.SpatialMapping
 {
@@ -52,10 +52,12 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// Serializes a list of MeshFilter objects into a byte array.
         /// Transforms vertices into world space before writing to the file.
+        /// Optionally transforms the vertices into the space of the supplied secondarySpace
         /// </summary>
         /// <param name="meshes">List of MeshFilter objects to be serialized.</param>
+        /// <param name="secondarySpace">New space to transform the vertices into.</param>
         /// <returns>Binary representation of the Mesh objects.</returns>
-        public static byte[] Serialize(IEnumerable<MeshFilter> meshes)
+        public static byte[] Serialize(IEnumerable<MeshFilter> meshes, Transform secondarySpace = null)
         {
             byte[] data = null;
 
@@ -65,7 +67,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 {
                     foreach (MeshFilter meshFilter in meshes)
                     {
-                        WriteMesh(writer, meshFilter.sharedMesh, meshFilter.transform);
+                        WriteMesh(writer, meshFilter.sharedMesh, meshFilter.transform, secondarySpace);
                     }
 
                     stream.Position = 0;
@@ -106,13 +108,14 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <param name="writer">BinaryWriter representing the data stream.</param>
         /// <param name="mesh">The Mesh object to be written.</param>
         /// <param name="transform">If provided, will transform all vertices into world space before writing.</param>
-        private static void WriteMesh(BinaryWriter writer, Mesh mesh, Transform transform = null)
+        /// <param name="secondarySpace">Secondary space to transform the vertices into.</param>
+        private static void WriteMesh(BinaryWriter writer, Mesh mesh, Transform transform = null, Transform secondarySpace = null)
         {
             SysDiag.Debug.Assert(writer != null);
 
             // Write the mesh data.
             WriteMeshHeader(writer, mesh.vertexCount, mesh.triangles.Length);
-            WriteVertices(writer, mesh.vertices, transform);
+            WriteVertices(writer, mesh.vertices, transform, secondarySpace);
             WriteTriangleIndicies(writer, mesh.triangles);
         }
 
@@ -178,7 +181,8 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <param name="reader">BinaryReader representing the data stream.</param>
         /// <param name="vertices">Array of Vector3 structures representing each vertex.</param>
         /// <param name="transform">If provided, will convert all vertices into world space before writing.</param>
-        private static void WriteVertices(BinaryWriter writer, Vector3[] vertices, Transform transform = null)
+        /// <param name="secondarySpace">If provided, will convert the vertices local to this space.</param>
+        private static void WriteVertices(BinaryWriter writer, Vector3[] vertices, Transform transform = null, Transform secondarySpace = null)
         {
             SysDiag.Debug.Assert(writer != null);
 
@@ -187,6 +191,10 @@ namespace HoloToolkit.Unity.SpatialMapping
                 for (int v = 0, vLength = vertices.Length; v < vLength; ++v)
                 {
                     Vector3 vertex = transform.TransformPoint(vertices[v]);
+                    if (secondarySpace != null)
+                    {
+                        vertex = secondarySpace.InverseTransformPoint(vertex);
+                    }
                     writer.Write(vertex.x);
                     writer.Write(vertex.y);
                     writer.Write(vertex.z);
