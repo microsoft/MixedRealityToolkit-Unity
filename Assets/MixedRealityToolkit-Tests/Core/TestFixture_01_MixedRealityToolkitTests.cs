@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestDataProvider1), new TestDataProvider1("Test Data Provider 1", 10));
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestDataProvider2), new TestDataProvider2("Test Data Provider 2", 10));
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestFailService), new TestFailService());
-            LogAssert.Expect(LogType.Error, $"Unable to register {typeof(ITestFailService).Name}. Concrete type does not implement {typeof(IMixedRealityExtensionService).Name} or {typeof(IMixedRealityDataProvider).Name}.");
+            LogAssert.Expect(LogType.Error, $"{typeof(ITestFailService).Name} does not implement {typeof(IMixedRealityService).Name}.");
 
             // Retrieve all registered IMixedRealityExtensionServices
             var extensionServices = MixedRealityToolkit.Instance.GetActiveServices(typeof(IMixedRealityDataProvider));
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestExtensionService1), new TestExtensionService1("Test ExtensionService 1", 10));
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestExtensionService2), new TestExtensionService2("Test ExtensionService 2", 10));
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestFailService), new TestFailService());
-            LogAssert.Expect(LogType.Error, $"Unable to register {typeof(ITestFailService).Name}. Concrete type does not implement {typeof(IMixedRealityExtensionService).Name} or {typeof(IMixedRealityDataProvider).Name}.");
+            LogAssert.Expect(LogType.Error, $"{typeof(ITestFailService).Name} does not implement {typeof(IMixedRealityService).Name}.");
 
             // Retrieve all registered IMixedRealityExtensionServices
             var extensionServices = MixedRealityToolkit.Instance.GetActiveServices(typeof(IMixedRealityExtensionService));
