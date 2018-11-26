@@ -5,5 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Services
 {
-    internal interface IFailService : IMixedRealityService { }
+    internal interface ITestDataProvider2 : IMixedRealityDataProvider, ITestService
+    {
+    }
 }

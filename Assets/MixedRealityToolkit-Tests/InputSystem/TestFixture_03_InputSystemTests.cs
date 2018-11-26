@@ -4,7 +4,10 @@
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
+using Microsoft.MixedReality.Toolkit.Tests.Services;
 using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
@@ -19,10 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Tests
-            Assert.IsNotNull(MixedRealityToolkit.Instance.ActiveProfile);
-            Assert.IsNotEmpty(MixedRealityToolkit.Instance.ActiveSystems);
-            Assert.AreEqual(1, MixedRealityToolkit.Instance.ActiveSystems.Count);
-            Assert.AreEqual(0, MixedRealityToolkit.Instance.RegisteredMixedRealityServices.Count);
+            Assert.IsNotEmpty(MixedRealityToolkit.ActiveSystems);
+            Assert.AreEqual(1, MixedRealityToolkit.ActiveSystems.Count);
+            Assert.AreEqual(0, MixedRealityToolkit.RegisteredMixedRealityServices.Count);
         }
 
         [Test]
@@ -50,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Tests
             Assert.IsFalse(inputSystemExists);
+            LogAssert.Expect(LogType.Error, $"Unable to find {typeof(IMixedRealityInputSystem).Name} service.");
         }
 
         [Test]
