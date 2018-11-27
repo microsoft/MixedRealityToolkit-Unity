@@ -78,7 +78,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         /// <inheritdoc/>
         public override void Initialize()
         {
-            base.Initialize();
+            meshEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
+            surfaceFindingEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
+
             InitializeInternal();
         }
 
@@ -87,9 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         /// </summary>
         private void InitializeInternal()
         {
-            meshEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
-            surfaceFindingEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
-
             // General settings
             StartupBehavior = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.StartupBehavior;
             ObservationExtents = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.ObservationExtents;
@@ -123,11 +122,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         /// <inheritdoc/>
         public override void Reset()
         {
-            base.Reset();
             // todo: cleanup some objects but not the root scene items
             InitializeInternal();
         }
 
+
+        /// <inheritdoc/>
         public override void Destroy()
         {
             // Cleanup game objects created during execution.
@@ -137,14 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
                 if (spatialAwarenessParent != null)
                 {
                     spatialAwarenessParent.transform.DetachChildren();
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(spatialAwarenessParent);
-                    }
-                    else
-                    {
-                        Object.Destroy(spatialAwarenessParent);
-                    }
+                    Object.Destroy(spatialAwarenessParent);
                     spatialAwarenessParent = null;
                 }
 
@@ -152,14 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
                 if (meshParent != null)
                 {
                     meshParent.transform.DetachChildren();
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(meshParent);
-                    }
-                    else
-                    {
-                        Object.Destroy(meshParent);
-                    }
+                    Object.Destroy(meshParent);
                     meshParent = null;
                 }
 
@@ -167,14 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
                 if (surfaceParent != null)
                 {
                     surfaceParent.transform.DetachChildren();
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(surfaceParent);
-                    }
-                    else
-                    {
-                        Object.Destroy(surfaceParent);
-                    }
+                    Object.Destroy(surfaceParent);
                     surfaceParent = null;
                 }
             }
@@ -200,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshAdded =
             delegate (IMixedRealitySpatialAwarenessMeshHandler handler, BaseEventData eventData)
             {
-                MixedRealitySpatialAwarenessEventData spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
+                var spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
                 handler.OnMeshAdded(spatialEventData);
             };
 
@@ -222,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshUpdated =
             delegate (IMixedRealitySpatialAwarenessMeshHandler handler, BaseEventData eventData)
             {
-                MixedRealitySpatialAwarenessEventData spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
+                var spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
                 handler.OnMeshUpdated(spatialEventData);
             };
 
@@ -242,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshRemoved =
             delegate (IMixedRealitySpatialAwarenessMeshHandler handler, BaseEventData eventData)
             {
-                MixedRealitySpatialAwarenessEventData spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
+                var spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
                 handler.OnMeshRemoved(spatialEventData);
             };
 
@@ -265,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessSurfaceFindingHandler> OnSurfaceAdded =
             delegate (IMixedRealitySpatialAwarenessSurfaceFindingHandler handler, BaseEventData eventData)
             {
-                MixedRealitySpatialAwarenessEventData spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
+                var spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
                 handler.OnSurfaceAdded(spatialEventData);
             };
 
