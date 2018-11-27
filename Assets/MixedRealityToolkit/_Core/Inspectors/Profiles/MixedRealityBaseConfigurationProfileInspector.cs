@@ -147,6 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 var renderedProfile = property.objectReferenceValue as BaseMixedRealityProfile;
                 Debug.Assert(renderedProfile != null);
+                Debug.Assert(profile != null, "No profile was set in OnEnable. Did you forget to call base.OnEnable in a derived profile class?");
 
                 if (!renderedProfile.IsCustomProfile && profile.IsCustomProfile)
                 {

@@ -2,9 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+//using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
@@ -111,10 +113,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         #region Mixed Reality runtime component registry
 
+        private static readonly List<Tuple<Type, IMixedRealityService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityService>>();
+
         /// <summary>
-        /// Local component registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="IMixedRealityExtensionService"/>.
+        /// Local component registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="IMixedRealityService"/>.
         /// </summary>
-        public List<Tuple<Type, IMixedRealityExtensionService>> MixedRealityComponents { get; } = new List<Tuple<Type, IMixedRealityExtensionService>>();
+        public static IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => registeredMixedRealityServices;
+
+        /// <summary>
+        /// Local component registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="IMixedRealityService"/>.
+        /// </summary>
+        [Obsolete("Use RegisteredMixedRealityServices instead.")]
+        public List<Tuple<Type, IMixedRealityExtensionService>> MixedRealityComponents => null;
 
         private int mixedRealityComponentsCount = 0;
 
@@ -139,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (ActiveProfile.ActiveServices.Count > 0)
             {
                 mixedRealityComponentsCount = 0;
-                MixedRealityComponents.Clear();
+                registeredMixedRealityServices.Clear();
                 ActiveProfile.ActiveServices.Clear();
             }
 #endif
@@ -198,7 +208,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Spatial Awareness system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsSpatialAwarenessSystemEnabled)
             {
-                if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) || SpatialAwarenessSystem == null)
+                if (RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) && SpatialAwarenessSystem != null)
+                {
+                    //if (ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders != null &&
+                    //    ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders.RegisteredSpatialObserverDataProviders != null)
+                    //{
+                    //    for (int i = 0; i < ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders.RegisteredSpatialObserverDataProviders.Length; i++)
+                    //    {
+                    //        var spatialObserver = ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders.RegisteredSpatialObserverDataProviders[i];
+                    //        RegisterService<IMixedRealitySpatialAwarenessObserver>(spatialObserver.SpatialObserverType, spatialObserver.RuntimePlatform, spatialObserver.SpatialObserverName, spatialObserver.Priority);
+                    //    }
+                    //}
+                }
+                else
                 {
                     Debug.LogError("Failed to start the Spatial Awareness System!");
                 }
@@ -226,17 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile.Configurations?.Length; i++)
                 {
                     var configuration = ActiveProfile.RegisteredServiceProvidersProfile.Configurations[i];
-#if UNITY_EDITOR
-                    if (UnityEditor.EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(configuration.RuntimePlatform))
-#else
-                    if (Application.platform.IsPlatformSupported(configuration.RuntimePlatform))
-#endif
-                    {
-                        if (!RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.ComponentName, configuration.Priority))
-                        {
-                            Debug.LogError($"Failed to register the {configuration.ComponentType.Type} Extension Service!");
-                        }
-                    }
+                    RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, configuration.ComponentName, configuration.Priority);
                 }
             }
 
@@ -600,11 +612,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// </summary>
         /// <typeparam name="T">The interface type for the system to be registered.</typeparam>
         /// <param name="concreteType">The concrete type to instantiate.</param>
+        /// <param name="supportedPlatforms">The runtime platform to check against when registering.</param>
         /// <param name="args">Optional arguments used when instantiating the concrete type.</param>
         /// <returns>True, if the service was successfully registered.</returns>
-        public bool RegisterService<T>(Type concreteType, params object[] args)
+        public bool RegisterService<T>(Type concreteType, SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), params object[] args)
         {
             if (ActiveProfile == null) { return false; }
+
+#if !UNITY_EDITOR
+            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
+#else
+            if (!UnityEditor.EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
+#endif
+            {
+                return false;
+            }
 
             if (concreteType == null)
             {
@@ -657,16 +679,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 return false;
             }
 
-            if (!typeof(IMixedRealityExtensionService).IsAssignableFrom(interfaceType))
+            if (typeof(IMixedRealityExtensionService).IsAssignableFrom(interfaceType) ||
+                typeof(IMixedRealityDataProvider).IsAssignableFrom(interfaceType))
             {
-                Debug.LogError($"Unable to register {interfaceType}. Concrete type does not implement the IMixedRealityExtensionService implementation.");
-                return false;
+                registeredMixedRealityServices.Add(new Tuple<Type, IMixedRealityService>(interfaceType, serviceInstance));
+                if (!isInitializing) { serviceInstance.Initialize(); }
+
+                mixedRealityComponentsCount = registeredMixedRealityServices.Count;
+                return true;
             }
 
-            MixedRealityComponents.Add(new Tuple<Type, IMixedRealityExtensionService>(interfaceType, serviceInstance as IMixedRealityExtensionService));
-            if (!isInitializing) { serviceInstance.Initialize(); }
-            mixedRealityComponentsCount = MixedRealityComponents.Count;
-            return true;
+            Debug.LogError($"Unable to register {interfaceType}. Concrete type does not implement IMixedRealityExtensionService or IMixedRealityDataProvider.");
+            return false;
         }
 
         /// <summary>
@@ -811,7 +835,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
                 if (service != null)
                 {
-                    MixedRealityComponents.Remove(new Tuple<Type, IMixedRealityExtensionService>(type, (IMixedRealityExtensionService)service));
+                    registeredMixedRealityServices.Remove(new Tuple<Type, IMixedRealityService>(type, service));
                 }
             }
         }
@@ -852,7 +876,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
                 if (GetService(type, serviceName, out service))
                 {
-                    MixedRealityComponents.Remove(new Tuple<Type, IMixedRealityExtensionService>(type, (IMixedRealityExtensionService)service));
+                    registeredMixedRealityServices.Remove(new Tuple<Type, IMixedRealityService>(type, service));
                 }
             }
         }
@@ -1059,7 +1083,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
 
             // Enable all registered runtime components
-            foreach (var component in MixedRealityComponents)
+            foreach (var component in registeredMixedRealityServices)
             {
                 component.Item2.Initialize();
             }
@@ -1077,7 +1101,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
 
             // Reset all registered runtime components
-            foreach (var service in MixedRealityComponents)
+            foreach (var service in registeredMixedRealityServices)
             {
                 service.Item2.Reset();
             }
@@ -1095,7 +1119,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
 
             // Enable all registered runtime components
-            foreach (var component in MixedRealityComponents)
+            foreach (var component in registeredMixedRealityServices)
             {
                 component.Item2.Enable();
             }
@@ -1113,7 +1137,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
 
             //Update runtime component registry
-            foreach (var component in MixedRealityComponents)
+            foreach (var component in registeredMixedRealityServices)
             {
                 component.Item2.Update();
             }
@@ -1131,7 +1155,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
 
             // Disable all registered runtime components
-            foreach (var component in MixedRealityComponents)
+            foreach (var component in registeredMixedRealityServices)
             {
                 component.Item2.Disable();
             }
@@ -1151,12 +1175,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             activeProfile.ActiveServices.Clear();
 
             // Destroy all registered runtime components
-            foreach (var component in MixedRealityComponents)
+            foreach (var component in registeredMixedRealityServices)
             {
                 component.Item2.Destroy();
             }
 
-            MixedRealityComponents.Clear();
+            registeredMixedRealityServices.Clear();
         }
 
         #endregion Multiple Service Management
@@ -1241,16 +1265,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 return false;
             }
 
-            if (mixedRealityComponentsCount != MixedRealityComponents.Count)
+            if (mixedRealityComponentsCount != registeredMixedRealityServices.Count)
             {
                 InitializeServiceLocator();
             }
 
             for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
-                if (CheckComponentMatch(type, serviceName, MixedRealityComponents[i]))
+                if (CheckComponentMatch(type, serviceName, registeredMixedRealityServices[i]))
                 {
-                    service = MixedRealityComponents[i].Item2;
+                    service = registeredMixedRealityServices[i].Item2;
                     return true;
                 }
             }
@@ -1279,14 +1303,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
-                if (CheckComponentMatch(type, serviceName, MixedRealityComponents[i]))
+                if (CheckComponentMatch(type, serviceName, registeredMixedRealityServices[i]))
                 {
-                    services.Add(MixedRealityComponents[i].Item2);
+                    services.Add(registeredMixedRealityServices[i].Item2);
                 }
             }
         }
 
-        private static bool CheckComponentMatch(Type type, string serviceName, Tuple<Type, IMixedRealityExtensionService> components)
+        private static bool CheckComponentMatch(Type type, string serviceName, Tuple<Type, IMixedRealityService> components)
         {
             bool isValid = string.IsNullOrEmpty(serviceName) || components.Item2.Name == serviceName;
 
