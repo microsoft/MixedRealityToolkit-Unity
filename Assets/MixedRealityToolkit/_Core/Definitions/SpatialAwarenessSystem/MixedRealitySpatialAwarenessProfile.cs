@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 
         [SerializeField]
         [Tooltip("The list of registered spatial observer data providers.")]
-        private MixedRealitySpatialObserverDataProvidersProfile spatialObserverDataProviders;
+        private MixedRealitySpatialObserverDataProvidersProfile spatialObserverDataProviders = null;
 
         /// <summary>
         /// The list of registered <see cref="IMixedRealitySpatialAwarenessObserver"/>s.

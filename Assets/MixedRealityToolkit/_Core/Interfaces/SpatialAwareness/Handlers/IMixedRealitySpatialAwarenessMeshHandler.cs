@@ -6,24 +6,27 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers
 {
-    public interface IMixedRealitySpatialAwarenessMeshHandler : IEventSystemHandler
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IMixedRealitySpatialAwarenessMeshHandler<T> : IEventSystemHandler
     {
         /// <summary>
         /// Called when the spatial awareness mesh subsystem adds a mesh.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData);
+        void OnMeshAdded(MixedRealitySpatialAwarenessEventData<T> eventData);
 
         /// <summary>
         /// Called when the spatial awareness mesh subsystem updates an existing mesh.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData);
+        void OnMeshUpdated(MixedRealitySpatialAwarenessEventData<T> eventData);
 
         /// <summary>
         /// Called when the spatial awareness mesh subsystem removes an existing mesh.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnMeshRemoved(MixedRealitySpatialAwarenessEventData eventData);
+        void OnMeshRemoved(MixedRealitySpatialAwarenessEventData<T> eventData);
     }
 }

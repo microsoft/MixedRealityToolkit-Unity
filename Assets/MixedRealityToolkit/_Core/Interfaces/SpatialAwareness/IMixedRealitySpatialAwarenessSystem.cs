@@ -143,28 +143,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded"/> method to indicate a mesh has been added.
         /// </summary>
         /// <param name="meshId">Value identifying the mesh.</param>
-        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
+        /// <param name="meshObject">The mesh <see cref="SpatialMeshObject"/>.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
-        void RaiseMeshAdded(int meshId, GameObject meshObject);
+        void RaiseMeshAdded(int meshId, SpatialMeshObject meshObject);
 
         /// <summary>
         /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an existing mesh has been updated.
         /// </summary>
         /// <param name="meshId">Value identifying the mesh.</param>
-        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
+        /// <param name="meshObject">The mesh <see cref="SpatialMeshObject"/>.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
-        void RaiseMeshUpdated(int meshId, GameObject meshObject);
+        void RaiseMeshUpdated(int meshId, SpatialMeshObject meshObject);
 
         /// <summary>
         /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an existing mesh has been removed.
         /// </summary>
         /// <param name="meshId">Value identifying the mesh.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
         void RaiseMeshRemoved(int meshId);
 

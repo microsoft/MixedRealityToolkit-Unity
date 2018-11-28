@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         private float lastUpdated = 0;
 
         /// <inheritdoc />
-        public override IReadOnlyDictionary<int, SpatialMeshObject> Meshes => meshObjects;
+        public override IReadOnlyDictionary<int, SpatialMeshObject> Meshes => SpatialMeshObjects;
 
         /// <inheritdoc/>
         public override void StartObserving()
@@ -272,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
 
             Debug.Assert(worldAnchor != null);
 
-            SurfaceData surfaceData = new SurfaceData(
+            var surfaceData = new SurfaceData(
                 surfaceId,
                 newMesh.Filter,
                 worldAnchor,
@@ -301,10 +301,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         {
             SpatialMeshObject mesh;
 
-            if (meshObjects.TryGetValue(id, out mesh))
+            if (SpatialMeshObjects.TryGetValue(id, out mesh))
             {
                 // Remove the mesh object from the collection.
-                meshObjects.Remove(id);
+                SpatialMeshObjects.Remove(id);
 
                 // Reclaim the mesh object for future use.
                 ReclaimMeshObject(mesh);
@@ -436,24 +436,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             // Add / update the mesh to our collection
             bool sendUpdatedEvent = false;
 
-            if (meshObjects.ContainsKey(cookedData.id.handle))
+            if (SpatialMeshObjects.ContainsKey(cookedData.id.handle))
             {
                 // Reclaim the old mesh object for future use.
-                ReclaimMeshObject(meshObjects[cookedData.id.handle]);
-                meshObjects.Remove(cookedData.id.handle);
+                ReclaimMeshObject(SpatialMeshObjects[cookedData.id.handle]);
+                SpatialMeshObjects.Remove(cookedData.id.handle);
 
                 sendUpdatedEvent = true;
             }
 
-            meshObjects.Add(cookedData.id.handle, meshObject);
+            SpatialMeshObjects.Add(cookedData.id.handle, meshObject);
 
             if (sendUpdatedEvent)
             {
-                SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, meshObject.GameObject);
+                SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, meshObject);
             }
             else
             {
-                SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, meshObject.GameObject);
+                SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, meshObject);
             }
         }
 

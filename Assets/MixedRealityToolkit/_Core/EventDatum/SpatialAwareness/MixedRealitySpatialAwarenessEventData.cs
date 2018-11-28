@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using System;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
@@ -12,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
     /// <summary>
     /// Data for spatial awareness events.
     /// </summary>
-    public class MixedRealitySpatialAwarenessEventData : GenericBaseEventData
+    public class MixedRealitySpatialAwarenessEventData<T> : GenericBaseEventData
     {
         /// <summary>
         /// Identifier of the object associated with this event.
@@ -28,9 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         public DateTime EventTime { get; private set; }
 
         /// <summary>
-        /// <see cref="GameObject"/>, managed by the spatial awareness system, representing the data in this event.
+        /// The spatial object managed by the spatial awareness system, representing the data in this event.
         /// </summary>
-        public GameObject GameObject { get; private set; }
+        public T SpatialObject { get; private set; }
 
         /// <summary>
         /// Constructor.
@@ -38,16 +36,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// <param name="eventSystem"></param>
         public MixedRealitySpatialAwarenessEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        /// <inheritdoc />
-        public void Initialize(
-            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
-            int id,
-            GameObject gameObject)
+        /// <summary>
+        /// Used to initialize/reset the event and populate the data.
+        /// </summary>
+        /// <param name="spatialAwarenessSystem"></param>
+        /// <param name="id"></param>
+        /// <param name="spatialObject"></param>
+        public void Initialize(IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem, int id, T spatialObject)
         {
-            base.BaseInitialize(spatialAwarenessSystem);
+            BaseInitialize(spatialAwarenessSystem);
             Id = id;
             EventTime = DateTime.Now;
-            GameObject = gameObject;
+            SpatialObject = spatialObject;
         }
     }
 }

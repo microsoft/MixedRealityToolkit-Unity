@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// <summary>
         /// The collection of meshes being managed by the observer.
         /// </summary>
-        protected Dictionary<int, SpatialMeshObject> meshObjects = new Dictionary<int, SpatialMeshObject>();
+        protected readonly Dictionary<int, SpatialMeshObject> SpatialMeshObjects = new Dictionary<int, SpatialMeshObject>();
 
         /// <summary>
         /// Creates a <see cref="SpatialMeshObject"/>.
@@ -56,33 +56,29 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// <param name="name"></param>
         /// <param name="meshId"></param>
         /// <returns>
-        /// SpatialMeshObject containing the fields that describe the mesh.
+        /// <see cref="SpatialMeshObject"/> containing the fields that describe the mesh.
         /// </returns>
-        protected SpatialMeshObject CreateSpatialMeshObject(
-            Mesh mesh,
-            string name,
-            int meshId)
+        protected SpatialMeshObject CreateSpatialMeshObject(Mesh mesh, string name, int meshId)
         {
-            SpatialMeshObject newMesh = new SpatialMeshObject();
+            var gameObject = new GameObject(name, requiredMeshComponents)
+            {
+                layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayer
+            };
 
-            newMesh.Id = meshId;
-            newMesh.GameObject = new GameObject(name, requiredMeshComponents);
-            newMesh.GameObject.layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayer;
-
-            newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
-            newMesh.Filter.sharedMesh = mesh;
-
-            newMesh.Renderer = newMesh.GameObject.GetComponent<MeshRenderer>();
+            var meshFilter = gameObject.GetComponent<MeshFilter>();
+            var meshRenderer = gameObject.GetComponent<MeshRenderer>();
+            var meshCollider = gameObject.GetComponent<MeshCollider>();
 
             // Reset the surface mesh collider to fit the updated mesh. 
             // Unity tribal knowledge indicates that to change the mesh assigned to a
-            // mesh collider, the mesh must first be set to null.  Presumably there
+            // mesh collider and mesh filter, the mesh must first be set to null.  Presumably there
             // is a side effect in the setter when setting the shared mesh to null.
-            newMesh.Collider = newMesh.GameObject.GetComponent<MeshCollider>();
-            newMesh.Collider.sharedMesh = null;
-            newMesh.Collider.sharedMesh = newMesh.Filter.sharedMesh;
+            meshFilter.sharedMesh = null;
+            meshFilter.sharedMesh = mesh;
+            meshCollider.sharedMesh = null;
+            meshCollider.sharedMesh = meshFilter.sharedMesh;
 
-            return newMesh;
+            return new SpatialMeshObject(meshId, gameObject, meshRenderer, meshFilter, meshCollider);
         }
 
         /// <summary>
@@ -92,13 +88,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         {
             // Clean up mesh objects.
             // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
-            foreach (SpatialMeshObject meshObject in meshObjects.Values)
+            foreach (SpatialMeshObject meshObject in SpatialMeshObjects.Values)
             {
                 // Cleanup mesh object.
                 // Destroy the game object, destroy the meshes.
                 CleanupMeshObject(meshObject);
             }
-            meshObjects.Clear();
+
+            SpatialMeshObjects.Clear();
         }
 
         /// <summary>
@@ -111,8 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         {
             if (destroyGameObject && (meshObject.GameObject != null))
             {
-                UnityEngine.Object.Destroy(meshObject.GameObject);
-                meshObject.GameObject = null;
+                Object.Destroy(meshObject.GameObject);
             }
 
             Mesh filterMesh = meshObject.Filter.sharedMesh;
@@ -122,13 +118,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
             {
                 if (filterMesh != null)
                 {
-                    UnityEngine.Object.Destroy(filterMesh);
+                    Object.Destroy(filterMesh);
                     meshObject.Filter.sharedMesh = null;
                 }
 
                 if ((colliderMesh != null) && (colliderMesh != filterMesh))
                 {
-                    UnityEngine.Object.Destroy(colliderMesh);
+                    Object.Destroy(colliderMesh);
                     meshObject.Collider.sharedMesh = null;
                 }
             }
