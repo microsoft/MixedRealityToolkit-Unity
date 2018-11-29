@@ -74,7 +74,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Event generation logic
 
-        public bool UpdateTouch(Touch touch, Ray ray)
+        public virtual bool UpdateTouch(Touch touch, Ray ray)
         {
             PersistentTouch knownTouch = GetPersistentTouch(touch.fingerId);
             if (knownTouch != null)
@@ -91,7 +91,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public void RemoveTouch(Touch touch)
+        public virtual void RemoveTouch(Touch touch)
         {
             PersistentTouch knownTouch = GetPersistentTouch(touch.fingerId);
             if (knownTouch != null)
@@ -147,22 +147,22 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        protected void OnTappedEvent(int id, int tapCount)
+        protected virtual void OnTappedEvent(int id, int tapCount)
         {
             InputManager.Instance.RaiseInputClicked(this, (uint)id, InteractionSourcePressInfo.Select, tapCount);
         }
 
-        protected void OnHoldStartedEvent(int id)
+        protected virtual void OnHoldStartedEvent(int id)
         {
             InputManager.Instance.RaiseHoldStarted(this, (uint)id);
         }
 
-        protected void OnHoldCanceledEvent(int id)
+        protected virtual void OnHoldCanceledEvent(int id)
         {
             InputManager.Instance.RaiseHoldCanceled(this, (uint)id);
         }
 
-        protected void OnHoldCompletedEvent(int id)
+        protected virtual void OnHoldCompletedEvent(int id)
         {
             InputManager.Instance.RaiseHoldCompleted(this, (uint)id);
         }
