@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
     /// 
 
 
-    public class TwoHandManipulatable : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityInputHandler
+    public class TwoHandManipulatable : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealitySpatialInputHandler
     {
         #region fields
         [SerializeField]
@@ -83,6 +83,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         private GameObject cubeRight;
         private bool usingPose = false;
 
+        [SerializeField]
+        private TextMesh debugText;
+
         /// <summary>
         /// Maps input id -> position of hand
         /// </summary>
@@ -112,11 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             if (hostTransform == null)
             {
                 hostTransform = transform;
-            }
-
-            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.InputSystem != null)
-            {
-                MixedRealityToolkit.InputSystem.Register(hostTransform.gameObject);
             }
         }
 
@@ -311,6 +309,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         /// </summary>
         public void OnInputDown(InputEventData eventData)
         {
+            if (eventData.MixedRealityInputAction.Description.ToUpper() != "NONE" && m_handsPressedInputSourceMap.ContainsKey(eventData.SourceId) == false)
+            {
+                if (m_handsPressedInputSourceMap.Count == 0)
+                {
+                    GameObject.Find("DebugLog").GetComponent<TextMesh>().text = eventData.MixedRealityInputAction.Description + " " +
+                                                                            Time.unscaledDeltaTime.ToString();
+                }
+                else if (m_handsPressedInputSourceMap.Count == 1)
+                {
+                    GameObject.Find("DebugOut").GetComponent<TextMesh>().text = eventData.MixedRealityInputAction.Description + " " +
+                                                                            Time.unscaledDeltaTime.ToString();
+                }
+
+                GameObject.Find("DebugText").GetComponent<TextMesh>().text = eventData.SourceId.ToString();
+            }
+
             Vector3 inputPosition = Vector3.zero;
             m_handsPressedInputSourceMap[eventData.SourceId] = eventData.InputSource;
 
@@ -345,16 +359,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         /// <param name="eventData"></param>
         public void OnPoseInputChanged(InputEventData<MixedRealityPose> eventData)
         {
+            if (debugText)
+            {
+           //    debugText.text = "On pose changed " + eventData.MixedRealityInputAction.Description + " " + Time.unscaledDeltaTime.ToString();
+            }
             if (eventData.InputSource.SourceName.Contains("Hand"))
             {
                 m_handsPoseMap[eventData.SourceId] = eventData.InputData.Position;
             }
         }
-
-        /// <summary>
-        /// OnSourceDetected Event Handler
-        /// </summary>
-        public void OnSourceDetected(SourceStateEventData eventData) { }
 
         /// <summary>
         /// OnSourceLost
@@ -368,11 +381,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         #endregion Event Handlers
 
         #region Unused Event Handlers
+        /// <summary>
+        /// OnSourceDetected Event Handler
+        /// </summary>
+        public void OnSourceDetected(SourceStateEventData eventData) { }
         public void OnInputPressed(InputEventData<float> eventData)
         {
         }
 
         public void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        {
+        }
+
+        public void OnPositionChanged(InputEventData<Vector3> eventData)
+        {
+        }
+
+        public void OnRotationChanged(InputEventData<Quaternion> eventData)
         {
         }
         #endregion Unused Event Handlers
