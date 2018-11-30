@@ -13,7 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     public class MixedRealitySpatialAwarenessProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
         // General settings
-        private SerializedProperty spatialObserverDataProviders;
         private SerializedProperty startupBehavior;
         private SerializedProperty observationExtents;
         private SerializedProperty isStationaryObserver;
@@ -59,13 +58,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         protected override void OnEnable()
         {
             base.OnEnable();
+
             if (!CheckMixedRealityConfigured(false))
             {
                 return;
             }
 
             // General settings
-            spatialObserverDataProviders = serializedObject.FindProperty("spatialObserverDataProviders");
             startupBehavior = serializedObject.FindProperty("startupBehavior");
             observationExtents = serializedObject.FindProperty("observationExtents");
             isStationaryObserver = serializedObject.FindProperty("isStationaryObserver");
@@ -120,21 +119,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 GUI.enabled = false;
             }
 
-            bool changed = false;
-
             EditorGUILayout.LabelField("General Settings:", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
-
-            changed |= RenderProfile(spatialObserverDataProviders);
             EditorGUILayout.PropertyField(startupBehavior);
             EditorGUILayout.PropertyField(observationExtents);
             EditorGUILayout.PropertyField(isStationaryObserver);
             EditorGUILayout.PropertyField(updateInterval);
-            EditorGUI.indentLevel--;
-            EditorGUILayout.Space();
 
+            EditorGUILayout.Space();
             EditorGUILayout.LabelField("Mesh Settings:", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(useMeshSystem, useSystemContent);
             EditorGUILayout.PropertyField(meshPhysicsLayer, physicsLayerContent);
             EditorGUILayout.PropertyField(meshLevelOfDetail, lodContent);
@@ -143,11 +135,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(meshDisplayOption, displayOptionContent);
             EditorGUILayout.PropertyField(meshVisibleMaterial, visibleMaterialContent);
             EditorGUILayout.PropertyField(meshOcclusionMaterial, occlusionMaterialContent);
-            EditorGUI.indentLevel--;
-            EditorGUILayout.Space();
 
+            EditorGUILayout.Space();
             EditorGUILayout.LabelField("Surface Finding Settings:", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(useSurfaceFindingSystem, useSystemContent);
             EditorGUILayout.PropertyField(surfaceFindingPhysicsLayer, physicsLayerContent);
             EditorGUILayout.PropertyField(surfaceFindingMinimumArea, minimumAreaContent);
@@ -159,14 +149,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(wallSurfaceMaterial, wallMaterialContent);
             EditorGUILayout.PropertyField(displayPlatformSurfaces);
             EditorGUILayout.PropertyField(platformSurfaceMaterial, platformMaterialContent);
-            EditorGUI.indentLevel--;
 
             serializedObject.ApplyModifiedProperties();
-
-            if (changed)
-            {
-                MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
-            }
         }
     }
 }
