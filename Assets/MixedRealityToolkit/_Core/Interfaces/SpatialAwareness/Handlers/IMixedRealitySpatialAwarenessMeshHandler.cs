@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers
 {
     /// <summary>
-    /// 
+    /// The event handler for all Spatial Awareness Mesh Events.
     /// </summary>
     public interface IMixedRealitySpatialAwarenessMeshHandler<T> : IEventSystemHandler
     {

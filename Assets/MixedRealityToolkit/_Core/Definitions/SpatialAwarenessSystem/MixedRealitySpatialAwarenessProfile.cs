@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         private LayerMask surfaceFindingPhysicsLayerMask;
 
         /// <summary>
-        /// The desired Unity Physics Layer on which to set the planar surfaces.
+        /// The desired Unity Physics Layer(s) on which to set the planar surfaces.
         /// </summary>
         public LayerMask SurfaceFindingPhysicsLayerMask => surfaceFindingPhysicsLayerMask;
 

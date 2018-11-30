@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers
 {
     /// <summary>
-    /// 
+    /// The event handler for all Spatial Awareness Surface Finding Events.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IMixedRealitySpatialAwarenessSurfaceFindingHandler<T> : IEventSystemHandler
