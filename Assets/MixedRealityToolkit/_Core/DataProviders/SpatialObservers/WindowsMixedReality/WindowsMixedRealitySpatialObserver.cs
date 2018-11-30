@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_WSA
+using System;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
@@ -111,15 +112,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         /// </summary>
         private float lastUpdated = 0;
 
-        /// <inheritdoc />
-        public override IReadOnlyDictionary<int, SpatialMeshObject> Meshes => SpatialMeshObjects;
-
         /// <inheritdoc/>
         public override void StartObserving()
         {
             if (IsRunning)
             {
-                Debug.LogWarning("The Windows Mixed Reality spatial observer is currently running.");
+                Debug.LogWarning($"The {Name} is already running.");
                 return;
             }
 
@@ -135,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         {
             if (!IsRunning)
             {
-                Debug.LogWarning("The Windows Mixed Reality spatial observer is currently stopped.");
+                Debug.LogWarning($"The {Name} is already stopped.");
                 return;
             }
 
@@ -158,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
                 observer = new SurfaceObserver();
                 ConfigureObserverVolume();
 
-                if (SpatialAwarenessSystem.StartupBehavior == AutoStartBehavior.AutoStart)
+                if (StartupBehavior == AutoStartBehavior.AutoStart)
                 {
                     StartObserving();
                 }
@@ -224,12 +222,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
                     RequestMesh(meshWorkQueue.Dequeue());
                 }
                 // If enough time has passed since the previous observer update...
-                else if (Time.time - lastUpdated >= SpatialAwarenessSystem.UpdateInterval)
+                else if (Time.time - lastUpdated >= UpdateInterval)
                 {
                     // Update the observer location if it is not stationary
-                    if (!SpatialAwarenessSystem.IsStationaryObserver)
+                    if (!IsStationaryObserver)
                     {
-                        SpatialAwarenessSystem.ObserverOrigin = CameraCache.Main.transform.position;
+                        ObserverOrigin = CameraCache.Main.transform.position;
                     }
 
                     // The application can update the observer volume at any time, make sure we are using the latest.
@@ -301,16 +299,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         {
             SpatialMeshObject mesh;
 
-            if (SpatialMeshObjects.TryGetValue(id, out mesh))
+            if (spatialMeshObjects.TryGetValue(id, out mesh))
             {
                 // Remove the mesh object from the collection.
-                SpatialMeshObjects.Remove(id);
+                spatialMeshObjects.Remove(id);
 
                 // Reclaim the mesh object for future use.
                 ReclaimMeshObject(mesh);
 
                 // Send the mesh removed event
-                SpatialAwarenessSystem.RaiseMeshRemoved(id);
+                SpatialAwarenessSystem.RaiseMeshRemoved(this, id);
             }
         }
 
@@ -344,8 +342,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         /// </summary>
         private void ConfigureObserverVolume()
         {
-            Vector3 newExtents = SpatialAwarenessSystem.ObservationExtents;
-            Vector3 newOrigin = SpatialAwarenessSystem.ObserverOrigin;
+            Vector3 newExtents = ObservationExtents;
+            Vector3 newOrigin = ObserverOrigin;
 
             if (currentObserverExtents.Equals(newExtents) &&
                 currentObserverOrigin.Equals(newOrigin))
@@ -366,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         /// <param name="changeType">The type of change that occurred on the surface.</param>
         /// <param name="bounds">The bounds of the surface.</param>
         /// <param name="updateTime">The date and time at which the change occurred.</param>
-        private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, System.DateTime updateTime)
+        private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, DateTime updateTime)
         {
             if (!IsRunning) { return; }
 
@@ -436,24 +434,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             // Add / update the mesh to our collection
             bool sendUpdatedEvent = false;
 
-            if (SpatialMeshObjects.ContainsKey(cookedData.id.handle))
+            if (spatialMeshObjects.ContainsKey(cookedData.id.handle))
             {
                 // Reclaim the old mesh object for future use.
-                ReclaimMeshObject(SpatialMeshObjects[cookedData.id.handle]);
-                SpatialMeshObjects.Remove(cookedData.id.handle);
+                ReclaimMeshObject(spatialMeshObjects[cookedData.id.handle]);
+                spatialMeshObjects.Remove(cookedData.id.handle);
 
                 sendUpdatedEvent = true;
             }
 
-            SpatialMeshObjects.Add(cookedData.id.handle, meshObject);
+            spatialMeshObjects.Add(cookedData.id.handle, meshObject);
 
             if (sendUpdatedEvent)
             {
-                SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, meshObject);
+                SpatialAwarenessSystem.RaiseMeshUpdated(this, cookedData.id.handle, meshObject);
             }
             else
             {
-                SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, meshObject);
+                SpatialAwarenessSystem.RaiseMeshAdded(this, cookedData.id.handle, meshObject);
             }
         }
 

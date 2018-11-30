@@ -2,8 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,13 +21,111 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        protected BaseSpatialObserver(string name, uint priority) : base(name, priority) { }
+        protected BaseSpatialObserver(string name, uint priority) : base(name, priority)
+        {
+            SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewObserverId();
+        }
+
+        #region IMixedRealityService Implementation
+
+        /// <inheritdoc />
+        public override void Initialize()
+        {
+            StartupBehavior = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.StartupBehavior;
+            ObservationExtents = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.ObservationExtents;
+            IsStationaryObserver = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.IsStationaryObserver;
+            UpdateInterval = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval;
+        }
+
+        #endregion IMixedRealityService Implementation
+
+        #region IMixedRealityEventSource Implementation
+
+        /// <inheritdoc />
+        public string SourceName => Name;
+
+        /// <inheritdoc />
+        public uint SourceId { get; }
+
+        #region IEquality Implementation
+
+        /// <summary>Determines whether the specified objects are equal.</summary>
+        /// <param name="left">The first object to compare.</param>
+        /// <param name="right">The second object to compare.</param>
+        /// <paramref name="left" /> and <paramref name="right" /> are of different types and neither one can handle comparisons with the other.</exception>
+        public static bool Equals(IMixedRealitySpatialAwarenessObserver left, IMixedRealitySpatialAwarenessObserver right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <inheritdoc />
+        bool IEqualityComparer.Equals(object left, object right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) { return false; }
+            if (ReferenceEquals(this, obj)) { return true; }
+            if (obj.GetType() != GetType()) { return false; }
+
+            return Equals((IMixedRealitySpatialAwarenessObserver)obj);
+        }
+
+        private bool Equals(IMixedRealitySpatialAwarenessObserver other)
+        {
+            return other != null && SourceId == other.SourceId && string.Equals(Name, other.SourceName);
+        }
+
+        /// <inheritdoc />
+        int IEqualityComparer.GetHashCode(object obj)
+        {
+            return obj.GetHashCode();
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = 0;
+                hashCode = (hashCode * 397) ^ (int)SourceId;
+                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        #endregion IEquality Implementation
+
+        #endregion IMixedRealityEventSource Implementation
+
+        #region IMixedRealitySpatialAwarenessObserver Implementation
+
+        /// <inheritdoc />
+        public AutoStartBehavior StartupBehavior { get; set; } = AutoStartBehavior.AutoStart;
+
+        /// <inheritdoc />
+        public Vector3 ObservationExtents { get; set; } = Vector3.one * 3;
+
+        /// <inheritdoc />
+        public bool IsStationaryObserver { get; set; } = false;
+
+        /// <inheritdoc />
+        public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
+
+        /// <inheritdoc />
+        public Quaternion ObserverOrientation { get; set; }
+
+        /// <inheritdoc />
+        public float UpdateInterval { get; set; } = 3.5f;
 
         /// <inheritdoc />
         public bool IsRunning { get; protected set; }
 
         /// <inheritdoc />
-        public virtual IReadOnlyDictionary<int, SpatialMeshObject> Meshes => new Dictionary<int, SpatialMeshObject>();
+        public IReadOnlyDictionary<int, SpatialMeshObject> SpatialMeshObjects => spatialMeshObjects;
 
         /// <inheritdoc />
         public virtual void StartObserving() { }
@@ -47,16 +147,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// <summary>
         /// The collection of meshes being managed by the observer.
         /// </summary>
-        protected readonly Dictionary<int, SpatialMeshObject> SpatialMeshObjects = new Dictionary<int, SpatialMeshObject>();
+        protected readonly Dictionary<int, SpatialMeshObject> spatialMeshObjects = new Dictionary<int, SpatialMeshObject>();
 
         /// <summary>
         /// Creates a <see cref="SpatialMeshObject"/>.
         /// </summary>
-        /// <param name="mesh"></param> todo: add comments
-        /// <param name="name"></param>
-        /// <param name="meshId"></param>
+        /// <param name="mesh">The <see cref="Mesh"/> data to use when constructing the spatial mesh object.</param>
+        /// <param name="name">The name of the spatial mesh <see cref="GameObject"/> reference.</param>
+        /// <param name="meshId">the id of the spatial mesh object.</param>
         /// <returns>
-        /// <see cref="SpatialMeshObject"/> containing the fields that describe the mesh.
+        /// <see cref="SpatialMeshObject"/> containing the fields that describe the spatial mesh object.
         /// </returns>
         protected SpatialMeshObject CreateSpatialMeshObject(Mesh mesh, string name, int meshId)
         {
@@ -77,8 +177,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
             meshFilter.sharedMesh = mesh;
             meshCollider.sharedMesh = null;
             meshCollider.sharedMesh = meshFilter.sharedMesh;
-
-            return new SpatialMeshObject(meshId, gameObject, meshRenderer, meshFilter, meshCollider);
+            var spatialMeshObject = new SpatialMeshObject(meshId, gameObject, meshRenderer, meshFilter, meshCollider);
+            spatialMeshObjects.Add(meshId, spatialMeshObject);
+            return spatialMeshObject;
         }
 
         /// <summary>
@@ -88,14 +189,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         {
             // Clean up mesh objects.
             // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
-            foreach (SpatialMeshObject meshObject in SpatialMeshObjects.Values)
+            foreach (SpatialMeshObject meshObject in spatialMeshObjects.Values)
             {
                 // Cleanup mesh object.
                 // Destroy the game object, destroy the meshes.
                 CleanupMeshObject(meshObject);
             }
 
-            SpatialMeshObjects.Clear();
+            spatialMeshObjects.Clear();
         }
 
         /// <summary>
@@ -106,16 +207,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// <param name="destroyMeshes"></param>
         protected void CleanupMeshObject(SpatialMeshObject meshObject, bool destroyGameObject = true, bool destroyMeshes = true)
         {
-            if (destroyGameObject && (meshObject.GameObject != null))
+            // Only clean up meshes if we're not going to destroy the GameObject.
+            // If the GameObject is to be destroyed we can skip this step and have Unity clean up for us.
+            if (!destroyGameObject && destroyMeshes)
             {
-                Object.Destroy(meshObject.GameObject);
-            }
+                Mesh filterMesh = meshObject.Filter.sharedMesh;
+                Mesh colliderMesh = meshObject.Collider.sharedMesh;
 
-            Mesh filterMesh = meshObject.Filter.sharedMesh;
-            Mesh colliderMesh = meshObject.Collider.sharedMesh;
-
-            if (destroyMeshes)
-            {
                 if (filterMesh != null)
                 {
                     Object.Destroy(filterMesh);
@@ -128,6 +226,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
                     meshObject.Collider.sharedMesh = null;
                 }
             }
+
+            if (destroyGameObject)
+            {
+                Debug.Assert(meshObject.GameObject != null);
+                Object.Destroy(meshObject.GameObject);
+            }
         }
+
+        #endregion IMixedRealitySpatialAwarenessObserver Implementation
     }
 }
