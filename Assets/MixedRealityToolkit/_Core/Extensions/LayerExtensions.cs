@@ -90,7 +90,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 
         private static UnityEditor.SerializedProperty tagManagerLayers = null;
 
-        private static UnityEditor.SerializedProperty TagManagerLayers
+        /// <summary>
+        /// The current layers defined in the Tag Manager.
+        /// </summary>
+        public static UnityEditor.SerializedProperty TagManagerLayers
         {
             get
             {

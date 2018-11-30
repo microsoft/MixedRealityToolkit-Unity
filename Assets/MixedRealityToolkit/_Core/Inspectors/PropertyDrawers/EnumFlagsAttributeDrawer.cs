@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
     /// From https://answers.unity.com/questions/486694/default-editor-enum-as-flags-.html
     /// </summary>
     [CustomPropertyDrawer(typeof(EnumFlagsAttribute))]
-    public class EnumFlagsAttributeDrawer : PropertyDrawer
+    public sealed class EnumFlagsAttributeDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {

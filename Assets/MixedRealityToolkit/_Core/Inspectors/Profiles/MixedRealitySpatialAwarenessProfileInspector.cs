@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         // Mesh settings
         private SerializedProperty useMeshSystem;
-        private SerializedProperty meshPhysicsLayerMask;
+        private SerializedProperty meshPhysicsLayer;
         private SerializedProperty meshLevelOfDetail;
         private SerializedProperty meshTrianglesPerCubicMeter;
         private SerializedProperty meshRecalculateNormals;
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         // Surface Finding settings
         private SerializedProperty useSurfaceFindingSystem;
-        private SerializedProperty surfaceFindingPhysicsLayerMask;
+        private SerializedProperty surfaceFindingPhysicsLayer;
         private SerializedProperty surfaceFindingMinimumArea;
         private SerializedProperty displayFloorSurfaces;
         private SerializedProperty floorSurfaceMaterial;
@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             // Mesh settings
             useMeshSystem = serializedObject.FindProperty("useMeshSystem");
-            meshPhysicsLayerMask = serializedObject.FindProperty("meshPhysicsLayerMask");
+            meshPhysicsLayer = serializedObject.FindProperty("meshPhysicsLayer");
             meshLevelOfDetail = serializedObject.FindProperty("meshLevelOfDetail");
             meshTrianglesPerCubicMeter = serializedObject.FindProperty("meshTrianglesPerCubicMeter");
             meshRecalculateNormals = serializedObject.FindProperty("meshRecalculateNormals");
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             // Surface Finding settings
             useSurfaceFindingSystem = serializedObject.FindProperty("useSurfaceFindingSystem");
-            surfaceFindingPhysicsLayerMask = serializedObject.FindProperty("surfaceFindingPhysicsLayerMask");
+            surfaceFindingPhysicsLayer = serializedObject.FindProperty("surfaceFindingPhysicsLayer");
             surfaceFindingMinimumArea = serializedObject.FindProperty("surfaceFindingMinimumArea");
             displayFloorSurfaces = serializedObject.FindProperty("displayFloorSurfaces");
             floorSurfaceMaterial = serializedObject.FindProperty("floorSurfaceMaterial");
@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Mesh Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(useMeshSystem, useSystemContent);
-            EditorGUILayout.PropertyField(meshPhysicsLayerMask, physicsLayerContent);
+            EditorGUILayout.PropertyField(meshPhysicsLayer, physicsLayerContent);
             EditorGUILayout.PropertyField(meshLevelOfDetail, lodContent);
             EditorGUILayout.PropertyField(meshTrianglesPerCubicMeter, trianglesPerCubicMeterContent);
             EditorGUILayout.PropertyField(meshRecalculateNormals);
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Surface Finding Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(useSurfaceFindingSystem, useSystemContent);
-            EditorGUILayout.PropertyField(surfaceFindingPhysicsLayerMask, physicsLayerContent);
+            EditorGUILayout.PropertyField(surfaceFindingPhysicsLayer, physicsLayerContent);
             EditorGUILayout.PropertyField(surfaceFindingMinimumArea, minimumAreaContent);
             EditorGUILayout.PropertyField(displayFloorSurfaces);
             EditorGUILayout.PropertyField(floorSurfaceMaterial, floorMaterialContent);

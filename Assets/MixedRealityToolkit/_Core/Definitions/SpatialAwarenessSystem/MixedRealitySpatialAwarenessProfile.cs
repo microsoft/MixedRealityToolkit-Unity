@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using UnityEngine;
@@ -83,14 +84,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// </summary>
         public bool UseMeshSystem => useMeshSystem;
 
+        [PhysicsLayer]
         [SerializeField]
         [Tooltip("Physics layer(s) on which to set the mesh")]
-        private LayerMask meshPhysicsLayerMask;
+        private int meshPhysicsLayer = -1;
 
         /// <summary>
         /// The desired Unity Physics Layer on which to set the spatial mesh.
         /// </summary>
-        public LayerMask MeshPhysicsLayerMask => meshPhysicsLayerMask;
+        public int MeshPhysicsLayer => meshPhysicsLayer;
 
         [SerializeField]
         [Tooltip("Level of detail for the mesh")]
@@ -161,14 +163,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// </summary>
         public bool UseSurfaceFindingSystem => useSurfaceFindingSystem;
 
+        [PhysicsLayer]
         [SerializeField]
         [Tooltip("Physics layer on which to set the planar surfaces")]
-        private LayerMask surfaceFindingPhysicsLayerMask;
+        private int surfaceFindingPhysicsLayer = -1;
 
         /// <summary>
         /// The desired Unity Physics Layer(s) on which to set the planar surfaces.
         /// </summary>
-        public LayerMask SurfaceFindingPhysicsLayerMask => surfaceFindingPhysicsLayerMask;
+        public int SurfaceFindingPhysicsLayer => surfaceFindingPhysicsLayer;
 
         [SerializeField]
         [Tooltip("The minimum area, in square meters, of the planar surfaces")]

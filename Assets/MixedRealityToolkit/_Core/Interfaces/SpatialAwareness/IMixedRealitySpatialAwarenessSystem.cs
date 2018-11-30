@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Get or sets the desired Unity Physics Layer on which to set the spatial mesh.
         /// </summary>
-        LayerMask MeshPhysicsLayerMask { get; set; }
+        int MeshPhysicsLayer { get; set; }
 
         /// <summary>
         /// Gets or sets the level of detail, as a MixedRealitySpatialAwarenessMeshLevelOfDetail value, for the returned spatial mesh.
@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets or Sets the layer mask for the surface finding physics layer.
         /// </summary>
-        LayerMask SurfaceFindingPhysicsLayerMask { get; set; }
+        int SurfaceFindingPhysicsLayer { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum surface area, in square meters, that must be satisfied before a surface is identified.
@@ -217,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness surface finding subsystem.
         /// </summary>
-        IDictionary<int, GameObject> PlanarSurfaces { get; }
+        IReadOnlyDictionary<int, GameObject> PlanarSurfaces { get; }
 
         #region Surface Finding Events
 

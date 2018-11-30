@@ -19,9 +19,7 @@ MonoBehaviour:
   isStationaryObserver: 0
   updateInterval: 3.5
   useMeshSystem: 1
-  meshPhysicsLayerMask:
-    serializedVersion: 2
-    m_Bits: 2147483648
+  meshPhysicsLayer: 31
   meshLevelOfDetail: 0
   meshTrianglesPerCubicMeter: 0
   meshRecalculateNormals: 1
@@ -30,9 +28,7 @@ MonoBehaviour:
   meshOcclusionMaterial: {fileID: 2100000, guid: a809c7ea182b699409443d46d5b42435,
     type: 2}
   useSurfaceFindingSystem: 0
-  surfaceFindingPhysicsLayerMask:
-    serializedVersion: 2
-    m_Bits: 1073741824
+  surfaceFindingPhysicsLayer: 30
   surfaceFindingMinimumArea: 0.025
   displayFloorSurfaces: 0
   floorSurfaceMaterial: {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321,

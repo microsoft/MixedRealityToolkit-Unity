@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         {
             var gameObject = new GameObject(name, requiredMeshComponents)
             {
-                layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayerMask
+                layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayer
             };
 
             var meshFilter = gameObject.GetComponent<MeshFilter>();
@@ -228,15 +228,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// <summary>
         /// Removes the <see cref="SpatialMeshObject"/> associated with the specified id.
         /// </summary>
-        /// <param name="id">The id of the mesh to be removed.</param>
-        protected void RemoveMeshObject(int id)
+        /// <param name="meshId">The id of the mesh to be removed.</param>
+        protected void RemoveMeshObject(int meshId)
         {
             SpatialMeshObject mesh;
 
-            if (spatialMeshObjects.TryGetValue(id, out mesh))
+            if (spatialMeshObjects.TryGetValue(meshId, out mesh))
             {
                 // Remove the mesh object from the collection.
-                spatialMeshObjects.Remove(id);
+                spatialMeshObjects.Remove(meshId);
 
                 // Sent the mesh removed event.
                 RaiseMeshRemoved(mesh);

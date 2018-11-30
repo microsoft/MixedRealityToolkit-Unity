@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         public bool UseMeshSystem { get; set; } = true;
 
         /// <inheritdoc />
-        public LayerMask MeshPhysicsLayerMask { get; set; }
+        public int MeshPhysicsLayer { get; set; }
 
         private SpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;
 
@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         public bool UseSurfaceFindingSystem { get; set; } = false;
 
         /// <inheritdoc />
-        public LayerMask SurfaceFindingPhysicsLayerMask { get; set; }
+        public int SurfaceFindingPhysicsLayer { get; set; }
 
         /// <inheritdoc />
         public float SurfaceFindingMinimumArea { get; set; } = 0.025f;
@@ -212,15 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         public Material PlatformSurfaceMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public IDictionary<int, GameObject> PlanarSurfaces
-        {
-            get
-            {
-                // This implementation of the spatial awareness system manages game objects.
-                // todo
-                return new Dictionary<int, GameObject>(0);
-            }
-        }
+        public IReadOnlyDictionary<int, GameObject> PlanarSurfaces => new Dictionary<int, GameObject>(0);
 
         #endregion Surface Finding Handling implementation
 
@@ -239,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
 
             // Mesh settings
             UseMeshSystem = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UseMeshSystem;
-            MeshPhysicsLayerMask = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshPhysicsLayerMask;
+            MeshPhysicsLayer = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshPhysicsLayer;
             MeshLevelOfDetail = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshLevelOfDetail;
             MeshTrianglesPerCubicMeter = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshTrianglesPerCubicMeter;
             MeshRecalculateNormals = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshRecalculateNormals;
@@ -249,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
 
             // Surface finding settings
             UseSurfaceFindingSystem = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UseSurfaceFindingSystem;
-            SurfaceFindingPhysicsLayerMask = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingPhysicsLayerMask;
+            SurfaceFindingPhysicsLayer = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingPhysicsLayer;
             SurfaceFindingMinimumArea = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingMinimumArea;
             DisplayFloorSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayFloorSurfaces;
             FloorSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.FloorSurfaceMaterial;
@@ -334,7 +326,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
                 var spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialMeshObject>>(eventData);
                 handler.OnMeshUpdated(spatialEventData);
             };
-
 
         /// <inheritdoc />
         public void RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver observer, SpatialMeshObject spatialMeshObject)
