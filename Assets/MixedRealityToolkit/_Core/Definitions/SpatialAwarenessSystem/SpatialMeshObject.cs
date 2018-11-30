@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMixedReality")]
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 {
     /// <summary>
@@ -32,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <summary>
         /// The id of the spatial mesh object.
         /// </summary>
-        public int Id { get; internal set; }
+        public int Id { get; }
 
         /// <summary>
         /// The <see cref="GameObject"/> reference of the Spatial Mesh Object.

@@ -114,44 +114,37 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// </summary>
         Material MeshOcclusionMaterial { get; set; }
 
-        /// <summary>
-        /// Gets the collection of <see cref="SpatialMeshObject"/>s being managed by the spatial awareness mesh subsystem.
-        /// </summary>
-        IReadOnlyDictionary<int, SpatialMeshObject> Meshes { get; }
-
         #region Mesh Events
 
         /// <summary>
         /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler{T}.OnMeshAdded"/> method to indicate a mesh has been added.
         /// </summary>
         /// <param name="observer"></param>
-        /// <param name="meshId">Value identifying the mesh.</param>
         /// <param name="meshObject">The mesh <see cref="SpatialMeshObject"/>.</param>
         /// <remarks>
         /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
-        void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialMeshObject meshObject);
+        void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, SpatialMeshObject meshObject);
 
         /// <summary>
         /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler{T}.OnMeshUpdated"/> method to indicate an existing mesh has been updated.
         /// </summary>
         /// <param name="observer"></param>
-        /// <param name="meshId">Value identifying the mesh.</param>
         /// <param name="meshObject">The mesh <see cref="SpatialMeshObject"/>.</param>
         /// <remarks>
         /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
-        void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialMeshObject meshObject);
+        void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, SpatialMeshObject meshObject);
 
         /// <summary>
         /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler{T}.OnMeshUpdated"/> method to indicate an existing mesh has been removed.
         /// </summary>
         /// <param name="observer"></param>
-        /// <param name="meshId">Value identifying the mesh.</param>
+        /// <param name="meshObject">The mesh <see cref="SpatialMeshObject"/>.</param>
         /// <remarks>
         /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
-        void RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver observer, int meshId);
+        void RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver observer, SpatialMeshObject meshObject);
 
         #endregion Mesh Events
 
