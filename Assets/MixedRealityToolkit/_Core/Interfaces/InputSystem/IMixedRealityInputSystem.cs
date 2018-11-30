@@ -119,6 +119,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// <returns>a new unique Id for the input source.</returns>
         uint GenerateNewSourceId();
 
+        /// <summary>
+        /// Request a new generic input source from the system.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="pointers"></param>
+        /// <returns></returns>
         IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null);
 
         /// <summary>
