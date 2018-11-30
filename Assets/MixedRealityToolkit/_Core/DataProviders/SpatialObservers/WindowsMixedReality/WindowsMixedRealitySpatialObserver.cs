@@ -111,9 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         /// </summary>
         private float lastUpdated = 0;
 
-        /// <inheritdoc />
-        public override IReadOnlyDictionary<int, SpatialMeshObject> Meshes => SpatialMeshObjects;
-
         /// <inheritdoc/>
         public override void StartObserving()
         {

@@ -25,7 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         public bool IsRunning { get; protected set; }
 
         /// <inheritdoc />
-        public virtual IReadOnlyDictionary<int, SpatialMeshObject> Meshes => new Dictionary<int, SpatialMeshObject>();
+        /// <remarks>
+        /// This method returns a copy of the collection maintained by the observer so that application
+        /// code can iterate through the collection without concern for changes to the backing data.
+        /// </remarks>
+        public virtual IReadOnlyDictionary<int, SpatialMeshObject> Meshes => new Dictionary<int, SpatialMeshObject>(SpatialMeshObjects);
 
         /// <inheritdoc />
         public virtual void StartObserving() { }
