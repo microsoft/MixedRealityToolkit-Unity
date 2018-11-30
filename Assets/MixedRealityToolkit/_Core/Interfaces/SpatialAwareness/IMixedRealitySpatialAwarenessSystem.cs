@@ -45,12 +45,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         HashSet<IMixedRealitySpatialAwarenessObserver> DetectedSpatialObservers { get; }
 
         /// <summary>
-        /// 
+        /// Raise the event that a <see cref="IMixedRealitySpatialAwarenessObserver"/> has been detected.
         /// </summary>
         void RaiseSpatialAwarenessObserverDetected(IMixedRealitySpatialAwarenessObserver observer);
 
         /// <summary>
-        /// 
+        /// Raise the event that a <see cref="IMixedRealitySpatialAwarenessObserver"/> has been lost.
         /// </summary>
         void RaiseSpatialAwarenessObserverLost(IMixedRealitySpatialAwarenessObserver observer);
 
@@ -68,12 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Get or sets the desired Unity Physics Layer on which to set the spatial mesh.
         /// </summary>
-        int MeshPhysicsLayer { get; set; }
-
-        /// <summary>
-        /// Gets the bit mask that corresponds to the value specified in <see cref="MeshPhysicsLayer"/>.
-        /// </summary>
-        int MeshPhysicsLayerMask { get; }
+        LayerMask MeshPhysicsLayerMask { get; set; }
 
         /// <summary>
         /// Gets or sets the level of detail, as a MixedRealitySpatialAwarenessMeshLevelOfDetail value, for the returned spatial mesh.
@@ -105,12 +100,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         SpatialMeshDisplayOptions MeshDisplayOption { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Material"/> to be used when displaying <see cref="Mesh"/>es.
+        /// Gets or sets the <see cref="Material"/> to be used when displaying <see cref="SpatialMeshObject"/>s.
         /// </summary>
         Material MeshVisibleMaterial { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Material"/> to be used when spatial <see cref="Mesh"/>es should occlude other objects.
+        /// Gets or sets the <see cref="Material"/> to be used when <see cref="SpatialMeshObject"/>s should occlude other objects.
         /// </summary>
         Material MeshOcclusionMaterial { get; set; }
 
@@ -162,14 +157,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         bool UseSurfaceFindingSystem { get; set; }
 
         /// <summary>
-        /// Get or sets the desired Unity Physics Layer on which to set the planar surfaces.
+        /// Gets or Sets the layer mask for the surface finding physics layer.
         /// </summary>
-        int SurfacePhysicsLayer { get; set; }
-
-        /// <summary>
-        /// Gets the bit mask that corresponds to the value specified in <see cref="SurfacePhysicsLayer"/>.
-        /// </summary>
-        int SurfacePhysicsLayerMask { get; }
+        LayerMask SurfaceFindingPhysicsLayerMask { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum surface area, in square meters, that must be satisfied before a surface is identified.

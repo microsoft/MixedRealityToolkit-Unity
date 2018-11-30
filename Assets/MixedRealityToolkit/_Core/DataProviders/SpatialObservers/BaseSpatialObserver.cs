@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         {
             var gameObject = new GameObject(name, requiredMeshComponents)
             {
-                layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayer
+                layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayerMask
             };
 
             var meshFilter = gameObject.GetComponent<MeshFilter>();

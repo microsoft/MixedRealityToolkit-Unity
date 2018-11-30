@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
@@ -200,6 +201,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Spatial Awareness system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsSpatialAwarenessSystemEnabled)
             {
+#if UNITY_EDITOR
+                // Setup the default spatial awareness layers in the project settings.
+                LayerExtensions.SetupLayer(31, MixedRealitySpatialAwarenessProfile.SpatialAwarenessMeshesLayerName);
+                LayerExtensions.SetupLayer(30, MixedRealitySpatialAwarenessProfile.SpatialAwarenessSurfacesLayerName);
+#endif
                 if (RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) && SpatialAwarenessSystem != null)
                 {
                     if (ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders != null &&
@@ -216,6 +222,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 {
                     Debug.LogError("Failed to start the Spatial Awareness System!");
                 }
+            }
+            else
+            {
+#if UNITY_EDITOR
+                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessProfile.SpatialAwarenessMeshesLayerName);
+                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessProfile.SpatialAwarenessSurfacesLayerName);
+#endif
             }
 
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project

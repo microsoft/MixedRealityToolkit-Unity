@@ -132,10 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         public bool UseMeshSystem { get; set; } = true;
 
         /// <inheritdoc />
-        public int MeshPhysicsLayer { get; set; } = 31;
-
-        /// <inheritdoc />
-        public int MeshPhysicsLayerMask => 1 << MeshPhysicsLayer;
+        public LayerMask MeshPhysicsLayerMask { get; set; }
 
         private SpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;
 
@@ -185,10 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         public bool UseSurfaceFindingSystem { get; set; } = false;
 
         /// <inheritdoc />
-        public int SurfacePhysicsLayer { get; set; } = 31;
-
-        /// <inheritdoc />
-        public int SurfacePhysicsLayerMask => 1 << SurfacePhysicsLayer;
+        public LayerMask SurfaceFindingPhysicsLayerMask { get; set; }
 
         /// <inheritdoc />
         public float SurfaceFindingMinimumArea { get; set; } = 0.025f;
@@ -245,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
 
             // Mesh settings
             UseMeshSystem = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UseMeshSystem;
-            MeshPhysicsLayer = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshPhysicsLayer;
+            MeshPhysicsLayerMask = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshPhysicsLayerMask;
             MeshLevelOfDetail = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshLevelOfDetail;
             MeshTrianglesPerCubicMeter = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshTrianglesPerCubicMeter;
             MeshRecalculateNormals = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshRecalculateNormals;
@@ -255,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
 
             // Surface finding settings
             UseSurfaceFindingSystem = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UseSurfaceFindingSystem;
-            SurfacePhysicsLayer = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingPhysicsLayer;
+            SurfaceFindingPhysicsLayerMask = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingPhysicsLayerMask;
             SurfaceFindingMinimumArea = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingMinimumArea;
             DisplayFloorSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayFloorSurfaces;
             FloorSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.FloorSurfaceMaterial;

@@ -13,6 +13,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Spatial Awareness Profile", fileName = "MixedRealitySpatialAwarenessProfile", order = (int)CreateProfileMenuItemIndices.SpatialAwareness)]
     public class MixedRealitySpatialAwarenessProfile : BaseMixedRealityProfile
     {
+        /// <summary>
+        /// The name of the Spatial Awareness Mesh Physics Layer.
+        /// </summary>
+        public const string SpatialAwarenessMeshesLayerName = "Spatial Awareness Meshes";
+
+        /// <summary>
+        /// The name of the Spatial Awareness Surfaces Physics Layer.
+        /// </summary>
+        public const string SpatialAwarenessSurfacesLayerName = "Spatial Awareness Sufaces";
+
         #region General settings
 
         [SerializeField]
@@ -74,13 +84,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         public bool UseMeshSystem => useMeshSystem;
 
         [SerializeField]
-        [Tooltip("Physics layer on which to set the mesh")]
-        private int meshPhysicsLayer = 31;
+        [Tooltip("Physics layer(s) on which to set the mesh")]
+        private LayerMask meshPhysicsLayerMask;
 
         /// <summary>
         /// The desired Unity Physics Layer on which to set the spatial mesh.
         /// </summary>
-        public int MeshPhysicsLayer => meshPhysicsLayer;
+        public LayerMask MeshPhysicsLayerMask => meshPhysicsLayerMask;
 
         [SerializeField]
         [Tooltip("Level of detail for the mesh")]
@@ -153,12 +163,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 
         [SerializeField]
         [Tooltip("Physics layer on which to set the planar surfaces")]
-        private int surfaceFindingPhysicsLayer = 31;
+        private LayerMask surfaceFindingPhysicsLayerMask;
 
         /// <summary>
         /// The desired Unity Physics Layer on which to set the planar surfaces.
         /// </summary>
-        public int SurfaceFindingPhysicsLayer => surfaceFindingPhysicsLayer;
+        public LayerMask SurfaceFindingPhysicsLayerMask => surfaceFindingPhysicsLayerMask;
 
         [SerializeField]
         [Tooltip("The minimum area, in square meters, of the planar surfaces")]
