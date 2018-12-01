@@ -3,10 +3,10 @@
 
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.WSA;
@@ -34,43 +34,91 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         public override void Initialize()
         {
             // Only initialize if the Spatial Awareness system has been enabled in the configuration profile.
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled) { return; }
+            if (!Application.isPlaying ||
+                !MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled ||
+                MixedRealityToolkit.SpatialAwarenessSystem == null)
+            {
+                return;
+            }
 
-            CreateObserver();
+            if (observer == null)
+            {
+                observer = new SurfaceObserver();
+            }
+
+            Debug.Assert(observer != null);
 
             // Apply the initial observer volume settings.
-            ConfigureObserverVolume();
-        }
+            ConfigureObserverVolume(ObservationExtents, ObserverOrigin);
 
-        /// <inheritdoc />
-        public override void Reset()
-        {
-            CleanupObserver();
-            Initialize();
+            base.Initialize();
         }
 
         /// <inheritdoc />
         public override void Update()
         {
-            UpdateObserver();
+            // Only update the observer if it is running.
+            if (MixedRealityToolkit.SpatialAwarenessSystem == null || !Application.isPlaying || !IsRunning) { return; }
+
+            if (outstandingMeshObjects.Count > 0)
+            {
+                // If we have a mesh to work on...
+                if (meshWorkQueue.Count > 0)
+                {
+                    // We're using a simple first-in-first-out rule for requesting meshes,
+                    // but a more sophisticated algorithm could prioritize
+                    // the queue based on distance to the user or some other metric.
+                    RequestMesh(meshWorkQueue.Dequeue());
+                }
+                // If enough time has passed since the previous observer update...
+                else if (Time.time - lastUpdated >= UpdateInterval)
+                {
+                    // Update the observer location if it is not stationary
+                    if (!IsStationaryObserver)
+                    {
+                        ObserverOrigin = CameraCache.Main.transform.position;
+                    }
+
+                    // The application can update the observer volume at any time, make sure we are using the latest.
+                    ConfigureObserverVolume(ObservationExtents, ObserverOrigin);
+
+                    observer.Update(SurfaceObserver_OnSurfaceChanged);
+                    lastUpdated = Time.time;
+                }
+            }
+
+            base.Update();
+        }
+
+        /// <inheritdoc />
+        public override void Disable()
+        {
+            // Cleanup the outstanding mesh objects.
+            foreach (var meshObject in outstandingMeshObjects)
+            {
+                DestroyMeshObject(meshObject.Value);
+            }
+
+            outstandingMeshObjects.Clear();
+
+            base.Disable();
         }
 
         /// <inheritdoc />
         public override void Destroy()
         {
-            CleanupObserver();
+            if (observer != null)
+            {
+                observer.Dispose();
+                observer = null;
+            }
+
+            base.Destroy();
         }
 
         #endregion IMixedRealityToolkit implementation
 
         #region IMixedRealitySpatialAwarenessObserver implementation
-
-        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-
-        /// <summary>
-        /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
-        /// </summary>
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 
         /// <summary>
         /// The surface observer providing the spatial data.
@@ -97,29 +145,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         /// only request one mesh to be created at a time.  This variable will track 
         /// if a mesh creation request is in flight. 
         /// </summary> 
-        private SpatialMeshObject? outstandingMeshObject = null;
-
-        /// <summary>
-        /// When surfaces are replaced or removed, rather than destroying them, we'll keep
-        /// one as a spare for use in outstanding mesh requests. That way, we'll have fewer
-        /// game object create/destroy cycles, which should help performance.
-        /// </summary>
-        private SpatialMeshObject? spareMeshObject = null;
+        private readonly Dictionary<int, SpatialMeshObject> outstandingMeshObjects = new Dictionary<int, SpatialMeshObject>();
 
         /// <summary>
         /// The time at which the surface observer was last asked for updated data.
         /// </summary>
         private float lastUpdated = 0;
 
-        /// <inheritdoc />
-        public override IReadOnlyDictionary<int, SpatialMeshObject> Meshes => meshObjects;
-
         /// <inheritdoc/>
         public override void StartObserving()
         {
             if (IsRunning)
             {
-                Debug.LogWarning("The Windows Mixed Reality spatial observer is currently running.");
+                Debug.LogWarning($"The {Name} is already running.");
                 return;
             }
 
@@ -135,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         {
             if (!IsRunning)
             {
-                Debug.LogWarning("The Windows Mixed Reality spatial observer is currently stopped.");
+                Debug.LogWarning($"The {Name} is already stopped.");
                 return;
             }
 
@@ -147,101 +185,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         }
 
         /// <summary>
-        /// Creates the surface observer and handles the desired startup behavior.
-        /// </summary>
-        private void CreateObserver()
-        {
-            if (SpatialAwarenessSystem == null) { return; }
-
-            if (observer == null)
-            {
-                observer = new SurfaceObserver();
-                ConfigureObserverVolume();
-
-                if (SpatialAwarenessSystem.StartupBehavior == AutoStartBehavior.AutoStart)
-                {
-                    StartObserving();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Ensures that the surface observer has been stopped and destroyed.
-        /// </summary>
-        private void CleanupObserver()
-        {
-            if (observer != null)
-            {
-                if (IsRunning)
-                {
-                    StopObserving();
-                }
-                observer.Dispose();
-                observer = null;
-            }
-
-            if (Application.isPlaying)
-            {
-                // Cleanup the mesh objects that are being managed by this observer.
-                CleanupMeshes();
-
-                // Cleanup the outstanding mesh object.
-                if (outstandingMeshObject.HasValue)
-                {
-                    // Destroy the game object, destroy the meshes.
-                    CleanupMeshObject(outstandingMeshObject.Value);
-                    outstandingMeshObject = null;
-                }
-
-                // Cleanup the spare mesh object
-                if (spareMeshObject.HasValue)
-                {
-                    // Destroy the game object, destroy the meshes.
-                    CleanupMeshObject(spareMeshObject.Value);
-                    spareMeshObject = null;
-                }
-
-                // Clean up planar surface objects
-                // todo
-            }
-        }
-
-        /// <summary>
-        /// Requests updates from the surface observer.
-        /// </summary>
-        private void UpdateObserver()
-        {
-            if (SpatialAwarenessSystem == null) { return; }
-
-            // Only update the observer if it is running.
-            if (IsRunning && !outstandingMeshObject.HasValue)
-            {
-                // If we have a mesh to work on...
-                if (meshWorkQueue.Count > 0)
-                {
-                    // We're using a simple first-in-first-out rule for requesting meshes, but a more sophisticated algorithm could prioritize
-                    // the queue based on distance to the user or some other metric.
-                    RequestMesh(meshWorkQueue.Dequeue());
-                }
-                // If enough time has passed since the previous observer update...
-                else if (Time.time - lastUpdated >= SpatialAwarenessSystem.UpdateInterval)
-                {
-                    // Update the observer location if it is not stationary
-                    if (!SpatialAwarenessSystem.IsStationaryObserver)
-                    {
-                        SpatialAwarenessSystem.ObserverOrigin = CameraCache.Main.transform.position;
-                    }
-
-                    // The application can update the observer volume at any time, make sure we are using the latest.
-                    ConfigureObserverVolume();
-
-                    observer.Update(SurfaceObserver_OnSurfaceChanged);
-                    lastUpdated = Time.time;
-                }
-            }
-        }
-
-        /// <summary>
         /// Issue a request to the Surface Observer to begin baking the mesh.
         /// </summary>
         /// <param name="surfaceId">ID of the mesh to bake.</param>
@@ -249,104 +192,35 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         {
             string meshName = $"SpatialMesh_{surfaceId.handle}";
 
-            SpatialMeshObject newMesh;
-            WorldAnchor worldAnchor;
-
-            if (!spareMeshObject.HasValue)
-            {
-                newMesh = CreateSpatialMeshObject(null, meshName, surfaceId.handle);
-
-                worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
-            }
-            else
-            {
-                newMesh = spareMeshObject.Value;
-                spareMeshObject = null;
-
-                newMesh.GameObject.name = meshName;
-                newMesh.Id = surfaceId.handle;
-                newMesh.GameObject.SetActive(true);
-
-                worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
-            }
+            var newSpatialMeshObject = CreateSpatialMeshObject(null, meshName, surfaceId.handle);
+            var worldAnchor = newSpatialMeshObject.GameObject.EnsureComponent<WorldAnchor>();
 
             Debug.Assert(worldAnchor != null);
 
-            SurfaceData surfaceData = new SurfaceData(
+            var surfaceData = new SurfaceData(
                 surfaceId,
-                newMesh.Filter,
+                newSpatialMeshObject.Filter,
                 worldAnchor,
-                newMesh.Collider,
-                SpatialAwarenessSystem.MeshTrianglesPerCubicMeter,
+                newSpatialMeshObject.Collider,
+                MixedRealityToolkit.SpatialAwarenessSystem.MeshTrianglesPerCubicMeter,
                 true);
 
             if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
             {
-                outstandingMeshObject = newMesh;
+                outstandingMeshObjects.Add(surfaceId.handle, newSpatialMeshObject);
             }
             else
             {
-                Debug.LogError($"Mesh request failed for Id == surfaceId.handle");
-                Debug.Assert(outstandingMeshObject == null);
-                ReclaimMeshObject(newMesh);
-            }
-        }
-
-
-        /// <summary>
-        /// Removes the <see cref="SpatialMeshObject"/> associated with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the mesh to be removed.</param>
-        protected void RemoveMeshObject(int id)
-        {
-            SpatialMeshObject mesh;
-
-            if (meshObjects.TryGetValue(id, out mesh))
-            {
-                // Remove the mesh object from the collection.
-                meshObjects.Remove(id);
-
-                // Reclaim the mesh object for future use.
-                ReclaimMeshObject(mesh);
-
-                // Send the mesh removed event
-                SpatialAwarenessSystem.RaiseMeshRemoved(id);
-            }
-        }
-
-        /// <summary>
-        /// Reclaims the <see cref="SpatialMeshObject"/> to allow for later reuse.
-        /// </summary>
-        /// <param name="availableMeshObject"></param>
-        protected void ReclaimMeshObject(SpatialMeshObject availableMeshObject)
-        {
-            if (!spareMeshObject.HasValue)
-            {
-                // Cleanup the mesh object.
-                // Do not destroy the game object, destroy the meshes.
-                CleanupMeshObject(availableMeshObject, false);
-
-                availableMeshObject.GameObject.name = "Unused Spatial Mesh";
-                availableMeshObject.GameObject.SetActive(false);
-
-                spareMeshObject = availableMeshObject;
-            }
-            else
-            {
-                // Cleanup the mesh object.
-                // Destroy the game object, destroy the meshes.
-                CleanupMeshObject(availableMeshObject);
+                Debug.LogError($"Mesh request failed for spatial observer with Id {surfaceId.handle}");
+                DestroyMeshObject(newSpatialMeshObject);
             }
         }
 
         /// <summary>
         /// Applies the configured observation extents.
         /// </summary>
-        private void ConfigureObserverVolume()
+        private void ConfigureObserverVolume(Vector3 newExtents, Vector3 newOrigin)
         {
-            Vector3 newExtents = SpatialAwarenessSystem.ObservationExtents;
-            Vector3 newOrigin = SpatialAwarenessSystem.ObserverOrigin;
-
             if (currentObserverExtents.Equals(newExtents) &&
                 currentObserverOrigin.Equals(newOrigin))
             {
@@ -366,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         /// <param name="changeType">The type of change that occurred on the surface.</param>
         /// <param name="bounds">The bounds of the surface.</param>
         /// <param name="updateTime">The date and time at which the change occurred.</param>
-        private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, System.DateTime updateTime)
+        private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, DateTime updateTime)
         {
             if (!IsRunning) { return; }
 
@@ -393,34 +267,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         {
             if (!IsRunning) { return; }
 
-            if (!outstandingMeshObject.HasValue)
-            {
-                Debug.LogWarning($"OnDataReady called for mesh id {cookedData.id.handle} while no request was outstanding.");
-                return;
-            }
+            SpatialMeshObject outstandingMeshObject;
+            outstandingMeshObjects.TryGetValue(cookedData.id.handle, out outstandingMeshObject);
 
             if (!outputWritten)
             {
                 Debug.LogWarning($"OnDataReady reported no data written for mesh id {cookedData.id.handle}");
-                ReclaimMeshObject(outstandingMeshObject.Value);
-                outstandingMeshObject = null;
+                DestroyMeshObject(outstandingMeshObject);
                 return;
             }
 
-            // Since there is only one outstanding mesh object, update the id to match
-            // the one received after baking.
-            SpatialMeshObject meshObject = outstandingMeshObject.Value;
-            meshObject.Id = cookedData.id.handle;
-            outstandingMeshObject = null;
+            SpatialMeshObject meshObject = outstandingMeshObject;
+            outstandingMeshObjects.Remove(meshObject.Id);
 
             // Apply the appropriate material to the mesh.
-            SpatialMeshDisplayOptions displayOption = SpatialAwarenessSystem.MeshDisplayOption;
+            SpatialMeshDisplayOptions displayOption = MixedRealityToolkit.SpatialAwarenessSystem.MeshDisplayOption;
+
             if (displayOption != SpatialMeshDisplayOptions.None)
             {
                 meshObject.Renderer.enabled = true;
                 meshObject.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
-                    SpatialAwarenessSystem.MeshVisibleMaterial :
-                    SpatialAwarenessSystem.MeshOcclusionMaterial;
+                        MixedRealityToolkit.SpatialAwarenessSystem.MeshVisibleMaterial :
+                        MixedRealityToolkit.SpatialAwarenessSystem.MeshOcclusionMaterial;
             }
             else
             {
@@ -428,33 +296,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             }
 
             // Recalculate the mesh normals if requested.
-            if (SpatialAwarenessSystem.MeshRecalculateNormals)
+            if (MixedRealityToolkit.SpatialAwarenessSystem.MeshRecalculateNormals)
             {
                 meshObject.Filter.sharedMesh.RecalculateNormals();
             }
 
-            // Add / update the mesh to our collection
-            bool sendUpdatedEvent = false;
-
-            if (meshObjects.ContainsKey(cookedData.id.handle))
+            if (SpatialMeshObjects.ContainsKey(cookedData.id.handle))
             {
-                // Reclaim the old mesh object for future use.
-                ReclaimMeshObject(meshObjects[cookedData.id.handle]);
-                meshObjects.Remove(cookedData.id.handle);
-
-                sendUpdatedEvent = true;
+                RaiseMeshUpdated(meshObject);
+                return;
             }
 
-            meshObjects.Add(cookedData.id.handle, meshObject);
-
-            if (sendUpdatedEvent)
-            {
-                SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, meshObject.GameObject);
-            }
-            else
-            {
-                SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, meshObject.GameObject);
-            }
+            RaiseMeshAdded(meshObject);
         }
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
