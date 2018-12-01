@@ -68,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers
         /// <inheritdoc />
         public IMixedRealityInputSource InputSource { get; }
 
+        /// <inheritdoc />
         public IMixedRealityControllerVisualizer Visualizer { get; private set; }
 
         /// <inheritdoc />
