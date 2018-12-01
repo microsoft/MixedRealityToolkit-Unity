@@ -27,6 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 
         private void OnEnable()
         {
+            if (!MixedRealityToolkit.IsInitialized) { return; }
+
             canvas = (Canvas)target;
 
             var utility = canvas.GetComponent<CanvasUtility>();
@@ -45,7 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             EditorGUI.BeginChangeCheck();
             base.OnInspectorGUI();
 
-            if (EditorGUI.EndChangeCheck())
+            if (EditorGUI.EndChangeCheck() &&
+                MixedRealityToolkit.IsInitialized)
             {
                 UpdateCanvasSettings();
             }
