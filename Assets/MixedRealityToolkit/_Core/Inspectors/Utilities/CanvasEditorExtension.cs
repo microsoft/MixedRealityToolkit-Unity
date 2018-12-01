@@ -97,19 +97,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             // Remove the helper if we don't need it.
             if (removeUtility || !IsUtilityValid)
             {
-
                 if (utility != null)
                 {
                     canvas.worldCamera = null;
-                    DestroyImmediate(utility);
+                    EditorApplication.delayCall += () => DestroyImmediate(utility);
                 }
 
                 hasUtility = false;
             }
             else
             {
-                Debug.Assert(utility != null);
-                hasUtility = true;
+                if (canvas.renderMode == RenderMode.WorldSpace)
+                {
+                    Debug.Assert(utility != null);
+                    hasUtility = true;
+                }
             }
         }
     }
