@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 
         private void OnEnable()
         {
-            if (!MixedRealityToolkit.IsInitialized) { return; }
+            if (!MixedRealityToolkit.IsInitialized || !MixedRealityPreferences.ShowCanvasUtilityPrompt) { return; }
 
             canvas = (Canvas)target;
 
@@ -48,7 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             base.OnInspectorGUI();
 
             if (EditorGUI.EndChangeCheck() &&
-                MixedRealityToolkit.IsInitialized)
+                MixedRealityToolkit.IsInitialized &&
+                MixedRealityPreferences.ShowCanvasUtilityPrompt)
             {
                 UpdateCanvasSettings();
             }
@@ -64,13 +66,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                 canvas.renderMode == RenderMode.WorldSpace &&
                 canvas.worldCamera != MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera)
             {
-                if (EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel"))
+                var selection = EditorUtility.DisplayDialogComplex("Attention!", DialogText, "OK", "Cancel", "Dismiss Forever");
+                switch (selection)
                 {
-                    canvas.worldCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
-                }
-                else
-                {
-                    removeUtility = true;
+                    case 0:
+                        canvas.worldCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
+                        break;
+                    case 1:
+                        removeUtility = true;
+                        break;
+                    case 2:
+                        MixedRealityPreferences.ShowCanvasUtilityPrompt = false;
+                        removeUtility = true;
+                        break;
                 }
             }
 
