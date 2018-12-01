@@ -85,32 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
         /// <inheritdoc />
         public override void Initialize()
         {
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
-            {
-                Debug.LogError("The Input system is missing the required Input System Profile!");
-                return;
-            }
-
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile != null)
-            {
-                CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
-            }
-            else
-            {
-                Debug.LogError("The Input system is missing the required Input Action Rules Profile!");
-                return;
-            }
-
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
-            {
-                GazeProvider = CameraCache.Main.gameObject.EnsureComponent(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-            }
-            else
-            {
-                Debug.LogError("The Input system is missing the required Pointer Profile!");
-                return;
-            }
-
             bool addedComponents = false;
 
             if (!Application.isPlaying)
@@ -148,6 +122,32 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
             if (!addedComponents)
             {
                 CameraCache.Main.gameObject.EnsureComponent<StandaloneInputModule>();
+            }
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
+            {
+                Debug.LogError("The Input system is missing the required Input System Profile!");
+                return;
+            }
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile != null)
+            {
+                CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
+            }
+            else
+            {
+                Debug.LogError("The Input system is missing the required Input Action Rules Profile!");
+                return;
+            }
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+            {
+                GazeProvider = CameraCache.Main.gameObject.EnsureComponent(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+            }
+            else
+            {
+                Debug.LogError("The Input system is missing the required Pointer Profile!");
+                return;
             }
 
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
@@ -190,26 +190,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
         /// <inheritdoc />
         public override void Disable()
         {
-            if (GazeProvider?.GameObjectReference != null)
-            {
-                GazeProvider.Enabled = false;
+            GazeProvider = null;
 
-                var component = GazeProvider.GameObjectReference.GetComponent<IMixedRealityGazeProvider>() as Component;
+            if (!Application.isPlaying)
+            {
+                var component = CameraCache.Main.GetComponent<IMixedRealityGazeProvider>() as Component;
 
                 if (component != null)
                 {
-                    if (Application.isPlaying)
-                    {
-                        UnityEngine.Object.Destroy(component);
-                    }
-                    else
-                    {
-                        UnityEngine.Object.DestroyImmediate(component);
-                    }
+                    UnityEngine.Object.DestroyImmediate(component);
+                }
+
+                var inputModule = CameraCache.Main.GetComponent<StandaloneInputModule>();
+
+                if (inputModule != null)
+                {
+                    UnityEngine.Object.DestroyImmediate(inputModule);
                 }
             }
 
-            GazeProvider = null;
             InputDisabled?.Invoke();
         }
 
