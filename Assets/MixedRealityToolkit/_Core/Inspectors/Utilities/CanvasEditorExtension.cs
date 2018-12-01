@@ -27,6 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 
         private void OnEnable()
         {
+            if (!MixedRealityToolkit.IsInitialized || !MixedRealityPreferences.ShowCanvasUtilityPrompt) { return; }
+
             canvas = (Canvas)target;
 
             var utility = canvas.GetComponent<CanvasUtility>();
@@ -45,7 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             EditorGUI.BeginChangeCheck();
             base.OnInspectorGUI();
 
-            if (EditorGUI.EndChangeCheck())
+            if (EditorGUI.EndChangeCheck() &&
+                MixedRealityToolkit.IsInitialized &&
+                MixedRealityPreferences.ShowCanvasUtilityPrompt)
             {
                 UpdateCanvasSettings();
             }
@@ -61,13 +65,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                 canvas.renderMode == RenderMode.WorldSpace &&
                 canvas.worldCamera != MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera)
             {
-                if (EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel"))
+                var selection = EditorUtility.DisplayDialogComplex("Attention!", DialogText, "OK", "Cancel", "Dismiss Forever");
+                switch (selection)
                 {
-                    canvas.worldCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
-                }
-                else
-                {
-                    removeUtility = true;
+                    case 0:
+                        canvas.worldCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
+                        break;
+                    case 1:
+                        removeUtility = true;
+                        break;
+                    case 2:
+                        MixedRealityPreferences.ShowCanvasUtilityPrompt = false;
+                        removeUtility = true;
+                        break;
                 }
             }
 
@@ -97,19 +107,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             // Remove the helper if we don't need it.
             if (removeUtility || !IsUtilityValid)
             {
-
                 if (utility != null)
                 {
                     canvas.worldCamera = null;
-                    DestroyImmediate(utility);
+                    EditorApplication.delayCall += () => DestroyImmediate(utility);
                 }
 
                 hasUtility = false;
             }
             else
             {
-                Debug.Assert(utility != null);
-                hasUtility = true;
+                if (canvas.renderMode == RenderMode.WorldSpace)
+                {
+                    Debug.Assert(utility != null);
+                    hasUtility = true;
+                }
             }
         }
     }

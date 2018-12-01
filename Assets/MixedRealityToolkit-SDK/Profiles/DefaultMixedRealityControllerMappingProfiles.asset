@@ -8,17 +8,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a1cf5fd47e548e6a23bdd3ddcc00cf6, type: 3}
+  m_Script: {fileID: 11500000, guid: db9c29265fa7ee24185e314cdc8cbedf, type: 3}
   m_Name: DefaultMixedRealityControllerMappingProfiles
   m_EditorClassIdentifier: 
   isCustomProfile: 0
   controllerMappingProfiles:
-  - {fileID: 11400000, guid: e2a9abb2aa64b0e4cb8fbb35126f0322, type: 2}
-  - {fileID: 11400000, guid: 36b2b4f68fb3c7846b12a588a1c7663d, type: 2}
-  - {fileID: 11400000, guid: ceec9d3d32e411b45a4777f784eb5885, type: 2}
-  - {fileID: 11400000, guid: 038d8a4d4f3a61a46b389e09a3596cfa, type: 2}
-  - {fileID: 11400000, guid: fd53131ac5414b74d93915bc1216526a, type: 2}
-  - {fileID: 11400000, guid: bdd0faeb01530ad40b3cfa0e000e12e7, type: 2}
-  - {fileID: 11400000, guid: 968c4c192bee3184f8dc0b7bc6d8fa8e, type: 2}
-  - {fileID: 11400000, guid: d6976c62b5fe7114591a222dd4a43157, type: 2}
+  - {fileID: 11400000, guid: fc22b069f0258da4f97988eacf139f13, type: 2}
+  - {fileID: 11400000, guid: 6cfe97f898d22da4c93792a75ecb7b9e, type: 2}
+  - {fileID: 11400000, guid: 0c9e473bebc86064aaf71189a19e6ea5, type: 2}
   - {fileID: 11400000, guid: eab2f09952f26bb43b548bde7145683b, type: 2}
+  - {fileID: 11400000, guid: 8b16801dc2a6eb848bf9e951b3eb4f29, type: 2}
+  - {fileID: 11400000, guid: d40f2e7ed60edde4681f9b61f72c9da8, type: 2}
+  - {fileID: 11400000, guid: 6b8d78ebfd1b79546af6324a332334ee, type: 2}
+  - {fileID: 11400000, guid: fdc625797256ec149bccdf1e357a5f10, type: 2}
+  - {fileID: 11400000, guid: fe3f107824ca919499998cc4d6828b67, type: 2}

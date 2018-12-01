@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using UnityEngine;
@@ -13,11 +14,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Spatial Awareness Profile", fileName = "MixedRealitySpatialAwarenessProfile", order = (int)CreateProfileMenuItemIndices.SpatialAwareness)]
     public class MixedRealitySpatialAwarenessProfile : BaseMixedRealityProfile
     {
+        /// <summary>
+        /// The name of the Spatial Awareness Mesh Physics Layer.
+        /// </summary>
+        public const string SpatialAwarenessMeshesLayerName = "Spatial Awareness Meshes";
+
+        /// <summary>
+        /// The name of the Spatial Awareness Surfaces Physics Layer.
+        /// </summary>
+        public const string SpatialAwarenessSurfacesLayerName = "Spatial Awareness Sufaces";
+
         #region General settings
 
         [SerializeField]
         [Tooltip("The list of registered spatial observer data providers.")]
-        private MixedRealitySpatialObserverDataProvidersProfile spatialObserverDataProviders;
+        private MixedRealitySpatialObserverDataProvidersProfile spatialObserverDataProviders = null;
 
         /// <summary>
         /// The list of registered <see cref="IMixedRealitySpatialAwarenessObserver"/>s.
@@ -73,9 +84,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// </summary>
         public bool UseMeshSystem => useMeshSystem;
 
+        [PhysicsLayer]
         [SerializeField]
-        [Tooltip("Physics layer on which to set the mesh")]
-        private int meshPhysicsLayer = 31;
+        [Tooltip("Physics layer(s) on which to set the mesh")]
+        private int meshPhysicsLayer = -1;
 
         /// <summary>
         /// The desired Unity Physics Layer on which to set the spatial mesh.
@@ -151,12 +163,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// </summary>
         public bool UseSurfaceFindingSystem => useSurfaceFindingSystem;
 
+        [PhysicsLayer]
         [SerializeField]
         [Tooltip("Physics layer on which to set the planar surfaces")]
-        private int surfaceFindingPhysicsLayer = 31;
+        private int surfaceFindingPhysicsLayer = -1;
 
         /// <summary>
-        /// The desired Unity Physics Layer on which to set the planar surfaces.
+        /// The desired Unity Physics Layer(s) on which to set the planar surfaces.
         /// </summary>
         public int SurfaceFindingPhysicsLayer => surfaceFindingPhysicsLayer;
 

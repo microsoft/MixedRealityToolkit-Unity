@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty pointerProfile;
         private SerializedProperty gesturesProfile;
         private SerializedProperty speechCommandsProfile;
-        private SerializedProperty enableControllerMapping;
+        private SerializedProperty controllerDataProvidersProfile;
         private SerializedProperty controllerMappingProfiles;
         private SerializedProperty controllerVisualizationProfile;
 
@@ -41,8 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             pointerProfile = serializedObject.FindProperty("pointerProfile");
             gesturesProfile = serializedObject.FindProperty("gesturesProfile");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
+            controllerDataProvidersProfile = serializedObject.FindProperty("controllerDataProvidersProfile");
             controllerMappingProfiles = serializedObject.FindProperty("controllerMappingProfiles");
-            enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerVisualizationProfile = serializedObject.FindProperty("controllerVisualizationProfile");
         }
 
@@ -69,20 +69,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUIUtility.labelWidth = 160f;
 
             serializedObject.Update();
-            EditorGUI.BeginChangeCheck();
             bool changed = false;
 
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(focusProviderType);
+            if (EditorGUI.EndChangeCheck())
+            {
+                changed = true;
+            }
 
             changed |= RenderProfile(inputActionsProfile);
             changed |= RenderProfile(inputActionRulesProfile);
             changed |= RenderProfile(pointerProfile);
             changed |= RenderProfile(gesturesProfile);
             changed |= RenderProfile(speechCommandsProfile);
-            EditorGUILayout.PropertyField(enableControllerMapping);
+            changed |= RenderProfile(controllerDataProvidersProfile);
             changed |= RenderProfile(controllerMappingProfiles);
             changed |= RenderProfile(controllerVisualizationProfile);
-            changed |= EditorGUI.EndChangeCheck();
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();

@@ -2,70 +2,57 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
 {
-    public interface IMixedRealitySpatialAwarenessSystem : IMixedRealityEventSystem, IMixedRealityEventSource
+    /// <summary>
+    /// The interface definition for Spatial Awareness features in the Mixed Reality Toolkit.
+    /// </summary>
+    public interface IMixedRealitySpatialAwarenessSystem : IMixedRealityEventSystem
     {
-        /// <summary>
-        /// Indicates the developer's intended startup behavior.
-        /// </summary>
-        AutoStartBehavior StartupBehavior { get; set; }
-
-        // todo: ObserverVolumeType
-
-        // todo?: bool StationaryObserver
-
-        /// <summary>
-        /// Gets or sets the size of the volume, in meters per axis, from which individual observations will be made.
-        /// </summary>
-        Vector3 ObservationExtents { get; set; }
-
-        /// <summary>
-        /// Should the observer remain stationary in the scene?
-        /// </summary>
-        /// <remarks>
-        /// Set IsStationaryObserver set to false, to move the volume with the user. 
-        /// If set to true, the origin will be 0,0,0 or the last known location.
-        /// </remarks>
-        bool IsStationaryObserver { get; set; }
-
-        /// <summary>
-        /// Gets or sets the origin of the observer.
-        /// </summary>
-        /// <remarks>
-        /// Moving the observer origin allows the spatial awareness system to locate and discard meshes as the user
-        /// navigates the environment.
-        /// </remarks>
-        Vector3 ObserverOrigin { get; set; }
-
-        // todo Quaternion ObserverOrientation { get; set }
-
-        /// <summary>
-        /// Gets or sets the frequency, in seconds, at which the spatial observer updates.
-        /// </summary>
-        float UpdateInterval { get; set; }
-
         /// <summary>
         /// Indicates the current running state of the spatial awareness observer.
         /// </summary>
-        bool IsObserverRunning { get; }
+        bool IsObserverRunning(IMixedRealitySpatialAwarenessObserver observer);
+
+        /// <summary>
+        /// Generates a new unique observer id.<para/>
+        /// <remarks>All <see cref="IMixedRealitySpatialAwarenessObserver"/>s are required to call this method in their initialization.</remarks>
+        /// </summary>
+        /// <returns>a new unique Id for the observer.</returns>
+        uint GenerateNewObserverId();
 
         /// <summary>
         /// Starts / restarts the spatial observer.
         /// </summary>
         /// <remarks>This will cause spatial awareness events to resume.</remarks>
-        void ResumeObserver();
+        void ResumeObserver(IMixedRealitySpatialAwarenessObserver observer);
 
         /// <summary>
         /// Stops / pauses the spatial observer.
         /// </summary>
         /// <remarks>This will cause spatial awareness events to be suspended until ResumeObserver is called.</remarks>
-        void SuspendObserver();
+        void SuspendObserver(IMixedRealitySpatialAwarenessObserver observer);
+
+        /// <summary>
+        /// List of the spatial observers as detected by the spatial awareness system.
+        /// </summary>
+        HashSet<IMixedRealitySpatialAwarenessObserver> DetectedSpatialObservers { get; }
+
+        /// <summary>
+        /// Raise the event that a <see cref="IMixedRealitySpatialAwarenessObserver"/> has been detected.
+        /// </summary>
+        void RaiseSpatialAwarenessObserverDetected(IMixedRealitySpatialAwarenessObserver observer);
+
+        /// <summary>
+        /// Raise the event that a <see cref="IMixedRealitySpatialAwarenessObserver"/> has been lost.
+        /// </summary>
+        void RaiseSpatialAwarenessObserverLost(IMixedRealitySpatialAwarenessObserver observer);
 
         #region Mesh Handling
 
@@ -82,11 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// Get or sets the desired Unity Physics Layer on which to set the spatial mesh.
         /// </summary>
         int MeshPhysicsLayer { get; set; }
-
-        /// <summary>
-        /// Gets the bit mask that corresponds to the value specified in <see cref="MeshPhysicsLayer"/>.
-        /// </summary>
-        int MeshPhysicsLayerMask { get; }
 
         /// <summary>
         /// Gets or sets the level of detail, as a MixedRealitySpatialAwarenessMeshLevelOfDetail value, for the returned spatial mesh.
@@ -118,50 +100,46 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         SpatialMeshDisplayOptions MeshDisplayOption { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Material"/> to be used when displaying <see cref="Mesh"/>es.
+        /// Gets or sets the <see cref="Material"/> to be used when displaying <see cref="SpatialMeshObject"/>s.
         /// </summary>
         Material MeshVisibleMaterial { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Material"/> to be used when spatial <see cref="Mesh"/>es should occlude other objects.
+        /// Gets or sets the <see cref="Material"/> to be used when <see cref="SpatialMeshObject"/>s should occlude other objects.
         /// </summary>
         Material MeshOcclusionMaterial { get; set; }
-
-        /// <summary>
-        /// Gets the collection of <see cref="SpatialMeshObject"/>s being managed by the spatial awareness mesh subsystem.
-        /// </summary>
-        IReadOnlyDictionary<int, SpatialMeshObject> Meshes { get; }
 
         #region Mesh Events
 
         /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded"/> method to indicate a mesh has been added.
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler{T}.OnMeshAdded"/> method to indicate a mesh has been added.
         /// </summary>
-        /// <param name="meshId">Value identifying the mesh.</param>
-        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
+        /// <param name="observer"></param>
+        /// <param name="meshObject">The mesh <see cref="SpatialMeshObject"/>.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
-        void RaiseMeshAdded(int meshId, GameObject meshObject);
+        void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, SpatialMeshObject meshObject);
 
         /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an existing mesh has been updated.
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler{T}.OnMeshUpdated"/> method to indicate an existing mesh has been updated.
         /// </summary>
-        /// <param name="meshId">Value identifying the mesh.</param>
-        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
+        /// <param name="observer"></param>
+        /// <param name="meshObject">The mesh <see cref="SpatialMeshObject"/>.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
-        void RaiseMeshUpdated(int meshId, GameObject meshObject);
+        void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, SpatialMeshObject meshObject);
 
         /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an existing mesh has been removed.
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler{T}.OnMeshUpdated"/> method to indicate an existing mesh has been removed.
         /// </summary>
-        /// <param name="meshId">Value identifying the mesh.</param>
+        /// <param name="observer"></param>
+        /// <param name="meshObject">The mesh <see cref="SpatialMeshObject"/>.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
-        void RaiseMeshRemoved(int meshId);
+        void RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver observer, SpatialMeshObject meshObject);
 
         #endregion Mesh Events
 
@@ -179,14 +157,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         bool UseSurfaceFindingSystem { get; set; }
 
         /// <summary>
-        /// Get or sets the desired Unity Physics Layer on which to set the planar surfaces.
+        /// Gets or Sets the layer mask for the surface finding physics layer.
         /// </summary>
-        int SurfacePhysicsLayer { get; set; }
-
-        /// <summary>
-        /// Gets the bit mask that corresponds to the value specified in <see cref="SurfacePhysicsLayer"/>.
-        /// </summary>
-        int SurfacePhysicsLayerMask { get; }
+        int SurfaceFindingPhysicsLayer { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum surface area, in square meters, that must be satisfied before a surface is identified.
@@ -244,38 +217,41 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness surface finding subsystem.
         /// </summary>
-        IDictionary<int, GameObject> PlanarSurfaces { get; }
+        IReadOnlyDictionary<int, GameObject> PlanarSurfaces { get; }
 
         #region Surface Finding Events
 
         /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceAdded"/> method to indicate a planar surface has been added.
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler{T}.OnSurfaceAdded"/> method to indicate a planar surface has been added.
         /// </summary>
+        /// <param name="observer"></param>
         /// <param name="surfaceId">Value identifying the surface.</param>
         /// <param name="surfaceObject">The surface <see cref="GameObject"/>.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
-        void RaiseSurfaceAdded(int surfaceId, GameObject surfaceObject);
+        void RaiseSurfaceAdded(IMixedRealitySpatialAwarenessObserver observer, int surfaceId, GameObject surfaceObject);
 
         /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceUpdated"/> method to indicate an existing planar surface has been updated.
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler{T}.OnSurfaceUpdated"/> method to indicate an existing planar surface has been updated.
         /// </summary>
+        /// <param name="observer"></param>
         /// <param name="surfaceId">Value identifying the surface.</param>
         /// <param name="surfaceObject">The surface <see cref="GameObject"/>.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
-        void RaiseSurfaceUpdated(int surfaceId, GameObject surfaceObject);
+        void RaiseSurfaceUpdated(IMixedRealitySpatialAwarenessObserver observer, int surfaceId, GameObject surfaceObject);
 
         /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceUpdated"/> method to indicate an existing planar surface has been removed.
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler{T}.OnSurfaceUpdated"/> method to indicate an existing planar surface has been removed.
         /// </summary>
+        /// <param name="observer"></param>
         /// <param name="surfaceId">Value identifying the surface.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
-        void RaiseSurfaceRemoved(int surfaceId);
+        void RaiseSurfaceRemoved(IMixedRealitySpatialAwarenessObserver observer, int surfaceId);
 
         #endregion Surface Finding Events
 

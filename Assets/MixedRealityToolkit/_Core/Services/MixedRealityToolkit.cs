@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
@@ -113,18 +114,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         #region Mixed Reality runtime component registry
 
-        private readonly List<Tuple<Type, IMixedRealityService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityService>>();
+        private static readonly List<Tuple<Type, IMixedRealityService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityService>>();
 
         /// <summary>
         /// Local component registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="IMixedRealityService"/>.
         /// </summary>
-        public IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => registeredMixedRealityServices;
+        public static IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => registeredMixedRealityServices;
 
         /// <summary>
         /// Local component registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="IMixedRealityService"/>.
         /// </summary>
         [Obsolete("Use RegisteredMixedRealityServices instead.")]
-        public List<Tuple<Type, IMixedRealityService>> MixedRealityComponents => (List<Tuple<Type, IMixedRealityService>>)RegisteredMixedRealityServices;
+        public List<Tuple<Type, IMixedRealityExtensionService>> MixedRealityComponents => null;
 
         private int mixedRealityComponentsCount = 0;
 
@@ -208,6 +209,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Spatial Awareness system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsSpatialAwarenessSystemEnabled)
             {
+#if UNITY_EDITOR
+                // Setup the default spatial awareness layers in the project settings.
+                LayerExtensions.SetupLayer(31, MixedRealitySpatialAwarenessProfile.SpatialAwarenessMeshesLayerName);
+                LayerExtensions.SetupLayer(30, MixedRealitySpatialAwarenessProfile.SpatialAwarenessSurfacesLayerName);
+#endif
                 if (RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) && SpatialAwarenessSystem != null)
                 {
                     if (ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders != null &&
@@ -224,6 +230,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 {
                     Debug.LogError("Failed to start the Spatial Awareness System!");
                 }
+            }
+            else
+            {
+#if UNITY_EDITOR
+                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessProfile.SpatialAwarenessMeshesLayerName);
+                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessProfile.SpatialAwarenessSurfacesLayerName);
+#endif
             }
 
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
@@ -689,7 +702,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 return true;
             }
 
-            Debug.LogError($"Unable to register {interfaceType}. Concrete type does not implement IMixedRealityExtensionService nor IMixedRealityDataProvider.");
+            Debug.LogError($"Unable to register {interfaceType}. Concrete type does not implement IMixedRealityExtensionService or IMixedRealityDataProvider.");
             return false;
         }
 

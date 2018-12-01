@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using System;
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -15,8 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityControllerMappingProfiles))]
     public class MixedRealityControllerMappingProfilesInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private static readonly GUIContent CustomControllerButtonContent = new GUIContent("+ Add a Device Definition");
-        private static readonly GUIContent ControllerMinusButtonContent = new GUIContent("-", "Remove Device Definition");
+        private static readonly GUIContent AddMappingDefinitionContent = new GUIContent("+ Add a new Mapping Definition");
+        private static readonly GUIContent RemoveMappingDefinitionContent = new GUIContent("-", "Remove Mapping Definition");
 
         private SerializedProperty controllerMappingProfiles;
 
@@ -66,11 +65,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Controller Input Mappings", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Use this profile to define all the controllers and their inputs your users will be able to use in your application.\n\n" +
-                                    "You'll want to define all your Input Actions first, then you can then wire them up to hardware sensors, controllers, gestures, and other input devices.", MessageType.Info);
+                                    "You'll want to define all your Input Actions and Controller Data Providers first so you can wire up actions to hardware sensors, controllers, gestures, and other input devices.", MessageType.Info);
 
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
-                EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
+                EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the input system profile.", MessageType.Error);
+                return;
+            }
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerDataProvidersProfile == null)
+            {
+                EditorGUILayout.HelpBox("No input actions found, please specify a controller data providers profile in the input system profile.", MessageType.Error);
                 return;
             }
 
@@ -80,11 +85,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("Supported Devices", EditorStyles.boldLabel);
-
             bool changed = false;
 
-            if (GUILayout.Button(CustomControllerButtonContent, EditorStyles.miniButton))
+            if (GUILayout.Button(AddMappingDefinitionContent, EditorStyles.miniButton))
             {
                 controllerMappingProfiles.arraySize += 1;
                 var newItem = controllerMappingProfiles.GetArrayElementAtIndex(controllerMappingProfiles.arraySize - 1);
@@ -144,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                 changed |= profileChanged;
 
-                if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                if (GUILayout.Button(RemoveMappingDefinitionContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {
                     controllerMappingProfiles.DeleteArrayElementAtIndex(i);
                     changed = true;
