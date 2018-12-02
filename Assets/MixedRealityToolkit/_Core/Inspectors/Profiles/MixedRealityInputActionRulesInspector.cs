@@ -97,11 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
                  MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
-                if (GUILayout.Button("Back to Configuration Profile"))
-                {
-                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
-                }
-
                 return;
             }
 
