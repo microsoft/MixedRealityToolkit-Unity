@@ -3,7 +3,7 @@
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.NetworkingSystem
 {
-    public class NetworkingConfigurationProfile
+    public class NetworkingConfigurationProfile : BaseMixedRealityProfile
     {
     }
 }
