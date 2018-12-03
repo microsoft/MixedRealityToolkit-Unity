@@ -60,7 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
             showFps = false;
             showMemory = false;
 
-            RaiseDiagnosticsChanged();
+            if (Application.isPlaying)
+            {
+                RaiseDiagnosticsChanged();
+            }
         }
 
         #endregion IMixedRealityService
