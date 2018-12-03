@@ -1,0 +1,350 @@
+fileFormatVersion: 2
+guid: 09f4942833b61cf429ab5ae4addaacac
+timeCreated: 1447098422
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: body
+    100002: Box1491
+    100004: Box1492
+    100006: //RootNode
+    100008: Cylinder316
+    100010: Object329
+    100012: Object330
+    100014: Object331
+    100016: Object332
+    100018: Object333
+    100020: Object334
+    100022: Object335
+    100024: Object336
+    100026: Object337
+    100028: Object338
+    100030: wheel1
+    100032: wheel2
+    100034: wheel3
+    100036: wheel4
+    400000: body
+    400002: Box1491
+    400004: Box1492
+    400006: //RootNode
+    400008: Cylinder316
+    400010: Object329
+    400012: Object330
+    400014: Object331
+    400016: Object332
+    400018: Object333
+    400020: Object334
+    400022: Object335
+    400024: Object336
+    400026: Object337
+    400028: Object338
+    400030: wheel1
+    400032: wheel2
+    400034: wheel3
+    400036: wheel4
+    2300000: Box1491
+    2300002: Box1492
+    2300004: Cylinder316
+    2300006: Object329
+    2300008: Object330
+    2300010: Object331
+    2300012: Object332
+    2300014: Object333
+    2300016: Object334
+    2300018: Object335
+    2300020: Object336
+    2300022: Object337
+    2300024: Object338
+    3300000: Box1491
+    3300002: Box1492
+    3300004: Cylinder316
+    3300006: Object329
+    3300008: Object330
+    3300010: Object331
+    3300012: Object332
+    3300014: Object333
+    3300016: Object334
+    3300018: Object335
+    3300020: Object336
+    3300022: Object337
+    3300024: Object338
+    4300000: Object329
+    4300002: Box1491
+    4300004: Object330
+    4300006: Box1492
+    4300008: Object332
+    4300010: Object338
+    4300012: Cylinder316
+    4300014: Object335
+    4300016: Object331
+    4300018: Object336
+    4300020: Object334
+    4300022: Object333
+    4300024: Object337
+    7400000: Rotate_wheels
+    7400002: Turn_left
+    7400004: Turn_right
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Rotate_wheels
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 19
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: body/Box1491
+        weight: 1
+      - path: body/Box1492
+        weight: 1
+      - path: body/Object329
+        weight: 1
+      - path: body/Object330
+        weight: 1
+      - path: body/Object332
+        weight: 1
+      - path: wheel1
+        weight: 1
+      - path: wheel1/Object335
+        weight: 1
+      - path: wheel1/Object335/Object331
+        weight: 1
+      - path: wheel2
+        weight: 1
+      - path: wheel2/Object338
+        weight: 1
+      - path: wheel2/Object338/Cylinder316
+        weight: 1
+      - path: wheel3
+        weight: 1
+      - path: wheel3/Object334
+        weight: 1
+      - path: wheel3/Object336
+        weight: 1
+      - path: wheel4
+        weight: 1
+      - path: wheel4/Object333
+        weight: 1
+      - path: wheel4/Object337
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Turn_left
+      takeName: Take 001
+      firstFrame: 21
+      lastFrame: 40
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: body/Box1491
+        weight: 1
+      - path: body/Box1492
+        weight: 1
+      - path: body/Object329
+        weight: 1
+      - path: body/Object330
+        weight: 1
+      - path: body/Object332
+        weight: 1
+      - path: wheel1
+        weight: 1
+      - path: wheel1/Object335
+        weight: 1
+      - path: wheel1/Object335/Object331
+        weight: 1
+      - path: wheel2
+        weight: 1
+      - path: wheel2/Object338
+        weight: 1
+      - path: wheel2/Object338/Cylinder316
+        weight: 1
+      - path: wheel3
+        weight: 1
+      - path: wheel3/Object334
+        weight: 1
+      - path: wheel3/Object336
+        weight: 1
+      - path: wheel4
+        weight: 1
+      - path: wheel4/Object333
+        weight: 1
+      - path: wheel4/Object337
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Turn_right
+      takeName: Take 001
+      firstFrame: 42
+      lastFrame: 61
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: body/Box1491
+        weight: 1
+      - path: body/Box1492
+        weight: 1
+      - path: body/Object329
+        weight: 1
+      - path: body/Object330
+        weight: 1
+      - path: body/Object332
+        weight: 1
+      - path: wheel1
+        weight: 1
+      - path: wheel1/Object335
+        weight: 1
+      - path: wheel1/Object335/Object331
+        weight: 1
+      - path: wheel2
+        weight: 1
+      - path: wheel2/Object338
+        weight: 1
+      - path: wheel2/Object338/Cylinder316
+        weight: 1
+      - path: wheel3
+        weight: 1
+      - path: wheel3/Object334
+        weight: 1
+      - path: wheel3/Object336
+        weight: 1
+      - path: wheel4
+        weight: 1
+      - path: wheel4/Object333
+        weight: 1
+      - path: wheel4/Object337
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

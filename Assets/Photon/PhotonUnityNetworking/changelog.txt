@@ -1,0 +1,70 @@
+PUN 2 Change Log
+
+v2.5 (20th November 2018)
+Fixed: The RoomOption CleanupCacheOnLeave is now correctly set per room (if set for creation of the room). This bug caused a server-side cleanup of Instantiate-events, buffered RPCs and other buffered events, despite a different setting in the options. This messed with a game's state, if you wanted to keep networked objects when players leave.
+Fixed: Regression during PhotoView cleanup leading to loss of viewId in OnDisable and OnDestroy calls. Now OnDisable and OnDestroy can access the viewID. Pooling the game object will set the new viewID before OnEnable is called.
+Fixed: Asteroids Demo. The cached room list now gets cleared correctly when the client joins a room / leaves the lobby.
+Added: The component "PhotonTransformViewClassic", which provides all the options (and implementation) from PUN Classic (1.xy). Use this if you want to use the options that were previously available. This component is deliberately not used by default.
+Changed: The inspector for PhotonTransformView to hint about the PhotonTransformViewClassic and using your own synchronization in general.
+Changed: PUN now suppresses the compiler warning "649" on newer versions of Unity for some of our Basics Tutorial scripts. This helps us keep the used code simple and better at "teaching" PUN.
+Changed: The Realtime API no longer sends the actor properties on a rejoin. The values are known to the server and should not be updated. Set new values after rejoining the room, if that's needed.
+Fixed: Support for 2018.3 and newer prefab workflow to not show/deal the viewId field when editing a prefab.
+Fixed: ViewID assignment algorithm when reaching the max view ID value.
+Fixed: Removed harmless "duplicate"-warnig inside the DemoHub context. Now eventSystem is only created if needed.
+
+
+v2.4 (24th October 2018)
+Fixed: Duplicated Instantiation Events when using PhotonNetwork.ReconnectAndRejoin: when a client rejoins a room, his server-side cached Instantiation Events get duplicated, resulting in duplicated objects. This has been fixed.
+Changed: When Unity exports with Runtime 4.x and Mono, PUN and Chat now use a new, async socket class to work around issues with Socket.Receive blocking indefinitely (and timing out). This is now available for UDP and TCP. IL2CPP is not using this.
+Note: We changed the "productname" internally from PhotonUnityNetworking to PUN2, to avoid a problem when building UWP apps with the AssemblyDefinitions in place. In that case, two .dbg files were created and put into the generated solution. This does not affect projects which import PUN (without the ProjectSettings file) but you should keep this in mind.
+Updated: The Photon3Unity3d.dll to v4.1.2.4 with some fixes and improvements. See release_history.txt.
+
+v2.3.1 (17th October 2018)
+Updated: The Photon3Unity3d.dll to v4.1.2.3 for fix one issue with duplicates of fragmented messages. This could cause an exception and disconnect.
+
+v2.3 (16th October 2018)
+Fixed: The "Background Fallback Thread". PhotonHandler.Awake() now starts the fallback thread which send acks, even if the Main Loop is paused. This was missing and potentially causing timeouts when loading levels.
+Changed: The Background Fallback Thread will keep a connection for another 30 seconds. This is set via ConnectionHandler.KeepAliveInBackground.
+Moved: Instantiation will now call SendInstantiate() earlier to makes sure the event to instantiate is sent (queued) before anything related to the new PhotonViews. This fixes issues when calling an RPC right within Awake() of a new object.
+Added: Check in Instantiate, if the prefab has a PhotonView. Logs error and returns null, if it doesn't have one.
+Removed: Surplus warning logged when the lower-level connection reports a Disconnected state more than once.
+Fixed: When using the 4.x mono runtime in Unity, the Socket.Receive method could get stuck and cause timeouts (in Editor and builds). The LoadBalancingClient now works around this by using the SocketUdpAsync class from our Photon dll in those cases. Please report if there are network-issues with 4.x runtime, mono.
+Changed: Enum DisconnectCause. Replace TimeoutDisconnect with ClientTimeout. Replace DisconnectByServer with ServerTimeout. Replace DisconnectByServerUserLimit with MaxCcuReached.
+Added: Enum DisconnectCause.DisconnectByServerReasonUnknown for the case it's neither a ccu-limit, timeout nor a disconnect by the room's logic.
+Changed: Warning-dialog "AppId not set" is not shown, if the configuration points to a Master Server (Photon OnPremise). When the new server SDK expects an AppId, too, this could be reverted.
+Updated: Cockpit demo scene to expose automaticallySyncLevel and load level form. Updated links to docs.
+Updated: The readme.txt.
+Updated: The Photon3Unity3d.dll to v4.1.2.2, which has a few changes. See release_history.txt.
+
+v2.2  (27th September 2018)
+Added: Assembly Definitions for Unity 2017.3 and up. PUN, Realtime, Chat, the WebSocket folder and some Editor classes are now assemblies and will recompile less frequently.
+Added: Chat Demo. An updated version of the UI from PUN Classic.
+Fixed: PunCockpit integration fixed, scene camera was not set properly. This fixes the black screen over any demo which uses the cockpit.
+Fixed: OnCustomAuthenticationFailed() was not virtual in MonoBehaviourPunCallbacks. Now it is and you can override it.
+Changed: Custom editor for PhotonServerSettings, which hides AppIdVoice and AppIdChat when the APIs are not present in a project.
+Removed: PhotonNetwork.InstantiateInRoomOnly. If you need to instantiate game objects before getting into a room, assign a PhotonView and PhotonView.viewID, when you arrive in a room.
+
+v2.1  (13th September 2018)
+Fixed: PunTurnManager fully ported to the new PUN 2 API.
+Fixed: SlotRacer Player Control was not setup properly when joining late.
+Fixed: Room is now properly cleaned up when unwanted disconnection occurs.
+Fixed: WebGL exports can also use the new serialization protocol v1.8. Clients no longer have to set this manually when mixing WebGL and other exports for cross platform games.
+Fixed: Before calling OnPhotonSerializeView on observed scripts, each PhotonView checks the component's isActiveAndEnabled. This better matches previous logic, where inactive objects are not running.
+Changed: Internals of PhotonNetwork.Instantiate and .Destroy. The process is streamlined and always uses a PrefabPool. The DefaultPool works as before: It loads Resources and actually Destroys them. A custom pool may actually reuse objects and doesn't have to load prefabs from Resources.
+Added: DefaultPool class, which is a simple remake of the previous workflow with prefabs and resources.
+Changed: The LevelPrefix is now a byte value. It was a short, even though PUN always just sent a byte. It's not changed otherwise and pending an overhault to become more usable.
+Changed: AllocateViewId() and AllocateSceneViewId() now have a PhotonView as parameter. This allocates the viewId and applies it right away. Due to that, we no longer need a workaround for "allocated but not yet used" viewIds.
+Removed: PhotonNetwork.ObjectPool value. Use PrefabPool to set a new pool.
+Removed: UnAllocateViewID(). You no longer have to return any viewIDs, not even manually allocated ones.
+Changed: SendInstantiate and ServerCleanInstantiateAndDestroy (called by an object's Destroy) now reuse their Hashtables for the events and the RaiseEventOptions. This reduces GC.
+Changed: Internally, PUN stores which prefabs don't implement IPunInstantiateMagicCallback. This avoids calling GetComponents more than once in best case.
+Changed: The Asteroids demo caches a list of available rooms now.
+
+v2.0.1  (4th September 2018)
+Updated: Asteroids Demo. Fixed room listing, player listing, the ready-button and the countdown for ship instantiation.
+Added: A "teleport" setting to the PhotonRigidbody2DView and PhotonRigidbodyView. With this, you can implement teleporting as done in the Asteroids Demo.
+Changed: When the PhotonServerSettings point to a Master Server, ConnectUsingSettings() will re-set the serialization protocol (SerializationProtocolType) to be compatible with the Photon Server SDK.
+
+v2.0  (7th August 2018)
+Updated: PUN! Cleaned up naming, callbacks, APIs and demos.
+Note: We are redoing the docs online: https://doc.photonengine.com/en-us/pun/v2

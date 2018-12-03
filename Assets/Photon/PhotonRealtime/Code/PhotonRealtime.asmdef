@@ -1,0 +1,10 @@
+{
+    "name": "PhotonRealtime",
+    "references": [
+        "PhotonWebSocket"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

@@ -1,0 +1,21 @@
+------------------------------------------------------------------------
+The eurofurence typeface family by tobias b koehler (unci@tigerden.com)
+------------------------------------------------------------------------
+
+This is a family of geometric rounded sans serif fonts consisting of
+three weights (light, medium, bold) in upright and italic styles,
+originally designed for EuroFurence, the first European furry convention
+1995 in Kaiser-Wilhelm-Koog.
+
+The character set includes Roman, Greek and Cyrillic characters.
+File format is TrueType for PC (under Windows, Linux etc).
+
+These fonts are freeware and can be distributed as long as they are
+together with this text file. I would appreciate it though if you could
+contact me at unci@tigerden.com if you put them on a server. Free
+samples from commercial users are always very welcome. :)
+
+For more information, please see the uncifonts WWW page at:
+http://mercurio.iet.unipi.it/users/tobias/uncifonts.html
+
+Have fun!                                   tobias b koehler, 2000-04-02
