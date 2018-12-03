@@ -18,8 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         public void Test_01_InitializeMixedRealityToolkit()
         {
             TestUtilities.CleanupScene();
+            MixedRealityToolkit.ConfirmInitialized();
 
-            TestUtilities.InitializeMixedRealityToolkit();
+            // Tests
             GameObject gameObject = GameObject.Find(nameof(MixedRealityToolkit));
             Assert.AreEqual(nameof(MixedRealityToolkit), gameObject.name);
         }
@@ -27,14 +28,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         [Test]
         public void Test_02_TestNoMixedRealityConfigurationFound()
         {
-            LogAssert.Expect(LogType.Error, "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit");
+            TestUtilities.CleanupScene();
+            MixedRealityToolkit.ConfirmInitialized();
 
             MixedRealityToolkit.Instance.ActiveProfile = null;
 
+            // Tests
+            LogAssert.Expect(LogType.Error, "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit");
             Assert.IsFalse(MixedRealityToolkit.HasActiveProfile);
             Assert.IsNull(MixedRealityToolkit.Instance.ActiveProfile);
-
-            TestUtilities.CleanupScene();
         }
 
         [Test]
@@ -42,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         {
             TestUtilities.InitializeMixedRealityToolkitScene();
 
-            // Create Test Configuration
+            // Tests
             Assert.AreEqual(0, MixedRealityToolkit.ActiveSystems.Count);
             Assert.AreEqual(0, MixedRealityToolkit.RegisteredMixedRealityServices.Count);
         }
