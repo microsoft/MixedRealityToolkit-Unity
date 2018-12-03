@@ -82,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             public static GUIContent cullMode = new GUIContent("Cull Mode", "Triangle Culling Mode");
             public static GUIContent renderQueueOverride = new GUIContent("Render Queue Override", "Manually Override the Render Queue");
             public static GUIContent albedo = new GUIContent("Albedo", "Albedo (RGB) and Transparency (Alpha)");
+            public static GUIContent albedoAssignedAtRuntime = new GUIContent("Albedo Assigned at Runtime", "As an optimization albedo operations are disabled when no albedo texture is specified. If a albedo texture will be specified at runtime enable this option.");
             public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Threshold for Alpha Cutoff");
             public static GUIContent metallic = new GUIContent("Metallic", "Metallic Value");
             public static GUIContent smoothness = new GUIContent("Smoothness", "Smoothness Value");
@@ -89,8 +90,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             public static GUIContent channelMap = new GUIContent("Channel Map", "Metallic (Red), Occlusion (Green), Emission (Blue), Smoothness (Alpha)");
             public static GUIContent enableNormalMap = new GUIContent("Normal Map", "Enable Normal Map");
             public static GUIContent normalMap = new GUIContent("Normal Map");
+            public static GUIContent normalMapScale = new GUIContent("Scale", "Scales the Normal Map Normal");
             public static GUIContent enableEmission = new GUIContent("Emission", "Enable Emission");
             public static GUIContent emissiveColor = new GUIContent("Color");
+            public static GUIContent enableTriplanarMapping = new GUIContent("Triplanar Mapping", "Enable Triplanar Mapping, a technique which programmatically generates UV coordinates");
+            public static GUIContent enableLocalSpaceTriplanarMapping = new GUIContent("Local Space", "If True Triplanar Mapping is Calculated in Local Space");
+            public static GUIContent triplanarMappingBlendSharpness = new GUIContent("Blend Sharpness", "The Power of the Blend with the Normal");
             public static GUIContent directionalLight = new GUIContent("Directional Light", "Affected by One Unity Directional Light");
             public static GUIContent specularHighlights = new GUIContent("Specular Highlights", "Calculate Specular Highlights");
             public static GUIContent reflections = new GUIContent("Reflections", "Calculate Glossy Reflections");
@@ -152,13 +157,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
         protected MaterialProperty albedoMap;
         protected MaterialProperty albedoColor;
         protected MaterialProperty albedoAlphaMode;
+        protected MaterialProperty albedoAssignedAtRuntime;
         protected MaterialProperty alphaCutoff;
         protected MaterialProperty enableChannelMap;
         protected MaterialProperty channelMap;
         protected MaterialProperty enableNormalMap;
         protected MaterialProperty normalMap;
+        protected MaterialProperty normalMapScale;
         protected MaterialProperty enableEmission;
         protected MaterialProperty emissiveColor;
+        protected MaterialProperty enableTriplanarMapping;
+        protected MaterialProperty enableLocalSpaceTriplanarMapping;
+        protected MaterialProperty triplanarMappingBlendSharpness;
         protected MaterialProperty metallic;
         protected MaterialProperty smoothness;
         protected MaterialProperty directionalLight;
@@ -221,6 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             albedoMap = FindProperty("_MainTex", props);
             albedoColor = FindProperty("_Color", props);
             albedoAlphaMode = FindProperty("_AlbedoAlphaMode", props);
+            albedoAssignedAtRuntime = FindProperty("_AlbedoAssignedAtRuntime", props);
             alphaCutoff = FindProperty("_Cutoff", props);
             metallic = FindProperty("_Metallic", props);
             smoothness = FindProperty("_Smoothness", props);
@@ -228,8 +239,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             channelMap = FindProperty("_ChannelMap", props);
             enableNormalMap = FindProperty("_EnableNormalMap", props);
             normalMap = FindProperty("_NormalMap", props);
+            normalMapScale = FindProperty("_NormalMapScale", props);
             enableEmission = FindProperty("_EnableEmission", props);
             emissiveColor = FindProperty("_EmissiveColor", props);
+            enableTriplanarMapping = FindProperty("_EnableTriplanarMapping", props);
+            enableLocalSpaceTriplanarMapping = FindProperty("_EnableLocalSpaceTriplanarMapping", props);
+            triplanarMappingBlendSharpness = FindProperty("_TriplanarMappingBlendSharpness", props);
             directionalLight = FindProperty("_DirectionalLight", props);
             specularHighlights = FindProperty("_SpecularHighlights", props);
             reflections = FindProperty("_Reflections", props);
@@ -297,6 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             float? specularHighlights = GetFloatProperty(material, "_SpecularHighlights");
             float? normalMap = null;
             Texture normalMapTexture = material.GetTexture("_BumpMap");
+            float? normalMapScale = GetFloatProperty(material, "_BumpScale");
             float? emission = null;
             Color? emissionColor = GetColorProperty(material, "_EmissionColor");
             float? reflections = null;
@@ -335,6 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 material.SetTexture("_NormalMap", normalMapTexture);
             }
 
+            SetFloatProperty(material, null, "_NormalMapScale", normalMapScale);
             SetFloatProperty(material, "_EMISSION", "_EnableEmission", emission);
             SetColorProperty(material, "_EmissiveColor", emissionColor);
             SetFloatProperty(material, "_REFLECTIONS", "_Reflections", reflections);
@@ -377,7 +394,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
         protected void MaterialChanged(Material material)
         {
-            SetupMaterialWithAlbedo(material, albedoMap, albedoAlphaMode);
+            SetupMaterialWithAlbedo(material, albedoMap, albedoAlphaMode, albedoAssignedAtRuntime);
             SetupMaterialWithRenderingMode(material, (RenderingMode)renderingMode.floatValue, (CustomRenderingMode)customRenderingMode.floatValue, (int)renderQueueOverride.floatValue);
         }
 
@@ -429,7 +446,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             GUILayout.Label(Styles.primaryMapsTitle, EditorStyles.boldLabel);
 
             materialEditor.TexturePropertySingleLine(Styles.albedo, albedoMap, albedoColor);
-
             materialEditor.ShaderProperty(enableChannelMap, Styles.enableChannelMap);
 
             if (PropertyEnabled(enableChannelMap))
@@ -461,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                     materialEditor.ShaderProperty(smoothness, Styles.smoothness);
                 }
 
-                SetupMaterialWithAlbedo(material, albedoMap, albedoAlphaMode);
+                SetupMaterialWithAlbedo(material, albedoMap, albedoAlphaMode, albedoAssignedAtRuntime);
 
                 EditorGUI.indentLevel -= 2;
             }
@@ -476,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 if (PropertyEnabled(enableNormalMap))
                 {
                     EditorGUI.indentLevel += 2;
-                    materialEditor.TexturePropertySingleLine(Styles.normalMap, normalMap);
+                    materialEditor.TexturePropertySingleLine(Styles.normalMap, normalMap, normalMap.textureValue != null ? normalMapScale : null);
                     EditorGUI.indentLevel -= 2;
                 }
             }
@@ -486,6 +502,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             if (PropertyEnabled(enableEmission))
             {
                 materialEditor.ShaderProperty(emissiveColor, Styles.emissiveColor, 2);
+            }
+
+            materialEditor.ShaderProperty(enableTriplanarMapping, Styles.enableTriplanarMapping);
+
+            if (PropertyEnabled(enableTriplanarMapping))
+            {
+                materialEditor.ShaderProperty(enableLocalSpaceTriplanarMapping, Styles.enableLocalSpaceTriplanarMapping, 2);
+                materialEditor.ShaderProperty(triplanarMappingBlendSharpness, Styles.triplanarMappingBlendSharpness, 2);
             }
 
             EditorGUILayout.Space();
@@ -664,6 +688,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 material.enableInstancing = true;
             }
 
+            if (albedoMap.textureValue == null)
+            {
+                materialEditor.ShaderProperty(albedoAssignedAtRuntime, Styles.albedoAssignedAtRuntime);
+            }
+
             materialEditor.EnableInstancingField();
 
             if (material.enableInstancing)
@@ -694,9 +723,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             }
         }
 
-        protected static void SetupMaterialWithAlbedo(Material material, MaterialProperty albedoMap, MaterialProperty albedoAlphaMode)
+        protected static void SetupMaterialWithAlbedo(Material material, MaterialProperty albedoMap, MaterialProperty albedoAlphaMode, MaterialProperty albedoAssignedAtRuntime)
         {
-            if (albedoMap.textureValue)
+            if (albedoMap.textureValue || PropertyEnabled(albedoAssignedAtRuntime))
             {
                 material.DisableKeyword(Styles.disableAlbedoMapName);
             }
