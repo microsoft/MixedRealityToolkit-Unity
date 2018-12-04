@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.NetworkingSystem
     /// Configuration profile settings for setting up networking.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Networking Profile", fileName = "MixedRealityNetworkingProfile", order = (int)CreateProfileMenuItemIndices.Networking)]
-
     public class MixedRealityNetworkingProfile : BaseMixedRealityProfile
     {
     }

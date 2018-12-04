@@ -36,6 +36,10 @@ MonoBehaviour:
       Microsoft.MixedReality.Toolkit.SDK
   spatialAwarenessProfile: {fileID: 11400000, guid: 2a33d8426496c874ab1550069b7ccef8,
     type: 2}
+  networkingSystemProfile: {fileID: 0}
+  enableNetworkingSystem: 0
+  networkingSystemType:
+    reference: 
   diagnosticsSystemProfile: {fileID: 11400000, guid: 478436bd1083882479a52d067e98e537,
     type: 2}
   enableDiagnosticsSystem: 1

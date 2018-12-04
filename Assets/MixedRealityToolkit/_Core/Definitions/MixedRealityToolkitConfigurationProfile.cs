@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.NetworkingSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
@@ -15,7 +16,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.NetworkingSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions
@@ -259,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 
         [SerializeField]
         [Tooltip("Networking System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealityDiagnosticsSystem), TypeGrouping.ByNamespaceFlat)]
+        [Implements(typeof(IMixedRealityNetworkingSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType networkingSystemType;
 
         /// <summary>

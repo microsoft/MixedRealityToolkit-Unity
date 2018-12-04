@@ -35,6 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty enableSpatialAwarenessSystem;
         private SerializedProperty spatialAwarenessSystemType;
         private SerializedProperty spatialAwarenessProfile;
+        // Networking system properties
+        private SerializedProperty enableNetworkingSystem;
+        private SerializedProperty networkingSystemType;
+        private SerializedProperty networkingSystemProfile;
         // Diagnostic system properties
         private SerializedProperty enableDiagnosticsSystem;
         private SerializedProperty diagnosticsSystemType;
@@ -107,6 +111,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             enableSpatialAwarenessSystem = serializedObject.FindProperty("enableSpatialAwarenessSystem");
             spatialAwarenessSystemType = serializedObject.FindProperty("spatialAwarenessSystemType");
             spatialAwarenessProfile = serializedObject.FindProperty("spatialAwarenessProfile");
+            // Networking system configuration
+            enableNetworkingSystem = serializedObject.FindProperty("enableNetworkingSystem");
+            networkingSystemType = serializedObject.FindProperty("networkingSystemType");
+            networkingSystemProfile = serializedObject.FindProperty("networkingSystemProfile");
             // Diagnostics system configuration
             enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
@@ -236,6 +244,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
             EditorGUILayout.PropertyField(spatialAwarenessSystemType);
             changed |= RenderProfile(spatialAwarenessProfile);
+
+            // Networking System configuration
+            GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Networking System Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(enableNetworkingSystem);
+            EditorGUILayout.PropertyField(networkingSystemType);
+            changed |= RenderProfile(networkingSystemProfile);
 
             // Diagnostics System configuration
             GUILayout.Space(12f);
