@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a0ebd1eb88b7834790e9ec3f3226152, type: 3}
+  m_Name: SessionsDemoExpMode
+  m_EditorClassIdentifier: 
+  id: 0
+  sessionStagePrefabs:
+  - {fileID: 5774283010820387627, guid: 09c9bb14d0737e94090d52f8e497b37d, type: 3}
+  - {fileID: 921046043296863256, guid: 6a6b337cdcd2f2740b0325405c7b3a02, type: 3}
+  - {fileID: 5104761651181519534, guid: b2c2139a36031ca46b7eee99c9447b13, type: 3}
+  - {fileID: 2619365478350987036, guid: 2f57d02df505a244ab372a513795fc88, type: 3}
+  - {fileID: 106076655947668665, guid: 678e71e233a1160419b6b6fbe9d1b489, type: 3}
+  userDefinitions: []
+  layoutSceneName: SessionDemoLayoutScene
