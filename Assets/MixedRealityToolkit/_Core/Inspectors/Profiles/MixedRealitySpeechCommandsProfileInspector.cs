@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private SerializedProperty recognizerStartBehaviour;
         private SerializedProperty recognitionConfidenceLevel;
+        private static bool showSpeechCommands = true;
         private SerializedProperty speechCommands;
         private static GUIContent[] actionLabels;
         private static int[] actionIds;
@@ -86,7 +87,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(recognizerStartBehaviour);
             EditorGUILayout.PropertyField(recognitionConfidenceLevel);
 
-            RenderList(speechCommands);
+            EditorGUILayout.Space();
+            showSpeechCommands = EditorGUILayout.Foldout(showSpeechCommands, "Speech Commands");
+            if (showSpeechCommands)
+            {
+                RenderList(speechCommands);
+            }
+
             serializedObject.ApplyModifiedProperties();
         }
 
