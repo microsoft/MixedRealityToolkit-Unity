@@ -1,0 +1,18 @@
+{
+    "name": "Pixie.AppSystems.Managers",
+    "references": [
+        "Pixie.AppSystems",
+        "Pixie.DeviceControl",
+        "Pixie.Initialization",
+        "Pixie.Core",
+        "Pixie.DeviceControl.Users"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
