@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         SpatialAwareness,
         Gestures,
         TouchInput,
+        Networking,
         Diagnostics,
         RegisteredServiceProviders,
 

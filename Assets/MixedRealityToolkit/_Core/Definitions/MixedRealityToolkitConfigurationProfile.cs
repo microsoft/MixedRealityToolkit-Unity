@@ -15,6 +15,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.NetworkingSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions
@@ -231,6 +232,46 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         }
 
         [SerializeField]
+        [Tooltip("Profile for wiring up networking assets.")]
+        private MixedRealityNetworkingProfile networkingSystemProfile;
+
+        /// <summary>
+        /// Active profile for diagnostic configuration
+        /// </summary>
+        public MixedRealityNetworkingProfile NetworkingSystemProfile
+        {
+            get { return networkingSystemProfile; }
+            private set { networkingSystemProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable networking system")]
+        private bool enableNetworkingSystem = false;
+
+        /// <summary>
+        /// Is the networking system properly configured and enabled?
+        /// </summary>
+        public bool IsNetworkingSystemEnabled
+        {
+            get { return enableNetworkingSystem && NetworkingSystemSystemType?.Type != null && networkingSystemProfile != null; }
+            private set { enableNetworkingSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Networking System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityDiagnosticsSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType networkingSystemType;
+
+        /// <summary>
+        /// Diagnostics System Script File to instantiate at runtime
+        /// </summary>
+        public SystemType NetworkingSystemSystemType
+        {
+            get { return networkingSystemType; }
+            private set { networkingSystemType = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Profile for wiring up diagnostic assets.")]
         private MixedRealityDiagnosticsProfile diagnosticsSystemProfile;
 
@@ -247,6 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         [Tooltip("Enable diagnostic system")]
         private bool enableDiagnosticsSystem = false;
 
+        /// <summary>
+        /// Is the diagnostics system properly configured and enabled?
+        /// </summary>
         public bool IsDiagnosticsSystemEnabled
         {
             get { return enableDiagnosticsSystem && DiagnosticsSystemSystemType?.Type != null && diagnosticsSystemProfile != null; }
