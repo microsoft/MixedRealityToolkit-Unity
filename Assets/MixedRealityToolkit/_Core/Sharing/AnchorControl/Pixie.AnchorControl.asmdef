@@ -1,0 +1,19 @@
+{
+    "name": "Pixie.AnchorControl",
+    "references": [
+        "Pixie.Core",
+        "Pixie.StateControl",
+        "Pixie.AppSystems.StateObjects",
+        "Pixie.DeviceControl.Users",
+        "Pixie.AppSystems",
+        "Pixie.DeviceControl"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
