@@ -1,0 +1,15 @@
+{
+    "name": "Pixie.DeviceControl.Users",
+    "references": [
+        "Pixie.Core",
+        "Pixie.AppSystems",
+        "Pixie.StateControl",
+        "Pixie.CameraControl",
+        "Pixie.DeviceControl",
+        "Pixie.Initialization"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
