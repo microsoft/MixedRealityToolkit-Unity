@@ -1,0 +1,19 @@
+{
+    "name": "Pixie.DeviceControl.Photon",
+    "references": [
+        "Pixie.AppSystems",
+        "Pixie.Initialization",
+        "Pixie.DeviceControl",
+        "PhotonRealtime",
+        "PhotonUnityNetworking",
+        "Pixie.Core"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
