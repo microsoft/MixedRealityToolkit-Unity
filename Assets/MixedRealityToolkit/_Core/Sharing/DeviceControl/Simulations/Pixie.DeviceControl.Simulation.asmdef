@@ -1,0 +1,24 @@
+{
+    "name": "Pixie.DeviceControl.Simulation",
+    "references": [
+        "Pixie.Core",
+        "Pixie.AppSystems",
+        "Pixie.DeviceControl.Users",
+        "Pixie.StateControl",
+        "Pixie.AppSystems.StateObjects",
+        "Pixie.AppSystems.Sessions",
+        "Pixie.DeviceControl"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
