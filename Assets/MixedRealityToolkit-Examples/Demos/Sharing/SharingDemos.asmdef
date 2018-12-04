@@ -1,0 +1,27 @@
+{
+    "name": "SharingDemos",
+    "references": [
+        "Pixie.Core",
+        "Pixie.AppSystems",
+        "Pixie.AppSystems.Managers",
+        "Pixie.AppSystems.Sessions",
+        "Pixie.AppSystems.StateObjects",
+        "Pixie.AppSystems.TimeSync",
+        "Pixie.DeviceControl",
+        "Pixie.AnchorControl",
+        "Pixie.StateControl.Logging",
+        "Pixie.StateControl",
+        "Pixie.Initialization",
+        "Pixie.DeviceControl.Users",
+        "PhotonRealtime",
+        "PhotonUnityNetworking"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
