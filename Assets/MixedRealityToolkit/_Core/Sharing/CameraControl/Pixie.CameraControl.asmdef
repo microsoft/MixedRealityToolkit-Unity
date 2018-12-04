@@ -1,0 +1,10 @@
+{
+    "name": "Pixie.CameraControl",
+    "references": [
+        "Pixie.Initialization"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
