@@ -1,0 +1,17 @@
+{
+    "name": "Pixie.DeviceControl",
+    "references": [
+        "Pixie.AppSystems",
+        "Pixie.Initialization",
+        "Pixie.Core",
+        "Pixie.StateControl"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
