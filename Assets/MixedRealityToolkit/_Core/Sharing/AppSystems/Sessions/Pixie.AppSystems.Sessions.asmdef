@@ -1,0 +1,22 @@
+{
+    "name": "Pixie.AppSystems.Sessions",
+    "references": [
+        "Pixie.Core",
+        "Pixie.AppSystems",
+        "Pixie.StateControl",
+        "Pixie.DeviceControl.Users",
+        "Pixie.AppSystems.StateObjects",
+        "Pixie.Initialization",
+        "Pixie.DeviceControl",
+        "Pixie.AppSystems.TimeSync",
+        "Pixie.StateControl.Photon"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
