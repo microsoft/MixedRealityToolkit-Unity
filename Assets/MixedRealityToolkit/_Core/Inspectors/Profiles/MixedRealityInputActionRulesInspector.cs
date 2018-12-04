@@ -93,13 +93,30 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         {
             RenderMixedRealityToolkitLogo();
 
-            if (!CheckMixedRealityConfigured() ||
-                !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
-                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
+            if (!CheckMixedRealityConfigured())
             {
+                return;
+            }
+
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+
                 if (GUILayout.Button("Back to Configuration Profile"))
                 {
                     Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
+                }
+
+                return;
+            }
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
+            {
+                EditorGUILayout.HelpBox("No Input Actions profile was specified.", MessageType.Error);
+
+                if (GUILayout.Button("Back to Input Profile"))
+                {
+                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
                 }
 
                 return;

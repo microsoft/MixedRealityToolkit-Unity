@@ -22,14 +22,14 @@ MonoBehaviour:
       Microsoft.MixedReality.Toolkit.SDK
   enableBoundarySystem: 1
   boundarySystemType:
-    reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
-      Microsoft.MixedReality.Toolkit.SDK
+    reference: Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem.MixedRealityBoundarySystem,
+      Microsoft.MixedReality.Toolkit
   boundaryVisualizationProfile: {fileID: 11400000, guid: 6d28cce596b44bd3897ca86f8b24e076,
     type: 2}
   enableTeleportSystem: 1
   teleportSystemType:
-    reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
-      Microsoft.MixedReality.Toolkit.SDK
+    reference: Microsoft.MixedReality.Toolkit.Core.Services.Teleportation.MixedRealityTeleportSystem,
+      Microsoft.MixedReality.Toolkit
   enableSpatialAwarenessSystem: 1
   spatialAwarenessSystemType:
     reference: Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.MixedRealitySpatialAwarenessSystem,
@@ -40,7 +40,7 @@ MonoBehaviour:
     type: 2}
   enableDiagnosticsSystem: 1
   diagnosticsSystemType:
-    reference: Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem.MixedRealityDiagnosticsManager,
-      Microsoft.MixedReality.Toolkit.SDK
+    reference: Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem.MixedRealityDiagnosticsSystem,
+      Microsoft.MixedReality.Toolkit
   registeredServiceProvidersProfile: {fileID: 11400000, guid: efbaf6ea540c69f4fb75415a5d145a53,
     type: 2}

@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 
         public bool IsDiagnosticsSystemEnabled
         {
-            get { return enableDiagnosticsSystem && DiagnosticsSystemSystemType?.Type != null; }
+            get { return enableDiagnosticsSystem && DiagnosticsSystemSystemType?.Type != null && diagnosticsSystemProfile != null; }
             private set { enableDiagnosticsSystem = value; }
         }
 
