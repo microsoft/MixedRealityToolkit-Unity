@@ -1,0 +1,17 @@
+{
+    "name": "Pixie.Networking",
+    "references": [
+        "PhotonUnityNetworking",
+        "Pixie.Initialization",
+        "PhotonRealtime",
+        "Pixie.Core"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
