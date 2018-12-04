@@ -169,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             bool changed = false;
 
             // Experience configuration
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             ExperienceScale experienceScale = (ExperienceScale)targetExperienceScale.intValue;
             showExperienceProperties = EditorGUILayout.Foldout(showExperienceProperties, "Experience Settings");
             if (showExperienceProperties)
@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             // Camera Profile configuration
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             showCameraProperties = EditorGUILayout.Foldout(showCameraProperties, "Camera Settings");
             if (showCameraProperties)
             {
@@ -217,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             // Input System configuration
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             showInputProperties = EditorGUILayout.Foldout(showInputProperties, "Input System Settings");
             if (showInputProperties)
             {
@@ -227,7 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             // Boundary System configuration
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             showBoundaryProperties = EditorGUILayout.Foldout(showBoundaryProperties, "Boundary System Settings");
             if (showBoundaryProperties)
             {
@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             // Teleport System configuration
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             showTeleportProperties = EditorGUILayout.Foldout(showTeleportProperties, "Teleport System Settings");
             if (showTeleportProperties)
             {
@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             // Spatial Awareness System configuration
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             showSpatialAwarenessProperties = EditorGUILayout.Foldout(showSpatialAwarenessProperties, "Spatial Awareness System Settings");
             if (showSpatialAwarenessProperties)
             {
@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             // Diagnostics System configuration
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             showDiagnosticProperties = EditorGUILayout.Foldout(showDiagnosticProperties, "Diagnostics System Settings");
             if (showDiagnosticProperties)
             {
@@ -272,7 +272,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 changed |= RenderProfile(diagnosticsSystemProfile);
             }
 
-            GUILayout.Space(12f);
+            // Registered Services configuration
+            EditorGUILayout.Space();
             showRegisteredServiceProperties = EditorGUILayout.Foldout(showRegisteredServiceProperties, "Additional Service Providers");
             if (showRegisteredServiceProperties)
             {

@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 EditorGUIUtility.wideMode = prevWideMode;
             }
 
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             showPlayAreaProperties = EditorGUILayout.Foldout(showPlayAreaProperties, "Play Area Settings");
             if (showPlayAreaProperties)
             {
@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
             }
 
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             showTrackedAreaProperties = EditorGUILayout.Foldout(showTrackedAreaProperties, "Tracked Area Settings");
             if (showTrackedAreaProperties)
             {
@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
             }
 
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             showWallProperties = EditorGUILayout.Foldout(showWallProperties, "Boundary Wall Settings");
             if (showWallProperties)
             {
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
             }
 
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
             showCeilingProperties = EditorGUILayout.Foldout(showCeilingProperties, "Boundary Ceiling Settings");
             if (showCeilingProperties)
             {

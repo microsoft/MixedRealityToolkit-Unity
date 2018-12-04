@@ -13,10 +13,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     {
         private SerializedProperty visible;
         private SerializedProperty handlerType;
+
+        private static bool showFpsProperties = true;
         private SerializedProperty showFps;
         private SerializedProperty fpsBuffer;
+
+        private static bool showCpuProperties = true;
         private SerializedProperty showCpu;
         private SerializedProperty cpuBuffer;
+
+        private static bool showMemoryProperties = true;
         private SerializedProperty showMemory;
         private SerializedProperty memoryBuffer;
 
@@ -62,17 +68,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(visible);
-            EditorGUILayout.Space();
-
             EditorGUILayout.PropertyField(handlerType);
-            EditorGUILayout.Space();
 
-            EditorGUILayout.PropertyField(showCpu);
-            EditorGUILayout.PropertyField(cpuBuffer);
-            EditorGUILayout.PropertyField(showFps);
-            EditorGUILayout.PropertyField(fpsBuffer);
-            EditorGUILayout.PropertyField(showMemory);
-            EditorGUILayout.PropertyField(memoryBuffer);
+            EditorGUILayout.Space();
+            showCpuProperties = EditorGUILayout.Foldout(showCpuProperties, "Processor");
+            if (showCpuProperties)
+            {
+                EditorGUILayout.PropertyField(showCpu);
+                EditorGUILayout.PropertyField(cpuBuffer);
+            }
+
+            EditorGUILayout.Space();
+            showFpsProperties = EditorGUILayout.Foldout(showFpsProperties, "Frame Rate");
+            if (showFpsProperties)
+            {
+                EditorGUILayout.PropertyField(showFps);
+                EditorGUILayout.PropertyField(fpsBuffer);
+            }
+
+            EditorGUILayout.Space();
+            showMemoryProperties = EditorGUILayout.Foldout(showMemoryProperties, "Memory");
+            if (showMemoryProperties)
+            {
+                EditorGUILayout.PropertyField(showMemory);
+                EditorGUILayout.PropertyField(memoryBuffer);
+            }
 
             serializedObject.ApplyModifiedProperties();
         }
