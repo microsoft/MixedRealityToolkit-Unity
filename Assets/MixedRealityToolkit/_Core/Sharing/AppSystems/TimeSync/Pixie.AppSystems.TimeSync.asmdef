@@ -1,0 +1,17 @@
+{
+    "name": "Pixie.AppSystems.TimeSync",
+    "references": [
+        "Pixie.Core",
+        "Pixie.AppSystems",
+        "Pixie.Initialization",
+        "Pixie.DeviceControl"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

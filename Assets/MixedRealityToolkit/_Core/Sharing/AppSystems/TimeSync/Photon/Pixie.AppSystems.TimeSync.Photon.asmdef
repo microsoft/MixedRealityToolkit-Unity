@@ -1,0 +1,19 @@
+{
+    "name": "Pixie.AppSystems.TimeSync.Photon",
+    "references": [
+        "Pixie.Core",
+        "Pixie.AppSystems.TimeSync",
+        "PhotonRealtime",
+        "PhotonUnityNetworking",
+        "Pixie.Initialization",
+        "Pixie.DeviceControl"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
