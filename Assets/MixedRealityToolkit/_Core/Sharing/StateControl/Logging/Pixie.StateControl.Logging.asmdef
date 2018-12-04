@@ -1,0 +1,17 @@
+{
+    "name": "Pixie.StateControl.Logging",
+    "references": [
+        "Pixie.StateControl",
+        "Pixie.Core",
+        "Pixie.AppSystems.TimeSync",
+        "Pixie.Initialization"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

@@ -1,0 +1,10 @@
+{
+    "name": "Pixie.StateControl",
+    "references": [
+        "Pixie.Core"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

@@ -1,0 +1,17 @@
+{
+    "name": "Pixie.StateControl.Photon",
+    "references": [
+        "Pixie.Core",
+        "Pixie.StateControl",
+        "PhotonRealtime",
+        "PhotonUnityNetworking"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
