@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             public FocusDetails Details { get { return focusDetails; } }
 
             /// <inheritdoc />
-            public GameObject CurrentPointerTarget { get { return focusDetails.Object; } }
+            public GameObject CurrentPointerTarget=> focusDetails.Object;
 
             /// <inheritdoc />
             public GameObject PreviousPointerTarget { get; private set; }
