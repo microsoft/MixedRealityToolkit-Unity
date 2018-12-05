@@ -14,7 +14,7 @@ MonoBehaviour:
   isCustomProfile: 0
   registeredSpatialObserverDataProviders:
   - spatialObserverType:
-      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.WindowsMixedReality.WindowsMixedRealitySpatialObserverDataProvider,
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserverDataProvider,
         Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMixedReality
     spatialObserverName: Windows Mixed Reality Spatial Observer Data Provider
     priority: 5
