@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     public class MixedRealitySpatialAwarenessProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
         // General settings
+        private SerializedProperty spatialObserverDataProviders;
         private SerializedProperty startupBehavior;
         private SerializedProperty observationExtents;
         private SerializedProperty isStationaryObserver;
@@ -65,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             // General settings
+            spatialObserverDataProviders = serializedObject.FindProperty("spatialObserverDataProviders");
             startupBehavior = serializedObject.FindProperty("startupBehavior");
             observationExtents = serializedObject.FindProperty("observationExtents");
             isStationaryObserver = serializedObject.FindProperty("isStationaryObserver");
@@ -120,6 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             EditorGUILayout.LabelField("General Settings:", EditorStyles.boldLabel);
+            RenderProfile(spatialObserverDataProviders);
             EditorGUILayout.PropertyField(startupBehavior);
             EditorGUILayout.PropertyField(observationExtents);
             EditorGUILayout.PropertyField(isStationaryObserver);
