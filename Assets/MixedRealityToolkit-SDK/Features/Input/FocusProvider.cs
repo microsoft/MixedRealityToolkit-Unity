@@ -333,24 +333,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             cameraObject.transform.parent = transform;
             cameraObject.transform.localPosition = Vector3.zero;
             cameraObject.transform.localRotation = Quaternion.identity;
+
+            // The raycast camera is used to raycast into the UI scene, it doesn't need to render 
+            // anything so is disabled, however its projection matrix will be used to calculate raycast info 
+            // so it is helpful to have a very close nearclip plane
             uiRaycastCamera = cameraObject.AddComponent<Camera>();
             uiRaycastCamera.enabled = false;
-            uiRaycastCamera.clearFlags = CameraClearFlags.Depth;
-            uiRaycastCamera.cullingMask = CameraCache.Main.cullingMask;
-            uiRaycastCamera.orthographic = true;
-            uiRaycastCamera.orthographicSize = 0.5f;
-            uiRaycastCamera.nearClipPlane = 0.1f;
-            uiRaycastCamera.farClipPlane = 1000f;
-            uiRaycastCamera.rect = new Rect(0, 0, 1, 1);
-            uiRaycastCamera.depth = 0;
-            uiRaycastCamera.renderingPath = RenderingPath.UsePlayerSettings;
-            uiRaycastCamera.targetTexture = null;
-            uiRaycastCamera.useOcclusionCulling = false;
-            uiRaycastCamera.allowHDR = false;
-            uiRaycastCamera.allowMSAA = false;
-            uiRaycastCamera.allowDynamicResolution = false;
-            uiRaycastCamera.targetDisplay = 1;
-            uiRaycastCamera.stereoTargetEye = StereoTargetEyeMask.Both;
+            uiRaycastCamera.nearClipPlane = 0.01f;
+            uiRaycastCamera.farClipPlane = 100f;
         }
 
         /// <summary>
