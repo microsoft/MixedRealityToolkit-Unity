@@ -187,6 +187,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     Debug.LogError("Failed to start the Input System!");
                 }
             }
+            else
+            {
+#if UNITY_EDITOR
+                Utilities.Editor.InputMappingAxisUtility.RemoveMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
+#endif
+            }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
