@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.WindowsMixedReality.Profiles
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Spatial Observers/Windows Mixed Reality Spatial Mesh Data Provider Profile", fileName = "WindowsMixedRealitySpatialMeshObserverProfile")]
-    public class WindowsMixedRealitySpatialMeshObserverProfile : BaseMixedRealityProfile
+    public class WindowsMixedRealitySpatialMeshObserverProfile : BaseMixedRealitySpatialObserverProfile
     {
     }
 }

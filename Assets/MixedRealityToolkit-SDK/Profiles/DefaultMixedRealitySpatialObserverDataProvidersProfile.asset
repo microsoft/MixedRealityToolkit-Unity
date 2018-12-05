@@ -19,3 +19,4 @@ MonoBehaviour:
     spatialObserverName: Windows Mixed Reality Spatial Observer Data Provider
     priority: 5
     runtimePlatform: 8
+    profile: {fileID: 11400000, guid: 47999fb2978b3554f95ea8ad2a51c0e2, type: 2}

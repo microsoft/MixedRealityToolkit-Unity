@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <param name="spatialObserverName"></param>
         /// <param name="priority"></param>
         /// <param name="runtimePlatform"></param>
+        /// <param name="profile"></param>
         public SpatialObserverDataProviderConfiguration(SystemType spatialObserverType, string spatialObserverName, uint priority, SupportedPlatforms runtimePlatform, BaseMixedRealitySpatialObserverProfile profile)
         {
             this.spatialObserverType = spatialObserverType;
