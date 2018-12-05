@@ -1,0 +1,14 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.WindowsMixedReality.Profiles.Inspectors",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Core.Inspectors",
+        "Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMixedReality"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

@@ -77,11 +77,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 var spatialObserverName = spatialObserverConfiguration.FindPropertyRelative("spatialObserverName");
                 var priority = spatialObserverConfiguration.FindPropertyRelative("priority");
                 var runtimePlatform = spatialObserverConfiguration.FindPropertyRelative("runtimePlatform");
+                var profile = spatialObserverConfiguration.FindPropertyRelative("profile");
 
                 spatialObserverType.FindPropertyRelative("reference").stringValue = string.Empty;
                 spatialObserverName.stringValue = "New Spatial Observer Data Provider";
                 priority.intValue = 5;
                 runtimePlatform.intValue = 0;
+                profile.objectReferenceValue = null;
                 serializedObject.ApplyModifiedProperties();
                 foldouts = new bool[registeredSpatialObserverDataProviders.arraySize];
                 return;
@@ -97,6 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 var spatialObserverName = spatialObserverConfiguration.FindPropertyRelative("spatialObserverName");
                 var priority = spatialObserverConfiguration.FindPropertyRelative("priority");
                 var runtimePlatform = spatialObserverConfiguration.FindPropertyRelative("runtimePlatform");
+                var profile = spatialObserverConfiguration.FindPropertyRelative("profile");
 
                 EditorGUILayout.BeginHorizontal();
                 foldouts[i] = EditorGUILayout.Foldout(foldouts[i], spatialObserverName.stringValue, true);
@@ -120,6 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     EditorGUILayout.PropertyField(spatialObserverName);
                     EditorGUILayout.PropertyField(priority);
                     EditorGUILayout.PropertyField(runtimePlatform);
+                    RenderProfile(profile);
                     EditorGUI.indentLevel--;
                 }
 

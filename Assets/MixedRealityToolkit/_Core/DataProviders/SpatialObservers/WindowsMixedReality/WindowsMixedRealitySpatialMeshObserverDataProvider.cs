@@ -15,16 +15,16 @@ using UnityEngine.XR.WSA;
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.WindowsMixedReality
 {
     /// <summary>
-    /// The Windows Mixed Reality Spatial Observer.
+    /// The Windows Mixed Reality Spatial Mesh Observer.
     /// </summary>
-    public class WindowsMixedRealitySpatialObserverDataProvider : BaseSpatialObserverDataProvider
+    public class WindowsMixedRealitySpatialMeshObserverDataProvider : BaseSpatialObserverDataProvider
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public WindowsMixedRealitySpatialObserverDataProvider(string name, uint priority) : base(name, priority) { }
+        public WindowsMixedRealitySpatialMeshObserverDataProvider(string name, uint priority) : base(name, priority) { }
 
 #if UNITY_WSA
 
