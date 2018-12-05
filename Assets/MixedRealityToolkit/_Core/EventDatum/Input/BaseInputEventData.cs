@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using System;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
@@ -12,6 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
     /// </summary>
     public abstract class BaseInputEventData : BaseEventData
     {
+        /// <summary>
+        /// The time at which the event occurred.
+        /// </summary>
+        /// <remarks>
+        /// The value will be in the device's configured time zone.
+        /// </remarks>
+        public DateTime EventTime { get; private set; }
+
         /// <summary>
         /// The source the input event originates from.
         /// </summary>
@@ -41,6 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         protected void BaseInitialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction)
         {
             Reset();
+            EventTime = DateTime.Now;
             InputSource = inputSource;
             MixedRealityInputAction = inputAction;
             SourceId = InputSource.SourceId;

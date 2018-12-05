@@ -57,6 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!CheckMixedRealityConfigured(false))
             {
                 return;
