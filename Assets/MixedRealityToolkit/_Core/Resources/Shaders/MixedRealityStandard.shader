@@ -563,7 +563,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_CHANNEL_MAP)
                 fixed4 channel = tex2D(_ChannelMap, i.uv);
                 _Metallic = channel.r;
-                albedo *= channel.g;
+                albedo.rgb *= channel.g;
                 _Smoothness = channel.a * 2.0;
 #else
 #if defined(_METALLIC_TEXTURE_ALBEDO_CHANNEL_A)
@@ -675,6 +675,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 _Cutoff = 0.5;
 #endif
                 clip(albedo.a - _Cutoff);
+                albedo.a = 1.0;
 #endif
 
 #if defined(_NORMAL)
