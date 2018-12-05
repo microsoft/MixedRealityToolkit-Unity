@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
                 {
                     string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
                     int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
-                    int currentSelection = EditorGUILayout.Popup("keyword", previousSelection, keywords);
+                    int currentSelection = EditorGUILayout.Popup("Keyword", previousSelection, keywords);
 
                     if (currentSelection != previousSelection)
                     {
