@@ -103,10 +103,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             public Vector3 StartPoint { get; private set; }
 
             /// <inheritdoc />
-            public FocusDetails Details { get; private set; }
+            public FocusDetails Details { get { return focusDetails; } }
 
             /// <inheritdoc />
-            public GameObject CurrentPointerTarget { get; private set; }
+            public GameObject CurrentPointerTarget { get { return focusDetails.Object; } }
 
             /// <inheritdoc />
             public GameObject PreviousPointerTarget { get; private set; }
@@ -140,6 +140,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 Pointer = pointer;
             }
 
+            /// <summary>
+            /// Update focus information from a physics raycast
+            /// </summary>
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 PreviousPointerTarget = Details.Object;
@@ -150,10 +153,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 focusDetails.Point = hit.point;
                 focusDetails.Normal = hit.normal;
                 focusDetails.Object = hit.transform.gameObject;
-                Details = focusDetails;
-                CurrentPointerTarget = Details.Object;
             }
 
+            /// <summary>
+            /// Update focus information from a Canvas raycast 
+            /// </summary>
             public void UpdateHit(RaycastResult result, RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 // We do not update the PreviousPointerTarget here because
@@ -165,7 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 focusDetails.Point = hit.point;
                 focusDetails.Normal = hit.normal;
                 focusDetails.Object = result.gameObject;
-                Details = focusDetails;
             }
 
             public void UpdateHit()
@@ -181,8 +184,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 focusDetails.Point = finalStep.Terminus;
                 focusDetails.Normal = -finalStep.Direction;
                 focusDetails.Object = null;
-                Details = focusDetails;
-                CurrentPointerTarget = Details.Object;
             }
 
             public void ResetFocusedObjects(bool clearPreviousObject = true)
@@ -192,8 +193,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 focusDetails.Point = Details.Point;
                 focusDetails.Normal = Details.Normal;
                 focusDetails.Object = null;
-                Details = focusDetails;
-                CurrentPointerTarget = null;
             }
 
             /// <inheritdoc />
