@@ -103,10 +103,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             public Vector3 StartPoint { get; private set; }
 
             /// <inheritdoc />
-            public FocusDetails Details { get { return focusDetails; } }
+            public FocusDetails Details => focusDetails;
 
             /// <inheritdoc />
-            public GameObject CurrentPointerTarget { get { return focusDetails.Object; } }
+            public GameObject CurrentPointerTarget=> focusDetails.Object;
 
             /// <inheritdoc />
             public GameObject PreviousPointerTarget { get; private set; }
