@@ -17,14 +17,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
     /// <summary>
     /// The Windows Mixed Reality Spatial Observer.
     /// </summary>
-    public class WindowsMixedRealitySpatialObserver : BaseSpatialObserver
+    public class WindowsMixedRealitySpatialObserverDataProvider : BaseSpatialObserverDataProvider
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public WindowsMixedRealitySpatialObserver(string name, uint priority) : base(name, priority) { }
+        public WindowsMixedRealitySpatialObserverDataProvider(string name, uint priority) : base(name, priority) { }
 
 #if UNITY_WSA
 
