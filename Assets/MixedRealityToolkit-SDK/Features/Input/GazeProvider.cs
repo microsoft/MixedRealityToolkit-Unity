@@ -232,8 +232,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             public override bool TryGetPointerRotation(out Quaternion rotation)
             {
-                rotation = Quaternion.identity;
-                return false;
+                rotation = gazeTransform.rotation;
+                return true;
             }
 
             #endregion IMixedRealityPointer Implementation
