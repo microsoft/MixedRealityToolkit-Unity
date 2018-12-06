@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        ///  TODO Uncomment out profile after controller data provider refactor.
+        ///  TODO Uncomment out profile after spatial observer and controller data provider refactor.
         public BaseExtensionService(string name, uint priority/*, BaseMixedRealityExtensionServiceProfile profile*/) : base(name, priority) { }
     }
 }
