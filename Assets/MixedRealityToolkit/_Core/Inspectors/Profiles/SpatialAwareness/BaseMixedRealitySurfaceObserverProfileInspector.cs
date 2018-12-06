@@ -26,6 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
         private readonly GUIContent wallMaterialContent = new GUIContent("Wall Material");
         private readonly GUIContent minimumAreaContent = new GUIContent("Minimum Area");
 
+        public bool foldout = true;
+
         /// <inheritdoc />
         protected override void OnEnable()
         {
@@ -59,16 +61,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
 
             serializedObject.Update();
 
-            EditorGUILayout.LabelField("Surface Finding Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(surfaceFindingMinimumArea, minimumAreaContent);
-            EditorGUILayout.PropertyField(displayFloorSurfaces);
-            EditorGUILayout.PropertyField(floorSurfaceMaterial, floorMaterialContent);
-            EditorGUILayout.PropertyField(displayCeilingSurfaces);
-            EditorGUILayout.PropertyField(ceilingSurfaceMaterial, ceilingMaterialContent);
-            EditorGUILayout.PropertyField(displayWallSurfaces);
-            EditorGUILayout.PropertyField(wallSurfaceMaterial, wallMaterialContent);
-            EditorGUILayout.PropertyField(displayPlatformSurfaces);
-            EditorGUILayout.PropertyField(platformSurfaceMaterial, platformMaterialContent);
+            foldout = EditorGUILayout.Foldout(foldout, "Surface Finding Settings", true);
+
+            if (foldout)
+            {
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(surfaceFindingMinimumArea, minimumAreaContent);
+                EditorGUILayout.PropertyField(displayFloorSurfaces);
+                EditorGUILayout.PropertyField(floorSurfaceMaterial, floorMaterialContent);
+                EditorGUILayout.PropertyField(displayCeilingSurfaces);
+                EditorGUILayout.PropertyField(ceilingSurfaceMaterial, ceilingMaterialContent);
+                EditorGUILayout.PropertyField(displayWallSurfaces);
+                EditorGUILayout.PropertyField(wallSurfaceMaterial, wallMaterialContent);
+                EditorGUILayout.PropertyField(displayPlatformSurfaces);
+                EditorGUILayout.PropertyField(platformSurfaceMaterial, platformMaterialContent);
+                EditorGUI.indentLevel--;
+            }
 
             serializedObject.ApplyModifiedProperties();
         }

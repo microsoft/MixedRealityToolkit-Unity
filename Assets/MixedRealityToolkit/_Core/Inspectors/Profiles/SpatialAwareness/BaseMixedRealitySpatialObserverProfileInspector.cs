@@ -18,6 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
         private SerializedProperty updateInterval;
         private SerializedProperty physicsLayer;
 
+        private bool foldout = true;
+
         /// <inheritdoc />
         protected override void OnEnable()
         {
@@ -74,11 +76,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
 
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(startupBehavior);
-            EditorGUILayout.PropertyField(observationExtents);
-            EditorGUILayout.PropertyField(isStationaryObserver);
-            EditorGUILayout.PropertyField(updateInterval);
-            EditorGUILayout.PropertyField(physicsLayer);
+            foldout = EditorGUILayout.Foldout(foldout, "General Settings", true);
+
+            if (foldout)
+            {
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(startupBehavior);
+                EditorGUILayout.PropertyField(observationExtents);
+                EditorGUILayout.PropertyField(isStationaryObserver);
+                EditorGUILayout.PropertyField(updateInterval);
+                EditorGUILayout.PropertyField(physicsLayer);
+                EditorGUI.indentLevel--;
+            }
 
             serializedObject.ApplyModifiedProperties();
         }

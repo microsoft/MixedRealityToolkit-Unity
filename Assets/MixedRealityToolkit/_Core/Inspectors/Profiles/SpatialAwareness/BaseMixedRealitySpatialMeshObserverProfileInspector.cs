@@ -16,6 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
         private SerializedProperty meshVisibleMaterial;
         private SerializedProperty meshOcclusionMaterial;
 
+        private bool foldout = true;
+
         /// <inheritdoc />
         protected override void OnEnable()
         {
@@ -45,12 +47,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
 
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(meshLevelOfDetail);
-            EditorGUILayout.PropertyField(meshTrianglesPerCubicMeter);
-            EditorGUILayout.PropertyField(meshRecalculateNormals);
-            EditorGUILayout.PropertyField(meshDisplayOption);
-            EditorGUILayout.PropertyField(meshVisibleMaterial);
-            EditorGUILayout.PropertyField(meshOcclusionMaterial);
+            foldout = EditorGUILayout.Foldout(foldout, "Spatial Mesh Settings", true);
+
+            if (foldout)
+            {
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(meshLevelOfDetail);
+                EditorGUILayout.PropertyField(meshTrianglesPerCubicMeter);
+                EditorGUILayout.PropertyField(meshRecalculateNormals);
+                EditorGUILayout.PropertyField(meshDisplayOption);
+                EditorGUILayout.PropertyField(meshVisibleMaterial);
+                EditorGUILayout.PropertyField(meshOcclusionMaterial);
+                EditorGUI.indentLevel--;
+            }
 
             serializedObject.ApplyModifiedProperties();
         }

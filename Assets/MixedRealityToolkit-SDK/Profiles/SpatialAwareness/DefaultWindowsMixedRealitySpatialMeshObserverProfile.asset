@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90a4bdbfdea331745b57570c107eeaae, type: 3}
-  m_Name: WindowsMixedRealitySpatialMeshObserverProfile
+  m_Name: DefaultWindowsMixedRealitySpatialMeshObserverProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
   startupBehavior: 0

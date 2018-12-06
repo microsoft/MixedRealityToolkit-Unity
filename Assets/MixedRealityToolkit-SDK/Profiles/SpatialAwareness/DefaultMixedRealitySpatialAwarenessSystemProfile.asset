@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07ce77c4cbff53f458a4a58f1407173a, type: 3}
-  m_Name: DefaultMixedRealitySpatialAwarenessProfile
+  m_Name: DefaultMixedRealitySpatialAwarenessSystemProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
   registeredSpatialObserverDataProviders:
