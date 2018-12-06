@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
+using Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using System;
@@ -22,12 +23,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <param name="spatialObserverName"></param>
         /// <param name="priority"></param>
         /// <param name="runtimePlatform"></param>
-        public SpatialObserverDataProviderConfiguration(SystemType spatialObserverType, string spatialObserverName, uint priority, SupportedPlatforms runtimePlatform)
+        public SpatialObserverDataProviderConfiguration(SystemType spatialObserverType, string spatialObserverName, uint priority, SupportedPlatforms runtimePlatform, BaseMixedRealitySpatialObserverProfile profile)
         {
             this.spatialObserverType = spatialObserverType;
             this.spatialObserverName = spatialObserverName;
             this.priority = priority;
             this.runtimePlatform = runtimePlatform;
+            this.profile = profile;
         }
 
         [SerializeField]
@@ -64,5 +66,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// The runtime platform(s) to run this system, feature, or manager on.
         /// </summary>
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
+
+        [SerializeField]
+        private BaseMixedRealitySpatialObserverProfile profile;
+
+        /// <summary>
+        /// The profile to use for this spatial observer.
+        /// </summary>
+        public BaseMixedRealitySpatialObserverProfile Profile => profile;
     }
 }

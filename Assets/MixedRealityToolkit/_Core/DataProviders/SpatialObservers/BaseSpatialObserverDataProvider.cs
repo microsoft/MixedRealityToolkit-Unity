@@ -2,11 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
@@ -14,14 +14,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
     /// <summary>
     /// Base class for spatial awareness observers.
     /// </summary>
-    public abstract class BaseSpatialObserver : BaseDataProvider, IMixedRealitySpatialAwarenessObserver
+    public abstract class BaseSpatialObserverDataProvider : BaseDataProvider, IMixedRealitySpatialAwarenessObserver
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        protected BaseSpatialObserver(string name, uint priority) : base(name, priority)
+        protected BaseSpatialObserverDataProvider(string name, uint priority) : base(name, priority)
         {
             if (MixedRealityToolkit.SpatialAwarenessSystem != null)
             {

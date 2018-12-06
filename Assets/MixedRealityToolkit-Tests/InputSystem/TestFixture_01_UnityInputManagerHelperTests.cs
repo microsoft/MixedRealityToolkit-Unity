@@ -5,9 +5,9 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
 using NUnit.Framework;
 
-namespace Microsoft.MixedReality.Toolkit.Tests
+namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
-    public class UnityInputManagerHelperTests
+    public class TestFixture_01_UnityInputManagerHelperTests
     {
         [Test]
         public void Test01_TestAddCustomMappings()
@@ -42,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test02_TestRemoveCustomMappings()
         {
-
             InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
 
             Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_1));
@@ -68,6 +67,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_25));
             Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_26));
             Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_27));
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            // Put the mappings back.
+            InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
         }
     }
 }
