@@ -405,8 +405,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             // The raycast camera is used to raycast into the UI scene, it doesn't need to render 
             // anything so is disabled, however its projection matrix will be used to calculate raycast info 
-            // so it is helpful to have a very close nearclip plane
-            uiRaycastCamera = cameraObject.AddComponent<Camera>();
+            // so it is helpful to have a very close near-clip plane
+            uiRaycastCamera = cameraObject.EnsureComponent<Camera>();
             uiRaycastCamera.enabled = false;
             uiRaycastCamera.nearClipPlane = 0.01f;
             uiRaycastCamera.farClipPlane = 100f;
