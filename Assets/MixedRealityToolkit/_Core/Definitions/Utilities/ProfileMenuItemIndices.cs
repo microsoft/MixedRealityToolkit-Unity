@@ -19,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         BoundaryVisualization,
         ControllerVisualization,
         SpatialAwareness,
-        SpatialAwarenessDataProviders,
         Gestures,
         TouchInput,
         Diagnostics,
