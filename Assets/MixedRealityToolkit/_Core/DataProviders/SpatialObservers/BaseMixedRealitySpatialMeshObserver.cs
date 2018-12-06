@@ -190,31 +190,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// Clean up the resources associated with the surface.
         /// </summary>
         /// <param name="meshObject">The <see cref="SpatialMeshObject"/> whose resources will be cleaned up.</param>
-        /// <param name="destroyGameObject"></param>
-        /// <param name="destroyMeshes"></param>
-        protected void DestroyMeshObject(SpatialMeshObject meshObject, bool destroyGameObject = true, bool destroyMeshes = true)
+        protected void DestroyMeshObject(SpatialMeshObject meshObject)
         {
-            if (destroyGameObject && (meshObject.GameObject != null))
+            if (meshObject.GameObject != null)
             {
                 Object.Destroy(meshObject.GameObject);
-            }
-
-            Mesh filterMesh = meshObject.Filter.sharedMesh;
-            Mesh colliderMesh = meshObject.Collider.sharedMesh;
-
-            if (destroyMeshes)
-            {
-                if (filterMesh != null)
-                {
-                    Object.Destroy(filterMesh);
-                    meshObject.Filter.sharedMesh = null;
-                }
-
-                if ((colliderMesh != null) && (colliderMesh != filterMesh))
-                {
-                    Object.Destroy(colliderMesh);
-                    meshObject.Collider.sharedMesh = null;
-                }
             }
         }
 

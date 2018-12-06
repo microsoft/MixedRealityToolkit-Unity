@@ -45,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
                 return;
             }
 
-
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled)
             {
                 EditorGUILayout.HelpBox("The Spatial Awareness Observer Data Provider requires that the spatial awareness system be enabled.", MessageType.Error);

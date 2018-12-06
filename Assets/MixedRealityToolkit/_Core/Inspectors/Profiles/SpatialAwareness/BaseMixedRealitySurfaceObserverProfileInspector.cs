@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
         private readonly GUIContent wallMaterialContent = new GUIContent("Wall Material");
         private readonly GUIContent minimumAreaContent = new GUIContent("Minimum Area");
 
-        public bool foldout = true;
+        private bool foldout = true;
 
         /// <inheritdoc />
         protected override void OnEnable()

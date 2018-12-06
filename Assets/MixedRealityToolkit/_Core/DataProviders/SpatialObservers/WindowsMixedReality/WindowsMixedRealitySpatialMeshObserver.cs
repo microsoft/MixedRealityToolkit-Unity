@@ -64,39 +64,36 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             // Only update the observer if it is running.
             if (MixedRealityToolkit.SpatialAwarenessSystem == null || !Application.isPlaying || !IsRunning) { return; }
 
-            if (outstandingMeshObjects.Count > 0)
+            // If we have a mesh to work on...
+            if (meshWorkQueue.Count > 0)
             {
-                // If we have a mesh to work on...
-                if (meshWorkQueue.Count > 0)
-                {
-                    // We're using a simple first-in-first-out rule for requesting meshes,
-                    // but a more sophisticated algorithm could prioritize
-                    // the queue based on distance to the user or some other metric.
-                    RequestMesh(meshWorkQueue.Dequeue());
-                }
-                // If enough time has passed since the previous observer update...
-                else if (Time.time - lastUpdated >= UpdateInterval)
-                {
-                    // Update the observer location if it is not stationary
-                    if (!IsStationaryObserver)
-                    {
-                        ObserverOrigin = CameraCache.Main.transform.position;
-                    }
-
-                    // The application can update the observer volume at any time, make sure we are using the latest.
-                    ConfigureObserverVolume(ObservationExtents, ObserverOrigin);
-
-                    observer.Update(SurfaceObserver_OnSurfaceChanged);
-                    lastUpdated = Time.time;
-                }
+                // We're using a simple first-in-first-out rule for requesting meshes,
+                // but a more sophisticated algorithm could prioritize
+                // the queue based on distance to the user or some other metric.
+                RequestMesh(meshWorkQueue.Dequeue());
             }
+            // If enough time has passed since the previous observer update...
+            else if (Time.time - lastUpdated >= UpdateInterval)
+            {
+                // Update the observer location if it is not stationary
+                if (!IsStationaryObserver)
+                {
+                    ObserverOrigin = CameraCache.Main.transform.position;
+                }
 
-            base.Update();
+                // The application can update the observer volume at any time, make sure we are using the latest.
+                ConfigureObserverVolume(ObservationExtents, ObserverOrigin);
+
+                observer.Update(SurfaceObserver_OnSurfaceChanged);
+                lastUpdated = Time.time;
+            }
         }
 
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             // Cleanup the outstanding mesh objects.
             foreach (var meshObject in outstandingMeshObjects)
             {
@@ -104,8 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             }
 
             outstandingMeshObjects.Clear();
-
-            base.Disable();
         }
 
         /// <inheritdoc />
@@ -116,8 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
                 observer.Dispose();
                 observer = null;
             }
-
-            base.Destroy();
         }
 
         #endregion IMixedRealityService implementation
@@ -192,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         /// <param name="surfaceId">ID of the mesh to bake.</param>
         private void RequestMesh(SurfaceId surfaceId)
         {
-            string meshName = $"SpatialMesh_{surfaceId.handle}";
+            string meshName = $"SpatialMesh_{surfaceId.handle.ToString()}";
 
             var newSpatialMeshObject = CreateSpatialMeshObject(null, meshName, surfaceId.handle);
             var worldAnchor = newSpatialMeshObject.GameObject.EnsureComponent<WorldAnchor>();
@@ -213,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             }
             else
             {
-                Debug.LogError($"Mesh request failed for spatial observer with Id {surfaceId.handle}");
+                Debug.LogError($"Mesh request failed for spatial observer with Id {surfaceId.handle.ToString()}");
                 DestroyMeshObject(newSpatialMeshObject);
             }
         }
@@ -274,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
 
             if (!outputWritten)
             {
-                Debug.LogWarning($"OnDataReady reported no data written for mesh id {cookedData.id.handle}");
+                Debug.LogWarning($"OnDataReady reported no data written for mesh id {cookedData.id.handle.ToString()}");
                 DestroyMeshObject(outstandingMeshObject);
                 return;
             }
@@ -288,9 +281,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             if (displayOption != SpatialMeshDisplayOptions.None)
             {
                 meshObject.Renderer.enabled = true;
-                meshObject.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
-                        MeshVisibleMaterial :
-                        MeshOcclusionMaterial;
+                meshObject.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible)
+                    ? MeshVisibleMaterial
+                    : MeshOcclusionMaterial;
             }
             else
             {
