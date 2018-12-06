@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
@@ -17,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
     /// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
     /// and then repositioning the object based on that.
     /// </summary>
-    public class DragAndDropHandler : BaseFocusHandler, IMixedRealitySourceStateHandler, IMixedRealityPointerHandler
+    public class DragAndDropHandler : BaseFocusHandler, IMixedRealitySourceStateHandler, IMixedRealityPointerHandler, IMixedRealityInputHandler<MixedRealityPose>
     {
         private enum RotationModeEnum
         {
@@ -30,6 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         [SerializeField]
         [Tooltip("The action that will start/stop the dragging.")]
         private MixedRealityInputAction dragAction = MixedRealityInputAction.None;
+
+        [SerializeField]
+        [Tooltip("The action that will provide the drag position.")]
+        private MixedRealityInputAction dragPositionAction = MixedRealityInputAction.None;
 
         [SerializeField]
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
@@ -56,13 +61,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         private bool isDragging;
         private bool isDraggingEnabled = true;
 
-        private float handRefDistance;
+        private float handRefDistance = -1;
         private float objectReferenceDistance;
 
         private Vector3 draggingPosition;
         private Vector3 objectReferenceUp;
         private Vector3 objectReferenceForward;
         private Vector3 objectReferenceGrabPoint;
+        private Vector3 objectReferenceDirection;
 
         private Quaternion draggingRotation;
         private Quaternion gazeAngularOffset;
@@ -85,14 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             hostRigidbody = hostTransform.GetComponent<Rigidbody>();
         }
 
-        private void Update()
-        {
-            if (isDraggingEnabled && isDragging)
-            {
-                UpdateDragging();
-            }
-        }
-
         private void OnDestroy()
         {
             if (isDragging)
@@ -107,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            if (eventData.SourceId == currentInputSource.SourceId)
+            if (eventData.SourceId == currentInputSource?.SourceId)
             {
                 eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
 
@@ -117,15 +115,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            if (isDragging)
+            if (!isDraggingEnabled || isDragging || eventData.MixedRealityInputAction != dragAction)
             {
-                // We're already handling drag input, so we can't start a new drag operation.
-                return;
-            }
-
-            if (eventData.MixedRealityInputAction != dragAction)
-            {
-                // If we're not grabbing.
+                // If we're already handling drag input or we're not grabbing, don't start a new drag operation.
                 return;
             }
 
@@ -152,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.SourceId == currentInputSource.SourceId)
+            if (eventData.SourceId == currentInputSource?.SourceId)
             {
                 StopDragging();
             }
@@ -198,11 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 return;
             }
 
-            // TODO: robertes: Fix push/pop and single-handler model so that multiple HandDraggable components can be active at once.
-
-            // Add self as a modal input handler, to get all inputs during the manipulation
-            MixedRealityToolkit.InputSystem.PushModalInputHandler(gameObject);
-
+            currentPointer.IsFocusLocked = true;
             isDragging = true;
 
             if (hostRigidbody != null)
@@ -213,48 +201,63 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
             Transform cameraTransform = CameraCache.Main.transform;
 
-            Vector3 inputPosition;
-            currentPointer.TryGetPointerPosition(out inputPosition);
-
             Vector3 pivotPosition = GetHandPivotPosition(cameraTransform);
-            handRefDistance = Vector3.Magnitude(inputPosition - pivotPosition);
             objectReferenceDistance = Vector3.Magnitude(initialDraggingPosition - pivotPosition);
-
-            Vector3 objForward = hostTransform.forward;
-            Vector3 objUp = hostTransform.up;
 
             // Store where the object was grabbed from
             objectReferenceGrabPoint = cameraTransform.transform.InverseTransformDirection(hostTransform.position - initialDraggingPosition);
 
-            Vector3 objDirection = Vector3.Normalize(initialDraggingPosition - pivotPosition);
-            Vector3 handDirection = Vector3.Normalize(inputPosition - pivotPosition);
-
             // in camera space
-            objForward = cameraTransform.InverseTransformDirection(objForward);
-            objUp = cameraTransform.InverseTransformDirection(objUp);
-            objDirection = cameraTransform.InverseTransformDirection(objDirection);
-            handDirection = cameraTransform.InverseTransformDirection(handDirection);
+            objectReferenceForward = cameraTransform.InverseTransformDirection(hostTransform.forward);
+            objectReferenceUp = cameraTransform.InverseTransformDirection(hostTransform.up);
+            objectReferenceDirection = cameraTransform.InverseTransformDirection(Vector3.Normalize(initialDraggingPosition - pivotPosition));
 
-            objectReferenceForward = objForward;
-            objectReferenceUp = objUp;
-
-            // Store the initial offset between the hand and the object, so that we can consider it when dragging
-            gazeAngularOffset = Quaternion.FromToRotation(handDirection, objDirection);
             draggingPosition = initialDraggingPosition;
         }
 
         /// <summary>
-        /// Update the position of the object being dragged.
+        /// Stops dragging the object.
         /// </summary>
-        private void UpdateDragging()
+        private void StopDragging()
         {
+            if (!isDragging)
+            {
+                return;
+            }
+
+            currentPointer.IsFocusLocked = false;
+            isDragging = false;
+            handRefDistance = -1;
+
+            if (hostRigidbody != null)
+            {
+                hostRigidbody.isKinematic = hostRigidbodyWasKinematic;
+            }
+        }
+
+        #region IMixedRealitySourcePoseHandler Implementation
+
+        void IMixedRealityInputHandler<MixedRealityPose>.OnInputChanged(InputEventData<MixedRealityPose> eventData)
+        {
+            if (eventData.MixedRealityInputAction != dragPositionAction || !isDraggingEnabled || !isDragging || eventData.SourceId != currentInputSource?.SourceId)
+            {
+                return;
+            }
+
             Transform cameraTransform = CameraCache.Main.transform;
-
-            Vector3 inputPosition;
-            currentPointer.TryGetPointerPosition(out inputPosition);
-
+            Vector3 inputPosition = eventData.InputData.Position;
             Vector3 pivotPosition = GetHandPivotPosition(cameraTransform);
             Vector3 newHandDirection = Vector3.Normalize(inputPosition - pivotPosition);
+
+            if (handRefDistance < 0)
+            {
+                handRefDistance = Vector3.Magnitude(inputPosition - pivotPosition);
+
+                Vector3 handDirection = cameraTransform.InverseTransformDirection(Vector3.Normalize(inputPosition - pivotPosition));
+
+                // Store the initial offset between the hand and the object, so that we can consider it when dragging
+                gazeAngularOffset = Quaternion.FromToRotation(handDirection, objectReferenceDirection);
+            }
 
             // in camera space
             newHandDirection = cameraTransform.InverseTransformDirection(newHandDirection);
@@ -288,6 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             }
 
             Vector3 newPosition = Vector3.Lerp(hostTransform.position, draggingPosition + cameraTransform.TransformDirection(objectReferenceGrabPoint), positionLerpSpeed);
+
             // Apply Final Position
             if (hostRigidbody == null)
             {
@@ -316,25 +320,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             }
         }
 
-        /// <summary>
-        /// Stops dragging the object.
-        /// </summary>
-        private void StopDragging()
-        {
-            if (!isDragging)
-            {
-                return;
-            }
+        void IMixedRealityInputHandler.OnInputUp(InputEventData eventData) { }
 
-            // Remove self as a modal input handler
-            MixedRealityToolkit.InputSystem.PopModalInputHandler();
+        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData) { }
 
-            isDragging = false;
+        void IMixedRealityInputHandler.OnInputPressed(InputEventData<float> eventData) { }
 
-            if (hostRigidbody != null)
-            {
-                hostRigidbody.isKinematic = hostRigidbodyWasKinematic;
-            }
-        }
+        void IMixedRealityInputHandler.OnPositionInputChanged(InputEventData<Vector2> eventData) { }
+
+        #endregion IMixedRealitySourcePoseHandler Implementation
     }
 }
