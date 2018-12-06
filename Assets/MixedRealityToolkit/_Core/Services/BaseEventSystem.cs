@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,8 +13,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
     /// <summary>
     /// Base Event System that can be inherited from to give other system features event capabilities.
     /// </summary>
-    public abstract class BaseEventSystem : BaseService, IMixedRealityEventSystem
+    public abstract class BaseEventSystem : BaseSystem, IMixedRealityEventSystem
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="priority"></param>
+        /// <param name="profile"></param>
+        protected BaseEventSystem(string name, uint priority, BaseMixedRealityProfile profile)
+            : base(name, priority, profile)
+        {
+        }
+
         #region IMixedRealityEventSystem Implementation
 
         private static bool isExecutingEvents = false;

@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
-using Microsoft.MixedReality.Toolkit.Tests.Services;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -19,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             TestUtilities.InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager("Input System", 2, null));
 
             // Tests
             Assert.IsNotEmpty(MixedRealityToolkit.ActiveSystems);
@@ -33,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             TestUtilities.InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager("Input System", 2, null));
 
             // Retrieve Input System
             var inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
@@ -61,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             TestUtilities.InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager("Input System", 2, null));
 
             // Check for Input System
             var inputSystemExists = MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealityInputSystem>();

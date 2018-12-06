@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
@@ -14,6 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
     /// </summary>
     public class MixedRealityDiagnosticsSystem : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
+        public MixedRealityDiagnosticsSystem(string name, uint priority, MixedRealityDiagnosticsProfile profile) : base(name, priority, profile)
+        {
+        }
+
         #region IMixedRealityService
 
         /// <inheritdoc />
@@ -198,7 +203,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
 
                 if (handlerType.Type != null)
                 {
-                    diagnosticsHandler = diagnosticVisualization.AddComponent(handlerType.Type) as IMixedRealityDiagnosticsHandler;
+                    diagnosticVisualization.AddComponent(handlerType.Type);
+                    diagnosticsHandler = diagnosticVisualization.GetComponent<IMixedRealityDiagnosticsHandler>();
+                    Debug.Assert(diagnosticsHandler != null);
                     return diagnosticVisualization;
                 }
 
