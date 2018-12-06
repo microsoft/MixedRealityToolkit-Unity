@@ -1,5 +1,5 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
@@ -7,10 +7,10 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwareness
 {
-    [CustomEditor(typeof(MixedRealitySpatialObserverDataProvidersProfile))]
-    public class MixedRealitySpatialObserversProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    [CustomEditor(typeof(MixedRealitySpatialAwarenessSystemProfile))]
+    public class MixedRealitySpatialAwarenessSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
         private static readonly GUIContent SpatialObserverAddButtonContent = new GUIContent("+ Add a New Spatial Observer");
         private static readonly GUIContent SpatialObserverMinusButtonContent = new GUIContent("-", "Remove Spatial Observer");
@@ -19,8 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private bool[] foldouts = null;
 
+        /// <inheritdoc />
         protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!CheckMixedRealityConfigured(false))
             {
                 return;
@@ -30,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             foldouts = new bool[registeredSpatialObserverDataProviders.arraySize];
         }
 
-
+        /// <inheritdoc />
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
@@ -39,26 +42,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled)
+            if (GUILayout.Button("Back to Configuration Profile"))
             {
-                EditorGUILayout.HelpBox("No spatial awareness system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-
-                if (GUILayout.Button("Back to Configuration Profile"))
-                {
-                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
-                }
-
-                return;
-            }
-
-            if (GUILayout.Button("Back to Spatial Awareness Profile"))
-            {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile;
+                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Registered Spatial Observer Data Providers", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("The platform specific spatial observers registered with the spatial awareness system.", MessageType.Info);
+            EditorGUILayout.LabelField("Spatial Awareness System Settings", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Spatial Awareness can enhance your experience by enabling objects to interact with the real world.\n\nBelow is a list of registered Spatial Observers that can gather data about your environment.", MessageType.Info);
             EditorGUILayout.Space();
             serializedObject.Update();
 
@@ -92,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.Space();
             EditorGUILayout.BeginVertical();
 
-            for (int i = 0; i < registeredSpatialObserverDataProviders.arraySize; i++)
+            for (int i = 0; i < registeredSpatialObserverDataProviders?.arraySize; i++)
             {
                 var spatialObserverConfiguration = registeredSpatialObserverDataProviders.GetArrayElementAtIndex(i);
                 var spatialObserverType = spatialObserverConfiguration.FindPropertyRelative("spatialObserverType");
@@ -123,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     EditorGUILayout.PropertyField(spatialObserverName);
                     EditorGUILayout.PropertyField(priority);
                     EditorGUILayout.PropertyField(runtimePlatform);
-                    RenderProfile(profile);
+                    RenderProfile(profile, false);
                     EditorGUI.indentLevel--;
                 }
 

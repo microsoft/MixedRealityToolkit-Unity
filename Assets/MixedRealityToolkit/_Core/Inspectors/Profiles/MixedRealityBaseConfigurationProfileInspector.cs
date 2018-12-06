@@ -129,11 +129,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
         }
 
+        /// <summary>
+        /// Renders a <see cref="BaseMixedRealityProfile"/>.
+        /// </summary>
+        /// <param name="property">the <see cref="BaseMixedRealityProfile"/> property.</param>
+        /// <param name="guiContent">The GUIContent for the field.</param>
+        /// <param name="showAddButton">Optional flag to hide the create button.</param>
+        /// <returns>True, if the profile changed.</returns>
         protected static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true)
         {
             return RenderProfileInternal(property, guiContent, showAddButton);
         }
 
+        /// <summary>
+        /// Renders a <see cref="BaseMixedRealityProfile"/>.
+        /// </summary>
+        /// <param name="property">the <see cref="BaseMixedRealityProfile"/> property.</param>
+        /// <param name="showAddButton">Optional flag to hide the create button.</param>
+        /// <returns>True, if the profile changed.</returns>
         protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true)
         {
             return RenderProfileInternal(property, null, showAddButton);
