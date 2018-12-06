@@ -31,10 +31,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// </summary>
         /// <param name="pointer"></param>
         /// <param name="inputAction"></param>
+        /// <param name="handedness"></param>
+        /// <param name="inputSource"></param>
         /// <param name="count"></param>
-        public void Initialize(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, int count = 0)
+        public void Initialize(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null, int count = 0)
         {
-            Initialize(pointer.InputSourceParent, inputAction);
+            if (inputSource != null)
+            {
+                Initialize(inputSource, handedness, inputAction);
+            }
+            else
+            {
+                Initialize(pointer.InputSourceParent, handedness, inputAction);
+            }
+
             Pointer = pointer;
             Count = count;
         }
