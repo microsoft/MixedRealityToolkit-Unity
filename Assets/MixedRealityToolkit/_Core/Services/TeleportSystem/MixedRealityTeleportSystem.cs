@@ -22,7 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.Teleportation
         /// <param name="name"></param>
         /// <param name="priority"></param>
         /// <param name="profile"></param>
-        public MixedRealityTeleportSystem(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        public MixedRealityTeleportSystem(string name, uint priority, BaseMixedRealityProfile profile)
+            : base(name, priority, profile) { }
 
         private TeleportEventData teleportEventData;
 

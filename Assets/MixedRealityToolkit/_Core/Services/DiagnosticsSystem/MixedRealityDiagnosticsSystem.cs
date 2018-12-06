@@ -15,7 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
     /// </summary>
     public class MixedRealityDiagnosticsSystem : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
-        public MixedRealityDiagnosticsSystem(string name, uint priority, MixedRealityDiagnosticsProfile profile) : base(name, priority, profile)
+        public MixedRealityDiagnosticsSystem(string name, uint priority, MixedRealityDiagnosticsProfile profile)
+            : base(name, priority, profile)
         {
         }
 
