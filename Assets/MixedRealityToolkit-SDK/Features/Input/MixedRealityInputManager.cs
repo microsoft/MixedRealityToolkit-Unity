@@ -87,7 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public override void Initialize()
         {
             base.Initialize();
-            CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null)
+            {
+                CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
+            }
+
             InitializeInternal();
             InputEnabled?.Invoke();
         }
