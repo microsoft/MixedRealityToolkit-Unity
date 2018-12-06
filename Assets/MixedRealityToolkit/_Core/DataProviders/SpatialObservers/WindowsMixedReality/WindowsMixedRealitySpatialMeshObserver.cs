@@ -161,7 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         {
             if (IsRunning)
             {
-                Debug.LogWarning($"The {Name} is already running.");
                 return;
             }
 
@@ -177,7 +176,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         {
             if (!IsRunning)
             {
-                Debug.LogWarning($"The {Name} is already stopped.");
                 return;
             }
 
