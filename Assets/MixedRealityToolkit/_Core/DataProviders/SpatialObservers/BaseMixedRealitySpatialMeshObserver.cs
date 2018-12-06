@@ -2,10 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,58 +12,50 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
     /// <summary>
     /// Base class for spatial awareness observers.
     /// </summary>
-    public abstract class BaseSpatialObserverDataProvider : BaseDataProvider, IMixedRealitySpatialAwarenessObserver
+    public abstract class BaseMixedRealitySpatialMeshObserver : BaseMixedRealitySpatialObserverDataProvider, IMixedRealitySpatialMeshObserver
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        protected BaseSpatialObserverDataProvider(string name, uint priority) : base(name, priority)
+        /// <param name="profile"></param>
+        protected BaseMixedRealitySpatialMeshObserver(string name, uint priority, BaseMixedRealitySpatialMeshObserverProfile profile)
+            : base(name, priority, profile)
         {
-            if (MixedRealityToolkit.SpatialAwarenessSystem != null)
+            if (profile == null)
             {
-                SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewObserverId();
+                Debug.LogError($"Missing profile for {name}");
+                return;
             }
+
+            MeshLevelOfDetail = profile.MeshLevelOfDetail;
+            MeshTrianglesPerCubicMeter = profile.MeshTrianglesPerCubicMeter;
+            MeshRecalculateNormals = profile.MeshRecalculateNormals;
+            MeshDisplayOption = profile.MeshDisplayOption;
+            MeshVisibleMaterial = profile.MeshVisibleMaterial;
+            MeshOcclusionMaterial = profile.MeshOcclusionMaterial;
+            ObservationExtents = profile.ObservationExtents;
+            IsStationaryObserver = profile.IsStationaryObserver;
         }
 
-        #region IMixedRealityEventSource Implementation
-
-        /// <inheritdoc />
-        public string SourceName => Name;
-
-        /// <inheritdoc />
-        public uint SourceId { get; } = 0;
-
-        #endregion IMixedRealityEventSource Implementation
+        /// <summary>
+        /// When a mesh is created we will need to create a game object with a minimum 
+        /// set of components to contain the mesh.  These are the required component types.
+        /// </summary>
+        private readonly System.Type[] requiredMeshComponents =
+        {
+            typeof(MeshFilter),
+            typeof(MeshRenderer),
+            typeof(MeshCollider)
+        };
 
         #region IMixedRealityService Implementation
 
         /// <inheritdoc />
-        public override void Initialize()
-        {
-            if (MixedRealityToolkit.SpatialAwarenessSystem != null)
-            {
-                MixedRealityToolkit.SpatialAwarenessSystem.RaiseSpatialAwarenessObserverDetected(this);
-            }
-        }
-
-        /// <inheritdoc />
-        public override void Enable()
-        {
-            if (MixedRealityToolkit.SpatialAwarenessSystem != null &&
-                MixedRealityToolkit.SpatialAwarenessSystem.UseMeshSystem &&
-                MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled &&
-                MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.StartupBehavior == AutoStartBehavior.AutoStart)
-            {
-                StartObserving();
-            }
-        }
-
-        /// <inheritdoc />
         public override void Disable()
         {
-            StopObserving();
+            base.Disable();
 
             // Cleanup the mesh objects that are being managed by this observer.
             // Clean up mesh objects.
@@ -78,54 +68,65 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
             }
 
             spatialMeshObjects.Clear();
-
-            // Clean up planar surface objects
-            // todo
-        }
-
-        /// <inheritdoc />
-        public override void Destroy()
-        {
-            if (MixedRealityToolkit.SpatialAwarenessSystem != null)
-            {
-                MixedRealityToolkit.SpatialAwarenessSystem.RaiseSpatialAwarenessObserverLost(this);
-            }
         }
 
         #endregion IMixedRealityService Implementation
 
-        #region IMixedRealitySpatialAwarenessObserver Implementation
+        #region IMixedRealitySpatialMeshObserver Implementation
+
+        private SpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;
 
         /// <inheritdoc />
-        public Vector3 ObservationExtents { get; protected set; }
+        public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail
+        {
+            get
+            {
+                return meshLevelOfDetail;
+            }
+
+            set
+            {
+                if (meshLevelOfDetail != value)
+                {
+                    // Non-custom values automatically modify MeshTrianglesPerCubicMeter
+                    if (value != SpatialAwarenessMeshLevelOfDetail.Custom)
+                    {
+                        MeshTrianglesPerCubicMeter = (uint)value;
+                    }
+
+                    meshLevelOfDetail = value;
+                }
+            }
+        }
 
         /// <inheritdoc />
-        public bool IsStationaryObserver { get; protected set; }
+        public uint MeshTrianglesPerCubicMeter { get; private set; }
+
+        /// <inheritdoc />
+        public bool MeshRecalculateNormals { get; }
+
+        /// <inheritdoc />
+        public SpatialMeshDisplayOptions MeshDisplayOption { get; }
+
+        /// <inheritdoc />
+        public Material MeshVisibleMaterial { get; }
+
+        /// <inheritdoc />
+        public Material MeshOcclusionMaterial { get; }
+
+        /// <inheritdoc />
+        public Vector3 ObservationExtents { get; }
+
+        /// <inheritdoc />
+        public bool IsStationaryObserver { get; }
 
         /// <inheritdoc />
         public Vector3 ObserverOrigin { get; protected set; }
 
         /// <inheritdoc />
-        public Quaternion ObserverOrientation { get; protected set; }
-
-        /// <inheritdoc />
-        public float UpdateInterval { get; set; }
-
-        /// <inheritdoc />
-        public bool IsRunning { get; protected set; }
+        public Quaternion ObserverOrientation { get; protected set; } = Quaternion.identity;
 
         private readonly Dictionary<int, SpatialMeshObject> spatialMeshObjects = new Dictionary<int, SpatialMeshObject>();
-
-        /// <summary>
-        /// When a mesh is created we will need to create a game object with a minimum 
-        /// set of components to contain the mesh.  These are the required component types.
-        /// </summary>
-        private readonly System.Type[] requiredMeshComponents =
-        {
-            typeof(MeshFilter),
-            typeof(MeshRenderer),
-            typeof(MeshCollider)
-        };
 
         /// <inheritdoc />
         /// <remarks>
@@ -153,14 +154,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
             MixedRealityToolkit.SpatialAwarenessSystem.RaiseMeshRemoved(this, spatialMeshObject);
         }
 
-        /// <inheritdoc />
-        public virtual void StartObserving() { }
-
-        /// <inheritdoc />
-        public virtual void StopObserving() { }
-
-        #endregion IMixedRealitySpatialAwarenessObserver Implementation
-
         /// <summary>
         /// Creates a <see cref="SpatialMeshObject"/>.
         /// </summary>
@@ -174,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         {
             var gameObject = new GameObject(name, requiredMeshComponents)
             {
-                layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayer
+                layer = PhysicsLayer
             };
 
             var meshFilter = gameObject.GetComponent<MeshFilter>();
@@ -247,58 +240,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
             }
         }
 
-        #region IEquality Implementation
-
-        /// <summary>
-        /// Determines if the specified objects are equal.
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        public static bool Equals(IMixedRealitySpatialAwarenessObserver left, IMixedRealitySpatialAwarenessObserver right)
-        {
-            return left.Equals(right);
-        }
-
-        /// <inheritdoc />
-        bool IEqualityComparer.Equals(object left, object right)
-        {
-            return left.Equals(right);
-        }
-
-        /// <inheritdoc />
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) { return false; }
-            if (ReferenceEquals(this, obj)) { return true; }
-            if (obj.GetType() != GetType()) { return false; }
-
-            return Equals((IMixedRealitySpatialAwarenessObserver)obj);
-        }
-
-        private bool Equals(IMixedRealitySpatialAwarenessObserver other)
-        {
-            return other != null && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
-        }
-
-        /// <inheritdoc />
-        int IEqualityComparer.GetHashCode(object obj)
-        {
-            return obj.GetHashCode();
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = 0;
-                hashCode = (hashCode * 397) ^ (int)SourceId;
-                hashCode = (hashCode * 397) ^ (SourceName != null ? SourceName.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-
-        #endregion IEquality Implementation
+        #endregion IMixedRealitySpatialMeshObserver Implementation
     }
 }

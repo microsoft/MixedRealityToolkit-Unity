@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_WSA
+using Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.WindowsMixedReality.Profiles;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Services;
@@ -17,18 +18,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
     /// <summary>
     /// The Windows Mixed Reality Spatial Mesh Observer.
     /// </summary>
-    public class WindowsMixedRealitySpatialMeshObserverDataProvider : BaseSpatialObserverDataProvider
+    public class WindowsMixedRealitySpatialMeshObserver : BaseMixedRealitySpatialMeshObserver
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public WindowsMixedRealitySpatialMeshObserverDataProvider(string name, uint priority) : base(name, priority) { }
+        /// <param name="profile"></param>
+        public WindowsMixedRealitySpatialMeshObserver(string name, uint priority, WindowsMixedRealitySpatialMeshObserverProfile profile) : base(name, priority, profile)
+        {
+        }
 
 #if UNITY_WSA
 
-        #region IMixedRealityToolkit implementation
+        #region IMixedRealityService implementation
 
         /// <inheritdoc />
         public override void Initialize()
@@ -116,9 +120,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             base.Destroy();
         }
 
-        #endregion IMixedRealityToolkit implementation
+        #endregion IMixedRealityService implementation
 
-        #region IMixedRealitySpatialAwarenessObserver implementation
+        #region IMixedRealitySpatialMeshObserver implementation
 
         /// <summary>
         /// The surface observer providing the spatial data.
@@ -202,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
                 newSpatialMeshObject.Filter,
                 worldAnchor,
                 newSpatialMeshObject.Collider,
-                MixedRealityToolkit.SpatialAwarenessSystem.MeshTrianglesPerCubicMeter,
+                MeshTrianglesPerCubicMeter,
                 true);
 
             if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
@@ -281,14 +285,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             outstandingMeshObjects.Remove(meshObject.Id);
 
             // Apply the appropriate material to the mesh.
-            SpatialMeshDisplayOptions displayOption = MixedRealityToolkit.SpatialAwarenessSystem.MeshDisplayOption;
+            SpatialMeshDisplayOptions displayOption = MeshDisplayOption;
 
             if (displayOption != SpatialMeshDisplayOptions.None)
             {
                 meshObject.Renderer.enabled = true;
                 meshObject.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
-                        MixedRealityToolkit.SpatialAwarenessSystem.MeshVisibleMaterial :
-                        MixedRealityToolkit.SpatialAwarenessSystem.MeshOcclusionMaterial;
+                        MeshVisibleMaterial :
+                        MeshOcclusionMaterial;
             }
             else
             {
@@ -296,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             }
 
             // Recalculate the mesh normals if requested.
-            if (MixedRealityToolkit.SpatialAwarenessSystem.MeshRecalculateNormals)
+            if (MeshRecalculateNormals)
             {
                 meshObject.Filter.sharedMesh.RecalculateNormals();
             }
@@ -310,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             RaiseMeshAdded(meshObject);
         }
 
-        #endregion IMixedRealitySpatialAwarenessObserver implementation
+        #endregion IMixedRealitySpatialMeshObserver implementation
 
 #endif // UNITY_WSA
     }

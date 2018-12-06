@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 {
     /// <summary>
-    /// The configuration setting for a <see cref="IMixedRealitySpatialAwarenessObserver"/>
+    /// The configuration setting for a <see cref="IMixedRealityMeshObserver"/>
     /// </summary>
     [Serializable]
     public struct SpatialObserverDataProviderConfiguration
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 
         [SerializeField]
         [Tooltip("The concrete type of spatial observer to register.")]
-        [Implements(typeof(IMixedRealitySpatialAwarenessObserver), TypeGrouping.ByNamespaceFlat)]
+        [Implements(typeof(IMixedRealitySpatialObserverDataProvider), TypeGrouping.ByNamespaceFlat)]
         private SystemType spatialObserverType;
 
         /// <summary>
