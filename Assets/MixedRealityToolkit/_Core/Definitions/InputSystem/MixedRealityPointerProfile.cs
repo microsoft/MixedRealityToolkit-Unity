@@ -66,7 +66,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// <summary>
         /// The concrete type of <see cref="IMixedRealityGazeProvider"/> to use.
         /// </summary>
-        public SystemType GazeProviderType => gazeProviderType;
+        public SystemType GazeProviderType
+        {
+            get { return gazeProviderType; }
+            internal set { gazeProviderType = value; }
+        }
 
         [SerializeField]
         private PointerOption[] pointerOptions = new PointerOption[0];
