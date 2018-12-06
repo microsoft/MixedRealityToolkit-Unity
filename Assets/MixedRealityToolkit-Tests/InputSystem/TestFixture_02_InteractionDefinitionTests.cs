@@ -7,9 +7,9 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Tests
+namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
-    public class InteractionDefinitionTests
+    public class TestFixture_02_InteractionDefinitionTests
     {
         #region objects
 
