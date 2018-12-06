@@ -203,8 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
 #if UNITY_EDITOR
                 // Setup the default spatial awareness layers in the project settings.
-                LayerExtensions.SetupLayer(31, MixedRealitySpatialAwarenessProfile.SpatialAwarenessMeshesLayerName);
-                LayerExtensions.SetupLayer(30, MixedRealitySpatialAwarenessProfile.SpatialAwarenessSurfacesLayerName);
+                LayerExtensions.SetupLayer(31, MixedRealitySpatialAwarenessSystemProfile.SpatialAwarenessMeshesLayerName);
+                LayerExtensions.SetupLayer(30, MixedRealitySpatialAwarenessSystemProfile.SpatialAwarenessSurfacesLayerName);
 #endif
                 if (RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) && SpatialAwarenessSystem != null)
                 {
@@ -232,8 +232,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             else
             {
 #if UNITY_EDITOR
-                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessProfile.SpatialAwarenessMeshesLayerName);
-                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessProfile.SpatialAwarenessSurfacesLayerName);
+                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessSystemProfile.SpatialAwarenessMeshesLayerName);
+                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessSystemProfile.SpatialAwarenessSurfacesLayerName);
 #endif
             }
 

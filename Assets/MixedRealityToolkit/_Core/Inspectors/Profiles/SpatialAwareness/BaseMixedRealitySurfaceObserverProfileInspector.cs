@@ -1,8 +1,13 @@
-﻿using UnityEditor;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+
+using Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwareness
 {
+    [CustomEditor(typeof(BaseMixedRealitySurfaceObserverProfile))]
     public abstract class BaseMixedRealitySurfaceObserverProfileInspector : BaseMixedRealitySpatialObserverProfileInspector
     {
         private SerializedProperty surfaceFindingMinimumArea;
@@ -26,6 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
         {
             base.OnEnable();
 
+            if (!CheckMixedRealityConfigured(false))
+            {
+                return;
+            }
+
             surfaceFindingMinimumArea = serializedObject.FindProperty("surfaceFindingMinimumArea");
             displayFloorSurfaces = serializedObject.FindProperty("displayFloorSurfaces");
             floorSurfaceMaterial = serializedObject.FindProperty("floorSurfaceMaterial");
@@ -40,6 +50,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
         /// <inheritdoc />
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
+            if (!CheckMixedRealityConfigured())
+            {
+                return;
+            }
+
+            serializedObject.Update();
+
             EditorGUILayout.LabelField("Surface Finding Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(surfaceFindingMinimumArea, minimumAreaContent);
             EditorGUILayout.PropertyField(displayFloorSurfaces);
@@ -50,6 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
             EditorGUILayout.PropertyField(wallSurfaceMaterial, wallMaterialContent);
             EditorGUILayout.PropertyField(displayPlatformSurfaces);
             EditorGUILayout.PropertyField(platformSurfaceMaterial, platformMaterialContent);
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

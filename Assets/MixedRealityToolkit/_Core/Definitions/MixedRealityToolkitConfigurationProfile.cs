@@ -219,12 +219,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 
         [SerializeField]
         [Tooltip("Profile for configuring the Spatial Awareness system.")]
-        private MixedRealitySpatialAwarenessProfile spatialAwarenessProfile;
+        private MixedRealitySpatialAwarenessSystemProfile spatialAwarenessProfile;
 
         /// <summary>
         /// Active profile for spatial awareness configuration
         /// </summary>
-        public MixedRealitySpatialAwarenessProfile SpatialAwarenessProfile
+        public MixedRealitySpatialAwarenessSystemProfile SpatialAwarenessProfile
         {
             get { return spatialAwarenessProfile; }
             private set { spatialAwarenessProfile = value; }
