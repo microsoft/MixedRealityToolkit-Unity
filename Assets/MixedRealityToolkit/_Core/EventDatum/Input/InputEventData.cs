@@ -29,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction)
         {
             BaseInitialize(inputSource, inputAction);
+            Handedness = Handedness.None;
         }
 
         /// <summary>
