@@ -29,6 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private const float MovementThreshold = 0.01f;
 
         [SerializeField]
+        [Tooltip("If true, the gaze cursor will disappear when the pointer's focus is locked, to prevent the cursor from floating idly in the world.")]
+        private bool setCursorInvisibleWhenFocusLocked = true;
+
+        [SerializeField]
         [Tooltip("Maximum distance at which the gaze can hit a GameObject.")]
         private float maxGazeCollisionDistance = 10.0f;
 
@@ -296,6 +300,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
+            }
+
+            if (setCursorInvisibleWhenFocusLocked && GazePointer?.IsFocusLocked == GazeCursor?.IsVisible)
+            {
+                GazeCursor.SetVisibility(!GazePointer.IsFocusLocked);
             }
         }
 
