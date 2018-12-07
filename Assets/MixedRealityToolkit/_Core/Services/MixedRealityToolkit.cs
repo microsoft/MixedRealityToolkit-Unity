@@ -239,7 +239,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
-                if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType, null /* Note: The Teleport system doesn't have a profile, but might in the future.*/) || TeleportSystem == null)
+                // Note: The Teleport system doesn't have a profile, but might in the future.
+                var dummyProfile = ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
+
+                if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType, dummyProfile) || TeleportSystem == null)
                 {
                     Debug.LogError("Failed to start the Teleport System!");
                 }
