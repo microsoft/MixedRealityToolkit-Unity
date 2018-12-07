@@ -32,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// <summary>
         /// Dictionary list of active Systems used by the Mixed Reality Toolkit at runtime
         /// </summary>
+        [Obsolete("Use MixedRealityToolkit.ActiveSystems instead")]
         public Dictionary<Type, IMixedRealityService> ActiveServices { get; } = new Dictionary<Type, IMixedRealityService>();
 
         #endregion Service Registry properties

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
@@ -79,7 +78,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(enableControllerMapping);
             changed |= RenderProfile(controllerMappingProfile);
             changed |= RenderProfile(controllerVisualizationProfile);
-            changed |= EditorGUI.EndChangeCheck();
+
+            if (!changed)
+            {
+                changed |= EditorGUI.EndChangeCheck();
+            }
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
