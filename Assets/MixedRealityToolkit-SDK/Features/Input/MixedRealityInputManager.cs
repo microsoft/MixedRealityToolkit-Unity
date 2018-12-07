@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
@@ -28,10 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="priority"></param>
         /// <param name="profile"></param>
-        public MixedRealityInputManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile)
+        public MixedRealityInputManager(MixedRealityInputSystemProfile profile) : base(profile)
         {
             // TODO Move profile assignments here in Input System refactor.
         }
@@ -89,10 +86,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #region IMixedRealityManager Implementation
 
-        /// <inheritdoc />
         /// <remarks>
         /// Input system is critical, so should be processed before all other managers
         /// </remarks>
+        /// <inheritdoc />
         public override uint Priority => 1;
 
         /// <inheritdoc />
@@ -214,6 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             InputEnabled?.Invoke();
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
             InputDisabled?.Invoke();

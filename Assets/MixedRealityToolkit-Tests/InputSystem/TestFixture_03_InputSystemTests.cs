@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
@@ -18,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             TestUtilities.InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager("Input System", 2, null));
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager(ScriptableObject.CreateInstance<MixedRealityInputSystemProfile>()));
 
             // Tests
             Assert.IsNotEmpty(MixedRealityToolkit.ActiveSystems);
@@ -32,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             TestUtilities.InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager("Input System", 2, null));
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager(ScriptableObject.CreateInstance<MixedRealityInputSystemProfile>()));
 
             // Retrieve Input System
             var inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
@@ -60,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             TestUtilities.InitializeMixedRealityToolkitScene();
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager("Input System", 2, null));
+            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputManager(ScriptableObject.CreateInstance<MixedRealityInputSystemProfile>()));
 
             // Check for Input System
             var inputSystemExists = MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealityInputSystem>();

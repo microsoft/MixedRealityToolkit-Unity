@@ -23,11 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="priority"></param>
         /// <param name="profile"></param>
-        public MixedRealityBoundarySystem(string name, uint priority, MixedRealityBoundaryVisualizationProfile profile)
-            : base(name, priority, profile)
+        public MixedRealityBoundarySystem(MixedRealityBoundaryVisualizationProfile profile)
+            : base(profile)
         {
             Scale = MixedRealityToolkit.Instance.ActiveProfile.TargetExperienceScale;
             ShowFloor = profile.ShowFloor;

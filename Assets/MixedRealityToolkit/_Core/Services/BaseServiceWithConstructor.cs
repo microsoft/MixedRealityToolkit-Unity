@@ -15,8 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public BaseServiceWithConstructor(string name, uint priority)
+        public BaseServiceWithConstructor(string name = "", uint priority = 10)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = GetType().Name;
+            }
+
             this.name = name;
             this.priority = priority;
         }
