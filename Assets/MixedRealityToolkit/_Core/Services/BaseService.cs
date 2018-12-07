@@ -6,13 +6,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
     /// <summary>
     /// The base service implements <see cref="Interfaces.IMixedRealityService"/> and provides default properties for all services.
     /// </summary>
-    public class BaseService : Interfaces.IMixedRealityService
+    public abstract class BaseService : Interfaces.IMixedRealityService
     {
         /// <inheritdoc />
-        public virtual string Name { get; set; }
+        public virtual string Name { get; protected set; }
 
         /// <inheritdoc />
-        public virtual uint Priority { get; set; } = 5;
+        public virtual uint Priority { get; protected set; } = 5;
 
         /// <inheritdoc />
         public virtual void Initialize() { }

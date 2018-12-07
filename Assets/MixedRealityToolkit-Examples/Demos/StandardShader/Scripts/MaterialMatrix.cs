@@ -15,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
         [SerializeField]
         private Material material = null;
         [SerializeField]
+        private Mesh mesh = null;
+        [SerializeField]
         [Range(2, 100)]
         private int dimension = 5;
         [SerializeField]
@@ -24,6 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
         private string firstPropertyName = "_Metallic";
         [SerializeField]
         private string secondPropertyName = "_Glossiness";
+        [SerializeField]
+        private Vector3 localRotation = Vector3.zero;
 
         private void Awake()
         {
@@ -55,7 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
                 return;
             }
 
-            Vector3 position = Vector3.zero;
+            float center = (dimension - 1) * positionOffset * -0.5f;
+            Vector3 position = new Vector3(center, 0.0f, center);
             int firstPropertyId = Shader.PropertyToID(firstPropertyName);
             int secondPropertyId = Shader.PropertyToID(secondPropertyName);
 
@@ -66,32 +71,48 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
             {
                 for (int j = 0; j < dimension; ++j)
                 {
-                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    sphere.name = "Sphere" + (i * dimension + j);
-                    sphere.transform.parent = transform;
-                    sphere.transform.localPosition = position;
-                    position.x += 1.0f + positionOffset;
+                    GameObject element = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    element.name = "Element" + (i * dimension + j);
+                    element.transform.parent = transform;
+                    element.transform.localPosition = position;
+                    element.transform.localRotation = Quaternion.Euler(localRotation);
+                    position.x += positionOffset;
 
                     Material newMaterial = new Material(material);
                     newMaterial.SetFloat(firstPropertyId, firstProperty);
                     newMaterial.SetFloat(secondPropertyId, secondProperty);
 
-                    Renderer renderer = sphere.GetComponent<Renderer>();
+                    Renderer renderer = element.GetComponent<Renderer>();
+                    MeshFilter meshFilter = element.GetComponent<MeshFilter>();
 
-                    if (Application.isPlaying)
+                    if (Application.isPlaying == true)
                     {
                         renderer.material = newMaterial;
+
+                        if (mesh != null)
+                        {
+                            meshFilter.mesh = mesh;
+                            Destroy(element.GetComponent<SphereCollider>());
+                            element.AddComponent<MeshCollider>();
+                        }
                     }
                     else
                     {
                         renderer.sharedMaterial = newMaterial;
+
+                        if (mesh != null)
+                        {
+                            meshFilter.mesh = mesh;
+                            DestroyImmediate(element.GetComponent<SphereCollider>());
+                            element.AddComponent<MeshCollider>();
+                        }
                     }
 
                     firstProperty += 1.0f / (dimension - 1);
                 }
 
-                position.x = 0.0f;
-                position.z += 1.0f + positionOffset;
+                position.x = center;
+                position.z += positionOffset;
 
                 firstProperty = 0.0f;
                 secondProperty += 1.0f / (dimension - 1);

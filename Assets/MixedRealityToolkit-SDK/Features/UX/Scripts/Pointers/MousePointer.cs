@@ -17,9 +17,42 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     /// </summary>
     public class MousePointer : BaseControllerPointer, IMixedRealityMousePointer
     {
-        private Vector3 newRotation = Vector3.zero;
+        private float timeoutTimer = 0.0f;
 
         private bool isInteractionEnabled = false;
+
+        private bool cursorWasDisabledOnDown = false;
+
+        private bool isDisabled = true;
+
+        #region IMixedRealityMousePointer Implementaiton
+
+        [SerializeField]
+        [Tooltip("Should the mouse cursor be hidden when no active input is received?")]
+        private bool hideCursorWhenInactive = true;
+
+        /// <inheritdoc />
+        bool IMixedRealityMousePointer.HideCursorWhenInactive => hideCursorWhenInactive;
+
+        [SerializeField]
+        [Range(0.01f, 1f)]
+        [Tooltip("What is the movement threshold to reach before un-hiding mouse cursor?")]
+        private float movementThresholdToUnHide = 0.1f;
+
+        /// <inheritdoc />
+        float IMixedRealityMousePointer.MovementThresholdToUnHide => movementThresholdToUnHide;
+
+        [SerializeField]
+        [Range(0f, 10f)]
+        [Tooltip("How long should it take before the mouse cursor is hidden?")]
+        private float hideTimeout = 3.0f;
+
+        /// <inheritdoc />
+        float IMixedRealityMousePointer.HideTimeout => hideTimeout;
+
+        #endregion IMixedRealityMousePointer Implementation
+
+        #region IMixedRealityPointer Implementaiton
 
         /// <inheritdoc />
         public override bool IsInteractionEnabled => isInteractionEnabled;
@@ -57,6 +90,38 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
+        #endregion IMixedRealityPointer Implementaiton
+
+        #region IMixedRealitySourcePoseHandler Implementaiton
+
+        /// <inheritdoc />
+        public override void OnSourceDetected(SourceStateEventData eventData)
+        {
+            if (RayStabilizer != null)
+            {
+                RayStabilizer = null;
+            }
+
+            base.OnSourceDetected(eventData);
+
+            if (eventData.SourceId == Controller?.InputSource.SourceId)
+            {
+                isInteractionEnabled = true;
+            }
+        }
+
+        /// <inheritdoc />
+        public override void OnSourceLost(SourceStateEventData eventData)
+        {
+            base.OnSourceLost(eventData);
+
+            if (eventData.SourceId == Controller?.InputSource.SourceId)
+            {
+                isInteractionEnabled = false;
+            }
+        }
+
+        /// <inheritdoc />
         public override void OnSourcePoseChanged(SourcePoseEventData<Vector2> eventData)
         {
             if (Controller == null ||
@@ -68,33 +133,60 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (UseSourcePoseData)
             {
-                newRotation = transform.rotation.eulerAngles;
-                newRotation.x += eventData.SourceData.y;
-                newRotation.y += eventData.SourceData.x;
-                transform.rotation = Quaternion.Euler(newRotation);
+                UpdateMousePosition(eventData.SourceData.x, eventData.SourceData.y);
+            }
+        }
+
+        #endregion IMixedRealitySourcePoseHandler Implementaiton
+
+        #region IMixedRealityInputHandler Implementaiton
+
+        /// <inheritdoc />
+        public override void OnInputDown(InputEventData eventData)
+        {
+            cursorWasDisabledOnDown = isDisabled;
+
+            if (cursorWasDisabledOnDown)
+            {
+                BaseCursor?.SetVisibility(true);
+                transform.rotation = CameraCache.Main.transform.rotation;
+            }
+            else
+            {
+                base.OnInputDown(eventData);
             }
         }
 
         /// <inheritdoc />
-        public override void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        public override void OnInputUp(InputEventData eventData)
+        {
+            if (!isDisabled && !cursorWasDisabledOnDown)
+            {
+                base.OnInputUp(eventData);
+            }
+        }
+
+        /// <inheritdoc />
+        public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
                 if (!UseSourcePoseData &&
                     PoseAction == eventData.MixedRealityInputAction)
                 {
-                    IsTracked = true;
-                    TrackingState = TrackingState.Tracked;
-                    newRotation = transform.rotation.eulerAngles;
-                    newRotation.x += eventData.InputData.x;
-                    newRotation.y += eventData.InputData.y;
-                    transform.rotation = Quaternion.Euler(newRotation);
+                    UpdateMousePosition(eventData.InputData.x, eventData.InputData.y);
                 }
             }
         }
 
+        #endregion IMixedRealityInputHandler Implementaiton
+
+        #region Monobehaviour Implementaiton
+
         protected override void Start()
         {
+            isDisabled = DisableCursorOnStart;
+
             base.Start();
 
             if (RayStabilizer != null)
@@ -112,34 +204,45 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        /// <inheritdoc />
-        public override void OnSourceDetected(SourceStateEventData eventData)
+        private void Update()
         {
-            if (RayStabilizer != null)
-            {
-                RayStabilizer = null;
-            }
+            if (!hideCursorWhenInactive || isDisabled) { return; }
 
-            base.OnSourceDetected(eventData);
+            timeoutTimer += Time.unscaledDeltaTime;
 
-            if (eventData.InputSource.SourceId == Controller.InputSource.SourceId)
+            if (timeoutTimer >= hideTimeout)
             {
-                Debug.Log("Pointer detected");
-                isInteractionEnabled = true;
+                timeoutTimer = 0.0f;
+                BaseCursor?.SetVisibility(false);
+                isDisabled = true;
             }
         }
 
-        /// <inheritdoc />
-        public override void OnSourceLost(SourceStateEventData eventData)
-        {
-            base.OnSourceLost(eventData);
+        #endregion Monobehaviour Implementaiton
 
-            if (Controller != null &&
-                eventData.Controller != null &&
-                eventData.Controller.InputSource.SourceId == Controller.InputSource.SourceId)
+        private void UpdateMousePosition(float mouseX, float mouseY)
+        {
+            if (Mathf.Abs(mouseX) >= movementThresholdToUnHide ||
+                Mathf.Abs(mouseY) >= movementThresholdToUnHide)
             {
-                isInteractionEnabled = false;
+                if (isDisabled)
+                {
+                    BaseCursor?.SetVisibility(true);
+                    transform.rotation = CameraCache.Main.transform.rotation;
+                }
+
+                isDisabled = false;
             }
+
+            if (!isDisabled)
+            {
+                timeoutTimer = 0.0f;
+            }
+
+            var newRotation = Vector3.zero;
+            newRotation.x += mouseX;
+            newRotation.y += mouseY;
+            transform.Rotate(newRotation, Space.World);
         }
     }
 }

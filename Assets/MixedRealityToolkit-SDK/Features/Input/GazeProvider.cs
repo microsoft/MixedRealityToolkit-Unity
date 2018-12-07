@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
@@ -373,8 +374,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
+        [Obsolete]
         public void OnInputPressed(InputEventData<float> eventData) { }
 
+        [Obsolete]
         public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
         #endregion IMixedRealityInputHandler Implementation

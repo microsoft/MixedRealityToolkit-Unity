@@ -103,10 +103,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             public Vector3 StartPoint { get; private set; }
 
             /// <inheritdoc />
-            public FocusDetails Details { get; private set; }
+            public FocusDetails Details => focusDetails;
 
             /// <inheritdoc />
-            public GameObject CurrentPointerTarget { get; private set; }
+            public GameObject CurrentPointerTarget => focusDetails.Object;
 
             /// <inheritdoc />
             public GameObject PreviousPointerTarget { get; private set; }
@@ -140,6 +140,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 Pointer = pointer;
             }
 
+            /// <summary>
+            /// Update focus information from a physics raycast
+            /// </summary>
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 PreviousPointerTarget = Details.Object;
@@ -150,10 +153,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 focusDetails.Point = hit.point;
                 focusDetails.Normal = hit.normal;
                 focusDetails.Object = hit.transform.gameObject;
-                Details = focusDetails;
-                CurrentPointerTarget = Details.Object;
             }
 
+            /// <summary>
+            /// Update focus information from a Canvas raycast 
+            /// </summary>
             public void UpdateHit(RaycastResult result, RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 // We do not update the PreviousPointerTarget here because
@@ -165,7 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 focusDetails.Point = hit.point;
                 focusDetails.Normal = hit.normal;
                 focusDetails.Object = result.gameObject;
-                Details = focusDetails;
             }
 
             public void UpdateHit()
@@ -181,22 +184,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 focusDetails.Point = finalStep.Terminus;
                 focusDetails.Normal = -finalStep.Direction;
                 focusDetails.Object = null;
-                Details = focusDetails;
-                CurrentPointerTarget = Details.Object;
             }
 
             public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
-                if (clearPreviousObject)
-                {
-                    PreviousPointerTarget = null;
-                }
+                PreviousPointerTarget = clearPreviousObject ? null : CurrentPointerTarget;
 
                 focusDetails.Point = Details.Point;
                 focusDetails.Normal = Details.Normal;
                 focusDetails.Object = null;
-                Details = focusDetails;
-                CurrentPointerTarget = null;
             }
 
             /// <inheritdoc />
@@ -337,24 +333,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             cameraObject.transform.parent = transform;
             cameraObject.transform.localPosition = Vector3.zero;
             cameraObject.transform.localRotation = Quaternion.identity;
+
+            // The raycast camera is used to raycast into the UI scene, it doesn't need to render 
+            // anything so is disabled
+            // The default settings are all that is necessary 
             uiRaycastCamera = cameraObject.AddComponent<Camera>();
             uiRaycastCamera.enabled = false;
-            uiRaycastCamera.clearFlags = CameraClearFlags.Depth;
-            uiRaycastCamera.cullingMask = CameraCache.Main.cullingMask;
-            uiRaycastCamera.orthographic = true;
-            uiRaycastCamera.orthographicSize = 0.5f;
-            uiRaycastCamera.nearClipPlane = 0.1f;
-            uiRaycastCamera.farClipPlane = 1000f;
-            uiRaycastCamera.rect = new Rect(0, 0, 1, 1);
-            uiRaycastCamera.depth = 0;
-            uiRaycastCamera.renderingPath = RenderingPath.UsePlayerSettings;
-            uiRaycastCamera.targetTexture = null;
-            uiRaycastCamera.useOcclusionCulling = false;
-            uiRaycastCamera.allowHDR = false;
-            uiRaycastCamera.allowMSAA = false;
-            uiRaycastCamera.allowDynamicResolution = false;
-            uiRaycastCamera.targetDisplay = 1;
-            uiRaycastCamera.stereoTargetEye = StereoTargetEyeMask.Both;
         }
 
         /// <summary>
