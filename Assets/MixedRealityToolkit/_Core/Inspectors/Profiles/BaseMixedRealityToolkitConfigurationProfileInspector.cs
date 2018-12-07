@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     public abstract class MixedRealityBaseConfigurationProfileInspector { }
 
     /// <summary>
-    /// Base class for all Mixed Reality Toolkit Profile Inspectors to inherit from.
+    /// Base class for all Mixed Reality Toolkit specific <see cref="BaseMixedRealityProfile"/> inspectors to inherit from.
     /// </summary>
     public abstract class BaseMixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityProfileInspector
     {

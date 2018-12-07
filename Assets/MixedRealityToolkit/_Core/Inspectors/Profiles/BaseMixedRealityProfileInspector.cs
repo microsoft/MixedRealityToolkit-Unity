@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     /// <summary>
-    /// 
+    /// Base class for all <see cref="BaseMixedRealityProfile"/> Inspectors to inherit from.
     /// </summary>
     public abstract class BaseMixedRealityProfileInspector : Editor
     {
