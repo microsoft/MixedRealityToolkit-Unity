@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.Networking
         /// Constructor.
         /// </summary>
         /// <param name="profile"></param>
-        public MixedRealityNetworkingSystem(MixedRealityNetworkingProfile profile)
+        public MixedRealityNetworkingSystem(MixedRealityNetworkSystemProfile profile)
             : base(profile)
         {
         }

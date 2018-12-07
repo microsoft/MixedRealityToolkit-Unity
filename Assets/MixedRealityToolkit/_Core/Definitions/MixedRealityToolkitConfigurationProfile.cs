@@ -235,12 +235,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 
         [SerializeField]
         [Tooltip("Profile for wiring up networking assets.")]
-        private MixedRealityNetworkingProfile networkingSystemProfile;
+        private MixedRealityNetworkSystemProfile networkingSystemProfile;
 
         /// <summary>
         /// Active profile for diagnostic configuration
         /// </summary>
-        public MixedRealityNetworkingProfile NetworkingSystemProfile
+        public MixedRealityNetworkSystemProfile NetworkingSystemProfile
         {
             get { return networkingSystemProfile; }
             private set { networkingSystemProfile = value; }

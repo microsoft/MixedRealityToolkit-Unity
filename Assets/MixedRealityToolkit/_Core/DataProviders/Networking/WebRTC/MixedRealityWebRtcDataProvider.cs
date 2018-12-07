@@ -13,7 +13,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Networking.WebRTC
     public class MixedRealityWebRtcDataProvider : BaseDataProvider, IMixedRealityNetworkDataProvider
     {
         /// <inheritdoc />
-        public MixedRealityWebRtcDataProvider(string name, uint priority) : base(name, priority) { }
+        public MixedRealityWebRtcDataProvider(string name, uint priority)
+            : base(name, priority)
+        {
+        }
 
         #region IMixedRealityEventSource Implementation
 

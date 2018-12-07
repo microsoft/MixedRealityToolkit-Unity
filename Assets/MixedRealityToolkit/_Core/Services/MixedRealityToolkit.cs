@@ -9,6 +9,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
 //using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
@@ -245,6 +246,34 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType, dummyProfile) || TeleportSystem == null)
                 {
                     Debug.LogError("Failed to start the Teleport System!");
+                }
+            }
+
+            if (ActiveProfile.IsNetworkingSystemEnabled)
+            {
+                if (RegisterService<IMixedRealityNetworkingSystem>(ActiveProfile.NetworkingSystemSystemType, ActiveProfile.NetworkingSystemProfile) && NetworkingSystem != null)
+                {
+                    if (ActiveProfile.NetworkingSystemProfile.RegisteredNetworkDataProviders != null)
+                    {
+                        for (int i = 0; i < ActiveProfile.NetworkingSystemProfile.RegisteredNetworkDataProviders.Length; i++)
+                        {
+                            var networkProvider = ActiveProfile.NetworkingSystemProfile.RegisteredNetworkDataProviders[i];
+
+                            if (!RegisterService<IMixedRealityNetworkDataProvider>(
+                                networkProvider.DataProviderType,
+                                networkProvider.RuntimePlatform,
+                                networkProvider.DataProviderName,
+                                networkProvider.Priority,
+                                networkProvider.Profile))
+                            {
+                                Debug.LogError($"Failed to start {networkProvider.DataProviderName}!");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Failed to start the Networking System!");
                 }
             }
 
@@ -1359,6 +1388,35 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         private static bool logTeleportSystem = true;
+
+        private static IMixedRealityNetworkingSystem networkingSystem = null;
+
+        /// <summary>
+        /// The current Networking System registered with the Mixed Reality Toolkit.
+        /// </summary>
+        public static IMixedRealityNetworkingSystem NetworkingSystem
+        {
+            get
+            {
+                if (isApplicationQuitting)
+                {
+                    return null;
+                }
+
+                if (networkingSystem != null)
+                {
+                    return networkingSystem;
+                }
+
+                networkingSystem = Instance.GetService<IMixedRealityNetworkingSystem>(logNetworkingSystem);
+                // If we found a valid system, then we turn logging back on for the next time we need to search.
+                // If we didn't find a valid system, then we stop logging so we don't spam the debug window.
+                logNetworkingSystem = networkingSystem != null;
+                return networkingSystem;
+            }
+        }
+
+        private static bool logNetworkingSystem = true;
 
         private static IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
 
