@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem.Handlers
 {
+    /// <summary>
+    /// Generic networking data handler for consuming network data from the <see cref="IMixedRealityNetworkingSystem"/>
+    /// </summary>
+    /// <typeparam name="T">The type of data you want to receive.</typeparam>
     public interface IMixedRealityNetworkingHandler<T> : IEventSystemHandler
     {
         void OnDataReceived(BaseNetworkingEventData<T> eventData);

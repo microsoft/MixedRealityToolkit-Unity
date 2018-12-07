@@ -5,5 +5,10 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem
 {
-    public interface IMixedRealityNetworkProvider : IMixedRealityEventSource { }
+    /// <summary>
+    /// The interface to define networking data providers, such as WebRTC, Photon, uNet, etc.
+    /// </summary>
+    public interface IMixedRealityNetworkDataProvider : IMixedRealityEventSource, IMixedRealityDataProvider
+    {
+    }
 }

@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Networking.WebRTC
     /// <summary>
     /// The Mixed Reality Toolkit's Web RTC Data provider.
     /// </summary>
-    public class MixedRealityWebRtcDataProvider : BaseDataProvider, IMixedRealityNetworkProvider
+    public class MixedRealityWebRtcDataProvider : BaseDataProvider, IMixedRealityNetworkDataProvider
     {
         /// <inheritdoc />
         public MixedRealityWebRtcDataProvider(string name, uint priority) : base(name, priority) { }
@@ -25,7 +25,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Networking.WebRTC
 
         #region IEquality Implementation
 
-        public static bool Equals(IMixedRealityNetworkProvider left, IMixedRealityNetworkProvider right)
+        /// <summary>
+        /// Equality check against each <see cref="IMixedRealityNetworkDataProvider"/>
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns>True, if the <see cref="IMixedRealityNetworkDataProvider"/>s are the same.</returns>
+        public static bool Equals(IMixedRealityNetworkDataProvider left, IMixedRealityNetworkDataProvider right)
         {
             return left.Equals(right);
         }
@@ -43,10 +49,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Networking.WebRTC
             if (ReferenceEquals(this, obj)) { return true; }
             if (obj.GetType() != GetType()) { return false; }
 
-            return Equals((IMixedRealityNetworkProvider)obj);
+            return Equals((IMixedRealityNetworkDataProvider)obj);
         }
 
-        private bool Equals(IMixedRealityNetworkProvider other)
+        private bool Equals(IMixedRealityNetworkDataProvider other)
         {
             return other != null && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
         }

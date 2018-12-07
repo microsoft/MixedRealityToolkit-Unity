@@ -38,9 +38,10 @@ MonoBehaviour:
     type: 2}
   networkingSystemProfile: {fileID: 11400000, guid: fde216fe8d8122e4ab222c7207a4d785,
     type: 2}
-  enableNetworkingSystem: 0
+  enableNetworkingSystem: 1
   networkingSystemType:
-    reference: 
+    reference: Microsoft.MixedReality.Toolkit.Core.Services.Networking.MixedRealityNetworkingSystem,
+      MixedRealityToolkit.Core.Services.Networking
   diagnosticsSystemProfile: {fileID: 11400000, guid: 478436bd1083882479a52d067e98e537,
     type: 2}
   enableDiagnosticsSystem: 1
