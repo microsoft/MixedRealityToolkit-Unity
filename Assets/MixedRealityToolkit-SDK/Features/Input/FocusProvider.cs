@@ -403,13 +403,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             cameraObject.transform.localPosition = Vector3.zero;
             cameraObject.transform.localRotation = Quaternion.identity;
 
-            // The raycast camera is used to raycast into the UI scene, it doesn't need to render 
-            // anything so is disabled, however its projection matrix will be used to calculate raycast info 
-            // so it is helpful to have a very close near-clip plane
+            // The raycast camera is used to raycast into the UI scene,
+            // it doesn't need to render anything so is disabled
+            // The default settings are all that is necessary 
             uiRaycastCamera = cameraObject.EnsureComponent<Camera>();
             uiRaycastCamera.enabled = false;
-            uiRaycastCamera.nearClipPlane = 0.01f;
-            uiRaycastCamera.farClipPlane = 100f;
         }
 
         /// <summary>
