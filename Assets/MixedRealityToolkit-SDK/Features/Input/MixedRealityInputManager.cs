@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
@@ -24,6 +25,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// </summary>
     public class MixedRealityInputManager : BaseEventSystem, IMixedRealityInputSystem
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="priority"></param>
+        /// <param name="profile"></param>
+        public MixedRealityInputManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile)
+        {
+            // TODO Move profile assignments here in Input System refactor.
+        }
+
         /// <inheritdoc />
         public event Action InputEnabled;
 

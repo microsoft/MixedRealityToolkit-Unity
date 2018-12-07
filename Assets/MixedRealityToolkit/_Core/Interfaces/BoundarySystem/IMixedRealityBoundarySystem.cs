@@ -34,9 +34,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         bool ShowFloor { get; set; }
 
         /// <summary>
+        /// The size at which to display the rectangular floor plane <see cref="GameObject"/>.
+        /// </summary>
+        Vector2 FloorScale { get; }
+
+        /// <summary>
+        /// The material to use for the floor <see cref="GameObject"/> when created by the boundary system.
+        /// </summary>
+        Material FloorMaterial { get; }
+
+        /// <summary>
         /// Enable / disable play area rendering.
         /// </summary>
         bool ShowPlayArea { get; set; }
+
+        /// <summary>
+        /// The material to use for the rectangular play area <see cref="GameObject"/>.
+        /// </summary>
+        Material PlayAreaMaterial { get; }
 
         /// <summary>
         /// Enable / disable tracked area rendering.
@@ -44,16 +59,32 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         bool ShowTrackedArea { get; set; }
 
         /// <summary>
+        /// The material to use for the boundary geometry <see cref="GameObject"/>.
+        /// </summary>
+        Material TrackedAreaMaterial { get; }
+
+        /// <summary>
         /// Enable / disable boundary wall rendering.
         /// </summary>
         bool ShowBoundaryWalls { get; set; }
+
+        /// <summary>
+        /// The material to use for displaying the boundary geometry walls.
+        /// </summary>
+        Material BoundaryWallMaterial { get; }
 
         /// <summary>
         /// Enable / disable ceiling rendering.
         /// </summary>
         /// <remarks>
         /// The ceiling is defined as a <see cref="GameObject"/> positioned <see cref="BoundaryHeight"/> above the floor.
+        /// </remarks>
         bool ShowBoundaryCeiling { get; set; }
+
+        /// <summary>
+        /// The material to use for displaying the boundary ceiling.
+        /// </summary>
+        Material BoundaryCeilingMaterial { get; }
 
         /// <summary>
         /// Two dimensional representation of the geometry of the boundary, as provided

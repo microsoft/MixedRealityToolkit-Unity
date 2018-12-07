@@ -19,6 +19,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
     /// </summary>
     public class MixedRealitySpatialAwarenessSystem : BaseEventSystem, IMixedRealitySpatialAwarenessSystem
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="priority"></param>
+        /// <param name="profile"></param>
+        public MixedRealitySpatialAwarenessSystem(string name, uint priority, MixedRealitySpatialAwarenessProfile profile)
+            : base(name, priority, profile)
+        {
+        }
+
         private GameObject spatialAwarenessParent = null;
 
         /// <summary>
