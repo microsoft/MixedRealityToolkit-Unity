@@ -11,6 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem.Handle
     /// <typeparam name="T">The type of data you want to receive.</typeparam>
     public interface IMixedRealityNetworkingHandler<T> : IEventSystemHandler
     {
+        /// <summary>
+        /// Is triggered by incoming data and includes eventData as a parameter.
+        /// </summary>
+        /// <param name="eventData"></param>
         void OnDataReceived(BaseNetworkingEventData<T> eventData);
     }
 }

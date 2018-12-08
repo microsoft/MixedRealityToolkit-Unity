@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.NetworkingSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Services.Networking
 {
@@ -19,5 +20,43 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.Networking
             : base(profile)
         {
         }
+
+        /// <inheritdoc />
+        public override void Initialize()
+        {
+        }
+
+        #region IMixedRealityNetworkingSystem Implementation
+
+        /// <inheritdoc />
+        public HashSet<IMixedRealityNetworkDataProvider> NetworkDataProviders { get; } = new HashSet<IMixedRealityNetworkDataProvider>();
+
+        /// <inheritdoc />
+        public uint RequestNetworkDataProviderSourceId()
+        {
+            return 0;
+        }
+
+        /// <inheritdoc />
+        public void RaiseNetworkDataProviderDetected(IMixedRealityNetworkDataProvider networkDataProvider)
+        {
+        }
+
+        /// <inheritdoc />
+        public void RaiseNetworkDataProviderLost(IMixedRealityNetworkDataProvider networkDataProvider)
+        {
+        }
+
+        /// <inheritdoc />
+        public void SendData<T>(T data)
+        {
+        }
+
+        /// <inheritdoc />
+        public void OnDataReceived<T>(T data)
+        {
+        }
+
+        #endregion IMixedRealityNetworkingSystem Implementation
     }
 }

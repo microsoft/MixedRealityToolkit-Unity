@@ -6,10 +6,20 @@ using UnityEngine.EventSystems;
 
 public class BaseNetworkingEventData<T> : GenericBaseEventData
 {
+    /// <summary>
+    /// The data of the network event.
+    /// </summary>
     public T Data { get; private set; }
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="eventSystem"></param>
     public BaseNetworkingEventData(EventSystem eventSystem) : base(eventSystem) { }
 
+    /// <summary>
+    /// Used to initialize/reset the event and populate the data.
+    /// </summary>
     public void Initialize(T data)
     {
         BaseInitialize(null);
