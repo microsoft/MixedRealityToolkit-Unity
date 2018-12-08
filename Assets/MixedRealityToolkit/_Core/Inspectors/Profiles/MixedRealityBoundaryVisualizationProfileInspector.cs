@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             EditorGUILayout.Space();
-            showWallProperties = EditorGUILayout.Foldout(showWallProperties, "Boundary Wall Settings");
+            showWallProperties = EditorGUILayout.Foldout(showWallProperties, "Boundary Wall Settings", true);
             if (showWallProperties)
             {
                 EditorGUILayout.PropertyField(showBoundaryWalls, showContent);
