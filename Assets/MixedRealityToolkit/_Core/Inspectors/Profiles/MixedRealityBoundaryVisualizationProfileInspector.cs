@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             EditorGUILayout.Space();
-            showPlayAreaProperties = EditorGUILayout.Foldout(showPlayAreaProperties, "Play Area Settings");
+            showPlayAreaProperties = EditorGUILayout.Foldout(showPlayAreaProperties, "Play Area Settings", true);
             if (showPlayAreaProperties)
             {
                 EditorGUILayout.PropertyField(showPlayArea, showContent);
