@@ -95,50 +95,66 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             CheckProfileLock(target);
 
             serializedObject.Update();
+            EditorGUILayout.Space();
             EditorGUILayout.PropertyField(boundaryHeight);
 
             EditorGUILayout.Space();
             showFloorProperties = EditorGUILayout.Foldout(showFloorProperties, "Floor Settings", true);
             if (showFloorProperties)
             {
-                EditorGUILayout.PropertyField(showFloor, showContent);
-                EditorGUILayout.PropertyField(floorMaterial, materialContent);
-                var prevWideMode = EditorGUIUtility.wideMode;
-                EditorGUIUtility.wideMode = true;
-                EditorGUILayout.PropertyField(floorScale, scaleContent, GUILayout.ExpandWidth(true));
-                EditorGUIUtility.wideMode = prevWideMode;
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showFloor, showContent);
+                    EditorGUILayout.PropertyField(floorMaterial, materialContent);
+                    var prevWideMode = EditorGUIUtility.wideMode;
+                    EditorGUIUtility.wideMode = true;
+                    EditorGUILayout.PropertyField(floorScale, scaleContent, GUILayout.ExpandWidth(true));
+                    EditorGUIUtility.wideMode = prevWideMode;
+                }
             }
 
             EditorGUILayout.Space();
             showPlayAreaProperties = EditorGUILayout.Foldout(showPlayAreaProperties, "Play Area Settings", true);
             if (showPlayAreaProperties)
             {
-                EditorGUILayout.PropertyField(showPlayArea, showContent);
-                EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showPlayArea, showContent);
+                    EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
+                }
             }
 
             EditorGUILayout.Space();
             showTrackedAreaProperties = EditorGUILayout.Foldout(showTrackedAreaProperties, "Tracked Area Settings", true);
             if (showTrackedAreaProperties)
             {
-                EditorGUILayout.PropertyField(showTrackedArea, showContent);
-                EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showTrackedArea, showContent);
+                    EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
+                }
             }
 
             EditorGUILayout.Space();
             showWallProperties = EditorGUILayout.Foldout(showWallProperties, "Boundary Wall Settings", true);
             if (showWallProperties)
             {
-                EditorGUILayout.PropertyField(showBoundaryWalls, showContent);
-                EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showBoundaryWalls, showContent);
+                    EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
+                }
             }
 
             EditorGUILayout.Space();
             showCeilingProperties = EditorGUILayout.Foldout(showCeilingProperties, "Boundary Ceiling Settings", true);
             if (showCeilingProperties)
             {
-                EditorGUILayout.PropertyField(showBoundaryCeiling, showContent);
-                EditorGUILayout.PropertyField(boundaryCeilingMaterial, materialContent);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showBoundaryCeiling, showContent);
+                    EditorGUILayout.PropertyField(boundaryCeilingMaterial, materialContent);
+                }
             }
 
             serializedObject.ApplyModifiedProperties();

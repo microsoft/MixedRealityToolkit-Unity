@@ -71,27 +71,36 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(handlerType);
 
             EditorGUILayout.Space();
-            showCpuProperties = EditorGUILayout.Foldout(showCpuProperties, "Processor");
+            showCpuProperties = EditorGUILayout.Foldout(showCpuProperties, "Processor", true);
             if (showCpuProperties)
             {
-                EditorGUILayout.PropertyField(showCpu);
-                EditorGUILayout.PropertyField(cpuBuffer);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showCpu);
+                    EditorGUILayout.PropertyField(cpuBuffer);
+                }
             }
 
             EditorGUILayout.Space();
-            showFpsProperties = EditorGUILayout.Foldout(showFpsProperties, "Frame Rate");
+            showFpsProperties = EditorGUILayout.Foldout(showFpsProperties, "Frame Rate", true);
             if (showFpsProperties)
             {
-                EditorGUILayout.PropertyField(showFps);
-                EditorGUILayout.PropertyField(fpsBuffer);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showFps);
+                    EditorGUILayout.PropertyField(fpsBuffer);
+                }
             }
 
             EditorGUILayout.Space();
-            showMemoryProperties = EditorGUILayout.Foldout(showMemoryProperties, "Memory");
+            showMemoryProperties = EditorGUILayout.Foldout(showMemoryProperties, "Memory", true);
             if (showMemoryProperties)
             {
-                EditorGUILayout.PropertyField(showMemory);
-                EditorGUILayout.PropertyField(memoryBuffer);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showMemory);
+                    EditorGUILayout.PropertyField(memoryBuffer);
+                }
             }
 
             serializedObject.ApplyModifiedProperties();
