@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             EditorGUILayout.Space();
-            showCeilingProperties = EditorGUILayout.Foldout(showCeilingProperties, "Boundary Ceiling Settings");
+            showCeilingProperties = EditorGUILayout.Foldout(showCeilingProperties, "Boundary Ceiling Settings", true);
             if (showCeilingProperties)
             {
                 EditorGUILayout.PropertyField(showBoundaryCeiling, showContent);
