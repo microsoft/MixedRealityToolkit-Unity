@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
             
             EditorGUILayout.Space();
-            showOpaqueProperties = EditorGUILayout.Foldout(showOpaqueProperties, "Opaque Display Settings");
+            showOpaqueProperties = EditorGUILayout.Foldout(showOpaqueProperties, "Opaque Display Settings", true);
             if (showOpaqueProperties)
             {
                 EditorGUILayout.PropertyField(opaqueNearClip, nearClipTitle);
