@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             serializedObject.Update();
 
             EditorGUILayout.Space();
-            showGlobalProperties = EditorGUILayout.Foldout(showGlobalProperties, "Global Settings");
+            showGlobalProperties = EditorGUILayout.Foldout(showGlobalProperties, "Global Settings", true);
             if (showGlobalProperties)
             {
                 EditorGUILayout.PropertyField(isCameraPersistent);
