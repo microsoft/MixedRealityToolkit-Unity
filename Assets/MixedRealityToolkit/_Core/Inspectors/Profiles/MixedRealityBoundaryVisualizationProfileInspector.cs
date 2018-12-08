@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(boundaryHeight);
 
             EditorGUILayout.Space();
-            showFloorProperties = EditorGUILayout.Foldout(showFloorProperties, "Floor Settings");
+            showFloorProperties = EditorGUILayout.Foldout(showFloorProperties, "Floor Settings", true);
             if (showFloorProperties)
             {
                 EditorGUILayout.PropertyField(showFloor, showContent);
