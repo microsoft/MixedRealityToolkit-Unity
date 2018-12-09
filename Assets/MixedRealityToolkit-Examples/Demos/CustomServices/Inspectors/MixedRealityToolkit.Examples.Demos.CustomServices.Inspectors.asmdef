@@ -1,0 +1,14 @@
+{
+    "name": "MixedRealityToolkit.Examples.Demos.CustomServices.Inspectors",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core.Inspectors",
+        "Microsoft.MixedReality.Toolkit.Examples",
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
