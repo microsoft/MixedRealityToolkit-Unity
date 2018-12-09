@@ -179,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         #region IActiveBuildTargetChanged Implementation
 
         /// <inheritdoc />
-        public int callbackOrder => 0;
+        public int callbackOrder { get { return 0; } }
 
         /// <inheritdoc />
         public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
