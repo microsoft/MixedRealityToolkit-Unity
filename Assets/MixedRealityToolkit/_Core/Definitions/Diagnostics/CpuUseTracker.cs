@@ -3,7 +3,7 @@
 
 using System;
 
-#if !WINDOWS_UWP || ENABLE_IL2CPP
+#if ENABLE_IL2CPP && !WINDOWS_UWP
 using System.Diagnostics;
 using System.Linq;
 #endif
@@ -15,35 +15,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
     /// </summary>
     public struct CpuUseTracker
     {
-#if !WINDOWS_UWP || ENABLE_IL2CPP
-        private readonly Process currentProcess;
-#endif
-
-        private readonly TimeSpan[] readings;
-        private TimeSpan? processorTime;
-        private int index;
-
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="buffer">The number of readings for this tracker.</param>
         public CpuUseTracker(int buffer = 20)
         {
-#if !WINDOWS_UWP || ENABLE_IL2CPP
+#if ENABLE_IL2CPP && !WINDOWS_UWP
             currentProcess = Process.GetCurrentProcess();
-#endif
             readings = new TimeSpan[buffer];
             processorTime = null;
             index = 0;
+#endif
         }
 
-        /// <summary>
-        /// Reset the tracker.
-        /// </summary>
-        public void Reset()
-        {
-            processorTime = null;
-        }
+#if ENABLE_IL2CPP && !WINDOWS_UWP
+        private readonly Process currentProcess;
+        private readonly TimeSpan[] readings;
+        private TimeSpan? processorTime;
+        private int index;
+#endif
 
         /// <summary>
         /// The current reading in Milliseconds.
@@ -52,14 +43,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
         {
             get
             {
-#if WINDOWS_UWP && !ENABLE_IL2CPP
-                // UWP doesn't support process with .NET runtime, so we can't get CPU readings with the current pattern.
-                return -1;
-#else
-
+#if ENABLE_IL2CPP && !WINDOWS_UWP
                 if (!processorTime.HasValue)
                 {
-                    processorTime = currentProcess.TotalProcessorTime;
+                    try
+                    {
+                        processorTime = currentProcess.TotalProcessorTime;
+                    }
+                    catch (Exception e)
+                    {
+                        UnityEngine.Debug.LogError(e.Message);
+                    }
+
                     return 0;
                 }
 
@@ -71,8 +66,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
                 index = (index + 1) % readings.Length;
 
                 return Math.Round(readings.Average(t => t.TotalMilliseconds), 2);
+#else
+                // Platforms that don't support IL2CPP can't get CPU readings with the current pattern.
+                return -1;
 #endif
             }
+        }
+
+        /// <summary>
+        /// Reset the tracker.
+        /// </summary>
+        public void Reset()
+        {
+#if ENABLE_IL2CPP && !WINDOWS_UWP
+            processorTime = null;
+#endif
         }
     }
 }

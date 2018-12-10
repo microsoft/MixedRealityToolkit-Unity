@@ -6,8 +6,15 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
 {
+    /// <summary>
+    /// Interface to implement to receive data from the <see cref="IMixedRealityDiagnosticsSystem"/>.
+    /// </summary>
     public interface IMixedRealityDiagnosticsHandler : IEventSystemHandler
     {
+        /// <summary>
+        /// Raised when the diagnostics system sends an update to the diagnostic data.
+        /// </summary>
+        /// <param name="eventData"></param>
         void OnDiagnosticSettingsChanged(DiagnosticsEventData eventData);
     }
 }
