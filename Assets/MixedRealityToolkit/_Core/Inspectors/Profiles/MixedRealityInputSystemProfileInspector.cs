@@ -66,10 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             CheckProfileLock(target);
 
             serializedObject.Update();
-            EditorGUI.BeginChangeCheck();
             bool changed = false;
 
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(focusProviderType);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                changed = true;
+            }
 
             changed |= RenderProfile(inputActionsProfile);
             changed |= RenderProfile(inputActionRulesProfile);
@@ -79,11 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             changed |= RenderProfile(controllerVisualizationProfile);
             changed |= RenderProfile(controllerDataProvidersProfile);
             changed |= RenderProfile(controllerMappingProfiles);
-
-            if (!changed)
-            {
-                changed |= EditorGUI.EndChangeCheck();
-            }
 
             serializedObject.ApplyModifiedProperties();
 
