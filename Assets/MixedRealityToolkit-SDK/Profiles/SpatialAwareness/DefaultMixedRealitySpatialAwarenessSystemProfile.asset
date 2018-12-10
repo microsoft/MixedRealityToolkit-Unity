@@ -8,14 +8,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4c54f1a09f94fd49ef7c8f0df3be5cb, type: 3}
-  m_Name: DefaultMixedRealitySpatialObserverDataProvidersProfile
+  m_Script: {fileID: 11500000, guid: 07ce77c4cbff53f458a4a58f1407173a, type: 3}
+  m_Name: DefaultMixedRealitySpatialAwarenessSystemProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 0
+  isCustomProfile: 1
   registeredSpatialObserverDataProviders:
   - spatialObserverType:
-      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserverDataProvider,
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver,
         Microsoft.MixedReality.Toolkit.Core.Devices.SpatialObservers.WindowsMixedReality
-    spatialObserverName: Windows Mixed Reality Spatial Observer Data Provider
+    spatialObserverName: Windows Mixed Reality Spatial Mesh Observer
     priority: 5
     runtimePlatform: 8
+    profile: {fileID: 11400000, guid: 25a015577dafdb245a9428581598f4d6, type: 2}

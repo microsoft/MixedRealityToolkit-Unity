@@ -229,18 +229,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             {
 #if UNITY_EDITOR
                 // Setup the default spatial awareness layers in the project settings.
-                LayerExtensions.SetupLayer(31, MixedRealitySpatialAwarenessProfile.SpatialAwarenessMeshesLayerName);
-                LayerExtensions.SetupLayer(30, MixedRealitySpatialAwarenessProfile.SpatialAwarenessSurfacesLayerName);
+                LayerExtensions.SetupLayer(31, MixedRealitySpatialAwarenessSystemProfile.SpatialAwarenessMeshesLayerName);
+                LayerExtensions.SetupLayer(30, MixedRealitySpatialAwarenessSystemProfile.SpatialAwarenessSurfacesLayerName);
 #endif
                 if (RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) && SpatialAwarenessSystem != null)
                 {
-                    if (ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders != null &&
-                        ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders.RegisteredSpatialObserverDataProviders != null)
+                    if (ActiveProfile.SpatialAwarenessProfile.RegisteredSpatialObserverDataProviders != null)
                     {
-                        for (int i = 0; i < ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders.RegisteredSpatialObserverDataProviders.Length; i++)
+                        for (int i = 0; i < ActiveProfile.SpatialAwarenessProfile.RegisteredSpatialObserverDataProviders.Length; i++)
                         {
-                            var spatialObserver = ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders.RegisteredSpatialObserverDataProviders[i];
-                            RegisterService<IMixedRealitySpatialAwarenessObserver>(spatialObserver.SpatialObserverType, spatialObserver.RuntimePlatform, spatialObserver.SpatialObserverName, spatialObserver.Priority);
+                            var spatialObserver = ActiveProfile.SpatialAwarenessProfile.RegisteredSpatialObserverDataProviders[i];
+
+                            if (spatialObserver.Profile == null)
+                            {
+                                Debug.LogError($"Missing profile for {spatialObserver.SpatialObserverName}");
+                                continue;
+                            }
+
+                            RegisterService<IMixedRealitySpatialObserverDataProvider>(spatialObserver.SpatialObserverType, spatialObserver.RuntimePlatform, spatialObserver.SpatialObserverName, spatialObserver.Priority, spatialObserver.Profile);
                         }
                     }
                 }
@@ -252,8 +258,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             else
             {
 #if UNITY_EDITOR
-                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessProfile.SpatialAwarenessMeshesLayerName);
-                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessProfile.SpatialAwarenessSurfacesLayerName);
+                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessSystemProfile.SpatialAwarenessMeshesLayerName);
+                LayerExtensions.RemoveLayer(MixedRealitySpatialAwarenessSystemProfile.SpatialAwarenessSurfacesLayerName);
 #endif
             }
 
