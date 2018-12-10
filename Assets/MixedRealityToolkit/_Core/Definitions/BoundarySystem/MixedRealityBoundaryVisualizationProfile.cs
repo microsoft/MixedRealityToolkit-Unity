@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         [PhysicsLayer]
         [SerializeField]
         [Tooltip("The physics layer to assign to the generated floor.")]
-        private int floorPhysicsLayer = 2;
+        private int floorPhysicsLayer = 0;
 
         /// <summary>
         /// The physics layer to assign to the generated floor.
