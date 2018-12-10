@@ -576,7 +576,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
 
             currentPlayAreaObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
             currentPlayAreaObject.name = "Play Area";
-            currentPlayAreaObject.layer = ignoreRaycastLayerValue;
+            currentPlayAreaObject.layer = PlayAreaPhysicsLayer;
             currentPlayAreaObject.transform.Translate(new Vector3(center.x, boundaryObjectRenderOffset, center.y));
             currentPlayAreaObject.transform.Rotate(new Vector3(90, -angle, 0));
             currentPlayAreaObject.transform.localScale = new Vector3(width, height, 1.0f);
