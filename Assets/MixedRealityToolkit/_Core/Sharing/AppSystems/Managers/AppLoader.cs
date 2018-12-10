@@ -5,6 +5,7 @@ using Pixie.Initialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Pixie.AppSystems.Managers
 {
@@ -26,7 +27,7 @@ namespace Pixie.AppSystems.Managers
         [SerializeField]
         private UserProfile[] profiles;
         [SerializeField]
-        private bool autoSelectProfile = true;
+        private bool autoStart = true;
         [SerializeField]
         private UserProfile profile;
 
@@ -35,8 +36,8 @@ namespace Pixie.AppSystems.Managers
         
         private void Start()
         {
-            if (autoSelectProfile)
-                SetProfile(profile.name);
+            if (autoStart)
+                StartCoroutine(LoadApp());
         }
 
         public void SetProfile(string userProfileName)
@@ -57,11 +58,29 @@ namespace Pixie.AppSystems.Managers
         {
             ComponentFinder.FindInScenes<ISceneLoader>(out sceneLoader);
 
+            switch (profile.DeviceType)
+            {
+                case DeviceTypeEnum.IOT:
+                    sceneLoader.SceneOpMode = SceneOpTypeEnum.Immediate;
+                    break;
+
+                default:
+                    sceneLoader.SceneOpMode = SceneOpTypeEnum.Async;
+                    break;
+            }
+
             sceneLoader.SetActiveScene(profile.ActiveSceneName);
 
             // Load all of our launch scenes
             foreach (string launchSceneName in profile.LaunchSceneNames)
-                yield return sceneLoader.LoadLocalScene(launchSceneName);
+            {
+                // TEMP until we get this coroutine problem sorted on UWP
+                SceneManager.LoadScene(launchSceneName, LoadSceneMode.Additive);
+                //yield return StartCoroutine(sceneLoader.LoadLocalScene(launchSceneName));
+                yield return null;
+            }
+
+            Debug.LogError("Finished loading scenes");
 
             // Find our app manager from the scene and kick it off
             ComponentFinder.FindInScenes<IAppManager>(out appManager);

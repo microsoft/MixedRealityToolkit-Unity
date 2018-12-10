@@ -16,6 +16,7 @@ namespace Pixie.DeviceControl
         private IDeviceSource deviceSources;
         private IDeviceAssigner deviceAssigner;
         private IAppStateReadWrite appState;
+        private JsonSerializerSettings jsonSettings;
 
         public void ClearPrefs()
         {
@@ -57,7 +58,7 @@ namespace Pixie.DeviceControl
             if (PlayerPrefs.HasKey(devicePrefsKey))
             {
                 string devicePrefsString = PlayerPrefs.GetString(devicePrefsKey);
-                prefs = JsonConvert.DeserializeObject<LocalDevicePrefsState>(devicePrefsString);
+                prefs = JsonConvert.DeserializeObject<LocalDevicePrefsState>(devicePrefsString, jsonSettings);
                 return true;
             }
 
@@ -74,6 +75,9 @@ namespace Pixie.DeviceControl
                 default:
                     throw new Exception("This component is not intended for use on " + AppRole);
             }
+
+            jsonSettings = new JsonSerializerSettings();
+            jsonSettings.Formatting = Formatting.Indented;
 
             ComponentFinder.FindInScenes<IDeviceSource>(out deviceSources);
             ComponentFinder.FindInScenes<IDeviceAssigner>(out deviceAssigner);
@@ -141,7 +145,7 @@ namespace Pixie.DeviceControl
         {
             string devicePrefsKey = GetPrefsKey(DeviceType);
 
-            string devicePrefsString = JsonConvert.SerializeObject(prefs);
+            string devicePrefsString = JsonConvert.SerializeObject(prefs, jsonSettings);
             PlayerPrefs.SetString(devicePrefsKey, devicePrefsString);
         }
 

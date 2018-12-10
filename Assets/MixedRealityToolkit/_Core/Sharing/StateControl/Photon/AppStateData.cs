@@ -3,9 +3,15 @@ using Pixie.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+#if BINARY_SERIALIZATION
 using System.Runtime.Serialization.Formatters.Binary;
+#else
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Text;
+#endif
 using UnityEngine;
+using System.IO;
 
 namespace Pixie.StateControl.Photon
 {
@@ -126,14 +132,14 @@ namespace Pixie.StateControl.Photon
         [PunRPC]
         public void ReceiveFlushedStates(string stateArrayTypeName, byte[] flushedStatesBytes)
         {
-            List<object> flushedStates = DeserializeStateList(flushedStatesBytes);
-
             IStateArrayBase stateArray;
             if (!stateLookupByName.TryGetValue(stateArrayTypeName, out stateArray))
                 Debug.LogError("Received flushed states for state array that doesn't exist: " + stateArrayTypeName);
 
+            List<object> flushedStates = DeserializeStateList(flushedStatesBytes, stateArray.StateType);
+
             stateArray.ReceiveFlushedStates(flushedStates);
-            
+
             if (OnReceiveChangedStates != null)
                 OnReceiveChangedStates(stateArray.StateType, flushedStates);
         }
@@ -142,21 +148,39 @@ namespace Pixie.StateControl.Photon
 
         private static byte[] SerializeStateList(List<object> states)
         {
+#if BINARY_SERIALIZATION
             using (MemoryStream stream = new MemoryStream())
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(stream, states);
                 return stream.GetBuffer();
             }
+#else
+            string statesAsString = JsonConvert.SerializeObject(states);
+            return Encoding.ASCII.GetBytes(statesAsString);
+#endif
         }
 
-        private static List<object> DeserializeStateList(byte[] bytes)
+        private static List<object> DeserializeStateList(byte[] bytes, Type stateType)
         {
+#if BINARY_SERIALIZATION
             using (MemoryStream stream = new MemoryStream(bytes))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 return formatter.Deserialize(stream) as List<object>;
             }
+#else
+            string statesAsString = Encoding.ASCII.GetString(bytes);
+            // This will convert the string to a lits of JObjects
+            List<object> stateObjects = JsonConvert.DeserializeObject<List<object>>(statesAsString);
+            // Before returning them, convert them to system object
+            for (int i = 0; i < stateObjects.Count; i++)
+            {
+                JObject jObject = stateObjects[i] as JObject;
+                stateObjects[i] = jObject.ToObject(stateType);
+            }
+            return stateObjects;
+#endif
         }
     }
 }
