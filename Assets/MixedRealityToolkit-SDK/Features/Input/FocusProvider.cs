@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             public FocusDetails Details => focusDetails;
 
             /// <inheritdoc />
-            public GameObject CurrentPointerTarget=> focusDetails.Object;
+            public GameObject CurrentPointerTarget => focusDetails.Object;
 
             /// <inheritdoc />
             public GameObject PreviousPointerTarget { get; private set; }
@@ -335,12 +335,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             cameraObject.transform.localRotation = Quaternion.identity;
 
             // The raycast camera is used to raycast into the UI scene, it doesn't need to render 
-            // anything so is disabled, however its projection matrix will be used to calculate raycast info 
-            // so it is helpful to have a very close nearclip plane
+            // anything so is disabled
+            // The default settings are all that is necessary 
             uiRaycastCamera = cameraObject.AddComponent<Camera>();
             uiRaycastCamera.enabled = false;
-            uiRaycastCamera.nearClipPlane = 0.01f;
-            uiRaycastCamera.farClipPlane = 100f;
         }
 
         /// <summary>
