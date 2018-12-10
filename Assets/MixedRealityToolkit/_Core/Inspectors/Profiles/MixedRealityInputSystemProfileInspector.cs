@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty gesturesProfile;
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty controllerVisualizationProfile;
+        private SerializedProperty controllerDataProvidersProfile;
         private SerializedProperty controllerMappingProfiles;
 
         protected override void OnEnable()
@@ -40,8 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             pointerProfile = serializedObject.FindProperty("pointerProfile");
             gesturesProfile = serializedObject.FindProperty("gesturesProfile");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            controllerMappingProfiles = serializedObject.FindProperty("controllerMappingProfiles");
             controllerVisualizationProfile = serializedObject.FindProperty("controllerVisualizationProfile");
+            controllerDataProvidersProfile = serializedObject.FindProperty("controllerDataProvidersProfile");
+            controllerMappingProfiles = serializedObject.FindProperty("controllerMappingProfiles");
         }
 
         public override void OnInspectorGUI()
@@ -63,9 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             CheckProfileLock(target);
 
-            var previousLabelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = 160f;
-
             serializedObject.Update();
             EditorGUI.BeginChangeCheck();
             bool changed = false;
@@ -78,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             changed |= RenderProfile(gesturesProfile);
             changed |= RenderProfile(speechCommandsProfile);
             changed |= RenderProfile(controllerVisualizationProfile);
+            changed |= RenderProfile(controllerDataProvidersProfile);
             changed |= RenderProfile(controllerMappingProfiles);
 
             if (!changed)
@@ -85,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 changed |= EditorGUI.EndChangeCheck();
             }
 
-            EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
 
             if (changed)
