@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions
         {
             // FindAssets uses tags check documentation for more info
             string[] guids = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
-            T[] instances = new T[guids.Length];
+            var instances = new T[guids.Length];
 
             for (int i = 0; i < guids.Length; i++)
             {
