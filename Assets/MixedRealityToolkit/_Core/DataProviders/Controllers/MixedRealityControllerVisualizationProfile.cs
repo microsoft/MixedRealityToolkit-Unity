@@ -102,11 +102,32 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers
         {
             for (int i = 0; i < controllerVisualizationSettings.Length; i++)
             {
-                if (controllerVisualizationSettings[i].ControllerType != null &&
+                if (!controllerVisualizationSettings[i].UseDefaultModel &&
+                    controllerVisualizationSettings[i].ControllerType != null &&
                     controllerVisualizationSettings[i].ControllerType.Type == controllerType &&
-                   (controllerVisualizationSettings[i].Handedness == hand || controllerVisualizationSettings[i].Handedness == Handedness.Both))
+                    (controllerVisualizationSettings[i].Handedness == hand || controllerVisualizationSettings[i].Handedness == Handedness.Both))
                 {
                     return controllerVisualizationSettings[i].OverrideControllerModel;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the override <see cref="IMixedRealityControllerVisualizer"/> type for a specific controller type and hand.
+        /// </summary>
+        /// <param name="controllerType">The type of controller to query for</param>
+        /// <param name="hand">The specific hand assigned to the controller</param>
+        public SystemType GetControllerTypeOverride(Type controllerType, Handedness hand)
+        {
+            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
+            {
+                if (controllerVisualizationSettings[i].ControllerType != null &&
+                    controllerVisualizationSettings[i].ControllerType.Type == controllerType &&
+                    (controllerVisualizationSettings[i].Handedness == hand || controllerVisualizationSettings[i].Handedness == Handedness.Both))
+                {
+                    return controllerVisualizationSettings[i].ControllerVisualizationType;
                 }
             }
 
