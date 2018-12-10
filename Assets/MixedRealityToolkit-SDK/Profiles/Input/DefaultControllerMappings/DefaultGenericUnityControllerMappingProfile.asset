@@ -16,7 +16,7 @@ MonoBehaviour:
   controllerMappings:
   - description: Generic Unity Controller
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsGaming.JoystickController,
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInput.GenericJoystickController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
     useCustomInteractionMappings: 1

@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsM
         /// <inheritdoc />
         public override void Update()
         {
-            if (!Application.isPlaying || MixedRealityToolkit.InputSystem == null) { return; }
+            if (!Application.isPlaying || MixedRealityToolkit.InputSystem == null || dictationRecognizer == null) { return; }
 
             if (!isTransitioning && IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
             {

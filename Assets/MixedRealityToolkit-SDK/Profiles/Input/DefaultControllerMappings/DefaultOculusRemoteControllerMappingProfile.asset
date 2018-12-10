@@ -16,7 +16,7 @@ MonoBehaviour:
   controllerMappings:
   - description: Oculus Remote Controller
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OculusRemoteController,
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.OpenVR.OculusRemoteController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
     useCustomInteractionMappings: 0

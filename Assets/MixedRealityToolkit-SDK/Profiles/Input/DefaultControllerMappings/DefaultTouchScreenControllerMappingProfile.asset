@@ -16,7 +16,7 @@ MonoBehaviour:
   controllerMappings:
   - description: Touch Screen Input
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityTouchController,
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInput.UnityTouchController,
         Microsoft.MixedReality.Toolkit
     handedness: 7
     useCustomInteractionMappings: 0

@@ -66,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers
         /// <inheritdoc />
         public IMixedRealityInputSource InputSource { get; }
 
+        /// <inheritdoc />
         public IMixedRealityControllerVisualizer Visualizer { get; private set; }
 
         /// <inheritdoc />
@@ -88,6 +89,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers
         /// <param name="controllerType"></param>
         public bool SetupConfiguration(Type controllerType)
         {
+            Debug.Assert(controllerType != null);
+
             if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.RenderMotionControllers)
             {
                 TryRenderControllerModel(controllerType);
@@ -102,37 +105,36 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers
 
             for (int i = 0; i < controllerMappings?.Count; i++)
             {
-                if (!profileFound && controllerMappings[i].ControllerType.Type == controllerType)
-                {
-                    profileFound = true;
-                }
+                Debug.Log($"Checking {controllerMappings[i].Description} with type: {controllerMappings[i].ControllerType?.Type?.Name}");
 
                 // Assign any known interaction mappings.
-                if (controllerMappings[i].ControllerType.Type == controllerType &&
+                if (controllerMappings[i].ControllerType?.Type == controllerType &&
                     controllerMappings[i].Handedness == ControllerHandedness &&
                     controllerMappings[i].Interactions.Length > 0)
                 {
+                    Debug.Log($"Assigning {controllerMappings[i].Interactions.Length} interactions for {controllerMappings[i].Description}...");
                     AssignControllerMappings(controllerMappings[i].Interactions);
-                    break;
-                }
+                    profileFound = true;
 
-                // If no controller mappings found, warn the user.  Does not stop the project from running.
-                if (Interactions == null || Interactions.Length < 1)
-                {
-                    SetupDefaultInteractions(ControllerHandedness);
-
-                    // We still don't have controller mappings, so this may be a custom controller. 
+                    // If no controller mappings found, warn the user.  Does not stop the project from running.
                     if (Interactions == null || Interactions.Length < 1)
                     {
-                        Debug.LogWarning($"No Controller interaction mappings found for {controllerMappings[i].Description}.");
-                        return false;
+                        SetupDefaultInteractions(ControllerHandedness);
+
+                        // We still don't have controller mappings, so this may be a custom controller. 
+                        if (Interactions == null || Interactions.Length < 1)
+                        {
+                            Debug.LogWarning($"No Controller interaction mappings found for {controllerMappings[i].Description}!\nThe default interactions were assigned.");
+                        }
                     }
+
+                    break;
                 }
             }
 
             if (!profileFound)
             {
-                Debug.LogWarning($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
+                Debug.LogWarning($"No controller profile found for type {controllerType.Name}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
                 return false;
             }
 

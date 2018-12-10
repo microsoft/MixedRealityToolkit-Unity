@@ -16,7 +16,7 @@ MonoBehaviour:
   controllerMappings:
   - description: Generic OpenVR Controller Left
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.GenericOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.OpenVR.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
     useCustomInteractionMappings: 1
@@ -179,7 +179,7 @@ MonoBehaviour:
       invertYAxis: 0
   - description: Generic OpenVR Controller Right
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.GenericOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.OpenVR.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
     useCustomInteractionMappings: 1

@@ -49,3 +49,9 @@ MonoBehaviour:
   - id: 12
     description: Mouse Delta
     axisConstraint: 4
+  - id: 13
+    description: Movement Direction
+    axisConstraint: 4
+  - id: 14
+    description: Rotation Direction
+    axisConstraint: 4

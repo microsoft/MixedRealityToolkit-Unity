@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInp
             MixedRealityToolkit.InputSystem?.RaiseSourcePoseChanged(InputSource, this, controllerPose);
             MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, Input.mouseScrollDelta);
 
-            for (int i = 0; i < Interactions.Length; i++)
+            for (int i = 0; i < Interactions?.Length; i++)
             {
                 if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
                 {

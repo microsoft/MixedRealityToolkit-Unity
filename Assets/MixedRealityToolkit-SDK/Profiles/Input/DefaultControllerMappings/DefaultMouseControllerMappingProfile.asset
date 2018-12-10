@@ -16,7 +16,7 @@ MonoBehaviour:
   controllerMappings:
   - description: Mouse Input
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.MouseController,
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInput.MouseController,
         Microsoft.MixedReality.Toolkit
     handedness: 7
     useCustomInteractionMappings: 0

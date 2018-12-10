@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
             var label = EditorGUI.BeginProperty(rect, content, property);
             var inputActionId = property.FindPropertyRelative("id");
 
-            if (profile == null || actionLabels == null || actionIds == null)
+            if (profile == null || profile.InputActions == null || actionLabels == null || actionIds == null)
             {
                 GUI.enabled = false;
                 EditorGUI.IntPopup(rect, label, inputActionId.intValue.ResetIfGreaterThan(0), actionLabels, actionIds);

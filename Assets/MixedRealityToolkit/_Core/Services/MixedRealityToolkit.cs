@@ -16,6 +16,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.Controllers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -197,15 +198,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType) || InputSystem == null)
+                if (RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType) && InputSystem != null)
+                {
+                    if (RegisterService<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType))
+                    {
+                        if (ActiveProfile.InputSystemProfile.ControllerDataProvidersProfile != null)
+                        {
+                            for (int i = 0; i < ActiveProfile.InputSystemProfile.ControllerDataProvidersProfile.RegisteredControllerDataProviders.Length; i++)
+                            {
+                                var controllerDataProvider = ActiveProfile.InputSystemProfile.ControllerDataProvidersProfile.RegisteredControllerDataProviders[i];
+
+                                RegisterService<IMixedRealityControllerDataProvider>(controllerDataProvider.DataProviderType, controllerDataProvider.RuntimePlatform, controllerDataProvider.DataProviderName, controllerDataProvider.Priority);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        inputSystem = null;
+                        Debug.LogError("Failed to register the focus provider! The input system will not function without it.");
+                        return;
+                    }
+                }
+                else
                 {
                     Debug.LogError("Failed to start the Input System!");
-                }
-
-                if (!RegisterService<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType))
-                {
-                    Debug.LogError("Failed to register the focus provider! The input system will not function without it.");
-                    return;
                 }
             }
             else

@@ -16,7 +16,7 @@ MonoBehaviour:
   controllerMappings:
   - description: Vive Wand Controller Left
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.ViveWandController,
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.OpenVR.ViveWandController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
     useCustomInteractionMappings: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
       invertYAxis: 0
   - description: Vive Wand Controller Right
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.ViveWandController,
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.OpenVR.ViveWandController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
     useCustomInteractionMappings: 0

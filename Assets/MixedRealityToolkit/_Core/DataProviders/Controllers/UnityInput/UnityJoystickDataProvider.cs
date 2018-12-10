@@ -159,6 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInp
             {
                 // Controller failed to be setup correctly.
                 // Return null so we don't raise the source detected.
+                Debug.LogError($"Failed to configure {controllerType.Name} controller!");
                 return null;
             }
 

@@ -70,7 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInp
                 }
             }
 
-            Controller.SetupConfiguration(typeof(MouseController));
+            if (!Controller.SetupConfiguration(typeof(MouseController)))
+            {
+                Debug.LogError($"Failed to configure {typeof(MouseController).Name} controller!");
+                return;
+            }
+
             MixedRealityToolkit.InputSystem?.RaiseSourceDetected(Controller.InputSource, Controller);
         }
 

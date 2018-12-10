@@ -79,6 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInp
         private void AddTouchController(Touch touch, Ray ray)
         {
             UnityTouchController controller;
+
             if (!ActiveTouches.TryGetValue(touch.fingerId, out controller))
             {
                 IMixedRealityInputSource inputSource = null;
@@ -102,7 +103,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInp
                     }
                 }
 
-                controller.SetupConfiguration(typeof(UnityTouchController));
+                if (!controller.SetupConfiguration(typeof(UnityTouchController)))
+                {
+                    Debug.LogError($"Failed to configure {typeof(UnityTouchController).Name} controller!");
+                    return;
+                }
+
                 ActiveTouches.Add(touch.fingerId, controller);
             }
 
