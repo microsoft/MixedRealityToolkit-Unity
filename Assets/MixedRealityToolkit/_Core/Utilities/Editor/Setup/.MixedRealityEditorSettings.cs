@@ -14,11 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
     [InitializeOnLoad]
     public class MixedRealityEditorSettings : IActiveBuildTargetChanged
     {
-        public MixedRealityEditorSettings()
-        {
-            callbackOrder = 0;
-        }
-
         private const string IgnoreKey = "_MixedRealityToolkit_Editor_IgnoreSettingsPrompts";
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
 
@@ -45,69 +40,96 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             get { return MixedRealityToolkit_AbsoluteFolderPath.Replace(Application.dataPath + "\\", "Assets/"); }
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         static MixedRealityEditorSettings()
         {
-            if (!IsNewSession || Application.isPlaying)
+            CheckSettings();
+        }
+
+        /// <summary>
+        /// Check the Mixed Reality Toolkit's settings.
+        /// </summary>
+        public static void CheckSettings()
+        {
+            if (Application.isPlaying ||
+                EditorPrefs.GetBool(IgnoreKey, false) ||
+                !SessionState.GetBool(SessionKey, true))
             {
                 return;
             }
 
+            SessionState.SetBool(SessionKey, false);
+
             bool refresh = false;
             bool restart = false;
 
-            var ignoreSettings = EditorPrefs.GetBool(IgnoreKey, false);
+            var message = "The Mixed Reality Toolkit needs to apply the following settings to your project:\n\n";
 
-            if (!ignoreSettings)
+            var forceTextSerialization = EditorSettings.serializationMode == SerializationMode.ForceText;
+
+            if (!forceTextSerialization)
             {
-                var message = "The Mixed Reality Toolkit needs to apply the following settings to your project:\n\n";
+                message += "- Force Text Serialization\n";
+            }
 
-                var forceTextSerialization = EditorSettings.serializationMode == SerializationMode.ForceText;
+            var il2Cpp = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) == ScriptingImplementation.IL2CPP;
 
-                if (!forceTextSerialization)
+            if (!il2Cpp)
+            {
+                message += "- Change the Scripting Backend to use IL2CPP\n";
+            }
+
+            var visibleMetaFiles = EditorSettings.externalVersionControl.Equals("Visible Meta Files");
+
+            if (!visibleMetaFiles)
+            {
+                message += "- Visible meta files\n";
+            }
+
+            if (!PlayerSettings.virtualRealitySupported)
+            {
+                message += "- Enable XR Settings for your current platform\n";
+            }
+
+            message += "\nWould you like to make this change?";
+
+            if (!forceTextSerialization || !il2Cpp || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
+            {
+                var choice = EditorUtility.DisplayDialogComplex("Apply Mixed Reality Toolkit Default Settings?", message, "Apply", "Ignore", "Later");
+
+                switch (choice)
                 {
-                    message += "- Force Text Serialization\n";
-                }
+                    case 0:
+                        EditorSettings.serializationMode = SerializationMode.ForceText;
+                        EditorSettings.externalVersionControl = "Visible Meta Files";
+                        PlayerSettings.SetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup, ScriptingImplementation.IL2CPP);
+                        PlayerSettings.virtualRealitySupported = true;
 
-                var il2Cpp = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) == ScriptingImplementation.IL2CPP;
+                        var projectSettingsObject = AssetDatabase.LoadAssetAtPath<Object>("ProjectSettings/ProjectSettings.asset");
+                        Debug.Assert(projectSettingsObject != null);
+                        var projectSettings = new SerializedObject(projectSettingsObject);
+                        var vrSettingsProperty = projectSettings.FindProperty("vrSettings");
+                        Debug.Assert(vrSettingsProperty != null);
 
-                if (!il2Cpp)
-                {
-                    message += "- Change the Scripting Backend to use IL2CPP\n";
-                }
+                        if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.WSAPlayer)
+                        {
+                            var holoLensProperty = vrSettingsProperty.FindPropertyRelative("hololens");
+                            Debug.Assert(holoLensProperty != null);
+                            var depthBufferSettingsProperty = holoLensProperty.FindPropertyRelative("depthBufferSharingEnabled");
+                            Debug.Assert(depthBufferSettingsProperty != null);
+                            depthBufferSettingsProperty.boolValue = true;
+                            depthBufferSettingsProperty.serializedObject.ApplyModifiedProperties();
+                        }
 
-                var visibleMetaFiles = EditorSettings.externalVersionControl.Equals("Visible Meta Files");
-
-                if (!visibleMetaFiles)
-                {
-                    message += "- Visible meta files\n";
-                }
-
-                if (!PlayerSettings.virtualRealitySupported)
-                {
-                    message += "- Enable XR Settings for your current platform\n";
-                }
-
-                message += "\nWould you like to make this change?";
-
-                if (!forceTextSerialization || !il2Cpp || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
-                {
-                    var choice = EditorUtility.DisplayDialogComplex("Apply Mixed Reality Toolkit Default Settings?", message, "Apply", "Ignore", "Later");
-
-                    switch (choice)
-                    {
-                        case 0:
-                            EditorSettings.serializationMode = SerializationMode.ForceText;
-                            EditorSettings.externalVersionControl = "Visible Meta Files";
-                            PlayerSettings.SetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup, ScriptingImplementation.IL2CPP);
-                            PlayerSettings.virtualRealitySupported = true;
-                            refresh = true;
-                            break;
-                        case 1:
-                            EditorPrefs.SetBool(IgnoreKey, true);
-                            break;
-                        case 2:
-                            break;
-                    }
+                        refresh = true;
+                        break;
+                    case 1:
+                        EditorPrefs.SetBool(IgnoreKey, true);
+                        break;
+                    case 2:
+                        break;
                 }
             }
 
@@ -126,21 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             if (restart)
             {
                 EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
-            }
-        }
-
-        /// <summary>
-        /// Returns true the first time it is called within this editor session, and false for all subsequent calls.
-        /// <remarks>A new session is also true if the editor build target group is changed.</remarks>
-        /// </summary>
-        private static bool IsNewSession
-        {
-            get
-            {
-                if (SessionState.GetBool(SessionKey, false)) { return false; }
-
-                SessionState.SetBool(SessionKey, true);
-                return true;
             }
         }
 
@@ -169,49 +176,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             return false;
         }
 
-        private static void SetIconTheme()
-        {
-            if (string.IsNullOrEmpty(MixedRealityToolkit_AbsoluteFolderPath))
-            {
-                Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
-                return;
-            }
-
-            var icons = Directory.GetFiles(MixedRealityToolkit_AbsoluteFolderPath + "/_Core/Resources/Icons");
-            var icon = new Texture2D(2, 2);
-            var iconColor = new Color32(4, 165, 240, 255);
-
-            for (int i = 0; i < icons.Length; i++)
-            {
-                icons[i] = icons[i].Replace("/", "\\");
-                if (icons[i].Contains(".meta")) { continue; }
-
-                var imageData = File.ReadAllBytes(icons[i]);
-                icon.LoadImage(imageData, false);
-
-                var pixels = icon.GetPixels32();
-                for (int j = 0; j < pixels.Length; j++)
-                {
-                    pixels[j].r = iconColor.r;
-                    pixels[j].g = iconColor.g;
-                    pixels[j].b = iconColor.b;
-                }
-
-                icon.SetPixels32(pixels);
-                File.WriteAllBytes(icons[i], icon.EncodeToPNG());
-            }
-
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-        }
+        #region IActiveBuildTargetChanged Implementation
 
         /// <inheritdoc />
-        public int callbackOrder { get; private set; }
+        public int callbackOrder { get { return 0; } }
 
         /// <inheritdoc />
         public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
         {
-            SessionState.SetBool(SessionKey, false);
+            SessionState.SetBool(SessionKey, true);
+            CheckSettings();
         }
+
+        #endregion IActiveBuildTargetChanged Implementation
     }
 }
