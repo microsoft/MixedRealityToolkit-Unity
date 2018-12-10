@@ -285,23 +285,53 @@ The configuration screen below allows you to configure any of the controllers cu
 
 The MRTK provides a default configuration for the following controllers / systems:
 
-* Mouse (including 3D spatial mouse support)
-* Touch Screen
-* Xbox controllers
-* Windows Mixed Reality controllers
-* HoloLens Gestures
-* HTC Vive wand controllers
-* Oculus Touch controllers
-* Oculus Remote controller
-* Generic OpenVR devices (advanced users only)
+* Mouse Devices (including 3D spatial mouse support)
+* Touch Screen Devices
+* Xbox Controller
+* Windows Mixed Reality Devices
+    * Motion Controllers
+    * HoloLens Gestures
+* HTC Vive Wand Devices
+* Oculus Touch Devices
+* Oculus Remote Device
 
-Clicking on the Image for any of the pre-built controller systems allows you to configure a single Input Action for all its corresponding inputs, for example, see the Oculus Touch controller configuration screen below:
+For [advanced users](#advanced-controller-mapping-setup), you can also specify generic fallback input from Unity's input system with the following:
+
+* Generic Unity Devices
+* Generic OpenVR Devices
+
+Clicking on any of the controller mapping profiles will open the profile so you can edit the mappings for that device category.
+
+![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_WmrMappingProfile.png)
+
+Clicking on the Image for any of the controllers allows you to configure a single Input Action for all its corresponding inputs, for example, see the Oculus Touch controller configuration screen below:
 
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png)
 
-There is also an advanced screen for configuring other OpenVR or Unity input controllers that are not identified above.
-
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
+
+## Advanced Controller Mapping Setup
+
+For advanced users who want to add custom input mappings through Unity's input system, you can use the generic Unity device or generic Open VR device profiles.
+
+![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_AdvancedControllerMapping.PNG)
+
+All of the mapping values used in this profile are created and used in conjunction with Unity's Input Manager.
+
+- **Input Type:** The type of input that you'll be expecting from this interaction mapping.
+- **Axis Type:** The type of data the input will generate
+    - **Digital:** Simple binary data in the form of a bool value.
+    - **Single Axis:** Simple float data between 0-1.
+    - **Dual Axis:** Simple Vector2 data between 0-1 on each axis respectively.
+    - **Three DOF:** Position: Vector3 data representing positional data.
+    - **Three DOF:** Rotation: Quaternion data representing rotation data.
+    - **Six DOF:** Pose data that represents both positional and rotational data.
+- **Action:** The action defined in the Action Profile that this input will raise through the MRTK's input system.
+- **Keycode:** The keycode that will trigger this input if the Axis Type is Digital.
+    - Note: Single & Dual Axis types will also use this area to render options to invert the axis data.
+- **X Axis:** The input axis that the X axis should represent.
+- **Y Axis:** The input axis that the Y axis should represent.
+
 ---
 <a name="visualization"/>
 

@@ -1,0 +1,10 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Core.Services.InputSystem",
+    "references": [
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

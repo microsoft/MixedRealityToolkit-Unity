@@ -12,17 +12,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         Camera,
         Input,
         Pointer,
-        ControllerMapping,
         InputActions,
         InputActionRules,
-        Speech,
-        BoundaryVisualization,
-        ControllerVisualization,
-        SpatialAwareness,
         Gestures,
+        SpeechCommands,
+        ControllerDataProviders,
+        ControllerMappings,
+        ControllerVisualization,
+        BoundaryVisualization,
+        SpatialAwareness,
+        SpatialAwarenessDataProviders,
         Diagnostics,
         RegisteredServiceProviders,
-
-        Assembly = 99
     }
 }

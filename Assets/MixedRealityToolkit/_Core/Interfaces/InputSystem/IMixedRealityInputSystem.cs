@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.Controllers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
 using System;
 using System.Collections.Generic;
@@ -119,6 +119,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// <returns>a new unique Id for the input source.</returns>
         uint GenerateNewSourceId();
 
+        /// <summary>
+        /// Request a new generic input source from the system.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="pointers"></param>
+        /// <returns></returns>
         IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null);
 
         /// <summary>

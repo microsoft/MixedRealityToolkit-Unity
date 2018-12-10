@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1cf5fd47e548e6a23bdd3ddcc00cf6, type: 3}
+  m_Name: DefaultMixedRealityControllerDataProvidersProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  registeredControllerDataProviders:
+  - dataProviderType:
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInput.MouseDataProvider,
+        Microsoft.MixedReality.Toolkit
+    dataProviderName: Mouse Controller Data Provider
+    priority: 5
+    runtimePlatform: -1
+  - dataProviderType:
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInput.UnityTouchDeviceManager,
+        Microsoft.MixedReality.Toolkit
+    dataProviderName: Touch Screen Controller Data Provider
+    priority: 5
+    runtimePlatform: -1
+  - dataProviderType:
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInput.UnityJoystickDataProvider,
+        Microsoft.MixedReality.Toolkit
+    dataProviderName: Unity Joystick Controller Data Provider
+    priority: 5
+    runtimePlatform: -1
+  - dataProviderType:
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.OpenVR.OpenVRDataProvider,
+        Microsoft.MixedReality.Toolkit
+    dataProviderName: Open VR Controller Data Provider
+    priority: 5
+    runtimePlatform: -1
+  - dataProviderType:
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality.WindowsMixedRealityDataProvider,
+        Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality
+    dataProviderName: Windows Mixed Reality Controller Data Provider
+    priority: 5
+    runtimePlatform: 8
+  - dataProviderType:
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality.WindowsSpeechDataProvider,
+        Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality
+    dataProviderName: Windows Speech Data Provider
+    priority: 5
+    runtimePlatform: 9
+  - dataProviderType:
+      reference: Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality.WindowsDictationDataProvider,
+        Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.WindowsMixedReality
+    dataProviderName: Windows Dictation Data Provider
+    priority: 5
+    runtimePlatform: 9

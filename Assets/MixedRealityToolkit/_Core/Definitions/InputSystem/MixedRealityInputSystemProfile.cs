@@ -2,11 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.Controllers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -85,18 +86,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             internal set { gesturesProfile = value; }
         }
 
-
-        private IMixedRealitySpeechSystem speechSystem;
-
-        /// <summary>
-        /// Current Registered Speech System.
-        /// </summary>
-        public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySpeechSystem>());
-
         /// <summary>
         /// Is the speech Commands Enabled?
         /// </summary>
-        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled;
+        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechDataProvider != null && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled;
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
@@ -111,42 +104,43 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             internal set { speechCommandsProfile = value; }
         }
 
-        private IMixedRealityDictationSystem dictationSystem;
-
-        /// <summary>
-        /// Current Registered Dictation System.
-        /// </summary>
-        public IMixedRealityDictationSystem DictationSystem => dictationSystem ?? (dictationSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityDictationSystem>());
-
         /// <summary>
         /// Is Dictation Enabled?
         /// </summary>
-        public bool IsDictationEnabled => MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && DictationSystem != null;
-
-        [SerializeField]
-        [Tooltip("Enable and configure the devices for your application.")]
-        private bool enableControllerMapping = false;
+        public bool IsDictationEnabled => MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && DictationDataProvider != null;
 
         /// <summary>
         /// Enable and configure the devices for your application.
         /// </summary>
-        public bool IsControllerMappingEnabled
-        {
-            get { return controllerMappingProfile != null && enableControllerMapping; }
-            internal set { enableControllerMapping = value; }
-        }
+        [Obsolete("Removed. Controller mapping is now enabled by default if a controller data provider is registered in the MixedRealityControllerDataProvidersProfile.")]
+        public bool IsControllerMappingEnabled => false;
 
         [SerializeField]
-        [Tooltip("Device profile for wiring up physical inputs to Actions.")]
-        private MixedRealityControllerMappingProfile controllerMappingProfile;
+        [Tooltip("Device profile for registering platform specific input data sources.")]
+        private MixedRealityControllerDataProvidersProfile controllerDataProvidersProfile;
 
         /// <summary>
         /// Active profile for controller mapping configuration
         /// </summary>
-        public MixedRealityControllerMappingProfile ControllerMappingProfile
+        public MixedRealityControllerDataProvidersProfile ControllerDataProvidersProfile
         {
-            get { return controllerMappingProfile; }
-            internal set { controllerMappingProfile = value; }
+            get { return controllerDataProvidersProfile; }
+            internal set { controllerDataProvidersProfile = value; }
+        }
+
+        [Obsolete("Property renamed to ControllerMappingProfiles")]
+        public MixedRealityControllerMappingProfile ControllerMappingProfile = null;
+
+        [SerializeField]
+        private MixedRealityControllerMappingProfiles controllerMappingProfiles;
+
+        /// <summary>
+        /// The profile for setting up registered data provider controller mappings.
+        /// </summary>
+        public MixedRealityControllerMappingProfiles ControllerMappingProfiles
+        {
+            get { return controllerMappingProfiles; }
+            internal set { controllerMappingProfiles = value; }
         }
 
         [SerializeField]
@@ -161,5 +155,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             get { return controllerVisualizationProfile; }
             internal set { controllerVisualizationProfile = value; }
         }
+
+        private IMixedRealityFocusProvider focusProvider;
+
+        /// <summary>
+        /// Current Registered <see cref="IMixedRealityFocusProvider"/>.
+        /// </summary>
+        public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = MixedRealityToolkit.Instance.GetService<IMixedRealityFocusProvider>());
+
+        private IMixedRealitySpeechDataProvider speechDataProvider;
+
+        /// <summary>
+        /// Current Registered <see cref="IMixedRealitySpeechDataProvider"/>
+        /// </summary>
+        public IMixedRealitySpeechDataProvider SpeechDataProvider => speechDataProvider ?? (speechDataProvider = MixedRealityToolkit.Instance.GetService<IMixedRealitySpeechDataProvider>());
+
+        private IMixedRealityDictationDataProvider dictationDataProvider;
+
+        /// <summary>
+        /// Current Registered <see cref="IMixedRealityDictationDataProvider"/>.
+        /// </summary>
+        public IMixedRealityDictationDataProvider DictationDataProvider => dictationDataProvider ?? (dictationDataProvider = MixedRealityToolkit.Instance.GetService<IMixedRealityDictationDataProvider>());
     }
 }

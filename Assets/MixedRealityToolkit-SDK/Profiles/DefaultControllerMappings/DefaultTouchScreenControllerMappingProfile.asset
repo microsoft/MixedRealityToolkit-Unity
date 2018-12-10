@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25094e8b89e84efbba685062a0de46d6, type: 3}
+  m_Name: DefaultTouchScreenControllerMappingProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  hasSetupDefaults: 1
+  controllerMappings:
+  - description: Touch Screen Input
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityTouchController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 7
+    useCustomInteractionMappings: 0
+    interactions:
+    - id: 0
+      description: Touch Pointer Delta
+      axisType: 4
+      inputType: 4
+      inputAction:
+        id: 12
+        description: Mouse Delta
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Touch Pointer Position
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Touch Press
+      axisType: 2
+      inputType: 6
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0

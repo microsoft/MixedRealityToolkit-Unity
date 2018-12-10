@@ -1,0 +1,13 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInput.Profiles.Inspectors",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Core.Inspectors"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
