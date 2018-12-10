@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
@@ -11,10 +12,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// This class is an example of the <see cref="IMixedRealitySpatialAwarenessMeshHandler"/> interface. It keeps track
+    /// This class is an example of the <see cref="IMixedRealitySpatialAwarenessMeshHandler{T}"/> interface. It keeps track
     /// of the IDs of each mesh and tracks the number of updates they have received.
     /// </summary>
-    public class DemoSpatialMeshHandler : MonoBehaviour, IMixedRealitySpatialAwarenessMeshHandler
+    public class DemoSpatialMeshHandler : MonoBehaviour, IMixedRealitySpatialAwarenessMeshHandler<SpatialMeshObject>
     {
         /// <summary>
         /// Collection that tracks the IDs and count of updates for each active spatial awareness mesh.
@@ -33,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <inheritdoc />
-        public virtual void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnMeshAdded(MixedRealitySpatialAwarenessEventData<SpatialMeshObject> eventData)
         {
             Debug.Log("DemoSpatialMeshHandler.OnMeshAdded");
 
@@ -46,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <inheritdoc />
-        public virtual void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnMeshUpdated(MixedRealitySpatialAwarenessEventData<SpatialMeshObject> eventData)
         {
             uint updateCount = 0;
 
@@ -63,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <inheritdoc />
-        public virtual void OnMeshRemoved(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnMeshRemoved(MixedRealitySpatialAwarenessEventData<SpatialMeshObject> eventData)
         {
             Debug.Log("DemoSpatialMeshHandler.OnMeshRemoved");
 
