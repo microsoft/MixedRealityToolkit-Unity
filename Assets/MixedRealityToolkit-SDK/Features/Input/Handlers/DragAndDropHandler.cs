@@ -70,7 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         // Used for moving with a pointer ray
         private float stickLength;
-        private Vector3 previousPointerPosition;
         private Vector3 previousPointerPositionHeadSpace;
 
         // Used for moving with a source position
@@ -227,7 +226,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 Vector3 inputPosition;
                 currentPointer.TryGetPointerPosition(out inputPosition);
 
-                previousPointerPosition = inputPosition;
                 previousPointerPositionHeadSpace = cameraTransform.InverseTransformPoint(inputPosition);
                 stickLength = Vector3.Distance(initialDraggingPosition, inputPosition);
             }
@@ -326,7 +324,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
                 draggingPosition = pointingRay.GetPoint(stickLength);
 
-                previousPointerPosition = pointerPosition;
                 previousPointerPositionHeadSpace = currentPositionHeadSpace;
             }
 
