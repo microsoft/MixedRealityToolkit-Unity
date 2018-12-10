@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
         private bool showPlayArea = false;
 
         /// <inheritdoc/>
-        public int FloorPhysicsLayer { get; private set; } = 0; // Default
+        public int FloorPhysicsLayer { get; private set; }
 
         /// <inheritdoc/>
         public bool ShowPlayArea
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
         private bool showTrackedArea = false;
 
         /// <inheritdoc/>
-        public int PlayAreaPhysicsLayer { get; private set; } = 0; // Default
+        public int PlayAreaPhysicsLayer { get; private set; }
 
         /// <inheritdoc/>
         public bool ShowTrackedArea
@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
         private bool showBoundaryWalls = false;
 
         /// <inheritdoc/>
-        public int TrackedAreaPhysicsLayer { get; private set; } = 0; // Default
+        public int TrackedAreaPhysicsLayer { get; private set; }
 
         /// <inheritdoc/>
         public bool ShowBoundaryWalls
@@ -408,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
         private bool showCeiling = false;
 
         /// <inheritdoc/>
-        public int BoundaryWallsPhysicsLayer { get; private set; } = 0; // Default
+        public int BoundaryWallsPhysicsLayer { get; private set; }
 
         /// <inheritdoc/>
         public bool ShowBoundaryCeiling
@@ -436,7 +436,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
         }
 
         /// <inheritdoc/>
-        public int CeilingPhysicsLayer { get; private set; } = 0; // Default
+        public int CeilingPhysicsLayer { get; private set; }
 
         /// <inheritdoc/>
         public Edge[] Bounds { get; private set; } = new Edge[0];

@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         [PhysicsLayer]
         [SerializeField]
         [Tooltip("The physics layer to assign to the generated floor.")]
-        private int floorPhysicsLayer;
+        private int floorPhysicsLayer = 2;
 
         /// <summary>
         /// The physics layer to assign to the generated floor.
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         [PhysicsLayer]
         [SerializeField]
         [Tooltip("The physics layer to assign to the generated play area.")]
-        private int playAreaPhysicsLayer;
+        private int playAreaPhysicsLayer = 2;
 
         /// <summary>
         /// The physics layer to assign to the generated play area.
@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         [PhysicsLayer]
         [SerializeField]
         [Tooltip("The physics layer to assign to the generated tracked area.")]
-        private int trackedAreaPhysicsLayer;
+        private int trackedAreaPhysicsLayer = 2;
 
         /// <summary>
         /// The physics layer to assign to the generated tracked area.
@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         [PhysicsLayer]
         [SerializeField]
         [Tooltip("The physics layer to assign to the generated boundary walls.")]
-        private int boundaryWallsPhysicsLayer;
+        private int boundaryWallsPhysicsLayer = 2;
 
         /// <summary>
         /// The physics layer to assign to the generated boundary walls.
@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         [PhysicsLayer]
         [SerializeField]
         [Tooltip("The physics layer to assign to the generated boundary ceiling.")]
-        private int ceilingPhysicsLayer;
+        private int ceilingPhysicsLayer = 2;
 
         /// <summary>
         /// The physics layer to assign to the generated boundary ceiling.
