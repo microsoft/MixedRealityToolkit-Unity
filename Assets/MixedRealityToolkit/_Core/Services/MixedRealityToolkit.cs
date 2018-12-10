@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile.Configurations?.Length; i++)
                 {
                     var configuration = ActiveProfile.RegisteredServiceProvidersProfile.Configurations[i];
-                    RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, configuration.ComponentName, configuration.Priority);
+                    RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, configuration.ComponentName, configuration.Priority/*, TODO: configuration.ConfigurationProfile*/);
                 }
             }
 

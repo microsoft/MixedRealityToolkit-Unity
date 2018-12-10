@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// <param name="priority">The priority this system, feature, or manager will be initialized in.</param>
         /// <param name="runtimePlatform">The runtime platform(s) to run this system, feature, or manager on.</param>
         /// <param name="configurationProfile">The configuration profile for the system, feature, or manager.</param>
-        public MixedRealityServiceConfiguration(SystemType componentType, string componentName, uint priority, SupportedPlatforms runtimePlatform, ScriptableObject configurationProfile)
+        public MixedRealityServiceConfiguration(SystemType componentType, string componentName, uint priority, SupportedPlatforms runtimePlatform, BaseMixedRealityExtensionServiceProfile configurationProfile)
         {
             this.componentType = componentType;
             this.componentName = componentName;
@@ -67,11 +67,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
 
         [SerializeField]
-        private ScriptableObject configurationProfile;
+        private BaseMixedRealityExtensionServiceProfile configurationProfile;
 
         /// <summary>
         /// The configuration profile for the system, feature, or manager.
         /// </summary>
-        public ScriptableObject ConfigurationProfile => configurationProfile;
+        public BaseMixedRealityExtensionServiceProfile ConfigurationProfile => configurationProfile;
     }
 }
