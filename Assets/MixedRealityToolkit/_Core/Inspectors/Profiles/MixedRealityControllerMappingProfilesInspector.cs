@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEditor;
@@ -12,7 +13,7 @@ using Object = UnityEngine.Object;
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityControllerMappingProfiles))]
-    public class MixedRealityControllerMappingProfilesInspector : MixedRealityBaseConfigurationProfileInspector
+    public class MixedRealityControllerMappingProfilesInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private static readonly GUIContent AddMappingDefinitionContent = new GUIContent("+ Add a new Mapping Definition");
         private static readonly GUIContent RemoveMappingDefinitionContent = new GUIContent("-", "Remove Mapping Definition");
@@ -23,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             base.OnEnable();
 
-            if (!CheckMixedRealityConfigured(false))
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
                 return;
             }
@@ -40,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            if (!CheckMixedRealityConfigured())
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             {
                 return;
             }
