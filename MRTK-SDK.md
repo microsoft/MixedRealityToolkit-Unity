@@ -39,7 +39,7 @@ Scene elements relate to management style components / configuration to activate
 
 ### Interaction controls
 
-Controls form how the user moves and interacts in the scene, ranging from:
+Controls from how the user moves and interacts in the scene, ranging from:
 
  * Locomotion / Teleportation control
  * Locomotion / Teleportation boundaries / targets
