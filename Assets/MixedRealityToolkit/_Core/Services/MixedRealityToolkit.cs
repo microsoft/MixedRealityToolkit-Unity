@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType) || InputSystem == null)
+                if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType, ActiveProfile.InputSystemProfile) || InputSystem == null)
                 {
                     Debug.LogError("Failed to start the Input System!");
                 }
@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
-                if (!RegisterService<IMixedRealityBoundarySystem>(ActiveProfile.BoundarySystemSystemType) || BoundarySystem == null)
+                if (!RegisterService<IMixedRealityBoundarySystem>(ActiveProfile.BoundarySystemSystemType, ActiveProfile.BoundaryVisualizationProfile) || BoundarySystem == null)
                 {
                     Debug.LogError("Failed to start the Boundary System!");
                 }
@@ -232,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 LayerExtensions.SetupLayer(31, MixedRealitySpatialAwarenessSystemProfile.SpatialAwarenessMeshesLayerName);
                 LayerExtensions.SetupLayer(30, MixedRealitySpatialAwarenessSystemProfile.SpatialAwarenessSurfacesLayerName);
 #endif
-                if (RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) && SpatialAwarenessSystem != null)
+                if (RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType, ActiveProfile.SpatialAwarenessProfile) && SpatialAwarenessSystem != null)
                 {
                     if (ActiveProfile.SpatialAwarenessProfile.RegisteredSpatialObserverDataProviders != null)
                     {
@@ -266,7 +266,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
-                if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType) || TeleportSystem == null)
+                // Note: The Teleport system doesn't have a profile, but might in the future.
+                var dummyProfile = ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
+
+                if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType, dummyProfile) || TeleportSystem == null)
                 {
                     Debug.LogError("Failed to start the Teleport System!");
                 }
@@ -274,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (ActiveProfile.IsDiagnosticsSystemEnabled)
             {
-                if (!RegisterService<IMixedRealityDiagnosticsSystem>(ActiveProfile.DiagnosticsSystemSystemType) || DiagnosticsSystem == null)
+                if (!RegisterService<IMixedRealityDiagnosticsSystem>(ActiveProfile.DiagnosticsSystemSystemType, ActiveProfile.DiagnosticsSystemProfile) || DiagnosticsSystem == null)
                 {
                     Debug.LogError("Failed to start the Diagnostics System!");
                 }
@@ -637,10 +640,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// </summary>
         /// <typeparam name="T">The interface type for the system to be registered.</typeparam>
         /// <param name="interfaceType">The concrete type to instantiate.</param>
+        /// <param name="args">Optional arguments used when instantiating the concrete type.</param>
+        /// <returns>True, if the service was successfully registered.</returns>
+        public bool RegisterService<T>(Type interfaceType, params object[] args)
+        {
+            return RegisterService<T>(interfaceType, (SupportedPlatforms)(-1), args);
+        }
+
+        /// <summary>
+        /// Create and register a new service to the Mixed Reality Toolkit service registry for the specified platform.
+        /// </summary>
+        /// <typeparam name="T">The interface type for the system to be registered.</typeparam>
+        /// <param name="interfaceType">The concrete type to instantiate.</param>
         /// <param name="supportedPlatforms">The runtime platform to check against when registering.</param>
         /// <param name="args">Optional arguments used when instantiating the concrete type.</param>
         /// <returns>True, if the service was successfully registered.</returns>
-        public bool RegisterService<T>(Type interfaceType, SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), params object[] args)
+        public bool RegisterService<T>(Type interfaceType, SupportedPlatforms supportedPlatforms, params object[] args)
         {
             if (isApplicationQuitting)
             {

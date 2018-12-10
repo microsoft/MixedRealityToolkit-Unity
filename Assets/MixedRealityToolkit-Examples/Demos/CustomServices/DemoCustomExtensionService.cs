@@ -15,11 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.CustomExtensionServices
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        /// TODO: use profile data in constructor.
-        public DemoCustomExtensionService(string name, uint priority/*, BaseMixedRealityExtensionServiceProfile profile*/) : base(name, priority/*, profile*/)
+        /// <param name="profile"></param>
+        public DemoCustomExtensionService(string name, uint priority, DemoCustomExtensionServiceProfile profile) : base(name, priority, profile)
         {
             // In the constructor, you should set any configuration data from your profile here.
-            MyCustomData = string.Empty;
+            MyCustomData = profile.MyCustomStringData;
         }
 
         /// <inheritdoc />

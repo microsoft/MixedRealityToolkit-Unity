@@ -23,6 +23,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
     /// </summary>
     public class MixedRealityInputSystem : BaseEventSystem, IMixedRealityInputSystem
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile"></param>
+        public MixedRealityInputSystem(MixedRealityInputSystemProfile profile) : base(profile)
+        {
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile != null)
+            {
+                CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
+            }
+            else
+            {
+                Debug.LogError("The Input system is missing the required Input Action Rules Profile!");
+            }
+        }
+
         /// <inheritdoc />
         public event Action InputEnabled;
 
@@ -40,8 +57,35 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
         /// <inheritdoc />
         public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = MixedRealityToolkit.Instance.GetService<IMixedRealityFocusProvider>());
 
+        private IMixedRealityGazeProvider gazeProvider;
+
         /// <inheritdoc />
-        public IMixedRealityGazeProvider GazeProvider { get; private set; }
+        public IMixedRealityGazeProvider GazeProvider
+        {
+            get
+            {
+                if (gazeProvider == null)
+                {
+                    if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+                    {
+                        if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType?.Type != null)
+                        {
+                            gazeProvider = CameraCache.Main.gameObject.EnsureComponent(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+                        }
+                        else
+                        {
+                            Debug.LogError("The Input system is missing the required GazeProviderType!");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("The Input system is missing the required Pointer Profile!");
+                    }
+                }
+
+                return gazeProvider;
+            }
+        }
 
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
@@ -76,10 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
 
         #region IMixedRealityManager Implementation
 
-        /// <inheritdoc />
         /// <remarks>
         /// Input system is critical, so should be processed before all other managers
         /// </remarks>
+        /// <inheritdoc />
         public override uint Priority => 1;
 
         /// <inheritdoc />
@@ -124,40 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
                 CameraCache.Main.gameObject.EnsureComponent<StandaloneInputModule>();
             }
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
-            {
-                Debug.LogError("The Input system is missing the required Input System Profile!");
-                return;
-            }
-
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile != null)
-            {
-                CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
-            }
-            else
-            {
-                Debug.LogError("The Input system is missing the required Input Action Rules Profile!");
-                return;
-            }
-
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
-            {
-                if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType?.Type != null)
-                {
-                    GazeProvider = CameraCache.Main.gameObject.EnsureComponent(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-                }
-                else
-                {
-                    Debug.LogError("The Input system is missing the required GazeProviderType!");
-                    return;
-                }
-            }
-            else
-            {
-                Debug.LogError("The Input system is missing the required Pointer Profile!");
-                return;
-            }
-
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
 
             sourceTrackingEventData = new SourcePoseEventData<TrackingState>(EventSystem.current);
@@ -188,17 +198,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
         }
 
         /// <inheritdoc />
-        public override void Reset()
-        {
-            Disable();
-            Initialize();
-            Enable();
-        }
-
-        /// <inheritdoc />
         public override void Disable()
         {
-            GazeProvider = null;
+            gazeProvider = null;
 
             if (!Application.isPlaying)
             {

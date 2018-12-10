@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Services
 {
-    internal class TestExtensionService2 : BaseExtensionService, ITestExtensionService2
+    internal class TestExtensionService2 : BaseServiceWithConstructor, ITestExtensionService2
     {
         public TestExtensionService2(string name, uint priority) : base(name, priority) { }
 

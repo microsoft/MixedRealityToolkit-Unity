@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
@@ -15,6 +16,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.Teleportation
     /// </summary>
     public class MixedRealityTeleportSystem : BaseEventSystem, IMixedRealityTeleportSystem
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile"></param>
+        public MixedRealityTeleportSystem(BaseMixedRealityProfile profile)
+            : base(profile) { }
+
         private TeleportEventData teleportEventData;
 
         private bool isTeleporting = false;

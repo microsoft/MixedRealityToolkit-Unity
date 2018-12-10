@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-//using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Services
@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        ///  TODO Uncomment out profile after spatial observer and controller data provider refactor.
-        public BaseExtensionService(string name, uint priority/*, BaseMixedRealityExtensionServiceProfile profile*/) : base(name, priority) { }
+        /// <param name="profile"></param>
+        public BaseExtensionService(string name, uint priority, BaseMixedRealityExtensionServiceProfile profile) : base(name, priority) { }
     }
 }

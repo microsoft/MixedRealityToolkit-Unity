@@ -14,6 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
     /// </summary>
     public class MixedRealityDiagnosticsSystem : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
+        public MixedRealityDiagnosticsSystem(MixedRealityDiagnosticsProfile profile)
+            : base(profile)
+        {
+        }
+
         #region IMixedRealityService
 
         /// <inheritdoc />
@@ -198,7 +203,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
 
                 if (handlerType.Type != null)
                 {
-                    diagnosticsHandler = diagnosticVisualization.AddComponent(handlerType.Type) as IMixedRealityDiagnosticsHandler;
+                    diagnosticVisualization.AddComponent(handlerType.Type);
+                    diagnosticsHandler = diagnosticVisualization.GetComponent<IMixedRealityDiagnosticsHandler>();
+                    Debug.Assert(diagnosticsHandler != null);
                     return diagnosticVisualization;
                 }
 

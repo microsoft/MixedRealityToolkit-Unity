@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
@@ -17,6 +18,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
     /// </summary>
     public class MixedRealitySpatialAwarenessSystem : BaseEventSystem, IMixedRealitySpatialAwarenessSystem
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile"></param>
+        public MixedRealitySpatialAwarenessSystem(BaseMixedRealityProfile profile) : base(profile)
+        {
+        }
+
         private GameObject spatialAwarenessParent = null;
 
         /// <summary>
