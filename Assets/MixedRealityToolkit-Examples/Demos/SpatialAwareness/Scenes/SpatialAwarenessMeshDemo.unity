@@ -290,17 +290,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &492021542
+--- !u!1 &195763920
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 492021543}
-  - component: {fileID: 492021546}
-  - component: {fileID: 492021545}
-  - component: {fileID: 492021544}
+  - component: {fileID: 195763921}
+  - component: {fileID: 195763922}
   m_Layer: 0
   m_Name: UIRaycastCamera
   m_TagString: Untagged
@@ -308,12 +306,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &492021543
+--- !u!4 &195763921
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 492021542}
+  m_GameObject: {fileID: 195763920}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -321,44 +319,12 @@ Transform:
   m_Father: {fileID: 902380248}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &492021544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 492021542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &492021545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 492021542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!20 &492021546
+--- !u!20 &195763922
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 492021542}
+  m_GameObject: {fileID: 195763920}
   m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 3
@@ -404,6 +370,7 @@ GameObject:
   - component: {fileID: 902380253}
   - component: {fileID: 902380252}
   - component: {fileID: 902380251}
+  - component: {fileID: 902380254}
   - component: {fileID: 902380250}
   - component: {fileID: 902380249}
   m_Layer: 0
@@ -423,7 +390,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 492021543}
+  - {fileID: 195763921}
   m_Father: {fileID: 159232969}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -438,8 +405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf98dd1206224111a38765365e98e207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorPrefab: {fileID: 1000012072213228, guid: 5b3e2856904e43c680f84f326861032a,
-    type: 2}
   maxGazeCollisionDistance: 10
   raycastLayerMasks:
   - serializedVersion: 2
@@ -449,7 +414,6 @@ MonoBehaviour:
   gazeTransform: {fileID: 0}
   minHeadVelocityThreshold: 0.5
   maxHeadVelocityThreshold: 2
-  debugDrawRay: 0
 --- !u!114 &902380250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -458,16 +422,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 902380247}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d8ddcf767354d5f90704bb40ddec60a, type: 3}
+  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointingExtent: 10
-  uiRaycastCamera: {fileID: 492021546}
-  pointingRaycastLayerMasks:
-  - serializedVersion: 2
-    m_Bits: 4294967291
-  debugDrawPointingRays: 0
-  debugDrawPointingRayColors: []
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!81 &902380251
 AudioListener:
   m_ObjectHideFlags: 0
@@ -522,6 +486,20 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &902380254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 902380247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
 --- !u!1 &1088453782
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -15,6 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     {
         private static readonly GUIContent ControllerTypeContent = new GUIContent("Controller Type", "The type of Controller this pointer will attach itself to at runtime.");
 
+        private SerializedProperty pointingExtent;
+        private SerializedProperty pointingRaycastLayerMasks;
+        private SerializedProperty debugDrawPointingRays;
+        private SerializedProperty debugDrawPointingRayColors;
+        private SerializedProperty gazeCursorPrefab;
+        private SerializedProperty gazeProviderType;
         private SerializedProperty pointerOptions;
         private ReorderableList pointerOptionList;
 
@@ -29,6 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
+            pointingExtent = serializedObject.FindProperty("pointingExtent");
+            pointingRaycastLayerMasks = serializedObject.FindProperty("pointingRaycastLayerMasks");
+            debugDrawPointingRays = serializedObject.FindProperty("debugDrawPointingRays");
+            debugDrawPointingRayColors = serializedObject.FindProperty("debugDrawPointingRayColors");
+            gazeCursorPrefab = serializedObject.FindProperty("gazeCursorPrefab");
+            gazeProviderType = serializedObject.FindProperty("gazeProviderType");
             pointerOptions = serializedObject.FindProperty("pointerOptions");
 
             pointerOptionList = new ReorderableList(serializedObject, pointerOptions, false, false, true, true)
@@ -60,9 +72,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.Space();
 
             CheckProfileLock(target);
-
             serializedObject.Update();
             currentlySelectedPointerOption = -1;
+
+            EditorGUILayout.PropertyField(pointingExtent);
+            EditorGUILayout.PropertyField(pointingRaycastLayerMasks, true);
+            EditorGUILayout.PropertyField(debugDrawPointingRays);
+            EditorGUILayout.PropertyField(debugDrawPointingRayColors, true);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.HelpBox("The gaze provider uses the default settings above, but further customization of the gaze can be done on the Gaze Provider.", MessageType.Info);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(gazeCursorPrefab);
+            EditorGUILayout.PropertyField(gazeProviderType);
+
+            EditorGUILayout.Space();
+            if (GUILayout.Button("Customize Gaze Provider Settings"))
+            {
+                Selection.activeObject = CameraCache.Main.gameObject;
+            }
+
+            EditorGUILayout.Space();
             pointerOptionList.DoLayoutList();
             serializedObject.ApplyModifiedProperties();
         }
