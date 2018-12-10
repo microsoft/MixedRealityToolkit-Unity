@@ -15,7 +15,7 @@ MonoBehaviour:
   boundaryHeight: 3
   showFloor: 1
   floorMaterial: {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
-  floorPhysicsLayer: 2
+  floorPhysicsLayer: 0
   floorScale: {x: 10, y: 10}
   showPlayArea: 1
   playAreaMaterial: {fileID: 2100000, guid: 3c55769e893c4f4c8c51b7fa69bee2b9, type: 2}
