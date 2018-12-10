@@ -17,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty pointerProfile;
         private SerializedProperty gesturesProfile;
         private SerializedProperty speechCommandsProfile;
-        private SerializedProperty enableControllerMapping;
         private SerializedProperty controllerMappingProfile;
         private SerializedProperty controllerVisualizationProfile;
 
@@ -42,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             gesturesProfile = serializedObject.FindProperty("gesturesProfile");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
             controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
-            enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerVisualizationProfile = serializedObject.FindProperty("controllerVisualizationProfile");
         }
 
@@ -79,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             changed |= RenderProfile(pointerProfile);
             changed |= RenderProfile(gesturesProfile);
             changed |= RenderProfile(speechCommandsProfile);
-            EditorGUILayout.PropertyField(enableControllerMapping);
             changed |= RenderProfile(controllerMappingProfile);
             changed |= RenderProfile(controllerVisualizationProfile);
 
