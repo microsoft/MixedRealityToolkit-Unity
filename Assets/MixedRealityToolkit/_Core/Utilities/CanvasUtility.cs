@@ -30,9 +30,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         {
             Debug.Assert(Canvas != null);
 
-            if (Canvas.isRootCanvas && Canvas.renderMode == RenderMode.WorldSpace)
+            if (MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
+                Canvas.isRootCanvas && Canvas.renderMode == RenderMode.WorldSpace)
             {
-                Canvas.worldCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
+                Canvas.worldCamera = MixedRealityToolkit.InputSystem?.FocusProvider?.UIRaycastCamera;
             }
         }
     }

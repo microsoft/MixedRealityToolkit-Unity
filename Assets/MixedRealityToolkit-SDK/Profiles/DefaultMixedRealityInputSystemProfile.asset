@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityInputSystemProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  focusProviderType:
+    reference: Microsoft.MixedReality.Toolkit.SDK.Input.FocusProvider, Microsoft.MixedReality.Toolkit.SDK
   inputActionsProfile: {fileID: 11400000, guid: 723eb97b02944311b92861f473eee53e,
     type: 2}
-  gesturesProfile: {fileID: 11400000, guid: bd7829a9b29409045a745b5a18299291, type: 2}
   inputActionRulesProfile: {fileID: 11400000, guid: 03945385d89102f41855bc8f5116b199,
     type: 2}
   pointerProfile: {fileID: 11400000, guid: 48aa63a9725047b28d4137fd0834bc31, type: 2}
+  gesturesProfile: {fileID: 11400000, guid: bd7829a9b29409045a745b5a18299291, type: 2}
   speechCommandsProfile: {fileID: 11400000, guid: e8d0393e66374dae9646851a57dc6bc1,
     type: 2}
   enableControllerMapping: 1

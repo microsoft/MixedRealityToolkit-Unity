@@ -40,7 +40,7 @@ From here you can navigate to all the configuration profiles for the MRTK, inclu
 
 * [Experience Settings](#experience)
 * [Camera Settings](#camera)
-* [Input System Settings](#inputsystem)
+* [Input System Settings](#input-system-settings)
 * [Boundary Settings](#boundary)
 * [Teleporting Settings](#teleportation)
 * [Spatial Awareness Settings](#spatialawareness)
@@ -96,7 +96,8 @@ Behind the Input System provided by the MRTK are several other systems, these he
 
 Each of the individual profiles are detailed below:
 
-* [Input Actions Settings](#inputactions)
+* [Focus Settings](#focus-settings)
+* [Input Actions Settings](#input-actions-settings)
 * [Input Actions Rules](#inputactionrules)
 * [Pointer Configuration](#pointer)
 * [Gestures Configuration](#gestures)
@@ -238,6 +239,15 @@ Pointers can also be visualized within the active scene using one of the many Li
 ![](/External/HowTo/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
+
+* Pointing Extent: Determines the global pointing extent for all pointers, including gaze.
+* Pointing Raycast Layer Masks: Determines which layers pointers will raycast against.
+* Debug Draw Pointing Rays: A debug helper for visualizing the rays used for raycasting.
+* Debug Draw Pointing Rays Colors: A set of colors to use for visualizing.
+* Gaze cursor prefab: Makes it easy to specify a global gaze cursor for any scene.
+
+There's an additional helper button to quickly jump to the Gaze Provider to override some specific values for Gaze if needed.
+
 ---
 <a name="gestures"/>
 
