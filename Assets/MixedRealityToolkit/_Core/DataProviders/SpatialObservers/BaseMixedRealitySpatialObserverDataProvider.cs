@@ -4,8 +4,8 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using System;
 using System.Collections;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
 {
@@ -24,8 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         {
             if (profile == null)
             {
-                Debug.LogError($"Missing profile for {name}");
-                return;
+                throw new ArgumentNullException($"Missing profile for {name}");
             }
 
             if (MixedRealityToolkit.SpatialAwarenessSystem != null)
@@ -73,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         public float UpdateInterval { get; set; }
 
         /// <inheritdoc />
-        public int PhysicsLayer { get; set; }
+        public virtual int PhysicsLayer { get; }
 
         /// <inheritdoc />
         public bool IsRunning { get; protected set; }

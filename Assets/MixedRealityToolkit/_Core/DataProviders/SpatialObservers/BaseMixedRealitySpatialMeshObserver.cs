@@ -23,12 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         protected BaseMixedRealitySpatialMeshObserver(string name, uint priority, BaseMixedRealitySpatialMeshObserverProfile profile)
             : base(name, priority, profile)
         {
-            if (profile == null)
-            {
-                Debug.LogError($"Missing profile for {name}");
-                return;
-            }
-
+            MeshPhysicsLayerOverride = profile.MeshPhysicsLayerOverride;
             MeshLevelOfDetail = profile.MeshLevelOfDetail;
             MeshTrianglesPerCubicMeter = profile.MeshTrianglesPerCubicMeter;
             MeshRecalculateNormals = profile.MeshRecalculateNormals;
@@ -75,6 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         #region IMixedRealitySpatialMeshObserver Implementation
 
         private SpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;
+
+        /// <inheritdoc />
+        public override int PhysicsLayer => MeshPhysicsLayerOverride >= 0 ? MeshPhysicsLayerOverride : base.PhysicsLayer;
+
+        /// <inheritdoc />
+        public int MeshPhysicsLayerOverride { get; }
 
         /// <inheritdoc />
         public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail
