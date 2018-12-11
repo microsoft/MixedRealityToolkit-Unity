@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.CustomExtensionServices.
             base.OnEnable();
 
             // We check to make sure the MRTK is configured here.
-            // Pass false so we don't get en error for showing the help box.
+            // Pass false so we don't get an error for showing the help box.
             if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
                 return;
