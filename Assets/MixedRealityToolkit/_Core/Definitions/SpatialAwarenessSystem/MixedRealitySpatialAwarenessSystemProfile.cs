@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <summary>
         /// The name of the Spatial Awareness Surfaces Physics Layer.
         /// </summary>
-        public const string SpatialAwarenessSurfacesLayerName = "Spatial Awareness Sufaces";
+        public const string SpatialAwarenessSurfacesLayerName = "Spatial Awareness Surfaces";
 
         [SerializeField]
         [Tooltip("The list of registered spatial observer data providers.")]
