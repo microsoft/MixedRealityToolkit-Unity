@@ -11,10 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a4bdbfdea331745b57570c107eeaae, type: 3}
   m_Name: DefaultWindowsMixedRealitySpatialMeshObserverProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   startupBehavior: 0
   observationExtents: {x: 3, y: 3, z: 3}
-  isStationaryObserver: 1
+  isStationaryObserver: 0
   updateInterval: 3.5
   physicsLayer: 31
   meshLevelOfDetail: 0

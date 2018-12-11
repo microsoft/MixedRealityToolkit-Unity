@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers;
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
         {
             base.OnEnable();
 
-            if (!CheckMixedRealityConfigured(false))
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
                 return;
             }
@@ -54,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
         {
             base.OnInspectorGUI();
 
-            if (!CheckMixedRealityConfigured())
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             {
                 return;
             }
