@@ -7,7 +7,8 @@
         "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
         "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup",
-        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor"
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor",
+        "Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

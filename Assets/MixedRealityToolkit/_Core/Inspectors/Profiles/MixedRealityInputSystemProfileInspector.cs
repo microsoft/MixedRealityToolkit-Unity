@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
@@ -12,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityInputSystemProfile))]
     public class MixedRealityInputSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
+        private SerializedProperty focusProviderType;
         private SerializedProperty inputActionsProfile;
         private SerializedProperty inputActionRulesProfile;
         private SerializedProperty pointerProfile;
@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
+            focusProviderType = serializedObject.FindProperty("focusProviderType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
@@ -71,6 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUI.BeginChangeCheck();
             bool changed = false;
 
+            EditorGUILayout.PropertyField(focusProviderType);
+
             changed |= RenderProfile(inputActionsProfile);
             changed |= RenderProfile(inputActionRulesProfile);
             changed |= RenderProfile(pointerProfile);
@@ -79,7 +82,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(enableControllerMapping);
             changed |= RenderProfile(controllerMappingProfile);
             changed |= RenderProfile(controllerVisualizationProfile);
-            changed |= EditorGUI.EndChangeCheck();
+
+            if (!changed)
+            {
+                changed |= EditorGUI.EndChangeCheck();
+            }
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
