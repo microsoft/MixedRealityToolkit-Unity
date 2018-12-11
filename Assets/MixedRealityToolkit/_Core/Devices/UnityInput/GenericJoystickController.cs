@@ -128,8 +128,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 case DeviceInputType.TriggerPress:
                 case DeviceInputType.ButtonPress:
                     // Update the interaction data source
-                    interactionMapping.BoolData = singleAxisValue.Equals(1f);
                     defaultValue = 1f;
+                    interactionMapping.BoolData = singleAxisValue.Equals(defaultValue);
                     break;
                 case DeviceInputType.TriggerTouch:
                 case DeviceInputType.TriggerNearTouch:
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 case DeviceInputType.RingFingerNearTouch:
                 case DeviceInputType.PinkyFingerNearTouch:
                     // Update the interaction data source
-                    interactionMapping.BoolData = !singleAxisValue.Equals(0f);
+                    interactionMapping.BoolData = !singleAxisValue.Equals(defaultValue);
                     break;
                 case DeviceInputType.Trigger:
                     // Update the interaction data source
@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                     }
                     return;
                 default:
-                    Debug.LogWarning("Unhandled Interaction");
+                    Debug.LogWarning($"Unhandled Interaction {interactionMapping.Description}");
                     return;
             }
 
