@@ -11,6 +11,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
     public interface IMixedRealityGazeProvider
     {
         /// <summary>
+        /// Enable or disable the <see cref="Component"/> attached to the <see cref="GameObjectReference"/>
+        /// </summary>
+        bool Enabled { get; set; }
+
+        /// <summary>
         /// The Gaze Input Source for the provider.
         /// </summary>
         IMixedRealityInputSource GazeInputSource { get; }
@@ -19,6 +24,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// The Gaze Pointer for the provider.
         /// </summary>
         IMixedRealityPointer GazePointer { get; }
+
+        /// <summary>
+        /// The Gaze Cursor for the provider.
+        /// </summary>
+        IMixedRealityCursor GazeCursor { get; }
 
         /// <summary>
         /// The game object that is currently being gazed at, if any.
@@ -61,5 +71,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// The current head movement direction.
         /// </summary>
         Vector3 HeadMovementDirection { get; }
+
+        /// <summary>
+        /// Get the GameObject reference for this Gaze Provider.
+        /// </summary>
+        GameObject GameObjectReference { get; }
     }
 }

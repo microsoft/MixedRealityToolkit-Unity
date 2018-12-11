@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -12,6 +12,17 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityInputPointerProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  pointingExtent: 10
+  pointingRaycastLayerMasks:
+  - serializedVersion: 2
+    m_Bits: 4294967291
+  debugDrawPointingRays: 1
+  debugDrawPointingRayColors:
+  - {r: 0, g: 1, b: 0, a: 1}
+  gazeCursorPrefab: {fileID: 1000012072213228, guid: 5b3e2856904e43c680f84f326861032a,
+    type: 2}
+  gazeProviderType:
+    reference: Microsoft.MixedReality.Toolkit.SDK.Input.GazeProvider, Microsoft.MixedReality.Toolkit.SDK
   pointerOptions:
   - controllerType:
       reference: 

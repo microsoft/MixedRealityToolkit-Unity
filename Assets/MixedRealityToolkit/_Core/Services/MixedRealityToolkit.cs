@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Services
 {
@@ -164,6 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 registeredMixedRealityServices.Clear();
             }
 #endif
+
             ClearCoreSystemCache();
             EnsureMixedRealityRequirements();
 
@@ -197,6 +199,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType) || InputSystem == null)
                 {
                     Debug.LogError("Failed to start the Input System!");
+                }
+
+                if (!RegisterService<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType))
+                {
+                    Debug.LogError("Failed to register the focus provider! The input system will not function without it.");
+                    return;
                 }
             }
             else
@@ -294,6 +302,41 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
             // We'll enforce that here, then tracking can update it to the appropriate position later.
             CameraCache.Main.transform.position = Vector3.zero;
+
+            bool addedComponents = false;
+            if (!Application.isPlaying)
+            {
+                var eventSystems = FindObjectsOfType<EventSystem>();
+
+                if (eventSystems.Length == 0)
+                {
+                    CameraCache.Main.gameObject.EnsureComponent<EventSystem>();
+                    addedComponents = true;
+                }
+                else
+                {
+                    bool raiseWarning;
+
+                    if (eventSystems.Length == 1)
+                    {
+                        raiseWarning = eventSystems[0].gameObject != CameraCache.Main.gameObject;
+                    }
+                    else
+                    {
+                        raiseWarning = true;
+                    }
+
+                    if (raiseWarning)
+                    {
+                        Debug.LogWarning("Found an existing event system in your scene. The Mixed Reality Toolkit requires only one, and must be found on the main camera.");
+                    }
+                }
+            }
+
+            if (!addedComponents)
+            {
+                CameraCache.Main.gameObject.EnsureComponent<EventSystem>();
+            }
         }
 
         #region MonoBehaviour Implementation
@@ -1021,6 +1064,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
 
             return typeof(IMixedRealityInputSystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityFocusProvider).IsAssignableFrom(type) ||
                    typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type) ||
