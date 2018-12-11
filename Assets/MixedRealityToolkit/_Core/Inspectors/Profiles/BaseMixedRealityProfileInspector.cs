@@ -5,40 +5,23 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup;
+using System;
 using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
-    public abstract class MixedRealityBaseConfigurationProfileInspector : BaseMixedRealityInspector
+    /// <summary>
+    /// Base class for all <see cref="BaseMixedRealityProfile"/> Inspectors to inherit from.
+    /// </summary>
+    public abstract class BaseMixedRealityProfileInspector : Editor
     {
         private const string IsCustomProfileProperty = "isCustomProfile";
-
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
-
-        [SerializeField]
-        private Texture2D logoLightTheme = null;
-
-        [SerializeField]
-        private Texture2D logoDarkTheme = null;
 
         private static BaseMixedRealityProfile profile;
         private static SerializedObject targetProfile;
         private static BaseMixedRealityProfile profileToCopy;
-
-        protected virtual void Awake()
-        {
-            if (logoLightTheme == null)
-            {
-                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MRTK_Logo_Black.png", typeof(Texture2D));
-            }
-
-            if (logoDarkTheme == null)
-            {
-                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MRTK_Logo_White.png", typeof(Texture2D));
-            }
-        }
 
         protected virtual void OnEnable()
         {
@@ -46,87 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             profile = target as BaseMixedRealityProfile;
         }
 
-        [MenuItem("CONTEXT/BaseMixedRealityProfile/Create Copy from Profile Values", false, 0)]
-        protected static async void CreateCopyProfileValues()
+        [Obsolete("Use MixedRealityInspectorUtility.CheckMixedRealityConfigured instead")]
+        public static bool CheckMixedRealityConfigured(bool flag = true)
         {
-            profileToCopy = profile;
-            ScriptableObject newProfile = CreateInstance(profile.GetType().ToString());
-            profile = newProfile.CreateAsset("Assets/MixedRealityToolkit-Generated/CustomProfiles") as BaseMixedRealityProfile;
-            Debug.Assert(profile != null);
-
-            await new WaitUntil(() => profileToCopy != profile);
-
-            Selection.activeObject = null;
-            PasteProfileValues();
-            Selection.activeObject = profile;
-
-            if (!profileToCopy.IsCustomProfile)
-            {
-                // For now we only replace it if it's the master configuration profile.
-                // Sub-profiles are easy to update in the master configuration inspector.
-                if (MixedRealityToolkit.Instance.ActiveProfile.GetType() == profile.GetType())
-                {
-                    MixedRealityToolkit.Instance.ActiveProfile = profile as MixedRealityToolkitConfigurationProfile;
-                }
-            }
-        }
-
-        [MenuItem("CONTEXT/BaseMixedRealityProfile/Copy Profile Values", false, 1)]
-        private static void CopyProfileValues()
-        {
-            profileToCopy = profile;
-        }
-
-        [MenuItem("CONTEXT/BaseMixedRealityProfile/Paste Profile Values", true)]
-        private static bool PasteProfileValuesValidation()
-        {
-            return profile != null &&
-                   targetProfile != null &&
-                   profileToCopy != null &&
-                   targetProfile.FindProperty(IsCustomProfileProperty).boolValue &&
-                   profile.GetType() == profileToCopy.GetType();
-        }
-
-        [MenuItem("CONTEXT/BaseMixedRealityProfile/Paste Profile Values", false, 2)]
-        private static void PasteProfileValues()
-        {
-            Undo.RecordObject(profile, "Paste Profile Values");
-            bool targetIsCustom = targetProfile.FindProperty(IsCustomProfileProperty).boolValue;
-            string originalName = targetProfile.targetObject.name;
-            EditorUtility.CopySerialized(profileToCopy, targetProfile.targetObject);
-            targetProfile.Update();
-            targetProfile.FindProperty(IsCustomProfileProperty).boolValue = targetIsCustom;
-            targetProfile.ApplyModifiedProperties();
-            targetProfile.targetObject.name = originalName;
-            Debug.Assert(targetProfile.FindProperty(IsCustomProfileProperty).boolValue == targetIsCustom);
-            AssetDatabase.SaveAssets();
-        }
-
-        /// <summary>
-        /// Render the Mixed Reality Toolkit Logo.
-        /// </summary>
-        protected void RenderMixedRealityToolkitLogo()
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            GUILayout.Label(EditorGUIUtility.isProSkin ? logoDarkTheme : logoLightTheme, GUILayout.MaxHeight(128f));
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.Space(12f);
-        }
-
-        /// <summary>
-        /// Checks if the profile is locked and displays a warning.
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="lockProfile"></param>
-        protected static void CheckProfileLock(Object target, bool lockProfile = true)
-        {
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                EditorGUILayout.HelpBox("This profile is part of the default set from the Mixed Reality Toolkit SDK. You can make a copy of this profile, and customize it if needed.", MessageType.Warning);
-                GUI.enabled = !lockProfile;
-            }
+            return false;
         }
 
         /// <summary>
@@ -216,6 +122,62 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             EditorGUILayout.EndHorizontal();
             return changed;
+        }
+
+        [MenuItem("CONTEXT/BaseMixedRealityProfile/Create Copy from Profile Values", false, 0)]
+        protected static async void CreateCopyProfileValues()
+        {
+            profileToCopy = profile;
+            ScriptableObject newProfile = CreateInstance(profile.GetType().ToString());
+            profile = newProfile.CreateAsset("Assets/MixedRealityToolkit-Generated/CustomProfiles") as BaseMixedRealityProfile;
+            Debug.Assert(profile != null);
+
+            await new WaitUntil(() => profileToCopy != profile);
+
+            Selection.activeObject = null;
+            PasteProfileValues();
+            Selection.activeObject = profile;
+
+            if (!profileToCopy.IsCustomProfile)
+            {
+                // For now we only replace it if it's the master configuration profile.
+                // Sub-profiles are easy to update in the master configuration inspector.
+                if (MixedRealityToolkit.Instance.ActiveProfile.GetType() == profile.GetType())
+                {
+                    MixedRealityToolkit.Instance.ActiveProfile = profile as MixedRealityToolkitConfigurationProfile;
+                }
+            }
+        }
+
+        [MenuItem("CONTEXT/BaseMixedRealityProfile/Copy Profile Values", false, 1)]
+        private static void CopyProfileValues()
+        {
+            profileToCopy = profile;
+        }
+
+        [MenuItem("CONTEXT/BaseMixedRealityProfile/Paste Profile Values", true)]
+        private static bool PasteProfileValuesValidation()
+        {
+            return profile != null &&
+                   targetProfile != null &&
+                   profileToCopy != null &&
+                   targetProfile.FindProperty(IsCustomProfileProperty).boolValue &&
+                   profile.GetType() == profileToCopy.GetType();
+        }
+
+        [MenuItem("CONTEXT/BaseMixedRealityProfile/Paste Profile Values", false, 2)]
+        private static void PasteProfileValues()
+        {
+            Undo.RecordObject(profile, "Paste Profile Values");
+            bool targetIsCustom = targetProfile.FindProperty(IsCustomProfileProperty).boolValue;
+            string originalName = targetProfile.targetObject.name;
+            EditorUtility.CopySerialized(profileToCopy, targetProfile.targetObject);
+            targetProfile.Update();
+            targetProfile.FindProperty(IsCustomProfileProperty).boolValue = targetIsCustom;
+            targetProfile.ApplyModifiedProperties();
+            targetProfile.targetObject.name = originalName;
+            Debug.Assert(targetProfile.FindProperty(IsCustomProfileProperty).boolValue == targetIsCustom);
+            AssetDatabase.SaveAssets();
         }
 
         private static async void PasteProfileValuesDelay(BaseMixedRealityProfile newProfile)
