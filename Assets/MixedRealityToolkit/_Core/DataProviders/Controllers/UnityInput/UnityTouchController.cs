@@ -107,7 +107,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInp
             {
                 Interactions[0].Vector2Data = TouchData.deltaPosition;
 
-                if (Interactions[0].Changed)
+                if (Interactions[0].Changed ||
+                   !Interactions[0].Vector2Data.Equals(Vector2.zero))
                 {
                     MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, Interactions[0].MixedRealityInputAction, TouchData.deltaPosition);
                 }

@@ -96,7 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInp
                 {
                     Interactions[i].Vector2Data = mouseDelta;
 
-                    if (Interactions[i].Changed)
+                    if (Interactions[i].Changed ||
+                       !Interactions[i].Vector2Data.Equals(Vector2.zero))
                     {
                         MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
                     }
@@ -106,7 +107,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInp
                 {
                     Interactions[i].Vector2Data = Input.mouseScrollDelta;
 
-                    if (Interactions[i].Changed)
+                    if (Interactions[i].Changed ||
+                       !Interactions[i].Vector2Data.Equals(Vector2.zero))
                     {
                         MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
                     }
@@ -132,12 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Controllers.UnityInp
                             MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
                         }
                     }
-                    else
+
+                    if (Interactions[i].BoolData)
                     {
-                        if (Interactions[i].BoolData)
-                        {
-                            MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
-                        }
+                        MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
                     }
                 }
             }
