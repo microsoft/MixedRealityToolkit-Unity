@@ -16,8 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         [PhysicsLayer]
         [SerializeField]
         [Tooltip("Optional physics layer override to specify for generated surface objects.")]
-        private int surfacePhysicsLayerOverride;
+        private int surfacePhysicsLayerOverride = -1;
 
+        /// <summary>
+        /// The surface physics layer override to use on generated surface objects.
+        /// </summary>
         public int SurfacePhysicsLayerOverride => surfacePhysicsLayerOverride;
 
         [SerializeField]
