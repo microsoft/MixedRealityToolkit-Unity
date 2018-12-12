@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// <summary>
         /// The physics layer that the generated floor is assigned to.
         /// </summary>
-        int FloorPhysicsLayer { get; }
+        int FloorPhysicsLayer { get; set; }
 
         /// <summary>
         /// Enable / disable play area rendering.
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// <summary>
         /// The physics layer that the generated play area is assigned to.
         /// </summary>
-        int PlayAreaPhysicsLayer { get; }
+        int PlayAreaPhysicsLayer { get; set; }
 
         /// <summary>
         /// Enable / disable tracked area rendering.
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// <summary>
         /// The physics layer that the generated tracked area is assigned to.
         /// </summary>
-        int TrackedAreaPhysicsLayer { get; }
+        int TrackedAreaPhysicsLayer { get; set; }
 
         /// <summary>
         /// Enable / disable boundary wall rendering.
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// <summary>
         /// The physics layer that the generated boundary walls are assigned to.
         /// </summary>
-        int BoundaryWallsPhysicsLayer { get; }
+        int BoundaryWallsPhysicsLayer { get; set; }
 
         /// <summary>
         /// Enable / disable ceiling rendering.
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// <summary>
         /// The physics layer that the generated boundary ceiling is assigned to.
         /// </summary>
-        int CeilingPhysicsLayer { get; }
+        int CeilingPhysicsLayer { get; set; }
 
         /// <summary>
         /// Two dimensional representation of the geometry of the boundary, as provided

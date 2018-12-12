@@ -317,8 +317,29 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
 
         private bool showPlayArea = false;
 
+        private int floorPhysicsLayer;
+
         /// <inheritdoc/>
-        public int FloorPhysicsLayer { get; private set; }
+        public int FloorPhysicsLayer
+        {
+            get
+            {
+                if (currentFloorObject != null)
+                {
+                    floorPhysicsLayer = currentFloorObject.layer;
+                }
+
+                return floorPhysicsLayer;
+            }
+            set
+            {
+                floorPhysicsLayer = value;
+                if (currentFloorObject != null)
+                {
+                    currentFloorObject.layer = floorPhysicsLayer;
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public bool ShowPlayArea
@@ -347,8 +368,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
 
         private bool showTrackedArea = false;
 
+        private int playAreaPhysicsLayer;
+
         /// <inheritdoc/>
-        public int PlayAreaPhysicsLayer { get; private set; }
+        public int PlayAreaPhysicsLayer
+        {
+            get
+            {
+                if (currentPlayAreaObject != null)
+                {
+                    playAreaPhysicsLayer = currentPlayAreaObject.layer;
+                }
+
+                return playAreaPhysicsLayer;
+            }
+            set
+            {
+                playAreaPhysicsLayer = value;
+
+                if (currentPlayAreaObject != null)
+                {
+                    currentPlayAreaObject.layer = playAreaPhysicsLayer;
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public bool ShowTrackedArea
@@ -377,8 +420,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
 
         private bool showBoundaryWalls = false;
 
+        private int trackedAreaPhysicsLayer;
+
         /// <inheritdoc/>
-        public int TrackedAreaPhysicsLayer { get; private set; }
+        public int TrackedAreaPhysicsLayer
+        {
+            get
+            {
+                if (currentTrackedAreaObject != null)
+                {
+                    trackedAreaPhysicsLayer = currentTrackedAreaObject.layer;
+                }
+
+                return trackedAreaPhysicsLayer;
+            }
+            set
+            {
+                trackedAreaPhysicsLayer = value;
+
+                if (currentTrackedAreaObject != null)
+                {
+                    currentTrackedAreaObject.layer = trackedAreaPhysicsLayer;
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public bool ShowBoundaryWalls
@@ -407,8 +472,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
 
         private bool showCeiling = false;
 
+        private int boundaryWallsPhysicsLayer;
+
         /// <inheritdoc/>
-        public int BoundaryWallsPhysicsLayer { get; private set; }
+        public int BoundaryWallsPhysicsLayer
+        {
+            get
+            {
+                if (currentBoundaryWallObject != null)
+                {
+                    boundaryWallsPhysicsLayer = currentBoundaryWallObject.layer;
+                }
+
+                return boundaryWallsPhysicsLayer;
+            }
+            set
+            {
+                boundaryWallsPhysicsLayer = value;
+
+                if (currentBoundaryWallObject != null)
+                {
+                    currentBoundaryWallObject.layer = boundaryWallsPhysicsLayer;
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public bool ShowBoundaryCeiling
@@ -435,8 +522,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
             }
         }
 
+        private int ceilingPhysicsLayer;
+
         /// <inheritdoc/>
-        public int CeilingPhysicsLayer { get; private set; }
+        public int CeilingPhysicsLayer
+        {
+            get
+            {
+                if (currentCeilingObject != null)
+                {
+                    ceilingPhysicsLayer = currentCeilingObject.layer;
+                }
+
+                return ceilingPhysicsLayer;
+            }
+            set
+            {
+                ceilingPhysicsLayer = value;
+
+                if (currentCeilingObject != null)
+                {
+                    currentFloorObject.layer = ceilingPhysicsLayer;
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public Edge[] Bounds { get; private set; } = new Edge[0];
