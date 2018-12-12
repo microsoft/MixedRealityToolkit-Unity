@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 {
@@ -23,12 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         {
             get
             {
-                if (string.IsNullOrEmpty(mixedRealityToolkit_RelativeFolderPath))
+                if (string.IsNullOrEmpty(mixedRealityToolkit_RelativeFolderPath) &&
+                    !FindDirectory(Application.dataPath, "MixedRealityToolkit", out mixedRealityToolkit_RelativeFolderPath))
                 {
-                    if (!FindDirectory(Application.dataPath, "MixedRealityToolkit", out mixedRealityToolkit_RelativeFolderPath))
-                    {
-                        Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
-                    }
+                    Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
                 }
 
                 return mixedRealityToolkit_RelativeFolderPath;
@@ -154,8 +154,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         private static bool FindDirectory(string directoryPathToSearch, string directoryName, out string path)
         {
             path = string.Empty;
+            string[] directories;
 
-            var directories = Directory.GetDirectories(directoryPathToSearch);
+            try
+            {
+                directories = Directory.GetDirectories(directoryPathToSearch);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
 
             for (int i = 0; i < directories.Length; i++)
             {
