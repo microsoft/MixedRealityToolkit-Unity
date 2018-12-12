@@ -303,6 +303,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             }
 
             RaiseMeshAdded(meshObject);
+
+            // reset our pending object so we can process another mesh.
+            pendingSpatialObject = null;
         }
 
         #endregion IMixedRealitySpatialMeshObserver implementation
