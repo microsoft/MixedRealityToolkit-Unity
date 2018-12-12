@@ -74,13 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                 message += "- Force Text Serialization\n";
             }
 
-            var il2Cpp = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) == ScriptingImplementation.IL2CPP;
-
-            if (!il2Cpp)
-            {
-                message += "- Change the Scripting Backend to use IL2CPP\n";
-            }
-
             var visibleMetaFiles = EditorSettings.externalVersionControl.Equals("Visible Meta Files");
 
             if (!visibleMetaFiles)
@@ -88,12 +81,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                 message += "- Visible meta files\n";
             }
 
+            var il2Cpp = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) == ScriptingImplementation.IL2CPP;
+
+            if (!il2Cpp)
+            {
+                message += "- Change the Scripting Backend to use IL2CPP\n";
+            }
+
             if (!PlayerSettings.virtualRealitySupported)
             {
                 message += "- Enable XR Settings for your current platform\n";
             }
 
-            message += "\nWould you like to make this change?";
+            if (EditorUserBuildSettings.selectedBuildTargetGroup == BuildTargetGroup.WSA)
+            {
+                message += "- Enable Shared Depth Buffer in the XR SDK Settings\n";
+            }
+
+            message += "\nWould you like to make these changes?\n\n";
 
             if (!forceTextSerialization || !il2Cpp || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
             {
