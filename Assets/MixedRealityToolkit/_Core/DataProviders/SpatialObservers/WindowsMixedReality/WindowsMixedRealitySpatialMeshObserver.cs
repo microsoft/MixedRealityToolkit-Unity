@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             if (MixedRealityToolkit.SpatialAwarenessSystem == null || !Application.isPlaying || !IsRunning) { return; }
 
             // If we have a mesh to work on...
-            if (!pendingSpatialObject.HasValue || meshWorkQueue.Count > 0)
+            if (!pendingSpatialObject.HasValue && meshWorkQueue.Count > 0)
             {
                 // We're using a simple first-in-first-out rule for requesting meshes,
                 // but a more sophisticated algorithm could prioritize
