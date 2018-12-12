@@ -65,6 +65,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         /// <inheritdoc />
         public bool IsObserverRunning(IMixedRealitySpatialObserverDataProvider observer)
         {
+            foreach (var detectedObserver in DetectedSpatialObservers)
+            {
+                if (detectedObserver.SourceId == observer.SourceId)
+                {
+                    return observer.IsRunning;
+                }
+            }
+
             return false;
         }
 
