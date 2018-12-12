@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using UnityEngine;
 
@@ -87,19 +90,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialOb
         IReadOnlyDictionary<int, SpatialMeshObject> SpatialMeshObjects { get; }
 
         /// <summary>
-        /// Forwards mesh added event to the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/>.
+        /// Forwards mesh added event to the <see cref="SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
         /// <param name="spatialMeshObject">The <see cref="SpatialMeshObject"/> data.</param>
         void RaiseMeshAdded(SpatialMeshObject spatialMeshObject);
 
         /// <summary>
-        /// Forwards mesh updated event to the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/>.
+        /// Forwards mesh updated event to the <see cref="SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
         /// <param name="spatialMeshObject">The <see cref="SpatialMeshObject"/> data.</param>
         void RaiseMeshUpdated(SpatialMeshObject spatialMeshObject);
 
         /// <summary>
-        /// Forwards mesh removed event to the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/>.
+        /// Forwards mesh removed event to the <see cref="SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
         /// <param name="spatialMeshObject">The <see cref="SpatialMeshObject"/> data.</param>
         void RaiseMeshRemoved(SpatialMeshObject spatialMeshObject);
