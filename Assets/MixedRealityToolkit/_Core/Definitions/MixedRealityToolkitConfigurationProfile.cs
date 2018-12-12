@@ -12,13 +12,15 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests")]
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 {
     /// <summary>
@@ -61,12 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// </summary>
         public bool IsCameraProfileEnabled
         {
-            get
-            {
-                return CameraProfile != null && enableCameraProfile;
-            }
-
-            private set { enableCameraProfile = value; }
+            get { return CameraProfile != null && enableCameraProfile; }
+            internal set { enableCameraProfile = value; }
         }
 
         [SerializeField]
@@ -80,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public MixedRealityCameraProfile CameraProfile
         {
             get { return cameraProfile; }
-            private set { cameraProfile = value; }
+            internal set { cameraProfile = value; }
         }
 
         [SerializeField]
@@ -92,11 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// </summary>
         public bool IsInputSystemEnabled
         {
-            get
-            {
-                return inputSystemProfile != null && inputSystemType != null && inputSystemType.Type != null && enableInputSystem;
-            }
-            private set { enableInputSystem = value; }
+            get { return inputSystemProfile != null && inputSystemType != null && inputSystemType.Type != null && enableInputSystem; }
+            internal set { enableInputSystem = value; }
         }
 
         [SerializeField]
@@ -109,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public MixedRealityInputSystemProfile InputSystemProfile
         {
             get { return inputSystemProfile; }
-            private set { inputSystemProfile = value; }
+            internal set { inputSystemProfile = value; }
         }
 
         [SerializeField]
@@ -123,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public SystemType InputSystemType
         {
             get { return inputSystemType; }
-            private set { inputSystemType = value; }
+            internal set { inputSystemType = value; }
         }
 
         [SerializeField]
@@ -136,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public bool IsBoundarySystemEnabled
         {
             get { return boundarySystemType != null && boundarySystemType.Type != null && enableBoundarySystem && boundaryVisualizationProfile != null; }
-            private set { enableInputSystem = value; }
+            internal set { enableInputSystem = value; }
         }
 
         [SerializeField]
@@ -150,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public SystemType BoundarySystemSystemType
         {
             get { return boundarySystemType; }
-            private set { boundarySystemType = value; }
+            internal set { boundarySystemType = value; }
         }
 
         [SerializeField]
@@ -163,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public MixedRealityBoundaryVisualizationProfile BoundaryVisualizationProfile
         {
             get { return boundaryVisualizationProfile; }
-            private set { boundaryVisualizationProfile = value; }
+            internal set { boundaryVisualizationProfile = value; }
         }
 
         [SerializeField]
@@ -176,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public bool IsTeleportSystemEnabled
         {
             get { return teleportSystemType != null && teleportSystemType.Type != null && enableTeleportSystem; }
-            private set { enableTeleportSystem = value; }
+            internal set { enableTeleportSystem = value; }
         }
 
         [SerializeField]
@@ -190,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public SystemType TeleportSystemSystemType
         {
             get { return teleportSystemType; }
-            private set { teleportSystemType = value; }
+            internal set { teleportSystemType = value; }
         }
 
         [SerializeField]
@@ -203,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public bool IsSpatialAwarenessSystemEnabled
         {
             get { return spatialAwarenessSystemType != null && spatialAwarenessSystemType.Type != null && enableSpatialAwarenessSystem; }
-            private set { enableSpatialAwarenessSystem = value; }
+            internal set { enableSpatialAwarenessSystem = value; }
         }
 
         [SerializeField]
@@ -217,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public SystemType SpatialAwarenessSystemSystemType
         {
             get { return spatialAwarenessSystemType; }
-            private set { spatialAwarenessSystemType = value; }
+            internal set { spatialAwarenessSystemType = value; }
         }
 
         [SerializeField]
@@ -230,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public MixedRealitySpatialAwarenessProfile SpatialAwarenessProfile
         {
             get { return spatialAwarenessProfile; }
-            private set { spatialAwarenessProfile = value; }
+            internal set { spatialAwarenessProfile = value; }
         }
 
         [SerializeField]
@@ -243,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public MixedRealityNetworkSystemProfile NetworkingSystemProfile
         {
             get { return networkingSystemProfile; }
-            private set { networkingSystemProfile = value; }
+            internal set { networkingSystemProfile = value; }
         }
 
         [SerializeField]
@@ -256,7 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public bool IsNetworkingSystemEnabled
         {
             get { return enableNetworkingSystem && NetworkingSystemSystemType?.Type != null && networkingSystemProfile != null; }
-            private set { enableNetworkingSystem = value; }
+            internal set { enableNetworkingSystem = value; }
         }
 
         [SerializeField]
@@ -270,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public SystemType NetworkingSystemSystemType
         {
             get { return networkingSystemType; }
-            private set { networkingSystemType = value; }
+            internal set { networkingSystemType = value; }
         }
 
         [SerializeField]
@@ -283,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public MixedRealityDiagnosticsProfile DiagnosticsSystemProfile
         {
             get { return diagnosticsSystemProfile; }
-            private set { diagnosticsSystemProfile = value; }
+            internal set { diagnosticsSystemProfile = value; }
         }
 
         [SerializeField]
@@ -296,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public bool IsDiagnosticsSystemEnabled
         {
             get { return enableDiagnosticsSystem && DiagnosticsSystemSystemType?.Type != null && diagnosticsSystemProfile != null; }
-            private set { enableDiagnosticsSystem = value; }
+            internal set { enableDiagnosticsSystem = value; }
         }
 
         [SerializeField]
@@ -310,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public SystemType DiagnosticsSystemSystemType
         {
             get { return diagnosticsSystemType; }
-            private set { diagnosticsSystemType = value; }
+            internal set { diagnosticsSystemType = value; }
         }
 
         [SerializeField]
