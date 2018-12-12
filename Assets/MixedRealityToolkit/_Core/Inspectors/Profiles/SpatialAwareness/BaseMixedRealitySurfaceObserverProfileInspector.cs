@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
     [CustomEditor(typeof(BaseMixedRealitySurfaceObserverProfile))]
     public abstract class BaseMixedRealitySurfaceObserverProfileInspector : BaseMixedRealitySpatialObserverProfileInspector
     {
+        private SerializedProperty surfacePhysicsLayerOverride;
         private SerializedProperty surfaceFindingMinimumArea;
         private SerializedProperty displayFloorSurfaces;
         private SerializedProperty floorSurfaceMaterial;
@@ -39,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
                 return;
             }
 
+            surfacePhysicsLayerOverride = serializedObject.FindProperty("surfacePhysicsLayerOverride");
             surfaceFindingMinimumArea = serializedObject.FindProperty("surfaceFindingMinimumArea");
             displayFloorSurfaces = serializedObject.FindProperty("displayFloorSurfaces");
             floorSurfaceMaterial = serializedObject.FindProperty("floorSurfaceMaterial");
@@ -67,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
             if (foldout)
             {
                 EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(surfacePhysicsLayerOverride);
                 EditorGUILayout.PropertyField(surfaceFindingMinimumArea, minimumAreaContent);
                 EditorGUILayout.PropertyField(displayFloorSurfaces);
                 EditorGUILayout.PropertyField(floorSurfaceMaterial, floorMaterialContent);
