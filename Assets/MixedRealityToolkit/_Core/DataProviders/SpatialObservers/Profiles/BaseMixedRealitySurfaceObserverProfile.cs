@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
@@ -12,6 +13,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
     /// </summary>
     public abstract class BaseMixedRealitySurfaceObserverProfile : BaseMixedRealitySpatialObserverProfile
     {
+        [PhysicsLayer]
+        [SerializeField]
+        [Tooltip("Optional physics layer override to specify for generated surface objects.")]
+        private int surfacePhysicsLayerOverride = -1;
+
+        /// <summary>
+        /// The surface physics layer override to use on generated surface objects.
+        /// </summary>
+        public int SurfacePhysicsLayerOverride => surfacePhysicsLayerOverride;
+
         [SerializeField]
         [Tooltip("The minimum area, in square meters, of the planar surfaces")]
         private float surfaceFindingMinimumArea = 0.025f;

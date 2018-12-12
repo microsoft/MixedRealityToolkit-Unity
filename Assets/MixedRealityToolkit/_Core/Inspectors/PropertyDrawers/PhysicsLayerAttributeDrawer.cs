@@ -20,6 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
             var guiContents = new List<GUIContent>();
             var layerIds = new List<int>();
 
+            guiContents.Add(new GUIContent("(None)"));
+            layerIds.Add(-1);
+
             for (int i = 0; i < LayerExtensions.TagManagerLayers.arraySize; i++)
             {
                 var layer = LayerExtensions.TagManagerLayers.GetArrayElementAtIndex(i);

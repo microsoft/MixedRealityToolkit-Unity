@@ -17,6 +17,7 @@ MonoBehaviour:
   isStationaryObserver: 0
   updateInterval: 3.5
   physicsLayer: 31
+  meshPhysicsLayerOverride: -1
   meshLevelOfDetail: 0
   meshTrianglesPerCubicMeter: 0
   meshRecalculateNormals: 1

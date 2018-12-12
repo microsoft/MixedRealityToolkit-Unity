@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
         private SerializedProperty updateInterval;
         private SerializedProperty physicsLayer;
 
-        private bool foldout = true;
+        private static bool foldout = true;
 
         /// <inheritdoc />
         protected override void OnEnable()
@@ -41,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
+
             if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             {
                 return;

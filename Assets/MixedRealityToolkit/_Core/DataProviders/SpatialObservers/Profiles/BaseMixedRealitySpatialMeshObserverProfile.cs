@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using UnityEngine;
 
@@ -8,6 +9,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
 {
     public abstract class BaseMixedRealitySpatialMeshObserverProfile : BaseMixedRealitySpatialObserverProfile
     {
+        [PhysicsLayer]
+        [SerializeField]
+        [Tooltip("The optional mesh Physics layer override of the base PhysicsLayer")]
+        private int meshPhysicsLayerOverride = -1;
+
+        /// <summary>
+        /// The optional Physics layer override of the base <see cref="Interfaces.DataProviders.SpatialObservers.IMixedRealitySpatialObserverDataProvider.PhysicsLayer"/>
+        /// </summary>
+        public int MeshPhysicsLayerOverride => meshPhysicsLayerOverride;
+
         [SerializeField]
         [Tooltip("Level of detail for the mesh")]
         private SpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;

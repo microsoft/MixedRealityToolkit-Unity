@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             if (MixedRealityToolkit.SpatialAwarenessSystem == null || !Application.isPlaying || !IsRunning) { return; }
 
             // If we have a mesh to work on...
-            if (meshWorkQueue.Count > 0)
+            if (!pendingSpatialObject.HasValue && meshWorkQueue.Count > 0)
             {
                 // We're using a simple first-in-first-out rule for requesting meshes,
                 // but a more sophisticated algorithm could prioritize
@@ -95,13 +95,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         {
             base.Disable();
 
-            // Cleanup the outstanding mesh objects.
-            foreach (var meshObject in outstandingMeshObjects)
+            if (pendingSpatialObject.HasValue)
             {
-                DestroyMeshObject(meshObject.Value);
+                DestroyMeshObject(pendingSpatialObject.Value);
             }
-
-            outstandingMeshObjects.Clear();
         }
 
         /// <inheritdoc />
@@ -141,9 +138,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         /// <summary> 
         /// To prevent too many meshes from being generated at the same time, we will 
         /// only request one mesh to be created at a time.  This variable will track 
-        /// if a mesh creation request is in flight. 
+        /// if a mesh creation request is in flight.
         /// </summary> 
-        private readonly Dictionary<int, SpatialMeshObject> outstandingMeshObjects = new Dictionary<int, SpatialMeshObject>();
+        private SpatialMeshObject? pendingSpatialObject = null;
 
         /// <summary>
         /// The time at which the surface observer was last asked for updated data.
@@ -203,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
 
             if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
             {
-                outstandingMeshObjects.Add(surfaceId.handle, newSpatialMeshObject);
+                pendingSpatialObject = newSpatialMeshObject;
             }
             else
             {
@@ -263,18 +260,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         {
             if (!IsRunning) { return; }
 
-            SpatialMeshObject outstandingMeshObject;
-            outstandingMeshObjects.TryGetValue(cookedData.id.handle, out outstandingMeshObject);
+            if (!pendingSpatialObject.HasValue || pendingSpatialObject.Value.Id != cookedData.id.handle)
+            {
+                Debug.LogError("Pending spatial mesh object is invalid!");
+                return;
+            }
+
+            SpatialMeshObject meshObject = pendingSpatialObject.Value;
 
             if (!outputWritten)
             {
                 Debug.LogWarning($"OnDataReady reported no data written for mesh id {cookedData.id.handle.ToString()}");
-                DestroyMeshObject(outstandingMeshObject);
+                DestroyMeshObject(meshObject);
                 return;
             }
-
-            SpatialMeshObject meshObject = outstandingMeshObject;
-            outstandingMeshObjects.Remove(meshObject.Id);
 
             // Apply the appropriate material to the mesh.
             SpatialMeshDisplayOptions displayOption = MeshDisplayOption;
@@ -304,6 +303,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
             }
 
             RaiseMeshAdded(meshObject);
+
+            // reset our pending object so we can process another mesh.
+            pendingSpatialObject = null;
         }
 
         #endregion IMixedRealitySpatialMeshObserver implementation

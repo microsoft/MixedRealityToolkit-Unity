@@ -22,9 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialOb
         float UpdateInterval { get; set; }
 
         /// <summary>
-        /// The physics layer to use when creating spatial objects for this observer.
+        /// The global physics layer to use when creating spatial objects for this observer.
         /// </summary>
-        int PhysicsLayer { get; set; }
+        /// <remarks>
+        /// Some implementations may override this.
+        /// </remarks>
+        int PhysicsLayer { get; }
 
         /// <summary>
         /// Is the observer running (actively accumulating spatial data)?

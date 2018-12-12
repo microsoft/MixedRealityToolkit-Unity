@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
                 return;
             }
 
+            SurfacePhysicsLayerOverride = profile.SurfacePhysicsLayerOverride;
             SurfaceFindingMinimumArea = profile.SurfaceFindingMinimumArea;
             DisplayFloorSurfaces = profile.DisplayFloorSurfaces;
             FloorSurfaceMaterial = profile.FloorSurfaceMaterial;
@@ -36,6 +37,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
             DisplayPlatformSurfaces = profile.DisplayPlatformSurfaces;
             PlatformSurfaceMaterial = profile.PlatformSurfaceMaterial;
         }
+
+        /// <inheritdoc />
+        public override int PhysicsLayer
+        {
+            get
+            {
+                if (SurfacePhysicsLayerOverride > -1)
+                {
+                    return base.PhysicsLayer;
+                }
+
+                return SurfacePhysicsLayerOverride;
+            }
+        }
+
+        /// <inheritdoc />
+        public int SurfacePhysicsLayerOverride { get; }
 
         /// <inheritdoc />
         public float SurfaceFindingMinimumArea { get; }

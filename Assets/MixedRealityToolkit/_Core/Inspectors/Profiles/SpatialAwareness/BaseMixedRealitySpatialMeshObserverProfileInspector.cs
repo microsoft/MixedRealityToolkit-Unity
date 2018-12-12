@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
     [CustomEditor(typeof(BaseMixedRealitySpatialMeshObserverProfile))]
     public abstract class BaseMixedRealitySpatialMeshObserverProfileInspector : BaseMixedRealitySpatialObserverProfileInspector
     {
+        private SerializedProperty meshPhysicsLayerOverride;
         private SerializedProperty meshLevelOfDetail;
         private SerializedProperty meshTrianglesPerCubicMeter;
         private SerializedProperty meshRecalculateNormals;
@@ -17,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
         private SerializedProperty meshVisibleMaterial;
         private SerializedProperty meshOcclusionMaterial;
 
-        private bool foldout = true;
+        private static bool foldout = true;
 
         /// <inheritdoc />
         protected override void OnEnable()
@@ -29,6 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
                 return;
             }
 
+            meshPhysicsLayerOverride = serializedObject.FindProperty("meshPhysicsLayerOverride");
             meshLevelOfDetail = serializedObject.FindProperty("meshLevelOfDetail");
             meshTrianglesPerCubicMeter = serializedObject.FindProperty("meshTrianglesPerCubicMeter");
             meshRecalculateNormals = serializedObject.FindProperty("meshRecalculateNormals");
@@ -53,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.SpatialAwarene
             if (foldout)
             {
                 EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(meshPhysicsLayerOverride);
                 EditorGUILayout.PropertyField(meshLevelOfDetail);
                 EditorGUILayout.PropertyField(meshTrianglesPerCubicMeter);
                 EditorGUILayout.PropertyField(meshRecalculateNormals);
