@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles;
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Linq;
 using UnityEditor;
@@ -14,7 +15,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityInputActionRulesProfile))]
-    public class MixedRealityInputActionRulesInspector : MixedRealityBaseConfigurationProfileInspector
+    public class MixedRealityInputActionRulesInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private static readonly GUIContent RuleAddButtonContent = new GUIContent("+ Add a New Rule Definition");
         private static readonly GUIContent RuleMinusButtonContent = new GUIContent("-", "Remove Rule Definition");
@@ -60,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         {
             base.OnEnable();
 
-            if (!CheckMixedRealityConfigured(false) ||
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false) ||
                 !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
                  MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
@@ -93,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         {
             RenderMixedRealityToolkitLogo();
 
-            if (!CheckMixedRealityConfigured())
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             {
                 return;
             }
