@@ -275,9 +275,8 @@ PlayerSettings:
   m_BuildTargetGraphicsAPIs: []
   m_BuildTargetVRSettings:
   - m_BuildTarget: Android
-    m_Enabled: 0
-    m_Devices:
-    - Oculus
+    m_Enabled: 1
+    m_Devices: []
   - m_BuildTarget: Metro
     m_Enabled: 1
     m_Devices:
@@ -304,6 +303,7 @@ PlayerSettings:
   - m_BuildTarget: Standalone
     m_Enabled: 1
     m_Devices:
+    - Oculus
     - OpenVR
   - m_BuildTarget: Tizen
     m_Enabled: 0
@@ -630,7 +630,7 @@ PlayerSettings:
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: Microsoft.MixedReality.Toolkit
-  metroPackageVersion: 2018.0.0.0
+  metroPackageVersion: 2018.9.0.0
   metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
@@ -652,27 +652,39 @@ PlayerSettings:
   platformCapabilities:
     WindowsStoreApps:
       AllJoyn: False
+      Appointments: False
+      BackgroundMediaPlayback: False
       BlockedChatMessages: False
       Bluetooth: False
       Chat: False
       CodeGeneration: False
+      Contacts: False
       EnterpriseAuthentication: False
       HumanInterfaceDevice: False
       InputInjectionBrokered: False
       InternetClient: True
       InternetClientServer: False
       Location: False
+      LowLevelDevices: False
       Microphone: True
       MusicLibrary: False
       Objects3D: False
+      OfflineMapsManagement: False
       PhoneCall: False
+      PhoneCallHistoryPublic: False
       PicturesLibrary: False
+      PointOfService: False
       PrivateNetworkClientServer: False
       Proximity: False
+      RecordedCallsFolder: False
+      RemoteSystem: False
       RemovableStorage: False
       SharedUserCertificates: False
       SpatialPerception: True
+      SystemManagement: False
       UserAccountInformation: False
+      UserDataTasks: False
+      UserNotificationListener: False
       VideosLibrary: False
       VoipCall: False
       WebCam: False

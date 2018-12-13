@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityRegisteredServiceProvidersProfile))]
-    public class MixedRealityRegisteredServiceProviderProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    public class MixedRealityRegisteredServiceProviderProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Unregister");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Register a new Service Provider");
@@ -17,9 +18,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private static bool[] configFoldouts;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            if (!CheckMixedRealityConfigured(false))
+            base.OnEnable();
+
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
                 return;
             }
@@ -31,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            if (!CheckMixedRealityConfigured())
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             {
                 return;
             }
@@ -45,10 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.LabelField("Registered Service Providers Profile", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("This profile defines any additional Services like systems, features, and managers to register with the Mixed Reality Toolkit.", MessageType.Info);
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
 
             serializedObject.Update();
             RenderList(configurations);
@@ -112,6 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {
                     list.DeleteArrayElementAtIndex(i);
+                    serializedObject.ApplyModifiedProperties();
+                    MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
                     EditorGUILayout.EndHorizontal();
                     GUILayout.EndVertical();
                     break;

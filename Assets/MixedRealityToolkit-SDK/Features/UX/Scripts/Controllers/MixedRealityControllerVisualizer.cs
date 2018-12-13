@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         #region IMixedRealityInputHandler Implementation
 
         /// <summary>
-        /// Visualize the pressed button in the controller model, if supported
+        /// Visualize digital and single axis controls down state on the controller model, if supported
         /// </summary>
         /// <remarks>
         /// Reserved for future implementation
@@ -31,11 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         public override void OnInputDown(InputEventData eventData)
         {
             base.OnInputDown(eventData);
-            // TODO Visualize button down
+            // TODO Visualize digital and single axis controls down state
         }
 
         /// <summary>
-        /// Visualize the released button in the controller model, if supported
+        /// Visualize digital and single axis controls up state on the controller model, if supported
         /// </summary>
         /// <remarks>
         /// Reserved for future implementation
@@ -44,32 +44,32 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         public override void OnInputUp(InputEventData eventData)
         {
             base.OnInputUp(eventData);
-            // TODO Visualize button up
+            // TODO Visualize digital and single axis controls up state
         }
 
         /// <summary>
-        /// Visualize the held trigger in the controller model, if supported
+        /// Visualize single axis controls on the controller model, if supported
         /// </summary>
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
         /// <param name="eventData"></param>
-        public override void OnInputPressed(InputEventData<float> eventData)
+        public override void OnInputChanged(InputEventData<float> eventData)
         {
-            base.OnInputPressed(eventData);
+            base.OnInputChanged(eventData);
             // TODO Visualize single axis controls
         }
 
         /// <summary>
-        /// Visualize the movement of a dual axis input in the controller model, if supported
+        /// Visualize the movement of a dual axis input on the controller model, if supported
         /// </summary>
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
         /// <param name="eventData"></param>
-        public override void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
-            base.OnPositionInputChanged(eventData);
+            base.OnInputChanged(eventData);
             // TODO Visualize dual axis controls
         }
 
