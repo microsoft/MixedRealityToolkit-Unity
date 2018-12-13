@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
@@ -113,35 +114,64 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Networking.WebRTC
         public void SendData<T>(T data)
         {
             var messageDataType = typeof(T).AssemblyQualifiedName;
-            var messageData = Encoding.ASCII.GetBytes(JsonUtility.ToJson(data));
+            byte[] messageData;
+
+            if (typeof(T).IsPrimitive ||
+                typeof(T) == typeof(string))
+            {
+                messageData = data.GetBuiltInTypeBytes();
+            }
+            else
+            {
+                messageData = Encoding.ASCII.GetBytes(JsonUtility.ToJson(data));
+            }
+
             var message = new Frame(messageDataType, messageData);
 
             // TODO Send message data down into the lower level resource api peer connection.
         }
 
-        /// <summary>
-        /// TODO: probably won't be this method but I wanted to provide a way to show how network data providers can call into the network system to raise when 
-        /// </summary>
-        private void RaiseWebRtcDataArrived()
+        private void OnFrameReceived(Frame frame)
         {
             // TODO get frame data from peer connection.
-            Frame frame = new Frame("myType", new byte[0]);
             var messageDataType = Type.GetType(frame.MessageType, false);
-            object message = null;
 
             if (messageDataType != null)
             {
-                message = JsonUtility.FromJson(Encoding.ASCII.GetString(frame.Message), messageDataType);
+                RaiseWebRtcDataArrived(messageDataType, frame.Message);
             }
             else
             {
                 Debug.LogError($"Failed to get network message type {frame.MessageType}");
             }
+        }
 
-            if (message != null)
+        /// <summary>
+        /// TODO: probably won't be this method but I wanted to provide a way to show how network data providers could call into the network system to raise when data has been received
+        /// </summary>
+        private static void RaiseWebRtcDataArrived<T>(T type, byte[] data)
+        {
+            T message;
+
+            try
             {
-                MixedRealityToolkit.NetworkingSystem.RaiseDataReceived(message);
+                if (typeof(T).IsPrimitive ||
+                    typeof(T) == typeof(string))
+                {
+                    message = data.GetBuiltInTypeValueFromBytes<T>();
+                }
+                else
+                {
+                    message = JsonUtility.FromJson<T>(Encoding.ASCII.GetString(data));
+                }
             }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to convert {type.GetType().Name} message data!\n{e.Message}");
+                return;
+            }
+
+            MixedRealityToolkit.NetworkingSystem.RaiseDataReceived(message);
         }
 
         #endregion IMixedRealityNetworkDataProvider Implementation
