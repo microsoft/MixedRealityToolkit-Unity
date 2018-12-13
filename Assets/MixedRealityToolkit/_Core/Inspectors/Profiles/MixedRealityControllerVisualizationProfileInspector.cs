@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             if (modelPrefab == null) { return true; }
 
-            if (PrefabUtility.GetPrefabType(modelPrefab) != PrefabType.Prefab)
+            if (PrefabUtility.GetPrefabInstanceStatus(modelPrefab) == PrefabInstanceStatus.NotAPrefab)
             {
                 Debug.LogWarning("Assigned GameObject must be a prefab");
                 return false;
