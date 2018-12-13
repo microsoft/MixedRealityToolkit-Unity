@@ -3,15 +3,35 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Networking.WebRTC
 {
     /// <summary>
     /// The Mixed Reality Toolkit's Web RTC Data provider.
     /// </summary>
-    public class MixedRealityWebRtcDataProvider : BaseDataProvider, IMixedRealityNetworkDataProvider
+    public class MixedRealityWebRtcDataProvider : BaseDataProvider, IMixedRealityNetworkDataProvider<Guid, WebRtcPeerConnection>
     {
+        /// <summary>
+        /// This is just an example of a single frame from a web rtc data track.
+        /// </summary>
+        [Serializable]
+        private struct Frame
+        {
+            public Frame(string messageType, byte[] message)
+            {
+                MessageType = messageType;
+                Message = message;
+            }
+
+            public string MessageType;
+            public byte[] Message;
+        }
+
         /// <inheritdoc />
         public MixedRealityWebRtcDataProvider(string name, uint priority)
             : base(name, priority)
@@ -80,6 +100,50 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.Networking.WebRTC
 
         #endregion IEquality Implementation
 
-        #endregion
+        #endregion IMixedRealityEventSource Implementation
+
+        #region IMixedRealityNetworkDataProvider Implementation
+
+        private readonly Dictionary<Guid, WebRtcPeerConnection> connections = new Dictionary<Guid, WebRtcPeerConnection>();
+
+        /// <inheritdoc />
+        public IReadOnlyDictionary<Guid, WebRtcPeerConnection> Connections => new Dictionary<Guid, WebRtcPeerConnection>(connections);
+
+        /// <inheritdoc />
+        public void SendData<T>(T data)
+        {
+            var messageDataType = typeof(T).AssemblyQualifiedName;
+            var messageData = Encoding.ASCII.GetBytes(JsonUtility.ToJson(data));
+            var message = new Frame(messageDataType, messageData);
+
+            // TODO Send message data down into the lower level resource api peer connection.
+        }
+
+        /// <summary>
+        /// TODO: probably won't be this method but I wanted to provide a way to show how network data providers can call into the network system to raise when 
+        /// </summary>
+        private void RaiseWebRtcDataArrived()
+        {
+            // TODO get frame data from peer connection.
+            Frame frame = new Frame("myType", new byte[0]);
+            var messageDataType = Type.GetType(frame.MessageType, false);
+            object message = null;
+
+            if (messageDataType != null)
+            {
+                message = JsonUtility.FromJson(Encoding.ASCII.GetString(frame.Message), messageDataType);
+            }
+            else
+            {
+                Debug.LogError($"Failed to get network message type {frame.MessageType}");
+            }
+
+            if (message != null)
+            {
+                MixedRealityToolkit.NetworkingSystem.RaiseDataReceived(message);
+            }
+        }
+
+        #endregion IMixedRealityNetworkDataProvider Implementation
     }
 }

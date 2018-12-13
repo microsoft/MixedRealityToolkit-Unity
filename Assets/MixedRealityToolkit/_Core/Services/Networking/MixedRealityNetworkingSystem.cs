@@ -50,11 +50,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.Networking
         /// <inheritdoc />
         public void SendData<T>(T data)
         {
+            // Notes: we can mix and match or do some special routing here if we wanted.
+            foreach (var networkDataProvider in NetworkDataProviders)
+            {
+                networkDataProvider.SendData(data);
+            }
         }
 
         /// <inheritdoc />
-        public void OnDataReceived<T>(T data)
+        public void RaiseDataReceived<T>(T data)
         {
+            // TODO forward to all the registered listeners.
         }
 
         #endregion IMixedRealityNetworkingSystem Implementation

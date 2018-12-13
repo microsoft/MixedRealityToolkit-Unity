@@ -6,6 +6,9 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem
 {
+    /// <summary>
+    /// The networking system contract for the Mixed Reality Toolkit.
+    /// </summary>
     public interface IMixedRealityNetworkingSystem : IMixedRealityEventSystem
     {
         /// <summary>
@@ -39,10 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.NetworkingSystem
         void SendData<T>(T data);
 
         /// <summary>
-        /// Raised when data has been received from an <see cref="IMixedRealityNetworkDataProvider"/>. It's up to the <see cref="IMixedRealityNetworkingSystem"/> to forward this data to whomever needs it.
+        /// Raise when data has been received from an <see cref="IMixedRealityNetworkDataProvider"/>. It's up to the <see cref="IMixedRealityNetworkingSystem"/> to forward this data to whomever needs it.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="data"></param>
-        void OnDataReceived<T>(T data);
+        void RaiseDataReceived<T>(T data);
     }
 }
