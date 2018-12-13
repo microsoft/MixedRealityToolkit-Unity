@@ -2146,7 +2146,7 @@ MonoBehaviour:
   m_text: "Interactables Examples\n<size=75%>\nThe Interactable is a base component
     for building interactive content, like buttons and UI controls, with feedback
     based on interactive states. Interactables can have voice commands added to them
-    and offers a deep theming system for all types of snesory feedback.\n</size><size=75%>\n\u2022<indent=3%>Button
+    and offers a deep theming system for all types of sensory feedback.\n</size><size=75%>\n\u2022<indent=3%>Button
     \u2013 a standard UI button with basic feedback</indent>\n\u2022<indent=3%>Toggle
     Button \u2013 an advanced button with multiple dimensions</indent>\n\u2022<indent=3%>Animated
     Button \u2013 a button that uses an Animator theme for feedback</indent>\n\u2022<indent=3%>Simple
