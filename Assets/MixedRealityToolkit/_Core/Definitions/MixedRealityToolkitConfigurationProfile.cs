@@ -5,16 +5,20 @@ using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests")]
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 {
     /// <summary>
@@ -28,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// <summary>
         /// Dictionary list of active Systems used by the Mixed Reality Toolkit at runtime
         /// </summary>
+        [Obsolete("Use MixedRealityToolkit.ActiveSystems instead")]
         public Dictionary<Type, IMixedRealityService> ActiveServices { get; } = new Dictionary<Type, IMixedRealityService>();
 
         #endregion Service Registry properties
@@ -56,12 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// </summary>
         public bool IsCameraProfileEnabled
         {
-            get
-            {
-                return CameraProfile != null && enableCameraProfile;
-            }
-
-            private set { enableCameraProfile = value; }
+            get { return CameraProfile != null && enableCameraProfile; }
+            internal set { enableCameraProfile = value; }
         }
 
         [SerializeField]
@@ -75,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public MixedRealityCameraProfile CameraProfile
         {
             get { return cameraProfile; }
-            private set { cameraProfile = value; }
+            internal set { cameraProfile = value; }
         }
 
         [SerializeField]
@@ -87,11 +88,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// </summary>
         public bool IsInputSystemEnabled
         {
-            get
-            {
-                return inputSystemProfile != null && inputSystemType != null && inputSystemType.Type != null && enableInputSystem;
-            }
-            private set { enableInputSystem = value; }
+            get { return inputSystemProfile != null && inputSystemType != null && inputSystemType.Type != null && enableInputSystem; }
+            internal set { enableInputSystem = value; }
         }
 
         [SerializeField]
@@ -104,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public MixedRealityInputSystemProfile InputSystemProfile
         {
             get { return inputSystemProfile; }
-            private set { inputSystemProfile = value; }
+            internal set { inputSystemProfile = value; }
         }
 
         [SerializeField]
@@ -118,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public SystemType InputSystemType
         {
             get { return inputSystemType; }
-            private set { inputSystemType = value; }
+            internal set { inputSystemType = value; }
         }
 
         [SerializeField]
@@ -130,8 +128,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// </summary>
         public bool IsBoundarySystemEnabled
         {
-            get { return boundarySystemType != null && boundarySystemType.Type != null && enableBoundarySystem; }
-            private set { enableInputSystem = value; }
+            get { return boundarySystemType != null && boundarySystemType.Type != null && enableBoundarySystem && boundaryVisualizationProfile != null; }
+            internal set { enableInputSystem = value; }
         }
 
         [SerializeField]
@@ -145,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public SystemType BoundarySystemSystemType
         {
             get { return boundarySystemType; }
-            private set { boundarySystemType = value; }
+            internal set { boundarySystemType = value; }
         }
 
         [SerializeField]
@@ -158,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public MixedRealityBoundaryVisualizationProfile BoundaryVisualizationProfile
         {
             get { return boundaryVisualizationProfile; }
-            private set { boundaryVisualizationProfile = value; }
+            internal set { boundaryVisualizationProfile = value; }
         }
 
         [SerializeField]
@@ -171,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public bool IsTeleportSystemEnabled
         {
             get { return teleportSystemType != null && teleportSystemType.Type != null && enableTeleportSystem; }
-            private set { enableTeleportSystem = value; }
+            internal set { enableTeleportSystem = value; }
         }
 
         [SerializeField]
@@ -185,7 +183,47 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public SystemType TeleportSystemSystemType
         {
             get { return teleportSystemType; }
-            private set { teleportSystemType = value; }
+            internal set { teleportSystemType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable the Spatial Awareness system on Startup")]
+        private bool enableSpatialAwarenessSystem = false;
+
+        /// <summary>
+        /// Enable and configure the spatial awareness system.
+        /// </summary>
+        public bool IsSpatialAwarenessSystemEnabled
+        {
+            get { return spatialAwarenessSystemType != null && spatialAwarenessSystemType.Type != null && enableSpatialAwarenessSystem; }
+            internal set { enableSpatialAwarenessSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Spatial Awareness System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealitySpatialAwarenessSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType spatialAwarenessSystemType;
+
+        /// <summary>
+        /// Boundary System Script File to instantiate at runtime.
+        /// </summary>
+        public SystemType SpatialAwarenessSystemSystemType
+        {
+            get { return spatialAwarenessSystemType; }
+            internal set { spatialAwarenessSystemType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Profile for configuring the Spatial Awareness system.")]
+        private MixedRealitySpatialAwarenessProfile spatialAwarenessProfile;
+
+        /// <summary>
+        /// Active profile for spatial awareness configuration
+        /// </summary>
+        public MixedRealitySpatialAwarenessProfile SpatialAwarenessProfile
+        {
+            get { return spatialAwarenessProfile; }
+            internal set { spatialAwarenessProfile = value; }
         }
 
         [SerializeField]
@@ -198,17 +236,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public MixedRealityDiagnosticsProfile DiagnosticsSystemProfile
         {
             get { return diagnosticsSystemProfile; }
-            private set { diagnosticsSystemProfile = value; }
+            internal set { diagnosticsSystemProfile = value; }
         }
 
         [SerializeField]
         [Tooltip("Enable diagnostic system")]
         private bool enableDiagnosticsSystem = false;
 
+        /// <summary>
+        /// Is the Diagnostics System enabled?
+        /// </summary>
         public bool IsDiagnosticsSystemEnabled
         {
-            get { return enableDiagnosticsSystem && DiagnosticsSystemSystemType?.Type != null; }
-            private set { enableDiagnosticsSystem = value; }
+            get { return enableDiagnosticsSystem && DiagnosticsSystemSystemType?.Type != null && diagnosticsSystemProfile != null; }
+            internal set { enableDiagnosticsSystem = value; }
         }
 
         [SerializeField]
@@ -222,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public SystemType DiagnosticsSystemSystemType
         {
             get { return diagnosticsSystemType; }
-            private set { diagnosticsSystemType = value; }
+            internal set { diagnosticsSystemType = value; }
         }
 
         [SerializeField]

@@ -55,3 +55,17 @@ MonoBehaviour:
     priority: 10
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness.WindowsMixedRealitySpatialObserver,
+        Microsoft.MixedReality.Toolkit
+    componentName: Windows Mixed Reality Spatial Observer
+    priority: 10
+    runtimePlatform: 8
+    configurationProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.MouseDeviceManager,
+        Microsoft.MixedReality.Toolkit
+    componentName: Mouse Input Manager
+    priority: 10
+    runtimePlatform: -1
+    configurationProfile: {fileID: 0}

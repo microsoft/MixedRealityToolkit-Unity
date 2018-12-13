@@ -111,6 +111,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         }
 
         /// <inheritdoc />
+        public bool IsVisible => PrimaryCursorVisual != null ? PrimaryCursorVisual.gameObject.activeInHierarchy : gameObject.activeInHierarchy;
+
+        /// <inheritdoc />
         public bool SetVisibilityOnSourceDetected { get; set; } = false;
 
         /// <inheritdoc />
@@ -284,9 +287,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// </summary>
         protected virtual void UnregisterManagers()
         {
-            MixedRealityToolkit.InputSystem.InputEnabled -= OnInputEnabled;
-            MixedRealityToolkit.InputSystem.InputDisabled -= OnInputDisabled;
-            MixedRealityToolkit.InputSystem.Unregister(gameObject);
+            if (MixedRealityToolkit.InputSystem != null)
+            {
+                MixedRealityToolkit.InputSystem.InputEnabled -= OnInputEnabled;
+                MixedRealityToolkit.InputSystem.InputDisabled -= OnInputDisabled;
+                MixedRealityToolkit.InputSystem.Unregister(gameObject);
+            }
         }
 
         /// <summary>
@@ -322,7 +328,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             if (newTargetedObject == null)
             {
                 TargetedObject = null;
-
                 targetPosition = RayStep.GetPointByDistance(Pointer.Rays, defaultCursorDistance);
                 lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, defaultCursorDistance);
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;

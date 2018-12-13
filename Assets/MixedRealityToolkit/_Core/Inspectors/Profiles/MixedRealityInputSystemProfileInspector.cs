@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
@@ -10,43 +10,42 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityInputSystemProfile))]
-    public class MixedRealityInputSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    public class MixedRealityInputSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
+        private SerializedProperty focusProviderType;
         private SerializedProperty inputActionsProfile;
-        private SerializedProperty gesturesProfile;
         private SerializedProperty inputActionRulesProfile;
         private SerializedProperty pointerProfile;
+        private SerializedProperty gesturesProfile;
         private SerializedProperty speechCommandsProfile;
-        private SerializedProperty controllerVisualizationProfile;
         private SerializedProperty enableControllerMapping;
         private SerializedProperty controllerMappingProfile;
+        private SerializedProperty controllerVisualizationProfile;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            if (!MixedRealityToolkit.ConfirmInitialized())
+            base.OnEnable();
+
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
                 return;
             }
 
-            if (!MixedRealityToolkit.HasActiveProfile)
-            {
-                return;
-            }
-
+            focusProviderType = serializedObject.FindProperty("focusProviderType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
-            gesturesProfile = serializedObject.FindProperty("gesturesProfile");
             inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
+            gesturesProfile = serializedObject.FindProperty("gesturesProfile");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            controllerVisualizationProfile = serializedObject.FindProperty("controllerVisualizationProfile");
-            enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
+            enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
+            controllerVisualizationProfile = serializedObject.FindProperty("controllerVisualizationProfile");
         }
 
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            if (!CheckMixedRealityConfigured())
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             {
                 return;
             }
@@ -60,10 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.LabelField("Input System Profile", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("The Input System Profile helps developers configure input no matter what platform you're building for.", MessageType.Info);
 
-            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
-            {
-                GUI.enabled = false;
-            }
+            CheckProfileLock(target);
 
             var previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 160f;
@@ -72,18 +68,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUI.BeginChangeCheck();
             bool changed = false;
 
+            EditorGUILayout.PropertyField(focusProviderType);
+
             changed |= RenderProfile(inputActionsProfile);
-            changed |= RenderProfile(gesturesProfile);
             changed |= RenderProfile(inputActionRulesProfile);
             changed |= RenderProfile(pointerProfile);
+            changed |= RenderProfile(gesturesProfile);
             changed |= RenderProfile(speechCommandsProfile);
-            changed |= RenderProfile(controllerVisualizationProfile);
             EditorGUILayout.PropertyField(enableControllerMapping);
             changed |= RenderProfile(controllerMappingProfile);
+            changed |= RenderProfile(controllerVisualizationProfile);
 
             if (!changed)
             {
-                changed = EditorGUI.EndChangeCheck();
+                changed |= EditorGUI.EndChangeCheck();
             }
 
             EditorGUIUtility.labelWidth = previousLabelWidth;

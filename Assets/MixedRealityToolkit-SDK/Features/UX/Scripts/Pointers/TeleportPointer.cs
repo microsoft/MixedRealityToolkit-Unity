@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         #region IMixedRealityInputHandler Implementation
 
         /// <inheritdoc />
-        public override void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             // Don't process input if we've got an active teleport request in progress.
             if (IsTeleportRequestActive) { return; }

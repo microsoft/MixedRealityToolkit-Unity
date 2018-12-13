@@ -3,6 +3,8 @@
 # What is MixedRealityToolkit-vNext
 The V1 Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.
 
+> ### For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](/BranchGuide.md).
+
 This new version of the MixedRealityToolkit aims to further extend the capabilities of the toolkit and also introduce new features, including the capability to support more VR/AR/XR platforms beyond Microsoft's own Mixed Reality setup.
 
 The vNext branch is taking all the best lessons learned from the original Mixed Reality Toolkit and refactoring / restructuring it to both:
@@ -33,9 +35,19 @@ The Mixed Reality Toolkit vNext will includes many APIs to accelerate the develo
 | To develop apps for mixed reality headsets, you need the Windows 10 Fall Creators Update | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
 
 # Getting started with MRTK-vNext
-MRTK-vNext is currently under heavy development, utilizing the current state of the [Dev_Working_Branch](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch) as a starting point. Refer to this branch for working examples and experimental code.
 
-> Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](/MRTK-SDK.md) here.  Which aims to help on-board developers quicker when building solutions.
+The Mixed Reality team have prepared a few guides for getting up to speed on using the new Mixed Reality Toolkit, which can be found here:
+
+* [Downloading the Mixed Reality Toolkit](/Documentation/DownloadingTheMRTK.md)
+* [Getting Started with the Mixed Reality Toolkit](/Documentation/GettingStartedWithTheMRTK.md)
+* [Mixed Reality Toolkit configuration guide](/Documentation/MixedRealityConfigurationGuide.md)
+
+More guides to follow.
+
+
+> Any queries, questions or feedback on using the Mixed Reality Toolkit should be [raised as Issues](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) on the site.  let us know what you like / dislike or think is incredibly awesome!
+> 
+> Alternatively, reach out to us on the [HoloDevelopers slack channels](https://holodevelopersslack.azurewebsites.net/)
 
 
 # Examples and QuickStart scenes
