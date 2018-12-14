@@ -10,23 +10,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.Sharing
     /// Uses JSON to store and retrieve serialized objects from PlayerPrefs
     /// Useful for testing state sharing without a connection
     /// </summary>
-    public class SimpleStatePlayerPrefs : ISimpleState
+    public class SimpleStatePlayerPrefs : BaseService, ISimpleState
     {
-        public string Name { get { return "SimpleStatePlayerPrefs"; } }
-
-        public uint Priority { get { return 0; } }
-
-        public void Destroy() { }
-
-        public void Disable() { }
-
-        public void Enable() { }
-
-        public void Initialize() { }
-
-        public void Reset() { }
-
-        public void Update() { }
+        public override void Initialize()
+        {
+            Name = "SimpleStatePlayerPrefs";
+        }
 
         public int SimulatedLatency { get; set; }
 
