@@ -42,7 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
             {
                 Type = Type.GetType(assemblyQualifiedClassName);
 
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+                if (Type != null && Type.IsAbstract())
+#else
                 if (Type != null && Type.IsAbstract)
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
                 {
                     Type = null;
                 }
@@ -65,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
             Type = type;
         }
 
-        #region ISerializationCallbackReceiver Members
+#region ISerializationCallbackReceiver Members
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
@@ -74,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 
         void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 
-        #endregion ISerializationCallbackReceiver Members
+#endregion ISerializationCallbackReceiver Members
 
         /// <summary>
         /// Gets or sets type of class reference.
