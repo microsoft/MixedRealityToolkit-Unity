@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
             Type = type;
         }
 
-#region ISerializationCallbackReceiver Members
+        #region ISerializationCallbackReceiver Members
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 
         void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 
-#endregion ISerializationCallbackReceiver Members
+        #endregion ISerializationCallbackReceiver Members
 
         /// <summary>
         /// Gets or sets type of class reference.
