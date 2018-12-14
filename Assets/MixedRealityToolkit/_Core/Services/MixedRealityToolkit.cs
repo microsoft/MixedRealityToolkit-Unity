@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.Controllers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
@@ -16,7 +17,6 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.Controllers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -216,7 +216,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     {
                         inputSystem = null;
                         Debug.LogError("Failed to register the focus provider! The input system will not function without it.");
-                        return;
                     }
                 }
                 else
