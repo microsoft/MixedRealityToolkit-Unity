@@ -2,14 +2,18 @@
     "name": "Microsoft.MixedReality.Toolkit.SDK.Inspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Core.Inspectors",
         "Microsoft.MixedReality.Toolkit.InputSystem",
-        "Microsoft.MixedReality.Toolkit.SDK",
-        "Microsoft.MixedReality.Toolkit.Core.Inspectors"
+        "Microsoft.MixedReality.Toolkit.SDK"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }

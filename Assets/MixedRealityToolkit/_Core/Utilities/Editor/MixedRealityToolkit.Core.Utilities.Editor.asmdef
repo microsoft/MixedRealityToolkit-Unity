@@ -1,13 +1,17 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup",
-        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor"
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor",
+        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }
