@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         [Prefab]
         [SerializeField]
         [Tooltip("The gaze cursor prefab to use on the Gaze pointer.")]
-        private GameObject gazeCursorPrefab;
+        private GameObject gazeCursorPrefab = null;
 
         /// <summary>
         /// The gaze cursor prefab to use on the Gaze pointer.
