@@ -1112,6 +1112,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                    typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityNetworkingSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type);
         }
 
