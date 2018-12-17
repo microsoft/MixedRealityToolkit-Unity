@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                         }
                     }
 
-                    // Clamp the end of the parabola to the result hit's point
+                    // Clamp the end of the line to the result hit's point
                     lineBase.LineEndClamp = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
 
                     if (FocusTarget != null)
