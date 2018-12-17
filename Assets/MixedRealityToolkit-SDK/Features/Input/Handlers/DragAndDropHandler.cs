@@ -91,8 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         private IMixedRealityPointer currentPointer;
         private IMixedRealityInputSource currentInputSource;
 
-        private Transform cameraTransform;
-
         // If the dot product between hand movement and head forward is less than this amount,
         // don't exponentially increase the length of the stick
         private readonly float zPushTolerance = 0.1f;
@@ -107,8 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             }
 
             hostRigidbody = hostTransform.GetComponent<Rigidbody>();
-
-            cameraTransform = CameraCache.Main.transform;
         }
 
         private void OnDestroy()
@@ -177,6 +173,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         #endregion IMixedRealitySourceStateHandler Implementation
 
+        #region BaseFocusHandler Overrides
+
+        /// <inheritdoc />
+        public override void OnFocusExit(FocusEventData eventData)
+        {
+            if (isDragging)
+            {
+                StopDragging();
+            }
+        }
+
+        #endregion BaseFocusHandler Overrides
+
         /// <summary>
         /// Enables or disables dragging.
         /// </summary>
@@ -205,6 +214,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             {
                 return;
             }
+
+            Transform cameraTransform = CameraCache.Main.transform;
 
             currentPointer.IsFocusLocked = true;
             isDragging = true;
