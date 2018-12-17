@@ -83,10 +83,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 {
                     InteractableThemeProperty current = ThemeProperties[i];
                     current.StartValue = GetProperty(current);
-                    if (hasFirstState)
+                    if (hasFirstState || force)
                     {
                         Ease.Start();
                         SetValue(current, state, Ease.GetCurved());
+                        hasFirstState = true;
                     }
                     else
                     {
