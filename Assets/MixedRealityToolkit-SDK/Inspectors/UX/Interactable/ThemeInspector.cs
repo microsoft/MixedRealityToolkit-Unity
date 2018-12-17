@@ -257,11 +257,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 {
                     renderHost = (GameObject)target.objectReferenceValue;
                 }
-
+                
                 InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(types[propIndex], renderHost);
 
                 // does this object have the right component types
                 SerializedProperty isValid = settingsItem.FindPropertyRelative("IsValid");
+                SerializedProperty noEaseing = settingsItem.FindPropertyRelative("NoEasing");
+                noEaseing.boolValue = themeBase.NoEasing;
+
                 bool valid = false;
 
                 bool hasText = false;
@@ -930,25 +933,33 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
                 if (animatorCount < sProps.arraySize)
                 {
-                    InspectorUIUtility.DrawDivider();
-
                     // show theme properties
                     SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
                     SerializedProperty enabled = easing.FindPropertyRelative("Enabled");
 
-                    enabled.boolValue = EditorGUILayout.Toggle(new GUIContent("Easing", "should the theme animate state values"), enabled.boolValue);
-                    if (enabled.boolValue)
+                    SerializedProperty noEasing = settingsItem.FindPropertyRelative("NoEasing");
+                    if (!noEasing.boolValue)
                     {
-                        EditorGUI.indentLevel = indentOnSectionStart + 1;
-                        SerializedProperty time = easing.FindPropertyRelative("LerpTime");
-                        //time.floatValue = 0.5f;
-                        SerializedProperty curve = easing.FindPropertyRelative("Curve");
-                        //curve.animationCurveValue = AnimationCurve.Linear(0, 1, 1, 1);
+                        InspectorUIUtility.DrawDivider();
+                        enabled.boolValue = EditorGUILayout.Toggle(new GUIContent("Easing", "should the theme animate state values"), enabled.boolValue);
 
-                        time.floatValue = EditorGUILayout.FloatField(new GUIContent("Duration", "animation duration"), time.floatValue);
-                        EditorGUILayout.PropertyField(curve, new GUIContent("Animation Curve"));
+                        if (enabled.boolValue)
+                        {
+                            EditorGUI.indentLevel = indentOnSectionStart + 1;
+                            SerializedProperty time = easing.FindPropertyRelative("LerpTime");
+                            //time.floatValue = 0.5f;
+                            SerializedProperty curve = easing.FindPropertyRelative("Curve");
+                            //curve.animationCurveValue = AnimationCurve.Linear(0, 1, 1, 1);
 
-                        EditorGUI.indentLevel = indentOnSectionStart;
+                            time.floatValue = EditorGUILayout.FloatField(new GUIContent("Duration", "animation duration"), time.floatValue);
+                            EditorGUILayout.PropertyField(curve, new GUIContent("Animation Curve"));
+
+                            EditorGUI.indentLevel = indentOnSectionStart;
+                        }
+                    }
+                    else
+                    {
+                        enabled.boolValue = false;
                     }
                 }
 

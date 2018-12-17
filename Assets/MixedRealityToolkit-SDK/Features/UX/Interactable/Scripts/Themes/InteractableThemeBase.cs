@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         public List<InteractableThemePropertyValue> CustomSettings = new List<InteractableThemePropertyValue>();
         public GameObject Host;
         public Easing Ease;
+        public bool NoEasing;
         public bool Loaded;
 
         private bool hasFirstState = false;
@@ -44,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 prop.ShaderOptions = settings.Properties[i].ShaderOptions;
                 prop.PropId = settings.Properties[i].PropId;
                 prop.Values = settings.Properties[i].Values;
+                
                 
                 ThemeProperties[i] = prop;
             }
