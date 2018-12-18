@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                         if (i == Result.RayStepIndex)
                         {
                             // Only add the distance between the start point and the hit
-                            clearWorldLength += Vector3.Distance(Result.StartPoint, Result.StartPoint);
+                            clearWorldLength += Vector3.Distance(Rays[i].Origin, Result.Details.Point);
                         }
                         else if (i < Result.RayStepIndex)
                         {
