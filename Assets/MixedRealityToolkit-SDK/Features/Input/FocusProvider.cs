@@ -246,6 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 if (!pointerWasLocked)
                 {
+                    PreviousPointerTarget = focusDetails.Object;
                     pointLocalSpace = focusDetails.Object.transform.InverseTransformPoint(focusDetails.Point);
                     normalLocalSpace = focusDetails.Object.transform.InverseTransformDirection(focusDetails.Normal);
                     pointerWasLocked = true;
@@ -254,6 +255,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 // In case the focused object is moving, we need to update the focus point based on the object's new transform.
                 focusDetails.Point = focusDetails.Object.transform.TransformPoint(pointLocalSpace);
                 focusDetails.Normal = focusDetails.Object.transform.TransformDirection(normalLocalSpace);
+
+                StartPoint = Pointer.Rays[0].Origin;
+
+                for (int i = 0; i < Pointer.Rays.Length; i++)
+                {
+                    if (Pointer.Rays[i].Contains(focusDetails.Point))
+                    {
+                        RayStepIndex = i;
+                        break;
+                    }
+                }
             }
 
             public void ResetFocusedObjects(bool clearPreviousObject = true)
