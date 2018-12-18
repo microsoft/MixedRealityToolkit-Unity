@@ -262,8 +262,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
                 // does this object have the right component types
                 SerializedProperty isValid = settingsItem.FindPropertyRelative("IsValid");
-                SerializedProperty noEaseing = settingsItem.FindPropertyRelative("NoEasing");
-                noEaseing.boolValue = themeBase.NoEasing;
+                SerializedProperty noEasing = settingsItem.FindPropertyRelative("NoEasing");
+                noEasing.boolValue = themeBase.NoEasing;
 
                 bool valid = false;
 
@@ -947,9 +947,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                         {
                             EditorGUI.indentLevel = indentOnSectionStart + 1;
                             SerializedProperty time = easing.FindPropertyRelative("LerpTime");
-                            //time.floatValue = 0.5f;
                             SerializedProperty curve = easing.FindPropertyRelative("Curve");
-                            //curve.animationCurveValue = AnimationCurve.Linear(0, 1, 1, 1);
 
                             time.floatValue = EditorGUILayout.FloatField(new GUIContent("Duration", "animation duration"), time.floatValue);
                             EditorGUILayout.PropertyField(curve, new GUIContent("Animation Curve"));
