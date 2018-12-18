@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 {
                     renderHost = (GameObject)target.objectReferenceValue;
                 }
-                
+
                 InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(types[propIndex], renderHost);
 
                 // does this object have the right component types
