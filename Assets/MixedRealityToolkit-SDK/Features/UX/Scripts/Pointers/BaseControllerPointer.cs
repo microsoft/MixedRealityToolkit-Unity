@@ -172,6 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             set
             {
                 base.Controller = value;
+                pointerName = gameObject.name;
                 InputSourceParent = base.Controller.InputSource;
             }
         }
