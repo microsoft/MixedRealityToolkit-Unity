@@ -29,6 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 
     public class TwoHandManipulatable : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealitySpatialInputHandler
     {
+       private enum HandMovementType
+        {
+            oneHandedOnly = 0,
+            twoHandedOnly,
+            oneAndTwoHanded
+        }
+
         #region fields
         [SerializeField]
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
@@ -55,8 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         private RotationConstraintType constraintOnRotation = RotationConstraintType.None;
 
         [SerializeField]
-        [Tooltip("If true, grabbing the object with one hand will initiate movement.")]
-        private bool OneHandMovement = true;
+        private HandMovementType handMoveType = HandMovementType.oneAndTwoHanded;
 
         [System.Flags]
         private enum State
@@ -174,11 +180,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
                         newState = State.Start;
                     }
                     else
-                        if (handsPressedCount == 1 && OneHandMovement)
+                        if (handsPressedCount == 1 && handMoveType != HandMovementType.twoHandedOnly)
                     {
                         newState = State.Moving;
                     }
-                    else if (handsPressedCount > 1)
+                    else if (handsPressedCount > 1 && handMoveType != HandMovementType.oneHandedOnly)
                     {
                         switch (ManipulationMode)
                         {
