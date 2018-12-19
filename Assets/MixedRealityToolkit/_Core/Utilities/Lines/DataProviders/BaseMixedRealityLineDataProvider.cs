@@ -297,6 +297,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <returns></returns>
         public float GetNormalizedLengthFromWorldLength(float worldLength, int searchResolution = 10)
         {
+            if (searchResolution < 1)
+            {
+                return 0;
+            }
+
             Vector3 lastPoint = GetUnClampedPoint(0f);
             float normalizedLength = 0f;
             float distanceSoFar = 0f;
