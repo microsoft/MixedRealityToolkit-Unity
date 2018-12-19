@@ -17,11 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
     /// <summary>
     /// Inspector for themes, and used by Interactable
     /// </summary>
-    
+
     // TODO: !!!!! need to make sure we refresh the shader list when the target changes
 
     // FIX : when adding a new setting, the rendered values is a dupe of the previous values in the list, but the dropdown is default.
-    
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(Theme))]
     public class ThemeInspector : Editor
@@ -44,13 +44,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
             settings = serializedObject.FindProperty("Settings");
             SetupThemeOptions();
         }
-        
+
         public override void OnInspectorGUI()
         {
             //RenderBaseInspector()
             RenderCustomInspector();
         }
-        
+
         protected virtual void RenderBaseInspector()
         {
             base.OnInspectorGUI();
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
                 showStates = InspectorUIUtility.DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart, prefsShowStates, FontStyle.Normal, false);
                 drawerStarted = true;
-                
+
                 if (showStates != prefsShowStates)
                 {
                     EditorPrefs.SetBool(statesPrefKey, showStates);
@@ -328,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
                     name.stringValue = properties[i].Name;
                     type.intValue = (int)properties[i].Type;
-                    
+
                     int valueCount = states.Length;
 
                     for (int j = 0; j < valueCount; j++)
@@ -785,7 +785,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 // a dropdown for the type of theme, they should make sense
                 // show theme dropdown
                 int id = InspectorUIUtility.ReverseLookup(className.stringValue, themeOptions);
-                
+
                 EditorGUILayout.BeginHorizontal();
                 int newId = EditorGUILayout.Popup("Theme Property", id, themeOptions);
 
@@ -827,7 +827,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     SerializedProperty item = sProps.GetArrayElementAtIndex(p);
                     SerializedProperty propId = item.FindPropertyRelative("PropId");
                     SerializedProperty name = item.FindPropertyRelative("Name");
-                    
+
                     SerializedProperty shaderNames = item.FindPropertyRelative("ShaderOptionNames");
                     SerializedProperty shaderName = item.FindPropertyRelative("ShaderName");
                     SerializedProperty propType = item.FindPropertyRelative("Type");
@@ -1012,7 +1012,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
             return serialized;
         }
-        
+
         public static void RenderThemeStates(SerializedProperty settings, State[] states, int margin)
         {
             GUIStyle box = InspectorUIUtility.Box(margin);
@@ -1052,7 +1052,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                             // the state values for this theme were not created yet
                             continue;
                         }
-                        
+
                         SerializedProperty item = values.GetArrayElementAtIndex(n);
                         SerializedProperty floatValue = item.FindPropertyRelative("Float");
                         SerializedProperty vector2Value = item.FindPropertyRelative("Vector2");
@@ -1137,7 +1137,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
             EditorGUILayout.EndVertical();
             GUILayout.Space(5);
         }
-        
+
         public static void AddAnimator(int[] arr, SerializedProperty prop = null)
         {
             SerializedProperty target = prop.FindPropertyRelative("Target");
@@ -1161,7 +1161,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     // we have a location
                     UnityEditor.Animations.AnimatorController controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath(path);
                     AnimatorStateMachine stateMachine = controller.layers[0].stateMachine;
-                    
+
                     for (int i = 0; i < targetStates.arraySize; i++)
                     {
                         string name = targetStates.GetArrayElementAtIndex(i).stringValue;
@@ -1188,7 +1188,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 }
             }
         }
-        
+
         public static ShaderInfo GetShaderProperties(Renderer renderer, ShaderPropertyType[] filter)
         {
             ShaderInfo info = new ShaderInfo();
