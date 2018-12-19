@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
 {
     /// <summary>
     /// Generic interface for all Mixed Reality Services
     /// </summary>
-    public interface IMixedRealityService
+    public interface IMixedRealityService : IDisposable
     {
         /// <summary>
         /// Optional Priority attribute if multiple services of the same type are required, enables targeting a service for action.
