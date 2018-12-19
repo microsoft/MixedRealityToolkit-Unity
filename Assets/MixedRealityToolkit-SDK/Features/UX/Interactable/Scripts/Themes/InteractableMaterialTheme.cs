@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         {
             Types = new Type[] { typeof(Renderer) };
             Name = "Material Theme";
+            NoEasing = true;
             ThemeProperties.Add(
                 new InteractableThemeProperty()
                 {
@@ -24,13 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     Values = new List<InteractableThemePropertyValue>(),
                     Default = new InteractableThemePropertyValue() { Material = null }
                 });
-        }
-
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
-        {
-            base.Init(host, settings);
-
-            settings.NoEasing = true;
         }
 
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)

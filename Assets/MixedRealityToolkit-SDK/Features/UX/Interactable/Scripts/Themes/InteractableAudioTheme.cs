@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         {
             Types = new Type[] { typeof(Transform) };
             Name = "Audio Theme";
+            NoEasing = true;
             ThemeProperties.Add(
                 new InteractableThemeProperty()
                 {
@@ -23,13 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     Values = new List<InteractableThemePropertyValue>(),
                     Default = new InteractableThemePropertyValue() { AudioClip = null }
                 });
-        }
-
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
-        {
-            base.Init(host, settings);
-
-            settings.NoEasing = true;
         }
 
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)

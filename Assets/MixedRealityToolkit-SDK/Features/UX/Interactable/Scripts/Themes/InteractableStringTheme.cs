@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         {
             Types = new Type[] { typeof(TextMesh), typeof(Text) };
             Name = "String Theme";
+            NoEasing = true;
             ThemeProperties.Add(
                 new InteractableThemeProperty()
                 {
@@ -27,12 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     Default = new InteractableThemePropertyValue() { String = "" }
                     
                 });
-        }
-
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
-        {
-            base.Init(host, settings);
-            settings.NoEasing = true;
         }
 
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)

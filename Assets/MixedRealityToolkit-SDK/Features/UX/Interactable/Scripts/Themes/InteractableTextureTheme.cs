@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         {
             Types = new Type[] { typeof(Renderer) };
             Name = "Texture Theme";
+            NoEasing = true;
             ThemeProperties.Add(
                 new InteractableThemeProperty()
                 {
@@ -29,8 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         public override void Init(GameObject host, InteractableThemePropertySettings settings)
         {
             base.Init(host, settings);
-
-            settings.NoEasing = true;
             propertyBlock = InteractableThemeShaderUtils.GetMaterialPropertyBlock(host, new ShaderProperties[0]);
         }
 

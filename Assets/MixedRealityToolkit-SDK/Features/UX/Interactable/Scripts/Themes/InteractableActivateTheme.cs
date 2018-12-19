@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         {
             Types = new Type[] { typeof(Transform) };
             Name = "Activate Theme";
+            NoEasing = true;
             ThemeProperties.Add(
                 new InteractableThemeProperty()
                 {
@@ -24,13 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     Default = new InteractableThemePropertyValue() { Bool = true }
                 });
         }
-
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
-        {
-            base.Init(host, settings);
-
-            settings.NoEasing = true;
-        }
+        
 
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
