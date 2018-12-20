@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 
     public class ManipulationHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealitySpatialInputHandler
     {
-       private enum HandMovementType
+       private enum HandSupportType
         {
             oneHandedOnly = 0,
             twoHandedOnly,
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         private RotationConstraintType constraintOnRotation = RotationConstraintType.None;
 
         [SerializeField]
-        private HandMovementType handMoveType = HandMovementType.oneAndTwoHanded;
+        private HandSupportType handSupportType = HandSupportType.oneAndTwoHanded;
 
         [System.Flags]
         private enum State
@@ -180,11 +180,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
                         newState = State.Start;
                     }
                     else
-                        if (handsPressedCount == 1 && handMoveType != HandMovementType.twoHandedOnly)
+                        if (handsPressedCount == 1 && handSupportType != HandSupportType.twoHandedOnly)
                     {
                         newState = State.Moving;
                     }
-                    else if (handsPressedCount > 1 && handMoveType != HandMovementType.oneHandedOnly)
+                    else if (handsPressedCount > 1 && handSupportType != HandSupportType.oneHandedOnly)
                     {
                         switch (ManipulationMode)
                         {
