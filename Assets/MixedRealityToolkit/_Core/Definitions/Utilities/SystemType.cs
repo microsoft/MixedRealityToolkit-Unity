@@ -38,9 +38,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         /// <param name="assemblyQualifiedClassName">Assembly qualified class name.</param>
         public SystemType(string assemblyQualifiedClassName)
         {
-            Type = !string.IsNullOrEmpty(assemblyQualifiedClassName)
-                ? Type.GetType(assemblyQualifiedClassName)
-                : null;
+            if (!string.IsNullOrEmpty(assemblyQualifiedClassName))
+            {
+                Type = Type.GetType(assemblyQualifiedClassName);
+
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+                if (Type != null && Type.IsAbstract())
+#else
+                if (Type != null && Type.IsAbstract)
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
+                {
+                    Type = null;
+                }
+            }
+            else
+            {
+                Type = null;
+            }
         }
 
         /// <summary>
@@ -80,13 +94,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
                 if (value != null)
                 {
 #if WINDOWS_UWP && !ENABLE_IL2CPP
-                    bool isValid = value.IsValueType() && !value.IsEnum() || value.IsClass();
+                    bool isValid = value.IsValueType() && !value.IsEnum() && !value.IsAbstract() || value.IsClass();
 #else
-                    bool isValid = value.IsValueType && !value.IsEnum || value.IsClass;
+                    bool isValid = value.IsValueType && !value.IsEnum && !value.IsAbstract || value.IsClass;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
                     if (!isValid)
                     {
-                        Debug.LogError($"'{value.FullName}' is not a class or struct type.");
+                        Debug.LogError($"'{value.FullName}' is not a valid class or struct type.");
                     }
                 }
 
