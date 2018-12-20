@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         private bool isDragging;
         private bool isDraggingEnabled = true;
-        private bool isDraggingWithHand;
+        private bool isDraggingWithSourcePose;
 
         // Used for moving with a pointer ray
         private float stickLength;
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                     ? focusDetails.Point
                     : hostTransform.position;
 
-            isDraggingWithHand = currentPointer == MixedRealityToolkit.InputSystem.GazeProvider.GazePointer;
+            isDraggingWithSourcePose = currentPointer == MixedRealityToolkit.InputSystem.GazeProvider.GazePointer;
 
             StartDragging(initialDraggingPosition);
         }
@@ -226,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 hostRigidbody.isKinematic = true;
             }
 
-            if (isDraggingWithHand)
+            if (isDraggingWithSourcePose)
             {
                 Vector3 pivotPosition = HandPivotPosition;
                 objectReferenceDistance = Vector3.Magnitude(initialDraggingPosition - pivotPosition);
@@ -283,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             Transform cameraTransform = CameraCache.Main.transform;
             Vector3 pivotPosition = Vector3.zero;
 
-            if (isDraggingWithHand)
+            if (isDraggingWithSourcePose)
             {
                 Vector3 inputPosition = eventData.InputData.Position;
                 pivotPosition = HandPivotPosition;
