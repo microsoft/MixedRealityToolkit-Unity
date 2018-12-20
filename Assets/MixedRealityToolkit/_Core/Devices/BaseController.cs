@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
                         MixedRealityInteractionMapping[] profileInteractions = controllerMappings[i].Interactions;
                         MixedRealityInteractionMapping[] newInteractions = new MixedRealityInteractionMapping[profileInteractions.Length];
 
-                        for (int j = 0; j < profileInteractions.Length; i++)
+                        for (int j = 0; j < profileInteractions.Length; j++)
                         {
                             newInteractions[j] = new MixedRealityInteractionMapping(profileInteractions[j]);
                         }
