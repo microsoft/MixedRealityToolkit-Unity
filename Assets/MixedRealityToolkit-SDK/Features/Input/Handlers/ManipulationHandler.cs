@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
     /// 
 
 
-    public class TwoHandManipulatable : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealitySpatialInputHandler
+    public class ManipulationHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealitySpatialInputHandler
     {
        private enum HandMovementType
         {
