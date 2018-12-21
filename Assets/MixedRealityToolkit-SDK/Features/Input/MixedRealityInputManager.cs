@@ -791,7 +791,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             ExecutePointerDown(HandlePointerDown(pointer));
         }
 
-        [Obsolete]
+        [Obsolete("Use RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, IMixedRealityInputSource inputSource = null)")]
         public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
@@ -837,7 +837,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             HandleClick();
         }
 
-        [Obsolete]
+        [Obsolete("Use RaisePointerClicked(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, int count, IMixedRealityInputSource inputSource = null)")]
         public void RaisePointerClicked(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction, int count)
         {
             // Create input event
@@ -874,7 +874,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             ExecutePointerUp(HandlePointerUp(pointer));
         }
 
-        [Obsolete]
+        [Obsolete("Use RaisePointerUp(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, IMixedRealityInputSource inputSource = null)")]
         public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
