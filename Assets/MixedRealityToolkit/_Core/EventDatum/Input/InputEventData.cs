@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
@@ -17,14 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <summary>
         /// Handedness of the <see cref="IMixedRealityInputSource"/>.
         /// </summary>
-        public Handedness Handedness
-        {
-            get
-            {
-                var controller = MixedRealityToolkit.InputSystem.TryGetController(InputSource);
-                return controller?.ControllerHandedness ?? Handedness.None;
-            }
-        }
+        public Handedness Handedness { get; private set; }
 
         /// <inheritdoc />
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
@@ -37,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction)
         {
             BaseInitialize(inputSource, inputAction);
+            Handedness = Handedness.None;
         }
 
         /// <summary>
@@ -48,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, MixedRealityInputAction inputAction)
         {
             BaseInitialize(inputSource, inputAction);
+            Handedness = handedness;
         }
     }
 
