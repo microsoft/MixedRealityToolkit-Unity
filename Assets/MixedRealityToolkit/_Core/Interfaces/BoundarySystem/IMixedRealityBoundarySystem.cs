@@ -44,6 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         Material FloorMaterial { get; }
 
         /// <summary>
+        /// The physics layer that the generated floor is assigned to.
+        /// </summary>
+        int FloorPhysicsLayer { get; set; }
+
+        /// <summary>
         /// Enable / disable play area rendering.
         /// </summary>
         bool ShowPlayArea { get; set; }
@@ -52,6 +57,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// The material to use for the rectangular play area <see cref="GameObject"/>.
         /// </summary>
         Material PlayAreaMaterial { get; }
+
+        /// <summary>
+        /// The physics layer that the generated play area is assigned to.
+        /// </summary>
+        int PlayAreaPhysicsLayer { get; set; }
 
         /// <summary>
         /// Enable / disable tracked area rendering.
@@ -64,6 +74,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         Material TrackedAreaMaterial { get; }
 
         /// <summary>
+        /// The physics layer that the generated tracked area is assigned to.
+        /// </summary>
+        int TrackedAreaPhysicsLayer { get; set; }
+
+        /// <summary>
         /// Enable / disable boundary wall rendering.
         /// </summary>
         bool ShowBoundaryWalls { get; set; }
@@ -72,6 +87,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// The material to use for displaying the boundary geometry walls.
         /// </summary>
         Material BoundaryWallMaterial { get; }
+
+        /// <summary>
+        /// The physics layer that the generated boundary walls are assigned to.
+        /// </summary>
+        int BoundaryWallsPhysicsLayer { get; set; }
 
         /// <summary>
         /// Enable / disable ceiling rendering.
@@ -85,6 +105,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// The material to use for displaying the boundary ceiling.
         /// </summary>
         Material BoundaryCeilingMaterial { get; }
+
+        /// <summary>
+        /// The physics layer that the generated boundary ceiling is assigned to.
+        /// </summary>
+        int CeilingPhysicsLayer { get; set; }
 
         /// <summary>
         /// Two dimensional representation of the geometry of the boundary, as provided
@@ -145,7 +170,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// <returns>The tracked area visualization object or null if one does not exist.</returns>
         GameObject GetTrackedAreaVisualization();
 
-        // todo: GetBoundaryWallVisualization();
+        /// <summary>
+        /// Gets the <see cref="GameObject"/> that represents the user's boundary walls.
+        /// </summary>
+        /// <returns>The boundary wall visualization object or null if one does not exist.</returns>
+        GameObject GetBoundaryWallVisualization();
 
         /// <summary>
         /// Gets the <see cref="GameObject"/> that represents the upper surface of the user's boundary.

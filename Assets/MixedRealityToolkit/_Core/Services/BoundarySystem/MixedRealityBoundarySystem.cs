@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealityBoundaryHandler> OnVisualizationChanged =
             delegate (IMixedRealityBoundaryHandler handler, BaseEventData eventData)
         {
-            BoundaryEventData boundaryEventData = ExecuteEvents.ValidateEventData<BoundaryEventData>(eventData);
+            var boundaryEventData = ExecuteEvents.ValidateEventData<BoundaryEventData>(eventData);
             handler.OnBoundaryVisualizationChanged(boundaryEventData);
         };
 
@@ -258,10 +258,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
         private const float boundaryObjectThickness = 0.005f;
 
         /// <summary>
-        /// A small offset to avoid render conflicts, primarilly with the floor.
+        /// A small offset to avoid render conflicts, primarily with the floor.
         /// </summary>
         /// <remarks>
-        /// This offset is used to avoid consuming mutiple physics layers.
+        /// This offset is used to avoid consuming multiple physics layers.
         /// </remarks>
         private const float boundaryObjectRenderOffset = 0.001f;
 
@@ -331,6 +331,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
 
         private bool showPlayArea = false;
 
+        private int floorPhysicsLayer;
+
+        /// <inheritdoc/>
+        public int FloorPhysicsLayer
+        {
+            get
+            {
+                if (currentFloorObject != null)
+                {
+                    floorPhysicsLayer = currentFloorObject.layer;
+                }
+
+                return floorPhysicsLayer;
+            }
+            set
+            {
+                floorPhysicsLayer = value;
+                if (currentFloorObject != null)
+                {
+                    currentFloorObject.layer = floorPhysicsLayer;
+                }
+            }
+        }
+
         /// <inheritdoc/>
         public bool ShowPlayArea
         {
@@ -357,6 +381,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
         }
 
         private bool showTrackedArea = false;
+
+        private int playAreaPhysicsLayer;
+
+        /// <inheritdoc/>
+        public int PlayAreaPhysicsLayer
+        {
+            get
+            {
+                if (currentPlayAreaObject != null)
+                {
+                    playAreaPhysicsLayer = currentPlayAreaObject.layer;
+                }
+
+                return playAreaPhysicsLayer;
+            }
+            set
+            {
+                playAreaPhysicsLayer = value;
+
+                if (currentPlayAreaObject != null)
+                {
+                    currentPlayAreaObject.layer = playAreaPhysicsLayer;
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public Material PlayAreaMaterial { get; }
@@ -388,6 +437,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
 
         private bool showBoundaryWalls = false;
 
+        private int trackedAreaPhysicsLayer;
+
+        /// <inheritdoc/>
+        public int TrackedAreaPhysicsLayer
+        {
+            get
+            {
+                if (currentTrackedAreaObject != null)
+                {
+                    trackedAreaPhysicsLayer = currentTrackedAreaObject.layer;
+                }
+
+                return trackedAreaPhysicsLayer;
+            }
+            set
+            {
+                trackedAreaPhysicsLayer = value;
+
+                if (currentTrackedAreaObject != null)
+                {
+                    currentTrackedAreaObject.layer = trackedAreaPhysicsLayer;
+                }
+            }
+        }
+
         /// <inheritdoc/>
         public Material TrackedAreaMaterial { get; }
 
@@ -418,6 +492,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
 
         private bool showCeiling = false;
 
+        private int boundaryWallsPhysicsLayer;
+
+        /// <inheritdoc/>
+        public int BoundaryWallsPhysicsLayer
+        {
+            get
+            {
+                if (currentBoundaryWallObject != null)
+                {
+                    boundaryWallsPhysicsLayer = currentBoundaryWallObject.layer;
+                }
+
+                return boundaryWallsPhysicsLayer;
+            }
+            set
+            {
+                boundaryWallsPhysicsLayer = value;
+
+                if (currentBoundaryWallObject != null)
+                {
+                    currentBoundaryWallObject.layer = boundaryWallsPhysicsLayer;
+                }
+            }
+        }
+
         /// <inheritdoc/>
         public Material BoundaryWallMaterial { get; }
 
@@ -442,6 +541,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
                     }
 
                     RaiseBoundaryVisualizationChanged();
+                }
+            }
+        }
+
+        private int ceilingPhysicsLayer;
+
+        /// <inheritdoc/>
+        public int CeilingPhysicsLayer
+        {
+            get
+            {
+                if (currentCeilingObject != null)
+                {
+                    ceilingPhysicsLayer = currentCeilingObject.layer;
+                }
+
+                return ceilingPhysicsLayer;
+            }
+            set
+            {
+                ceilingPhysicsLayer = value;
+
+                if (currentCeilingObject != null)
+                {
+                    currentFloorObject.layer = ceilingPhysicsLayer;
                 }
             }
         }
@@ -550,6 +674,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
                 MixedRealityToolkit.Instance.MixedRealityPlayspace.position.x,
                 FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f),
                 MixedRealityToolkit.Instance.MixedRealityPlayspace.position.z));
+            currentFloorObject.layer = FloorPhysicsLayer;
             currentFloorObject.GetComponent<Renderer>().sharedMaterial = FloorMaterial;
 
             return currentFloorObject;
@@ -586,7 +711,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
 
             currentPlayAreaObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
             currentPlayAreaObject.name = "Play Area";
-            currentPlayAreaObject.layer = ignoreRaycastLayerValue;
+            currentPlayAreaObject.layer = PlayAreaPhysicsLayer;
             currentPlayAreaObject.transform.Translate(new Vector3(center.x, boundaryObjectRenderOffset, center.y));
             currentPlayAreaObject.transform.Rotate(new Vector3(90, -angle, 0));
             currentPlayAreaObject.transform.localScale = new Vector3(width, height, 1.0f);
@@ -630,6 +755,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
                 MixedRealityToolkit.Instance.MixedRealityPlayspace.position.x,
                 boundaryObjectRenderOffset,
                 MixedRealityToolkit.Instance.MixedRealityPlayspace.position.z));
+            currentPlayAreaObject.layer = TrackedAreaPhysicsLayer;
 
             // Configure the renderer properties.
             float lineWidth = 0.01f;
@@ -669,6 +795,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
             }
 
             currentBoundaryWallObject = new GameObject("Tracked Area Walls");
+            currentBoundaryWallObject.layer = BoundaryWallsPhysicsLayer;
 
             // Create and parent the child objects
             float wallDepth = boundaryObjectThickness;
@@ -729,7 +856,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
                 BoundaryHeight + (currentCeilingObject.transform.localScale.y * 0.5f),
                 boundaryBoundingBox.center.z));
             currentCeilingObject.GetComponent<Renderer>().sharedMaterial = BoundaryCeilingMaterial;
-
+            currentCeilingObject.layer = CeilingPhysicsLayer;
             currentCeilingObject.transform.parent = BoundaryVisualizationParent.transform;
 
             return currentCeilingObject;

@@ -483,7 +483,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                 foreach (var otherPointer in pointers)
                 {
-                    if (otherPointer.CurrentPointerTarget == unfocusedObject)
+                    if (otherPointer.Pointer != pointer && otherPointer.CurrentPointerTarget == unfocusedObject)
                     {
                         objectIsStillFocusedByOtherPointer = true;
                         break;

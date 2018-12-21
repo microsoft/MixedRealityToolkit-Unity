@@ -99,13 +99,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         /// <inheritdoc />
         public IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
-
-        private IMixedRealityCursor gazeCursor = null;
+        private InternalGazePointer gazePointer = null;
 
         /// <inheritdoc />
-        public IMixedRealityCursor GazeCursor => gazeCursor;
-
-        private InternalGazePointer gazePointer = null;
+        public IMixedRealityCursor GazeCursor => GazePointer.BaseCursor;
 
         /// <inheritdoc />
         public GameObject GazeTarget { get; private set; }
@@ -396,7 +393,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
 
-            if (gazeCursor == null &&
+            if (GazeCursor == null &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
             {
