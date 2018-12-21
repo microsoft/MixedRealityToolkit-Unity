@@ -108,6 +108,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// </summary>
         void ClearFallbackInputStack();
 
+        #region IMixedRealityController Utilities
+
+        /// <summary>
+        /// Tried to get a <see cref="IMixedRealityController"/> from the <see cref="DetectedControllers"/> list.
+        /// </summary>
+        /// <param name="inputSource">The <see cref="IMixedRealityInputSource"/> you want to get a controller reference for.</param>
+        /// <param name="controller">The <see cref="IMixedRealityController"/> that was found in the list of <see cref="DetectedControllers"/></param>
+        /// <returns>True, if an <see cref="IMixedRealityController"/> is found.</returns>
+        bool TryGetController(IMixedRealityInputSource inputSource, out IMixedRealityController controller);
+
+        #endregion IMixedRealityController Utilities
+
         #region Input Events
 
         #region Input Source Events

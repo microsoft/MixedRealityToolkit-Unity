@@ -470,6 +470,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #endregion Fallback Input Handler Options
 
+        #region IMixedRealityController Utilities
+
+        /// <inheritdoc />
+        public bool TryGetController(IMixedRealityInputSource inputSource, out IMixedRealityController controller)
+        {
+            foreach (IMixedRealityController mixedRealityController in DetectedControllers)
+            {
+                if (inputSource.SourceId == mixedRealityController.InputSource.SourceId)
+                {
+                    controller = mixedRealityController;
+                    return true;
+                }
+            }
+
+            controller = null;
+            return false;
+        }
+
+        #endregion IMixedRealityController Utilities
+
         #region Input Events
 
         #region Input Source Events
@@ -940,7 +960,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             inputAction = ProcessRules(inputAction, true);
 
             // Create input event
-            inputEventData.Initialize(source, handedness, inputAction);
+            inputEventData.Initialize(source, inputAction);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputDownEventHandler);
@@ -975,7 +995,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             inputAction = ProcessRules(inputAction, true);
 
             // Create input event
-            floatInputEventData.Initialize(source, handedness, inputAction);
+            floatInputEventData.Initialize(source, inputAction);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(floatInputEventData, OnInputPressedEventHandler);
@@ -1034,7 +1054,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             inputAction = ProcessRules(inputAction, false);
 
             // Create input event
-            inputEventData.Initialize(source, handedness, inputAction);
+            inputEventData.Initialize(source, inputAction);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputUpEventHandler);
@@ -1193,7 +1213,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public void RaiseGestureStarted(IMixedRealityController controller, MixedRealityInputAction action)
         {
             action = ProcessRules(action, true);
-            inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
+            inputEventData.Initialize(controller.InputSource, action);
             HandleEvent(inputEventData, OnGestureStarted);
         }
 
@@ -1208,7 +1228,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action)
         {
             action = ProcessRules(action, true);
-            inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
+            inputEventData.Initialize(controller.InputSource, action);
             HandleEvent(inputEventData, OnGestureUpdated);
         }
 
@@ -1283,7 +1303,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action)
         {
             action = ProcessRules(action, false);
-            inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
+            inputEventData.Initialize(controller.InputSource, action);
             HandleEvent(inputEventData, OnGestureCompleted);
         }
 
@@ -1358,7 +1378,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public void RaiseGestureCanceled(IMixedRealityController controller, MixedRealityInputAction action)
         {
             action = ProcessRules(action, false);
-            inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
+            inputEventData.Initialize(controller.InputSource, action);
             HandleEvent(inputEventData, OnGestureCanceled);
         }
 
