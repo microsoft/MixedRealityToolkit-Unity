@@ -3,7 +3,9 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers;
 using UnityEngine;
 
@@ -64,13 +66,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                 if (updateSolverTargetToClickSource && solverHandler != null)
                 {
-                    if (eventData.Handedness == Handedness.Right)
+                    IMixedRealityController controller;
+
+                    if (MixedRealityToolkit.InputSystem.TryGetController(eventData.InputSource, out controller))
                     {
-                        solverHandler.TrackedObjectToReference = TrackedObjectType.MotionControllerRight;
-                    }
-                    else if (eventData.Handedness == Handedness.Left)
-                    {
-                        solverHandler.TrackedObjectToReference = TrackedObjectType.MotionControllerLeft;
+                        if (controller.ControllerHandedness == Handedness.Right)
+                        {
+                            solverHandler.TrackedObjectToReference = TrackedObjectType.MotionControllerRight;
+                        }
+                        else if (controller.ControllerHandedness == Handedness.Left)
+                        {
+                            solverHandler.TrackedObjectToReference = TrackedObjectType.MotionControllerLeft;
+                        }
                     }
                 }
 
