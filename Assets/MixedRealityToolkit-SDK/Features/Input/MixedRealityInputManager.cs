@@ -470,6 +470,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #endregion Fallback Input Handler Options
 
+        #region IMixedRealityController Utilities
+
+        /// <inheritdoc />
+        public IMixedRealityController TryGetController(IMixedRealityInputSource inputSource)
+        {
+            foreach (IMixedRealityController mixedRealityController in DetectedControllers)
+            {
+                if (inputSource.SourceId == mixedRealityController.InputSource.SourceId)
+                {
+                    return mixedRealityController;
+                }
+            }
+
+            return null;
+        }
+
+        #endregion IMixedRealityController Utilities
+
         #region Input Events
 
         #region Input Source Events
