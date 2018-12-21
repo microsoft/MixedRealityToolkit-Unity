@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <summary>
         /// Handedness of the <see cref="IMixedRealityInputSource"/>.
         /// </summary>
-        public Handedness Handedness { get; private set; }
+        public Handedness Handedness { get; private set; } = Handedness.None;
 
         /// <inheritdoc />
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
