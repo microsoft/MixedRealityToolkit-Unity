@@ -111,6 +111,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             changed = false;
         }
 
+        public MixedRealityInteractionMapping(MixedRealityInteractionMapping mixedRealityInteractionMapping)
+        {
+            id = mixedRealityInteractionMapping.id;
+            description = mixedRealityInteractionMapping.description;
+            axisType = mixedRealityInteractionMapping.axisType;
+            inputType = mixedRealityInteractionMapping.inputType;
+            inputAction = mixedRealityInteractionMapping.inputAction;
+            keyCode = mixedRealityInteractionMapping.keyCode;
+            axisCodeX = mixedRealityInteractionMapping.axisCodeX;
+            axisCodeY = mixedRealityInteractionMapping.axisCodeY;
+            invertXAxis = mixedRealityInteractionMapping.invertXAxis;
+            invertYAxis = mixedRealityInteractionMapping.invertYAxis;
+            rawData = null;
+            boolData = false;
+            floatData = 0f;
+            vector2Data = Vector2.zero;
+            positionData = Vector3.zero;
+            rotationData = Quaternion.identity;
+            poseData = MixedRealityPose.ZeroIdentity;
+            changed = false;
+        }
+
         #region Interaction Properties
 
         [SerializeField]
