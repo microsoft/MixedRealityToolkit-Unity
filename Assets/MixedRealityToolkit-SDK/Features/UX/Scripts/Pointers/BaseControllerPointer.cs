@@ -172,6 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             set
             {
                 base.Controller = value;
+                pointerName = gameObject.name;
                 InputSourceParent = base.Controller.InputSource;
             }
         }
@@ -253,7 +254,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public float PointerExtent
         {
-            get { return overrideGlobalPointerExtent ? MixedRealityToolkit.InputSystem.FocusProvider.GlobalPointingExtent : pointerExtent; }
+            get
+            {
+                if (overrideGlobalPointerExtent)
+                {
+                    if (MixedRealityToolkit.InputSystem?.FocusProvider != null)
+                    {
+                        return MixedRealityToolkit.InputSystem.FocusProvider.GlobalPointingExtent;
+                    }
+                }
+
+                return pointerExtent;
+            }
             set { pointerExtent = value; }
         }
 

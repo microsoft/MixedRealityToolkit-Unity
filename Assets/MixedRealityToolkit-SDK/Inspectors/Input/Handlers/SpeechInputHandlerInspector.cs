@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
             keywordsProperty = serializedObject.FindProperty("keywords");
             persistentKeywordsProperty = serializedObject.FindProperty("persistentKeywords");
 
-            if (CheckMixedRealityConfigured(false))
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
                 registeredKeywords = RegisteredKeywords().Distinct().ToArray();
             }
@@ -38,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            if (!CheckMixedRealityConfigured())
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             {
                 return;
             }
@@ -140,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
                 {
                     string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
                     int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
-                    int currentSelection = EditorGUILayout.Popup("keyword", previousSelection, keywords);
+                    int currentSelection = EditorGUILayout.Popup("Keyword", previousSelection, keywords);
 
                     if (currentSelection != previousSelection)
                     {

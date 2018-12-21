@@ -297,23 +297,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <returns></returns>
         public float GetNormalizedLengthFromWorldLength(float worldLength, int searchResolution = 10)
         {
+            if (searchResolution < 1)
+            {
+                return 0;
+            }
+
             Vector3 lastPoint = GetUnClampedPoint(0f);
             float normalizedLength = 0f;
             float distanceSoFar = 0f;
+            float normalizedSegmentLength = 1f / searchResolution;
 
             for (int i = 1; i < searchResolution; i++)
             {
                 // Get the normalized length of this position along the line
-                normalizedLength = (1f / searchResolution) * i;
+                normalizedLength = normalizedSegmentLength * i;
                 Vector3 currentPoint = GetUnClampedPoint(normalizedLength);
                 distanceSoFar += Vector3.Distance(lastPoint, currentPoint);
-                lastPoint = currentPoint;
 
                 if (distanceSoFar >= worldLength)
                 {
-                    // We've reached the world length
+                    // We've reached the world length, so subtract the amount we overshot
+                    normalizedLength -= (distanceSoFar - worldLength) / Vector3.Distance(lastPoint, currentPoint) * normalizedSegmentLength;
                     break;
                 }
+
+                lastPoint = currentPoint;
             }
 
             return Mathf.Clamp01(normalizedLength);
