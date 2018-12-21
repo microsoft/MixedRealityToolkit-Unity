@@ -220,8 +220,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             // Update the interaction data source
             interactionMapping.PoseData = currentPointerPose;
 
-            // If our value was updated, raise it.
-            if (interactionMapping.Updated)
+            // If our value was changed, raise it.
+            if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
                 MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentPointerPose);
@@ -256,8 +256,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                         // Update the interaction data source
                         interactionMapping.PoseData = currentGripPose;
 
-                        // If our value was updated, raise it.
-                        if (interactionMapping.Updated)
+                        // If our value was changed, raise it.
+                        if (interactionMapping.Changed)
                         {
                             // Raise input system Event if it enabled
                             MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripPose);
@@ -295,8 +295,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                             }
                         }
 
-                        // If our value was updated, raise it.
-                        if (interactionMapping.Updated)
+                        // If our action is active, raise it.
+                        if (interactionMapping.IsActive)
                         {
                             MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
@@ -321,8 +321,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                             }
                         }
 
-                        // If our value was updated, raise it.
-                        if (interactionMapping.Updated)
+                        // If our action is active, raise it.
+                        if (interactionMapping.IsActive)
                         {
                             MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
@@ -333,8 +333,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                         // Update the interaction data source
                         interactionMapping.Vector2Data = interactionSourceState.touchpadPosition;
 
-                        // If our value was updated, raise it.
-                        if (interactionMapping.Updated)
+                        // If our value was changed, raise it.
+                        if (interactionMapping.Changed)
                         {
                             // Raise input system Event if it enabled
                             MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
@@ -372,8 +372,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                             }
                         }
 
-                        // If our value was updated, raise it.
-                        if (interactionMapping.Updated)
+                        // If our action is active, raise it.
+                        if (interactionMapping.IsActive)
                         {
                             MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
@@ -384,8 +384,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                         // Update the interaction data source
                         interactionMapping.Vector2Data = interactionSourceState.thumbstickPosition;
 
-                        // If our value was updated, raise it.
-                        if (interactionMapping.Updated)
+                        // If our value was changed, raise it.
+                        if (interactionMapping.Changed)
                         {
                             // Raise input system Event if it enabled
                             MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.thumbstickPosition);
@@ -422,8 +422,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                         }
                     }
 
-                    // If our value was updated, raise it.
-                    if (interactionMapping.Updated)
+                    // If our action is active, raise it.
+                    if (interactionMapping.IsActive)
                     {
                         MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                     }
@@ -447,8 +447,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                             }
                         }
 
-                        // If our value was updated, raise it.
-                        if (interactionMapping.Updated)
+                        // If our action is active, raise it.
+                        if (interactionMapping.IsActive)
                         {
                             MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
@@ -459,8 +459,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                         // Update the interaction data source
                         interactionMapping.FloatData = interactionSourceState.selectPressedAmount;
 
-                        // If our value was updated, raise it.
-                        if (interactionMapping.Updated)
+                        // If our action is active, raise it.
+                        if (interactionMapping.IsActive)
                         {
                             // Raise input system Event if it enabled
                             MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
@@ -486,8 +486,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                             }
                         }
 
-                        // If our value was updated, raise it.
-                        if (interactionMapping.Updated)
+                        // If our action is active, raise it.
+                        if (interactionMapping.IsActive)
                         {
                             // Raise input system Event if it enabled
                             MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
@@ -521,8 +521,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 }
             }
 
-            // If our value was updated, raise it.
-            if (interactionMapping.Updated)
+            // If our action is active, raise it.
+            if (interactionMapping.IsActive)
             {
                 MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
             }

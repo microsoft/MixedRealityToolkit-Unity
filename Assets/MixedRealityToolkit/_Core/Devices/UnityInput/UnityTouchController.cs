@@ -107,8 +107,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             {
                 Interactions[0].Vector2Data = TouchData.deltaPosition;
 
-                // If our value was updated, raise it.
-                if (Interactions[0].Updated)
+                // If our value was changed, raise it.
+                if (Interactions[0].Changed)
                 {
                     MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, Interactions[0].MixedRealityInputAction, TouchData.deltaPosition);
                 }
@@ -119,8 +119,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 
                 Interactions[1].PoseData = lastPose;
 
-                // If our value was updated, raise it.
-                if (Interactions[1].Updated)
+                // If our value was changed, raise it.
+                if (Interactions[1].Changed)
                 {
                     MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, Interactions[1].MixedRealityInputAction, lastPose);
                 }
