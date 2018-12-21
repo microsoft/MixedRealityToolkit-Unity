@@ -258,6 +258,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                 StartPoint = Pointer.Rays[0].Origin;
 
+                // In order to provide a correct RayStepIndex, we
+                // need to check to see which RayStep now contains the hit point.
+                // This is needed if the object moved closer or further away.
                 for (int i = 0; i < Pointer.Rays.Length; i++)
                 {
                     if (Pointer.Rays[i].Contains(focusDetails.Point))
