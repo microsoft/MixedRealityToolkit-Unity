@@ -263,27 +263,27 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             }
         }
 
-        private bool updated;
+        private bool isActive;
 
         /// <summary>
-        /// Has the value been updated since the last reading?
+        /// Is the interaction active and the value non-default?
         /// </summary>
-        public bool Updated
+        public bool IsActive
         {
             get
             {
-                bool returnValue = updated;
+                bool returnValue = isActive;
 
-                if (updated)
+                if (isActive)
                 {
-                    updated = false;
+                    isActive = false;
                 }
 
                 return returnValue;
             }
             private set
             {
-                updated = value;
+                isActive = value;
             }
         }
 
@@ -328,8 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
                 }
 
                 Changed = rawData != value;
-                // use the internal reading for changed so we don't reset it.
-                Updated = changed || value != null;
+                IsActive = value != null;
                 rawData = value;
             }
         }
@@ -353,8 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
                 }
 
                 Changed = boolData != value;
-                // use the internal reading for changed so we don't reset it.
-                Updated = changed || value;
+                IsActive = value;
                 boolData = value;
             }
         }
@@ -385,8 +383,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
                 else
                 {
                     Changed = !floatData.Equals(value);
-                    // use the internal reading for changed so we don't reset it.
-                    Updated = changed || !floatData.Equals(0f);
+                    IsActive = !value.Equals(0f);
                     floatData = value;
                 }
             }
@@ -417,16 +414,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
                     Changed = !vector2Data.x.Equals(value.x * invertXAxisFactor) &&
                               !vector2Data.y.Equals(value.y * invertYAxisFactor);
-                    // use the internal reading for changed so we don't reset it.
-                    Updated = changed || !vector2Data.Equals(Vector2.zero);
+                    IsActive = !value.Equals(Vector2.zero);
                     vector2Data.x = value.x * invertXAxisFactor;
                     vector2Data.y = value.y * invertYAxisFactor;
                 }
                 else
                 {
                     Changed = vector2Data != value;
-                    // use the internal reading for changed so we don't reset it.
-                    Updated = changed || !vector2Data.Equals(Vector2.zero);
+                    IsActive = !value.Equals(Vector2.zero);
                     vector2Data = value;
                 }
             }
@@ -453,8 +448,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
                 }
 
                 Changed = positionData != value;
-                // use the internal reading for changed so we don't reset it.
-                Updated = changed || !value.Equals(Vector3.zero);
+                IsActive = !value.Equals(Vector3.zero);
                 positionData = value;
             }
         }
@@ -478,8 +472,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
                 }
 
                 Changed = rotationData != value;
-                // use the internal reading for changed so we don't reset it.
-                Updated = changed || !value.Equals(Quaternion.identity);
+                IsActive = !value.Equals(Quaternion.identity);
                 rotationData = value;
             }
         }
@@ -502,8 +495,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
                 }
 
                 Changed = poseData != value;
-                // use the internal reading for changed so we don't reset it.
-                Updated = changed || !value.Equals(MixedRealityPose.ZeroIdentity);
+                IsActive = !value.Equals(MixedRealityPose.ZeroIdentity);
                 poseData = value;
                 positionData = poseData.Position;
                 rotationData = poseData.Rotation;

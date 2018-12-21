@@ -86,8 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 {
                     Interactions[i].PoseData = controllerPose;
 
-                    // If our value was updated, raise it.
-                    if (Interactions[i].Updated)
+                    // If our value was changed, raise it.
+                    if (Interactions[i].Changed)
                     {
                         MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
                     }
@@ -97,8 +97,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 {
                     Interactions[i].Vector2Data = mouseDelta;
 
-                    // If our value was updated, raise it.
-                    if (Interactions[i].Updated)
+                    // If our value was changed, raise it.
+                    if (Interactions[i].Changed)
                     {
                         MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
                     }
@@ -108,8 +108,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 {
                     Interactions[i].Vector2Data = Input.mouseScrollDelta;
 
-                    // If our value was updated, raise it.
-                    if (Interactions[i].Updated)
+                    // If our value was changed, raise it.
+                    if (Interactions[i].Changed)
                     {
                         MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
                     }
@@ -136,8 +136,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                         }
                     }
 
-                    // If our value was updated, raise it.
-                    if (Interactions[i].Updated)
+                    // If our action is active, raise it.
+                    if (Interactions[i].IsActive)
                     {
                         MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
                     }

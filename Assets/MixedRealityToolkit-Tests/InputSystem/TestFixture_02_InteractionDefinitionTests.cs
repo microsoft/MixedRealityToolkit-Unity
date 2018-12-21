@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// <summary>
         /// We test by initializing a new <see cref="MixedRealityInteractionMapping"/>.
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == false.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == false.<para/>
         /// </summary>
         [Test]
         public void Test_01_01_InitializedRawData()
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // Test to make sure the initial values are correct.
             Assert.IsNull(initialValue);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.RawData = initialValue;
 
@@ -41,13 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // value doesn't raise changed or updated.
             Assert.IsNull(interaction.RawData);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         /// <summary>
         /// We test by setting the interaction data to two different values.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == true, then false after each subsequent check before assigning a new value.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true, then false after each subsequent check before assigning a new value.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true, then false after each subsequent check before assigning a new value.<para/>
         /// </summary>
         [Test]
         public void Test_01_02_ObjectChangedAndUpdated()
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.RawData;
 
@@ -70,13 +70,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.AreEqual(setValue1, testValue1);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.RawData = testValue2;
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.RawData;
 
@@ -85,13 +85,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.AreEqual(setValue2, testValue2);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.RawData = initialValue;
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue3 = interaction.RawData;
 
@@ -100,13 +100,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.AreEqual(initialValue, setValue3);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         /// <summary>
         /// We test by setting the interaction data to the same object multiple times.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true.<para/>
         /// </summary>
         [Test]
         public void Test_01_03_ObjectNoChangeAndUpdated()
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.RawData;
 
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.AreEqual(testValue, setValue1);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.RawData = testValue;
 
@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsFalse(interaction.Changed);
 
             // Make sure if we set the same value updated is true
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.RawData;
 
@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.AreEqual(testValue, setValue2);
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         #endregion objects
@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// <summary>
         /// We test by initializing a new <see cref="MixedRealityInteractionMapping"/>.
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == false.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == false.<para/>
         /// </summary>
         [Test]
         public void Test_02_01_InitializedBoolData()
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // Test to make sure the initial values are correct.
             Assert.IsFalse(initialValue);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.BoolData = initialValue;
 
@@ -178,13 +178,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // value doesn't raise changed or updated.
             Assert.IsFalse(initialValue);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         /// <summary>
         /// We test by setting the interaction data to two different values.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == true, then false after each subsequent check before assigning a new value.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true, then false after each subsequent check before assigning a new value.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true, then false after each subsequent check before assigning a new value.<para/>
         /// </summary>
         [Test]
         public void Test_02_02_BoolChangedAndUpdated()
@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.BoolData;
 
@@ -206,13 +206,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue1 == testValue1);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.BoolData = testValue2;
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.BoolData;
 
@@ -221,13 +221,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue2 == testValue2);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         /// <summary>
         /// We test by setting the interaction data to the same object multiple times.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true.<para/>
         /// </summary>
         [Test]
         public void Test_02_03_BoolNoChangeAndUpdated()
@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure if we set the value it's true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.BoolData;
 
@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue1 == testValue);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.BoolData = testValue;
 
@@ -256,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsFalse(interaction.Changed);
 
             // Make sure if we set the same value it's true
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.BoolData;
 
@@ -265,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue2 == testValue);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         #endregion bools
@@ -280,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// <summary>
         /// We test by initializing a new <see cref="MixedRealityInteractionMapping"/>.
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == false.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == false.<para/>
         /// </summary>
         [Test]
         public void Test_03_01_InitializedFloatData()
@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // Test to make sure the initial values are correct.
             Assert.AreEqual(0d, initialValue, double.Epsilon);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.FloatData = initialValue;
 
@@ -299,13 +299,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // value doesn't raise changed or updated.
             Assert.AreEqual(0d, initialValue, double.Epsilon);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         /// <summary>
         /// We test by setting the interaction data to two different values.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == true, then false after each subsequent check before assigning a new value.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true, then false after each subsequent check before assigning a new value.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true, then false after each subsequent check before assigning a new value.<para/>
         /// </summary>
         [Test]
         public void Test_03_02_FloatChangedAndUpdated()
@@ -319,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.FloatData;
 
@@ -327,13 +327,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.AreEqual(testValue1, setValue1, double.Epsilon);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.FloatData = testValue2;
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.FloatData;
 
@@ -341,13 +341,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.AreEqual(testValue2, setValue2, double.Epsilon);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.FloatData = initialValue;
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue3 = interaction.FloatData;
 
@@ -355,13 +355,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.AreEqual(initialValue, setValue3, double.Epsilon);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         /// <summary>
         /// We test by setting the interaction data to the same object multiple times.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true.<para/>
         /// </summary>
         [Test]
         public void Test_03_03_FloatNoChangeAndUpdated()
@@ -373,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure if we set the value it's true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.FloatData;
 
@@ -381,7 +381,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.AreEqual(testValue, setValue1, double.Epsilon);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.FloatData = testValue;
 
@@ -389,7 +389,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsFalse(interaction.Changed);
 
             // Make sure if we set the same value it's true
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.FloatData;
 
@@ -397,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.AreEqual(testValue, setValue2, double.Epsilon);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         #endregion float
@@ -412,7 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// <summary>
         /// We test by initializing a new <see cref="MixedRealityInteractionMapping"/>.
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == false.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == false.<para/>
         /// </summary>
         [Test]
         public void Test_04_01_InitializedVector2()
@@ -423,7 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // Test to make sure the initial values are correct.
             Assert.True(initialValue == Vector2.zero);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.Vector2Data = initialValue;
 
@@ -431,13 +431,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // value doesn't raise changed or updated.
             Assert.True(initialValue == Vector2.zero);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         /// <summary>
         /// We test by setting the interaction data to two different values.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == true, then false after each subsequent check before assigning a new value.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true, then false after each subsequent check before assigning a new value.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true, then false after each subsequent check before assigning a new value.<para/>
         /// </summary>
         [Test]
         public void Test_04_02_Vector2ChangedAndUpdated()
@@ -451,7 +451,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.Vector2Data;
 
@@ -465,7 +465,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.Vector2Data;
 
@@ -479,7 +479,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue3 = interaction.Vector2Data;
 
@@ -493,7 +493,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// <summary>
         /// We test by setting the interaction data to the same object multiple times.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true.<para/>
         /// </summary>
         [Test]
         public void Test_04_03_Vector2NoChangeAndUpdated()
@@ -505,7 +505,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure if we set the value it's true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.Vector2Data;
 
@@ -513,7 +513,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue1 == testValue);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.Vector2Data = testValue;
 
@@ -521,7 +521,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsFalse(interaction.Changed);
 
             // Make sure if we set the same value it's true
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.Vector2Data;
 
@@ -529,7 +529,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue2 == testValue);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         #endregion Vector2
@@ -544,7 +544,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// <summary>
         /// We test by setting the interaction data to two different values.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == true, then false after each subsequent check before assigning a new value.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true, then false after each subsequent check before assigning a new value.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true, then false after each subsequent check before assigning a new value.<para/>
         /// </summary>
         [Test]
         public void Test_05_01_InitializedVector3()
@@ -555,7 +555,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // Test to make sure the initial values are correct.
             Assert.True(initialValue == Vector3.zero);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.PositionData = initialValue;
 
@@ -563,13 +563,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // value doesn't raise changed or updated.
             Assert.True(initialValue == Vector3.zero);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         /// <summary>
         /// We test by setting the interaction data to the same object multiple times.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true.<para/>
         /// </summary>
         [Test]
         public void Test_05_02_Vector3ChangedAndUpdated()
@@ -583,7 +583,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.PositionData;
 
@@ -597,7 +597,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.PositionData;
 
@@ -611,7 +611,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue3 = interaction.PositionData;
 
@@ -625,7 +625,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// <summary>
         /// We test by initializing a new <see cref="MixedRealityInteractionMapping"/>.
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == false.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == false.<para/>
         /// </summary>
         [Test]
         public void Test_05_03_Vector3NoChangeAndUpdated()
@@ -637,7 +637,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure if we set the value it's true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.PositionData;
 
@@ -645,7 +645,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue1 == testValue);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.PositionData = testValue;
 
@@ -653,7 +653,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsFalse(interaction.Changed);
 
             // Make sure if we set the same value it's true
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.PositionData;
 
@@ -661,7 +661,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue2 == testValue);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         #endregion Vector3
@@ -676,7 +676,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// <summary>
         /// We test by setting the interaction data to two different values.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == true, then false after each subsequent check before assigning a new value.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true, then false after each subsequent check before assigning a new value.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true, then false after each subsequent check before assigning a new value.<para/>
         /// </summary>
         [Test]
         public void Test_06_01_InitializeQuaternion()
@@ -687,7 +687,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // Test to make sure the initial values are correct.
             Assert.IsTrue(initialValue == Quaternion.identity);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.RotationData = initialValue;
 
@@ -695,13 +695,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // value doesn't raise changed or updated.
             Assert.IsTrue(initialValue == Quaternion.identity);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         /// <summary>
         /// We test by setting the interaction data to the same object multiple times.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true.<para/>
         /// </summary>
         [Test]
         public void Test_06_02_QuaternionChangedAndUpdated()
@@ -715,7 +715,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.RotationData;
 
@@ -729,7 +729,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.RotationData;
 
@@ -743,7 +743,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue3 = interaction.RotationData;
 
@@ -757,7 +757,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// <summary>
         /// We test by initializing a new <see cref="MixedRealityInteractionMapping"/>.
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == false.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == false.<para/>
         /// </summary>
         [Test]
         public void Test_06_03_QuaternionNoChangeAndUpdated()
@@ -769,7 +769,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure if we set the value it's true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.RotationData;
 
@@ -777,7 +777,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue1 == testValue);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.RotationData = testValue;
 
@@ -785,7 +785,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsFalse(interaction.Changed);
 
             // Make sure if we set the same value it's true
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.RotationData;
 
@@ -793,7 +793,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue2 == testValue);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         #endregion Quaternion
@@ -808,7 +808,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// <summary>
         /// We test by setting the interaction data to two different values.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == true, then false after each subsequent check before assigning a new value.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true, then false after each subsequent check before assigning a new value.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true, then false after each subsequent check before assigning a new value.<para/>
         /// </summary>
         [Test]
         public void Test_07_01_InitializePoseData()
@@ -819,7 +819,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // Test to make sure the initial values are correct.
             Assert.IsTrue(initialValue == MixedRealityPose.ZeroIdentity);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.PoseData = initialValue;
 
@@ -827,13 +827,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // value doesn't raise changed or updated.
             Assert.IsTrue(initialValue == MixedRealityPose.ZeroIdentity);
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         /// <summary>
         /// We test by setting the interaction data to the same object multiple times.<para/>
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == true.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == true.<para/>
         /// </summary>
         [Test]
         public void Test_07_02_MixedRealityPoseChangedAndUpdated()
@@ -847,7 +847,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.PoseData;
 
@@ -861,7 +861,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.PoseData;
 
@@ -875,7 +875,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure the first query after value assignment is true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue3 = interaction.PoseData;
 
@@ -889,7 +889,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         /// <summary>
         /// We test by initializing a new <see cref="MixedRealityInteractionMapping"/>.
         /// We expect that <see cref="MixedRealityInteractionMapping.Changed"/> == false.<para/>
-        /// We expect that <see cref="MixedRealityInteractionMapping.Updated"/> == false.<para/>
+        /// We expect that <see cref="MixedRealityInteractionMapping.IsActive"/> == false.<para/>
         /// </summary>
         [Test]
         public void Test_07_03_MixedRealityPoseNoChangeAndUpdated()
@@ -901,7 +901,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Make sure if we set the value it's true
             Assert.IsTrue(interaction.Changed);
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue1 = interaction.PoseData;
 
@@ -909,7 +909,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue1 == testValue);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
 
             interaction.PoseData = testValue;
 
@@ -917,7 +917,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsFalse(interaction.Changed);
 
             // Make sure if we set the same value it's true
-            Assert.IsTrue(interaction.Updated);
+            Assert.IsTrue(interaction.IsActive);
 
             var setValue2 = interaction.PoseData;
 
@@ -925,7 +925,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.True(setValue2 == testValue);
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
-            Assert.IsFalse(interaction.Updated);
+            Assert.IsFalse(interaction.IsActive);
         }
 
         #endregion MixedRealityPose

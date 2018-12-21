@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             }
 
             // If pressed always raise pressed update.
-            if (interactionMapping.Updated)
+            if (interactionMapping.IsActive)
             {
                 MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
             }
@@ -145,8 +145,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                     // Update the interaction data source
                     interactionMapping.FloatData = singleAxisValue;
 
-                    // If our value was updated, raise it.
-                    if (interactionMapping.Updated)
+                    // If our action is active, raise it.
+                    if (interactionMapping.IsActive)
                     {
                         // Raise input system Event if it enabled
                         MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                     return;
             }
 
-            // If our value was updated, raise it.
+            // If our value was changed, raise it.
             if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
@@ -171,8 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 }
             }
 
-            // If our value was updated, raise it.
-            if (interactionMapping.Updated)
+            // If our action is active, raise it.
+            if (interactionMapping.IsActive)
             {
                 MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, singleAxisValue);
             }
@@ -192,8 +192,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             // Update the interaction data source
             interactionMapping.Vector2Data = dualAxisPosition;
 
-            // If our value was updated, raise it.
-            if (interactionMapping.Updated)
+            // If our value was changed, raise it.
+            if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
                 MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
@@ -227,8 +227,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 return;
             }
 
-            // If our value was updated, raise it.
-            if (interactionMapping.Updated)
+            // If our value was changed, raise it.
+            if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
                 MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
