@@ -783,19 +783,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             };
 
         /// <inheritdoc />
-        public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
+        public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction)
         {
             // Create input event
-            pointerEventData.Initialize(pointer, handedness, inputAction);
+            pointerEventData.Initialize(pointer, inputAction);
 
             ExecutePointerDown(HandlePointerDown(pointer));
         }
 
         /// <inheritdoc />
-        public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
+        public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
-            pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
+            pointerEventData.Initialize(pointer, handedness, inputAction);
 
             ExecutePointerDown(HandlePointerDown(pointer));
         }
@@ -829,19 +829,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 };
 
         /// <inheritdoc />
-        public void RaisePointerClicked(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction, int count)
+        public void RaisePointerClicked(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, int count)
         {
             // Create input event
-            pointerEventData.Initialize(pointer, handedness, inputAction, count);
+            pointerEventData.Initialize(pointer, inputAction, count);
 
             HandleClick();
         }
 
         /// <inheritdoc />
-        public void RaisePointerClicked(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, int count, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
+        public void RaisePointerClicked(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction, int count)
         {
             // Create input event
-            pointerEventData.Initialize(pointer, inputAction, handedness, inputSource, count);
+            pointerEventData.Initialize(pointer, handedness, inputAction, count);
 
             HandleClick();
         }
@@ -866,19 +866,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             };
 
         /// <inheritdoc />
-        public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
+        public void RaisePointerUp(IMixedRealityPointer pointer, MixedRealityInputAction inputAction)
         {
             // Create input event
-            pointerEventData.Initialize(pointer, handedness, inputAction);
+            pointerEventData.Initialize(pointer, inputAction);
 
             ExecutePointerUp(HandlePointerUp(pointer));
         }
 
         /// <inheritdoc />
-        public void RaisePointerUp(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
+        public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
-            pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
+            pointerEventData.Initialize(pointer, handedness, inputAction);
 
             ExecutePointerUp(HandlePointerUp(pointer));
         }

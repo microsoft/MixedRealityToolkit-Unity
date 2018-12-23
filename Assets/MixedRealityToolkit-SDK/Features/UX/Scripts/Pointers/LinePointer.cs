@@ -121,15 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             // Set our first and last points
             lineBase.FirstPoint = pointerPosition;
-
-            if (IsFocusLocked)
-            {
-                lineBase.LastPoint = pointerPosition + ((Result.Details.Point - pointerPosition).normalized * PointerExtent);
-            }
-            else
-            {
-                lineBase.LastPoint = pointerPosition + (PointerDirection * PointerExtent);
-            }
+            lineBase.LastPoint = pointerPosition + (PointerDirection * PointerExtent);
 
             // Make sure our array will hold
             if (Rays == null || Rays.Length != LineCastResolution)
@@ -201,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     if (IsFocusLocked)
                     {
                         gravityDistorter.enabled = true;
-                        gravityDistorter.WorldCenterOfGravity = Result.Details.Point;
+                        gravityDistorter.WorldCenterOfGravity = Result.CurrentPointerTarget.transform.position;
                     }
                 }
                 else

@@ -179,9 +179,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             private GraphicInputEventData graphicData;
 
             private FocusDetails focusDetails = new FocusDetails();
-            private Vector3 pointLocalSpace;
-            private Vector3 normalLocalSpace;
-            private bool pointerWasLocked;
 
             public PointerData(IMixedRealityPointer pointer)
             {
@@ -201,8 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 focusDetails.Point = hit.point;
                 focusDetails.Normal = hit.normal;
                 focusDetails.Object = hit.transform.gameObject;
-
-                pointerWasLocked = false;
             }
 
             /// <summary>
@@ -234,38 +229,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 focusDetails.Point = finalStep.Terminus;
                 focusDetails.Normal = -finalStep.Direction;
                 focusDetails.Object = null;
-
-                pointerWasLocked = false;
-            }
-
-            /// <summary>
-            /// Update focus information while focus is locked. If the object is moving,
-            /// this updates the hit point to its new world transform.
-            /// </summary>
-            public void UpdateFocusLockedHit()
-            {
-                if (!pointerWasLocked)
-                {
-                    PreviousPointerTarget = focusDetails.Object;
-                    pointLocalSpace = focusDetails.Object.transform.InverseTransformPoint(focusDetails.Point);
-                    normalLocalSpace = focusDetails.Object.transform.InverseTransformDirection(focusDetails.Normal);
-                    pointerWasLocked = true;
-                }
-
-                // In case the focused object is moving, we need to update the focus point based on the object's new transform.
-                focusDetails.Point = focusDetails.Object.transform.TransformPoint(pointLocalSpace);
-                focusDetails.Normal = focusDetails.Object.transform.TransformDirection(normalLocalSpace);
-
-                StartPoint = Pointer.Rays[0].Origin;
-
-                for (int i = 0; i < Pointer.Rays.Length; i++)
-                {
-                    if (Pointer.Rays[i].Contains(focusDetails.Point))
-                    {
-                        RayStepIndex = i;
-                        break;
-                    }
-                }
             }
 
             public void ResetFocusedObjects(bool clearPreviousObject = true)
@@ -626,10 +589,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     // Set the pointer's result last
                     pointer.Pointer.Result = pointer;
-                }
-                else
-                {
-                    pointer.UpdateFocusLockedHit();
                 }
             }
 
