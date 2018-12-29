@@ -6,9 +6,11 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObserv
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
 {
@@ -26,6 +28,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         protected BaseMixedRealitySpatialMeshObserver(string name, uint priority, BaseMixedRealitySpatialMeshObserverProfile profile)
             : base(name, priority, profile)
         {
+            if (profile == null)
+            {
+                throw new Exception($"Missing profile for {name}");
+            }
+
             MeshPhysicsLayerOverride = profile.MeshPhysicsLayerOverride;
             MeshLevelOfDetail = profile.MeshLevelOfDetail;
             MeshTrianglesPerCubicMeter = profile.MeshTrianglesPerCubicMeter;
@@ -172,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// <inheritdoc />
         public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail
         {
-            get => meshLevelOfDetail;
+            get { return meshLevelOfDetail; }
             set
             {
                 if (meshLevelOfDetail != value)
