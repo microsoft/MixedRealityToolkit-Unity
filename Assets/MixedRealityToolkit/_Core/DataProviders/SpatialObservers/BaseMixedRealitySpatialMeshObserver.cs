@@ -4,7 +4,10 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
@@ -32,7 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
             MeshOcclusionMaterial = profile.MeshOcclusionMaterial;
             ObservationExtents = profile.ObservationExtents;
             IsStationaryObserver = profile.IsStationaryObserver;
+            spatialMeshObjectPool = new Stack<SpatialMeshObject>();
         }
+
+        private readonly WaitForUpdate NextUpdate = new WaitForUpdate();
 
         /// <summary>
         /// When a mesh is created we will need to create a game object with a minimum 
@@ -47,22 +53,108 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
 
         #region IMixedRealityService Implementation
 
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            // Only update the observer if it is running.
+            if (!Application.isPlaying) { return; }
+
+            for (int i = 0; i < 10; i++)
+            {
+                spatialMeshObjectPool.Push(new SpatialMeshObject(-1, CreateBlankSpatialMeshGameObject()));
+            }
+        }
+
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            base.Enable();
+
+            // Only update the observer if it is running.
+            if (!Application.isPlaying) { return; }
+
+            // If we've got some spatial meshes and were disabled previously, turn them back on.
+            foreach (SpatialMeshObject meshObject in spatialMeshObjects.Values)
+            {
+                meshObject.GameObject.SetActive(true);
+            }
+        }
+
+        /// <inheritdoc />
+        public override void Update()
+        {
+            base.Update();
+
+            // Only update the observer if it is running.
+            if (!Application.isPlaying || !IsRunning) { return; }
+
+            lock (spatialMeshObjectPool)
+            {
+                // if we get low in our object pool, then create a few more.
+                if (spatialMeshObjectPool.Count < 5)
+                {
+                    spatialMeshObjectPool.Push(new SpatialMeshObject(-1, CreateBlankSpatialMeshGameObject()));
+                }
+            }
+        }
+
         /// <inheritdoc />
         public override void Disable()
         {
             base.Disable();
 
-            // Cleanup the mesh objects that are being managed by this observer.
-            // Clean up mesh objects.
-            // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
+            // Only update the observer if it is running.
+            if (!Application.isPlaying) { return; }
+
+            // Disable any spatial meshes we might have.
             foreach (SpatialMeshObject meshObject in spatialMeshObjects.Values)
             {
-                // Cleanup mesh object.
-                // Destroy the game object, destroy the meshes.
-                DestroyMeshObject(meshObject);
+                if (meshObject.GameObject != null)
+                {
+                    meshObject.GameObject.SetActive(false);
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            base.Destroy();
+
+            if (!Application.isPlaying) { return; }
+
+            // Cleanup the spatial meshes that are being managed by this observer.
+            foreach (SpatialMeshObject meshObject in spatialMeshObjects.Values)
+            {
+                if (Application.isEditor)
+                {
+                    Object.DestroyImmediate(meshObject.GameObject);
+                }
+                else
+                {
+                    Object.Destroy(meshObject.GameObject);
+                }
             }
 
             spatialMeshObjects.Clear();
+
+            lock (spatialMeshObjectPool)
+            {
+                foreach (SpatialMeshObject meshObject in spatialMeshObjectPool)
+                {
+                    if (Application.isEditor)
+                    {
+                        Object.DestroyImmediate(meshObject.GameObject);
+                    }
+                    else
+                    {
+                        Object.Destroy(meshObject.GameObject);
+                    }
+                }
+
+                spatialMeshObjectPool.Clear();
+            }
         }
 
         #endregion IMixedRealityService Implementation
@@ -72,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         private SpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;
 
         /// <inheritdoc />
-        public override int PhysicsLayer => MeshPhysicsLayerOverride >= 0 ? MeshPhysicsLayerOverride : base.PhysicsLayer;
+        public override int PhysicsLayer => MeshPhysicsLayerOverride == -1 ? base.PhysicsLayer : MeshPhysicsLayerOverride;
 
         /// <inheritdoc />
         public int MeshPhysicsLayerOverride { get; }
@@ -80,11 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// <inheritdoc />
         public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail
         {
-            get
-            {
-                return meshLevelOfDetail;
-            }
-
+            get => meshLevelOfDetail;
             set
             {
                 if (meshLevelOfDetail != value)
@@ -136,10 +224,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// </remarks>
         public IReadOnlyDictionary<int, SpatialMeshObject> SpatialMeshObjects => new Dictionary<int, SpatialMeshObject>(spatialMeshObjects);
 
+        private readonly Stack<SpatialMeshObject> spatialMeshObjectPool;
+
         /// <inheritdoc />
         public virtual void RaiseMeshAdded(SpatialMeshObject spatialMeshObject)
         {
-            spatialMeshObjects.Add(spatialMeshObject.Id, spatialMeshObject);
             MixedRealityToolkit.SpatialAwarenessSystem.RaiseMeshAdded(this, spatialMeshObject);
         }
 
@@ -152,73 +241,74 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// <inheritdoc />
         public virtual void RaiseMeshRemoved(SpatialMeshObject spatialMeshObject)
         {
-            MixedRealityToolkit.SpatialAwarenessSystem.RaiseMeshRemoved(this, spatialMeshObject);
+            SpatialMeshObject spatialMesh;
+            if (spatialMeshObjects.TryGetValue(spatialMeshObject.Id, out spatialMesh))
+            {
+                spatialMeshObjects.Remove(spatialMesh.Id);
+
+                // Raise mesh removed if it was prev enabled.
+                // spatialMesh.GameObject's only get enabled when successfully cooked.
+                // If it's disabled then likely the mesh was removed before cooking completed.
+                if (spatialMesh.GameObject.activeInHierarchy)
+                {
+                    MixedRealityToolkit.SpatialAwarenessSystem.RaiseMeshRemoved(this, spatialMeshObject);
+                }
+
+                spatialMesh.GameObject.SetActive(false);
+                // Recycle this spatial mesh object and add it back to the pool.
+                spatialMesh.GameObject.name = "Reclaimed Spatial Mesh Object";
+                spatialMesh.Mesh = null;
+                spatialMesh.Id = -1;
+
+                lock (spatialMeshObjectPool)
+                {
+                    spatialMeshObjectPool.Push(spatialMesh);
+                }
+            }
+            else
+            {
+                Debug.LogError($"{spatialMeshObject.Id} is missing from known spatial objects!");
+            }
         }
 
         /// <summary>
-        /// Creates a <see cref="SpatialMeshObject"/>.
+        /// Request a <see cref="SpatialMeshObject"/> from the collection of known spatial objects. If that object doesn't exist take one from our pool.
         /// </summary>
-        /// <param name="mesh"></param>
-        /// <param name="name"></param>
-        /// <param name="meshId"></param>
-        /// <returns>
-        /// <see cref="SpatialMeshObject"/> containing the fields that describe the mesh.
-        /// </returns>
-        protected SpatialMeshObject CreateSpatialMeshObject(Mesh mesh, string name, int meshId)
+        /// <param name="meshId">The id of the <see cref="SpatialMeshObject"/>.</param>
+        /// <returns>A <see cref="SpatialMeshObject"/></returns>
+        protected async Task<SpatialMeshObject> RequestSpatialMeshObject(int meshId)
         {
-            var gameObject = new GameObject(name, requiredMeshComponents)
+            SpatialMeshObject spatialMesh;
+            if (spatialMeshObjects.TryGetValue(meshId, out spatialMesh))
             {
-                layer = PhysicsLayer
+                return spatialMesh;
+            }
+
+            lock (spatialMeshObjectPool)
+            {
+                if (spatialMeshObjectPool.Count > 0)
+                {
+                    spatialMesh = spatialMeshObjectPool.Pop();
+                    spatialMesh.Id = meshId;
+                    spatialMeshObjects.Add(spatialMesh.Id, spatialMesh);
+                    return spatialMesh;
+                }
+            }
+
+            await NextUpdate;
+            return await RequestSpatialMeshObject(meshId);
+        }
+
+        private GameObject CreateBlankSpatialMeshGameObject()
+        {
+            var newGameObject = new GameObject($"Blank Spatial Mesh GameObject", requiredMeshComponents)
+            {
+                layer = MeshPhysicsLayerOverride == -1 ? base.PhysicsLayer : MeshPhysicsLayerOverride
             };
 
-            var meshFilter = gameObject.GetComponent<MeshFilter>();
-            var meshRenderer = gameObject.GetComponent<MeshRenderer>();
-            var meshCollider = gameObject.GetComponent<MeshCollider>();
-
-            // Reset the surface mesh collider to fit the updated mesh. 
-            // Unity tribal knowledge indicates that to change the mesh assigned to a
-            // mesh collider and mesh filter, the mesh must first be set to null.  Presumably there
-            // is a side effect in the setter when setting the shared mesh to null.
-            meshFilter.sharedMesh = null;
-            meshFilter.sharedMesh = mesh;
-            meshCollider.sharedMesh = null;
-            meshCollider.sharedMesh = meshFilter.sharedMesh;
-
-            return new SpatialMeshObject(meshId, gameObject, meshRenderer, meshFilter, meshCollider);
-        }
-
-        /// <summary>
-        /// Clean up the resources associated with the surface.
-        /// </summary>
-        /// <param name="meshObject">The <see cref="SpatialMeshObject"/> whose resources will be cleaned up.</param>
-        protected void DestroyMeshObject(SpatialMeshObject meshObject)
-        {
-            if (meshObject.GameObject != null)
-            {
-                Object.Destroy(meshObject.GameObject);
-            }
-        }
-
-        /// <summary>
-        /// Removes the <see cref="SpatialMeshObject"/> associated with the specified id.
-        /// </summary>
-        /// <param name="meshId">The id of the mesh to be removed.</param>
-        protected void RemoveMeshObject(int meshId)
-        {
-            SpatialMeshObject mesh;
-
-            if (spatialMeshObjects.TryGetValue(meshId, out mesh))
-            {
-                // Remove the mesh object from the collection.
-                spatialMeshObjects.Remove(meshId);
-
-                // Sent the mesh removed event.
-                RaiseMeshRemoved(mesh);
-
-                // Cleanup the mesh object.
-                // Destroy the game object, destroy the meshes.
-                DestroyMeshObject(mesh);
-            }
+            newGameObject.transform.parent = MixedRealityToolkit.SpatialAwarenessSystem.SpatialMeshesParent.transform;
+            newGameObject.SetActive(false);
+            return newGameObject;
         }
 
         #endregion IMixedRealitySpatialMeshObserver Implementation

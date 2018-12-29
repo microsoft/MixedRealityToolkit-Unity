@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,8 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         {
             if (profile == null)
             {
-                Debug.LogError($"Missing profile for {name}");
-                return;
+                throw new Exception($"Missing profile for {name}");
             }
 
             SurfacePhysicsLayerOverride = profile.SurfacePhysicsLayerOverride;
@@ -39,18 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         }
 
         /// <inheritdoc />
-        public override int PhysicsLayer
-        {
-            get
-            {
-                if (SurfacePhysicsLayerOverride > -1)
-                {
-                    return base.PhysicsLayer;
-                }
+        public override int PhysicsLayer => SurfacePhysicsLayerOverride == -1 ? base.PhysicsLayer : SurfacePhysicsLayerOverride;
 
-                return SurfacePhysicsLayerOverride;
-            }
-        }
 
         /// <inheritdoc />
         public int SurfacePhysicsLayerOverride { get; }

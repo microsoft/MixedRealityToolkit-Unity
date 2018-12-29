@@ -27,11 +27,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
                 throw new ArgumentNullException($"Missing profile for {name}");
             }
 
-            if (MixedRealityToolkit.SpatialAwarenessSystem != null)
+            if (MixedRealityToolkit.SpatialAwarenessSystem == null)
             {
-                SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewObserverId();
+                throw new Exception("Missing Spatial Awareness System!");
             }
 
+            SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewObserverId();
             StartupBehavior = profile.StartupBehavior;
             UpdateInterval = profile.UpdateInterval;
             PhysicsLayer = profile.PhysicsLayer;
@@ -42,10 +43,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// <inheritdoc />
         public override void Enable()
         {
-            if (MixedRealityToolkit.SpatialAwarenessSystem != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled)
+            base.Enable();
+
+            MixedRealityToolkit.SpatialAwarenessSystem?.RaiseSpatialAwarenessObserverDetected(this);
+
+            if (StartupBehavior == AutoStartBehavior.AutoStart)
             {
-                MixedRealityToolkit.SpatialAwarenessSystem.RaiseSpatialAwarenessObserverDetected(this);
                 StartObserving();
             }
         }
@@ -53,12 +56,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         /// <inheritdoc />
         public override void Disable()
         {
-            if (MixedRealityToolkit.SpatialAwarenessSystem != null)
-            {
-                MixedRealityToolkit.SpatialAwarenessSystem.RaiseSpatialAwarenessObserverLost(this);
-            }
+            base.Disable();
 
             StopObserving();
+
+            MixedRealityToolkit.SpatialAwarenessSystem?.RaiseSpatialAwarenessObserverLost(this);
         }
 
         #endregion IMixedRealityService Implementation
@@ -78,10 +80,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers
         public bool IsRunning { get; protected set; }
 
         /// <inheritdoc />
-        public virtual void StartObserving() { }
+        public virtual void StartObserving()
+        {
+            IsRunning = true;
+        }
 
         /// <inheritdoc />
-        public virtual void StopObserving() { }
+        public virtual void StopObserving()
+        {
+            IsRunning = false;
+        }
 
         #endregion IMixedRealitySpatialObserverDataProvider Implementation
 

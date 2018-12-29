@@ -15,41 +15,64 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// </summary>
         /// <param name="id"></param>
         /// <param name="gameObject"></param>
-        /// <param name="renderer"></param>
-        /// <param name="filter"></param>
-        /// <param name="collider"></param>
-        public SpatialMeshObject(int id, GameObject gameObject, MeshRenderer renderer, MeshFilter filter, MeshCollider collider)
+        public SpatialMeshObject(int id, GameObject gameObject) : this()
         {
             Id = id;
             GameObject = gameObject;
-            Renderer = renderer;
-            Filter = filter;
-            Collider = collider;
         }
 
         /// <summary>
         /// The id of the spatial mesh object.
         /// </summary>
-        public int Id { get; }
+        public int Id { get; internal set; }
+
+        private GameObject gameObject;
 
         /// <summary>
         /// The <see cref="GameObject"/> reference of the Spatial Mesh Object.
         /// </summary>
-        public GameObject GameObject { get; }
+        public GameObject GameObject
+        {
+            get { return gameObject; }
+            internal set
+            {
+                gameObject = value;
+
+                Renderer = gameObject.GetComponent<MeshRenderer>();
+                Filter = gameObject.GetComponent<MeshFilter>();
+                Collider = gameObject.GetComponent<MeshCollider>();
+            }
+        }
+
+        public Mesh Mesh
+        {
+            get { return Filter.sharedMesh; }
+            internal set
+            {
+                // Reset the surface mesh collider to fit the updated mesh. 
+                // Unity tribal knowledge indicates that to change the mesh assigned to a
+                // mesh collider and mesh filter, the mesh must first be set to null.  Presumably there
+                // is a side effect in the setter when setting the shared mesh to null.
+                Filter.sharedMesh = null;
+                Filter.sharedMesh = value;
+                Collider.sharedMesh = null;
+                Collider.sharedMesh = Filter.sharedMesh;
+            }
+        }
 
         /// <summary>
         /// The <see cref="MeshRenderer"/> reference for the Spatial Mesh Object.
         /// </summary>
-        public MeshRenderer Renderer { get; }
+        public MeshRenderer Renderer { get; private set; }
 
         /// <summary>
         /// The <see cref="MeshFilter"/> reference for the Spatial Mesh Object.
         /// </summary>
-        public MeshFilter Filter { get; }
+        public MeshFilter Filter { get; private set; }
 
         /// <summary>
         /// The <see cref="MeshCollider"/> reference for the Spatial Mesh Object.
         /// </summary>
-        public MeshCollider Collider { get; }
+        public MeshCollider Collider { get; private set; }
     }
 }
