@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         /// <summary>
         /// The surface observer providing the spatial data.
         /// </summary>
-        private static SurfaceObserver observer = null;
+        private readonly SurfaceObserver observer = null;
 
         /// <summary>
         /// The current location of the surface observer.
@@ -142,6 +142,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
         /// <param name="updateTime">The date and time at which the change occurred.</param>
         private async void SurfaceObserver_OnSurfaceChanged(SurfaceId surfaceId, SurfaceChange changeType, Bounds bounds, DateTime updateTime)
         {
+            SpatialMeshObject meshObject;
+
             // If we're adding or updating a mesh
             if (changeType != SurfaceChange.Removed)
             {
@@ -150,64 +152,68 @@ namespace Microsoft.MixedReality.Toolkit.Core.DataProviders.SpatialObservers.Win
                 var worldAnchor = spatialMeshObject.GameObject.EnsureComponent<WorldAnchor>();
                 var surfaceData = new SurfaceData(surfaceId, spatialMeshObject.Filter, worldAnchor, spatialMeshObject.Collider, MeshTrianglesPerCubicMeter, true);
 
-                if (!observer.RequestMeshAsync(surfaceData, OnDataReady))
+                if (!observer.RequestMeshAsync(surfaceData, OnDataReady(changeType)))
                 {
                     Debug.LogError($"Mesh request failed for spatial observer with Id {surfaceId.handle.ToString()}");
                     RaiseMeshRemoved(spatialMeshObject);
                 }
-
-                void OnDataReady(SurfaceData cookedData, bool outputWritten, float elapsedCookTimeSeconds)
-                {
-                    if (!outputWritten)
-                    {
-                        Debug.LogWarning($"No output for {cookedData.id.handle}");
-                        return;
-                    }
-
-                    if (!SpatialMeshObjects.TryGetValue(cookedData.id.handle, out SpatialMeshObject meshObject))
-                    {
-                        // Likely it was removed before data could be cooked.
-                        return;
-                    }
-
-                    // Apply the appropriate material to the mesh.
-                    SpatialMeshDisplayOptions displayOption = MeshDisplayOption;
-
-                    if (displayOption != SpatialMeshDisplayOptions.None)
-                    {
-                        meshObject.Renderer.enabled = true;
-                        meshObject.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible)
-                            ? MeshVisibleMaterial
-                            : MeshOcclusionMaterial;
-                    }
-                    else
-                    {
-                        meshObject.Renderer.enabled = false;
-                    }
-
-                    // Recalculate the mesh normals if requested.
-                    if (MeshRecalculateNormals)
-                    {
-                        meshObject.Filter.sharedMesh.RecalculateNormals();
-                    }
-
-                    meshObject.GameObject.SetActive(true);
-
-                    switch (changeType)
-                    {
-                        case SurfaceChange.Added:
-                            RaiseMeshAdded(meshObject);
-                            break;
-                        case SurfaceChange.Updated:
-                            RaiseMeshUpdated(meshObject);
-                            break;
-                    }
-                }
             }
-            else if (SpatialMeshObjects.TryGetValue(surfaceId.handle, out SpatialMeshObject meshObject))
+            else if (SpatialMeshObjects.TryGetValue(surfaceId.handle, out meshObject))
             {
                 RaiseMeshRemoved(meshObject);
             }
+        }
+
+        private SurfaceObserver.SurfaceDataReadyDelegate OnDataReady(SurfaceChange changeType)
+        {
+            return (cookedData, outputWritten, elapsedBakeTimeSeconds) =>
+            {
+                SpatialMeshObject meshObject;
+
+                if (!outputWritten)
+                {
+                    Debug.LogWarning($"No output for {cookedData.id.handle}");
+                    return;
+                }
+                if (!SpatialMeshObjects.TryGetValue(cookedData.id.handle, out meshObject))
+                {
+                    // Likely it was removed before data could be cooked.
+                    return;
+                }
+
+                // Apply the appropriate material to the mesh.
+                SpatialMeshDisplayOptions displayOption = MeshDisplayOption;
+
+                if (displayOption != SpatialMeshDisplayOptions.None)
+                {
+                    meshObject.Renderer.enabled = true;
+                    meshObject.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible)
+                        ? MeshVisibleMaterial
+                        : MeshOcclusionMaterial;
+                }
+                else
+                {
+                    meshObject.Renderer.enabled = false;
+                }
+
+                // Recalculate the mesh normals if requested.
+                if (MeshRecalculateNormals)
+                {
+                    meshObject.Filter.sharedMesh.RecalculateNormals();
+                }
+
+                meshObject.GameObject.SetActive(true);
+
+                switch (changeType)
+                {
+                    case SurfaceChange.Added:
+                        RaiseMeshAdded(meshObject);
+                        break;
+                    case SurfaceChange.Updated:
+                        RaiseMeshUpdated(meshObject);
+                        break;
+                }
+            };
         }
 
         #endregion IMixedRealitySpatialMeshObserver implementation
