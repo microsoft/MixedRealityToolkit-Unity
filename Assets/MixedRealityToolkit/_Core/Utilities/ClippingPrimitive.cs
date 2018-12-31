@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
     /// An abstract primitive component to animate and visualize a clipping primitive that can be 
     /// used to drive per pixel based clipping.
     /// </summary>
+    [ExecuteInEditMode]
     public abstract class ClippingPrimitive : MonoBehaviour
     {
         [Tooltip("The renderer(s) that should be affected by the primitive.")]
@@ -41,13 +42,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
 
         private int clippingSideID;
 
-        public void AddRenderer(Renderer renderer)
+        public void AddRenderer(Renderer _renderer)
         {
-            if (renderer != null && !renderers.Contains(renderer))
+            if (_renderer != null && !renderers.Contains(_renderer))
             {
-                renderers.Add(renderer);
+                renderers.Add(_renderer);
 
-                Material material = GetMaterial(renderer, false);
+                Material material = GetMaterial(_renderer, false);
 
                 if (material != null)
                 {
@@ -56,18 +57,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
             }
         }
 
-        public void RemoveRenderer(Renderer renderer)
+        public void RemoveRenderer(Renderer _renderer)
         {
-            if (renderers.Contains(renderer))
+            if (renderers.Contains(_renderer))
             {
-                Material material = GetMaterial(renderer, false);
+                Material material = GetMaterial(_renderer, false);
 
                 if (material != null)
                 {
                     ToggleClippingFeature(material, false);
                 }
 
-                renderers.Remove(renderer);
+                renderers.Remove(_renderer);
             }
         }
 
@@ -90,9 +91,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
             ToggleClippingFeature(false);
         }
 
+#if UNITY_EDITOR
+        // We need this class to be updated once per frame even when in edit mode. Ideally this would 
+        // occur after all other objects are updated in LateUpdate(), but because the ExecuteInEditMode 
+        // attribute only invokes Update() we handle edit mode updating in Update() and runtime updating 
+        // in LateUpdate().
         protected void Update()
         {
-            if (Application.isPlaying || !Application.isEditor)
+            if (Application.isPlaying)
             {
                 return;
             }
@@ -100,6 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
             Initialize();
             UpdateRenderers();
         }
+#endif
 
         protected void LateUpdate()
         {
@@ -152,17 +159,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
 
             for (int i = 0; i < renderers.Count; ++i)
             {
-                Renderer renderer = renderers[i];
+                Renderer _renderer = renderers[i];
 
-                if (renderer == null)
+                if (_renderer == null)
                 {
                     continue;
                 }
 
-                renderer.GetPropertyBlock(materialPropertyBlock);
+                _renderer.GetPropertyBlock(materialPropertyBlock);
                 materialPropertyBlock.SetFloat(clippingSideID, (float)clippingSide);
                 UpdateShaderProperties(materialPropertyBlock);
-                renderer.SetPropertyBlock(materialPropertyBlock);
+                _renderer.SetPropertyBlock(materialPropertyBlock);
             }
         }
 
@@ -206,20 +213,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
             }
         }
 
-        protected Material GetMaterial(Renderer renderer, bool trackAllocations = true)
+        protected Material GetMaterial(Renderer _renderer, bool trackAllocations = true)
         {
-            if (renderer == null)
+            if (_renderer == null)
             {
                 return null;
             }
 
             if (Application.isEditor && !Application.isPlaying)
             {
-                return renderer.sharedMaterial;
+                return _renderer.sharedMaterial;
             }
             else
             {
-                Material material = renderer.material;
+                Material material = _renderer.material;
 
                 if (trackAllocations && !allocatedMaterials.Contains(material))
                 {
