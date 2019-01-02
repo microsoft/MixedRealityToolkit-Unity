@@ -2,14 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityCameraProfile))]
-    public class MixedRealityCameraProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    public class MixedRealityCameraProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private SerializedProperty isCameraPersistent;
         private SerializedProperty opaqueNearClip;
@@ -25,9 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");
         private readonly GUIContent clearFlagsTitle = new GUIContent("Clear Flags");
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            if (!CheckMixedRealityManager(false))
+            base.OnEnable();
+
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
                 return;
             }
@@ -47,19 +50,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            if (!CheckMixedRealityManager())
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             {
                 return;
             }
 
             if (GUILayout.Button("Back to Configuration Profile"))
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
             }
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Camera Profile", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("The Camera Profile helps tweak camera settings no matter what platform you're building for.", MessageType.Info);
+
+            CheckProfileLock(target);
 
             serializedObject.Update();
 

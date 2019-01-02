@@ -38,9 +38,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         /// <param name="assemblyQualifiedClassName">Assembly qualified class name.</param>
         public SystemType(string assemblyQualifiedClassName)
         {
-            Type = !string.IsNullOrEmpty(assemblyQualifiedClassName)
-                ? Type.GetType(assemblyQualifiedClassName)
-                : null;
+            if (!string.IsNullOrEmpty(assemblyQualifiedClassName))
+            {
+                Type = Type.GetType(assemblyQualifiedClassName);
+
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+                if (Type != null && Type.IsAbstract())
+#else
+                if (Type != null && Type.IsAbstract)
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
+                {
+                    Type = null;
+                }
+            }
+            else
+            {
+                Type = null;
+            }
         }
 
         /// <summary>
@@ -59,19 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            if (!string.IsNullOrEmpty(reference))
-            {
-                type = Type.GetType(reference);
-
-                if (type == null)
-                {
-                    Debug.LogWarning($"'{reference}' was referenced but class or struct type was not found.");
-                }
-            }
-            else
-            {
-                type = null;
-            }
+            type = !string.IsNullOrEmpty(reference) ? Type.GetType(reference) : null;
         }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize() { }
@@ -92,13 +94,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
                 if (value != null)
                 {
 #if WINDOWS_UWP && !ENABLE_IL2CPP
-                    bool isValid = value.IsValueType() && !value.IsEnum() || value.IsClass();
+                    bool isValid = value.IsValueType() && !value.IsEnum() && !value.IsAbstract() || value.IsClass();
 #else
-                    bool isValid = value.IsValueType && !value.IsEnum || value.IsClass;
+                    bool isValid = value.IsValueType && !value.IsEnum && !value.IsAbstract || value.IsClass;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
                     if (!isValid)
                     {
-                        Debug.LogError($"'{value.FullName}' is not a class or struct type.");
+                        Debug.LogError($"'{value.FullName}' is not a valid class or struct type.");
                     }
                 }
 
@@ -124,15 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 
         public override string ToString()
         {
-            if (Type.FullName != null)
-            {
-                if (Type != null)
-                {
-                    return Type.FullName;
-                }
-            }
-
-            return "(None)";
+            return Type?.FullName ?? "(None)";
         }
     }
 }

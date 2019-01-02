@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
 {
     [CustomEditor(typeof(SimpleLineDataProvider))]
     public class SimpleLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
@@ -56,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
                 if (EditorGUI.EndChangeCheck())
                 {
                     Undo.RecordObject(LineData, "Change Simple Point Position");
-                    LineData.SetPoint(1, CameraCache.Main.transform.InverseTransformPoint(newTargetPosition));
+                    LineData.SetPoint(1, newTargetPosition);
                 }
             }
             else if (Tools.current == Tool.Rotate)

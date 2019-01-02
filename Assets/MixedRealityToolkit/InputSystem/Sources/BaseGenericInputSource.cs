@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
+using System;
 using System.Collections;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -16,21 +16,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     public class BaseGenericInputSource : IMixedRealityInputSource, IDisposable
     {
         /// <summary>
-        /// The Current Input System for this Input Source.
-        /// </summary>
-        public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-        private static IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="pointers"></param>
         public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null)
         {
-            SourceId = InputSystem.GenerateNewSourceId();
+            SourceId = MixedRealityToolkit.InputSystem.GenerateNewSourceId();
             SourceName = name;
-            Pointers = pointers ?? new[] { InputSystem.GazeProvider.GazePointer };
+            Pointers = pointers ?? new[] { MixedRealityToolkit.InputSystem.GazeProvider.GazePointer };
         }
 
         /// <inheritdoc />

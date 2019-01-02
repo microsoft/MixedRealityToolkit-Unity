@@ -33,8 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         #region MonoBehaviour Implementation
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+
             if (persistentKeywords)
             {
                 Debug.Assert(gameObject.transform.parent == null, "Persistent keyword GameObject must be at the root level of the scene hierarchy.");

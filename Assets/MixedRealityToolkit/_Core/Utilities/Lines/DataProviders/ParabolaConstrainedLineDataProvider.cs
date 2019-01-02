@@ -87,13 +87,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <inheritdoc />
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
-            if (pointIndex == 1)
+            switch (pointIndex)
             {
-                endPoint.Position = point;
-            }
-            else
-            {
-                Debug.LogError("Invalid point index!");
+                case 0:
+                    break;
+                case 1:
+                    endPoint.Position = point;
+                    break;
+                default:
+                    Debug.LogError("Invalid point index!");
+                    break;
             }
         }
 

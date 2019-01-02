@@ -12,15 +12,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
 {
     /// <summary>
-    /// Cursor Interface for handling pointers.
+    /// Interface for handling pointers.
     /// </summary>
     public interface IMixedRealityPointer : IEqualityComparer
     {
-        /// <summary>
-        /// The pointer's current input system reference.
-        /// </summary>
-        IMixedRealityInputSystem InputSystem { get; }
-
         /// <summary>
         /// The pointer's current controller reference.
         /// </summary>
@@ -81,6 +76,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// </summary>
         /// <remarks>If set, will override the <see cref="IMixedRealityInputSystem"/>'s default raycasting layer mask array.
         /// </remarks>
+        /// <example>
+        /// Allow the pointer to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)
+        /// <code language="csharp"><![CDATA[
+        /// int sr = LayerMask.GetMask("SR");
+        /// int nonSR = Physics.DefaultRaycastLayers &amp; ~sr;
+        /// IMixedRealityPointer.PrioritizedLayerMasksOverride = new LayerMask[] { nonSR, sr };
+        /// ]]></code>
+        /// </example>
         LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
         /// <summary>

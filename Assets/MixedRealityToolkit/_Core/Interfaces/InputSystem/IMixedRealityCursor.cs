@@ -43,6 +43,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         void SetVisibility(bool visible);
 
         /// <summary>
+        /// Is the cursor currently visible?
+        /// </summary>
+        bool IsVisible { get; }
+
+        /// <summary>
+        /// Sets the visibility of the <see cref="IMixedRealityCursor"/> when the source is detected.
+        /// </summary>
+        bool SetVisibilityOnSourceDetected { get; set; }
+
+        /// <summary>
         /// Returns the <see cref="IMixedRealityCursor"/>'s <see cref="GameObject"/> reference.
         /// </summary>
         /// <returns>The <see cref="GameObject"/> this <see cref="IMixedRealityCursor"/> component is attached to.</returns>

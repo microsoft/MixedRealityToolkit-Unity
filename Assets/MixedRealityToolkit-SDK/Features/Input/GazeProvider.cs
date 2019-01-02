@@ -1,16 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
@@ -26,8 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private const float MovementThreshold = 0.01f;
 
         [SerializeField]
-        [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
-        private GameObject cursorPrefab = null;
+        [Tooltip("If true, the gaze cursor will disappear when the pointer's focus is locked, to prevent the cursor from floating idly in the world.")]
+        private bool setCursorInvisibleWhenFocusLocked = true;
 
         [SerializeField]
         [Tooltip("Maximum distance at which the gaze can hit a GameObject.")]
@@ -74,9 +77,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         [Tooltip("Maximum head velocity threshold")]
         private float maxHeadVelocityThreshold = 2f;
 
-        [SerializeField]
-        [Tooltip("True to draw a debug view of the ray.")]
-        private bool debugDrawRay = false;
+        /// <inheritdoc />
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
+        }
 
         /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
@@ -98,6 +104,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
         private InternalGazePointer gazePointer = null;
+
+        /// <inheritdoc />
+        public IMixedRealityCursor GazeCursor => GazePointer.BaseCursor;
 
         /// <inheritdoc />
         public GameObject GazeTarget { get; private set; }
@@ -122,6 +131,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         /// <inheritdoc />
         public Vector3 HeadMovementDirection { get; private set; }
+
+        /// <inheritdoc />
+        public GameObject GameObjectReference => gameObject;
 
         private float lastHitDistance = 2.0f;
 
@@ -220,8 +232,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             public override bool TryGetPointerRotation(out Quaternion rotation)
             {
-                rotation = Quaternion.identity;
-                return false;
+                rotation = gazeTransform.rotation;
+                return true;
             }
 
             #endregion IMixedRealityPointer Implementation
@@ -231,9 +243,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the pressed button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that pressed the pointer.</param>
-            public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
+            public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
-                InputSystem.RaisePointerDown(this, handedness, mixedRealityInputAction);
+                MixedRealityToolkit.InputSystem.RaisePointerDown(this, mixedRealityInputAction, handedness, inputSource);
             }
 
             /// <summary>
@@ -241,10 +253,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the released button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that released the pointer.</param>
-            public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
+            public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
-                InputSystem.RaisePointerClicked(this, handedness, mixedRealityInputAction, 0);
-                InputSystem.RaisePointerUp(this, handedness, mixedRealityInputAction);
+                MixedRealityToolkit.InputSystem.RaisePointerClicked(this, mixedRealityInputAction, 0, handedness, inputSource);
+                MixedRealityToolkit.InputSystem.RaisePointerUp(this, mixedRealityInputAction, handedness, inputSource);
             }
         }
 
@@ -268,15 +280,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
-        protected void Start()
+        protected override async void Start()
         {
-            if (cursorPrefab != null)
-            {
-                var cursorObj = Instantiate(cursorPrefab, transform.parent);
-                GazePointer.BaseCursor = cursorObj.GetComponent<IMixedRealityCursor>();
-                Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
-                GazePointer.BaseCursor.Pointer = GazePointer;
-            }
+            base.Start();
+
+            await WaitUntilInputSystemValid;
+
+            GazePointer.BaseCursor?.SetVisibility(true);
 
             if (delayInitialization)
             {
@@ -287,9 +297,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void Update()
         {
-            if (debugDrawRay && gazeTransform != null)
+            if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
+            }
+
+            if (setCursorInvisibleWhenFocusLocked && GazePointer?.IsFocusLocked == GazeCursor?.IsVisible)
+            {
+                GazeCursor.SetVisibility(!GazePointer.IsFocusLocked);
             }
         }
 
@@ -324,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             HeadMovementDirection = Vector3.Slerp(HeadMovementDirection, newHeadMoveDirection, directionAdjustmentRate);
 
-            if (debugDrawRay && gazeTransform != null)
+            if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
             {
                 Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadMovementDirection * 10f, Color.Lerp(Color.red, Color.green, multiplier));
                 Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadVelocity, Color.yellow);
@@ -335,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             base.OnDisable();
             GazePointer.BaseCursor?.SetVisibility(false);
-            InputSystem.RaiseSourceLost(GazeInputSource);
+            MixedRealityToolkit.InputSystem?.RaiseSourceLost(GazeInputSource);
         }
 
         #endregion MonoBehaviour Implementation
@@ -348,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 if (eventData.InputSource.Pointers[i].PointerId == GazePointer.PointerId)
                 {
-                    gazePointer.RaisePointerUp(eventData.MixedRealityInputAction, eventData.Handedness);
+                    gazePointer.RaisePointerUp(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
                     return;
                 }
             }
@@ -360,14 +375,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 if (eventData.InputSource.Pointers[i].PointerId == GazePointer.PointerId)
                 {
-                    gazePointer.RaisePointerDown(eventData.MixedRealityInputAction, eventData.Handedness);
+                    gazePointer.RaisePointerDown(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
                     return;
                 }
             }
         }
 
+        [Obsolete]
         public void OnInputPressed(InputEventData<float> eventData) { }
 
+        [Obsolete]
         public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
         #endregion IMixedRealityInputHandler Implementation
@@ -382,13 +399,38 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
 
             Debug.Assert(gazeTransform != null, "No gaze transform to raycast from!");
-            return gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
+
+            gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
+
+            if (GazeCursor == null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+            {
+                var cursor = Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab, MixedRealityToolkit.Instance.MixedRealityPlayspace);
+                SetGazeCursor(cursor);
+            }
+
+            return gazePointer;
         }
 
-        private void RaiseSourceDetected()
+        private async void RaiseSourceDetected()
         {
-            InputSystem.RaiseSourceDetected(GazeInputSource);
+            await WaitUntilInputSystemValid;
+            MixedRealityToolkit.InputSystem.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
+        }
+
+        /// <summary>
+        /// Set the gaze cursor.
+        /// </summary>
+        public void SetGazeCursor(GameObject cursor)
+        {
+            Debug.Assert(cursor != null);
+            cursor.transform.parent = transform.parent;
+            GazePointer.BaseCursor = cursor.GetComponent<IMixedRealityCursor>();
+            Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
+            GazePointer.BaseCursor.SetVisibilityOnSourceDetected = false;
+            GazePointer.BaseCursor.Pointer = GazePointer;
         }
 
         #endregion Utilities

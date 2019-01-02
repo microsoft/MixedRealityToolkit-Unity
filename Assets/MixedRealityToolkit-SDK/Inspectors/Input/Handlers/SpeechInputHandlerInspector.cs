@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,21 +29,41 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 
             keywordsProperty = serializedObject.FindProperty("keywords");
             persistentKeywordsProperty = serializedObject.FindProperty("persistentKeywords");
-            registeredKeywords = RegisteredKeywords().Distinct().ToArray();
+
+            if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
+            {
+                registeredKeywords = RegisteredKeywords().Distinct().ToArray();
+            }
         }
 
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            serializedObject.Update();
-
-            if (registeredKeywords == null || registeredKeywords.Length == 0)
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             {
-
-                EditorGUILayout.HelpBox("No keywords registered.\n\nKeywords can be registered via Speech Commands Profile on the Mixed Reality Manager's Configuration Profile.", MessageType.Error);
                 return;
             }
 
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
+
+            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile == null)
+            {
+                EditorGUILayout.HelpBox("No Speech Commands Profile Found, be sure to specify a profile in the Input System's configuration profile.", MessageType.Error);
+                return;
+            }
+
+            if (registeredKeywords == null || registeredKeywords.Length == 0)
+            {
+                registeredKeywords = RegisteredKeywords().Distinct().ToArray();
+                EditorGUILayout.HelpBox("No keywords registered.\n\nKeywords can be registered via Speech Commands Profile on the Mixed Reality Toolkit's Configuration Profile.", MessageType.Error);
+                return;
+            }
+
+            serializedObject.Update();
             EditorGUILayout.PropertyField(persistentKeywordsProperty);
 
             ShowList(keywordsProperty);
@@ -85,9 +106,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
             for (int index = 0; index < list.arraySize; index++)
             {
                 // the element
-                SerializedProperty elementProperty = list.GetArrayElementAtIndex(index);
+                SerializedProperty speechCommandProperty = list.GetArrayElementAtIndex(index);
                 EditorGUILayout.BeginHorizontal();
-                bool elementExpanded = EditorGUILayout.PropertyField(elementProperty);
+                bool elementExpanded = EditorGUILayout.PropertyField(speechCommandProperty);
                 GUILayout.FlexibleSpace();
                 // the remove element button
                 bool elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
@@ -99,19 +120,35 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 
                 EditorGUILayout.EndHorizontal();
 
+                SerializedProperty keywordProperty = speechCommandProperty.FindPropertyRelative("keyword");
+
+                bool invalidKeyword = true;
+                foreach (string keyword in registeredKeywords)
+                {
+                    if (keyword == keywordProperty.stringValue)
+                    {
+                        invalidKeyword = false;
+                        break;
+                    }
+                }
+
+                if (invalidKeyword)
+                {
+                    EditorGUILayout.HelpBox("Registered keyword is not recognized in the speech command profile!", MessageType.Error);
+                }
+
                 if (!elementRemoved && elementExpanded)
                 {
-                    SerializedProperty keywordProperty = elementProperty.FindPropertyRelative("keyword");
                     string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
                     int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
-                    int currentSelection = EditorGUILayout.Popup("keyword", previousSelection, keywords);
+                    int currentSelection = EditorGUILayout.Popup("Keyword", previousSelection, keywords);
 
                     if (currentSelection != previousSelection)
                     {
                         keywordProperty.stringValue = keywords[currentSelection];
                     }
 
-                    SerializedProperty responseProperty = elementProperty.FindPropertyRelative("response");
+                    SerializedProperty responseProperty = speechCommandProperty.FindPropertyRelative("response");
                     EditorGUILayout.PropertyField(responseProperty, true);
                 }
             }
@@ -136,16 +173,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 
         private static IEnumerable<string> RegisteredKeywords()
         {
-            if (!MixedRealityManager.HasActiveProfile ||
-                !MixedRealityManager.Instance.ActiveProfile.IsSpeechCommandsEnabled ||
-                 MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile == null ||
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
             {
                 yield break;
             }
 
-            for (var i = 0; i < MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands.Length; i++)
+            for (var i = 0; i < MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length; i++)
             {
-                yield return MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands[i].Keyword;
+                yield return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands[i].Keyword;
             }
         }
     }

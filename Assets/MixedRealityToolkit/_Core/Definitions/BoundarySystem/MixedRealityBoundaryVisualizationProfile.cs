@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine;
 
@@ -10,8 +11,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
     /// Configuration profile settings for setting up boundary visualizations.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Boundary Visualization Profile", fileName = "MixedRealityBoundaryVisualizationProfile", order = (int)CreateProfileMenuItemIndices.BoundaryVisualization)]
-    public class MixedRealityBoundaryVisualizationProfile : ScriptableObject
+    public class MixedRealityBoundaryVisualizationProfile : BaseMixedRealityProfile
     {
+        [SerializeField]
+        [Tooltip("The approximate height of the play space, in meters.")]
+        private float boundaryHeight = 3.0f;
+
+        /// <summary>
+        /// The developer defined height of the boundary, in meters.
+        /// </summary>
+        /// <remarks>
+        /// The BoundaryHeight property is used to create a three dimensional volume for the play space.
+        /// </remarks>
+        public float BoundaryHeight => boundaryHeight;
+
         #region Floor settings
 
         [SerializeField]
@@ -34,6 +47,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         /// </summary>
         public Material FloorMaterial => floorMaterial;
 
+        [PhysicsLayer]
+        [SerializeField]
+        [Tooltip("The physics layer to assign to the generated floor.")]
+        private int floorPhysicsLayer = 0;
+
+        /// <summary>
+        /// The physics layer to assign to the generated floor.
+        /// </summary>
+        public int FloorPhysicsLayer => floorPhysicsLayer;
+
         [SerializeField]
         [Tooltip("The dimensions of the floor, in meters.")]
         private Vector2 floorScale = new Vector2(10f, 10f);
@@ -41,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         /// <summary>
         /// The size at which to display the rectangular floor plane <see cref="GameObject"/>.
         /// </summary>
-        public Vector3 FloorScale => floorScale;
+        public Vector2 FloorScale => floorScale;
 
         #endregion Floor settings
 
@@ -65,6 +88,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         /// </summary>
         public Material PlayAreaMaterial => playAreaMaterial;
 
+        [PhysicsLayer]
+        [SerializeField]
+        [Tooltip("The physics layer to assign to the generated play area.")]
+        private int playAreaPhysicsLayer = 2;
+
+        /// <summary>
+        /// The physics layer to assign to the generated play area.
+        /// </summary>
+        public int PlayAreaPhysicsLayer => playAreaPhysicsLayer;
+
         #endregion Play area settings
 
         #region Tracked area settings
@@ -86,6 +119,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         /// The material to use for the boundary geometry <see cref="GameObject"/>.
         /// </summary>
         public Material TrackedAreaMaterial => trackedAreaMaterial;
+
+        [PhysicsLayer]
+        [SerializeField]
+        [Tooltip("The physics layer to assign to the generated tracked area.")]
+        private int trackedAreaPhysicsLayer = 2;
+
+        /// <summary>
+        /// The physics layer to assign to the generated tracked area.
+        /// </summary>
+        public int TrackedAreaPhysicsLayer => trackedAreaPhysicsLayer;
 
         #endregion Tracked area settings
 
@@ -109,6 +152,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         /// </summary>
         public Material BoundaryWallMaterial => boundaryWallMaterial;
 
+        [PhysicsLayer]
+        [SerializeField]
+        [Tooltip("The physics layer to assign to the generated boundary walls.")]
+        private int boundaryWallsPhysicsLayer = 2;
+
+        /// <summary>
+        /// The physics layer to assign to the generated boundary walls.
+        /// </summary>
+        public int BoundaryWallsPhysicsLayer => boundaryWallsPhysicsLayer;
+
         #endregion Boundary wall settings
 
         #region Boundary ceiling settings
@@ -130,6 +183,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         /// The material to use for displaying the boundary ceiling.
         /// </summary>
         public Material BoundaryCeilingMaterial => boundaryCeilingMaterial;
+
+        [PhysicsLayer]
+        [SerializeField]
+        [Tooltip("The physics layer to assign to the generated boundary ceiling.")]
+        private int ceilingPhysicsLayer = 2;
+
+        /// <summary>
+        /// The physics layer to assign to the generated boundary ceiling.
+        /// </summary>
+        public int CeilingPhysicsLayer => ceilingPhysicsLayer;
 
         #endregion Boundary ceiling settings
     }

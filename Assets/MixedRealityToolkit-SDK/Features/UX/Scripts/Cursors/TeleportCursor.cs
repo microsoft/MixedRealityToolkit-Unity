@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.SDK.UX.Pointers;
 using System;
@@ -83,16 +84,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             if (Pointer == null)
             {
                 Debug.LogError($"[TeleportCursor.{name}] No Pointer has been assigned!");
+                Destroy(gameObject);
                 return;
             }
 
             FocusDetails focusDetails;
 
-            if (!InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
+            if (!MixedRealityToolkit.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
-                Debug.LogError(InputSystem.FocusProvider.IsPointerRegistered(Pointer)
-                    ? $"{gameObject.name}: Unable to get focus details for {pointer.GetType().Name}!"
-                    : $"{pointer.GetType().Name} has not been registered!");
+                if (MixedRealityToolkit.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                {
+                    Debug.LogError($"{gameObject.name}: Unable to get focus details for {pointer.GetType().Name}!");
+                }
+                else
+                {
+                    Debug.LogError($"{pointer.GetType().Name} has not been registered!");
+                    Destroy(gameObject);
+                }
                 return;
             }
 

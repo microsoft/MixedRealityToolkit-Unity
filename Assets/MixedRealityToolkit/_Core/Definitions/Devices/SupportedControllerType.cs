@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         OculusRemote,
         WindowsMixedReality,
         GenericUnity,
-        Xbox
+        Xbox,
+        TouchScreen,
+        Mouse,
     }
 }

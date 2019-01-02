@@ -11,12 +11,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
     /// <summary>
     /// Implements the Focus Provider for handling focus of pointers.
     /// </summary>
-    public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler
+    public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IMixedRealityDataProvider
     {
         /// <summary>
         /// Maximum distance at which all pointers can collide with a <see cref="GameObject"/>, unless it has an override extent.
         /// </summary>
         float GlobalPointingExtent { get; }
+
+        /// <summary>
+        /// The layer masks for the focus pointers to raycast against.
+        /// </summary>
+        LayerMask[] FocusLayerMasks { get; }
 
         /// <summary>
         /// The Camera the <see cref="UnityEngine.EventSystems.EventSystem"/> uses to raycast against.
@@ -30,29 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// If it's null, then focused object will be used.
         /// </summary>
         GameObject OverrideFocusedObject { get; set; }
-
-        /// <summary>
-        /// Gets the currently focused object based on specified the event data.
-        /// </summary>
-        /// <param name="eventData"></param>
-        /// <returns>Currently focused <see cref="GameObject"/> for the events input source.</returns>
-        GameObject GetFocusedObject(BaseInputEventData eventData);
-
-        /// <summary>
-        /// Try to get the focus details based on the specified event data.
-        /// </summary>
-        /// <param name="eventData"></param>
-        /// <param name="focusDetails"></param>
-        /// <returns>True, if event data pointer input source is registered.</returns>
-        bool TryGetFocusDetails(BaseInputEventData eventData, out FocusDetails focusDetails);
-
-        /// <summary>
-        /// Try to get the registered pointer source that raised the event.
-        /// </summary>
-        /// <param name="eventData"></param>
-        /// <param name="pointer"></param>
-        /// <returns>True, if event data's pointer input source is registered.</returns>
-        bool TryGetPointingSource(BaseInputEventData eventData, out IMixedRealityPointer pointer);
 
         /// <summary>
         /// Gets the currently focused object for the pointing source.
@@ -73,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// Get the Graphic Event Data for the specified pointing source.
         /// </summary>
         /// <param name="pointer">The pointer who's graphic event data we're looking for.</param>
-        /// <param name="graphicInputEventData">The graphihc event data for the specified pointer</param>
+        /// <param name="graphicInputEventData">The graphic event data for the specified pointer</param>
         /// <returns>True, if graphic event data exists.</returns>
         bool TryGetSpecificPointerGraphicEventData(IMixedRealityPointer pointer, out GraphicInputEventData graphicInputEventData);
 

@@ -4,12 +4,12 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ShaderBallClippingPlane
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _CLIPPING_PLANE _CLIPPING_PLANE_BORDER _DIRECTIONAL_LIGHT _HOVER_LIGHT
-    _REFLECTIONS _SPECULAR_HIGHLIGHTS
+  m_ShaderKeywords: _CLIPPING_BORDER _CLIPPING_PLANE _CLIPPING_PLANE_BORDER _DIRECTIONAL_LIGHT
+    _HOVER_LIGHT _REFLECTIONS _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -71,6 +71,7 @@ Material:
     m_Floats:
     - _AlbedoAlphaMode: 0
     - _AlbedoAlphaSmoothness: 0
+    - _AlbedoAssignedAtRuntime: 0
     - _BlendOp: 0
     - _BorderLight: 0
     - _BorderLightOpaque: 0
@@ -80,9 +81,13 @@ Material:
     - _BorderWidthHorizontal: 0.1
     - _BorderWidthVertical: 0.1
     - _BumpScale: 1
+    - _ClippingBorder: 1
+    - _ClippingBorderWidth: 0.025
+    - _ClippingBox: 0
     - _ClippingPlane: 1
     - _ClippingPlaneBorder: 1
     - _ClippingPlaneBorderWidth: 0.02
+    - _ClippingSphere: 0
     - _ColorWriteMask: 15
     - _Cull: 2
     - _CullMode: 2
@@ -97,7 +102,9 @@ Material:
     - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 0
     - _EnableLightMap: 0
+    - _EnableLocalSpaceTriplanarMapping: 0
     - _EnableNormalMap: 0
+    - _EnableTriplanarMapping: 0
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 0
@@ -114,6 +121,7 @@ Material:
     - _Mode: 0
     - _MyCullVariable: 1
     - _NearPlaneFade: 0
+    - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Reflections: 1
@@ -134,11 +142,13 @@ Material:
     - _StencilComparison: 0
     - _StencilOperation: 0
     - _StencilReference: 0
+    - _TriplanarMappingBlendSharpness: 4
     - _UVSec: 0
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
     - _ClipPlane: {r: 0, g: 1, b: 0, a: 0}
+    - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
     - _ClippingPlaneBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
     - _Color: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

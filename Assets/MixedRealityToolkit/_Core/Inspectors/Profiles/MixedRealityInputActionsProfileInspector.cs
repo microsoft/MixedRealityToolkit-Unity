@@ -2,14 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityInputActionsProfile))]
-    public class MixedRealityInputActionsProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    public class MixedRealityInputActionsProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Remove Action");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Action", "Add New Action");
@@ -20,9 +21,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
         private SerializedProperty inputActionList;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            if (!CheckMixedRealityManager(false))
+            base.OnEnable();
+
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
                 return;
             }
@@ -33,14 +36,26 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            if (!CheckMixedRealityManager())
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             {
                 return;
             }
 
-            if (GUILayout.Button("Back to Configuration Profile"))
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+
+                if (GUILayout.Button("Back to Configuration Profile"))
+                {
+                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
+                }
+
+                return;
+            }
+
+            if (GUILayout.Button("Back to Input Profile"))
+            {
+                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
             }
 
             EditorGUILayout.Space();
@@ -49,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.HelpBox("Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
                                     "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.", MessageType.Info);
 
+            CheckProfileLock(target);
 
             serializedObject.Update();
             RenderList(inputActionList);

@@ -9,6 +9,7 @@ Shader "Mixed Reality Toolkit/Standard"
         _Color("Color", Color) = (1.0, 1.0, 1.0, 1.0)
         _MainTex("Albedo", 2D) = "white" {}
         [Enum(AlbedoAlphaMode)] _AlbedoAlphaMode("Albedo Alpha Mode", Float) = 0 // "Transparency"
+        [Toggle] _AlbedoAssignedAtRuntime("Albedo Assigned at Runtime", Float) = 0.0
         _Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
         _Metallic("Metallic", Range(0.0, 1.0)) = 0.0
         _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
@@ -16,8 +17,12 @@ Shader "Mixed Reality Toolkit/Standard"
         [NoScaleOffset] _ChannelMap("Channel Map", 2D) = "white" {}
         [Toggle(_NORMAL_MAP)] _EnableNormalMap("Enable Normal Map", Float) = 0.0
         [NoScaleOffset] _NormalMap("Normal Map", 2D) = "bump" {}
+        _NormalMapScale("Scale", Float) = 1.0
         [Toggle(_EMISSION)] _EnableEmission("Enable Emission", Float) = 0.0
         _EmissiveColor("Emissive Color", Color) = (0.0, 0.0, 0.0, 1.0)
+        [Toggle(_TRIPLANAR_MAPPING)] _EnableTriplanarMapping("Triplanar Mapping", Float) = 0.0
+        [Toggle(_LOCAL_SPACE_TRIPLANAR_MAPPING)] _EnableLocalSpaceTriplanarMapping("Local Space", Float) = 0.0
+        _TriplanarMappingBlendSharpness("Blend Sharpness", Range(1.0, 16.0)) = 4.0
 
         // Rendering options.
         [Toggle(_DIRECTIONAL_LIGHT)] _DirectionalLight("Directional Light", Float) = 1.0
@@ -29,10 +34,11 @@ Shader "Mixed Reality Toolkit/Standard"
         _RimColor("Rim Color", Color) = (0.5, 0.5, 0.5, 1.0)
         _RimPower("Rim Power", Range(0.0, 8.0)) = 0.25
         [Toggle(_CLIPPING_PLANE)] _ClippingPlane("Clipping Plane", Float) = 0.0
-        _ClipPlane("Clip Plane", Vector) = (0.0, 1.0, 0.0, 0.0)
-        [Toggle(_CLIPPING_PLANE_BORDER)] _ClippingPlaneBorder("Clipping Plane Border", Float) = 0.0
-        _ClippingPlaneBorderWidth("Clipping Plane Border Width", Range(0.005, 1.0)) = 0.025
-        _ClippingPlaneBorderColor("Clipping Plane Border Color", Color) = (1.0, 0.2, 0.0, 1.0)
+        [Toggle(_CLIPPING_SPHERE)] _ClippingSphere("Clipping Sphere", Float) = 0.0
+        [Toggle(_CLIPPING_BOX)] _ClippingBox("Clipping Box", Float) = 0.0
+        [Toggle(_CLIPPING_BORDER)] _ClippingBorder("Clipping Border", Float) = 0.0
+        _ClippingBorderWidth("Clipping Border Width", Range(0.005, 1.0)) = 0.025
+        _ClippingBorderColor("Clipping Border Color", Color) = (1.0, 0.2, 0.0, 1.0)
         [Toggle(_NEAR_PLANE_FADE)] _NearPlaneFade("Near Plane Fade", Float) = 0.0
         _FadeBeginDistance("Fade Begin Distance", Range(0.01, 10.0)) = 0.85
         _FadeCompleteDistance("Fade Complete Distance", Range(0.01, 10.0)) = 0.5
@@ -118,13 +124,17 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _CHANNEL_MAP            
             #pragma shader_feature _NORMAL_MAP
             #pragma shader_feature _EMISSION
+            #pragma shader_feature _TRIPLANAR_MAPPING
+            #pragma shader_feature _LOCAL_SPACE_TRIPLANAR_MAPPING
             #pragma shader_feature _DIRECTIONAL_LIGHT
             #pragma shader_feature _SPECULAR_HIGHLIGHTS
             #pragma shader_feature _REFLECTIONS
             #pragma shader_feature _REFRACTION
             #pragma shader_feature _RIM_LIGHT
             #pragma shader_feature _CLIPPING_PLANE
-            #pragma shader_feature _CLIPPING_PLANE_BORDER
+            #pragma shader_feature _CLIPPING_SPHERE
+            #pragma shader_feature _CLIPPING_BOX
+            #pragma shader_feature _CLIPPING_BORDER
             #pragma shader_feature _NEAR_PLANE_FADE
             #pragma shader_feature _HOVER_LIGHT
             #pragma shader_feature _HOVER_COLOR_OVERRIDE
@@ -142,20 +152,27 @@ Shader "Mixed Reality Toolkit/Standard"
 
             #include "UnityCG.cginc"
             #include "UnityStandardConfig.cginc"
+            #include "UnityStandardUtils.cginc"
 
-#if defined(_DIRECTIONAL_LIGHT) || defined(_REFLECTIONS) || defined(_RIM_LIGHT) || defined(_ENVIRONMENT_COLORING)
+#if defined(_TRIPLANAR_MAPPING) || defined(_DIRECTIONAL_LIGHT) || defined(_REFLECTIONS) || defined(_RIM_LIGHT) || defined(_ENVIRONMENT_COLORING)
             #define _NORMAL
 #else
             #undef _NORMAL
 #endif
 
-#if defined(_NORMAL) || defined(_CLIPPING_PLANE) || defined(_NEAR_PLANE_FADE) || defined(_HOVER_LIGHT)
+#if defined(_CLIPPING_PLANE) || defined(_CLIPPING_SPHERE) || defined(_CLIPPING_BOX)
+        #define _CLIPPING_PRIMITIVE
+#else
+        #undef _CLIPPING_PRIMITIVE
+#endif
+
+#if defined(_NORMAL) || defined(_CLIPPING_PRIMITIVE) || defined(_NEAR_PLANE_FADE) || defined(_HOVER_LIGHT)
             #define _WORLD_POSITION
 #else
             #undef _WORLD_POSITION
 #endif
 
-#if defined(_ALPHATEST_ON) || defined(_CLIPPING_PLANE) || defined(_ROUND_CORNERS)
+#if defined(_ALPHATEST_ON) || defined(_CLIPPING_PRIMITIVE) || defined(_ROUND_CORNERS)
             #define _ALPHA_CLIP
 #else
             #undef _ALPHA_CLIP
@@ -186,7 +203,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #undef _DISTANCE_TO_EDGE
 #endif
 
-#if !defined(_DISABLE_ALBEDO_MAP) || defined(_CHANNEL_MAP) || defined(_NORMAL_MAP) || defined(_DISTANCE_TO_EDGE)
+#if !defined(_DISABLE_ALBEDO_MAP) || defined(_TRIPLANAR_MAPPING) || defined(_CHANNEL_MAP) || defined(_NORMAL_MAP) || defined(_DISTANCE_TO_EDGE)
             #define _UV
 #else
             #undef _UV
@@ -228,7 +245,11 @@ Shader "Mixed Reality Toolkit/Standard"
                 float3 scale : TEXCOORD3;
 #endif
 #if defined(_NORMAL)
-#if defined(_NORMAL_MAP)
+#if defined(_TRIPLANAR_MAPPING)
+                fixed3 worldNormal : TEXCOORD4;
+                fixed3 triplanarNormal : TEXCOORD5;
+                float3 triplanarPosition : TEXCOORD6;
+#elif defined(_NORMAL_MAP)
                 fixed3 tangentX : TEXCOORD4;
                 fixed3 tangentY : TEXCOORD5;
                 fixed3 tangentZ : TEXCOORD6;
@@ -265,10 +286,15 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_NORMAL_MAP)
             sampler2D _NormalMap;
+            float _NormalMapScale;
 #endif
 
 #if defined(_EMISSION)
             fixed4 _EmissiveColor;
+#endif
+
+#if defined(_TRIPLANAR_MAPPING)
+            float _TriplanarMappingBlendSharpness;
 #endif
 
 #if defined(_DIRECTIONAL_LIGHT)
@@ -285,9 +311,24 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_CLIPPING_PLANE)
+            fixed _ClipPlaneSide;
             float4 _ClipPlane;
-            fixed _ClippingPlaneBorderWidth;
-            fixed3 _ClippingPlaneBorderColor;
+#endif
+
+#if defined(_CLIPPING_SPHERE)
+            fixed _ClipSphereSide;
+            float4 _ClipSphere;
+#endif
+
+#if defined(_CLIPPING_BOX)
+            fixed _ClipBoxSide;
+            float4 _ClipBoxSize;
+            float4x4 _ClipBoxInverseTransform;
+#endif
+
+#if defined(_CLIPPING_BORDER)
+            fixed _ClippingBorderWidth;
+            fixed3 _ClippingBorderColor;
 #endif
 
 #if defined(_NEAR_PLANE_FADE)
@@ -338,7 +379,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_DIRECTIONAL_LIGHT)
-            static const fixed3 _Ambient = fixed3(0.25, 0.25, 0.25);
+            static const fixed3 _Ambient = fixed3(0.2, 0.2, 0.2);
 #endif
 
 #if defined(_SPECULAR_HIGHLIGHTS)
@@ -366,6 +407,21 @@ Shader "Mixed Reality Toolkit/Standard"
             {
                 float3 planePosition = plane.xyz * plane.w;
                 return dot(worldPosition - planePosition, plane.xyz);
+            }
+#endif
+
+#if defined(_CLIPPING_SPHERE)
+            inline float PointVsSphere(float3 worldPosition, float4 sphere)
+            {
+                return distance(worldPosition, sphere.xyz) - sphere.w;
+            }
+#endif
+
+#if defined(_CLIPPING_BOX)
+            inline float PointVsBox(float3 worldPosition, float3 boxSize, float4x4 boxInverseTransform)
+            {
+                float3 distance = abs(mul(boxInverseTransform, float4(worldPosition, 1.0))) - boxSize;
+                return length(max(distance, 0.0)) + min(max(distance.x, max(distance.y, distance.z)), 0.0);
             }
 #endif
 
@@ -478,7 +534,16 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_NORMAL)
                 fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);
 
-#if defined(_NORMAL_MAP)
+#if defined(_TRIPLANAR_MAPPING)
+                o.worldNormal = worldNormal;
+#if defined(_LOCAL_SPACE_TRIPLANAR_MAPPING)
+                o.triplanarNormal = v.normal;
+                o.triplanarPosition = v.vertex;
+#else
+                o.triplanarNormal = worldNormal;
+                o.triplanarPosition = o.worldPosition;
+#endif
+#elif defined(_NORMAL_MAP)
                 fixed3 worldTangent = UnityObjectToWorldDir(v.tangent.xyz);
                 fixed tangentSign = v.tangent.w * unity_WorldTransformParams.w;
                 fixed3 worldBitangent = cross(worldNormal, worldTangent) * tangentSign;
@@ -501,11 +566,33 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_INSTANCED_COLOR)
                 UNITY_SETUP_INSTANCE_ID(i);
 #endif
-                // Texturing.
+
+#if defined(_TRIPLANAR_MAPPING)
+                // Calculate triplanar uvs and apply texture scale and offset values like TRANSFORM_TEX.
+                fixed3 triplanarBlend = pow(abs(i.triplanarNormal), _TriplanarMappingBlendSharpness);
+                triplanarBlend /= dot(triplanarBlend, fixed3(1.0, 1.0, 1.0));
+                float2 uvX = i.triplanarPosition.zy * _MainTex_ST.xy + _MainTex_ST.zw;
+                float2 uvY = i.triplanarPosition.xz * _MainTex_ST.xy + _MainTex_ST.zw;
+                float2 uvZ = i.triplanarPosition.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+
+                // Ternary operator is 2 instructions faster than sign() when we don't care about zero returning a zero sign.
+                float3 axisSign = i.triplanarNormal < 0 ? -1 : 1;
+                uvX.x *= axisSign.x;
+                uvY.x *= axisSign.y;
+                uvZ.x *= -axisSign.z;
+#endif
+
+            // Texturing.
 #if defined(_DISABLE_ALBEDO_MAP)
                 fixed4 albedo = fixed4(1.0, 1.0, 1.0, 1.0);
 #else
+#if defined(_TRIPLANAR_MAPPING)
+                fixed4 albedo = tex2D(_MainTex, uvX) * triplanarBlend.x + 
+                                tex2D(_MainTex, uvY) * triplanarBlend.y + 
+                                tex2D(_MainTex, uvZ) * triplanarBlend.z;
+#else
                 fixed4 albedo = tex2D(_MainTex, i.uv);
+#endif
 #endif
 
 #ifdef LIGHTMAP_ON
@@ -515,7 +602,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_CHANNEL_MAP)
                 fixed4 channel = tex2D(_ChannelMap, i.uv);
                 _Metallic = channel.r;
-                albedo *= channel.g;
+                albedo.rgb *= channel.g;
                 _Smoothness = channel.a * 2.0;
 #else
 #if defined(_METALLIC_TEXTURE_ALBEDO_CHANNEL_A)
@@ -526,17 +613,26 @@ Shader "Mixed Reality Toolkit/Standard"
                 albedo.a = 1.0;
 #endif 
 #endif
-                // Plane clipping.
+                // Primitive clipping.
+#if defined(_CLIPPING_PRIMITIVE)
+                float primitiveDistance = 1.0; 
 #if defined(_CLIPPING_PLANE)
-                float planeDistance = PointVsPlane(i.worldPosition.xyz, _ClipPlane);
-#if defined(_CLIPPING_PLANE_BORDER)
-                fixed3 planeBorderColor = lerp(_ClippingPlaneBorderColor, fixed3(0.0, 0.0, 0.0), planeDistance / _ClippingPlaneBorderWidth);
-                albedo.rgb += planeBorderColor * ((planeDistance < _ClippingPlaneBorderWidth) ? 1.0 : 0.0);
+                primitiveDistance = min(primitiveDistance, PointVsPlane(i.worldPosition.xyz, _ClipPlane) * _ClipPlaneSide);
+#endif
+#if defined(_CLIPPING_SPHERE)
+                primitiveDistance = min(primitiveDistance, PointVsSphere(i.worldPosition.xyz, _ClipSphere) * _ClipSphereSide);
+#endif
+#if defined(_CLIPPING_BOX)
+                primitiveDistance = min(primitiveDistance, PointVsBox(i.worldPosition.xyz, _ClipBoxSize.xyz, _ClipBoxInverseTransform) * _ClipBoxSide);
+#endif
+#if defined(_CLIPPING_BORDER)
+                fixed3 primitiveBorderColor = lerp(_ClippingBorderColor, fixed3(0.0, 0.0, 0.0), primitiveDistance / _ClippingBorderWidth);
+                albedo.rgb += primitiveBorderColor * ((primitiveDistance < _ClippingBorderWidth) ? 1.0 : 0.0);
 #endif
 #if defined(_ALPHA_CLIP)
-                albedo *= (planeDistance > 0.0);
+                albedo *= (primitiveDistance > 0.0);
 #else
-                albedo *= saturate(planeDistance);
+                albedo *= saturate(primitiveDistance);
 #endif
 #endif
 
@@ -627,6 +723,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 _Cutoff = 0.5;
 #endif
                 clip(albedo.a - _Cutoff);
+                albedo.a = 1.0;
 #endif
 
 #if defined(_NORMAL)
@@ -638,11 +735,30 @@ Shader "Mixed Reality Toolkit/Standard"
 
                 // Normal calculation.
 #if defined(_NORMAL_MAP)
-                fixed3 tangentNormal = UnpackNormal(tex2D(_NormalMap, i.uv));
+#if defined(_TRIPLANAR_MAPPING)
+                fixed3 tangentNormalX = UnpackScaleNormal(tex2D(_NormalMap, uvX), _NormalMapScale);
+                fixed3 tangentNormalY = UnpackScaleNormal(tex2D(_NormalMap, uvY), _NormalMapScale);
+                fixed3 tangentNormalZ = UnpackScaleNormal(tex2D(_NormalMap, uvZ), _NormalMapScale);
+                tangentNormalX.x *= axisSign.x;
+                tangentNormalY.x *= axisSign.y;
+                tangentNormalZ.x *= -axisSign.z;
+
+                // Swizzle world normals to match tangent space and apply Whiteout normal blend.
+                tangentNormalX = fixed3(tangentNormalX.xy + i.worldNormal.zy, tangentNormalX.z * i.worldNormal.x);
+                tangentNormalY = fixed3(tangentNormalY.xy + i.worldNormal.xz, tangentNormalY.z * i.worldNormal.y);
+                tangentNormalZ = fixed3(tangentNormalZ.xy + i.worldNormal.xy, tangentNormalZ.z * i.worldNormal.z);
+
+                // Swizzle tangent normals to match world normal and blend together.
+                worldNormal = normalize(tangentNormalX.zyx * triplanarBlend.x +
+                                        tangentNormalY.xzy * triplanarBlend.y +
+                                        tangentNormalZ.xyz * triplanarBlend.z);
+#else
+                fixed3 tangentNormal = UnpackScaleNormal(tex2D(_NormalMap, i.uv), _NormalMapScale);
                 worldNormal.x = dot(i.tangentX, tangentNormal);
                 worldNormal.y = dot(i.tangentY, tangentNormal);
                 worldNormal.z = dot(i.tangentZ, tangentNormal);
                 worldNormal = normalize(worldNormal);
+#endif
 #else
                 worldNormal = normalize(i.worldNormal);
 #endif
@@ -675,7 +791,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
                 // Fresnel lighting.
 #if defined(_FRESNEL)
-                fixed fresnel = 1.0 - saturate(dot(worldViewDir, worldNormal));
+                fixed fresnel = 1.0 - saturate(abs(dot(worldViewDir, worldNormal)));
 #if defined(_RIM_LIGHT)
                 fixed3 fresnelColor = _RimColor * pow(fresnel, _RimPower);
 #else
@@ -689,7 +805,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed minProperty = min(_Smoothness, _Metallic);
                 output.rgb += ibl * min((1.0 - _Metallic), 0.5);
                 output.rgb = lerp(output.rgb, ibl, minProperty);
-                output.rgb *= lerp(_Ambient + glstate_lightmodel_ambient + (albedo.rgb *_LightColor0.rgb * diffuse + _LightColor0.rgb * specular), albedo, minProperty);
+                output.rgb *= lerp(_Ambient + UNITY_LIGHTMODEL_AMBIENT + (albedo.rgb * _LightColor0.rgb * diffuse + _LightColor0.rgb * specular), albedo, minProperty);
                 output.rgb += (_LightColor0.rgb * albedo * specular) + (_LightColor0.rgb * specular * _Smoothness);
 #endif
 
@@ -738,5 +854,5 @@ Shader "Mixed Reality Toolkit/Standard"
     }
     
     FallBack "VertexLit"
-    CustomEditor "Microsoft.MixedReality.Toolkit.Inspectors.MixedRealityStandardShaderGUI"
+    CustomEditor "Microsoft.MixedReality.Toolkit.Core.Inspectors.MixedRealityStandardShaderGUI"
 }
