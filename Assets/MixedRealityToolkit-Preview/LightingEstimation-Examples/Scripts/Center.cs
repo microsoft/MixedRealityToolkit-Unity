@@ -2,19 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Center : MonoBehaviour {
-	[SerializeField] float _dist = 1;
-	[SerializeField] Transform _from = null;
-	[SerializeField] bool _editorOnly = true;
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+{
+	public class Center : MonoBehaviour
+	{
+		[SerializeField] float     dist       = 1;
+		[SerializeField] Transform from       = null;
+		[SerializeField] bool      editorOnly = true;
 
-	private void Awake() {
-		if (_editorOnly) {
-			#if !UNITY_EDITOR
-			enabled = false;
-			#endif
+		private void Awake()
+		{
+			if (editorOnly)
+			{
+				#if !UNITY_EDITOR
+				enabled = false;
+				#endif
+			}
 		}
-	}
-	void LateUpdate () {
-		transform.position = (_from == null? Vector3.zero : _from.position) - transform.forward * _dist;
+		void LateUpdate ()
+		{
+			transform.position = (from == null? Vector3.zero : from.position) - transform.forward * dist;
+		}
 	}
 }
