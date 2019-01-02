@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Pixie.DeviceControl.Photon
 {
-    public class SystemPrefabPool : MonoBehaviour, ISystemPrefabPool, IPunPrefabPool
+    public class SystemPrefabPool : MonoBehaviour, ISystemPrefabPool//, IPunPrefabPool
     {
         public Action<GameObject> OnSystemObjectSpawned { get; set; }
 
@@ -14,7 +14,7 @@ namespace Pixie.DeviceControl.Photon
         [SerializeField]
         private GameObject deviceObjectPrefab;
 
-        private Dictionary<string, GameObject> prefabLookup = new Dictionary<string, GameObject>();
+        /*private Dictionary<string, GameObject> prefabLookup = new Dictionary<string, GameObject>();
 
         private void OnEnable()
         {
@@ -26,13 +26,6 @@ namespace Pixie.DeviceControl.Photon
             prefabLookup.Add(userObjectPrefab.name, userObjectPrefab);
             prefabLookup.Add(deviceObjectPrefab.name, deviceObjectPrefab);
         }
-        
-        public GameObject InstantiateUser()
-        {
-            // User prefabs are currently local and don't sync any values
-            // That may change in the future
-            return GameObject.Instantiate(userObjectPrefab);
-        }
 
         public void Destroy(GameObject gameObject)
         {
@@ -42,12 +35,20 @@ namespace Pixie.DeviceControl.Photon
         public new GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
         {
             GameObject systemObject = GameObject.Instantiate(prefabLookup[prefabId], position, rotation, null);
-            systemObject.SetActive(false);
+            PhotonView pv = systemObject.GetComponent<PhotonView>();
+            if (pv != null)
+                Debug.Log("Instantiated " + systemObject.name + " with photon view ID " + pv.ViewID);
 
-            if (OnSystemObjectSpawned != null)
-                OnSystemObjectSpawned(systemObject);
+            //systemObject.SetActive(false);
 
             return systemObject;
+        }*/
+
+        public GameObject InstantiateUser()
+        {
+            // User prefabs are currently local and don't sync any values
+            // That may change in the future
+            return GameObject.Instantiate(userObjectPrefab);
         }
 
         public GameObject InstantiateDevice()
@@ -55,6 +56,11 @@ namespace Pixie.DeviceControl.Photon
             // Device prefabs have a pun view component and sync values
             string prefabName = deviceObjectPrefab.name;
             GameObject go = PhotonNetwork.Instantiate(prefabName, Vector3.zero, Quaternion.identity);
+            Debug.Log("Instantiated device " + go.name);
+
+            if (OnSystemObjectSpawned != null)
+                OnSystemObjectSpawned(go);
+
             return go;
         }
     }

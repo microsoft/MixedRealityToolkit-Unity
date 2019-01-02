@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Pixie.AppSystems
 {
     [Serializable]
+    [AppStateType]
     public struct SessionState : IItemState, IItemStateComparer<SessionState>
     {
         public SessionState(sbyte sessionID)

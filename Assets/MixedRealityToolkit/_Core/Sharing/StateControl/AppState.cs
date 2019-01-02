@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Pixie.Core;
+using Pixie.Initialization;
 using UnityEngine;
 
 namespace Pixie.StateControl
@@ -19,21 +20,6 @@ namespace Pixie.StateControl
                     return false;
 
                 return dataSource.Synchronized;
-            }
-            set
-            {
-                if (dataSource == null)
-                    throw new Exception("Trying to set synchronized before app state is initialized!");
-
-                switch (AppRole)
-                {
-                    case AppRoleEnum.Client:
-                        throw new Exception("Client should not modify this property.");
-                    default:
-                        break;
-                }
-
-                dataSource.Synchronized = value;
             }
         }
 
@@ -137,6 +123,8 @@ namespace Pixie.StateControl
 
         public override void OnAppInitialize()
         {
+            Debug.Log("OnAppInitialize in app state");
+
             dataSource = (IAppStateData)gameObject.GetComponent(typeof(IAppStateData));
             if (dataSource == null)
                 throw new Exception("Can't proceed without a data source of type " + typeof(IAppStateData).Name);
@@ -144,17 +132,20 @@ namespace Pixie.StateControl
             stateSources.Clear();
 
             // Gather all state sources contributing to this app state
-            Component[] components = gameObject.GetComponentsInChildren(typeof(IAppStateSource), true);
+            List<IAppStateSource> appStateSources = new List<IAppStateSource>();
+            ComponentFinder.FindAllInScenes<IAppStateSource>(appStateSources, ComponentFinder.SearchTypeEnum.Recursive, 10);
 
             // Create the rest of our state arrays with reflection
-            foreach (IAppStateSource stateSource in components)
+            foreach (IAppStateSource stateSource in appStateSources)
             {
                 stateSources.Add(stateSource);
 
                 foreach (Type stateType in stateSource.StateTypes)
                 {
+                    Debug.Log("Adding type " + stateType + " to app state sources");
+
                     itemStateTypes.Add(stateType);
-                    dataSource.CreateStateArray(stateType, AppRole);
+                    dataSource.CreateStateArray(stateType);
                 }
             }
 
@@ -165,9 +156,7 @@ namespace Pixie.StateControl
                     // Now that we've gathered all our states,
                     // ask each state source to generate any states it needs to work correctly
                     foreach (IAppStateSource source in stateSources)
-                    {
                         source.GenerateRequiredStates(this);
-                    }
                     break;
 
                 default:
@@ -206,7 +195,10 @@ namespace Pixie.StateControl
         [UnityEditor.CustomEditor(typeof(AppState))]
         public class AppStateEditor : UnityEditor.Editor
         {
-            public static HashSet<string> visibleTypes = new HashSet<string>();
+            private static HashSet<string> visibleTypes = new HashSet<string>();
+            private static bool searchedForAvailableTypes = false;
+            private static List<Type> availableTypes = new List<Type>();
+            private static List<Type> stateArrayTypes = new List<Type>();
 
             public override void OnInspectorGUI()
             {
@@ -216,6 +208,55 @@ namespace Pixie.StateControl
 
                 GUI.color = Color.gray;
                 UnityEditor.EditorGUILayout.BeginVertical();
+
+                // State types
+                bool showDefinitions = UnityEditor.EditorGUILayout.Foldout(visibleTypes.Contains("AppStateTypeDefinitions"), "Defined state types");
+                if (showDefinitions)
+                {
+                    visibleTypes.Add("AppStateTypeDefinitions");
+                    GUI.color = Color.gray;
+                    UnityEditor.EditorGUILayout.BeginVertical(UnityEditor.EditorStyles.helpBox);
+                    for (int i = 0; i < availableTypes.Count; i++)
+                    {
+                        // See whether there's a type definition for the state array
+                        Type stateType = availableTypes[i];
+                        Type stateArrayType = stateArrayTypes[i];
+                        string stateArrayTypeMessage = string.Empty;
+                        if (stateArrayType == null)
+                        {
+                            GUI.color = Color.Lerp(Color.white, Color.red, 0.5f);
+                            stateArrayTypeMessage = "No accompanying StateArray<T> defined. You will encounter errors in an IL2CPP build.";
+                        }
+                        else
+                        {
+                            GUI.color = Color.white;
+                            stateArrayTypeMessage = "StateArray type is defined.";
+                        }
+                        UnityEditor.EditorGUILayout.BeginVertical(UnityEditor.EditorStyles.helpBox);
+                        UnityEditor.EditorGUILayout.LabelField(stateType.FullName);
+                        UnityEditor.EditorGUILayout.LabelField(stateArrayTypeMessage, UnityEditor.EditorStyles.miniLabel);
+                        UnityEditor.EditorGUILayout.EndVertical();
+                    }
+                    UnityEditor.EditorGUILayout.EndVertical();
+
+                    GUI.color = Color.white;
+                    if (!searchedForAvailableTypes || GUILayout.Button("Search for definitions", UnityEditor.EditorStyles.miniButton))
+                    {
+                        searchedForAvailableTypes = true;
+                        availableTypes.Clear();
+                        foreach (Type type in StateUtils.GetAllStateTypes())
+                        {
+                            Type stateArrayType = StateUtils.GetStateArrayType(type);
+                            availableTypes.Add(type);
+                            stateArrayTypes.Add(stateArrayType);
+                        }
+                    }
+                }
+                else
+                {
+                    visibleTypes.Remove("AppStateTypeDefinitions");
+                }
+
                 UnityEditor.EditorGUILayout.LabelField("State Sources: " + appState.stateSources.Count);
                 foreach (IAppStateSource stateSource in appState.stateSources)
                 {

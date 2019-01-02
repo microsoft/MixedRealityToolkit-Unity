@@ -126,6 +126,8 @@ namespace Pixie.AppSystems.TimeSync.Photon
 
         public void OnAppConnect() { }
 
+        public void OnAppSynchronize() { }
+
         public void OnAppShutDown() { }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) { }

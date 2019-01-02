@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Pixie.AnchorControl
 {
     [Serializable]
+    [AppStateType]
     public struct SharedAnchorState : IItemState, IItemStateComparer<SharedAnchorState>
     {
         const float MaxPositionRange = 20;

@@ -23,6 +23,6 @@ namespace Pixie.AppSystems.Sessions
         }
 
         // TEMPORARY WORKAROUND - defining this AOT so IL2CPP builds can use it. This will be handled automatically.
-        static StateArray<SessionState> sessionStates;
+        static StateArray<SessionState> SessionStateArray;
     }
 }

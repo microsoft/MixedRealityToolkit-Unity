@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Pixie.DeviceControl
 {
     [Serializable]
+    [AppStateType]
     public struct LocalTransformState : IItemState, IItemStateComparer<LocalTransformState>
     {
         public const float MaxPositionRange = 50f;

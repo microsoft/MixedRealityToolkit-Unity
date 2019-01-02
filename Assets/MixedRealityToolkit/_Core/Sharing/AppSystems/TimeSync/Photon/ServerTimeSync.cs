@@ -142,6 +142,8 @@ namespace Pixie.AppSystems.TimeSync
             started = true;
         }
 
+        public void OnAppSynchronize() { }
+
         public void OnAppShutDown() { }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) { }

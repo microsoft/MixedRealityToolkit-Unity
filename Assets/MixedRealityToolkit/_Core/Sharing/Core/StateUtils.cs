@@ -1,32 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-namespace Pixie
+namespace Pixie.Core
 {
     public static class StateUtils
     {
-        public static byte[] SerializeState(object state)
-        {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, state);
-                return stream.GetBuffer();
-            }
-        }
-
-        public static object DeserializeState(Type type, byte[] stateBytes)
-        {
-            using (MemoryStream stream = new MemoryStream(stateBytes))
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                return formatter.Deserialize(stream);
-            }
-        }
-
         public static Vector3 GetPredictedPos(Vector3 lastPos, Vector3 lastDir, float lastVelPerSecond, float lastTime, float currentTime, float latency)
         {
             predictedPos = lastPos;
@@ -212,5 +194,69 @@ namespace Pixie
             return !float.IsNaN(value.x) && !float.IsNaN(value.y) && !float.IsNaN(value.z);
         }
 
+        /// <summary>
+        /// Searches all assemblies for structs with AppStateType attribute
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Type> GetAllStateTypes()
+        {
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (Type type in GetAllStateTypesInAssembly(assembly))
+                    yield return type;
+            }
+        }
+
+        /// <summary>
+        /// Searches a single assembly for structs with AppStateType attribute
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
+        public static IEnumerable<Type> GetAllStateTypesInAssembly(Assembly assembly)
+        {
+            foreach (Type type in assembly.GetTypes())
+            {
+                AppStateTypeAttribute attribute = type.GetCustomAttribute<AppStateTypeAttribute>();
+                if (attribute != null)
+                    yield return type;
+            }
+        }
+
+        /// <summary>
+        /// Searches for a StateArray type that uses stateType as its generic argument
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static Type GetStateArrayType(Type stateType)
+        {
+            Type genericBaseClass = typeof(StateArray<>);
+            
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (Type type in assembly.GetTypes())
+                {
+                    if (!IsSubclassOfRawGeneric(genericBaseClass, type))
+                        continue;
+
+                    foreach (Type t in type.GetGenericArguments())
+                        Debug.Log("Found " + type.FullName + " with generic argument " + t.FullName);
+                }
+            }
+            return null;
+        }
+
+        private static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
+        {
+            while (toCheck != null && toCheck != typeof(object))
+            {
+                var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+
+                if (generic == cur)
+                    return true;
+
+                toCheck = toCheck.BaseType;
+            }
+            return false;
+        }
     }
 }

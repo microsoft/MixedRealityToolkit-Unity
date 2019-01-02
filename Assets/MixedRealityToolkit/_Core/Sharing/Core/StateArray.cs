@@ -7,9 +7,8 @@ namespace Pixie.Core
     // We use this class to get / set items in our sync list state in a standard way
     public class StateArray<T> : IStateArray<T> where T : struct, IItemState, IItemStateComparer<T>
     {
-        public StateArray(IStatePipe statePipe, AppRoleEnum appRole)
+        public StateArray(IStatePipe statePipe)
         {
-            this.appRole = appRole;
             this.statePipe = statePipe;
         }
 
@@ -37,9 +36,6 @@ namespace Pixie.Core
         private List<object> flushedStates = new List<object>();
 
         private IStatePipe statePipe;
-        private AppRoleEnum appRole;
-        private string rpcFlushMethodName;
-        private short largestKeyAdded;
 
         public IEnumerator<T> GetEnumerator()
         {
@@ -61,9 +57,28 @@ namespace Pixie.Core
             return (modifiedStates.ContainsKey(key) || states.ContainsKey(key));
         }
 
-        public void ReceiveFlushedStates(IEnumerable<object> flushedStates)
+        public void ReceiveSynchronizedStates(IEnumerable<object> remoteStates)
         {
-            foreach (T remoteValue in flushedStates)
+            UnityEngine.Debug.Log("Receiving synced states in state array " + StateType.Name);
+
+            foreach (T remoteValue in remoteStates)
+            {
+                if (!states.ContainsKey(remoteValue.Key))
+                {
+                    states.Add(remoteValue.Key, remoteValue);
+                    keys.Add(remoteValue.Key);
+                    continue;
+                }
+
+                // Don't bother with modified states when synchronizing
+                // Just dump the states into the main array
+                states[remoteValue.Key] = remoteValue;
+            }
+        }
+
+        public void ReceiveFlushedStates(IEnumerable<object> remoteStates)
+        {
+            foreach (T remoteValue in remoteStates)
             {
                 // If our local states don't contain this key, add it to states
                 // NOTE that this will not affect states added to modified states
@@ -112,6 +127,7 @@ namespace Pixie.Core
                 {
                     // If our modified states doesn't have an entry, just set the local state
                     states[remoteValue.Key] = remoteValue;
+
                     if (OnStateChangedInternal != null)
                         OnStateChangedInternal(StateType, localValue.Key);
                 }
@@ -327,9 +343,8 @@ namespace Pixie.Core
             }
             else
             {
-                // TODO include modified states added
-                foreach (KeyValuePair<short, T> state in states)
-                    yield return modifiedStates.ContainsKey(state.Key) ? modifiedStates[state.Key] : state.Value;
+                foreach (short key in keys)
+                    yield return modifiedStates.ContainsKey(key) ? modifiedStates[key] : states[key];
             }
         }
 

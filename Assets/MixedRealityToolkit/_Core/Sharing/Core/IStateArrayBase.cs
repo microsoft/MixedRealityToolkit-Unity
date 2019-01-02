@@ -58,7 +58,17 @@ namespace Pixie.Core
         /// </summary>
         bool KeyExists(short key);
 
+        /// <summary>
+        /// Adds remotely changed states to array and raises events
+        /// </summary>
+        /// <param name="flushedStates"></param>
         void ReceiveFlushedStates(IEnumerable<object> flushedStates);
+
+        /// <summary>
+        /// Adds remote states to array without raising any events
+        /// </summary>
+        /// <param name="synchronizedStates"></param>
+        void ReceiveSynchronizedStates(IEnumerable<object> synchronizedStates);
 
         void AddState(IItemState newState);
     }

@@ -12,6 +12,8 @@ namespace Pixie.Core
 
         public virtual void OnAppInitialize() { }
 
+        public virtual void OnAppSynchronize() { }
+
         public virtual void OnAppShutDown() { }
     }
 }

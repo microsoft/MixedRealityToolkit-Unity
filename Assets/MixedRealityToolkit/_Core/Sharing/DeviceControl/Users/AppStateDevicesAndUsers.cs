@@ -10,7 +10,7 @@ namespace Pixie.DeviceControl.Users
     {
         public IEnumerable<Type> StateTypes { get { return new Type[] {
             typeof(UserSlot),
-            typeof (UserDeviceState),
+            typeof(UserDeviceState),
             typeof(LocalTransformState),
             typeof(WorldTransformState)
         }; } }
@@ -37,5 +37,10 @@ namespace Pixie.DeviceControl.Users
                 transformNum++;
             }
         }
+
+        static StateArray<UserSlot> UserSlotArray;
+        static StateArray<UserDeviceState> UserDeviceStateArray;
+        static StateArray<LocalTransformState> LocalTransformStateArray;
+        static StateArray<WorldTransformState> WorldTransformStateArray;
     }
 }

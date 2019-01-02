@@ -56,6 +56,7 @@ namespace Pixie.DeviceControl
 
             if (!deviceObjects.ContainsKey(deviceID))
             {
+                Debug.Log("Instantiating device object");
                 // Create a device object for this new device
                 GameObject deviceObjectGo = prefabs.InstantiateDevice();
                 foreach (IDeviceObject deviceObject in deviceObjectGo.GetComponentsInChildren(typeof(IDeviceObject)))

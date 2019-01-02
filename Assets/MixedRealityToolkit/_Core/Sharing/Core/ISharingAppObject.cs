@@ -15,6 +15,7 @@
 
         void OnAppInitialize();
         void OnAppConnect();
+        void OnAppSynchronize();
         void OnAppShutDown();
     }
 }

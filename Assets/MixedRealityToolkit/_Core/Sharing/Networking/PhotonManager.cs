@@ -185,6 +185,11 @@ namespace Pixie.Networking
             status = ConnectionStatusEnum.ExperienceJoined;
         }
 
+        public void OnAppSynchronize()
+        {
+
+        }
+
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
             Debug.Log("Room list was updated");
@@ -325,7 +330,7 @@ namespace Pixie.Networking
                 // Try to create the room
                 if (!PhotonNetwork.JoinRoom(experienceName))
                 {
-                    feedbackText = "Couldn't join experience, will retry in a moment...";
+                    feedbackText = "Immediate failure, Couldn't join experience, will retry in a moment...";
                     yield return new WaitForSeconds(2f);
                 }
                 else

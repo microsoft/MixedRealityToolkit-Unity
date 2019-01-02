@@ -4,6 +4,7 @@ using System;
 namespace Pixie.DeviceControl
 {
     [Serializable]
+    [AppStateType]
     public struct UserDeviceState : IItemState, IItemStateComparer<UserDeviceState>
     {
         public UserDeviceState(short deviceID)

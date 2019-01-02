@@ -11,7 +11,7 @@ namespace Pixie.StateControl
         /// <summary>
         /// True when server considers states synchronized enough to proceed with app.
         /// </summary>
-        new bool Synchronized { get; set; }
+        new bool Synchronized { get; }
 
         /// <summary>
         /// Adds a state of type to gamestate.

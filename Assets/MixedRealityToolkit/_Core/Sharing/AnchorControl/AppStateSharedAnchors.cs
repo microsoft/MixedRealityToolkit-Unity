@@ -17,5 +17,9 @@ namespace Pixie.AnchorControl
         private bool synchronized;
 
         public void GenerateRequiredStates(IAppStateReadWrite appState) { }
+
+        static StateArray<AlignmentState> AlignmentStateArray;
+        static StateArray<SharedAnchorState> SharedAnchorStateArray;
+        static StateArray<UserAnchorState> UserAnchorStateArray;
     }
 }

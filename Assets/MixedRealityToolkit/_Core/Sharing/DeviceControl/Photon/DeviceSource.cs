@@ -127,7 +127,7 @@ namespace Pixie.DeviceControl.Photon
 
             // Let everyone else know that a device has been added
             // This will invoke OnDeviceConnected for everyone including server
-            photonView.RPC("AddDevice", RpcTarget.AllBufferedViaServer, rpcArgs);
+            photonView.RPC("AddDevice", RpcTarget.AllViaServer, rpcArgs);
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -186,7 +186,7 @@ namespace Pixie.DeviceControl.Photon
 
             bool isLocalDevice = (PhotonNetwork.LocalPlayer.UserId == userID);
 
-            OnDeviceConnected(deviceID, deviceName, isLocalDevice, deviceProperties);
+            OnDeviceDisconnected(deviceID, deviceName, isLocalDevice, deviceProperties);
         }
 
         [PunRPC]
@@ -206,11 +206,14 @@ namespace Pixie.DeviceControl.Photon
         
         public void OnAppInitialize() { }
 
+        public void OnAppSynchronize() { }
+
         public void OnAppConnect() { }
 
         public void OnAppShutDown() { }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) { }
+
 
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(DeviceSource))]
