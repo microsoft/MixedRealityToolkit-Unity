@@ -801,6 +801,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 if (pointerData.CurrentPointerTarget != null)
                 {
+                    float distance = 0f;
+                    for (int i = 0; i <= pointer.RayStepIndex; i++) {
+                        distance += pointer.Pointer.Rays[i].Length;
+                    }
+                    
                     // Check layer prioritization
                     if (prioritizedLayerMasks.Length > 1)
                     {
@@ -814,7 +819,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                         }
                         else if (threeDLayerIndex == uiLayerIndex)
                         {
-                            if (pointerData.Details.LastRaycastHit.distance > uiRaycastResult.distance)
+                            if (distance > uiRaycastResult.distance)
                             {
                                 overridePhysicsRaycast = true;
                             }
@@ -822,7 +827,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                     }
                     else
                     {
-                        if (pointerData.Details.LastRaycastHit.distance > uiRaycastResult.distance)
+                        if (distance > uiRaycastResult.distance)
                         {
                             overridePhysicsRaycast = true;
                         }
