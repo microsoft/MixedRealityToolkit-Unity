@@ -361,12 +361,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             FocusDetails focusDetails;
             if (!TryGetFocusDetails(pointingSource, out focusDetails)) { return null; }
 
-            GraphicInputEventData graphicInputEventData;
-            if (TryGetSpecificPointerGraphicEventData(pointingSource, out graphicInputEventData))
-            {
-                graphicInputEventData.selectedObject = focusDetails.Object;
-            }
-
             return focusDetails.Object;
         }
 
@@ -391,6 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             if (TryGetPointerData(pointer, out pointerData))
             {
                 graphicInputEventData = pointerData.GraphicEventData;
+                graphicInputEventData.selectedObject = pointerData.GraphicEventData.pointerCurrentRaycast.gameObject;
                 return true;
             }
 

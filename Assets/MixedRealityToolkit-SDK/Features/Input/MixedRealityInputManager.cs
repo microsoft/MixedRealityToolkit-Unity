@@ -904,10 +904,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             GraphicInputEventData graphicEventData;
             FocusProvider.TryGetSpecificPointerGraphicEventData(pointer, out graphicEventData);
-            
-            GameObject focusedObject = FocusProvider.GetFocusedObject(pointer);
-            graphicEventData.selectedObject = focusedObject;
-            
             return graphicEventData;
         }
 
