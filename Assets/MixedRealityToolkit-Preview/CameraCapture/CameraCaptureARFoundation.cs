@@ -1,4 +1,7 @@
-﻿#if USE_ARFOUNDATION
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+#if USE_ARFOUNDATION
 
 using System;
 using Unity.Collections;
@@ -7,7 +10,7 @@ using UnityEngine;
 using UnityEngine.XR.ARExtensions;
 using UnityEngine.XR.ARFoundation;
 
-namespace CameraCapture
+namespace Microsoft.MixedReality.Toolkit.CameraCapture
 {
 	public class CameraCaptureARFoundation : ICameraCapture
 	{
@@ -29,9 +32,11 @@ namespace CameraCapture
 			resolution = aResolution;
 			
 			Action<ARSystemStateChangedEventArgs> handler = null;
-			handler = (aState) => {
+			handler = (aState) =>
+			{
 				// Camera and orientation data aren't ready until ARFoundation is actually tracking!
-				if (aState.state == ARSystemState.SessionTracking) {
+				if (aState.state == ARSystemState.SessionTracking)
+				{
 					ARSubsystemManager.systemStateChanged -= handler;
 					ready = true;
 					if (aOnInitialized != null)
@@ -53,7 +58,8 @@ namespace CameraCapture
 			
 			// Set up resizing parameters
 			Vector2Int size = resolution.AdjustSize(new Vector2Int( image.width, image.height ));
-			var conversionParams = new CameraImageConversionParams {
+			var conversionParams = new CameraImageConversionParams
+			{
 				inputRect        = new RectInt(0, 0, image.width, image.height),
 				outputDimensions = new Vector2Int(size.x, size.y),
 				outputFormat     = TextureFormat.RGB24,

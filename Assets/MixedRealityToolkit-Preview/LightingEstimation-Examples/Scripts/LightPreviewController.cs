@@ -1,7 +1,9 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 #if UNITY_EDITOR || WINDOWS_UWP
 using UnityEngine.Windows.Speech;

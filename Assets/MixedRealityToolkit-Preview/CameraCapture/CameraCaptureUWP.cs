@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using System.Linq;
 using Unity.Collections;
 using UnityEngine;
@@ -9,7 +12,7 @@ using UnityEngine.XR.WSA.WebCam;
 using Windows.Media.Devices;
 #endif
 
-namespace CameraCapture
+namespace Microsoft.MixedReality.Toolkit.CameraCapture
 {
 	public class CameraCaptureUWP : ICameraCapture
 	{
@@ -26,18 +29,22 @@ namespace CameraCapture
 		public bool  IsReady           { get { return isReady; } }
 		public bool  IsRequestingImage { get; private set; }
 		public float FieldOfView       { get { return fieldOfView; } }
-		public int   Exposure { set{ 
-				IntPtr unknown = camera.GetUnsafePointerToVideoDeviceController();
-				using (VideoDeviceControllerWrapper wrapper = new VideoDeviceControllerWrapper(unknown)) {
-					wrapper.SetExposure(value);
-				}} 
+		public int   Exposure
+		{ set { 
+			IntPtr unknown = camera.GetUnsafePointerToVideoDeviceController();
+			using (VideoDeviceControllerWrapper wrapper = new VideoDeviceControllerWrapper(unknown))
+			{
+				wrapper.SetExposure(value);
 			}
-		public int   Whitebalance { set{ 
-				IntPtr unknown = camera.GetUnsafePointerToVideoDeviceController();
-				using (VideoDeviceControllerWrapper wrapper = new VideoDeviceControllerWrapper(unknown)) {
-					wrapper.SetWhiteBalance(value);
-				}} 
+		} }
+		public int   Whitebalance 
+		{ set { 
+			IntPtr unknown = camera.GetUnsafePointerToVideoDeviceController();
+			using (VideoDeviceControllerWrapper wrapper = new VideoDeviceControllerWrapper(unknown))
+			{
+				wrapper.SetWhiteBalance(value);
 			}
+		} }
 		#endregion
 
 		#region Methods

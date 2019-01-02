@@ -409,7 +409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9650c897c087bd94198f0d1eb4807e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onlyRunInEditor: 1
+  onlyRunInEditor: 1
 --- !u!20 &282840813
 Camera:
   m_ObjectHideFlags: 0
@@ -475,9 +475,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee5a936752f46924a8cf4f50430764b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dist: 2
-  _from: {fileID: 138245786}
-  _editorOnly: 1
+  dist: 1
+  from: {fileID: 0}
+  editorOnly: 1
 --- !u!1 &398328114
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,16 +1042,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f1a6bb1cd532004188db0255c1a4a31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mapResolution: 256
-  _singleStampOnly: 0
-  _stampFovMultiplier: 2
-  _stampExpireDistance: 0
-  _useDirectionalLight: 1
-  _maxLightColorSaturation: 0.3
-  _lightAngleAdjustPerSecond: 45
-  _cameraOrientation: {fileID: 0}
-  _probe: {fileID: 0}
-  _directionalLight: {fileID: 0}
+  mapResolution: 128
+  singleStampOnly: 0
+  stampFovMultiplier: 2
+  stampExpireDistance: 0
+  useDirectionalLight: 1
+  maxLightColorSaturation: 0.3
+  lightAngleAdjustPerSecond: 45
+  cameraOrientation: {fileID: 0}
+  probe: {fileID: 0}
+  directionalLight: {fileID: 0}
 --- !u!1 &1138546600
 GameObject:
   m_ObjectHideFlags: 0
@@ -1607,7 +1607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a104e0917ffd24fbedd7059c141b7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _logCount: 10
+  logCount: 10
 --- !u!4 &1873200447
 Transform:
   m_ObjectHideFlags: 0

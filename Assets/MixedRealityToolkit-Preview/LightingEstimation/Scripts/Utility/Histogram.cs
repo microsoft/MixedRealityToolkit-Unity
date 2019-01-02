@@ -1,102 +1,118 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 
-public class Histogram {
-	int[] _v;
-	float[] _r;
-	float[] _g;
-	float[] _b;
-	float _total = 0;
-	int   _buckets;
+namespace Microsoft.MixedReality.Toolkit.LightEstimation
+{
+	public class Histogram
+	{
+		int  [] v;
+		float[] r;
+		float[] g;
+		float[] b;
+		float total = 0;
+		int   buckets;
 
-	public int BucketCount { get { return _v.Length; } }
-	public float Max { get {
-		int max = _v[0];
-		for (int i = 1; i < _v.Length; i++) {
-			if (_v[i] > max) max = _v[i];
-			//if (_r[i] > max) max = _r[i];
-			//if (_g[i] > max) max = _g[i];
-			//if (_b[i] > max) max = _b[i];
+		public int   BucketCount { get { return v.Length; } }
+		public float Max { get 
+		{
+			int max = v[0];
+			for (int i = 1; i < v.Length; i++)
+			{
+				if (v[i] > max) max = v[i];
+			}
+			return max / total;
+		} }
+		public Color GetBucket(int bucketId) { return new Color(r[bucketId]/total, g[bucketId]/total, b[bucketId]/total, v[bucketId]/total); }
+		public int   GetBucketId(float percent) { return (int)(percent * buckets); }
+
+		public Histogram(int aBuckets = 10)
+		{
+			buckets  = aBuckets-1;
+
+			v = new int  [aBuckets];
+			r = new float[aBuckets];
+			g = new float[aBuckets];
+			b = new float[aBuckets];
 		}
-		return max / _total;
-	} }
-	public Color GetBucket(int aBucketId) { return new Color(_r[aBucketId]/_total, _g[aBucketId]/_total, _b[aBucketId]/_total, _v[aBucketId]/_total); }
-	public int GetBucketId(float aPercent) { return (int)(aPercent * _buckets); }
 
-	public Histogram(int aBuckets = 10) {
-		_buckets  = aBuckets-1;
-
-		_v = new int  [aBuckets];
-		_r = new float[aBuckets];
-		_g = new float[aBuckets];
-		_b = new float[aBuckets];
-	}
-
-	public void Clear() {
-		for (int i = 0; i < _v.Length; i++) {
-			_v[i] = 0;
-			_r[i] = 0;
-			_g[i] = 0;
-			_b[i] = 0;
+		public void Clear()
+		{
+			for (int i = 0; i < v.Length; i++)
+			{
+				v[i] = 0;
+				r[i] = 0;
+				g[i] = 0;
+				b[i] = 0;
+			}
+			total = 0;
 		}
-		_total = 0;
-	}
 
-	public void Add(Color aColor) {
-		float   gray = aColor.r*0.2126f + aColor.g*0.7152f + aColor.b*0.0722f;
-		Add(aColor.r, aColor.g, aColor.b, gray);
-	}
-	public void Add(Color32 aColor) {
-		float   r    = aColor.r/255f, g = aColor.g/255f, b = aColor.b/255f;
-		float   gray = r*0.2126f + g*0.7152f + b*0.0722f;
-		Add(r, g, b, gray);
-	}
-	public void Add(float r, float g, float b, float gray) {
-		int bucket = (int)(gray * _buckets);
-		_v[bucket] += 1;
-		_r[bucket] += r;
-		_g[bucket] += g;
-		_b[bucket] += b;
-		_total += 1;
-	}
+		public void Add(Color color)
+		{
+			float   gray = color.r*0.2126f + color.g*0.7152f + color.b*0.0722f;
+			Add(color.r, color.g, color.b, gray);
+		}
+		public void Add(Color32 color)
+		{
+			float   r    = color.r/255f, g = color.g/255f, b = color.b/255f;
+			float   gray = r*0.2126f + g*0.7152f + b*0.0722f;
+			Add(r, g, b, gray);
+		}
+		public void Add(float r, float g, float b, float gray)
+		{
+			int bucket = (int)(gray * buckets);
+			v[bucket] += 1;
+			this.r[bucket] += r;
+			this.g[bucket] += g;
+			this.b[bucket] += b;
+			total += 1;
+		}
 
-	/// <summary>
-	/// Finds the location on the histogram where a certain percentage of brightness is below
-	/// </summary>
-	/// <param name="aPercent"></param>
-	/// <returns></returns>
-	public float FindPercentage(float aPercent) {
-		int curr = 0;
+		/// <summary>
+		/// Finds the location on the histogram where a certain percentage of brightness is below
+		/// </summary>
+		/// <param name="percent"></param>
+		/// <returns></returns>
+		public float FindPercentage(float percent)
+		{
+			int curr = 0;
 		
-		for (int i = 0; i < _v.Length; i++) {
-			curr += _v[i];
-			float percent = curr/_total;
-			if (percent >= aPercent)
-				return i / (float)_buckets;
+			for (int i = 0; i < v.Length; i++)
+			{
+				curr += v[i];
+				float currPercent = curr/total;
+				if (currPercent >= percent)
+					return i / (float)buckets;
+			}
+			return 1;
 		}
-		return 1;
-	}
 
-	public Color GetColor(float aRangeMin, float aRangeMax) {
-		int minI = (int)(aRangeMin * _buckets);
-		int maxI = (int)(aRangeMax * _buckets);
+		public Color GetColor(float rangeMin, float rangeMax)
+		{
+			int minI = (int)(rangeMin * buckets);
+			int maxI = (int)(rangeMax * buckets);
 
-		Vector3 result = Vector3.zero;
-		for (int i = minI; i <= maxI; i++) {
-			result.x += _r[i];
-			result.y += _g[i];
-			result.z += _b[i];
+			Vector3 result = Vector3.zero;
+			for (int i = minI; i <= maxI; i++)
+			{
+				result.x += r[i];
+				result.y += g[i];
+				result.z += b[i];
+			}
+			result.Normalize();
+			return new Color(result.x, result.y, result.z, 1);
 		}
-		result.Normalize();
-		return new Color(result.x, result.y, result.z, 1);
-	}
 
-	public override string ToString() {
-		string result = "Hist: ";
-		for (int i = 0; i < _v.Length; i++) {
-			result += (int)((_v[i] / _total) * 100) + " ";
+		public override string ToString()
+		{
+			string result = "Hist: ";
+			for (int i = 0; i < v.Length; i++)
+			{
+				result += (int)((v[i] / total) * 100) + " ";
+			}
+			return result;
 		}
-		return result;
 	}
 }

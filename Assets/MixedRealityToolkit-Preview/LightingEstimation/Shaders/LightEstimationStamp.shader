@@ -1,4 +1,4 @@
-﻿Shader "Unlit/VertTransparent" {
+﻿Shader "Hidden/LightEstimationStamp" {
 	Properties {
 		_MainTex ("Texture", 2D) = "white" {}
 		_LightScale ("LightScale", Float) = 1
