@@ -7,16 +7,16 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
-    [CustomEditor(typeof(ClipPlane))]
-    public class ClipPlaneEditor : Editor
+    [CustomEditor(typeof(ClippingSphere))]
+    public class ClippingSphereEditor : Editor
     {
         private bool HasFrameBounds() { return true; }
 
         private Bounds OnGetFrameBounds()
         {
-            var clipPlane = target as ClipPlane;
-            Debug.Assert(clipPlane != null);
-            return new Bounds(clipPlane.transform.position, Vector3.one);
+            var primitive = target as ClippingSphere;
+            Debug.Assert(primitive != null);
+            return new Bounds(primitive.transform.position, Vector3.one * primitive.Radius);
         }
     }
 }

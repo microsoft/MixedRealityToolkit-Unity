@@ -15,12 +15,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
             Terminus = terminus;
             Length = Vector3.Distance(origin, terminus);
             Direction = (Terminus - Origin).normalized;
+
+            epsilon = 0.01f;
         }
 
         public Vector3 Origin { get; private set; }
         public Vector3 Terminus { get; private set; }
         public Vector3 Direction { get; private set; }
         public float Length { get; private set; }
+
+        private readonly float epsilon;
 
         public Vector3 GetPoint(float distance)
         {
@@ -41,6 +45,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
             Origin = ray.origin;
             Direction = ray.direction;
             Terminus = Origin + (Direction * Length);
+        }
+
+        public bool Contains(Vector3 point)
+        {
+            return Vector3.Distance(Origin, point) + Vector3.Distance(point, Terminus) - Length < epsilon;
         }
 
         public static implicit operator Ray(RayStep r)
