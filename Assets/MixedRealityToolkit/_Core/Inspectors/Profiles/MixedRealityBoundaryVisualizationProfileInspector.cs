@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityBoundaryVisualizationProfile))]
     public class MixedRealityBoundaryVisualizationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
+        private static bool showGeneralProperties = true;
         private SerializedProperty boundaryHeight;
 
         private static bool showFloorProperties = true;
@@ -105,8 +106,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             CheckProfileLock(target);
 
             serializedObject.Update();
+
             EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(boundaryHeight);
+            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
+            if (showGeneralProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(boundaryHeight);
+                }
+            }
 
             EditorGUILayout.Space();
             showFloorProperties = EditorGUILayout.Foldout(showFloorProperties, "Floor Settings", true);

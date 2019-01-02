@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityCameraProfile))]
     public class MixedRealityCameraProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private static bool showGlobalProperties = true;
+        private static bool showGeneralProperties = true;
         private SerializedProperty isCameraPersistent;
 
         private static bool showOpaqueProperties = true;
@@ -73,8 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             serializedObject.Update();
 
             EditorGUILayout.Space();
-            showGlobalProperties = EditorGUILayout.Foldout(showGlobalProperties, "Global Settings", true);
-            if (showGlobalProperties)
+            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
+            if (showGeneralProperties)
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
