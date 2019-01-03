@@ -10,6 +10,8 @@ using UnityEngine.Windows.Speech;
 using UnityEngine.XR.WSA.Input;
 #endif
 
+using Microsoft.MixedReality.Toolkit.LightEstimation;
+
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
 	public class LightPreviewController : MonoBehaviour
@@ -258,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 			else
 			{
 				// Blend rotation towards the player
-				Quaternion dest = Quaternion.LookRotation( Camera.main.transform.position );
+				Quaternion dest = Quaternion.LookRotation( Camera.main.transform.position-transform.position );
 				Vector3    rot  = dest.eulerAngles;
 				rot.x = rot.z = 0;
 				dest = Quaternion.Euler(rot);
