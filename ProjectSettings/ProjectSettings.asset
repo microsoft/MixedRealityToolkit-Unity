@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Microsoft
-  productName: MRTK Lighting Estimation
+  productName: MixedRealityToolkit
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -46,7 +46,7 @@ PlayerSettings:
   defaultScreenHeight: 768
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
-  m_StereoRenderingPath: 1
+  m_StereoRenderingPath: 0
   m_ActiveColorSpace: 0
   m_MTRendering: 1
   m_StackTraceTypes: 010000000100000001000000010000000100000001000000
@@ -73,7 +73,7 @@ PlayerSettings:
   Force IOS Speakers When Recording: 0
   deferSystemGesturesMode: 0
   hideHomeButton: 0
-  submitAnalytics: 0
+  submitAnalytics: 1
   usePlayerLog: 1
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
@@ -278,7 +278,7 @@ PlayerSettings:
     m_Enabled: 1
     m_Devices: []
   - m_BuildTarget: Metro
-    m_Enabled: 0
+    m_Enabled: 1
     m_Devices:
     - WindowsMR
   - m_BuildTarget: N3DS
@@ -629,14 +629,14 @@ PlayerSettings:
     Standalone: 3
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Microsoft.MixedReality.LE
+  metroPackageName: Microsoft.MixedReality.Toolkit
   metroPackageVersion: 2018.9.0.0
   metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
   metroCertificateIssuer: Microsoft
-  metroCertificateNotAfter: 808ff908d7c1d501
-  metroApplicationDescription: Microsoft.MixedReality.LE
+  metroCertificateNotAfter: 0090761b2802d501
+  metroApplicationDescription: Microsoft.MixedReality.Toolkit
   wsaImages: {}
   metroTileShortName: MixedRealityToolkit
   metroTileShowName: 0
@@ -687,7 +687,7 @@ PlayerSettings:
       UserNotificationListener: False
       VideosLibrary: False
       VoipCall: False
-      WebCam: True
+      WebCam: False
   metroFTAName: 
   metroFTAFileTypes: []
   metroProtocolName: 
