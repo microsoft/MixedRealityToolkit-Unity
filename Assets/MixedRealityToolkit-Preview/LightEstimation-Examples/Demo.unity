@@ -1010,7 +1010,7 @@ GameObject:
   - component: {fileID: 933084791}
   - component: {fileID: 933084792}
   m_Layer: 0
-  m_Name: LightingCaptureObj
+  m_Name: LightCaptureObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 using Microsoft.MixedReality.Toolkit.CameraCapture;
 using Microsoft.MixedReality.Toolkit.LightEstimation;
 
-public class LightingCapture : MonoBehaviour
+public class LightCapture : MonoBehaviour
 {
 	#region Fields
 	[Header("Settings")]

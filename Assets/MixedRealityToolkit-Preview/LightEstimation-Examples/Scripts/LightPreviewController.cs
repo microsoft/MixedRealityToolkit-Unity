@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 		int exposure   = -7;
 		int whitebalance = 6000;
 
-		LightingCapture lightCapture;
+		LightCapture lightCapture;
 		Component       tts;
 		MethodInfo      speakMethod;
 
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 			targetPos = transform.position;
 		
 			// Hook up resources
-			lightCapture = FindObjectOfType<LightingCapture>();
+			lightCapture = FindObjectOfType<LightCapture>();
 
 			// No hard dependence on the MRTK, just reflect into the parts we want to use
 			Type textToSpeechType = Type.GetType("HoloToolkit.Unity.TextToSpeech");

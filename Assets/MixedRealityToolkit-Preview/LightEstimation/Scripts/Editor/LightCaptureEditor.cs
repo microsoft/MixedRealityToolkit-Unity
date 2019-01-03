@@ -5,8 +5,8 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.LightEstimation
 {
-	[CustomEditor(typeof(LightingCapture))]
-	public class LightingCaptureEditor : Editor
+	[CustomEditor(typeof(LightCapture))]
+	public class LightCaptureEditor : Editor
 	{
 		SerializedProperty mapResolution;
 		SerializedProperty singleStampOnly;
