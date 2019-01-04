@@ -1,4 +1,4 @@
-﻿Shader "LightEstimation IBL" {
+﻿Shader "Mixed Reality Toolkit/LightEstimation IBL" {
 	Properties {
 		_MainTex   ("Texture", 2D) = "white" {}
 		_BumpMap   ("Normal",  2D) = "bump" {}
