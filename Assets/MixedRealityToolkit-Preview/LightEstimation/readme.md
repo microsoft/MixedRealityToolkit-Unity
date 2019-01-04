@@ -1,23 +1,34 @@
+# Light Estimation
 ## Basic Usage
 
 From the dropdown menu:
->Mixed Reality Toolkit / Lighting Estimation / Create Estimation Object
+>Mixed Reality Toolkit / Light Estimation / Create Estimation Object
 
-That's it! This will create a `GameObject` in your scene with the `Lightingcapture` component on it, this should work on the HoloLens automatically. If you want this example to work in-editor on a laptop that has a camera and a gyrosocope, add the `FollowGyroscope` component to your scene's `Main Camera`.
+That's it! This will create a `GameObject` in your scene with the `Lightcapture` component on it, this should work on the HoloLens automatically. If you want this example to work in-editor on a laptop that has a camera and a gyroscope, add the `FollowGyroscope` component to your scene's `Main Camera`.
 
 You can check out the 'Minimum' scene for an example of the bare minimum require for light estimation to work.
 
-## How does it work?
+## Project Configuration
 
-As the user interacts with the environment, this tool creates a Cubemap using the device's camera. This cubemap is then assigned to one of Unity's Reflection Probes for use by shaders for ambient light and reflection calculations!
+Please use Unity 2018.2 or greater, and ensure your application has permission to access the WebCam. For the 'Demo' scene running on HoloLens, permissions for Microphone (voice commands) and PicturesLibrary (saving active Cubemap to user's photo library) should be enabled.
 
-When the component loads, it takes a single picture from the camera, and wraps it around the entire cubemap! This provides an initial, immidiate estimate of the lighting in the room that can be improved upon over time.
+Light Estimation has no hard dependencies on MRTK, so if you wish to use it separately from MRTK, just copy these folders into your own project:
+>MixedRealityToolkit-Preview / LightEstimation<br/>
+>MixedRealityToolkit-Preview / CameraCapture
 
-As the user rotates, the component will 'stamp' the current camera image onto the cubemap, and save that rotation to a cache. As the user continues to rotate, the component will check the cache to see if there's already a stamp there, before adding another stamp. Settings can be configured to make stamps expire as the user moves from room to room.
+## How Does it Work?
 
-**IMPORTANT NOTE:** On HoloLens, the camera is locked to a specific exposure to accurately reflect lighting changes in each direction! Other devices **do not** do this due to API availability, which leads to a more even, muddy cubemap. So, if your lighting captures don't look great on your non-HoloLens device, that would be why.
+![Building up a Cubemap, live!](/External/ReadMeImages/LightEstimationHow.gif)
 
-## LightingCapture Settings
+As the user interacts with the environment, this tool creates a Cubemap using the device's camera. This Cubemap is then assigned to one of Unity's Reflection Probes for use by shaders for ambient light and reflection calculations!
+
+When the component loads, it takes a single picture from the camera, and wraps it around the entire Cubemap! This provides an initial, immediate estimate of the lighting in the room that can be improved upon over time.
+
+As the user rotates, the component will 'stamp' the current camera image onto the Cubemap, and save that rotation to a cache. As the user continues to rotate, the component will check the cache to see if there's already a stamp there, before adding another stamp. Settings can be configured to make stamps expire as the user moves from room to room.
+
+**IMPORTANT NOTE:** On HoloLens, the camera is locked to a specific exposure to accurately reflect lighting changes in each direction! Other devices **do not** do this due to API availability, which leads to a more even, muddy Cubemap. So, if your lighting captures don't look great on your non-HoloLens device, that would be why.
+
+## LightCapture Settings
 
 - **Map Resolution**
 Resolution (pixels) per-face of the generated lighting Cubemap.
@@ -37,25 +48,25 @@ The light eases into its new location when the information is updated. This is t
 
 ## Shaders
 
-The ambient lighting information works out of the box with Unity's Standard, Legacy, and Mobile shaders, as well as the MRTK Standard shaders! Reflections only work with the Standard and MRTK Standard shaders. Also included is a lightweight `LightEstimation IBL` shader that does normal + diffuse textures with ambient lighting (no reflections).
+The ambient lighting information works out of the box with Unity's Standard, Legacy, and Mobile shaders, as well as the MRTK Standard shaders! Reflections only work with the `Standard` and `MRTK Standard` shaders. Also included is a lightweight `LightEstimation IBL` shader that does normal + diffuse textures with ambient lighting (no reflections).
 
-You may have mixed success with the MRTK shader, we've experienced some issues with it and haven't yet pinned down the root cause. We're currently woking out some of the kinks, and intend to have this behaving properly before a final release!
+While the demo uses Unity's `Standard` shaders for project portability, we recommend using the `MRTK Standard` shaders, as they'll be significantly faster! The `LightEstimation IBL` shader is a great reference of what features need to be present for Light Estimation to work. Since it has more limited functionality, it may be even a little faster than `MRTK Standard`.
 
 ## Included Tools
 ### Camera Cubemap Creator
 
->Mixed Reality Toolkit / Lighting Estimation / Camera Cubemap Creator
+>Mixed Reality Toolkit / Light Estimation / Camera Cubemap Creator
 
-This is an editor window for putting together cubemaps outside of runtime for debugging and fixed locations. It's a little buggy, but can be used to make some good stuff! It saves a cubemap format .png to the Asset folder.
+This is an editor window for putting together Cubemaps outside of runtime for debugging and fixed locations. It's a little buggy, but can be used to make some good stuff! It saves a Cubemap format .png to the Asset folder.
 
 ### Save Cubemap From Probe
 
->Mixed Reality Toolkit / Lighting Estimation / Save Cubemap from Probe
+>Mixed Reality Toolkit / Light Estimation / Save Cubemap from Probe
 
-If you're in the editor during runtime, and want to save the current Reflection Probe, use this menu item! Also saves a cubemap format .png to the Asset folder.
+If you're in the editor during runtime, and want to save the current Reflection Probe, use this menu item! Also saves a Cubemap format .png to the Asset folder.
 
 ### Save Cubemap on HoloLens
 
-The 'Demo' scene can save a cubemap .png from the HoloLens to its picture folder using the 'save' command word. This scene requires the MRTK to work, and may have some broken prefabs. You can check the `LightPreviewController.SaveMap()` method for an implementation of the HoloLens save functionality if you want to trigger it from a different command.
+The 'Demo' scene can save a Cubemap .png from the HoloLens to its picture folder using the 'save' command word. You can check the `LightPreviewController.SaveMap()` method for an implementation of the HoloLens save functionality if you want to trigger it from a different command.
 
-This is the best way to get a test cubemap, as the HoloLens' ability to lock the camera exposure will result in a better image!
+This is the best way to get a test Cubemap, as the HoloLens' ability to lock the camera exposure will result in a better image!
