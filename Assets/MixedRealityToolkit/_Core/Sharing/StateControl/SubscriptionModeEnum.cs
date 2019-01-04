@@ -1,6 +1,9 @@
-﻿namespace Pixie.StateControl
+﻿using System;
+
+namespace Pixie.StateControl
 {
-    public enum SubscriptionModeEnum
+    [Serializable]
+    public enum SubscriptionModeEnum : byte
     {
         All,
         Manual

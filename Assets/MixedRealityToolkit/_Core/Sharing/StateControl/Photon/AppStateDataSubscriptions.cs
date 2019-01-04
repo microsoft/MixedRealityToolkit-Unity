@@ -11,13 +11,15 @@ namespace Pixie.StateControl.Photon
 {
     public class AppStateDataSubscriptions : MonoBehaviour, IAppStateDataSubscriptions
     {
+        public Action OnLocalSubscriptionModeChange { get; set; }
+
         private Dictionary<string, HashSet<string>> subscribedTypes = new Dictionary<string, HashSet<string>>();
         private Dictionary<string, SubscriptionModeEnum> subscriptionModes = new Dictionary<string, SubscriptionModeEnum>();
         private object[] rpcReceiveSubscriptionMode = new object[2];
         // Photon-specific component
         private PhotonView photonView;
 
-        public void SetSubscriptionMode(SubscriptionModeEnum subscriptionMode, IEnumerable<Type> subscriptionTypes = null)
+        public void SetLocalSubscriptionMode(SubscriptionModeEnum subscriptionMode, IEnumerable<Type> subscriptionTypes = null)
         {
             Debug.Log("Setting subscription mode: " + subscriptionMode);
 
@@ -25,7 +27,7 @@ namespace Pixie.StateControl.Photon
             if (photonView == null)
                 throw new Exception("This component can't operate without a photon view");
 
-            HashSet<string> subscriptionTypeNames = null;
+            List<string> subscriptionTypeNames = null;
 
             switch (subscriptionMode)
             {
@@ -37,7 +39,7 @@ namespace Pixie.StateControl.Photon
                     if (subscriptionTypes == null)
                         throw new Exception("Subscription types cannot be null when subscription is manual");
 
-                    subscriptionTypeNames = new HashSet<string>();
+                    subscriptionTypeNames = new List<string>();
                     foreach (Type type in subscriptionTypes)
                         subscriptionTypeNames.Add(type.FullName);
 
@@ -52,18 +54,45 @@ namespace Pixie.StateControl.Photon
             if (PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InRoom)
             {
                 rpcReceiveSubscriptionMode[0] = subscriptionMode;
-                rpcReceiveSubscriptionMode[1] = subscriptionTypeNames;
+                rpcReceiveSubscriptionMode[1] = subscriptionTypeNames.ToArray();
 
-                photonView.RPC("ReceiveSubscriptionSettings", RpcTarget.AllBuffered, rpcReceiveSubscriptionMode);
+                photonView.RPC("ReceiveSubscriptionMode", RpcTarget.AllBuffered, rpcReceiveSubscriptionMode);
             }
             else
             {
                 Debug.LogWarning("Not connected - not sending subscription type.");
             }
+
+            if (OnLocalSubscriptionModeChange != null)
+                OnLocalSubscriptionModeChange();
+        }
+
+        public bool IsLocalUserSubscribedToType(Type type)
+        {
+            SubscriptionModeEnum mode;
+
+            // If we haven't connected then we're subscribed by default
+            if (!PhotonNetwork.IsConnected)
+                return true;
+
+            // If no subscription mode has been set then we're subscribed by default
+            if (!subscriptionModes.TryGetValue(PhotonNetwork.LocalPlayer.UserId, out mode))
+                return true;
+
+            switch (mode)
+            {
+                case SubscriptionModeEnum.All:
+                default:
+                    return true;
+
+                case SubscriptionModeEnum.Manual:
+                    HashSet<string> subscribedTypesSet = subscribedTypes[PhotonNetwork.LocalPlayer.UserId];
+                    return subscribedTypesSet.Contains(type.FullName);
+            }
         }
 
         [PunRPC]
-        private void ReceiveSubscriptionMode(SubscriptionModeEnum newSubscriptionMode, HashSet<string> newStateTypes, PhotonMessageInfo info)
+        private void ReceiveSubscriptionMode(SubscriptionModeEnum newSubscriptionMode, string[] newStateTypes, PhotonMessageInfo info)
         {
             Debug.Log("Receiving subscription mode: " + newSubscriptionMode);
 

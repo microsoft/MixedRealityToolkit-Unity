@@ -24,6 +24,8 @@ namespace Pixie.StateControl.Photon
         public Action<Type, List<object>> OnReceiveChangedStates { get; set; }
         public bool Synchronized { get { return synchronized; } }
 
+        // Subscription source, if we have one
+        private AppStateDataSubscriptions subscriptions;
         // List of all state arrays being used
         private List<IStateArrayBase> stateList = new List<IStateArrayBase>();
         // Lookup of state array by type
@@ -101,7 +103,7 @@ namespace Pixie.StateControl.Photon
 
         public void SendFlushedStates(Type stateArrayType, List<object> flushedStates)
         {
-            Debug.Log("Sending " + flushedStates.Count + " states of type " + stateArrayType.FullName);
+            //Debug.Log("Sending " + flushedStates.Count + " states of type " + stateArrayType.FullName);
 
             byte[] flushedStateBytes = SerializeStateList(flushedStates);
 
@@ -110,8 +112,12 @@ namespace Pixie.StateControl.Photon
                 // Call the RPC - this will force the list to update
                 rpcMethodArgs[0] = stateArrayType.FullName;
                 rpcMethodArgs[1] = flushedStateBytes;
-                // Don't send via server - this will ensure no local gaps in state array keys
-                photonView.RPC("ReceiveFlushedStates", RpcTarget.All, rpcMethodArgs);
+                // Send for all players that are subscribed to this type
+                foreach (Player player in PhotonNetwork.PlayerList)
+                {
+                    if (subscriptions.IsUserSubscribedToType(player.UserId, stateArrayType))
+                        photonView.RPC("ReceiveFlushedStates", player, rpcMethodArgs);
+                }
             }
             else
             {
@@ -194,6 +200,74 @@ namespace Pixie.StateControl.Photon
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) { }
 
+        public void OnAppSynchronize()
+        {
+            switch (AppRole)
+            {
+                case AppRoleEnum.Server:
+                    // Server is synchronized by default
+                    synchronized = true;
+                    return;
+
+                default:
+                    break;
+            }
+
+            Debug.Log("Requesting synchronized states from server...");
+            // Ask the server to send us synchronized states
+            photonView.RPC("RequestSynchronizedStates", RpcTarget.MasterClient);
+        }
+
+        public void OnAppInitialize()
+        {
+            subscriptions = gameObject.GetComponent<AppStateDataSubscriptions>();
+
+            if (subscriptions == null)
+                throw new Exception("AppState requires an AppStateDataSubscriptions component in order to work.");
+        }
+
+        public void OnAppConnect()
+        {
+
+        }
+
+        public void OnAppShutDown()
+        {
+
+        }
+
+        private IEnumerator SynchronizeWithTargetOverTime(Player target)
+        {
+            List<object> states = new List<object>();
+            foreach (KeyValuePair<string,IStateArrayBase> stateArray in stateLookupByName)
+            {
+                // If this target isn't subscribed to this type, skip it
+                if (!subscriptions.IsUserSubscribedToType(target.UserId, stateArray.Value.StateType))
+                    continue;
+
+                //Debug.Log("Sending synced states for state array " + stateArray.Key + " to target " + target.ActorNumber);
+
+                states.Clear();
+                foreach (object state in stateArray.Value.GetStates())
+                    states.Add(state);
+
+                byte[] synchronizedStateBytes = SerializeStateList(states);
+
+                photonView.RPC("ReceiveSynchronizedStates", target, new object[] { stateArray.Key, synchronizedStateBytes });
+
+                // TODO get rid of magic number
+                yield return new WaitForSeconds(0.15f);
+            }
+
+            //Debug.Log("Target " + target.ActorNumber + " is synchronized");
+
+            // Tell the recipient they are synced up
+            photonView.RPC("SetSynchronized", target, new object[] { true });
+            // Remove from our list of targets
+            targetsRequestingSync.Remove(target);
+            yield break;            
+        }
+
         private static byte[] SerializeStateList(List<object> states)
         {
 #if BINARY_SERIALIZATION
@@ -229,67 +303,6 @@ namespace Pixie.StateControl.Photon
             }
             return stateObjects;
 #endif
-        }
-
-        public void OnAppSynchronize()
-        {
-            switch (AppRole)
-            {
-                case AppRoleEnum.Server:
-                    // Server is synchronized by default
-                    synchronized = true;
-                    return;
-
-                default:
-                    break;
-            }
-
-            Debug.Log("Requesting synchronized states from server...");
-            // Ask the server to send us synchronized states
-            photonView.RPC("RequestSynchronizedStates", RpcTarget.MasterClient);
-        }
-
-        public void OnAppInitialize()
-        {
-
-        }
-
-        public void OnAppConnect()
-        {
-
-        }
-
-        public void OnAppShutDown()
-        {
-
-        }
-
-        private IEnumerator SynchronizeWithTargetOverTime(Player target)
-        {
-            List<object> states = new List<object>();
-            foreach (KeyValuePair<string,IStateArrayBase> stateArray in stateLookupByName)
-            {
-                Debug.Log("Sending synced states for state array " + stateArray.Key + " to target " + target.ActorNumber);
-
-                states.Clear();
-                foreach (object state in stateArray.Value.GetStates())
-                    states.Add(state);
-
-                byte[] synchronizedStateBytes = SerializeStateList(states);
-
-                photonView.RPC("ReceiveSynchronizedStates", target, new object[] { stateArray.Key, synchronizedStateBytes });
-
-                // TODO get rid of magic number
-                yield return new WaitForSeconds(0.15f);
-            }
-
-            Debug.Log("Target " + target.ActorNumber + " is synchronized");
-
-            // Tell the recipient they are synced up
-            photonView.RPC("SetSynchronized", target, new object[] { true });
-            // Remove from our list of targets
-            targetsRequestingSync.Remove(target);
-            yield break;            
         }
     }
 }
