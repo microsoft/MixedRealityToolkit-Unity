@@ -152,9 +152,21 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 				}
 				map.Stamp(tex, Vector3.zero, rot);
 				
+				// Generate a unique filename
 				string path = "Assets/CamCubemap.png";
+				int    curr = 1;
+				while (File.Exists(path))
+				{
+					curr += 1;
+					path = string.Format("Assets/CamCubemap{0}.png", curr);
+				}
+
 				SaveCubemap(map.Map, path);
 				previewAsset = AssetDatabase.LoadAssetAtPath<Object>(path);
+
+				// Ping it, so the user knows we made it
+				Selection.activeObject = previewAsset;
+				EditorGUIUtility.PingObject(previewAsset);
 			});
 		}
 		#endregion
