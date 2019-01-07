@@ -8,6 +8,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Sharing
     /// </summary>
     public interface ISimpleState : IMixedRealityService
     {
+        bool IsConnected { get; }
+
         Task<bool> HasKey(string key);
         Task SetState<T>(string key, T state);
         Task<T> GetState<T>(string key);

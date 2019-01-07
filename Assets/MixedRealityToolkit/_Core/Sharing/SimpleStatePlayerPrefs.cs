@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Sharing;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Services.Sharing
@@ -12,10 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.Sharing
     /// </summary>
     public class SimpleStatePlayerPrefs : BaseService, ISimpleState
     {
-        public override void Initialize()
-        {
-            Name = "SimpleStatePlayerPrefs";
-        }
+        /// <inheritdoc />
+        public override string Name { get { return "SimpleStatePlayerPrefs"; } }
+
+        public bool IsConnected { get; set; }
 
         public int SimulatedLatency { get; set; }
 
@@ -26,6 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.Sharing
 
             await Task.Delay(SimulatedLatency);
 
+            await new WaitForUpdate();
+
             return PlayerPrefs.HasKey(key);
         }
         
@@ -35,6 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.Sharing
                 throw new Exception("Key cannot be empty.");
 
             await Task.Delay(SimulatedLatency);
+
+            await new WaitForUpdate();
 
             if (PlayerPrefs.HasKey(key))
             {
@@ -64,7 +70,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.Sharing
 
             await Task.Delay(SimulatedLatency);
 
-            string serializedObject = JsonUtility.ToJson(state);
+            await new WaitForUpdate();
+
+            string serializedObject = string.Empty;
+            try
+            {
+                serializedObject = JsonUtility.ToJson(state);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Failed to serialize object of type " + typeof(T) + ": " + e.ToString());
+                return;
+            }
+
             PlayerPrefs.SetString(key, serializedObject);
         }
     }
