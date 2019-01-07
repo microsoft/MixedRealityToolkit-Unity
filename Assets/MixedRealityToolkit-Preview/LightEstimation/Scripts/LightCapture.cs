@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
@@ -239,15 +239,19 @@ public class LightCapture : MonoBehaviour
 	#region Public Methods
 	public void SetExposure(int exp)
 	{
+		#if WINDOWS_UWP
 		CameraCaptureUWP cam = captureCamera as CameraCaptureUWP;
 		if (cam != null)
 			cam.Exposure = exp;
+		#endif
 	}
 	public void SetWhitebalance(int wb)
 	{
+		#if WINDOWS_UWP
 		CameraCaptureUWP cam = captureCamera as CameraCaptureUWP;
 		if (cam != null)
 			cam.Whitebalance = wb;
+		#endif
 	}
 
 	public void Clear()

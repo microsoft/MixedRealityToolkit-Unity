@@ -1,22 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-
+#if WINDOWS_UWP
 using System;
 using System.Linq;
 using Unity.Collections;
 using UnityEngine;
 
-#if WINDOWS_UWP
+
 using System.Runtime.InteropServices;
 using UnityEngine.XR.WSA.WebCam;
 using Windows.Media.Devices;
-#endif
 
 namespace Microsoft.MixedReality.Toolkit.CameraCapture
 {
 	public class CameraCaptureUWP : ICameraCapture
 	{
-#if WINDOWS_UWP
 		#region Fields
 		PhotoCapture     camera      = null;
 		CameraParameters cameraParams;
@@ -91,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 				isReady = true;
 			});
 		}
-
+		
 		void GetImage(Action<Texture2D, Matrix4x4> aOnFinished)
 		{
 			IsRequestingImage = true;
@@ -174,21 +172,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 			camera = null;
 		}
 		#endregion
-#else
-		public bool  IsReady           { get { throw new PlatformNotSupportedException(); } }
-		public bool  IsRequestingImage { get { throw new PlatformNotSupportedException(); } }
-		public float FieldOfView       { get { throw new PlatformNotSupportedException(); } }
-		public int   Exposure     { set { } }
-		public int   Whitebalance { set { } }
-
-		public void Initialize  (bool aPreferGPUTexture, CameraResolution aResolution, Action aOnInitialized) { throw new PlatformNotSupportedException(); }
-		public void Shutdown    ()                                                                            { throw new PlatformNotSupportedException(); }
-		public void RequestImage(Action<NativeArray<Color24>, Matrix4x4, int, int> aOnImageAcquired)          { throw new PlatformNotSupportedException(); }
-		public void RequestImage(Action<Texture,              Matrix4x4> aOnImageAcquired)                    { throw new PlatformNotSupportedException(); }
-#endif
 	}
 
-#if WINDOWS_UWP
 	public sealed class VideoDeviceControllerWrapper : IDisposable
 	{
 		private VideoDeviceController controller = null;
@@ -242,5 +227,5 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 			}
 		}
 	}
-#endif
 }
+#endif

@@ -13,11 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
 		private void Awake()
 		{
-			if (editorOnly)
+			if (!Application.isEditor && editorOnly)
 			{
-				#if !UNITY_EDITOR
 				enabled = false;
-				#endif
 			}
 		}
 		void LateUpdate ()

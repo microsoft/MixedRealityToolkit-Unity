@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
@@ -16,20 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 		float[] b;
 		float total = 0;
 		int   buckets;
-
-		public int   BucketCount { get { return v.Length; } }
-		public float Max { get 
-		{
-			int max = v[0];
-			for (int i = 1; i < v.Length; i++)
-			{
-				if (v[i] > max) max = v[i];
-			}
-			return max / total;
-		} }
-		public Color GetBucket(int bucketId) { return new Color(r[bucketId]/total, g[bucketId]/total, b[bucketId]/total, v[bucketId]/total); }
-		public int   GetBucketId(float percent) { return (int)(percent * buckets); }
-
+		
+		/// <param name="aBuckets">How many slots will we store values in? On a normal histogram picture, you can imagine this as "How many vertical bars do I want?". More gives you more granularity, but more than 255 would probably be pointless.</param>
 		public Histogram(int aBuckets = 10)
 		{
 			buckets  = aBuckets-1;
@@ -54,18 +42,14 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 			}
 			total = 0;
 		}
-
-		public void Add(Color color)
-		{
-			float   gray = color.r*0.2126f + color.g*0.7152f + color.b*0.0722f;
-			Add(color.r, color.g, color.b, gray);
-		}
-		public void Add(Color32 color)
-		{
-			float   r    = color.r/255f, g = color.g/255f, b = color.b/255f;
-			float   gray = r*0.2126f + g*0.7152f + b*0.0722f;
-			Add(r, g, b, gray);
-		}
+		
+		/// <summary>
+		/// Add a color entry to the histogram!
+		/// </summary>
+		/// <param name="r">Red 0-1 please!</param>
+		/// <param name="g">Green 0-1 please!</param>
+		/// <param name="b">Blue 0-1 please!</param>
+		/// <param name="gray">The Lightness/Value/Greyscale that corresponds with this color! (r*0.2126f + g*0.7152f + b*0.0722f is a pretty good one)</param>
 		public void Add(float r, float g, float b, float gray)
 		{
 			int bucket = (int)(gray * buckets);
@@ -75,12 +59,26 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 			this.b[bucket] += b;
 			total += 1;
 		}
+		/// <summary>
+		/// Add a color entry to the histogram!
+		/// </summary>
+		/// <param name="r">Red 0-255 please!</param>
+		/// <param name="g">Green 0-255 please!</param>
+		/// <param name="b">Blue 0-255 please!</param>
+		/// <param name="gray">The Lightness/Value/Greyscale 0-1 that corresponds with this color! ((r/255)*0.2126f + (g/255)*0.7152f + (b/255)*0.0722f is a pretty good one)</param>
+		public void Add(byte r, byte g, byte b, float gray)
+		{
+			int bucket = (int)(gray * buckets);
+			v[bucket] += 1;
+			this.r[bucket] += r/255f;
+			this.g[bucket] += g/255f;
+			this.b[bucket] += b/255f;
+			total += 1;
+		}
 
 		/// <summary>
 		/// Finds the location on the histogram where a certain percentage of brightness is below
 		/// </summary>
-		/// <param name="percent"></param>
-		/// <returns></returns>
 		public float FindPercentage(float percent)
 		{
 			int curr = 0;
