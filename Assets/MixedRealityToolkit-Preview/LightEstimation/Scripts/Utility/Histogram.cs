@@ -1,10 +1,13 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.LightEstimation
 {
+	/// <summary>
+	/// A handy tool for working with an image's overall colors!
+	/// </summary>
 	public class Histogram
 	{
 		int  [] v;
@@ -37,6 +40,9 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 			b = new float[aBuckets];
 		}
 
+		/// <summary>
+		/// Clear out allll the data! Fresh histogram, so you can start it again on a new one :)
+		/// </summary>
 		public void Clear()
 		{
 			for (int i = 0; i < v.Length; i++)
@@ -89,6 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 			return 1;
 		}
 
+		/// <summary>
+		/// Gets the average color of the histogram between the givel lightness range!
+		/// </summary>
 		public Color GetColor(float rangeMin, float rangeMax)
 		{
 			int minI = (int)(rangeMin * buckets);

@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+// Source code for the EditorGyro DLL can be found here:
+// https://github.com/maluoi/UnityEditorGyro
+
 using UnityEngine;
 #if UNITY_EDITOR_WIN
 using System.Runtime.InteropServices;

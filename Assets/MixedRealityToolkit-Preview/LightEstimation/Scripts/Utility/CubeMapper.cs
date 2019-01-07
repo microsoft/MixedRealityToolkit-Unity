@@ -39,12 +39,27 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 		#endregion
 
 		#region Properties
+		/// <summary>
+		/// The actual Cubemap object we're stamping to. Not ready until after you call Create.
+		/// </summary>
 		public Cubemap  Map                 { get { return map; } }
+		/// <summary>
+		/// This class uses a Skybox material for stamping onto! Great to use for any of your own skybox needs!
+		/// </summary>
 		public Material SkyMaterial         { get { return skybox; } }
+		/// <summary>
+		/// How far must one be (in meters) from a stamp in order for it to be removed from our cache? This whole idea is ignored if this value is zero or less.
+		/// </summary>
 		public float    StampExpireDistance { get { return stampExpireDistance; } set { stampExpireDistance = value; } }
 		#endregion
 
 		#region Public Methods
+		/// <summary>
+		/// Sets everything up for cubemapping!
+		/// </summary>
+		/// <param name="stampFOVDeg">The field of view of a stamp image, in degrees!</param>
+		/// <param name="resolution">How large should each cubemap face be?</param>
+		/// <param name="HDR">Use an HDR texture format for the cubemap?</param>
 		public void Create(float stampFOVDeg, int resolution=128, bool HDR=false)
 		{
 			fov = stampFOVDeg;
@@ -88,6 +103,9 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 			sphere.layer = cGeometryLayer;
 			sphere.transform.SetParent(root.transform);
 		}
+		/// <summary>
+		/// Shutdown and destroy everything!
+		/// </summary>
 		public void Destroy()
 		{
 			if (root == null)
@@ -98,6 +116,14 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 			else
 				Object.DestroyImmediate(root);
 		}
+		/// <summary>
+		/// Stamp a texture onto this cubemap! Doesn't check any caching or anything, but 
+		/// it does add an entry to the cache. First stamp will be wrapped around the 
+		/// whole cubemap.
+		/// </summary>
+		/// <param name="aTex">The texture resource to stamp onto the cubemap.</param>
+		/// <param name="aPosition">Where was the camera when this texture was aquired? Used for caching stamp location.</param>
+		/// <param name="aOrientation">How was the camera oriented when this texture was aquired? Used for caching stamp location.</param>
 		public void Stamp(Texture aTex, Vector3 aPosition, Quaternion aOrientation)
 		{
 			if (imageQuad == null)
@@ -154,15 +180,24 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 			CacheStamp(aPosition, aOrientation);
 			needsFullStamp = false;
 		}
+		/// <summary>
+		/// Clear out the cache, and the next stamp will stamp over the entire cubemap! Doesn't clear the cubemap itself.
+		/// </summary>
 		public void Clear()
 		{
 			needsFullStamp = true;
 			ClearCache();
 		}
+		/// <summary>
+		/// Only clears the stamp cache.
+		/// </summary>
 		public void ClearCache()
 		{
 			stampCache.Clear();
 		}
+		/// <summary>
+		/// Checks if a particular transform would overlap with an existing stamp on the Cubemap! 
+		/// </summary>
 		public bool IsCached(Vector3 position, Quaternion orientation)
 		{
 			float min = float.MaxValue;
@@ -207,6 +242,14 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 
 			return m;
 		}
+		/// <summary>
+		/// This function creates a sphere mesh with texture overlap at the back. It contracts
+		/// as its vertices are generated, making it look kinda like the shell of a nautilus! The first 
+		/// vertical slice will be scaled by 1, and the last by 0.9 in this case. Since there's overlap 
+		/// on the last few slices, this ensures none of the geometry will zfight.
+		/// More careful geometry and shaders might not need this scaling, but it doesn't hurt even then, 
+		/// since the view from the center is the same regardless!
+		/// </summary>
 		private Mesh CreateNautilusSphere()
 		{
 			float overlap = (360 / cSphereColumns);
@@ -288,6 +331,9 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 		#endregion
 
 		#region Static Methods
+		/// <summary>
+		/// Checks the cubemap for the average direction of the light! (not normalized) Fills out a histogram for color data as long as we're in there digging through all the pixels.
+		/// </summary>
 		public Vector3 GetWeightedDirection(ref Histogram histogram)
 		{
 			int mipLevel = (int)(Mathf.Log( map.width ) / Mathf.Log(2)) - 2;
@@ -309,6 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 		}
 		static Vector3 GetWeightedDirection(Cubemap map, CubemapFace face, int mipLevel, ref Histogram histogram)
 		{
+			// TODO: Switch to nativeArray
 			Color[] colors    = map.GetPixels( face, mipLevel );
 			int     width     = Mathf.Max( map.width >> mipLevel );
 			float   texelSize = 2f/width;
@@ -327,12 +374,18 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 					if (histogram != null)
 						histogram.Add(color.r, color.g, color.b, intensity);
 				
+					// TODO: get rid of this inner loop normalize
 					result += new Vector3(xP, yP, 1).normalized * intensity;
 				}
 			}
 			return result * scale;
 		}
 
+		/// <summary>
+		/// Turns the cubemap into a horizontal 1x6 layout Texture2D for use in saving 
+		/// to disk! If Unity sees an image in this format when importing, it automatically
+		/// assumes it's a cubemap.
+		/// </summary>
 		public static Texture2D CreateCubemapTex(Cubemap map)
 		{
 			Texture2D tex  = new Texture2D(map.width * 6, map.height, TextureFormat.RGB24, false);

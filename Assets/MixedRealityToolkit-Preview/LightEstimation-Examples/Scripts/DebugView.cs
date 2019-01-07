@@ -13,8 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
 		TextMesh     text;
 		List<string> lines = new List<string>();
-
-		// Use this for initialization
+		
 		void Awake ()
 		{
 			text = GetComponent<TextMesh>();

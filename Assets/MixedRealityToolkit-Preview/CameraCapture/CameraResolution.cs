@@ -9,34 +9,85 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 {
 	public enum NativeResolutionMode
 	{
+		/// <summary>
+		/// Choose the smallest available resolution.
+		/// </summary>
 		Smallest,
+		/// <summary>
+		/// Pick the largest available resolution.
+		/// </summary>
 		Largest,
+		/// <summary>
+		/// Pick whatever resolution is closes to our provided size. Uses number of pixels, width*height to determine closeness.
+		/// </summary>
 		Closest
 	}
 	public enum ResizeWhen
 	{
+		/// <summary>
+		/// Resize when the native image is larger than desired.
+		/// </summary>
 		IsLarger,
+		/// <summary>
+		/// Resize when the native image is smaller than desired.
+		/// </summary>
 		IsSmaller,
+		/// <summary>
+		/// Resize whenever sizes don't match desired.
+		/// </summary>
 		Always,
+		/// <summary>
+		/// Resize things? What? Madness!
+		/// </summary>
 		Never
 	}
 	public enum PreserveAspectPriority
 	{
+		/// <summary>
+		/// Preserve the desired width when resizing and maintaining native aspect ratio.
+		/// </summary>
 		Width,
+		/// <summary>
+		/// Preserve the desired height when resizing and maintaining native aspect ratio.
+		/// </summary>
 		Height
 	}
+	/// <summary>
+	/// A utility for dealing with a variety of different types of camera image inputs!
+	/// Also can be used to resize images if they aren't up to your expectations.
+	/// </summary>
 	public class CameraResolution
 	{
+		/// <summary>
+		/// When picking a picture mode for the camera, what's your preference?
+		/// </summary>
 		public NativeResolutionMode   nativeResolution       = NativeResolutionMode.Smallest;
+		/// <summary>
+		/// When should we resize the native picture to our specific chosen resolution?
+		/// </summary>
 		public ResizeWhen             resize                 = ResizeWhen.IsLarger;
+		/// <summary>
+		/// What's our preferred resolution?
+		/// </summary>
 		public Vector2Int             size                   = new Vector2Int(-1,200);
+		/// <summary>
+		/// Should we preserve the aspect ratio of the native image when resizing to our chosen resolution?
+		/// </summary>
 		public bool                   preserveAspect         = true;
+		/// <summary>
+		/// If we are preserving aspect ratio, do we prioritize keeping the height, or the width the same?
+		/// </summary>
 		public PreserveAspectPriority preserveAspectPriority = PreserveAspectPriority.Height;
 		
 		int               SizeDifference(Vector2Int aSize)
 		{
 			return Mathf.Abs(aSize.x*aSize.y - size.x*size.y);
 		}
+		/// <summary>
+		/// Given an image size, what would these settings output?
+		/// </summary>
+		/// <param name="aSourceSize">Your image size</param>
+		/// <returns>Resulting image size</returns>
 		public Vector2Int AdjustSize    (Vector2Int aSourceSize)
 		{
 			Vector2Int result = aSourceSize;
@@ -65,6 +116,12 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 			}
 			return result;
 		}
+		/// <summary>
+		/// Take a texture, and resize it to our specifications. If no resizing occurs, you may get the exact same Texture object you sent in.
+		/// </summary>
+		/// <param name="aSourceTexture">What texture are we working with?</param>
+		/// <param name="aDestTexture">And where shall we put it when we're done?</param>
+		/// <param name="aEnsureRGB24">If it's not RGB24, should we convert it anyhow? This will cause an incorrect format texture to 'resize' even if it's the correct size already.</param>
 		public void       ResizeTexture (Texture    aSourceTexture, ref Texture aDestTexture, bool aEnsureRGB24)
 		{
 			Vector2Int sourceSize = new Vector2Int(aSourceTexture.width, aSourceTexture.height);
