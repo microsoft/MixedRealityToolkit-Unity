@@ -4,6 +4,7 @@ using System;
 namespace Pixie.Demos
 {
     [Serializable]
+    [AppStateType]
     public struct BasicState : IItemState, IItemStateComparer<BasicState>
     {
         /// <summary>

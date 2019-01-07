@@ -33,5 +33,7 @@ namespace Pixie.Demos
             appState.AddState<BasicState>(state2);
             appState.AddState<BasicState>(state3);
         }
+
+        public static Core.StateArray<BasicState> BasicStateArray;
     }
 }

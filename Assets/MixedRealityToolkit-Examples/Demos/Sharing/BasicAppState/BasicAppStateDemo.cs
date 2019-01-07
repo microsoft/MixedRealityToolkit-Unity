@@ -29,6 +29,12 @@ namespace Pixie.Demos
         private InputField setStateIDInput;
         [SerializeField]
         private InputField setStateValueInput;
+        [SerializeField]
+        private Toggle stateTypeAToggle;
+        [SerializeField]
+        private Toggle stateTypeBToggle;
+        [SerializeField]
+        private Toggle stateTypeCToggle;
 
         private AppRoleEnum appRole = AppRoleEnum.Server;
         private bool connected = false;
@@ -64,6 +70,9 @@ namespace Pixie.Demos
             // Once we've joined a room, tell our sharing app objects that we've connected
             foreach (ISharingAppObject sharingAppObject in sharingAppObjects)
                 sharingAppObject.OnAppConnect();
+
+            foreach (ISharingAppObject sharingAppObject in sharingAppObjects)
+                sharingAppObject.OnAppSynchronize();
         }
 
         public void OnClickServer()
@@ -82,26 +91,48 @@ namespace Pixie.Demos
             StartCoroutine(ConnectToService());
         }
 
-        public void OnClickAddStateOfType()
+        public void OnClickSubscriptionToggle()
         {
-            appState.AddStateOfType(typeof(BasicState));
+
         }
 
-        public void OnClickAddState()
+        public void OnClickAddStateOfTypeA()
         {
-            short id = short.Parse(newStateIDInput.text);
-            BasicState newState = new BasicState(id);
-            appState.AddState<BasicState>(newState);
+            appState.AddStateOfType(typeof(StateTypeA));
+        }
+
+        public void OnClickAddStateOfTypeB()
+        {
+            appState.AddStateOfType(typeof(StateTypeB));
+        }
+
+        public void OnClickAddStateOfTypeC()
+        {
+            appState.AddStateOfType(typeof(StateTypeC));
         }
 
         public void OnClickSetState()
         {
-            short id = short.Parse(setStateIDInput.text);
-            byte value = byte.Parse(setStateValueInput.text);
+            foreach (StateTypeA stateReadOnly in appState.GetStates<StateTypeA>())
+            {
+                StateTypeA state = stateReadOnly;
+                state.Value = (byte)Random.Range(0, 255);
+                appState.SetState<StateTypeA>(state);
+            }
 
-            BasicState state = appState.GetState<BasicState>(id);
-            state.Value = value;
-            appState.SetState<BasicState>(state);
+            foreach (StateTypeB stateReadOnly in appState.GetStates<StateTypeB>())
+            {
+                StateTypeB state = stateReadOnly;
+                state.Value = (byte)Random.Range(0, 255);
+                appState.SetState<StateTypeB>(state);
+            }
+
+            foreach (StateTypeC stateReadOnly in appState.GetStates<StateTypeC>())
+            {
+                StateTypeC state = stateReadOnly;
+                state.Value = (byte)Random.Range(0, 255);
+                appState.SetState<StateTypeC>(state);
+            }
         }
 
         public void OnClickFlush()
@@ -178,6 +209,7 @@ namespace Pixie.Demos
                         yield return new WaitForSeconds(0.5f);
 
                     RoomOptions roomOptions = new RoomOptions();
+                    roomOptions.PublishUserId = true;
                     TypedLobby typedLobby = new TypedLobby("PixieEDemos", LobbyType.Default);
                     if (!PhotonNetwork.CreateRoom(SceneManager.GetActiveScene().name, roomOptions, typedLobby))
                         Debug.LogError("Couldn't connect to room.");

@@ -103,6 +103,9 @@ namespace Pixie.Demos
             foreach (ISharingAppObject sharingAppObject in sharingAppObjects)
                 sharingAppObject.OnAppConnect();
 
+            foreach (ISharingAppObject sharingAppObject in sharingAppObjects)
+                sharingAppObject.OnAppSynchronize();
+
             switch (appRole)
             {
                 case AppRoleEnum.Server:

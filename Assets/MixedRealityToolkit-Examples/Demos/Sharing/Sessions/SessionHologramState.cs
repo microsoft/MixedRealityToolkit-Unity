@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Pixie.Demos
 {
     [Serializable]
+    [AppStateType]
     public struct SessionHologramState : IItemState, IItemStateComparer<SessionHologramState>
     {
         const float MaxPositionRange = 20;

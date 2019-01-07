@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Pixie.Demos
 {
     [Serializable]
+    [AppStateType]
     public struct BasicHologramState : IItemState, IItemStateComparer<BasicHologramState>
     {
         public BasicHologramState(short hologramID)

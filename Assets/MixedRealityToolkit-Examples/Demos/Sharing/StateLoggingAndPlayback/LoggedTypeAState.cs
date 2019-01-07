@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Pixie.Demos
 {
     [Serializable]
+    [AppStateType]
     public struct LoggedTypeAState : IItemState, IItemStateComparer<LoggedTypeAState>
     {
         const float MaxPositionRange = 20;

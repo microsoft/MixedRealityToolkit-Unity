@@ -1,10 +1,9 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
-using Pixie.AppSystems;
-using Pixie.AppSystems.StateObjects;
 using Pixie.Core;
 using Pixie.Initialization;
 using Pixie.StateControl;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,37 +12,42 @@ using UnityEngine.UI;
 
 namespace Pixie.Demos
 {
-    public class HologramStateObjectsDemo : MonoBehaviourPunCallbacks
+    public class StateSubscriptionsDemo : MonoBehaviourPunCallbacks
     {
         [SerializeField]
         public GameObject startupButtons;
         [SerializeField]
         public GameObject demoContent;
         [SerializeField]
-        private InputField flushInterval;
-        [SerializeField]
         private Text stateText;
         [SerializeField]
         private Text headerText;
         [SerializeField]
-        private Text connectionStatusText;
+        private Text connectionStatusText;   
+        [SerializeField]
+        private Toggle stateTypeAToggle;
+        [SerializeField]
+        private Toggle stateTypeBToggle;
+        [SerializeField]
+        private Toggle stateTypeCToggle;
 
         private AppRoleEnum appRole = AppRoleEnum.Server;
         private bool connected = false;
         private bool connectedToMaster = false;
         private bool joinedRoom = false;
-
-        private float timeLastFlushed = 0;
         private IAppStateReadWrite appState;
-        private IStateView stateView;
+        private IAppStateDataSubscriptions subscriptions;
 
         private IEnumerator Start()
         {
             startupButtons.SetActive(true);
             demoContent.SetActive(false);
-            // Find our app state and state view
+            // Find our app state
             ComponentFinder.FindInScenes<IAppStateReadWrite>(out appState);
-            ComponentFinder.FindInScenes<IStateView>(out stateView);
+            ComponentFinder.FindInScenes<IAppStateDataSubscriptions>(out subscriptions);
+
+            // Set our initial subscriptions to ALL
+            subscriptions.SetLocalSubscriptionMode(SubscriptionModeEnum.All);
 
             // The app state is a sharing app object
             // These must be gathered up and initialized with the app role
@@ -87,9 +91,61 @@ namespace Pixie.Demos
             StartCoroutine(ConnectToService());
         }
 
-        public void OnClickCreateState()
+        public void OnClickSubscriptionToggle()
         {
-            appState.AddStateOfType(typeof(HologramState));
+            // Create a list of types based on which states are checked
+            List<Type> subscriptionTypes = new List<Type>();
+
+            if (stateTypeAToggle.isOn)
+                subscriptionTypes.Add(typeof(StateTypeA));
+
+            if (stateTypeBToggle.isOn)
+                subscriptionTypes.Add(typeof(StateTypeB));
+
+            if (stateTypeCToggle.isOn)
+                subscriptionTypes.Add(typeof(StateTypeC));
+
+            // Set the subscription mode to manual
+            subscriptions.SetLocalSubscriptionMode(SubscriptionModeEnum.Manual, subscriptionTypes);
+        }
+
+        public void OnClickAddStateOfTypeA()
+        {
+            appState.AddStateOfType(typeof(StateTypeA));
+        }
+
+        public void OnClickAddStateOfTypeB()
+        {
+            appState.AddStateOfType(typeof(StateTypeB));
+        }
+
+        public void OnClickAddStateOfTypeC()
+        {
+            appState.AddStateOfType(typeof(StateTypeC));
+        }
+
+        public void OnClickSetState()
+        {
+            foreach (StateTypeA stateReadOnly in appState.GetStates<StateTypeA>())
+            {
+                StateTypeA state = stateReadOnly;
+                state.Value = (byte)UnityEngine.Random.Range(0, 255);
+                appState.SetState<StateTypeA>(state);
+            }
+
+            foreach (StateTypeB stateReadOnly in appState.GetStates<StateTypeB>())
+            {
+                StateTypeB state = stateReadOnly;
+                state.Value = (byte)UnityEngine.Random.Range(0, 255);
+                appState.SetState<StateTypeB>(state);
+            }
+
+            foreach (StateTypeC stateReadOnly in appState.GetStates<StateTypeC>())
+            {
+                StateTypeC state = stateReadOnly;
+                state.Value = (byte)UnityEngine.Random.Range(0, 255);
+                appState.SetState<StateTypeC>(state);
+            }
         }
 
         public void OnClickFlush()
@@ -121,18 +177,22 @@ namespace Pixie.Demos
 
             if (appState.Initialized)
             {
-                // Tell the state view to update
-                stateView.OnSessionUpdate(default(SessionState));
-                // Check if we need to flush the app state
-                if (Time.time > timeLastFlushed + float.Parse(flushInterval.text))
+                text += "\nStateTypeA: " + (subscriptions.IsLocalUserSubscribedToType(typeof(StateTypeA)) ? "(Subscribed)" : "(NOT Subscribed)") + "\n---------------";
+                foreach (StateTypeA state in appState.GetStates<StateTypeA>())
                 {
-                    timeLastFlushed = Time.time;
-                    appState.Flush();
+                    text += "\n" + state.ToString() + "\n\n";
                 }
 
-                foreach (HologramState hologramState in appState.GetStates<HologramState>())
+                text += "\nStateTypeB: " + (subscriptions.IsLocalUserSubscribedToType(typeof(StateTypeB)) ? "(Subscribed)" : "(NOT Subscribed)") + "\n---------------";
+                foreach (StateTypeB state in appState.GetStates<StateTypeB>())
                 {
-                    text += "\n" + hologramState.ToString() + "\n\n";
+                    text += "\n" + state.ToString() + "\n\n";
+                }
+
+                text += "\nStateTypeC: " + (subscriptions.IsLocalUserSubscribedToType(typeof(StateTypeC)) ? "(Subscribed)" : "(NOT Subscribed)") + "\n---------------";
+                foreach (StateTypeC state in appState.GetStates<StateTypeC>())
+                {
+                    text += "\n" + state.ToString() + "\n\n";
                 }
             }
 
@@ -171,7 +231,7 @@ namespace Pixie.Demos
                     break;
 
                 case AppRoleEnum.Server:
-                    while (!connectedToMaster)
+                    while (!connected)
                         yield return new WaitForSeconds(0.5f);
 
                     RoomOptions roomOptions = new RoomOptions();

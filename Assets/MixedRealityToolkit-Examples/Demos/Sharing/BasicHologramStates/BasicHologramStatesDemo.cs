@@ -61,6 +61,9 @@ namespace Pixie.Demos
             // Once we've joined a room, tell our sharing app objects that we've connected
             foreach (ISharingAppObject sharingAppObject in sharingAppObjects)
                 sharingAppObject.OnAppConnect();
+
+            foreach (ISharingAppObject sharingAppObject in sharingAppObjects)
+                sharingAppObject.OnAppSynchronize();
         }
 
         public void OnClickServer()
@@ -167,6 +170,7 @@ namespace Pixie.Demos
                         yield return new WaitForSeconds(0.5f);
 
                     RoomOptions roomOptions = new RoomOptions();
+                    roomOptions.PublishUserId = true;
                     TypedLobby typedLobby = new TypedLobby("PixieEDemos", LobbyType.Default);
                     if (!PhotonNetwork.CreateRoom(SceneManager.GetActiveScene().name, roomOptions, typedLobby))
                         Debug.LogError("Couldn't connect to room.");

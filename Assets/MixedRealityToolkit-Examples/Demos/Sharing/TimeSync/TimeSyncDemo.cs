@@ -75,6 +75,9 @@ namespace Pixie.Demos
             // Once we've joined a room, tell our sharing app objects that we've connected
             foreach (ISharingAppObject sharingAppObject in sharingAppObjects)
                 sharingAppObject.OnAppConnect();
+
+            foreach (ISharingAppObject sharingAppObject in sharingAppObjects)
+                sharingAppObject.OnAppSynchronize();
         }
 
         public void OnClickServer()
