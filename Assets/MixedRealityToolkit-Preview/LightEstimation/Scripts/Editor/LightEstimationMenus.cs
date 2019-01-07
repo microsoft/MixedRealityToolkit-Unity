@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.LightEstimation {
+namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation {
 	public class LightEstimationMenus
 	{
 		[MenuItem("Mixed Reality Toolkit/Light Estimation/Create Estimation Object", priority = 1)]

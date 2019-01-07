@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.XR.ARExtensions;
 using UnityEngine.XR.ARFoundation;
 
-namespace Microsoft.MixedReality.Toolkit.CameraCapture
+namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 {
 	public class CameraCaptureARFoundation : ICameraCapture
 	{

@@ -6,12 +6,11 @@ using System.Linq;
 using Unity.Collections;
 using UnityEngine;
 
-
 using System.Runtime.InteropServices;
 using UnityEngine.XR.WSA.WebCam;
 using Windows.Media.Devices;
 
-namespace Microsoft.MixedReality.Toolkit.CameraCapture
+namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 {
 	public class CameraCaptureUWP : ICameraCapture
 	{

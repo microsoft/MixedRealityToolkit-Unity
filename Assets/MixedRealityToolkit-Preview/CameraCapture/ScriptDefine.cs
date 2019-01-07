@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.CameraCapture
+namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 {
 	class ScriptDefines
 	{

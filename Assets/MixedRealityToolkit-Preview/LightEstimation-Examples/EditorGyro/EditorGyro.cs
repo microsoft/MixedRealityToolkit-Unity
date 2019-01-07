@@ -9,7 +9,7 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.LightEstimation
+namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 {
 	public static class EditorGyro
 	{

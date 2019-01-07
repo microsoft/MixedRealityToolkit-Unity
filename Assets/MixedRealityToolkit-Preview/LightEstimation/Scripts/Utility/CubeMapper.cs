@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.LightEstimation
+namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 {
 	public class CubeMapper
 	{

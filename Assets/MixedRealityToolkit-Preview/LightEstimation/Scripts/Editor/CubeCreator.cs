@@ -5,9 +5,9 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.CameraCapture;
+using Microsoft.MixedReality.Toolkit.Preview.CameraCapture;
 
-namespace Microsoft.MixedReality.Toolkit.LightEstimation
+namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 {
 	public class CubeCreator : EditorWindow
 	{

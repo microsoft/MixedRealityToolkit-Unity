@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.Preview.Examples.Demos
 {
 	[RequireComponent(typeof(TextMesh))]
 	public class DebugView : MonoBehaviour

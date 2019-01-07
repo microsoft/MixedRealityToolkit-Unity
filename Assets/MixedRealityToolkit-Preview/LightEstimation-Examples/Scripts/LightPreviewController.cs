@@ -10,9 +10,9 @@ using UnityEngine.Windows.Speech;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-using Microsoft.MixedReality.Toolkit.LightEstimation;
+using Microsoft.MixedReality.Toolkit.Preview.LightEstimation;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.Preview.Examples.Demos
 {
 	public class LightPreviewController : MonoBehaviour
 	{
