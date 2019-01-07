@@ -8,16 +8,16 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 	[CustomEditor(typeof(LightCapture))]
 	public class LightCaptureEditor : Editor
 	{
-		SerializedProperty mapResolution;
-		SerializedProperty singleStampOnly;
-		SerializedProperty stampFovMultiplier;
-		SerializedProperty stampExpireDistance;
-		SerializedProperty useDirectionalLight;
-		SerializedProperty maxLightColorSaturation;
-		SerializedProperty lightAngleAdjustPerSecond;
-		SerializedProperty cameraOrientation;
-		SerializedProperty probe;
-		SerializedProperty directionalLight;
+		private SerializedProperty mapResolution;
+		private SerializedProperty singleStampOnly;
+		private SerializedProperty stampFovMultiplier;
+		private SerializedProperty stampExpireDistance;
+		private SerializedProperty useDirectionalLight;
+		private SerializedProperty maxLightColorSaturation;
+		private SerializedProperty lightAngleAdjustPerSecond;
+		private SerializedProperty cameraOrientation;
+		private SerializedProperty probe;
+		private SerializedProperty directionalLight;
 
 		private void OnEnable()
 		{

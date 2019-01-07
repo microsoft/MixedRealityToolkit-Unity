@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 		/// </summary>
 		public PreserveAspectPriority preserveAspectPriority = PreserveAspectPriority.Height;
 		
-		int               SizeDifference(Vector2Int aSize)
+		private int       SizeDifference(Vector2Int aSize)
 		{
 			return Mathf.Abs(aSize.x*aSize.y - size.x*size.y);
 		}

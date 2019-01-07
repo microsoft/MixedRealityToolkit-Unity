@@ -10,12 +10,12 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 	/// </summary>
 	public class Histogram
 	{
-		int  [] v;
-		float[] r;
-		float[] g;
-		float[] b;
-		float total = 0;
-		int   buckets;
+		private int  [] v;
+		private float[] r;
+		private float[] g;
+		private float[] b;
+		private float total = 0;
+		private int   buckets;
 		
 		/// <param name="aBuckets">How many slots will we store values in? On a normal histogram picture, you can imagine this as "How many vertical bars do I want?". More gives you more granularity, but more than 255 would probably be pointless.</param>
 		public Histogram(int aBuckets = 10)

@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 		[DllImport("GyroDLL", EntryPoint = "GyroGetRotation")]
 		private static extern Quaternion GetRawRotation();
 
-		static bool isInitialized = false;
+		private static bool isInitialized = false;
 		/// <summary>
 		/// Gets the current orientation of the hardware from the Gyroscope! This is equivalent to
 		/// Unity's Input.gyro.attitude, and will in fact call Input.gyro.attitude when built to

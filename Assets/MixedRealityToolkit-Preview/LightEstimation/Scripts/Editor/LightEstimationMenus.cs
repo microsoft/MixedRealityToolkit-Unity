@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation {
 	public class LightEstimationMenus
 	{
 		[MenuItem("Mixed Reality Toolkit/Light Estimation/Create Estimation Object", priority = 1)]
-		static void CreateLEObject()
+		private static void CreateLEObject()
 		{
 			GameObject go = new GameObject("LightEstimation", typeof(LightCapture));
 			EditorGUIUtility.PingObject(go);

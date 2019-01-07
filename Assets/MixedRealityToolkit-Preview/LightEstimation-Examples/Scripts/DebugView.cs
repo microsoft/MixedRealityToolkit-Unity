@@ -9,12 +9,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 	[RequireComponent(typeof(TextMesh))]
 	public class DebugView : MonoBehaviour
 	{
-		[SerializeField] int logCount = 10;
+		[SerializeField] private int logCount = 10;
 
-		TextMesh     text;
-		List<string> lines = new List<string>();
+		private TextMesh     text;
+		private List<string> lines = new List<string>();
 		
-		void Awake ()
+		private void Awake ()
 		{
 			text = GetComponent<TextMesh>();
 			Application.logMessageReceived += OnLogMessage;

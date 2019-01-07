@@ -7,9 +7,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
 	public class Center : MonoBehaviour
 	{
-		[SerializeField] float     dist       = 1;
-		[SerializeField] Transform from       = null;
-		[SerializeField] bool      editorOnly = true;
+		[SerializeField] private float     dist       = 1;
+		[SerializeField] private Transform from       = null;
+		[SerializeField] private bool      editorOnly = true;
 
 		private void Awake()
 		{
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 				enabled = false;
 			}
 		}
-		void LateUpdate ()
+		private void LateUpdate ()
 		{
 			transform.position = (from == null? Vector3.zero : from.position) - transform.forward * dist;
 		}

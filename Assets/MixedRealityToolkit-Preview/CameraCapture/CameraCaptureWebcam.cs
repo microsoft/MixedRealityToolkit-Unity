@@ -9,13 +9,13 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 {
 	public class CameraCaptureWebcam : ICameraCapture
 	{
-		Transform        poseSource     = null;
-		WebCamTexture    webcamTex      = null;
-		WebCamDevice     device;
-		float            startTime      = 0;
-		float            fieldOfView    = 45;
-		CameraResolution resolution     = null;
-		Texture          resizedTexture = null;
+		private Transform        poseSource     = null;
+		private WebCamTexture    webcamTex      = null;
+		private WebCamDevice     device;
+		private float            startTime      = 0;
+		private float            fieldOfView    = 45;
+		private CameraResolution resolution     = null;
+		private Texture          resizedTexture = null;
 
 		/// <summary>
 		/// Is the camera completely initialized and ready to begin taking pictures?

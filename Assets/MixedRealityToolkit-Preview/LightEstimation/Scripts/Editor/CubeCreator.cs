@@ -12,28 +12,28 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 	public class CubeCreator : EditorWindow
 	{
 		#region Fields
-		[SerializeField] int     resolution = 128;
-		[SerializeField] bool    overrideGyro;
-		[SerializeField] Vector3 overrideDir = new Vector3(0,0,1);
-		[SerializeField] float   fovModifier = 1;
-		[SerializeField] Object  previewAsset;
+		[SerializeField] private int     resolution = 128;
+		[SerializeField] private bool    overrideGyro;
+		[SerializeField] private Vector3 overrideDir = new Vector3(0,0,1);
+		[SerializeField] private float   fovModifier = 1;
+		[SerializeField] private Object  previewAsset;
 
-		ICameraCapture cam;
-		CubeMapper     map;
-		Editor         previewEditor;
-		GUIStyle       previewStyle;
+		private ICameraCapture cam;
+		private CubeMapper     map;
+		private Editor         previewEditor;
+		private GUIStyle       previewStyle;
 		#endregion
 
 		#region Menu Items
 		[MenuItem("Mixed Reality Toolkit/Light Estimation/Camera Cubemap Creator")]
-		static void Init()
+		private static void Init()
 		{
 			CubeCreator window = GetWindow<CubeCreator>();
 			window.Show();
 		}
 
 		[UnityEditor.MenuItem("Mixed Reality Toolkit/Light Estimation/Save Cubemap From Probe")]
-		static void SaveFromProbe()
+		private static void SaveFromProbe()
 		{
 			// Ensure we have a probe available
 			GameObject probeObject = Selection.activeGameObject;
@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 		#endregion
 
 		#region Static Helper Methods
-		static void SaveCubemap(Cubemap aMap, string aPath)
+		private static void SaveCubemap(Cubemap aMap, string aPath)
 		{
 			// Save the cubemap to file
 			byte[] pngData = CubeMapper.CreateCubemapTex(aMap).EncodeToPNG();

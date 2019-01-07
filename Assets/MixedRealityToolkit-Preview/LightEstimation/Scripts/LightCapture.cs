@@ -12,44 +12,44 @@ public class LightCapture : MonoBehaviour
 	#region Fields
 	[Header("Settings")]
 	[Tooltip("Resolution (pixels) per-face of the generated lighting Cubemap.")]
-	[SerializeField] int mapResolution = 128;
+	[SerializeField] private int mapResolution = 128;
 	
 	[Header("Stamp Optimizations")]
 	[Tooltip("Should the component only do the initial wraparound stamp? If true, only one picture will be taken, at the very beginning.")]
-	[SerializeField]              bool  singleStampOnly     = false;
+	[SerializeField]              private bool  singleStampOnly     = false;
 	[Tooltip("When stamping a camera picture onto the Cubemap, scale it up by this so it covers a little more space. This can mean fewer total stamps needed to complete the Cubemap, at the expense of a less perfect reflection.")]
-	[SerializeField, Range(1, 4)] float stampFovMultiplier  = 2f;
+	[SerializeField, Range(1, 4)] private float stampFovMultiplier  = 2f;
 	[Tooltip("This is the distance (meters) the camera must travel for a stamp to expire. When a stamp expires, the Camera will take another picture in that direction when given the opportunity. Zero means no expiration.")]
-	[SerializeField]              float stampExpireDistance = 0;
+	[SerializeField]              private float stampExpireDistance = 0;
 
 	[Header("Directional Lighting")]
 	[Tooltip("Should the system calculate information for a directional light? This will scrape the lower mips of the Cubemap to find the direction and color of the brightest values, and apply it to the scene's light.")]
-	[SerializeField]             bool  useDirectionalLight       = true;
+	[SerializeField]             private bool  useDirectionalLight       = true;
 	[Tooltip("When finding the primary light color, it will average the brightest 20% of the pixels, and use that color for the light. This sets the cap for the saturation of that color.")]
-	[SerializeField, Range(0,1)] float maxLightColorSaturation   = 0.3f;
+	[SerializeField, Range(0,1)] private float maxLightColorSaturation   = 0.3f;
 	[Tooltip("The light eases into its new location when the information is updated. This is the speed at which it eases to its new destination, measured in degrees per second.")]
-	[SerializeField]             float lightAngleAdjustPerSecond = 45f;
+	[SerializeField]             private float lightAngleAdjustPerSecond = 45f;
 
 	[Header("Optional Overrides")]
 	[Tooltip("Defaults to Camera.main. Which object should we be looking at for our orientation and position?")]
-	[SerializeField] Transform       cameraOrientation;
+	[SerializeField] private Transform       cameraOrientation;
 	[Tooltip("Default will pick from the scene, or create one automatically. If you have settings you'd like to configure on your probe, hook it in here.")]
-	[SerializeField] ReflectionProbe probe;
+	[SerializeField] private ReflectionProbe probe;
 	[Tooltip("Default will pick the first directional light in the scene. If no directional light is found, one will be created!")]
-	[SerializeField] Light           directionalLight;
+	[SerializeField] private Light           directionalLight;
 	
-	ICameraCapture captureCamera;
-	CubeMapper     map = null;
-	Histogram      histogram = new Histogram();
-	Material       startSky;
-	int            stampCount;
-	Texture2D      tex;
+	private ICameraCapture captureCamera;
+	private CubeMapper     map = null;
+	private Histogram      histogram = new Histogram();
+	private Material       startSky;
+	private int            stampCount;
+	private Texture2D      tex;
 
 	// For easing the light directions
-	Quaternion lightTargetDir;
-	Quaternion lightStartDir;
-	float      lightStartTime = -1;
-	float      lightTargetDuration;
+	private Quaternion lightTargetDir;
+	private Quaternion lightStartDir;
+	private float      lightStartTime = -1;
+	private float      lightTargetDuration;
 
 	/// <summary>
 	/// Direct access to the CubeMapper class we're using!

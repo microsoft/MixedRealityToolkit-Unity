@@ -16,26 +16,26 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 			public float      timestamp;
 		}
 
-		const int   cSphereRows    = 12;
-		const int   cSphereColumns = 18;
-		const float cSphereSize    = 10;
-		const int   cGeometryLayer = 30;
+		private const int   cSphereRows    = 12;
+		private const int   cSphereColumns = 18;
+		private const float cSphereSize    = 10;
+		private const int   cGeometryLayer = 30;
 		#endregion
 
 		#region Fields
-		GameObject root;
-		Camera     cam;
-		Cubemap    map;
-		Renderer   imageQuad;
-		Renderer   imageSphere;
-		Material   skybox;
-		float      fov;
-		bool       hdr;
+		private GameObject root;
+		private Camera     cam;
+		private Cubemap    map;
+		private Renderer   imageQuad;
+		private Renderer   imageSphere;
+		private Material   skybox;
+		private float      fov;
+		private bool       hdr;
 	
-		bool           needsFullStamp      = true;
-		float          stampExpireDistance = 0;
-		float          stampExpireLife     = 0;
-		List<StampDir> stampCache          = new List<StampDir>();
+		private bool           needsFullStamp      = true;
+		private float          stampExpireDistance = 0;
+		private float          stampExpireLife     = 0;
+		private List<StampDir> stampCache          = new List<StampDir>();
 		#endregion
 
 		#region Properties
@@ -353,7 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 			result += GetWeightedDirection(map, CubemapFace.PositiveZ, mipLevel, ref histogram);
 			return result/6f;
 		}
-		static Vector3 GetWeightedDirection(Cubemap map, CubemapFace face, int mipLevel, ref Histogram histogram)
+		private static Vector3 GetWeightedDirection(Cubemap map, CubemapFace face, int mipLevel, ref Histogram histogram)
 		{
 			// TODO: Switch to nativeArray
 			Color[] colors    = map.GetPixels( face, mipLevel );
@@ -403,7 +403,7 @@ namespace Microsoft.MixedReality.Toolkit.LightEstimation
 
 			return tex;
 		}
-		static void CopyFace(ref Color[] data, Cubemap map, CubemapFace face, int startX)
+		private static void CopyFace(ref Color[] data, Cubemap map, CubemapFace face, int startX)
 		{
 			Color[] faceData = map.GetPixels(face);
 

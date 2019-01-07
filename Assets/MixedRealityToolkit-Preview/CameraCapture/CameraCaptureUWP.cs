@@ -16,13 +16,13 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 	public class CameraCaptureUWP : ICameraCapture
 	{
 		#region Fields
-		PhotoCapture     camera      = null;
-		CameraParameters cameraParams;
-		CameraResolution resolution  = null;
-		Texture2D        cacheTex    = null;
-		Texture2D        resizedTex  = null;
-		bool             isReady     = false;
-		float            fieldOfView = 45;
+		private PhotoCapture     camera      = null;
+		private CameraParameters cameraParams;
+		private CameraResolution resolution  = null;
+		private Texture2D        cacheTex    = null;
+		private Texture2D        resizedTex  = null;
+		private bool             isReady     = false;
+		private float            fieldOfView = 45;
 
 		/// <summary>
 		/// Is the camera completely initialized and ready to begin taking pictures?
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 			});
 		}
 		
-		void GetImage(Action<Texture2D, Matrix4x4> aOnFinished)
+		private void GetImage(Action<Texture2D, Matrix4x4> aOnFinished)
 		{
 			IsRequestingImage = true;
 		

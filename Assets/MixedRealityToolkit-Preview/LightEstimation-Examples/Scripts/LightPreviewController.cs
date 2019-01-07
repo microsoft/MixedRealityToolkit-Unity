@@ -19,34 +19,34 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 		#region Fields
 		#pragma warning disable 414, 649
 		[Header("Scene/asset hooks")]
-		[SerializeField] GameObject   spheres      = null;
-		[SerializeField] GameObject   rabbits      = null;
-		[SerializeField] GameObject   cubes        = null;
-		[SerializeField] GameObject[] spawnPrefabs = null;
+		[SerializeField] private GameObject   spheres      = null;
+		[SerializeField] private GameObject   rabbits      = null;
+		[SerializeField] private GameObject   cubes        = null;
+		[SerializeField] private GameObject[] spawnPrefabs = null;
 
 		[Header("Movement Values")]
-		[SerializeField] float velocityDecay = 4f;
-		[SerializeField] float moveScale     = 1.5f;
-		[SerializeField] float maxVelocity   = 1;
-		[SerializeField] float lerpSpeed     = 4;
+		[SerializeField] private float velocityDecay = 4f;
+		[SerializeField] private float moveScale     = 1.5f;
+		[SerializeField] private float maxVelocity   = 1;
+		[SerializeField] private float lerpSpeed     = 4;
 	
-		Vector3 targetPos;
-		Vector3 handPos;
-		bool    pressed;
-		int     addIndex;
-		Vector3 handVelocity;
-		Vector3 lastPos;
-		float   lastTime;
+		private Vector3 targetPos;
+		private Vector3 handPos;
+		private bool    pressed;
+		private int     addIndex;
+		private Vector3 handVelocity;
+		private Vector3 lastPos;
+		private float   lastTime;
 
-		int exposure   = -7;
-		int whitebalance = 6000;
+		private int exposure   = -7;
+		private int whitebalance = 6000;
 
-		LightCapture lightCapture;
-		Component       tts;
-		MethodInfo      speakMethod;
+		private LightCapture lightCapture;
+		private Component       tts;
+		private MethodInfo      speakMethod;
 
 		#if UNITY_EDITOR || WINDOWS_UWP
-		KeywordRecognizer keywordRecognizer;
+		private KeywordRecognizer keywordRecognizer;
 		#endif
 		#pragma warning restore 414, 649
 		#endregion

@@ -14,9 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 {
 	public class CameraCaptureARFoundation : ICameraCapture
 	{
-		CameraResolution resolution;
-		Texture2D        captureTex;
-		bool             ready = false;
+		private CameraResolution resolution;
+		private Texture2D        captureTex;
+		private bool             ready = false;
 
 		/// <summary>
 		/// Is the camera completely initialized and ready to begin taking pictures?
@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 			ARSubsystemManager.systemStateChanged += handler;
 		}
 		
-		unsafe void GrabScreen()
+		private unsafe void GrabScreen()
 		{
 			// Grab the latest image from ARFoundation
 			CameraImage image;
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 			captureTex.Apply();
 		}
 
-		Matrix4x4 GetCamTransform()
+		private Matrix4x4 GetCamTransform()
 		{
 			Matrix4x4 matrix = Matrix4x4.identity;
 			ARSubsystemManager.cameraSubsystem.TryGetDisplayMatrix(ref matrix);

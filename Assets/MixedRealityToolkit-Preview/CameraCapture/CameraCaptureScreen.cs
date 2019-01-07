@@ -9,11 +9,11 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 {
 	public class CameraCaptureScreen : ICameraCapture
 	{
-		Camera           sourceCamera;
-		Texture2D        captureTex  = null;
-		bool             initialized = false;
-		CameraResolution resolution  = null;
-		int              renderMask  = ~(1 << 31);
+		private Camera           sourceCamera;
+		private Texture2D        captureTex  = null;
+		private bool             initialized = false;
+		private CameraResolution resolution  = null;
+		private int              renderMask  = ~(1 << 31);
 
 		/// <summary>
 		/// Is the camera completely initialized and ready to begin taking pictures?
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraCapture
 				aOnInitialized();
 		}
 
-		void GrabScreen(Vector2Int aSize)
+		private void GrabScreen(Vector2Int aSize)
 		{
 			if (captureTex == null || captureTex.width != aSize.x || captureTex.height != aSize.y)
 			{
