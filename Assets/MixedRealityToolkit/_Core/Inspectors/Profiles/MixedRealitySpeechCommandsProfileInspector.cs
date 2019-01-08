@@ -19,8 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private static readonly GUIContent KeyCodeContent = new GUIContent("KeyCode", "The keyboard key that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a keyboard key is pressed or keyword is recognized.");
 
+        private static bool showGeneralProperties = true;
         private SerializedProperty recognizerStartBehaviour;
         private SerializedProperty recognitionConfidenceLevel;
+
+        private static bool showSpeechCommands = true;
         private SerializedProperty speechCommands;
         private static GUIContent[] actionLabels;
         private static int[] actionIds;
@@ -39,6 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             recognizerStartBehaviour = serializedObject.FindProperty("startBehavior");
             recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
+
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
             actionIds = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
@@ -83,10 +87,27 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(recognizerStartBehaviour);
-            EditorGUILayout.PropertyField(recognitionConfidenceLevel);
+            EditorGUILayout.Space();
+            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
+            if (showGeneralProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(recognizerStartBehaviour);
+                    EditorGUILayout.PropertyField(recognitionConfidenceLevel);
+                }
+            }
 
-            RenderList(speechCommands);
+            EditorGUILayout.Space();
+            showSpeechCommands = EditorGUILayout.Foldout(showSpeechCommands, "Speech Commands", true);
+            if (showSpeechCommands)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    RenderList(speechCommands);
+                }
+            }
+
             serializedObject.ApplyModifiedProperties();
         }
 
