@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 Debug.LogWarning("The Windows Mixed Reality spatial observer is currently running.");
                 return;
             }
-
+            
             // We want the first update immediately.
             lastUpdated = 0;
 
@@ -346,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 ReclaimMeshObject(mesh);
 
                 // Send the mesh removed event
-                SpatialAwarenessSystem.RaiseMeshRemoved(id);
+                SpatialAwarenessSystem.RaiseMeshRemoved(this, id);
             }
         }
 
@@ -482,11 +482,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
             if (sendUpdatedEvent)
             {
-                SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, meshObject.GameObject);
+                SpatialAwarenessSystem.RaiseMeshUpdated(this, cookedData.id.handle, meshObject.GameObject);
             }
             else
             {
-                SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, meshObject.GameObject);
+                SpatialAwarenessSystem.RaiseMeshAdded(this, cookedData.id.handle, meshObject.GameObject);
             }
         }
 #endif // UNITY_WSA
