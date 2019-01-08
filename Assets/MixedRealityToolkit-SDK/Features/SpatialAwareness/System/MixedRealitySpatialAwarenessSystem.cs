@@ -183,14 +183,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         #region Mesh Events
 
         /// <inheritdoc />
-        public void RaiseMeshAdded(int meshId, GameObject mesh)
+        public void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, GameObject mesh)
         {
             if (!UseMeshSystem) { return; }
 
             // Parent the mesh object
             mesh.transform.parent = MeshParent.transform;
 
-            meshEventData.Initialize(this, meshId, mesh);
+            meshEventData.Initialize(observer, meshId, mesh);
             HandleEvent(meshEventData, OnMeshAdded);
         }
 
@@ -205,14 +205,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             };
 
         /// <inheritdoc />
-        public void RaiseMeshUpdated(int meshId, GameObject mesh)
+        public void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, GameObject mesh)
         {
             if (!UseMeshSystem) { return; }
 
             // Parent the mesh object
             mesh.transform.parent = MeshParent.transform;
 
-            meshEventData.Initialize(this, meshId, mesh);
+            meshEventData.Initialize(observer, meshId, mesh);
             HandleEvent(meshEventData, OnMeshUpdated);
         }
 
@@ -228,11 +228,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 
 
         /// <inheritdoc />
-        public void RaiseMeshRemoved(int meshId)
+        public void RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver observer, int meshId)
         {
             if (!UseMeshSystem) { return; }
 
-            meshEventData.Initialize(this, meshId, null);
+            meshEventData.Initialize(observer, meshId, null);
             HandleEvent(meshEventData, OnMeshRemoved);
         }
 
@@ -251,11 +251,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         #region Surface Finding Events
 
         /// <inheritdoc />
-        public void RaiseSurfaceAdded(int surfaceId, GameObject surfaceObject)
+        public void RaiseSurfaceAdded(IMixedRealitySpatialAwarenessObserver observer, int surfaceId, GameObject surfaceObject)
         {
             if (!UseSurfaceFindingSystem) { return; }
 
-            surfaceFindingEventData.Initialize(this, surfaceId, surfaceObject);
+            surfaceFindingEventData.Initialize(observer, surfaceId, surfaceObject);
             HandleEvent(surfaceFindingEventData, OnSurfaceAdded);
         }
 
@@ -270,11 +270,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             };
 
         /// <inheritdoc />
-        public void RaiseSurfaceUpdated(int surfaceId, GameObject surfaceObject)
+        public void RaiseSurfaceUpdated(IMixedRealitySpatialAwarenessObserver observer, int surfaceId, GameObject surfaceObject)
         {
             if (!UseSurfaceFindingSystem) { return; }
 
-            surfaceFindingEventData.Initialize(this, surfaceId, surfaceObject);
+            surfaceFindingEventData.Initialize(observer, surfaceId, surfaceObject);
             HandleEvent(surfaceFindingEventData, OnSurfaceUpdated);
         }
 
@@ -289,11 +289,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             };
 
         /// <inheritdoc />
-        public void RaiseSurfaceRemoved(int surfaceId)
+        public void RaiseSurfaceRemoved(IMixedRealitySpatialAwarenessObserver observer, int surfaceId)
         {
             if (!UseSurfaceFindingSystem) { return; }
 
-            surfaceFindingEventData.Initialize(this, surfaceId, null);
+            surfaceFindingEventData.Initialize(observer, surfaceId, null);
             HandleEvent(surfaceFindingEventData, OnSurfaceRemoved);
         }
 
@@ -310,57 +310,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         #endregion Surface Finding Events
 
         #endregion IMixedRealityToolkit Implementation
-
-        #region IMixedRealtyEventSystem Implementation
-
-        /// <inheritdoc />
-        public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
-        {
-            base.HandleEvent(eventData, eventHandler);
-        }
-
-        /// <summary>
-        /// Registers the <see cref="GameObject"/> to listen for boundary events.
-        /// </summary>
-        /// <param name="listener"></param>
-        public override void Register(GameObject listener)
-        {
-            base.Register(listener);
-        }
-
-        /// <summary>
-        /// UnRegisters the <see cref="GameObject"/> to listen for boundary events.
-        /// /// </summary>
-        /// <param name="listener"></param>
-        public override void Unregister(GameObject listener)
-        {
-            base.Unregister(listener);
-        }
-
-        #endregion
-
-        #region IMixedRealityEventSource Implementation
-
-        /// <inheritdoc />
-        bool IEqualityComparer.Equals(object x, object y)
-        {
-            // There shouldn't be other Spatial Awareness Managers to compare to.
-            return false;
-        }
-
-        /// <inheritdoc />
-        public int GetHashCode(object obj)
-        {
-            return Mathf.Abs(SourceName.GetHashCode());
-        }
-
-        /// <inheritdoc />
-        public uint SourceId { get; } = 0;
-
-        /// <inheritdoc />
-        public string SourceName { get; } = "Mixed Reality Spatial Awareness System";
-
-        #endregion IMixedRealityEventSource Implementation
 
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
@@ -399,6 +348,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public void SuspendObserver()
         {
             SpatialAwarenessObserver?.StopObserving();
+        }
+
+        private uint nextSourceId = 0;
+
+        /// <inheritdoc />
+        public uint GenerateNewSourceId()
+        {
+            return nextSourceId++;
         }
 
         #region Mesh Handling implementation
