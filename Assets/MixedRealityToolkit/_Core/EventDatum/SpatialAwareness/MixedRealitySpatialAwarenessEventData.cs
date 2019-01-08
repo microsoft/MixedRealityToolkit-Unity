@@ -30,11 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
 
         /// <inheritdoc />
         public void Initialize(
-            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
+            IMixedRealitySpatialAwarenessObserver observer,
             int id,
             GameObject gameObject)
         {
-            BaseInitialize(spatialAwarenessSystem);
+            BaseInitialize(observer);
             Id = id;
             GameObject = gameObject;
         }
