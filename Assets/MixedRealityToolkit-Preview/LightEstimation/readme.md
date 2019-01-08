@@ -16,6 +16,8 @@ Light Estimation has no hard dependencies on MRTK, so if you wish to use it sepa
 >MixedRealityToolkit-Preview / LightEstimation<br/>
 >MixedRealityToolkit-Preview / CameraCapture
 
+**NOTE:** This project is capable of using a laptop's gyroscope in the Unity Editor through [UnityEditorGyro](https://github.com/maluoi/UnityEditorGyro) to emulate the head rotation of a tracked device. The pre-compiled DLLs will not be included until they are properly signed, but you can add them yourself in the meantime! This can be quite helpful for debugging or development. Check the comments at the top of [EditorGyro.cs](/Assets/MixedRealityToolkit-Preview/LightEstimation-Examples/EditorGyro/EditorGyro.cs) in the project for details!
+
 ## How Does it Work?
 
 ![Building up a Cubemap, live!](/External/ReadMeImages/LightEstimationHow.gif)
@@ -26,7 +28,9 @@ When the component loads, it takes a single picture from the camera, and wraps i
 
 As the user rotates, the component will 'stamp' the current camera image onto the Cubemap, and save that rotation to a cache. As the user continues to rotate, the component will check the cache to see if there's already a stamp there, before adding another stamp. Settings can be configured to make stamps expire as the user moves from room to room.
 
-**IMPORTANT NOTE:** On HoloLens, the camera is locked to a specific exposure to accurately reflect lighting changes in each direction! Other devices **do not** do this due to API availability, which leads to a more even, muddy Cubemap. So, if your lighting captures don't look great on your non-HoloLens device, that would be why.
+**NOTE:** On HoloLens, the camera is locked to a specific exposure to accurately reflect lighting changes in each direction! Other devices **do not** do this due to API availability, which leads to a more even, muddy Cubemap. So, if your lighting captures don't look great on your non-HoloLens device, that would be why.
+
+**NOTE:** Light Estimation uses the camera for core functionality, and may interrupt, or be interrupted by other camera activities, such as marker tracking like Vuforia, or MRC (Mixed Reality Capture) camera streaming.
 
 ## LightCapture Settings
 

@@ -4,6 +4,15 @@
 // Source code for the EditorGyro DLL can be found here:
 // https://github.com/maluoi/UnityEditorGyro
 
+// DLLs are not essential, but are nice for testing in-editor for some computers, they are currently not included
+// You can find them precompiled in this package here: https://github.com/maluoi/UnityEditorGyro/tree/master/Downloads
+// Here are some quick steps to do this:
+// 1. Extract the x86 and x64 DLLs from the .unitypackage, and put them into the corresponding folders 
+// of LightEstimation-Examples/EditorGyro/Plugins.
+// 2. Mark both DLLs for the Editor platform only using Unity's inspector.
+// 3. Remove this #define.
+#define NO_EDITORGYRO_DLL
+
 using UnityEngine;
 #if UNITY_EDITOR_WIN
 using System.Runtime.InteropServices;
@@ -13,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 {
 	public static class EditorGyro
 	{
-		#if UNITY_EDITOR_WIN
+		#if UNITY_EDITOR_WIN && !NO_EDITORGYRO_DLL
 		[DllImport("GyroDLL", EntryPoint = "GyroInitialize")]
 		private static extern int Initialize();
 		[DllImport("GyroDLL", EntryPoint = "GyroIsInitialized")]
