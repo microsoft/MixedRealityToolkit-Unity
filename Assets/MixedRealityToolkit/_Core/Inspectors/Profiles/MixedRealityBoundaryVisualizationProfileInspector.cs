@@ -13,24 +13,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityBoundaryVisualizationProfile))]
     public class MixedRealityBoundaryVisualizationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
+        private static bool showGeneralProperties = true;
         private SerializedProperty boundaryHeight;
+
+        private static bool showFloorProperties = true;
         private SerializedProperty showFloor;
         private SerializedProperty floorMaterial;
         private SerializedProperty floorScale;
         private SerializedProperty floorPhysicsLayer;
 
+        private static bool showPlayAreaProperties = true;
         private SerializedProperty showPlayArea;
         private SerializedProperty playAreaMaterial;
         private SerializedProperty playAreaPhysicsLayer;
 
+        private static bool showTrackedAreaProperties = true;
         private SerializedProperty showTrackedArea;
         private SerializedProperty trackedAreaMaterial;
         private SerializedProperty trackedAreaPhysicsLayer;
 
+        private static bool showWallProperties = true;
         private SerializedProperty showBoundaryWalls;
         private SerializedProperty boundaryWallMaterial;
         private SerializedProperty boundaryWallsPhysicsLayer;
 
+        private static bool showCeilingProperties = true;
         private SerializedProperty showBoundaryCeiling;
         private SerializedProperty boundaryCeilingMaterial;
         private SerializedProperty ceilingPhysicsLayer;
@@ -99,40 +106,80 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             CheckProfileLock(target);
 
             serializedObject.Update();
-            EditorGUILayout.PropertyField(boundaryHeight);
+
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Floor Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(showFloor, showContent);
-            EditorGUILayout.PropertyField(floorMaterial, materialContent);
-            var prevWideMode = EditorGUIUtility.wideMode;
-            EditorGUIUtility.wideMode = true;
-            EditorGUILayout.PropertyField(floorScale, scaleContent, GUILayout.ExpandWidth(true));
-            EditorGUIUtility.wideMode = prevWideMode;
-            EditorGUILayout.PropertyField(floorPhysicsLayer);
+            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
+            if (showGeneralProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(boundaryHeight);
+                }
+            }
 
-            GUILayout.Space(12f);
-            EditorGUILayout.LabelField("Play Area Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(showPlayArea, showContent);
-            EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
-            EditorGUILayout.PropertyField(playAreaPhysicsLayer);
+            EditorGUILayout.Space();
+            showFloorProperties = EditorGUILayout.Foldout(showFloorProperties, "Floor Settings", true);
+            if (showFloorProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showFloor, showContent);
+                    EditorGUILayout.PropertyField(floorMaterial, materialContent);
+                    var prevWideMode = EditorGUIUtility.wideMode;
+                    EditorGUIUtility.wideMode = true;
+                    EditorGUILayout.PropertyField(floorScale, scaleContent, GUILayout.ExpandWidth(true));
+                    EditorGUIUtility.wideMode = prevWideMode;
+                    EditorGUILayout.PropertyField(floorPhysicsLayer);
+                }
+            }
 
-            GUILayout.Space(12f);
-            EditorGUILayout.LabelField("Tracked Area Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(showTrackedArea, showContent);
-            EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
-            EditorGUILayout.PropertyField(trackedAreaPhysicsLayer);
+            EditorGUILayout.Space();
+            showPlayAreaProperties = EditorGUILayout.Foldout(showPlayAreaProperties, "Play Area Settings", true);
+            if (showPlayAreaProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showPlayArea, showContent);
+                    EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
+                    EditorGUILayout.PropertyField(playAreaPhysicsLayer);
+                }
+            }
 
-            GUILayout.Space(12f);
-            EditorGUILayout.LabelField("Boundary Wall Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(showBoundaryWalls, showContent);
-            EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
-            EditorGUILayout.PropertyField(boundaryWallsPhysicsLayer);
+            EditorGUILayout.Space();
+            showTrackedAreaProperties = EditorGUILayout.Foldout(showTrackedAreaProperties, "Tracked Area Settings", true);
+            if (showTrackedAreaProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showTrackedArea, showContent);
+                    EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
+                    EditorGUILayout.PropertyField(trackedAreaPhysicsLayer);
+                }
+            }
 
-            GUILayout.Space(12f);
-            EditorGUILayout.LabelField("Boundary Ceiling Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(showBoundaryCeiling, showContent);
-            EditorGUILayout.PropertyField(boundaryCeilingMaterial, materialContent);
-            EditorGUILayout.PropertyField(ceilingPhysicsLayer);
+            EditorGUILayout.Space();
+            showWallProperties = EditorGUILayout.Foldout(showWallProperties, "Boundary Wall Settings", true);
+            if (showWallProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showBoundaryWalls, showContent);
+                    EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
+                    EditorGUILayout.PropertyField(boundaryWallsPhysicsLayer);
+                }
+            }
+
+            EditorGUILayout.Space();
+            showCeilingProperties = EditorGUILayout.Foldout(showCeilingProperties, "Boundary Ceiling Settings", true);
+            if (showCeilingProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showBoundaryCeiling, showContent);
+                    EditorGUILayout.PropertyField(boundaryCeilingMaterial, materialContent);
+                    EditorGUILayout.PropertyField(ceilingPhysicsLayer);
+                }
+            }
 
             serializedObject.ApplyModifiedProperties();
         }
