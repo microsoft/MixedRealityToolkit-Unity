@@ -82,12 +82,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
                     newMaterial.SetFloat(firstPropertyId, firstProperty);
                     newMaterial.SetFloat(secondPropertyId, secondProperty);
 
-                    Renderer renderer = element.GetComponent<Renderer>();
+                    Renderer _renderer = element.GetComponent<Renderer>();
                     MeshFilter meshFilter = element.GetComponent<MeshFilter>();
 
                     if (Application.isPlaying == true)
                     {
-                        renderer.material = newMaterial;
+                        _renderer.material = newMaterial;
 
                         if (mesh != null)
                         {
@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
                     }
                     else
                     {
-                        renderer.sharedMaterial = newMaterial;
+                        _renderer.sharedMaterial = newMaterial;
 
                         if (mesh != null)
                         {

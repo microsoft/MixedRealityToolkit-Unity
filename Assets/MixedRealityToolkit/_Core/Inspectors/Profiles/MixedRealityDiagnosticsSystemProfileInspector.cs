@@ -12,14 +12,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityDiagnosticsProfile))]
     public class MixedRealityDiagnosticsSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
+        private static bool showGeneralProperties = true;
         private SerializedProperty visible;
         private SerializedProperty handlerType;
+
+        private static bool showFpsProperties = true;
         private SerializedProperty showFps;
         private SerializedProperty fpsBuffer;
+        private readonly GUIContent showFpsContent = new GUIContent("Show Frame Rate");
+
+
+        private static bool showCpuProperties = true;
         private SerializedProperty showCpu;
         private SerializedProperty cpuBuffer;
+        private readonly GUIContent showCpuContent = new GUIContent("Show CPU Usage");
+
+        private static bool showMemoryProperties = true;
         private SerializedProperty showMemory;
         private SerializedProperty memoryBuffer;
+        private readonly GUIContent showMemoryContent = new GUIContent("Show Memory Usage");
 
         protected override void OnEnable()
         {
@@ -60,20 +71,50 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Diagnostic Visualization Options", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Diagnostic visualizations can help monitor system resources and performance inside an application.", MessageType.Info);
-            EditorGUILayout.Space();
 
-            EditorGUILayout.PropertyField(visible);
             EditorGUILayout.Space();
+            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
+            if (showGeneralProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(visible);
+                    EditorGUILayout.PropertyField(handlerType);
+                }
+            }
 
-            EditorGUILayout.PropertyField(handlerType);
             EditorGUILayout.Space();
+            showCpuProperties = EditorGUILayout.Foldout(showCpuProperties, "Processor Settings", true);
+            if (showCpuProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showCpu, showCpuContent);
+                    EditorGUILayout.PropertyField(cpuBuffer);
+                }
+            }
 
-            EditorGUILayout.PropertyField(showCpu);
-            EditorGUILayout.PropertyField(cpuBuffer);
-            EditorGUILayout.PropertyField(showFps);
-            EditorGUILayout.PropertyField(fpsBuffer);
-            EditorGUILayout.PropertyField(showMemory);
-            EditorGUILayout.PropertyField(memoryBuffer);
+            EditorGUILayout.Space();
+            showFpsProperties = EditorGUILayout.Foldout(showFpsProperties, "Frame Rate Settings", true);
+            if (showFpsProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showFps, showFpsContent);
+                    EditorGUILayout.PropertyField(fpsBuffer);
+                }
+            }
+
+            EditorGUILayout.Space();
+            showMemoryProperties = EditorGUILayout.Foldout(showMemoryProperties, "Memory Settings", true);
+            if (showMemoryProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(showMemory, showMemoryContent);
+                    EditorGUILayout.PropertyField(memoryBuffer);
+                }
+            }
 
             serializedObject.ApplyModifiedProperties();
         }

@@ -172,6 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             set
             {
                 base.Controller = value;
+                pointerName = gameObject.name;
                 InputSourceParent = base.Controller.InputSource;
             }
         }
@@ -410,8 +411,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 if (eventData.MixedRealityInputAction == pointerAction)
                 {
                     IsSelectPressed = false;
-                    MixedRealityToolkit.InputSystem.RaisePointerClicked(this, Handedness, pointerAction, 0);
-                    MixedRealityToolkit.InputSystem.RaisePointerUp(this, Handedness, pointerAction);
+                    MixedRealityToolkit.InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
+                    MixedRealityToolkit.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
                 }
             }
         }
@@ -432,7 +433,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsSelectPressed = true;
                     HasSelectPressedOnce = true;
-                    MixedRealityToolkit.InputSystem.RaisePointerDown(this, Handedness, pointerAction);
+                    MixedRealityToolkit.InputSystem.RaisePointerDown(this, pointerAction, Handedness);
                 }
             }
         }
