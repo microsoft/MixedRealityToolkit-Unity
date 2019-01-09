@@ -121,7 +121,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             // Set our first and last points
             lineBase.FirstPoint = pointerPosition;
-            lineBase.LastPoint = pointerPosition + (PointerDirection * PointerExtent);
+
+            if (IsFocusLocked)
+            {
+                lineBase.LastPoint = pointerPosition + ((Result.Details.Point - pointerPosition).normalized * PointerExtent);
+            }
+            else
+            {
+                lineBase.LastPoint = pointerPosition + (PointerDirection * PointerExtent);
+            }
 
             // Make sure our array will hold
             if (Rays == null || Rays.Length != LineCastResolution)
@@ -173,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                         if (i == Result.RayStepIndex)
                         {
                             // Only add the distance between the start point and the hit
-                            clearWorldLength += Vector3.Distance(Result.StartPoint, Result.StartPoint);
+                            clearWorldLength += Vector3.Distance(Rays[i].Origin, Result.Details.Point);
                         }
                         else if (i < Result.RayStepIndex)
                         {
@@ -182,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                         }
                     }
 
-                    // Clamp the end of the parabola to the result hit's point
+                    // Clamp the end of the line to the result hit's point
                     lineBase.LineEndClamp = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
 
                     if (FocusTarget != null)
@@ -193,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     if (IsFocusLocked)
                     {
                         gravityDistorter.enabled = true;
-                        gravityDistorter.WorldCenterOfGravity = Result.CurrentPointerTarget.transform.position;
+                        gravityDistorter.WorldCenterOfGravity = Result.Details.Point;
                     }
                 }
                 else

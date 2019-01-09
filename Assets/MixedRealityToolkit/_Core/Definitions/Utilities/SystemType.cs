@@ -42,7 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
             {
                 Type = Type.GetType(assemblyQualifiedClassName);
 
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+                if (Type != null && Type.IsAbstract())
+#else
                 if (Type != null && Type.IsAbstract)
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
                 {
                     Type = null;
                 }

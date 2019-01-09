@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
         [SerializeField]
         [Tooltip("The type of IMixedRealityDiagnosticsHandler to use for visualization.")]
         [Implements(typeof(IMixedRealityDiagnosticsHandler), TypeGrouping.ByNamespaceFlat)]
-        private SystemType handlerType;
+        private SystemType handlerType = null;
 
         /// <summary>
         /// The type of <see cref="IMixedRealityDiagnosticsHandler"/> to use for visualization.

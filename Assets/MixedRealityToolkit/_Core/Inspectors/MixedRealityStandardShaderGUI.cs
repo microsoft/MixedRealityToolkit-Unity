@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -68,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             public static string disableAlbedoMapName = "_DISABLE_ALBEDO_MAP";
             public static string albedoMapAlphaMetallicName = "_METALLIC_TEXTURE_ALBEDO_CHANNEL_A";
             public static string albedoMapAlphaSmoothnessName = "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A";
+            public static string propertiesComponentHelp = "Use the {0} component to control {1} properties.";
             public static readonly string[] renderingModeNames = Enum.GetNames(typeof(RenderingMode));
             public static readonly string[] customRenderingModeNames = Enum.GetNames(typeof(CustomRenderingMode));
             public static readonly string[] albedoAlphaModeNames = Enum.GetNames(typeof(AlbedoAlphaMode));
@@ -105,10 +107,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             public static GUIContent rimColor = new GUIContent("Color", "Rim Highlight Color");
             public static GUIContent rimPower = new GUIContent("Power", "Rim Highlight Saturation");
             public static GUIContent clippingPlane = new GUIContent("Clipping Plane", "Enable Clipping Against a Plane");
-            public static GUIContent clipPlane = new GUIContent("Plane", "Plane To Clip Against");
-            public static GUIContent clippingPlaneBorder = new GUIContent("Border", "Enable a Border Along the Clipping Plane");
-            public static GUIContent clippingPlaneBorderWidth = new GUIContent("Width", "Width of the Clipping Plane Border");
-            public static GUIContent clippingPlaneBorderColor = new GUIContent("Color", "Interpolated Color of the Clipping Plane Border");
+            public static GUIContent clippingSphere = new GUIContent("Clipping Sphere", "Enable Clipping Against a Sphere");
+            public static GUIContent clippingBox = new GUIContent("Clipping Box", "Enable Clipping Against a Box");
+            public static GUIContent clippingBorder = new GUIContent("Clipping Border", "Enable a Border Along the Clipping Primitive's Edge");
+            public static GUIContent clippingBorderWidth = new GUIContent("Width", "Width of the Clipping Border");
+            public static GUIContent clippingBorderColor = new GUIContent("Color", "Interpolated Color of the Clipping Border");
             public static GUIContent nearPlaneFade = new GUIContent("Near Plane Fade", "Objects Disappear (Turn to Black/Transparent) as the Camera Nears Them");
             public static GUIContent fadeBeginDistance = new GUIContent("Fade Begin", "Distance From Camera to Begin Fade In");
             public static GUIContent fadeCompleteDistance = new GUIContent("Fade Complete", "Distance From Camera When Fade is Fully In");
@@ -180,10 +183,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
         protected MaterialProperty rimColor;
         protected MaterialProperty rimPower;
         protected MaterialProperty clippingPlane;
-        protected MaterialProperty clipPlane;
-        protected MaterialProperty clippingPlaneBorder;
-        protected MaterialProperty clippingPlaneBorderWidth;
-        protected MaterialProperty clippingPlaneBorderColor;
+        protected MaterialProperty clippingSphere;
+        protected MaterialProperty clippingBox;
+        protected MaterialProperty clippingBorder;
+        protected MaterialProperty clippingBorderWidth;
+        protected MaterialProperty clippingBorderColor;
         protected MaterialProperty nearPlaneFade;
         protected MaterialProperty fadeBeginDistance;
         protected MaterialProperty fadeCompleteDistance;
@@ -254,10 +258,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             rimColor = FindProperty("_RimColor", props);
             rimPower = FindProperty("_RimPower", props);
             clippingPlane = FindProperty("_ClippingPlane", props);
-            clipPlane = FindProperty("_ClipPlane", props);
-            clippingPlaneBorder = FindProperty("_ClippingPlaneBorder", props);
-            clippingPlaneBorderWidth = FindProperty("_ClippingPlaneBorderWidth", props);
-            clippingPlaneBorderColor = FindProperty("_ClippingPlaneBorderColor", props);
+            clippingSphere = FindProperty("_ClippingSphere", props);
+            clippingBox = FindProperty("_ClippingBox", props);
+            clippingBorder = FindProperty("_ClippingBorder", props);
+            clippingBorderWidth = FindProperty("_ClippingBorderWidth", props);
+            clippingBorderColor = FindProperty("_ClippingBorderColor", props);
             nearPlaneFade = FindProperty("_NearPlaneFade", props);
             fadeBeginDistance = FindProperty("_FadeBeginDistance", props);
             fadeCompleteDistance = FindProperty("_FadeCompleteDistance", props);
@@ -552,13 +557,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
             if (PropertyEnabled(clippingPlane))
             {
-                materialEditor.ShaderProperty(clipPlane, Styles.clipPlane, 2);
-                materialEditor.ShaderProperty(clippingPlaneBorder, Styles.clippingPlaneBorder, 2);
+                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingPlane), Styles.clippingPlane.text), EditorStyles.helpBox, new GUILayoutOption[0]);
+            }
 
-                if (PropertyEnabled(clippingPlaneBorder))
+            materialEditor.ShaderProperty(clippingSphere, Styles.clippingSphere);
+
+            if (PropertyEnabled(clippingSphere))
+            {
+                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingSphere), Styles.clippingSphere.text), EditorStyles.helpBox, new GUILayoutOption[0]);
+            }
+
+            materialEditor.ShaderProperty(clippingBox, Styles.clippingBox);
+
+            if (PropertyEnabled(clippingBox))
+            {
+                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingBox), Styles.clippingBox.text), EditorStyles.helpBox, new GUILayoutOption[0]);
+            }
+
+            if (PropertyEnabled(clippingPlane) || PropertyEnabled(clippingSphere) || PropertyEnabled(clippingBox))
+            {
+                materialEditor.ShaderProperty(clippingBorder, Styles.clippingBorder);
+                
+                if (PropertyEnabled(clippingBorder))
                 {
-                    materialEditor.ShaderProperty(clippingPlaneBorderWidth, Styles.clippingPlaneBorderWidth, 4);
-                    materialEditor.ShaderProperty(clippingPlaneBorderColor, Styles.clippingPlaneBorderColor, 4);
+                    materialEditor.ShaderProperty(clippingBorderWidth, Styles.clippingBorderWidth, 2);
+                    materialEditor.ShaderProperty(clippingBorderColor, Styles.clippingBorderColor, 2);
                 }
             }
 
@@ -582,6 +605,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
             if (PropertyEnabled(hoverLight))
             {
+                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(HoverLight), Styles.hoverLight.text), EditorStyles.helpBox, new GUILayoutOption[0]);
+
                 materialEditor.ShaderProperty(enableHoverColorOverride, Styles.enableHoverColorOverride, 2);
 
                 if (PropertyEnabled(enableHoverColorOverride))
