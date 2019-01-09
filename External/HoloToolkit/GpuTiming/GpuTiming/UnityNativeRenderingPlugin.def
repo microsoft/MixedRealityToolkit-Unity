@@ -1,0 +1,7 @@
+LIBRARY
+
+EXPORTS
+	GetLastFrameGPUTime
+	GetRenderEventFunc
+	UnityPluginLoad
+	UnityPluginUnload

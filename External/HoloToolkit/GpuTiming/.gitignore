@@ -1,0 +1,3 @@
+## Ignore temporary files created from a build
+
+/BuildOutput/
