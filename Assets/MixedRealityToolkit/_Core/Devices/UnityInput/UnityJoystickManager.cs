@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public UnityJoystickManager(string name, uint priority) : base(name, priority) { }
+        public UnityJoystickManager(string name, uint priority, ScriptableObject profil) : base(name, priority, profil) { }
 
         private const float DeviceRefreshInterval = 3.0f;
 

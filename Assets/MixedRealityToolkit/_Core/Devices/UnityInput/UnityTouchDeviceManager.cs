@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public UnityTouchDeviceManager(string name, uint priority) : base(name, priority) { }
+        public UnityTouchDeviceManager(string name, uint priority, ScriptableObject profil) : base(name, priority, profil) { }
 
         private static readonly Dictionary<int, UnityTouchController> ActiveTouches = new Dictionary<int, UnityTouchController>();
 
