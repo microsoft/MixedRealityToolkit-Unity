@@ -17,16 +17,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <summary>
         /// Configuration Profil
         /// </summary>
-        protected ScriptableObject configurationProfil;
+        protected ScriptableObject configurationProfile;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public BaseExtensionService(string name, uint priority, ScriptableObject profil) : base(name, priority)
+        public BaseExtensionService(string name, uint priority, ScriptableObject profile) : base(name, priority)
         {
-            configurationProfil = profil;
+            configurationProfile = profile;
         }
     }
 }

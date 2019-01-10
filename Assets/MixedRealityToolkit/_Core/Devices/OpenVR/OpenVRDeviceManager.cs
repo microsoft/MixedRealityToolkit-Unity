@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public OpenVRDeviceManager(string name, uint priority, ScriptableObject profil) : base(name, priority, profil) { }
+        public OpenVRDeviceManager(string name, uint priority, ScriptableObject profile) : base(name, priority, profile) { }
 
         #region Controller Utilities
 

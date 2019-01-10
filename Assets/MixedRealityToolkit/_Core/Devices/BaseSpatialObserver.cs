@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public BaseSpatialObserver(string name, uint priority, ScriptableObject profil) : base(name, priority, profil)
+        public BaseSpatialObserver(string name, uint priority, ScriptableObject profile) : base(name, priority, profile)
         {
             SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
             SourceName = name;

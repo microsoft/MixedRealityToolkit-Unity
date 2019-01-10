@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public WindowsMixedRealitySpatialObserver(string name, uint priority, ScriptableObject profil) : base(name, priority, profil) { }
+        public WindowsMixedRealitySpatialObserver(string name, uint priority, ScriptableObject profile) : base(name, priority, profile) { }
 
         #region IMixedRealityToolkit implementation
 

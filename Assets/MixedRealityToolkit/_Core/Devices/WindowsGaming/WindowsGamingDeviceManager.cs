@@ -8,6 +8,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsGaming
     // TODO - Implement
     public class WindowsGamingDeviceManager : BaseDeviceManager
     {
-        public WindowsGamingDeviceManager(string name, uint priority, ScriptableObject profil) : base(name, priority, profil) { }
+        public WindowsGamingDeviceManager(string name, uint priority, ScriptableObject profile) : base(name, priority, profile) { }
     }
 }

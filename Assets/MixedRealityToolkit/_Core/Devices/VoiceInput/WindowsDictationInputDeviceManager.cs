@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public WindowsDictationInputDeviceManager(string name, uint priority, ScriptableObject profil) : base(name, priority, profil) { }
+        public WindowsDictationInputDeviceManager(string name, uint priority, ScriptableObject profile) : base(name, priority, profile) { }
 
         /// <summary>
         /// Is the Dictation Manager currently running?

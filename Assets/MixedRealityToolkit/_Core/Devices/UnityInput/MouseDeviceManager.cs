@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 {
     public class MouseDeviceManager : BaseDeviceManager, IMixedRealityExtensionService
     {
-        public MouseDeviceManager(string name, uint priority, ScriptableObject profil) : base(name, priority, profil) { }
+        public MouseDeviceManager(string name, uint priority, ScriptableObject profile) : base(name, priority, profile) { }
 
         /// <summary>
         /// Current Mouse Controller.

@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public BaseDeviceManager(string name, uint priority, ScriptableObject profil) : base(name, priority, profil) { }
+        public BaseDeviceManager(string name, uint priority, ScriptableObject profile) : base(name, priority, profile) { }
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
