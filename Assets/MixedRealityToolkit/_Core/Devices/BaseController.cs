@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
                         MixedRealityInteractionMapping[] profileInteractions = controllerMappings[i].Interactions;
                         MixedRealityInteractionMapping[] newInteractions = new MixedRealityInteractionMapping[profileInteractions.Length];
 
-                        for (int j = 0; j < profileInteractions.Length; i++)
+                        for (int j = 0; j < profileInteractions.Length; j++)
                         {
                             newInteractions[j] = new MixedRealityInteractionMapping(profileInteractions[j]);
                         }
@@ -162,12 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <param name="mappings">Configured mappings from a controller mapping profile</param>
         public void AssignControllerMappings(MixedRealityInteractionMapping[] mappings)
         {
-            Interactions = new MixedRealityInteractionMapping[mappings.Length];
-
-            for (int i = 0; i < mappings.Length; i++)
-            {
-                Interactions[i] = new MixedRealityInteractionMapping(mappings[i]);
-            }
+            Interactions = mappings;
         }
 
         private void TryRenderControllerModel(Type controllerType)
