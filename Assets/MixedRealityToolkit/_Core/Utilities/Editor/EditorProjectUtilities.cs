@@ -3,8 +3,6 @@
 
 using UnityEditor;
 
-#if UNITY_EDITOR
-
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
 {
     [InitializeOnLoad]
@@ -47,5 +45,3 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
         }
     }
 }
-
-#endif // UNITY_EDITOR
