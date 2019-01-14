@@ -11,10 +11,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public class BoundingBox : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityGestureHandler, IMixedRealitySpatialInputHandler, IMixedRealitySourceStateHandler
+    public class BoundingBox : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealitySpatialInputHandler, IMixedRealitySourceStateHandler
     {
         #region Enums
-
         /// <summary>
         /// Enum which describes how an object's boundingbox is to be flattened.
         /// </summary>
@@ -98,11 +97,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             Ray = 0,
             Point
         }
-
         #endregion Enums
 
         #region Serialized Fields
-
         [Header("Bounds Calculation")]
         [Tooltip("For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of Bounding Box.")]
         [SerializeField]
@@ -215,11 +212,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         [SerializeField]
         private float cornerRadius = 0.03f;
-
         #endregion Serialized Fields
 
-        private bool isActive = false;
+        #region Constants
+        private const int LeftTopBack = 0;
+        private const int LeftTopFront = 1;
+        private const int LeftBottomFront = 2;
+        private const int LeftBottomBack = 3;
+        private const int RightTopBack = 4;
+        private const int RightTopFront = 5;
+        private const int RightBottonFront = 6;
+        private const int RightBottomBack = 7;
+        private const int CORNER_COUNT = 8;
+        #endregion Constants
 
+        #region Private Properties
+        private bool isActive = false;
         /// <summary>
         /// This Public property sets whether the BoundingBox is active (visible)
         /// </summary>
@@ -247,24 +255,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 }
             }
         }
-
-        #region Constants
-
-        private const int LeftTopBack = 0;
-        private const int LeftTopFront = 1;
-        private const int LeftBottomFront = 2;
-        private const int LeftBottomBack = 3;
-        private const int RightTopBack = 4;
-        private const int RightTopFront = 5;
-        private const int RightBottonFront = 6;
-        private const int RightBottomBack = 7;
-        private const int CORNER_COUNT = 8;
-
-        #endregion Constants
-
-        #region Private Properties
-
-        private Vector3 grabStartPoint;
         private IMixedRealityPointer currentPointer;
         private IMixedRealityInputSource currentInputSource;
         private Vector3 initialGazePoint = Vector3.zero;
@@ -275,7 +265,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private Vector3 currentBoundsSize;
         private BoundsCalculationMethod boundsMethod;
         private HandleMoveType handleMoveType = HandleMoveType.Point;
-
         private List<GameObject> links;
         private List<GameObject> corners;
         private List<GameObject> balls;
@@ -286,7 +275,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private List<Collider> cornerColliders;
         private List<Collider> ballColliders;
         private Vector3[] edgeCenters;
-
         private Ray initialGrabRay;
         private Ray currentGrabRay;
         private float initialGrabMag;
@@ -295,17 +283,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private Vector3 initialGrabbedPosition;
         private Vector3 initialGrabbedCentroid;
         private Vector3 initialGrabPoint;
-
         private CardinalAxisType[] edgeAxes;
         private int[] flattenedHandles;
         private Vector3 boundsCentroid;
         private GameObject grabbedHandle;
         private bool usingPose = false;
         private Vector3 currentPosePosition = Vector3.zero;
-
         private HandleType currentHandleType;
-        private Vector3 lastBounds;
-
         #endregion Private Properties
 
         #region Monobehaviour Methods
@@ -315,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.InputSystem != null)
             {
-                MixedRealityToolkit.InputSystem.Register(targetObject);
+               // MixedRealityToolkit.InputSystem.Register(targetObject);
             }
 
             if (activateOnStart == true)
@@ -323,6 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 IsActive = true;
             }
         }
+
         private void Update()
         {
             if (currentInputSource == null)
@@ -340,7 +325,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         #endregion Monobehaviour Methods
 
         #region Private Methods
-
         private void CreateRig()
         {
             DestroyRig();
@@ -1189,11 +1173,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             float distance = dotProduct / magnitudeAb;
             return origin + (originToEnd * distance);
         }
-
         #endregion Private Methods
 
         #region Used Event Handlers
-
         public void OnInputDown(InputEventData eventData)
         {
             if (currentInputSource == null)
@@ -1229,7 +1211,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnInputUp(InputEventData eventData)
         {
-            if (eventData.InputSource.SourceId == currentInputSource.SourceId)
+            if (currentInputSource != null && eventData.InputSource.SourceId == currentInputSource.SourceId)
             {
                 currentInputSource = null;
                 currentHandleType = HandleType.None;
@@ -1270,48 +1252,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 ResetHandleVisibility();
             }
         }
-
         #endregion Used Event Handlers
 
         #region Unused Event Handlers
-
-        public void OnPointerDown(MixedRealityPointerEventData eventData)
-        {
-        }
-        public void OnPointerUp(MixedRealityPointerEventData eventData)
-        {
-        }
-        public void OnPointerClicked(MixedRealityPointerEventData eventData)
-        {
-        }
-        public void OnInputPressed(InputEventData<float> eventData)
-        {
-        }
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData)
-        {
-        }
-        public void OnGestureStarted(InputEventData eventData)
-        {
-        }
-        public void OnGestureUpdated(InputEventData eventData)
-        {
-        }
-        public void OnGestureCompleted(InputEventData eventData)
-        {
-        }
-        public void OnGestureCanceled(InputEventData eventData)
-        {
-        }
-        public void OnPositionChanged(InputEventData<Vector3> eventData)
-        {
-        }
-        public void OnRotationChanged(InputEventData<Quaternion> eventData)
-        {
-        }
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-        }
-
+        public void OnPointerDown(MixedRealityPointerEventData eventData) { }
+        public void OnPointerUp(MixedRealityPointerEventData eventData) { }
+        public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
+        public void OnInputPressed(InputEventData<float> eventData) { }
+        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
+        public void OnPositionChanged(InputEventData<Vector3> eventData) { }
+        public void OnRotationChanged(InputEventData<Quaternion> eventData) { }
+        public void OnSourceDetected(SourceStateEventData eventData) { }
         #endregion Unused Event Handlers
     }
 }
