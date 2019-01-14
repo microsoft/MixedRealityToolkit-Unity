@@ -31,9 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
     {
        private enum HandSupportType
         {
-            oneHandedOnly = 0,
-            twoHandedOnly,
-            oneAndTwoHanded
+            OneHandedOnly = 0,
+            TwoHandedOnly,
+            OneAndTwoHanded
         }
 
         #region fields
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         private RotationConstraintType constraintOnRotation = RotationConstraintType.None;
 
         [SerializeField]
-        private HandSupportType handSupportType = HandSupportType.oneAndTwoHanded;
+        private HandSupportType handSupportType = HandSupportType.OneAndTwoHanded;
 
         [System.Flags]
         private enum State
@@ -152,13 +152,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         #endregion Monobehaviour Functions
 
         #region Private Methods
-        /// <summary>
-        /// SetManipulationMode
-        /// </summary>
-        private void SetManipulationMode(TwoHandedManipulation mode)
-        {
-            ManipulationMode = mode;
-        }
 
         private void UpdateStateMachine()
         {
@@ -180,11 +173,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
                         newState = State.Start;
                     }
                     else
-                        if (handsPressedCount == 1 && handSupportType != HandSupportType.twoHandedOnly)
+                        if (handsPressedCount == 1 && handSupportType != HandSupportType.TwoHandedOnly)
                     {
                         newState = State.Moving;
                     }
-                    else if (handsPressedCount > 1 && handSupportType != HandSupportType.oneHandedOnly)
+                    else if (handsPressedCount > 1 && handSupportType != HandSupportType.OneHandedOnly)
                     {
                         switch (ManipulationMode)
                         {
@@ -391,28 +384,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         /// OnSourceDetected Event Handler
         /// </summary>
         public void OnSourceDetected(SourceStateEventData eventData) { }
-        public void OnInputPressed(InputEventData<float> eventData)
-        {
-        }
+        public void OnInputPressed(InputEventData<float> eventData) { }
 
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData)
-        {
-        }
+        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
-        public void OnPositionChanged(InputEventData<Vector3> eventData)
-        {
-        }
+        public void OnPositionChanged(InputEventData<Vector3> eventData) { }
 
-        public void OnRotationChanged(InputEventData<Quaternion> eventData)
-        {
-        }
+        public void OnRotationChanged(InputEventData<Quaternion> eventData) { }
         #endregion Unused Event Handlers
 
         #region Private Event Handlers
         private void OnTwoHandManipulationUpdated()
         {
-            
-#if UNITY_2017_2_OR_NEWER
             var targetRotation = hostTransform.rotation;
             var targetPosition = hostTransform.position;
             var targetScale = hostTransform.localScale;
@@ -433,7 +416,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             hostTransform.position = targetPosition;
             hostTransform.rotation = targetRotation;
             hostTransform.localScale = targetScale;
-#endif // UNITY_2017_2_OR_NEWER
         }
 
         private void OnOneHandMoveUpdated()
