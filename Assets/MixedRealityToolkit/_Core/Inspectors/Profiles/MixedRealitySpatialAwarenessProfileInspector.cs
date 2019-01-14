@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
@@ -10,15 +11,17 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealitySpatialAwarenessProfile))]
-    public class MixedRealitySpatialAwarenessProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    public class MixedRealitySpatialAwarenessProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         // General settings
+        private static bool showGeneralProperties = true;
         private SerializedProperty startupBehavior;
         private SerializedProperty observationExtents;
         private SerializedProperty isStationaryObserver;
         private SerializedProperty updateInterval;
 
         // Mesh settings
+        private static bool showMeshProperties = true;
         private SerializedProperty useMeshSystem;
         private SerializedProperty meshPhysicsLayer;
         private SerializedProperty meshLevelOfDetail;
@@ -29,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty meshOcclusionMaterial;
 
         // Surface Finding settings
+        private static bool showSurfaceFindingProperties = true;
         private SerializedProperty useSurfaceFindingSystem;
         private SerializedProperty surfaceFindingPhysicsLayer;
         private SerializedProperty surfaceFindingMinimumArea;
@@ -59,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             base.OnEnable();
 
-            if (!CheckMixedRealityConfigured(false))
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
                 return;
             }
@@ -98,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            if (!CheckMixedRealityConfigured())
+            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured())
             {
                 return;
             }
@@ -119,36 +123,54 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 GUI.enabled = false;
             }
 
-            EditorGUILayout.LabelField("General Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(startupBehavior);
-            EditorGUILayout.PropertyField(observationExtents);
-            EditorGUILayout.PropertyField(isStationaryObserver);
-            EditorGUILayout.PropertyField(updateInterval);
+            showGeneralProperties = EditorGUILayout.Foldout(showGeneralProperties, "General Settings", true);
+            if (showGeneralProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(startupBehavior);
+                    EditorGUILayout.PropertyField(observationExtents);
+                    EditorGUILayout.PropertyField(isStationaryObserver);
+                    EditorGUILayout.PropertyField(updateInterval);
+                }
+            }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Mesh Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(useMeshSystem, useSystemContent);
-            EditorGUILayout.PropertyField(meshPhysicsLayer, physicsLayerContent);
-            EditorGUILayout.PropertyField(meshLevelOfDetail, lodContent);
-            EditorGUILayout.PropertyField(meshTrianglesPerCubicMeter, trianglesPerCubicMeterContent);
-            EditorGUILayout.PropertyField(meshRecalculateNormals);
-            EditorGUILayout.PropertyField(meshDisplayOption, displayOptionContent);
-            EditorGUILayout.PropertyField(meshVisibleMaterial, visibleMaterialContent);
-            EditorGUILayout.PropertyField(meshOcclusionMaterial, occlusionMaterialContent);
+            showMeshProperties = EditorGUILayout.Foldout(showMeshProperties, "Mesh Settings", true);
+            if (showMeshProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(useMeshSystem, useSystemContent);
+                    EditorGUILayout.PropertyField(meshPhysicsLayer, physicsLayerContent);
+                    EditorGUILayout.PropertyField(meshLevelOfDetail, lodContent);
+                    EditorGUILayout.PropertyField(meshTrianglesPerCubicMeter, trianglesPerCubicMeterContent);
+                    EditorGUILayout.PropertyField(meshRecalculateNormals);
+                    EditorGUILayout.PropertyField(meshDisplayOption, displayOptionContent);
+                    EditorGUILayout.PropertyField(meshVisibleMaterial, visibleMaterialContent);
+                    EditorGUILayout.PropertyField(meshOcclusionMaterial, occlusionMaterialContent);
+                }
+            }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Surface Finding Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(useSurfaceFindingSystem, useSystemContent);
-            EditorGUILayout.PropertyField(surfaceFindingPhysicsLayer, physicsLayerContent);
-            EditorGUILayout.PropertyField(surfaceFindingMinimumArea, minimumAreaContent);
-            EditorGUILayout.PropertyField(displayFloorSurfaces);
-            EditorGUILayout.PropertyField(floorSurfaceMaterial, floorMaterialContent);
-            EditorGUILayout.PropertyField(displayCeilingSurfaces);
-            EditorGUILayout.PropertyField(ceilingSurfaceMaterial, ceilingMaterialContent);
-            EditorGUILayout.PropertyField(displayWallSurfaces);
-            EditorGUILayout.PropertyField(wallSurfaceMaterial, wallMaterialContent);
-            EditorGUILayout.PropertyField(displayPlatformSurfaces);
-            EditorGUILayout.PropertyField(platformSurfaceMaterial, platformMaterialContent);
+            showSurfaceFindingProperties = EditorGUILayout.Foldout(showSurfaceFindingProperties, "Surface Finding Settings", true);
+            if (showSurfaceFindingProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(useSurfaceFindingSystem, useSystemContent);
+                    EditorGUILayout.PropertyField(surfaceFindingPhysicsLayer, physicsLayerContent);
+                    EditorGUILayout.PropertyField(surfaceFindingMinimumArea, minimumAreaContent);
+                    EditorGUILayout.PropertyField(displayFloorSurfaces);
+                    EditorGUILayout.PropertyField(floorSurfaceMaterial, floorMaterialContent);
+                    EditorGUILayout.PropertyField(displayCeilingSurfaces);
+                    EditorGUILayout.PropertyField(ceilingSurfaceMaterial, ceilingMaterialContent);
+                    EditorGUILayout.PropertyField(displayWallSurfaces);
+                    EditorGUILayout.PropertyField(wallSurfaceMaterial, wallMaterialContent);
+                    EditorGUILayout.PropertyField(displayPlatformSurfaces);
+                    EditorGUILayout.PropertyField(platformSurfaceMaterial, platformMaterialContent);
+                }
+            }
 
             serializedObject.ApplyModifiedProperties();
         }

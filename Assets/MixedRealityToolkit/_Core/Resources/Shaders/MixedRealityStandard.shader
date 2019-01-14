@@ -34,10 +34,11 @@ Shader "Mixed Reality Toolkit/Standard"
         _RimColor("Rim Color", Color) = (0.5, 0.5, 0.5, 1.0)
         _RimPower("Rim Power", Range(0.0, 8.0)) = 0.25
         [Toggle(_CLIPPING_PLANE)] _ClippingPlane("Clipping Plane", Float) = 0.0
-        _ClipPlane("Clip Plane", Vector) = (0.0, 1.0, 0.0, 0.0)
-        [Toggle(_CLIPPING_PLANE_BORDER)] _ClippingPlaneBorder("Clipping Plane Border", Float) = 0.0
-        _ClippingPlaneBorderWidth("Clipping Plane Border Width", Range(0.005, 1.0)) = 0.025
-        _ClippingPlaneBorderColor("Clipping Plane Border Color", Color) = (1.0, 0.2, 0.0, 1.0)
+        [Toggle(_CLIPPING_SPHERE)] _ClippingSphere("Clipping Sphere", Float) = 0.0
+        [Toggle(_CLIPPING_BOX)] _ClippingBox("Clipping Box", Float) = 0.0
+        [Toggle(_CLIPPING_BORDER)] _ClippingBorder("Clipping Border", Float) = 0.0
+        _ClippingBorderWidth("Clipping Border Width", Range(0.005, 1.0)) = 0.025
+        _ClippingBorderColor("Clipping Border Color", Color) = (1.0, 0.2, 0.0, 1.0)
         [Toggle(_NEAR_PLANE_FADE)] _NearPlaneFade("Near Plane Fade", Float) = 0.0
         _FadeBeginDistance("Fade Begin Distance", Range(0.01, 10.0)) = 0.85
         _FadeCompleteDistance("Fade Complete Distance", Range(0.01, 10.0)) = 0.5
@@ -131,7 +132,9 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _REFRACTION
             #pragma shader_feature _RIM_LIGHT
             #pragma shader_feature _CLIPPING_PLANE
-            #pragma shader_feature _CLIPPING_PLANE_BORDER
+            #pragma shader_feature _CLIPPING_SPHERE
+            #pragma shader_feature _CLIPPING_BOX
+            #pragma shader_feature _CLIPPING_BORDER
             #pragma shader_feature _NEAR_PLANE_FADE
             #pragma shader_feature _HOVER_LIGHT
             #pragma shader_feature _HOVER_COLOR_OVERRIDE
@@ -157,13 +160,19 @@ Shader "Mixed Reality Toolkit/Standard"
             #undef _NORMAL
 #endif
 
-#if defined(_NORMAL) || defined(_CLIPPING_PLANE) || defined(_NEAR_PLANE_FADE) || defined(_HOVER_LIGHT)
+#if defined(_CLIPPING_PLANE) || defined(_CLIPPING_SPHERE) || defined(_CLIPPING_BOX)
+        #define _CLIPPING_PRIMITIVE
+#else
+        #undef _CLIPPING_PRIMITIVE
+#endif
+
+#if defined(_NORMAL) || defined(_CLIPPING_PRIMITIVE) || defined(_NEAR_PLANE_FADE) || defined(_HOVER_LIGHT)
             #define _WORLD_POSITION
 #else
             #undef _WORLD_POSITION
 #endif
 
-#if defined(_ALPHATEST_ON) || defined(_CLIPPING_PLANE) || defined(_ROUND_CORNERS)
+#if defined(_ALPHATEST_ON) || defined(_CLIPPING_PRIMITIVE) || defined(_ROUND_CORNERS)
             #define _ALPHA_CLIP
 #else
             #undef _ALPHA_CLIP
@@ -302,9 +311,24 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_CLIPPING_PLANE)
+            fixed _ClipPlaneSide;
             float4 _ClipPlane;
-            fixed _ClippingPlaneBorderWidth;
-            fixed3 _ClippingPlaneBorderColor;
+#endif
+
+#if defined(_CLIPPING_SPHERE)
+            fixed _ClipSphereSide;
+            float4 _ClipSphere;
+#endif
+
+#if defined(_CLIPPING_BOX)
+            fixed _ClipBoxSide;
+            float4 _ClipBoxSize;
+            float4x4 _ClipBoxInverseTransform;
+#endif
+
+#if defined(_CLIPPING_BORDER)
+            fixed _ClippingBorderWidth;
+            fixed3 _ClippingBorderColor;
 #endif
 
 #if defined(_NEAR_PLANE_FADE)
@@ -383,6 +407,21 @@ Shader "Mixed Reality Toolkit/Standard"
             {
                 float3 planePosition = plane.xyz * plane.w;
                 return dot(worldPosition - planePosition, plane.xyz);
+            }
+#endif
+
+#if defined(_CLIPPING_SPHERE)
+            inline float PointVsSphere(float3 worldPosition, float4 sphere)
+            {
+                return distance(worldPosition, sphere.xyz) - sphere.w;
+            }
+#endif
+
+#if defined(_CLIPPING_BOX)
+            inline float PointVsBox(float3 worldPosition, float3 boxSize, float4x4 boxInverseTransform)
+            {
+                float3 distance = abs(mul(boxInverseTransform, float4(worldPosition, 1.0))) - boxSize;
+                return length(max(distance, 0.0)) + min(max(distance.x, max(distance.y, distance.z)), 0.0);
             }
 #endif
 
@@ -574,17 +613,26 @@ Shader "Mixed Reality Toolkit/Standard"
                 albedo.a = 1.0;
 #endif 
 #endif
-                // Plane clipping.
+                // Primitive clipping.
+#if defined(_CLIPPING_PRIMITIVE)
+                float primitiveDistance = 1.0; 
 #if defined(_CLIPPING_PLANE)
-                float planeDistance = PointVsPlane(i.worldPosition.xyz, _ClipPlane);
-#if defined(_CLIPPING_PLANE_BORDER)
-                fixed3 planeBorderColor = lerp(_ClippingPlaneBorderColor, fixed3(0.0, 0.0, 0.0), planeDistance / _ClippingPlaneBorderWidth);
-                albedo.rgb += planeBorderColor * ((planeDistance < _ClippingPlaneBorderWidth) ? 1.0 : 0.0);
+                primitiveDistance = min(primitiveDistance, PointVsPlane(i.worldPosition.xyz, _ClipPlane) * _ClipPlaneSide);
+#endif
+#if defined(_CLIPPING_SPHERE)
+                primitiveDistance = min(primitiveDistance, PointVsSphere(i.worldPosition.xyz, _ClipSphere) * _ClipSphereSide);
+#endif
+#if defined(_CLIPPING_BOX)
+                primitiveDistance = min(primitiveDistance, PointVsBox(i.worldPosition.xyz, _ClipBoxSize.xyz, _ClipBoxInverseTransform) * _ClipBoxSide);
+#endif
+#if defined(_CLIPPING_BORDER)
+                fixed3 primitiveBorderColor = lerp(_ClippingBorderColor, fixed3(0.0, 0.0, 0.0), primitiveDistance / _ClippingBorderWidth);
+                albedo.rgb += primitiveBorderColor * ((primitiveDistance < _ClippingBorderWidth) ? 1.0 : 0.0);
 #endif
 #if defined(_ALPHA_CLIP)
-                albedo *= (planeDistance > 0.0);
+                albedo *= (primitiveDistance > 0.0);
 #else
-                albedo *= saturate(planeDistance);
+                albedo *= saturate(primitiveDistance);
 #endif
 #endif
 
