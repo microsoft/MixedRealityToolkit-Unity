@@ -4,10 +4,11 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services.DiagnosticsSystem
+namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
 {
     /// <summary>
     /// The default implementation of the <see cref="IMixedRealityDiagnosticsSystem"/>

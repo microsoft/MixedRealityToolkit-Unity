@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
 {
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
