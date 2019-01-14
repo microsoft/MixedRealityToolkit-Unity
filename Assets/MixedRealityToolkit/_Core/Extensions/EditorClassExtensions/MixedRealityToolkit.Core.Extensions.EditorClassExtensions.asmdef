@@ -1,12 +1,14 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions",
-    "references": [
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup"
-    ],
+    "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }

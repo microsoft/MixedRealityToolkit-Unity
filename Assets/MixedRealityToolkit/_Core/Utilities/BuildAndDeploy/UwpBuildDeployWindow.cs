@@ -288,7 +288,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
             if (GUILayout.Button("Open Player Settings"))
             {
-                EditorApplication.ExecuteMenuItem("Edit/Project Settings/Player");
+                // TODO: Remove use of "Unsupported" class.
+                Selection.activeObject = Unsupported.GetSerializedAssetInterfaceSingleton("PlayerSettings");
             }
 
             EditorGUILayout.EndHorizontal();
