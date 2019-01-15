@@ -6,20 +6,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     /// <summary>
     /// Options for how the spatial mesh is to be displayed by the spatial awareness system.
     /// </summary>
-    public enum SpatialMeshDisplayOptions
+    public enum SpatialObjectDisplayOptions
     {
         /// <summary>
-        /// Do not display the spatial mesh
+        /// Do not display the spatial object
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// Display the spatial mesh using the configured material
+        /// Display the spatial object using the configured material
         /// </summary>
         Visible,
 
         /// <summary>
-        /// Display the spatial mesh using the configured occlusion material
+        /// Display the spatial object using the configured occlusion material
         /// </summary>
         Occlusion
     }

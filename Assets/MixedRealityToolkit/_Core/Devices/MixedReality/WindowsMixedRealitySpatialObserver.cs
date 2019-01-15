@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         }
 
         /// <inheritdoc/>
-        public override void StartObserving()
+        public override void Resume()
         {
 #if UNITY_WSA
             if (IsRunning)
@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         }
 
         /// <inheritdoc/>
-        public override void StopObserving()
+        public override void Suspend()
         {
 #if UNITY_WSA
             if (!IsRunning)

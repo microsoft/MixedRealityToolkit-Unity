@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections;
@@ -80,15 +81,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// </summary>
         public virtual IDictionary<int, GameObject> Meshes => new Dictionary<int, GameObject>();
 
-        /// <summary>
-        /// Start the observer.
-        /// </summary>
-        public virtual void StartObserving() { }
+        public AutoStartBehavior StartupBehavior { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public int DefaultPhysicsLayer { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+        public int DefaultPhysicsLayerMask => throw new System.NotImplementedException();
+
+        public bool IsStationaryObserver { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public Vector3 ObservationExtents { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public Vector3 ObserverOrigin { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public float UpdateInterval { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         /// <summary>
-        /// Stop the observer.
+        /// Start | Resume the observer.
         /// </summary>
-        public virtual void StopObserving() { }
+        public virtual void Resume() { }
+
+        /// <summary>
+        /// Stop | Pause the observer.
+        /// </summary>
+        public virtual void Suspend() { }
 
         /// <summary>
         /// When a mesh is created we will need to create a game object with a minimum 
@@ -115,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <returns>
         /// SpatialMeshObject containing the fields that describe the mesh.
         /// </returns>
-        protected SpatialMeshObject CreateSpatialMeshObject(
+        protected SpatialAwarnessMeshObject CreateSpatialMeshObject(
             Mesh mesh,
             string name,
             int meshId)
