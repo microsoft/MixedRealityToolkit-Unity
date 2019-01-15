@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
@@ -13,7 +14,7 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
+namespace Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput
 {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     public class WindowsDictationInputDeviceManager : BaseDeviceManager, IMixedRealityDictationSystem

@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
@@ -13,7 +14,7 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
+namespace Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput
 {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     public class WindowsSpeechInputDeviceManager : BaseDeviceManager, IMixedRealitySpeechSystem

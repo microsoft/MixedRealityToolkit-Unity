@@ -36,15 +36,15 @@ MonoBehaviour:
     runtimePlatform: 8
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.WindowsSpeechInputDeviceManager,
-        Microsoft.MixedReality.Toolkit
+      reference: Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput.WindowsSpeechInputDeviceManager,
+        Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput
     componentName: Windows Speech Input Manager
     priority: 10
     runtimePlatform: 9
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.WindowsDictationInputDeviceManager,
-        Microsoft.MixedReality.Toolkit
+      reference: Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput.WindowsDictationInputDeviceManager,
+        Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput
     componentName: Windows Dictation Input Manager
     priority: 10
     runtimePlatform: 9
