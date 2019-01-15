@@ -15,7 +15,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Input
+namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
 {
     /// <summary>
     /// This class provides Gaze as an Input Source so users can interact with objects using their head.

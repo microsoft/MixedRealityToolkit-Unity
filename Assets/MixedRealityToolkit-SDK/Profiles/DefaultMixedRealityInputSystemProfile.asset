@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCustomProfile: 0
   focusProviderType:
-    reference: Microsoft.MixedReality.Toolkit.SDK.Input.FocusProvider, Microsoft.MixedReality.Toolkit
+    reference: Microsoft.MixedReality.Toolkit.Core.Services.InputSystem.FocusProvider,
+      Microsoft.MixedReality.Toolkit
   inputActionsProfile: {fileID: 11400000, guid: 723eb97b02944311b92861f473eee53e,
     type: 2}
   inputActionRulesProfile: {fileID: 11400000, guid: 03945385d89102f41855bc8f5116b199,
