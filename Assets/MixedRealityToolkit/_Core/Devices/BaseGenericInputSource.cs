@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using System.Collections;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
+namespace Microsoft.MixedReality.Toolkit.Core.Devices
 {
     /// <summary>
     /// Base class for input sources that don't inherit from MonoBehaviour.

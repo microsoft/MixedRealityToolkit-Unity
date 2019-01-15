@@ -2,11 +2,14 @@
     "name": "Microsoft.MixedReality.Toolkit.SDK",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.InputSystem",
         "Microsoft.MixedReality.Toolkit.Core.Utilities.Async"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }
