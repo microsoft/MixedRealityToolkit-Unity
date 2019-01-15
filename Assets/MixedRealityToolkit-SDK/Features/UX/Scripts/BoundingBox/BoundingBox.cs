@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public class BoundingBox : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealitySpatialInputHandler, IMixedRealitySourceStateHandler
+    public class BoundingBox : BaseFocusHandler, IMixedRealityPointerHandler, IMixedRealityInputHandler<MixedRealityPose>, IMixedRealitySourceStateHandler
     {
         #region Enums
         /// <summary>
@@ -268,7 +270,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private List<GameObject> links;
         private List<GameObject> corners;
         private List<GameObject> balls;
-        private Vector3 defaultScale;
         private List<Renderer> cornerRenderers;
         private List<Renderer> ballRenderers;
         private List<Renderer> linkRenderers;
@@ -299,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.InputSystem != null)
             {
-               // MixedRealityToolkit.InputSystem.Register(targetObject);
+               MixedRealityToolkit.InputSystem.Register(targetObject);
             }
 
             if (activateOnStart == true)
@@ -827,7 +828,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             rigRoot.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
 
             boundsCorners = new Vector3[8];
-            defaultScale = targetObject.transform.localScale;
 
             corners = new List<GameObject>();
             cornerColliders = new List<Collider>();
@@ -919,6 +919,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             SetHiddenHandles();
         }
+
         private void ShowOneHandle(GameObject handle)
         {
             //turn off all balls
@@ -1191,7 +1192,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     if (grabbedCollider != null)
                     {
                         currentInputSource = eventData.InputSource;
-
                         currentPointer = pointer;
                         grabbedHandle = grabbedCollider.gameObject;
                         currentHandleType = GetHandleType(grabbedHandle);
@@ -1221,19 +1221,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
-        public void OnPoseInputChanged(InputEventData<MixedRealityPose> eventData)
+        public void OnInputChanged(InputEventData<MixedRealityPose> eventData)
         {
             if (currentInputSource != null && eventData.InputSource.SourceId == currentInputSource.SourceId)
             {
-                if (eventData.InputSource.SourceName.Contains("Hand"))
+                Vector3 pos = eventData.InputData.Position;
+                usingPose = true;
+                if (initialGazePoint == Vector3.zero)
                 {
-                    usingPose = true;
-                    if (initialGazePoint == Vector3.zero)
-                    {
-                        initialGazePoint = eventData.InputData.Position;
-                    }
-                    currentPosePosition = initialGrabbedPosition + (eventData.InputData.Position - initialGazePoint);
+                    initialGazePoint = pos;
                 }
+                currentPosePosition = initialGrabbedPosition + (pos - initialGazePoint);
             }
             else
             {
@@ -1259,7 +1257,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public void OnPointerUp(MixedRealityPointerEventData eventData) { }
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
         public void OnInputPressed(InputEventData<float> eventData) { }
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
+        public void OnPositionInputChanged(InputEventData<Vector2> eventData){}
         public void OnPositionChanged(InputEventData<Vector3> eventData) { }
         public void OnRotationChanged(InputEventData<Quaternion> eventData) { }
         public void OnSourceDetected(SourceStateEventData eventData) { }
