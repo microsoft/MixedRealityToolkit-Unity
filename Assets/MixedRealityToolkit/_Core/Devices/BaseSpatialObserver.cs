@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <summary>
         /// The collection of meshes being managed by the observer.
         /// </summary>
-        protected Dictionary<int, SpatialMeshObject> meshObjects = new Dictionary<int, SpatialMeshObject>();
+        protected Dictionary<int, BaseSpatialAwarenessObject> meshObjects = new Dictionary<int, BaseSpatialAwarenessObject>();
 
         /// <summary>
         /// Creates a <see cref="SpatialMeshObject"/>.
@@ -126,12 +126,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <returns>
         /// SpatialMeshObject containing the fields that describe the mesh.
         /// </returns>
-        protected SpatialAwarnessMeshObject CreateSpatialMeshObject(
+        protected BaseSpatialAwarenessObject CreateSpatialMeshObject(
             Mesh mesh,
             string name,
             int meshId)
         {
-            SpatialMeshObject newMesh = new SpatialMeshObject();
+            BaseSpatialAwarenessObject newMesh = new BaseSpatialAwarenessObject();
 
             newMesh.Id = meshId;
             newMesh.GameObject = new GameObject(name, requiredMeshComponents);

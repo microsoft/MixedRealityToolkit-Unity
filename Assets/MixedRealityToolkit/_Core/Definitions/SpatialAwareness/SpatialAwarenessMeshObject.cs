@@ -8,13 +8,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     /// <summary>
     /// todo
     /// </summary>
-    public struct SpatialAwarenessMeshObject
+    public partial class SpatialAwarenessMeshObject : BaseSpatialAwarenessObject
     {
         // todo
-        public int Id;
-        public GameObject GameObject;
-        public MeshRenderer Renderer;
-        public MeshFilter Filter;
-        public MeshCollider Collider;
+        public MeshCollider Collider { get; set; }
     }
 }
