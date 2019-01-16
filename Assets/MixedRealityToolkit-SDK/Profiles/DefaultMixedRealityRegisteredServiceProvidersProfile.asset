@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -61,11 +62,4 @@ MonoBehaviour:
     componentName: Windows Mixed Reality Spatial Observer
     priority: 10
     runtimePlatform: 8
-    configurationProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.MouseDeviceManager,
-        Microsoft.MixedReality.Toolkit
-    componentName: Mouse Input Manager
-    priority: 10
-    runtimePlatform: -1
     configurationProfile: {fileID: 0}

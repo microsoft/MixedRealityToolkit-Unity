@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Input
+namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
 {
     /// <summary>
     /// This component ensures that all input events are forwarded to this <see cref="GameObject"/> when focus or gaze is not required.

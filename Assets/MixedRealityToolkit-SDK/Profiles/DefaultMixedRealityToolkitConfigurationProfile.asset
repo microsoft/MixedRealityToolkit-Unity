@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -18,8 +19,8 @@ MonoBehaviour:
   enableInputSystem: 1
   inputSystemProfile: {fileID: 11400000, guid: ad2080e8e71c35f4e8bcde94fa68f098, type: 2}
   inputSystemType:
-    reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
-      Microsoft.MixedReality.Toolkit.SDK
+    reference: Microsoft.MixedReality.Toolkit.Core.Services.InputSystem.MixedRealityInputSystem,
+      Microsoft.MixedReality.Toolkit
   enableBoundarySystem: 1
   boundarySystemType:
     reference: Microsoft.MixedReality.Toolkit.Core.Services.BoundarySystem.MixedRealityBoundarySystem,
