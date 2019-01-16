@@ -102,8 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <inheritdoc />
         public abstract void Suspend();
 
-        protected abstract BaseSpatialAwarenessObject CreateSpatialObject();
-
         /// <summary>
         /// Cleans up objects managed by the observer.
         /// </summary>

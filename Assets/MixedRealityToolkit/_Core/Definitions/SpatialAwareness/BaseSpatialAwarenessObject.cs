@@ -1,16 +1,30 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using UnityEngine;
 
-public partial class BaseSpatialAwarenessObject
+namespace Microsoft.MixedReality.Toolkit.Core.Devices
 {
-    public int Id { get; set; }
-    public GameObject GameObject { get; set; }
-    public MeshRenderer Renderer { get; set; }
-    public MeshFilter Filter { get; set; }
 
-    //public abstract Collider Collider { get; protected set; }
+    public partial class BaseSpatialAwarenessObject : IMixedRealitySpatialAwarenessObject
+    {
+        /// <inheritdoc />
+        public int Id { get; set; }
+
+        /// <inheritdoc />
+        public GameObject GameObject { get; set; }
+
+        /// <inheritdoc />
+        public MeshRenderer Renderer { get; set; }
+
+        /// <inheritdoc />
+        public MeshFilter Filter { get; set; }
+
+        public void CleanObject()
+        {
+            throw new System.NotImplementedException();
+        }
+
+    }
 }

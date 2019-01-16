@@ -54,10 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <inheritdoc />
         public Material OcclusionMaterial { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-        /// <summary>
-        /// The collection of meshes being managed by the observer.
-        /// </summary>
-        IReadOnlyDictionary<int, SpatialAwarenessMeshObject> IMixedRealitySpatialAwarenessMeshObserver.Meshes => new Dictionary<int, SpatialAwarenessMeshObject>();
+        IReadOnlyDictionary<int, SpatialAwarenessMeshObject> IMixedRealitySpatialAwarenessMeshObserver.Meshes => throw new System.NotImplementedException();
+
+
 
         /// <summary>
         /// Start | Resume the observer.
@@ -81,42 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         };
 
         protected Dictionary<int, BaseSpatialAwarenessObject> meshObjects = new Dictionary<int, BaseSpatialAwarenessObject>();
-
-        /// <summary>
-        /// Creates a <see cref="SpatialMeshObject"/>.
-        /// </summary>
-        /// <param name="mesh"></param> todo: add comments
-        /// <param name="name"></param>
-        /// <param name="meshId"></param>
-        /// <returns>
-        /// SpatialMeshObject containing the fields that describe the mesh.
-        /// </returns>
-        protected override BaseSpatialAwarenessObject CreateSpatialObject(
-            Mesh mesh,
-            string name,
-            int meshId)
-        {
-            BaseSpatialAwarenessObject newMesh = new BaseSpatialAwarenessObject();
-
-            newMesh.Id = meshId;
-            newMesh.GameObject = new GameObject(name, requiredMeshComponents);
-            newMesh.GameObject.layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayer;
-
-            newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
-            newMesh.Filter.sharedMesh = mesh;
-
-            newMesh.Renderer = newMesh.GameObject.GetComponent<MeshRenderer>();
-
-            // Reset the surface mesh collider to fit the updated mesh. 
-            // Unity tribal knowledge indicates that to change the mesh assigned to a
-            // mesh collider, the mesh must first be set to null.  Presumably there
-            // is a side effect in the setter when setting the shared mesh to null.
-            newMesh.Collider = newMesh.GameObject.GetComponent<MeshCollider>();
-            newMesh.Collider.sharedMesh = null;
-            newMesh.Collider.sharedMesh = newMesh.Filter.sharedMesh;
-
-            return newMesh;
-        }
 
         /// <summary>
         /// Cleans up mesh objects managed by the observer.
