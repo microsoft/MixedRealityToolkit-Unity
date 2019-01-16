@@ -10,6 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     public partial class SpatialAwarenessPlanarObject : BaseSpatialAwarenessObject
     {
         // todo
-        public BoxCollider Collider { get; set}
+        public BoxCollider Collider { get; set;  }
     }
 }

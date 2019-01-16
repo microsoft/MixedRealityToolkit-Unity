@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <remarks>
         /// Applications that wish to process the <see cref="Mesh"/>es should set this value to None.
         /// </remarks>
-        SpatialMeshDisplayOptions MeshDisplayOption { get; set; }
+        SpatialObjectDisplayOptions MeshDisplayOption { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Material"/> to be used when displaying <see cref="Mesh"/>es.

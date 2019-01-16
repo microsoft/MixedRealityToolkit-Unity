@@ -399,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         public bool MeshRecalculateNormals { get; set; } = true;
 
         /// <inheritdoc />
-        public SpatialMeshDisplayOptions MeshDisplayOption { get; set; } = SpatialMeshDisplayOptions.None;
+        public SpatialObjectDisplayOptions MeshDisplayOption { get; set; } = SpatialObjectDisplayOptions.None;
 
         /// <inheritdoc />
         public Material MeshVisibleMaterial { get; set; } = null;
