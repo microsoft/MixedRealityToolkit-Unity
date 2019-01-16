@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices
 {
-    public class BaseSpatialObserver : BaseExtensionService, IMixedRealitySpatialAwarenessObserver
+    public abstract class BaseSpatialObserver : BaseExtensionService, IMixedRealitySpatialAwarenessObserver
     {
         #region IMixedRealityEventSource Implementation
 
@@ -51,10 +51,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         }
 
         /// <inheritdoc />
-        public uint SourceId { get; }
+        public uint SourceId { get; protected set; }
 
         /// <inheritdoc />
-        public string SourceName { get; }
+        public string SourceName { get; protected set; }
 
         #endregion IMixedRealityEventSource Implementation
 
@@ -71,139 +71,48 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
-        /// <summary>
-        /// Is the observer running (actively accumulating spatial data)?
-        /// </summary>
-        public bool IsRunning { get; protected set; }
-
-        /// <summary>
-        /// The collection of mesh <see cref="GameObject"/>s that have been observed.
-        /// </summary>
-        public virtual IDictionary<int, GameObject> Meshes => new Dictionary<int, GameObject>();
-
+        /// <inheritdoc />
         public AutoStartBehavior StartupBehavior { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        
+        /// <inheritdoc />
         public int DefaultPhysicsLayer { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
+        /// <inheritdoc />
         public int DefaultPhysicsLayerMask => throw new System.NotImplementedException();
 
+        /// <inheritdoc />
+        public bool IsRunning => throw new System.NotImplementedException();
+
+        /// <inheritdoc />
         public bool IsStationaryObserver { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+        /// <inheritdoc />
         public Vector3 ObservationExtents { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+        /// <inheritdoc />
         public Vector3 ObserverOrigin { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+        /// <inheritdoc />
         public float UpdateInterval { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-        /// <summary>
-        /// Start | Resume the observer.
-        /// </summary>
-        public virtual void Resume() { }
+
+        /// <inheritdoc />
+        public abstract void Resume();
+
+        /// <inheritdoc />
+        public abstract void Suspend();
+
+        protected abstract BaseSpatialAwarenessObject CreateSpatialObject();
 
         /// <summary>
-        /// Stop | Pause the observer.
+        /// Cleans up objects managed by the observer.
         /// </summary>
-        public virtual void Suspend() { }
-
-        /// <summary>
-        /// When a mesh is created we will need to create a game object with a minimum 
-        /// set of components to contain the mesh.  These are the required component types.
-        /// </summary>
-        private System.Type[] requiredMeshComponents =
-        {
-            typeof(MeshFilter),
-            typeof(MeshRenderer),
-            typeof(MeshCollider)
-        };
-
-        /// <summary>
-        /// The collection of meshes being managed by the observer.
-        /// </summary>
-        protected Dictionary<int, BaseSpatialAwarenessObject> meshObjects = new Dictionary<int, BaseSpatialAwarenessObject>();
-
-        /// <summary>
-        /// Creates a <see cref="SpatialMeshObject"/>.
-        /// </summary>
-        /// <param name="mesh"></param> todo: add comments
-        /// <param name="name"></param>
-        /// <param name="meshId"></param>
-        /// <returns>
-        /// SpatialMeshObject containing the fields that describe the mesh.
-        /// </returns>
-        protected BaseSpatialAwarenessObject CreateSpatialMeshObject(
-            Mesh mesh,
-            string name,
-            int meshId)
-        {
-            BaseSpatialAwarenessObject newMesh = new BaseSpatialAwarenessObject();
-
-            newMesh.Id = meshId;
-            newMesh.GameObject = new GameObject(name, requiredMeshComponents);
-            newMesh.GameObject.layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayer;
-
-            newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
-            newMesh.Filter.sharedMesh = mesh;
-
-            newMesh.Renderer = newMesh.GameObject.GetComponent<MeshRenderer>();
-
-            // Reset the surface mesh collider to fit the updated mesh. 
-            // Unity tribal knowledge indicates that to change the mesh assigned to a
-            // mesh collider, the mesh must first be set to null.  Presumably there
-            // is a side effect in the setter when setting the shared mesh to null.
-            newMesh.Collider = newMesh.GameObject.GetComponent<MeshCollider>();
-            newMesh.Collider.sharedMesh = null;
-            newMesh.Collider.sharedMesh = newMesh.Filter.sharedMesh;
-
-            return newMesh;
-        }
-
-        /// <summary>
-        /// Cleans up mesh objects managed by the observer.
-        /// </summary>
-        protected void CleanupMeshes()
-        {
-            // Clean up mesh objects.
-            // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
-            foreach (SpatialMeshObject meshObject in meshObjects.Values)
-            {
-                // Cleanup mesh object.
-                // Destroy the game object, destroy the meshes.
-                CleanupMeshObject(meshObject);
-            }
-            meshObjects.Clear();
-        }
+        protected abstract void CleanUpSpatialObjectList();
 
         /// <summary>
         /// Clean up the resources associated with the surface.
         /// </summary>
-        /// <param name="meshObject">The <see cref="SpatialMeshObject"/> whose resources will be cleaned up.</param>
-        /// <param name="destroyGameObject"></param>
-        /// <param name="destroyMeshes"></param>
-        protected void CleanupMeshObject(
-            SpatialMeshObject meshObject,
-            bool destroyGameObject = true,
-            bool destroyMeshes = true)
-        {
-            if (destroyGameObject && (meshObject.GameObject != null))
-            {
-                Object.Destroy(meshObject.GameObject);
-                meshObject.GameObject = null;
-            }
-
-            Mesh filterMesh = meshObject.Filter.sharedMesh;
-            Mesh colliderMesh = meshObject.Collider.sharedMesh;
-
-            if (destroyMeshes)
-            {
-                if (filterMesh != null)
-                {
-                    Object.Destroy(filterMesh);
-                    meshObject.Filter.sharedMesh = null;
-                }
-
-                if ((colliderMesh != null) && (colliderMesh != filterMesh))
-                {
-                    Object.Destroy(colliderMesh);
-                    meshObject.Collider.sharedMesh = null;
-                }
-            }
-        }
+        protected abstract void CleanUpSpatialObject(BaseSpatialAwarenessObject spatialObject, bool destroyGameObject = true);
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }
