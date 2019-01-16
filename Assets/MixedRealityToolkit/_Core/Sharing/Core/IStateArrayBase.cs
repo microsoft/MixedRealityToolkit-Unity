@@ -37,6 +37,18 @@ namespace Pixie.Core
         void Flush();
 
         /// <summary>
+        /// Copies local cache into internal sync list array for specific key.
+        /// If key is not found flush will be ignored.
+        /// </summary>
+        void Flush(short key);
+
+        /// <summary>
+        /// Copies local cache into internal sync list array for all provided keys.
+        /// Keys that are not found will be ignored.
+        /// </summary>
+        void Flush(IEnumerable<short> keys);
+
+        /// <summary>
         /// Returns the next available key in the array.
         /// </summary>
         /// <returns></returns>

@@ -41,6 +41,18 @@ namespace Pixie.StateControl
                 stateArray.Flush();
         }
 
+        public void Flush<T>(IEnumerable<short> keys) where T : struct, IItemState, IItemStateComparer<T>
+        {
+            IStateArrayBase stateArray = GetStateArray(typeof(T));
+            stateArray.Flush(keys);
+        }
+
+        public void Flush<T>(short key) where T : struct, IItemState, IItemStateComparer<T>
+        {
+            IStateArrayBase stateArray = GetStateArray(typeof(T));
+            stateArray.Flush(key);
+        }
+
         public void Flush<T>() where T : struct, IItemState, IItemStateComparer<T>
         {
             IStateArrayBase stateArray = GetStateArray(typeof(T));

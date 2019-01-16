@@ -1,5 +1,6 @@
 ﻿using Pixie.Core;
 using System;
+using System.Collections.Generic;
 
 namespace Pixie.StateControl
 {
@@ -41,5 +42,15 @@ namespace Pixie.StateControl
         /// Flushes object state array of type T.
         /// </summary>
         void Flush<T>() where T : struct, IItemState, IItemStateComparer<T>;
+
+        /// <summary>
+        /// Flushes single item in object state array of type T.
+        /// </summary>
+        void Flush<T>(short key) where T : struct, IItemState, IItemStateComparer<T>;
+
+        /// <summary>
+        ///  Flushes set of items in object state array of type T.
+        /// </summary>
+        void Flush<T>(IEnumerable<short> keys) where T : struct, IItemState, IItemStateComparer<T>;
     }
 }

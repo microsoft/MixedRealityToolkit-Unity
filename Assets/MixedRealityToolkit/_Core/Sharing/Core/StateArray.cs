@@ -162,6 +162,56 @@ namespace Pixie.Core
             }
         }
 
+        public void Flush(short key)
+        {
+            T modifiedState;
+            if (modifiedStates.TryGetValue(key, out modifiedState))
+            {
+                flushedStates.Clear();
+                if (!states.ContainsKey(modifiedState.Key))
+                {
+                    // If states doesn't contain the key, add it
+                    flushedStates.Add(modifiedState);
+                }
+                else if (states[modifiedState.Key].IsDifferent(modifiedState))
+                {
+                    // Otherwise, if it's different from modified value, change it
+                    flushedStates.Add(modifiedState);
+                }
+
+                if (flushedStates.Count > 0)
+                    statePipe.SendFlushedStates(StateType, flushedStates);
+            }
+        }
+
+        public void Flush(IEnumerable<short> keys)
+        {
+            if (modifiedStates.Count > 0)
+            {
+                flushedStates.Clear();
+                foreach (short key in keys)
+                {
+                    T modifiedState;
+                    if (modifiedStates.TryGetValue(key, out modifiedState))
+                    {
+                        if (!states.ContainsKey(modifiedState.Key))
+                        {
+                            // If states doesn't contain the key, add it
+                            flushedStates.Add(modifiedState);
+                        }
+                        else if (states[modifiedState.Key].IsDifferent(modifiedState))
+                        {
+                            // Otherwise, if it's different from modified value, change it
+                            flushedStates.Add(modifiedState);
+                        }
+                    }
+                }
+
+                if (flushedStates.Count > 0)
+                    statePipe.SendFlushedStates(StateType, flushedStates);
+            }
+        }
+
         public T this[short key]
         {
             get
