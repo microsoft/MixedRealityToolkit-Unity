@@ -15,7 +15,7 @@ using UnityEngine.XR.WSA;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 {
-    public class WindowsMixedRealitySpatialObserver : BaseSpatialObserver
+    public class WindowsMixedRealitySpatialObserver : SpatialMeshObserver
     {
         /// <summary>
         /// Constructor.

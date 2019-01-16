@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
 using System.Collections.Generic;
 using UnityEngine;
@@ -72,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// </summary>
         /// <returns>The source identifier to be used by the <see cref="IMixedRealitySpatialAwarenessObserver"/> implementation.</returns>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, and not by application code.
         /// </remarks>
         uint GenerateNewSourceId();
 
@@ -141,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness mesh subsystem.
         /// </summary>
-        IDictionary<int, GameObject> Meshes { get; }
+        IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes { get; }
 
         #region Mesh Events
 
@@ -258,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness surface finding subsystem.
         /// </summary>
-        IDictionary<int, GameObject> PlanarSurfaces { get; }
+        IReadOnlyDictionary<int, SpatialAwarenessPlanarObject> PlanarSurfaces { get; }
 
         #region Surface Finding Events
 

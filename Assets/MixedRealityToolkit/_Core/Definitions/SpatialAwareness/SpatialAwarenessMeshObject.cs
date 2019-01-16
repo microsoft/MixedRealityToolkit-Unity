@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// </summary>
         public SpatialAwarenessMeshObject() : base()
         {
-            //empty for now
+            //todo?
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <returns>
         /// SpatialMeshObject containing the fields that describe the mesh.
         /// </returns>
-        public static SpatialAwarenessMeshObject CreateSpatialObject( Mesh mesh, Type[] requiredMeshComponents, string name, int meshId)
+        public static SpatialAwarenessMeshObject CreateSpatialObject(Mesh mesh, Type[] requiredMeshComponents, string name, int meshId)
         {
             SpatialAwarenessMeshObject newMesh = new SpatialAwarenessMeshObject();
 
@@ -54,6 +54,41 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             newMesh.Collider.sharedMesh = newMesh.Filter.sharedMesh;
 
             return newMesh;
+        }
+
+        /// <summary>
+        /// Clean up the resources associated with the surface.
+        /// </summary>
+        /// <param name="meshObject">The <see cref="SpatialAwarenessMeshObject"/> whose resources will be cleaned up.</param>
+        /// <param name="destroyGameObject"></param>
+        /// <param name="destroyMeshes"></param>
+        public static void CleanUpMeshObject(SpatialAwarenessMeshObject meshObject, bool destroyGameObject = true, bool destroyMeshes = true)
+        {
+
+            if (destroyGameObject && (meshObject.GameObject != null))
+            {
+                UnityEngine.Object.Destroy(meshObject.GameObject);
+                meshObject.GameObject = null;
+            }
+
+            Mesh filterMesh = meshObject.Filter.sharedMesh;
+            Mesh colliderMesh = meshObject.Collider.sharedMesh;
+
+            if (destroyMeshes)
+            {
+
+                if (filterMesh != null)
+                {
+                    UnityEngine.Object.Destroy(filterMesh);
+                    meshObject.Filter.sharedMesh = null;
+                }
+
+                if ((colliderMesh != null) && (colliderMesh != filterMesh))
+                {
+                    UnityEngine.Object.Destroy(colliderMesh);
+                    meshObject.Collider.sharedMesh = null;
+                }
+            }
         }
 
     }

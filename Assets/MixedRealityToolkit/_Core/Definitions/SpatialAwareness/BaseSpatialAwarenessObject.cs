@@ -26,5 +26,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
+        public BaseSpatialAwarenessObject()
+        {
+            //empty for now
+        }
+
     }
 }

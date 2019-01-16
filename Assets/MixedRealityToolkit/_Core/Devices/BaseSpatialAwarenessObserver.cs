@@ -107,11 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// </summary>
         protected abstract void CleanUpSpatialObjectList();
 
-        /// <summary>
-        /// Clean up the resources associated with the surface.
-        /// </summary>
-        protected abstract void CleanUpSpatialObject(BaseSpatialAwarenessObject spatialObject, bool destroyGameObject = true);
-
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }
 }

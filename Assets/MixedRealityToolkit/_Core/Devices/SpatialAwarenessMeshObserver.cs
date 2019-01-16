@@ -92,46 +92,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             {
                 // Cleanup mesh object.
                 // Destroy the game object, destroy the meshes.
-                CleanUpSpatialObject(meshObject);
+                SpatialAwarenessMeshObject.CleanUpMeshObject(meshObject);
             }
             meshObjects.Clear();
         }
 
-        /// <summary>
-        /// Clean up the resources associated with the surface.
-        /// </summary>
-        /// <param name="meshObject">The <see cref="SpatialAwarenessMeshObject"/> whose resources will be cleaned up.</param>
-        /// <param name="destroyGameObject"></param>
-        /// <param name="destroyMeshes"></param>
-        protected override void CleanUpSpatialObject(
-            BaseSpatialAwarenessObject spatialObject,
-            bool destroyGameObject = true)
-        {
-            SpatialAwarenessMeshObject meshObject = spatialObject as SpatialAwarenessMeshObject;
 
-            if (destroyGameObject && (meshObject.GameObject != null))
-            {
-                Object.Destroy(meshObject.GameObject);
-                meshObject.GameObject = null;
-            }
 
-            Mesh filterMesh = meshObject.Filter.sharedMesh;
-            Mesh colliderMesh = meshObject.Collider.sharedMesh;
-
-            if (filterMesh != null)
-            {
-                Object.Destroy(filterMesh);
-                meshObject.Filter.sharedMesh = null;
-            }
-
-            if ((colliderMesh != null) && (colliderMesh != filterMesh))
-            {
-                Object.Destroy(colliderMesh);
-                meshObject.Collider.sharedMesh = null;
-            }
-        }
-
-        //Old implmementation still using destroy meshes.. not sure if its needed?
+        //Old implmementation
         /*
          protected override void CleanUpSpatialObject(
             BaseSpatialAwarenessObject meshObject,

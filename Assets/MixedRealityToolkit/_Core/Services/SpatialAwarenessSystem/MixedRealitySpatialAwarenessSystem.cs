@@ -3,9 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Devices;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -61,12 +63,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
             return secondGeneration;
         }
 
-        private IMixedRealitySpatialAwarenessObserver spatialAwarenessObserver = null;
+        private IMixedRealitySpatialAwarenessMeshObserver spatialAwarenessObserver = null;
 
         /// <summary>
-        /// The <see cref="IMixedRealitySpatialAwarenessObserver"/>, if any, that is active on the current platform.
+        /// The <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>, if any, that is active on the current platform.
         /// </summary>
-        private IMixedRealitySpatialAwarenessObserver SpatialAwarenessObserver => spatialAwarenessObserver ?? (spatialAwarenessObserver = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessObserver>());
+        private IMixedRealitySpatialAwarenessMeshObserver SpatialAwarenessObserver => spatialAwarenessObserver ?? (spatialAwarenessObserver = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessMeshObserver>());
 
         #region IMixedRealityToolkit Implementation
 
@@ -339,13 +341,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         /// <inheritdoc />
         public void ResumeObserver()
         {
-            SpatialAwarenessObserver?.StartObserving();
+            SpatialAwarenessObserver?.Resume();
         }
 
         /// <inheritdoc />
         public void SuspendObserver()
         {
-            SpatialAwarenessObserver?.StopObserving();
+            SpatialAwarenessObserver?.Suspend();
         }
 
         private uint nextSourceId = 0;
@@ -409,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
 
         /// <inheritdoc />
         /// <remarks>The observer manages the mesh collection.</remarks>
-        public IDictionary<int, GameObject> Meshes => SpatialAwarenessObserver.Meshes;
+        public IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes => SpatialAwarenessObserver.Meshes;
 
         #endregion Mesh Handling implementation
 
@@ -452,13 +454,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         public Material PlatformSurfaceMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public IDictionary<int, GameObject> PlanarSurfaces
+        public IReadOnlyDictionary<int, SpatialAwarenessPlanarObject> PlanarSurfaces
         {
             get
             {
                 // This implementation of the spatial awareness system manages game objects.
                 // todo
-                return new Dictionary<int, GameObject>(0);
+                return new Dictionary<int, SpatialAwarenessPlanarObject>(0);
             }
         }
 
