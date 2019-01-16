@@ -15,8 +15,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 {
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityInputSystem"/>

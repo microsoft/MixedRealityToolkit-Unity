@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Services.InputSystem;
+using Microsoft.MixedReality.Toolkit.Services.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers

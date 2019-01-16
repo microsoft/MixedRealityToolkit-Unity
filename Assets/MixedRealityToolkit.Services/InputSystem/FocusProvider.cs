@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 {
     /// <summary>
     /// The focus provider handles the focused objects per input source.
