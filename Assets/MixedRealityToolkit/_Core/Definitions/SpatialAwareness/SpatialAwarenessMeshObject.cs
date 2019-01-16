@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <returns>
         /// SpatialMeshObject containing the fields that describe the mesh.
         /// </returns>
-        public static SpatialAwarenessMeshObject CreateSpatialObject(Mesh mesh, Type[] requiredMeshComponents, string name, int meshId)
+        public static SpatialAwarenessMeshObject CreateSpatialMeshObject(Mesh mesh, Type[] requiredMeshComponents, string name, int meshId)
         {
             SpatialAwarenessMeshObject newMesh = new SpatialAwarenessMeshObject();
 

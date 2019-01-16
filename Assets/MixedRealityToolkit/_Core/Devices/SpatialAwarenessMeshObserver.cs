@@ -56,8 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
 
         IReadOnlyDictionary<int, SpatialAwarenessMeshObject> IMixedRealitySpatialAwarenessMeshObserver.Meshes => throw new System.NotImplementedException();
 
-
-
         /// <summary>
         /// Start | Resume the observer.
         /// </summary>
@@ -72,14 +70,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// When a mesh is created we will need to create a game object with a minimum 
         /// set of components to contain the mesh.  These are the required component types.
         /// </summary>
-        private System.Type[] requiredMeshComponents =
+        protected System.Type[] requiredMeshComponents =
         {
             typeof(MeshFilter),
             typeof(MeshRenderer),
             typeof(MeshCollider)
         };
 
-        protected Dictionary<int, BaseSpatialAwarenessObject> meshObjects = new Dictionary<int, BaseSpatialAwarenessObject>();
+        protected Dictionary<int, SpatialAwarenessMeshObject> meshObjects = new Dictionary<int, SpatialAwarenessMeshObject>();
 
         /// <summary>
         /// Cleans up mesh objects managed by the observer.
@@ -96,41 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             }
             meshObjects.Clear();
         }
-
-
-
-        //Old implmementation
-        /*
-         protected override void CleanUpSpatialObject(
-            BaseSpatialAwarenessObject meshObject,
-            bool destroyGameObject = true,
-            bool destroyMeshes = true)
-        {
-            if (destroyGameObject && (meshObject.GameObject != null))
-            {
-                Object.Destroy(meshObject.GameObject);
-                meshObject.GameObject = null;
-            }
-
-            Mesh filterMesh = meshObject.Filter.sharedMesh;
-            Mesh colliderMesh = meshObject.Collider.sharedMesh;
-
-            if (destroyMeshes)
-            {
-                if (filterMesh != null)
-                {
-                    Object.Destroy(filterMesh);
-                    meshObject.Filter.sharedMesh = null;
-                }
-
-                if ((colliderMesh != null) && (colliderMesh != filterMesh))
-                {
-                    Object.Destroy(colliderMesh);
-                    meshObject.Collider.sharedMesh = null;
-                }
-            }
-        }
-        */
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }

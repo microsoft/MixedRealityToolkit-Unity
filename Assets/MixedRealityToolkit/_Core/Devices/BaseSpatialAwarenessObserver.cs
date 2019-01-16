@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         public int DefaultPhysicsLayerMask => throw new System.NotImplementedException();
 
         /// <inheritdoc />
-        public bool IsRunning => throw new System.NotImplementedException();
+        public bool IsRunning { get => throw new System.NotImplementedException(); protected set => throw new System.NotImplementedException(); }
 
         /// <inheritdoc />
         public bool IsStationaryObserver { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }

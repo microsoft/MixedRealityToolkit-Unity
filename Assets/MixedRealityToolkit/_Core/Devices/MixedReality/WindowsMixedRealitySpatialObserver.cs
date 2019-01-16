@@ -114,14 +114,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// only request one mesh to be created at a time.  This variable will track 
         /// if a mesh creation request is in flight. 
         /// </summary> 
-        private SpatialMeshObject? outstandingMeshObject = null;
+        private SpatialAwarenessMeshObject outstandingMeshObject = null;
 
         /// <summary>
         /// When surfaces are replaced or removed, rather than destroying them, we'll keep
         /// one as a spare for use in outstanding mesh requests. That way, we'll have fewer
         /// game object create/destroy cycles, which should help performance.
         /// </summary>
-        protected SpatialMeshObject? spareMeshObject = null;
+        protected SpatialAwarenessMeshObject spareMeshObject = null;
 
         /// <summary>
         /// The time at which the surface observer was last asked for updated data.
@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
                 if (SpatialAwarenessSystem.StartupBehavior == AutoStartBehavior.AutoStart)
                 {
-                    StartObserving();
+                    Resume();
                 }
             }
         }
@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             {
                 if (IsRunning)
                 {
-                    StopObserving();
+                    Suspend();
                 }
                 observer.Dispose();
                 observer = null;
@@ -219,21 +219,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             if (Application.isPlaying)
             {
                 // Cleanup the mesh objects that are being manaaged by this observer.
-                base.CleanupMeshes();
-
+                base.CleanUpSpatialObjectList();
                 // Cleanup the outstanding mesh object.
-                if (outstandingMeshObject.HasValue)
+                if (outstandingMeshObject != null)
                 {
                     // Destroy the game object, destroy the meshes.
-                    CleanupMeshObject(outstandingMeshObject.Value);
+                    SpatialAwarenessMeshObject.CleanUpMeshObject(outstandingMeshObject);
                     outstandingMeshObject = null;
                 }
 
                 // Cleanup the spare mesh object
-                if (spareMeshObject.HasValue)
+                if (spareMeshObject != null)
                 {
                     // Destroy the game object, destroy the meshes.
-                    CleanupMeshObject(spareMeshObject.Value);
+                    SpatialAwarenessMeshObject.CleanUpMeshObject(spareMeshObject);
                     spareMeshObject = null;
                 }
 
@@ -250,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             if (SpatialAwarenessSystem == null) { return; }
 
             // Only update the observer if it is running.
-            if (IsRunning && !outstandingMeshObject.HasValue)
+            if (IsRunning && outstandingMeshObject != null)
             {
                 // If we have a mesh to work on...
                 if (meshWorkQueue.Count > 0)
@@ -285,18 +284,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         {
             string meshName = ("SpatialMesh - " + surfaceId.handle);
 
-            SpatialMeshObject newMesh;
+            SpatialAwarenessMeshObject newMesh;
             WorldAnchor worldAnchor;
 
-            if (!spareMeshObject.HasValue)
+            if (spareMeshObject != null)
             {
-                newMesh = CreateSpatialMeshObject(null, meshName, surfaceId.handle);
+                newMesh = SpatialAwarenessMeshObject.CreateSpatialMeshObject(null, requiredMeshComponents, meshName, surfaceId.handle);
 
                 worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
             }
             else
             {
-                newMesh = spareMeshObject.Value;
+                newMesh = spareMeshObject;
                 spareMeshObject = null;
 
                 newMesh.GameObject.name = meshName;
@@ -330,12 +329,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
 
         /// <summary>
-        /// Removes the <see cref="SpatialMeshObject"/> associated with the specified id.
+        /// Removes the <see cref="SpatialAwarenessMeshObject"/> associated with the specified id.
         /// </summary>
         /// <param name="id">The id of the mesh to be removed.</param>
         protected void RemoveMeshObject(int id)
         {
-            SpatialMeshObject mesh;
+            SpatialAwarenessMeshObject mesh;
 
             if (meshObjects.TryGetValue(id, out mesh))
             {
@@ -351,16 +350,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         }
 
         /// <summary>
-        /// Reclaims the <see cref="SpatialMeshObject"/> to allow for later reuse.
+        /// Reclaims the <see cref="SpatialAwarenessMeshObject"/> to allow for later reuse.
         /// </summary>
         /// <param name="availableMeshObject"></param>
-        protected void ReclaimMeshObject(SpatialMeshObject availableMeshObject)
+        protected void ReclaimMeshObject(SpatialAwarenessMeshObject availableMeshObject)
         {
-            if (!spareMeshObject.HasValue)
+            if (spareMeshObject != null)
             {
                 // Cleanup the mesh object.
                 // Do not destroy the game object, destroy the meshes.
-                CleanupMeshObject(availableMeshObject, false);
+                SpatialAwarenessMeshObject.CleanUpMeshObject(availableMeshObject, false);
 
                 availableMeshObject.GameObject.name = "Unused Spatial Mesh";
                 availableMeshObject.GameObject.SetActive(false);
@@ -371,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             {
                 // Cleanup the mesh object.
                 // Destroy the game object, destroy the meshes.
-                CleanupMeshObject(availableMeshObject);
+                SpatialAwarenessMeshObject.CleanUpMeshObject(availableMeshObject);
             }
         }
 
@@ -428,7 +427,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         {
             if (!IsRunning) { return; }
 
-            if (!outstandingMeshObject.HasValue)
+            if ( outstandingMeshObject != null)
             {
                 Debug.LogWarning($"OnDataReady called for mesh id {cookedData.id.handle} while no request was outstanding.");
                 return;
@@ -437,23 +436,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             if (!outputWritten)
             {
                 Debug.LogWarning($"OnDataReady reported no data written for mesh id {cookedData.id.handle}");
-                ReclaimMeshObject(outstandingMeshObject.Value);
+                ReclaimMeshObject(outstandingMeshObject);
                 outstandingMeshObject = null;
                 return;
             }
 
             // Since there is only one outstanding mesh object, update the id to match
             // the one received after baking.
-            SpatialMeshObject meshObject = outstandingMeshObject.Value;
+            SpatialAwarenessMeshObject meshObject = outstandingMeshObject;
             meshObject.Id = cookedData.id.handle;
             outstandingMeshObject = null;
 
             // Apply the appropriate material to the mesh.
-            SpatialMeshDisplayOptions displayOption = SpatialAwarenessSystem.MeshDisplayOption;
-            if (displayOption != SpatialMeshDisplayOptions.None)
+            SpatialObjectDisplayOptions displayOption = SpatialAwarenessSystem.MeshDisplayOption;
+            if (displayOption != SpatialObjectDisplayOptions.None)
             {
                 meshObject.Renderer.enabled = true;
-                meshObject.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
+                meshObject.Renderer.sharedMaterial = (displayOption == SpatialObjectDisplayOptions.Visible) ?
                     SpatialAwarenessSystem.MeshVisibleMaterial :
                     SpatialAwarenessSystem.MeshOcclusionMaterial;
             }
