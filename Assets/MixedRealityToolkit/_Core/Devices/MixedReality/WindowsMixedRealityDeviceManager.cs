@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+using UnityEngine;
 
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
@@ -12,7 +13,6 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 #endif // UNITY_WSA
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public WindowsMixedRealityDeviceManager(string name, uint priority) : base(name, priority) { }
+        public WindowsMixedRealityDeviceManager(string name, uint priority, ScriptableObject profile) : base(name, priority, profile) { }
 
 #if UNITY_WSA
 

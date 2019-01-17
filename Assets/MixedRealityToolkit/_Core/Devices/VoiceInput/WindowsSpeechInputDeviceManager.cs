@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     public class WindowsSpeechInputDeviceManager : BaseDeviceManager, IMixedRealitySpeechSystem
     {
-        public WindowsSpeechInputDeviceManager(string name, uint priority) : base(name, priority) { }
+        public WindowsSpeechInputDeviceManager(string name, uint priority, ScriptableObject profile) : base(name, priority, profile) { }
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
