@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public IBaseRayStabilizer RayStabilizer { get; set; }
 
         /// <inheritdoc />
-        public RaycastModeType RaycastMode { get; set; } = RaycastModeType.Simple;
+        public RaycastMode RaycastMode { get; set; } = RaycastMode.Simple;
 
         /// <inheritdoc />
         public float SphereCastRadius { get; set; } = 0.1f;

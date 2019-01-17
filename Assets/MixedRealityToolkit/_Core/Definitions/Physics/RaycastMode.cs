@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
     /// <summary>
     /// Defines the different ways raycasting can be done.
     /// </summary>
-    public enum RaycastModeType
+    public enum RaycastMode
     {
         /// <summary>
         /// Use a simple raycast from a single point in a given direction.

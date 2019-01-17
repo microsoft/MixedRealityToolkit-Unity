@@ -54,21 +54,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             if (loFiEffect == null) { return; }
 
             // Get the current source quality setting.
-            AudioLoFiSourceQualityType sourceQuality = loFiEffect.SourceQuality;
+            AudioLoFiSourceQuality sourceQuality = loFiEffect.SourceQuality;
 
             // Select a new source quality setting.
             switch (sourceQuality)
             {
-                case AudioLoFiSourceQualityType.NarrowBandTelephony:
-                    sourceQuality = AudioLoFiSourceQualityType.AmRadio;
+                case AudioLoFiSourceQuality.NarrowBandTelephony:
+                    sourceQuality = AudioLoFiSourceQuality.AmRadio;
                     break;
 
-                case AudioLoFiSourceQualityType.AmRadio:
-                    sourceQuality = AudioLoFiSourceQualityType.FullRange;
+                case AudioLoFiSourceQuality.AmRadio:
+                    sourceQuality = AudioLoFiSourceQuality.FullRange;
                     break;
 
-                case AudioLoFiSourceQualityType.FullRange:
-                    sourceQuality = AudioLoFiSourceQualityType.NarrowBandTelephony;
+                case AudioLoFiSourceQuality.FullRange:
+                    sourceQuality = AudioLoFiSourceQuality.NarrowBandTelephony;
                     break;
             }
 
@@ -95,22 +95,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// Sets the appropriate material based on the source quality setting.
         /// </summary>
         /// <param name="sourceQuality">The source quality used to determine the appropriate material.</param>
-        private void SetEmitterMaterial(AudioLoFiSourceQualityType sourceQuality)
+        private void SetEmitterMaterial(AudioLoFiSourceQuality sourceQuality)
         {
             Material emitterMaterial = UnknownQuality;
 
             // Determine the material for the emitter based on the source quality.
             switch (sourceQuality)
             {
-                case AudioLoFiSourceQualityType.NarrowBandTelephony:
+                case AudioLoFiSourceQuality.NarrowBandTelephony:
                     emitterMaterial = NarrowBandTelephony;
                     break;
 
-                case AudioLoFiSourceQualityType.AmRadio:
+                case AudioLoFiSourceQuality.AmRadio:
                     emitterMaterial = AmRadio;
                     break;
 
-                case AudioLoFiSourceQualityType.FullRange:
+                case AudioLoFiSourceQuality.FullRange:
                     emitterMaterial = FullRange;
                     break;
             }

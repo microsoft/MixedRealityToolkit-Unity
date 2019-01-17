@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// <summary>
         /// The physics raycast mode to use.
         /// </summary>
-        RaycastModeType RaycastMode { get; set; }
+        RaycastMode RaycastMode { get; set; }
 
         /// <summary>
         /// The radius to use when <see cref="RaycastMode"/> is set to Sphere.

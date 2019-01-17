@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Surface raycast mode")]
-        private RaycastModeType raycastMode = RaycastModeType.Simple;
+        private RaycastMode raycastMode = RaycastMode.Simple;
 
         [SerializeField]
         [Tooltip("Number of rays per edge, should be odd. Total casts is n^2")]
@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             base.OnValidate();
 
-            if (raycastMode == RaycastModeType.Box)
+            if (raycastMode == RaycastMode.Box)
             {
                 boxCollider = gameObject.GetComponent<BoxCollider>();
 
@@ -180,14 +180,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         private void Start()
         {
-            if (raycastMode == RaycastModeType.Box && boxCollider == null)
+            if (raycastMode == RaycastMode.Box && boxCollider == null)
             {
                 boxCollider = gameObject.GetComponent<BoxCollider>();
 
                 if (boxCollider == null)
                 {
                     Debug.LogError($"Box raycast mode requires a BoxCollider, but none was found on {name}! Defaulting to Simple raycast mode.");
-                    raycastMode = RaycastModeType.Simple;
+                    raycastMode = RaycastMode.Simple;
                 }
             }
         }
@@ -256,13 +256,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
             switch (raycastMode)
             {
-                case RaycastModeType.Simple:
+                case RaycastMode.Simple:
                     SimpleRaycastStepUpdate(rayStep);
                     break;
-                case RaycastModeType.Box:
+                case RaycastMode.Box:
                     BoxRaycastStepUpdate(rayStep);
                     break;
-                case RaycastModeType.Sphere:
+                case RaycastMode.Sphere:
                     SphereRaycastStepUpdate(rayStep);
                     break;
             }
