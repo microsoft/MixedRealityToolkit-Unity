@@ -14,17 +14,17 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-namespace Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput
+namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
 {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-    public class WindowsDictationInputDeviceManager : BaseDeviceManager, IMixedRealityDictationSystem
+    public class WindowsDictationInputProvider : BaseDeviceManager, IMixedRealityDictationSystem
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public WindowsDictationInputDeviceManager(string name, uint priority) : base(name, priority) { }
+        public WindowsDictationInputProvider(string name, uint priority) : base(name, priority) { }
 
         /// <summary>
         /// Is the Dictation Manager currently running?

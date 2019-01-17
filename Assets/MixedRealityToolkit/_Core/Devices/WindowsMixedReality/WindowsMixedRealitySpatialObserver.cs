@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 {
     public class WindowsMixedRealitySpatialObserver : BaseSpatialObserver
     {

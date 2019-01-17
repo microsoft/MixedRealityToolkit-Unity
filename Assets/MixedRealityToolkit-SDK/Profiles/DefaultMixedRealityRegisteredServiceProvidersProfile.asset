@@ -31,21 +31,21 @@ MonoBehaviour:
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityDeviceManager,
         Microsoft.MixedReality.Toolkit
-    componentName: Mixed Reality Device Manager
+    componentName: Windows Mixed Reality Provider
     priority: 10
     runtimePlatform: 8
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput.WindowsSpeechInputDeviceManager,
-        Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput
-    componentName: Windows Speech Input Manager
+      reference: Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput.WindowsSpeechInputProvider,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
+    componentName: Windows Speech Input Provider
     priority: 10
     runtimePlatform: 9
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput.WindowsDictationInputDeviceManager,
-        Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput
-    componentName: Windows Dictation Input Manager
+      reference: Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput.WindowsDictationInputProvider,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
+    componentName: Windows Dictation Input Provider
     priority: 10
     runtimePlatform: 9
     configurationProfile: {fileID: 0}
@@ -57,7 +57,7 @@ MonoBehaviour:
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness.WindowsMixedRealitySpatialObserver,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealitySpatialObserver,
         Microsoft.MixedReality.Toolkit
     componentName: Windows Mixed Reality Spatial Observer
     priority: 10

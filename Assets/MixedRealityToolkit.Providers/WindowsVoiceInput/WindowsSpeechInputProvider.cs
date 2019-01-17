@@ -14,12 +14,12 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-namespace Microsoft.MixedReality.Toolkit.Devices.WindowsVoiceInput
+namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
 {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-    public class WindowsSpeechInputDeviceManager : BaseDeviceManager, IMixedRealitySpeechSystem
+    public class WindowsSpeechInputProvider : BaseDeviceManager, IMixedRealitySpeechSystem
     {
-        public WindowsSpeechInputDeviceManager(string name, uint priority) : base(name, priority) { }
+        public WindowsSpeechInputProvider(string name, uint priority) : base(name, priority) { }
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
