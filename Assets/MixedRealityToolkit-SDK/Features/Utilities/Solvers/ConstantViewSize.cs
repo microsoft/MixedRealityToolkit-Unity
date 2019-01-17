@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         [Tooltip("If you don't trust or don't like the auto size calculation, specify a manual size here. 0 is ignored")]
         private float manualObjectSize = 0;
 
-        public ScaleStateType ScaleState { get; private set; } = ScaleStateType.Static;
+        public ScaleState ScaleState { get; private set; } = ScaleState.Static;
 
         /// <summary>
         /// 0 to 1 between MinScale and MaxScale. If current is less than max, then scaling is being applied.
@@ -145,15 +145,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
             if (scaleDifference > scaleBuffer)
             {
-                ScaleState = ScaleStateType.Growing;
+                ScaleState = ScaleState.Growing;
             }
             else if (scaleDifference < -scaleBuffer)
             {
-                ScaleState = ScaleStateType.Shrinking;
+                ScaleState = ScaleState.Shrinking;
             }
             else
             {
-                ScaleState = ScaleStateType.Static;
+                ScaleState = ScaleState.Static;
             }
         }
     }

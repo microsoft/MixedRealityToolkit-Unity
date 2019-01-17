@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         public IBaseRayStabilizer RayStabilizer { get; set; }
 
         /// <inheritdoc />
-        public RaycastModeType RaycastMode { get; set; } = RaycastModeType.Simple;
+        public RaycastMode RaycastMode { get; set; } = RaycastMode.Simple;
 
         /// <inheritdoc />
         public float SphereCastRadius { get; set; }

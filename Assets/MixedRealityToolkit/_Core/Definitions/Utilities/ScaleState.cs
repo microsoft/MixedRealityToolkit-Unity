@@ -3,7 +3,7 @@
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 {
-    public enum ScaleStateType
+    public enum ScaleState
     {
         Static = 0,
         Shrinking,

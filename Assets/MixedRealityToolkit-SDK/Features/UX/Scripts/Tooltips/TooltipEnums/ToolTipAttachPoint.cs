@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     /// <remarks>
     /// These double as array positions.
     /// </remarks>
-    public enum ToolTipAttachPointType
+    public enum ToolTipAttachPoint
     {
         #region Specific options
 
