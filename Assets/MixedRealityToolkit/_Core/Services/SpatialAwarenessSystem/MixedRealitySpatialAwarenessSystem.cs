@@ -317,7 +317,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         public AutoStartBehavior StartupBehavior { get; set; } = AutoStartBehavior.AutoStart;
 
         /// <inheritdoc />
+        public VolumeType ObserverVolumeType { get; set; } = VolumeType.Cubic;
+
+        /// <inheritdoc />
         public Vector3 ObservationExtents { get; set; } = Vector3.one * 3;
+
+        /// <inheritdoc />
+        public float ObserverRadius { get; set; } = 3.0f;
 
         /// <inheritdoc />
         public bool IsStationaryObserver { get; set; } = false;
@@ -356,6 +362,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         public uint GenerateNewSourceId()
         {
             return nextSourceId++;
+        }
+
+        /// <inheritdoc />
+        public void GetObservers<T>()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void GetObserver<T>()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void GetObserver<T>(int id)
+        {
+            throw new System.NotImplementedException();
         }
 
         #region Mesh Handling implementation

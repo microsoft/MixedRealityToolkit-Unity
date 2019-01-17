@@ -81,12 +81,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
-        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-
+        //private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+        private IMixedRealitySpatialAwarenessMeshSystem spatialAwarenessSystem = null;
         /// <summary>
         /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
+        //private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
+        private IMixedRealitySpatialAwarenessMeshSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = (IMixedRealitySpatialAwarenessMeshSystem)MixedRealityToolkit.SpatialAwarenessSystem);
 
 #if UNITY_WSA
         /// <summary>
@@ -289,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
             if (spareMeshObject != null)
             {
-                newMesh = SpatialAwarenessMeshObject.CreateSpatialMeshObject(null, requiredMeshComponents, meshName, surfaceId.handle);
+                newMesh = SpatialAwarenessMeshObject.CreateSpatialMeshObject(null, requiredMeshComponents, MeshPhysicsLayer, meshName, surfaceId.handle);
 
                 worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
             }
@@ -312,7 +313,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 newMesh.Filter,
                 worldAnchor,
                 newMesh.Collider,
-                SpatialAwarenessSystem.MeshTrianglesPerCubicMeter,
+                MeshTrianglesPerCubicMeter,
+                //SpatialAwarenessSystem.MeshTrianglesPerCubicMeter,
                 true);
 
             if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))

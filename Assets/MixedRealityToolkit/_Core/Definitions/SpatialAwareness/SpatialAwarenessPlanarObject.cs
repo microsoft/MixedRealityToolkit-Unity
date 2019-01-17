@@ -30,13 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <returns>
         /// SpatialAwarenessPlanarObject containing the fields that describe the plane.
         /// </returns>
-        public static SpatialAwarenessPlanarObject CreateSpatialObject(Vector3 size, string name, int planeId)
+        public static SpatialAwarenessPlanarObject CreateSpatialObject(Vector3 size, int layer, string name, int planeId)
         {
             SpatialAwarenessPlanarObject newMesh = new SpatialAwarenessPlanarObject();
             
             newMesh.Id = planeId;
             newMesh.GameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            newMesh.GameObject.layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayer;
+            newMesh.GameObject.layer = layer;
             newMesh.GameObject.transform.localScale = size;
 
             newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();

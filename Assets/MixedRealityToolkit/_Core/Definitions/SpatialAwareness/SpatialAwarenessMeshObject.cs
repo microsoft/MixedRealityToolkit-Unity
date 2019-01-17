@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using UnityEngine;
@@ -32,13 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <returns>
         /// SpatialMeshObject containing the fields that describe the mesh.
         /// </returns>
-        public static SpatialAwarenessMeshObject CreateSpatialMeshObject(Mesh mesh, Type[] requiredMeshComponents, string name, int meshId)
+        public static SpatialAwarenessMeshObject CreateSpatialMeshObject(Mesh mesh, Type[] requiredMeshComponents, int layer, string name, int meshId)
         {
             SpatialAwarenessMeshObject newMesh = new SpatialAwarenessMeshObject();
 
             newMesh.Id = meshId;
             newMesh.GameObject = new GameObject(name, requiredMeshComponents);
-            newMesh.GameObject.layer = MixedRealityToolkit.SpatialAwarenessSystem.MeshPhysicsLayer;
+            newMesh.GameObject.layer = layer;
 
             newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
             newMesh.Filter.sharedMesh = mesh;
