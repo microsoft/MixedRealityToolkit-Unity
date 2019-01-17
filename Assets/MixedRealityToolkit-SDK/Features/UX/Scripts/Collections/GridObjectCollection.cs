@@ -42,12 +42,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Whether to sort objects by row first or by column first")]
         [SerializeField]
-        private LayoutOrderType layout = LayoutOrderType.ColumnThenRow;
+        private LayoutOrder layout = LayoutOrder.ColumnThenRow;
 
         /// <summary>
         /// Whether to sort objects by row first or by column first
         /// </summary>
-        public LayoutOrderType Layout
+        public LayoutOrder Layout
         {
             get { return layout; }
             set { layout = value; }
@@ -227,13 +227,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             }
         }
 
-        protected void ResolveGridLayout(Vector3[] grid, float offsetX, float offsetY, LayoutOrderType order)
+        protected void ResolveGridLayout(Vector3[] grid, float offsetX, float offsetY, LayoutOrder order)
         {
             int cellCounter = 0;
             float iMax;
             float jMax;
 
-            if (order == LayoutOrderType.RowThenColumn)
+            if (order == LayoutOrder.RowThenColumn)
             {
                 iMax = Rows;
                 jMax = Columns;

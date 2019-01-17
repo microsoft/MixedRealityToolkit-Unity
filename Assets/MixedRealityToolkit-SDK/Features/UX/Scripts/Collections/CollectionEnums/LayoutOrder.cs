@@ -1,28 +1,28 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 {
     /// <summary>
-    /// Enum describing the display mode of a ToolTip.
+    /// Collection layout type enum
     /// </summary>
-    public enum DisplayModeType
+    public enum LayoutOrder
     {
         /// <summary>
-        /// No state to have from Manager
+        /// Sort by column, then by row
         /// </summary>
-        None = 0,
+        ColumnThenRow = 0,
         /// <summary>
-        /// Tips are always on
+        /// Sort by row, then by column
         /// </summary>
-        On,
+        RowThenColumn,
         /// <summary>
-        /// Looking at Object Activates tip (Object must be interactive)
+        /// Sort horizontally
         /// </summary>
-        OnFocus,
+        Horizontal,
         /// <summary>
-        /// Tips are always off
+        /// Sort vertically
         /// </summary>
-        Off
+        Vertical
     }
 }

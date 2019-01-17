@@ -35,12 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Type of sorting to use")]
         [SerializeField]
-        private CollationOrderType sortType = CollationOrderType.None;
+        private CollationOrder sortType = CollationOrder.None;
 
         /// <summary>
         /// Type of sorting to use.
         /// </summary>
-        public CollationOrderType SortType
+        public CollationOrder SortType
         {
             get { return sortType; }
             set { sortType = value; }
@@ -84,20 +84,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
             switch (SortType)
             {
-                case CollationOrderType.ChildOrder:
+                case CollationOrder.ChildOrder:
                     NodeList.Sort((c1, c2) => (c1.Transform.GetSiblingIndex().CompareTo(c2.Transform.GetSiblingIndex())));
                     break;
 
-                case CollationOrderType.Alphabetical:
+                case CollationOrder.Alphabetical:
                     NodeList.Sort((c1, c2) => (string.CompareOrdinal(c1.Name, c2.Name)));
                     break;
 
-                case CollationOrderType.AlphabeticalReversed:
+                case CollationOrder.AlphabeticalReversed:
                     NodeList.Sort((c1, c2) => (string.CompareOrdinal(c1.Name, c2.Name)));
                     NodeList.Reverse();
                     break;
 
-                case CollationOrderType.ChildOrderReversed:
+                case CollationOrder.ChildOrderReversed:
                     NodeList.Sort((c1, c2) => (c1.Transform.GetSiblingIndex().CompareTo(c2.Transform.GetSiblingIndex())));
                     NodeList.Reverse();
                     break;

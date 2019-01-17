@@ -23,12 +23,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
     {
         [Tooltip("The quality level of the simulated audio source.")]
         [SerializeField]
-        private AudioLoFiSourceQualityType sourceQuality;
+        private AudioLoFiSourceQuality sourceQuality;
 
         /// <summary>
         /// The quality level of the simulated audio source (ex: AM radio).
         /// </summary>
-        public AudioLoFiSourceQualityType SourceQuality
+        public AudioLoFiSourceQuality SourceQuality
         {
             get { return sourceQuality; }
             set { sourceQuality = value;  }
@@ -56,8 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         /// Collection used to look up the filter settings that match the selected
         /// source quality.
         /// </summary>
-        private Dictionary<AudioLoFiSourceQualityType, AudioLoFiFilterSettings> sourceQualityFilterSettings =
-            new Dictionary<AudioLoFiSourceQualityType, AudioLoFiFilterSettings>();
+        private Dictionary<AudioLoFiSourceQuality, AudioLoFiFilterSettings> sourceQualityFilterSettings =
+            new Dictionary<AudioLoFiSourceQuality, AudioLoFiFilterSettings>();
 
         private void Awake()
         {
@@ -104,19 +104,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             if (sourceQualityFilterSettings.Keys.Count > 0) { return; }
 
             sourceQualityFilterSettings.Add(
-                AudioLoFiSourceQualityType.FullRange,
+                AudioLoFiSourceQuality.FullRange,
                 new AudioLoFiFilterSettings(10, 22000));    // Frequency range: 10 Hz - 22 kHz
             sourceQualityFilterSettings.Add(
-                AudioLoFiSourceQualityType.NarrowBandTelephony,
+                AudioLoFiSourceQuality.NarrowBandTelephony,
                 new AudioLoFiFilterSettings(300, 3400));    // Frequency range: 300 Hz - 3.4 kHz
             sourceQualityFilterSettings.Add(
-                AudioLoFiSourceQualityType.WideBandTelephony,
+                AudioLoFiSourceQuality.WideBandTelephony,
                 new AudioLoFiFilterSettings(50, 7000));     // Frequency range: 50 Hz - 7 kHz
             sourceQualityFilterSettings.Add(
-                AudioLoFiSourceQualityType.AmRadio,
+                AudioLoFiSourceQuality.AmRadio,
                 new AudioLoFiFilterSettings(40, 5000));     // Frequency range: 40 Hz - 5 kHz
             sourceQualityFilterSettings.Add(
-                AudioLoFiSourceQualityType.FmRadio,
+                AudioLoFiSourceQuality.FmRadio,
                 new AudioLoFiFilterSettings(30, 15000));    // Frequency range: 30 Hz - 15 kHz
         }
 

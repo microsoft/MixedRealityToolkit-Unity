@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
     /// <summary>
     /// Collation order type used for sorting
     /// </summary>
-    public enum CollationOrderType
+    public enum CollationOrder
     {
         /// <summary>
         /// Don't sort, just display in order received

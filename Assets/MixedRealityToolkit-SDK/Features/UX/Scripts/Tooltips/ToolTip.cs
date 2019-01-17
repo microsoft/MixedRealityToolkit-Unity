@@ -82,12 +82,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [SerializeField]
         [Tooltip("Display the state of the tooltip.")]
-        private DisplayModeType tipState;
+        private DisplayMode tipState;
 
         /// <summary>
         /// The display the state of the tooltip.
         /// </summary>
-        public DisplayModeType TipState
+        public DisplayMode TipState
         {
             get
             {
@@ -101,12 +101,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [SerializeField]
         [Tooltip("Display the state of a group of tooltips.")]
-        private DisplayModeType groupTipState;
+        private DisplayMode groupTipState;
 
         /// <summary>
         /// Display the state of a group of tooltips.
         /// </summary>
-        public DisplayModeType GroupTipState
+        public DisplayMode GroupTipState
         {
             set
             {
@@ -120,12 +120,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [SerializeField]
         [Tooltip("Display the state of the master tooltip.")]
-        private DisplayModeType masterTipState;
+        private DisplayMode masterTipState;
 
         /// <summary>
         /// Display the state of the master tooltip.
         /// </summary>
-        public DisplayModeType MasterTipState
+        public DisplayMode MasterTipState
         {
             set
             {
@@ -237,9 +237,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         private int fontSize = 30;
 
         [SerializeField]
-        private ToolTipAttachPointType attachPointType = ToolTipAttachPointType.Closest;
+        private ToolTipAttachPoint attachPointType = ToolTipAttachPoint.Closest;
 
-        public ToolTipAttachPointType PivotType
+        public ToolTipAttachPoint PivotType
         {
             get
             {
@@ -318,45 +318,45 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             {
                 switch (masterTipState)
                 {
-                    case DisplayModeType.None:
+                    case DisplayMode.None:
                     default:
                         // Use our group state
                         switch (groupTipState)
                         {
-                            case DisplayModeType.None:
+                            case DisplayMode.None:
                             default:
                                 // Use our local State
                                 switch (tipState)
                                 {
-                                    case DisplayModeType.None:
-                                    case DisplayModeType.Off:
+                                    case DisplayMode.None:
+                                    case DisplayMode.Off:
                                     default:
                                         return false;
 
-                                    case DisplayModeType.On:
+                                    case DisplayMode.On:
                                         return true;
 
-                                    case DisplayModeType.OnFocus:
+                                    case DisplayMode.OnFocus:
                                         return HasFocus;
                                 }
 
-                            case DisplayModeType.On:
+                            case DisplayMode.On:
                                 return true;
 
-                            case DisplayModeType.Off:
+                            case DisplayMode.Off:
                                 return false;
 
-                            case DisplayModeType.OnFocus:
+                            case DisplayMode.OnFocus:
                                 return HasFocus;
                         }
 
-                    case DisplayModeType.On:
+                    case DisplayMode.On:
                         return true;
 
-                    case DisplayModeType.Off:
+                    case DisplayMode.Off:
                         return false;
 
-                    case DisplayModeType.OnFocus:
+                    case DisplayMode.OnFocus:
                         return HasFocus;
                 }
             }

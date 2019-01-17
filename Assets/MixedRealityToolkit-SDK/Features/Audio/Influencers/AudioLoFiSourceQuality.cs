@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
     /// Source quality options, used by the AudioLoFiEffect, that match common telephony and
     /// radio broadcast options.
     /// </summary>
-    public enum AudioLoFiSourceQualityType
+    public enum AudioLoFiSourceQuality
     {
         /// <summary>
         /// Narrow frequency range telephony.

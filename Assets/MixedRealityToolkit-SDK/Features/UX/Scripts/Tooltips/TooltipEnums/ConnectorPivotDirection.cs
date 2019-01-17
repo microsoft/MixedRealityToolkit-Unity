@@ -5,17 +5,22 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 {
     /// <summary>
-    /// Controls how the tooltip will pivot relative to the camera/other objects.
+    /// In which direction does the tooltip connector project.
     /// </summary>
-    public enum ConnectorPivotModeType
+    public enum ConnectorPivotDirection
     {
         /// <summary>
-        /// Tooltip pivot will be set manually
+        /// Direction will be specified manually
         /// </summary>
         Manual = 0,
-        /// <summary>
-        /// Tooltip pivot will be set relative to object/camera based on specified direction and line length
-        /// </summary>
-        Automatic,
+        North,
+        Northeast,
+        East,
+        Southeast,
+        South,
+        Southwest,
+        West,
+        Northwest,
+        InFront,
     }
 }
