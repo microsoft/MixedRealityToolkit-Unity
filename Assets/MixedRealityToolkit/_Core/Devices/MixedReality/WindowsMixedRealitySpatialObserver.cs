@@ -81,13 +81,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
-        //private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-        private IMixedRealitySpatialAwarenessMeshSystem spatialAwarenessSystem = null;
+        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
         /// <summary>
         /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
-        //private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
-        private IMixedRealitySpatialAwarenessMeshSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = (IMixedRealitySpatialAwarenessMeshSystem)MixedRealityToolkit.SpatialAwarenessSystem);
+        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 
 #if UNITY_WSA
         /// <summary>

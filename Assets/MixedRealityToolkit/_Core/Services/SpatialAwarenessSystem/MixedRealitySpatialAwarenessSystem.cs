@@ -128,6 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
             InitializeInternal();
         }
 
+        /// <inheritdoc/>
         public override void Destroy()
         {
             // Cleanup game objects created during execution.
