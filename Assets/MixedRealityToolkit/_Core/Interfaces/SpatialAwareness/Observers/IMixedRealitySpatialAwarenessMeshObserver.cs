@@ -44,12 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         int MeshTrianglesPerCubicMeter { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating if the spatial awareness system to generate normal for the returned meshes
-        /// as some platforms may not support returning normal along with the spatial mesh. 
-        /// </summary>
-        bool RecalculateNormals { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating how the mesh subsystem is to display surface meshes within the application.
         /// </summary>
         /// <remarks>
@@ -68,8 +62,41 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         Material OcclusionMaterial { get; set; }
 
         /// <summary>
+        /// todo
+        /// </summary>
+        GameObject MeshParent { get; }
+
+        /// <summary>
         /// Gets the collection of <see cref="SpatialAwarenessMeshObject"/>s being managed by the observer.
         /// </summary>
         IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes { get; }
+
+        #region mesh events
+        /// <summary>
+        /// todo
+        /// </summary>
+        /// <param name="meshObserver"></param>
+        /// <param name="meshId"></param>
+        /// <param name="mesh"></param>
+        void RaiseMeshAdded(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="meshObserver"></param>
+        /// <param name="meshId"></param>
+        /// <param name="mesh"></param>
+        void RaiseMeshUpdated(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh);
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        /// <param name="meshObserver"></param>
+        /// <param name="meshId"></param>
+        void RaiseMeshRemoved(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId);
+
+        #endregion Mesh Events
+
+
     }
 }

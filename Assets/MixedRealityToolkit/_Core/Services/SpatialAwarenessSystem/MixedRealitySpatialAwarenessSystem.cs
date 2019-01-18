@@ -1,14 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Devices;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -63,12 +59,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
             return secondGeneration;
         }
 
-        private IMixedRealitySpatialAwarenessMeshObserver spatialAwarenessObserver = null;
+        private IMixedRealitySpatialAwarenessObserver spatialAwarenessObserver = null;
 
         /// <summary>
-        /// The <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>, if any, that is active on the current platform.
+        /// The <see cref="IMixedRealitySpatialAwarenessObserver"/>, if any, that is active on the current platform.
         /// </summary>
-        private IMixedRealitySpatialAwarenessMeshObserver SpatialAwarenessObserver => spatialAwarenessObserver ?? (spatialAwarenessObserver = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessMeshObserver>());
+        private IMixedRealitySpatialAwarenessObserver SpatialAwarenessObserver => spatialAwarenessObserver ?? (spatialAwarenessObserver = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessObserver>());
 
         #region IMixedRealityToolkit Implementation
 
@@ -183,18 +179,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
 
         #region Mesh Events
 
-        /// <inheritdoc />
-        public void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, GameObject mesh)
-        {
-            if (!UseMeshSystem) { return; }
-
-            // Parent the mesh object
-            mesh.transform.parent = MeshParent.transform;
-
-            meshEventData.Initialize(observer, meshId, mesh);
-            HandleEvent(meshEventData, OnMeshAdded);
-        }
-
         /// <summary>
         /// Event sent whenever a mesh is added.
         /// </summary>
@@ -205,18 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
                 handler.OnMeshAdded(spatialEventData);
             };
 
-        /// <inheritdoc />
-        public void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, GameObject mesh)
-        {
-            if (!UseMeshSystem) { return; }
-
-            // Parent the mesh object
-            mesh.transform.parent = MeshParent.transform;
-
-            meshEventData.Initialize(observer, meshId, mesh);
-            HandleEvent(meshEventData, OnMeshUpdated);
-        }
-
         /// <summary>
         /// Event sent whenever a mesh is updated.
         /// </summary>
@@ -226,16 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
                 MixedRealitySpatialAwarenessEventData spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
                 handler.OnMeshUpdated(spatialEventData);
             };
-
-
-        /// <inheritdoc />
-        public void RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver observer, int meshId)
-        {
-            if (!UseMeshSystem) { return; }
-
-            meshEventData.Initialize(observer, meshId, null);
-            HandleEvent(meshEventData, OnMeshRemoved);
-        }
 
         /// <summary>
         /// Event sent whenever a mesh is discarded.
@@ -254,8 +216,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         /// <inheritdoc />
         public void RaiseSurfaceAdded(IMixedRealitySpatialAwarenessObserver observer, int surfaceId, GameObject surfaceObject)
         {
-            if (!UseSurfaceFindingSystem) { return; }
-
             surfaceFindingEventData.Initialize(observer, surfaceId, surfaceObject);
             HandleEvent(surfaceFindingEventData, OnSurfaceAdded);
         }
@@ -273,8 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         /// <inheritdoc />
         public void RaiseSurfaceUpdated(IMixedRealitySpatialAwarenessObserver observer, int surfaceId, GameObject surfaceObject)
         {
-            if (!UseSurfaceFindingSystem) { return; }
-
             surfaceFindingEventData.Initialize(observer, surfaceId, surfaceObject);
             HandleEvent(surfaceFindingEventData, OnSurfaceUpdated);
         }
@@ -292,8 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         /// <inheritdoc />
         public void RaiseSurfaceRemoved(IMixedRealitySpatialAwarenessObserver observer, int surfaceId)
         {
-            if (!UseSurfaceFindingSystem) { return; }
-
             surfaceFindingEventData.Initialize(observer, surfaceId, null);
             HandleEvent(surfaceFindingEventData, OnSurfaceRemoved);
         }
@@ -314,49 +270,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
 
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
-        /// <inheritdoc />
-        public AutoStartBehavior StartupBehavior { get; set; } = AutoStartBehavior.AutoStart;
-
-        /// <inheritdoc />
-        public VolumeType ObserverVolumeType { get; set; } = VolumeType.Cubic;
-
-        /// <inheritdoc />
-        public Vector3 ObservationExtents { get; set; } = Vector3.one * 3;
-
-        /// <inheritdoc />
-        public float ObserverRadius { get; set; } = 3.0f;
-
-        /// <inheritdoc />
-        public bool IsStationaryObserver { get; set; } = false;
-
-        /// <inheritdoc />
-        public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
-
-        /// <inheritdoc />
-        public float UpdateInterval { get; set; } = 3.5f;
-
-        /// <inheritdoc />
-        public bool IsObserverRunning
-        {
-            get
-            {
-                if (SpatialAwarenessObserver == null) { return false; }
-                return SpatialAwarenessObserver.IsRunning;
-            }
-        }
-
-        /// <inheritdoc />
-        public void ResumeObserver()
-        {
-            SpatialAwarenessObserver?.Resume();
-        }
-
-        /// <inheritdoc />
-        public void SuspendObserver()
-        {
-            SpatialAwarenessObserver?.Suspend();
-        }
-
         private uint nextSourceId = 0;
 
         /// <inheritdoc />
@@ -366,130 +279,67 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         }
 
         /// <inheritdoc />
-        public void GetObservers<T>()
+        public void ResumeObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
-        public void GetObserver<T>()
+        public void ResumeObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
+        {
+            MixedRealityToolkit.Instance.GetService<T>());
+        }
+
+        /// <inheritdoc />
+        public void ResumeObserver<T>(int id) where T : IMixedRealitySpatialAwarenessObserver
         {
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
-        public void GetObserver<T>(int id)
+        public void SuspendObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
             throw new System.NotImplementedException();
         }
 
-        #region Mesh Handling implementation
-
         /// <inheritdoc />
-        public bool UseMeshSystem { get; set; } = true;
-
-        /// <inheritdoc />
-        public int MeshPhysicsLayer { get; set; } = 31;
-
-        /// <inheritdoc />
-        public int MeshPhysicsLayerMask => 1 << MeshPhysicsLayer;
-
-        private SpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;
-
-        /// <inheritdoc />
-        public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail
+        public void SuspendObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            get
-            {
-                return meshLevelOfDetail;
-            }
-
-            set
-            {
-                if (meshLevelOfDetail != value)
-                {
-                    // Non-custom values automatically modify MeshTrianglesPerCubicMeter
-                    if (value != SpatialAwarenessMeshLevelOfDetail.Custom)
-                    {
-                        MeshTrianglesPerCubicMeter = (int)value;
-                    }
-
-                    meshLevelOfDetail = value;
-                }
-            }
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
-        public int MeshTrianglesPerCubicMeter { get; set; } = (int)SpatialAwarenessMeshLevelOfDetail.Coarse;
+        public void SuspendObserver<T>(int id) where T : IMixedRealitySpatialAwarenessObserver
+        {
+            throw new System.NotImplementedException();
+        }
 
         /// <inheritdoc />
-        public bool MeshRecalculateNormals { get; set; } = true;
+        public T GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
+        {
+            throw new System.NotImplementedException();
+        }
 
         /// <inheritdoc />
-        public SpatialObjectDisplayOptions MeshDisplayOption { get; set; } = SpatialObjectDisplayOptions.None;
+        public T GetObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
+        {
+            throw new System.NotImplementedException();
+        }
 
         /// <inheritdoc />
-        public Material MeshVisibleMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        public Material MeshOcclusionMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        /// <remarks>The observer manages the mesh collection.</remarks>
-        public IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes => SpatialAwarenessObserver.Meshes;
+        public T GetObserver<T>(int id) where T : IMixedRealitySpatialAwarenessObserver
+        {
+            throw new System.NotImplementedException();
+        }
 
         #endregion Mesh Handling implementation
-
-        #region Surface Finding Handling implementation
-
-        /// <inheritdoc />
-        public bool UseSurfaceFindingSystem { get; set; } = false;
-
-        /// <inheritdoc />
-        public int SurfacePhysicsLayer { get; set; } = 31;
-
-        /// <inheritdoc />
-        public int SurfacePhysicsLayerMask => 1 << SurfacePhysicsLayer;
-
-        /// <inheritdoc />
-        public float SurfaceFindingMinimumArea { get; set; } = 0.025f;
-
-        /// <inheritdoc />
-        public bool DisplayFloorSurfaces { get; set; } = false;
-
-        /// <inheritdoc />
-        public Material FloorSurfaceMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        public bool DisplayCeilingSurfaces { get; set; } = false;
-
-        /// <inheritdoc />
-        public Material CeilingSurfaceMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        public bool DisplayWallSurfaces { get; set; } = false;
-
-        /// <inheritdoc />
-        public Material WallSurfaceMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        public bool DisplayPlatformSurfaces { get; set; } = false;
-
-        /// <inheritdoc />
-        public Material PlatformSurfaceMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        public IReadOnlyDictionary<int, SpatialAwarenessPlanarObject> PlanarSurfaces
+        GameObject IMixedRealitySpatialAwarenessSystem.SpatialAwarenessParent
         {
             get
             {
-                // This implementation of the spatial awareness system manages game objects.
-                // todo
-                return new Dictionary<int, SpatialAwarenessPlanarObject>(0);
+                throw new System.NotImplementedException();
             }
         }
-
-        #endregion Surface Finding Handling implementation
 
         #endregion IMixedRealitySpatialAwarenessSystem Implementation
     }

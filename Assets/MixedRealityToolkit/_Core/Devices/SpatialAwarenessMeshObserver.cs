@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices
 {
-    public class SpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver
+    public class SpatialAwarenessMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver
     {
 
         /// <summary>
@@ -17,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public SpatialMeshObserver(string name, uint priority) : base(name, priority)
+        public SpatialAwarenessMeshObserver(string name, uint priority) : base(name, priority)
         {
             SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
             SourceName = name;
@@ -31,30 +32,65 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         public virtual IDictionary<int, GameObject> Meshes => new Dictionary<int, GameObject>();
 
         /// <inheritdoc />
-        public int MeshPhysicsLayer { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public int MeshPhysicsLayer { get; set; } = 31;
 
         /// <inheritdoc />
-        public int MeshPhysicsLayerMask => throw new System.NotImplementedException();
+        public int MeshPhysicsLayerMask => 1 << MeshPhysicsLayer;
+
+        private SpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;
 
         /// <inheritdoc />
-        public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail
+        {
+            get
+            {
+                return meshLevelOfDetail;
+            }
+
+            set
+            {
+                if (meshLevelOfDetail != value)
+                {
+                    // Non-custom values automatically modify MeshTrianglesPerCubicMeter
+                    if (value != SpatialAwarenessMeshLevelOfDetail.Custom)
+                    {
+                        MeshTrianglesPerCubicMeter = (int)value;
+                    }
+
+                    meshLevelOfDetail = value;
+                }
+            }
+        }
 
         /// <inheritdoc />
-        public int MeshTrianglesPerCubicMeter { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public int MeshTrianglesPerCubicMeter { get; set; } = (int)SpatialAwarenessMeshLevelOfDetail.Coarse;
 
         /// <inheritdoc />
-        public bool RecalculateNormals { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public bool RecalculateNormals { get; set; }
 
         /// <inheritdoc />
-        public SpatialObjectDisplayOptions DisplayOption { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public SpatialObjectDisplayOptions DisplayOption { get; set; } = SpatialObjectDisplayOptions.None;
 
         /// <inheritdoc />
-        public Material VisibleMaterial { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public Material VisibleMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public Material OcclusionMaterial { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public Material OcclusionMaterial { get; set; } = null;
 
-        IReadOnlyDictionary<int, SpatialAwarenessMeshObject> IMixedRealitySpatialAwarenessMeshObserver.Meshes => throw new System.NotImplementedException();
+        IReadOnlyDictionary<int, SpatialAwarenessMeshObject> IMixedRealitySpatialAwarenessMeshObserver.Meshes => new Dictionary<int, SpatialAwarenessMeshObject>();
+
+        private GameObject meshParent = null;
+
+        /// <inheritdoc />
+        public GameObject MeshParent => meshParent != null ? meshParent : (meshParent = CreateMeshParent);
+
+        /// <summary>
+        /// Creates the parent for this observer's mesh objects so that the scene hierarchy does not get overly cluttered.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="GameObject"/> to which mesh objects created by this observer will be parented.
+        /// </returns>
+        private GameObject CreateMeshParent => new GameObject("MeshObserver");
 
         /// <summary>
         /// Start | Resume the observer.
@@ -79,6 +115,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
 
         protected Dictionary<int, SpatialAwarenessMeshObject> meshObjects = new Dictionary<int, SpatialAwarenessMeshObject>();
 
+        private MixedRealitySpatialAwarenessEventData meshEventData = null;
+
         /// <summary>
         /// Cleans up mesh objects managed by the observer.
         /// </summary>
@@ -94,6 +132,37 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             }
             meshObjects.Clear();
         }
+
+        #region mesh events
+
+        /// <inheritdoc />
+        public void RaiseMeshAdded(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh)
+        {
+            // Parent the mesh object
+            mesh.transform.parent = MeshParent.transform;
+
+            meshEventData.Initialize(meshObserver, meshId, mesh);
+            HandleEvent(meshEventData, OnMeshAdded);
+        }
+
+        ///<inheritdoc />
+        public void RaiseMeshUpdated(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh)
+        {
+            // Parent the mesh object
+            mesh.transform.parent = MeshParent.transform;
+
+            meshEventData.Initialize(meshObserver, meshId, mesh);
+            HandleEvent(meshEventData, OnMeshUpdated);
+        }
+
+        ///<inheritdoc />
+        public void RaiseMeshRemoved(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId)
+        {
+            meshEventData.Initialize(meshObserver, meshId, null);
+            HandleEvent(meshEventData, OnMeshRemoved);
+        }
+
+        #endregion mesh events
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }

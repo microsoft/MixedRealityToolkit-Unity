@@ -39,9 +39,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         bool IsStationaryObserver { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the volume, in meters per axis, from which individual observations will be made.
+        /// Gets or sets the type of volume the observer should operate in.
         /// </summary>
+        VolumeType ObserverVolumeType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the extents( 1/2 size) of the volume, in meters per axis, from which individual observations will be made.
+        /// </summary>
+        /// <remarks>
+        /// Only used when <see cref="ObserverVolumeType"/> is set to <see cref="VolumeType.Cubic"/>
+        /// </remarks>
         Vector3 ObservationExtents { get; set; }
+
+        /// <summary>
+        /// Gets or sets the radius of the spherical volume, in meters, from which individual observations will be made.
+        /// </summary>
+        /// <remarks>
+        /// Only used when <see cref="ObserverVolumeType"/> is set to <see cref="VolumeType.Spherical"/>
+        /// </remarks>
+        float ObserverRadius { get; set; }
 
         ///// <summary>
         ///// Gets or sets the orientation of the volume.
@@ -57,11 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// </remarks>
         Vector3 ObserverOrigin { get; set; }
 
-        ///// <summary>
-        ///// Gets or sets the shape of the observer volume.
-        ///// </summary>
-        // todo: ObserverVolumeShape ObserverShape { get; set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        bool RecalculateNormals { get; set; }
 
         /// <summary>
         /// Gets or sets the frequency, in seconds, at which the spatial observer should update.

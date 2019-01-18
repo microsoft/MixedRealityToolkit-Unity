@@ -70,29 +70,34 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         #region IMixedRealitySpatialAwarenessObserver implementation
 
         /// <inheritdoc />
-        public AutoStartBehavior StartupBehavior { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        
-        /// <inheritdoc />
-        public int DefaultPhysicsLayer { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public AutoStartBehavior StartupBehavior { get; set; }
 
         /// <inheritdoc />
-        public int DefaultPhysicsLayerMask => throw new System.NotImplementedException();
+        public int DefaultPhysicsLayer { get; set; }
 
         /// <inheritdoc />
-        public bool IsRunning { get => throw new System.NotImplementedException(); protected set => throw new System.NotImplementedException(); }
+        public int DefaultPhysicsLayerMask { get; set; }
 
         /// <inheritdoc />
-        public bool IsStationaryObserver { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public bool IsRunning { get; set; }
 
         /// <inheritdoc />
-        public Vector3 ObservationExtents { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public bool IsStationaryObserver { get; set; }
 
         /// <inheritdoc />
-        public Vector3 ObserverOrigin { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public VolumeType ObserverVolumeType { get; set; }
 
         /// <inheritdoc />
-        public float UpdateInterval { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public Vector3 ObservationExtents { get; set; }
 
+        /// <inheritdoc />
+        public Vector3 ObserverOrigin { get; set; }
+
+        /// <inheritdoc />
+        public float UpdateInterval { get; set; }
+
+        /// <inheritdoc />
+        public float ObserverRadius { get; set; }
 
         /// <inheritdoc />
         public abstract void Resume();

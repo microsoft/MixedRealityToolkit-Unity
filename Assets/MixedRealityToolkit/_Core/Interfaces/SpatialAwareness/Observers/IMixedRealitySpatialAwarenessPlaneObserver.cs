@@ -18,12 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// <remarks>
         /// If not explicitly set, it is recommended that implementations return <see cref="IMixedRealitySpatialAwarenessObserver.DefaultPhysicsLayer"/>.
         /// </remarks>
-        int PlanarPhysicsLayer { get; set; }
+        int SurfacePhysicsLayer { get; set; }
 
         /// <summary>
         /// Gets the bit mask that corresponds to the value specified in <see cref="MeshPhysicsLayer"/>.
         /// </summary>
-        int PlanarPhysicsLayerMask { get; }
+        int SurfacePhysicsLayerMask { get; }
 
         /// <summary>
         /// Gets or sets a value indicating if the spatial awareness system to generate normal for the returned meshes
@@ -32,26 +32,80 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         bool RecalculateNormals { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating how the mesh subsystem is to display surface meshes within the application.
+        /// todo
         /// </summary>
-        /// <remarks>
-        /// Applications that wish to process the <see cref="Plane"/>es should set this value to None.
-        /// </remarks>
-        SpatialObjectDisplayOptions DisplayOption { get; set; }
+        bool DisplayFloorSurfaces { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Material"/> to be used when displaying <see cref="Planes"/>es.
+        /// todo
         /// </summary>
-        Material VisibleMaterial { get; set; }
+        Material FloorSurfaceMaterial { get; set; };
 
         /// <summary>
-        /// Gets or sets the <see cref="Material"/> to be used when spatial <see cref="Planes"/>es should occlude other objects.
+        /// todo
         /// </summary>
-        Material OcclusionMaterial { get; set; }
+        bool DisplayCeilingSurfaces { get; set; };
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        Material CeilingSurfaceMaterial { get; set; };
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        bool DisplayWallSurfaces { get; set; };
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        Material WallSurfaceMaterial { get; set; };
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        bool DisplayPlatformSurfaces { get; set; };
+
+        /// <summary>
+        /// todoW
+        /// </summary>
+        Material PlatformSurfaceMaterial { get; set; };
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        GameObject SurfaceParent { get; }
 
         /// <summary>
         /// Gets the collection of <see cref="SpatialAwarenessPlanarObject"/>s being managed by the observer.
         /// </summary>
         IReadOnlyDictionary<int, SpatialAwarenessPlanarObject> Planes { get; }
+
+        #region Surface Finding Events
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        /// <param name="observer"></param>
+        /// <param name="surfaceId"></param>
+        /// <param name="surfaceObject"></param>
+        void RaiseSurfaceAdded(IMixedRealitySpatialAwarenessPlaneObserver observer, int surfaceId, GameObject surfaceObject);
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        /// <param name="planeObserver"></param>
+        /// <param name="surfaceId"></param>
+        /// <param name="surfaceObject"></param>
+        void RaiseSurfaceUpdated(IMixedRealitySpatialAwarenessPlaneObserver planeObserver, int surfaceId, GameObject surfaceObject);
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        /// <param name="planeObserver"></param>
+        /// <param name="surfaceId"></param>
+        void RaiseSurfaceRemoved(IMixedRealitySpatialAwarenessPlaneObserver planeObserver, int surfaceId);
+
+        #endregion Surface Finding Events
     }
 }
