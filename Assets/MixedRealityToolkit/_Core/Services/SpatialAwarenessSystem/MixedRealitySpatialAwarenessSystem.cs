@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
@@ -15,12 +16,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
     /// </summary>
     public class MixedRealitySpatialAwarenessSystem : BaseEventSystem, IMixedRealitySpatialAwarenessSystem
     {
+        public AutoStartBehavior DefaultObserverStartupBehavior { get; set; }
+
         private GameObject spatialAwarenessParent = null;
 
         /// <summary>
         /// Parent <see cref="GameObject"/> which will encapsulate all of the spatial awareness system created scene objects.
         /// </summary>
-        private GameObject SpatialAwarenessParent => spatialAwarenessParent != null ? spatialAwarenessParent : (spatialAwarenessParent = CreateSpatialAwarenessParent);
+        public GameObject SpatialAwarenessParent => spatialAwarenessParent != null ? spatialAwarenessParent : (spatialAwarenessParent = CreateSpatialAwarenessParent);
 
         /// <summary>
         /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
@@ -179,6 +182,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
 
         #region Mesh Events
 
+        /// <inheritdoc />
+        public void RaiseMeshAdded(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh)
+        {
+            // Parent the mesh object
+            mesh.transform.parent = MeshParent.transform;
+
+            meshEventData.Initialize(meshObserver, meshId, mesh);
+            HandleEvent(meshEventData, OnMeshAdded);
+        }
+
         /// <summary>
         /// Event sent whenever a mesh is added.
         /// </summary>
@@ -189,6 +202,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
                 handler.OnMeshAdded(spatialEventData);
             };
 
+        ///<inheritdoc />
+        public void RaiseMeshUpdated(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh)
+        {
+            // Parent the mesh object
+            mesh.transform.parent = MeshParent.transform;
+
+            meshEventData.Initialize(meshObserver, meshId, mesh);
+            HandleEvent(meshEventData, OnMeshUpdated);
+        }
+
         /// <summary>
         /// Event sent whenever a mesh is updated.
         /// </summary>
@@ -198,6 +221,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
                 MixedRealitySpatialAwarenessEventData spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
                 handler.OnMeshUpdated(spatialEventData);
             };
+
+        ///<inheritdoc />
+        public void RaiseMeshRemoved(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId)
+        {
+            meshEventData.Initialize(meshObserver, meshId, null);
+            HandleEvent(meshEventData, OnMeshRemoved);
+        }
 
         /// <summary>
         /// Event sent whenever a mesh is discarded.
@@ -287,7 +317,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         /// <inheritdoc />
         public void ResumeObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            MixedRealityToolkit.Instance.GetService<T>());
         }
 
         /// <inheritdoc />
@@ -299,7 +328,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         /// <inheritdoc />
         public void SuspendObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            throw new System.NotImplementedException();
+            MixedRealityToolkit.Instance.GetService(T);
+            //for each
         }
 
         /// <inheritdoc />
@@ -330,15 +360,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services.SpatialAwarenessSystem
         public T GetObserver<T>(int id) where T : IMixedRealitySpatialAwarenessObserver
         {
             throw new System.NotImplementedException();
-        }
-
-        #endregion Mesh Handling implementation
-        GameObject IMixedRealitySpatialAwarenessSystem.SpatialAwarenessParent
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
         }
 
         #endregion IMixedRealitySpatialAwarenessSystem Implementation

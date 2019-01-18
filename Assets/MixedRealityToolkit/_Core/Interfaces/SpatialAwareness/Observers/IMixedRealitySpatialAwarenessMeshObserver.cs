@@ -71,32 +71,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// </summary>
         IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes { get; }
 
-        #region mesh events
-        /// <summary>
-        /// todo
-        /// </summary>
-        /// <param name="meshObserver"></param>
-        /// <param name="meshId"></param>
-        /// <param name="mesh"></param>
-        void RaiseMeshAdded(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="meshObserver"></param>
-        /// <param name="meshId"></param>
-        /// <param name="mesh"></param>
-        void RaiseMeshUpdated(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh);
-
-        /// <summary>
-        /// todo
-        /// </summary>
-        /// <param name="meshObserver"></param>
-        /// <param name="meshId"></param>
-        void RaiseMeshRemoved(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId);
-
-        #endregion Mesh Events
-
-
     }
 }

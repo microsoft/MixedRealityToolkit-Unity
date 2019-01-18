@@ -10,9 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
     public interface IMixedRealitySpatialAwarenessSystem : IMixedRealityEventSystem
     {
         /// <summary>
-        /// Indicates the developer's intended startup behavior.
+        /// Indicates the fallback behavior for observers when not explicitly set.
         /// </summary>
-        AutoStartBehavior StartupBehavior { get; set; }
+        AutoStartBehavior DefaultObserverStartupBehavior { get; set; }
 
         /// <summary>
         /// todo

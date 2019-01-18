@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
@@ -10,7 +11,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices
 {
-    public class SpatialAwarenessMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver
+    public class SpatialAwarenessMeshObserver : BaseSpatialAwarenessObserver, IMixedRealitySpatialAwarenessMeshObserver
     {
 
         /// <summary>
@@ -64,9 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
 
         /// <inheritdoc />
         public int MeshTrianglesPerCubicMeter { get; set; } = (int)SpatialAwarenessMeshLevelOfDetail.Coarse;
-
-        /// <inheritdoc />
-        public bool RecalculateNormals { get; set; }
 
         /// <inheritdoc />
         public SpatialObjectDisplayOptions DisplayOption { get; set; } = SpatialObjectDisplayOptions.None;
@@ -132,37 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             }
             meshObjects.Clear();
         }
-
-        #region mesh events
-
-        /// <inheritdoc />
-        public void RaiseMeshAdded(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh)
-        {
-            // Parent the mesh object
-            mesh.transform.parent = MeshParent.transform;
-
-            meshEventData.Initialize(meshObserver, meshId, mesh);
-            HandleEvent(meshEventData, OnMeshAdded);
-        }
-
-        ///<inheritdoc />
-        public void RaiseMeshUpdated(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh)
-        {
-            // Parent the mesh object
-            mesh.transform.parent = MeshParent.transform;
-
-            meshEventData.Initialize(meshObserver, meshId, mesh);
-            HandleEvent(meshEventData, OnMeshUpdated);
-        }
-
-        ///<inheritdoc />
-        public void RaiseMeshRemoved(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId)
-        {
-            meshEventData.Initialize(meshObserver, meshId, null);
-            HandleEvent(meshEventData, OnMeshRemoved);
-        }
-
-        #endregion mesh events
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }

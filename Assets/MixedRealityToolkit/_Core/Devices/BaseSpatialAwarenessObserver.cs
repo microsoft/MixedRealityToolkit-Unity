@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices
 {
-    public abstract class BaseSpatialObserver : BaseExtensionService, IMixedRealitySpatialAwarenessObserver
+    public abstract class BaseSpatialAwarenessObserver : BaseExtensionService, IMixedRealitySpatialAwarenessObserver
     {
         #region IMixedRealityEventSource Implementation
 
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public BaseSpatialObserver(string name, uint priority) : base(name, priority)
+        public BaseSpatialAwarenessObserver(string name, uint priority) : base(name, priority)
         {
             SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
             SourceName = name;
@@ -94,10 +94,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         public Vector3 ObserverOrigin { get; set; }
 
         /// <inheritdoc />
-        public float UpdateInterval { get; set; }
+        public float ObserverRadius { get; set; }
 
         /// <inheritdoc />
-        public float ObserverRadius { get; set; }
+        public float UpdateInterval { get; set; }
+
+        ///<inheritdoc />
+        public bool RecalculateNormals { get; set; }
 
         /// <inheritdoc />
         public abstract void Resume();
