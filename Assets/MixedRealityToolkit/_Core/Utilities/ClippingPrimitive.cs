@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿  // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
@@ -30,7 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <summary>
         /// The renderer(s) that should be affected by the primitive.
         /// </summary>
-        public Side ClippingSide => clippingSide;
+        public Side ClippingSide
+        {
+            get { return clippingSide; }
+            set { clippingSide = value; }
+        }
 
         protected abstract string Keyword { get; }
         protected abstract string KeywordProperty { get; }
