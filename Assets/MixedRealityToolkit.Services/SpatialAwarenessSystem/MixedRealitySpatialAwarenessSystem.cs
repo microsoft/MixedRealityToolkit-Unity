@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,12 +17,14 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
     /// </summary>
     public class MixedRealitySpatialAwarenessSystem : BaseEventSystem, IMixedRealitySpatialAwarenessSystem
     {
+        public AutoStartBehavior DefaultObserverStartupBehavior { get; set; }
+
         private GameObject spatialAwarenessParent = null;
 
         /// <summary>
         /// Parent <see cref="GameObject"/> which will encapsulate all of the spatial awareness system created scene objects.
         /// </summary>
-        private GameObject SpatialAwarenessParent => spatialAwarenessParent != null ? spatialAwarenessParent : (spatialAwarenessParent = CreateSpatialAwarenessParent);
+        public GameObject SpatialAwarenessParent => spatialAwarenessParent != null ? spatialAwarenessParent : (spatialAwarenessParent = CreateSpatialAwarenessParent);
 
         /// <summary>
         /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
@@ -89,34 +90,36 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
             meshEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
             surfaceFindingEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
 
-            // General settings
-            StartupBehavior = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.StartupBehavior;
-            ObservationExtents = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.ObservationExtents;
-            IsStationaryObserver = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.IsStationaryObserver;
-            UpdateInterval = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval;
+            // TODO
 
-            // Mesh settings
-            UseMeshSystem = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UseMeshSystem;
-            MeshPhysicsLayer = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshPhysicsLayer;
-            MeshLevelOfDetail = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshLevelOfDetail;
-            MeshTrianglesPerCubicMeter = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshTrianglesPerCubicMeter;
-            MeshRecalculateNormals = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshRecalculateNormals;
-            MeshDisplayOption = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshDisplayOption;
-            MeshVisibleMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshVisibleMaterial;
-            MeshOcclusionMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshOcclusionMaterial;
+            //// General settings
+            //StartupBehavior = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.StartupBehavior;
+            //ObservationExtents = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.ObservationExtents;
+            //IsStationaryObserver = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.IsStationaryObserver;
+            //UpdateInterval = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval;
 
-            // Surface finding settings
-            UseSurfaceFindingSystem = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UseSurfaceFindingSystem;
-            SurfacePhysicsLayer = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingPhysicsLayer;
-            SurfaceFindingMinimumArea = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingMinimumArea;
-            DisplayFloorSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayFloorSurfaces;
-            FloorSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.FloorSurfaceMaterial;
-            DisplayCeilingSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayCeilingSurface;
-            CeilingSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.CeilingSurfaceMaterial;
-            DisplayWallSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayWallSurface;
-            WallSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.WallSurfaceMaterial;
-            DisplayPlatformSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayPlatformSurfaces;
-            PlatformSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.PlatformSurfaceMaterial;
+            //// Mesh settings
+            //UseMeshSystem = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UseMeshSystem;
+            //MeshPhysicsLayer = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshPhysicsLayer;
+            //MeshLevelOfDetail = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshLevelOfDetail;
+            //MeshTrianglesPerCubicMeter = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshTrianglesPerCubicMeter;
+            //MeshRecalculateNormals = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshRecalculateNormals;
+            //MeshDisplayOption = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshDisplayOption;
+            //MeshVisibleMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshVisibleMaterial;
+            //MeshOcclusionMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.MeshOcclusionMaterial;
+
+            //// Surface finding settings
+            //UseSurfaceFindingSystem = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.UseSurfaceFindingSystem;
+            //SurfacePhysicsLayer = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingPhysicsLayer;
+            //SurfaceFindingMinimumArea = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.SurfaceFindingMinimumArea;
+            //DisplayFloorSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayFloorSurfaces;
+            //FloorSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.FloorSurfaceMaterial;
+            //DisplayCeilingSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayCeilingSurface;
+            //CeilingSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.CeilingSurfaceMaterial;
+            //DisplayWallSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayWallSurface;
+            //WallSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.WallSurfaceMaterial;
+            //DisplayPlatformSurfaces = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.DisplayPlatformSurfaces;
+            //PlatformSurfaceMaterial = MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessProfile.PlatformSurfaceMaterial;
         }
 
         /// <inheritdoc/>
@@ -127,6 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
             InitializeInternal();
         }
 
+        /// <inheritdoc/>
         public override void Destroy()
         {
             // Cleanup game objects created during execution.
@@ -182,14 +186,12 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         #region Mesh Events
 
         /// <inheritdoc />
-        public void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, GameObject mesh)
+        public void RaiseMeshAdded(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh)
         {
-            if (!UseMeshSystem) { return; }
-
             // Parent the mesh object
             mesh.transform.parent = MeshParent.transform;
 
-            meshEventData.Initialize(observer, meshId, mesh);
+            meshEventData.Initialize(meshObserver, meshId, mesh);
             HandleEvent(meshEventData, OnMeshAdded);
         }
 
@@ -203,15 +205,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
                 handler.OnMeshAdded(spatialEventData);
             };
 
-        /// <inheritdoc />
-        public void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, GameObject mesh)
+        ///<inheritdoc />
+        public void RaiseMeshUpdated(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId, GameObject mesh)
         {
-            if (!UseMeshSystem) { return; }
-
             // Parent the mesh object
             mesh.transform.parent = MeshParent.transform;
 
-            meshEventData.Initialize(observer, meshId, mesh);
+            meshEventData.Initialize(meshObserver, meshId, mesh);
             HandleEvent(meshEventData, OnMeshUpdated);
         }
 
@@ -225,13 +225,10 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
                 handler.OnMeshUpdated(spatialEventData);
             };
 
-
-        /// <inheritdoc />
-        public void RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver observer, int meshId)
+        ///<inheritdoc />
+        public void RaiseMeshRemoved(IMixedRealitySpatialAwarenessMeshObserver meshObserver, int meshId)
         {
-            if (!UseMeshSystem) { return; }
-
-            meshEventData.Initialize(observer, meshId, null);
+            meshEventData.Initialize(meshObserver, meshId, null);
             HandleEvent(meshEventData, OnMeshRemoved);
         }
 
@@ -252,8 +249,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         /// <inheritdoc />
         public void RaiseSurfaceAdded(IMixedRealitySpatialAwarenessObserver observer, int surfaceId, GameObject surfaceObject)
         {
-            if (!UseSurfaceFindingSystem) { return; }
-
             surfaceFindingEventData.Initialize(observer, surfaceId, surfaceObject);
             HandleEvent(surfaceFindingEventData, OnSurfaceAdded);
         }
@@ -271,8 +266,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         /// <inheritdoc />
         public void RaiseSurfaceUpdated(IMixedRealitySpatialAwarenessObserver observer, int surfaceId, GameObject surfaceObject)
         {
-            if (!UseSurfaceFindingSystem) { return; }
-
             surfaceFindingEventData.Initialize(observer, surfaceId, surfaceObject);
             HandleEvent(surfaceFindingEventData, OnSurfaceUpdated);
         }
@@ -290,8 +283,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         /// <inheritdoc />
         public void RaiseSurfaceRemoved(IMixedRealitySpatialAwarenessObserver observer, int surfaceId)
         {
-            if (!UseSurfaceFindingSystem) { return; }
-
             surfaceFindingEventData.Initialize(observer, surfaceId, null);
             HandleEvent(surfaceFindingEventData, OnSurfaceRemoved);
         }
@@ -312,43 +303,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
 
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
-        /// <inheritdoc />
-        public AutoStartBehavior StartupBehavior { get; set; } = AutoStartBehavior.AutoStart;
-
-        /// <inheritdoc />
-        public Vector3 ObservationExtents { get; set; } = Vector3.one * 3;
-
-        /// <inheritdoc />
-        public bool IsStationaryObserver { get; set; } = false;
-
-        /// <inheritdoc />
-        public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
-
-        /// <inheritdoc />
-        public float UpdateInterval { get; set; } = 3.5f;
-
-        /// <inheritdoc />
-        public bool IsObserverRunning
-        {
-            get
-            {
-                if (SpatialAwarenessObserver == null) { return false; }
-                return SpatialAwarenessObserver.IsRunning;
-            }
-        }
-
-        /// <inheritdoc />
-        public void ResumeObserver()
-        {
-            SpatialAwarenessObserver?.StartObserving();
-        }
-
-        /// <inheritdoc />
-        public void SuspendObserver()
-        {
-            SpatialAwarenessObserver?.StopObserving();
-        }
-
         private uint nextSourceId = 0;
 
         /// <inheritdoc />
@@ -357,113 +311,61 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
             return nextSourceId++;
         }
 
-        #region Mesh Handling implementation
+        // TODO
 
-        /// <inheritdoc />
-        public bool UseMeshSystem { get; set; } = true;
+        ///// <inheritdoc />
+        //public void ResumeObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
+        //{
+        //    throw new System.NotImplementedException();
+        //}
 
-        /// <inheritdoc />
-        public int MeshPhysicsLayer { get; set; } = 31;
+        ///// <inheritdoc />
+        //public void ResumeObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
+        //{
+        //}
 
-        /// <inheritdoc />
-        public int MeshPhysicsLayerMask => 1 << MeshPhysicsLayer;
+        ///// <inheritdoc />
+        //public void ResumeObserver<T>(int id) where T : IMixedRealitySpatialAwarenessObserver
+        //{
+        //    throw new System.NotImplementedException();
+        //}
 
-        private SpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;
+        ///// <inheritdoc />
+        //public void SuspendObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
+        //{
+        //    MixedRealityToolkit.Instance.GetService(T);
+        //    //for each
+        //}
 
-        /// <inheritdoc />
-        public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail
-        {
-            get
-            {
-                return meshLevelOfDetail;
-            }
+        ///// <inheritdoc />
+        //public void SuspendObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
+        //{
+        //    throw new System.NotImplementedException();
+        //}
 
-            set
-            {
-                if (meshLevelOfDetail != value)
-                {
-                    // Non-custom values automatically modify MeshTrianglesPerCubicMeter
-                    if (value != SpatialAwarenessMeshLevelOfDetail.Custom)
-                    {
-                        MeshTrianglesPerCubicMeter = (int)value;
-                    }
+        ///// <inheritdoc />
+        //public void SuspendObserver<T>(int id) where T : IMixedRealitySpatialAwarenessObserver
+        //{
+        //    throw new System.NotImplementedException();
+        //}
 
-                    meshLevelOfDetail = value;
-                }
-            }
-        }
+        ///// <inheritdoc />
+        //public T GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
+        //{
+        //    throw new System.NotImplementedException();
+        //}
 
-        /// <inheritdoc />
-        public int MeshTrianglesPerCubicMeter { get; set; } = (int)SpatialAwarenessMeshLevelOfDetail.Coarse;
+        ///// <inheritdoc />
+        //public T GetObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
+        //{
+        //    throw new System.NotImplementedException();
+        //}
 
-        /// <inheritdoc />
-        public bool MeshRecalculateNormals { get; set; } = true;
-
-        /// <inheritdoc />
-        public SpatialMeshDisplayOptions MeshDisplayOption { get; set; } = SpatialMeshDisplayOptions.None;
-
-        /// <inheritdoc />
-        public Material MeshVisibleMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        public Material MeshOcclusionMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        /// <remarks>The observer manages the mesh collection.</remarks>
-        public IDictionary<int, GameObject> Meshes => SpatialAwarenessObserver.Meshes;
-
-        #endregion Mesh Handling implementation
-
-        #region Surface Finding Handling implementation
-
-        /// <inheritdoc />
-        public bool UseSurfaceFindingSystem { get; set; } = false;
-
-        /// <inheritdoc />
-        public int SurfacePhysicsLayer { get; set; } = 31;
-
-        /// <inheritdoc />
-        public int SurfacePhysicsLayerMask => 1 << SurfacePhysicsLayer;
-
-        /// <inheritdoc />
-        public float SurfaceFindingMinimumArea { get; set; } = 0.025f;
-
-        /// <inheritdoc />
-        public bool DisplayFloorSurfaces { get; set; } = false;
-
-        /// <inheritdoc />
-        public Material FloorSurfaceMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        public bool DisplayCeilingSurfaces { get; set; } = false;
-
-        /// <inheritdoc />
-        public Material CeilingSurfaceMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        public bool DisplayWallSurfaces { get; set; } = false;
-
-        /// <inheritdoc />
-        public Material WallSurfaceMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        public bool DisplayPlatformSurfaces { get; set; } = false;
-
-        /// <inheritdoc />
-        public Material PlatformSurfaceMaterial { get; set; } = null;
-
-        /// <inheritdoc />
-        public IDictionary<int, GameObject> PlanarSurfaces
-        {
-            get
-            {
-                // This implementation of the spatial awareness system manages game objects.
-                // todo
-                return new Dictionary<int, GameObject>(0);
-            }
-        }
-
-        #endregion Surface Finding Handling implementation
+        ///// <inheritdoc />
+        //public T GetObserver<T>(int id) where T : IMixedRealitySpatialAwarenessObserver
+        //{
+        //    throw new System.NotImplementedException();
+        //}
 
         #endregion IMixedRealitySpatialAwarenessSystem Implementation
     }
