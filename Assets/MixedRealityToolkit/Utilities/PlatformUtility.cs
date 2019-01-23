@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
 
         private static bool IsPlatformSupported(SupportedPlatforms target, SupportedPlatforms supported)
         {
-            return ((target & supported) == target);
+            return (target & supported) > 0;
         }
 
 #if UNITY_EDITOR
@@ -58,6 +58,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         private static SupportedPlatforms GetSupportedPlatformMask(UnityEditor.BuildTarget editorBuildTarget)
         {
             SupportedPlatforms supportedPlatforms = 0;
+
+            if (Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                supportedPlatforms |= SupportedPlatforms.WindowsStandalone;
+            }
 
             switch (editorBuildTarget)
             {
