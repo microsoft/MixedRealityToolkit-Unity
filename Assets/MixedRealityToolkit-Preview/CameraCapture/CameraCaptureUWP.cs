@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		{
 			resolution = aResolution;
 			Resolution cameraResolution = resolution.nativeResolution == NativeResolutionMode.Smallest ?
-				PhotoCapture.SupportedResolutions.OrderBy((res) => res.width * res.height).First() :
+				PhotoCapture.SupportedResolutions.OrderBy((res) =>  res.width * res.height).First() :
 				PhotoCapture.SupportedResolutions.OrderBy((res) => -res.width * res.height).First();
 
 			cacheTex = new Texture2D(cameraResolution.width, cameraResolution.height);
@@ -82,6 +82,13 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 				cameraParams.cameraResolutionHeight = cameraResolution.height;
 				cameraParams.pixelFormat            = CapturePixelFormat.BGRA32;
 			
+				IntPtr unknown = camera.GetUnsafePointerToVideoDeviceController();
+				using (VideoDeviceControllerWrapper wrapper = new VideoDeviceControllerWrapper(unknown)) {
+					wrapper.SetExposure(-7);
+					wrapper.SetWhiteBalance(5000);
+					wrapper.SetISO(80);
+				}
+
 				if (aOnInitialized != null)
 					aOnInitialized();
 
@@ -173,9 +180,13 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		#endregion
 	}
 
+	/// <summary>
+	/// A wrapper for setting camera exposure settings in UWP.
+	/// </summary>
 	public sealed class VideoDeviceControllerWrapper : IDisposable
 	{
 		private VideoDeviceController controller = null;
+		private bool                  disposed   = false;
 
 		public VideoDeviceControllerWrapper(IntPtr unknown)
 		{
@@ -184,9 +195,13 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
  
 		~VideoDeviceControllerWrapper()
 		{
-			Dispose();
+			Dispose(false);
 		}
  
+		/// <summary>
+		/// Manually override the camera's exposure.
+		/// </summary>
+		/// <param name="exposure">These appear to be imaginary units of some kind. Seems to be integer values around, but not exactly -10 to +10.</param>
 		public void SetExposure(int exposure)
 		{
 			//Debug.LogFormat("({3} : {0}-{1}) +{2}", controller.Exposure.Capabilities.Min, controller.Exposure.Capabilities.Max, controller.Exposure.Capabilities.Step, exposure);
@@ -196,6 +211,10 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			if (!controller.Exposure.TrySetValue((double)exposure))
 				Debug.LogErrorFormat("[{0}] HoloLens locatable camera has failed to set exposure to {1} as requested", typeof(VideoDeviceControllerWrapper), exposure);
 		}
+		/// <summary>
+		/// Manually override the camera's white balance.
+		/// </summary>
+		/// <param name="kelvin">White balance temperature in kelvin! Also seems a bit arbitrary as to what values it accepts.</param>
 		public void SetWhiteBalance(int kelvin)
 		{
 			if (!controller.WhiteBalance.TrySetAuto(false))
@@ -204,25 +223,42 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			if (!controller.WhiteBalance.TrySetValue((double)kelvin))
 				Debug.LogErrorFormat("[{0}] HoloLens locatable camera has failed to set WhiteBalance to {1} as requested", typeof(VideoDeviceControllerWrapper), kelvin);
 		}
-		public void SetFocus(int focus)
-		{
-			if (!controller.Focus.TrySetAuto(false))
-				Debug.LogErrorFormat("[{0}] HoloLens locatable camera has failed to set auto Focus off", typeof(VideoDeviceControllerWrapper));
-
-			if (!controller.Focus.TrySetValue((double)focus))
-				Debug.LogErrorFormat("[{0}] HoloLens locatable camera has failed to set Focus to {1} as requested", typeof(VideoDeviceControllerWrapper), focus);
-		}
+		/// <summary>
+		/// Manually override the camera's ISO.
+		/// </summary>
+		/// <param name="iso">Camera's sensitivity to light, kinda like gain.</param>
 		public void SetISO(int iso)
 		{
 			var task = controller.IsoSpeedControl.SetValueAsync((uint)iso);
 		}
  
+		/// <summary>
+		/// Dispose of resources!
+		/// </summary>
 		public void Dispose()
 		{
-			if (controller != null)
-			{
-				Marshal.ReleaseComObject(controller);
-				controller = null;
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		/// <summary>
+		/// Dispose(bool disposing) executes in two distinct scenarios.
+        /// If disposing equals true, the method has been called directly
+        /// or indirectly by a user's code. Managed and unmanaged resources
+        /// can be disposed.
+        /// If disposing equals false, the method has been called by the
+        /// runtime from inside the finalizer and you should not reference
+        /// other objects. Only unmanaged resources can be disposed.
+		/// If that's confusing to you too, maybe read this: https://docs.microsoft.com/en-us/dotnet/api/system.idisposable.dispose
+		/// </summary>
+		public void Dispose(bool disposing)
+		{
+			if (!disposed){
+				if (controller != null)
+				{
+					Marshal.ReleaseComObject(controller);
+					controller = null;
+				}
+				disposed = true;
 			}
 		}
 	}
