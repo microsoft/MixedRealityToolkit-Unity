@@ -12,7 +12,7 @@ using UnityEngine.XR.WSA.Input;
 
 using Microsoft.MixedReality.Toolkit.Preview.LightEstimation;
 
-namespace Microsoft.MixedReality.Toolkit.Preview.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 {
 	public class LightPreviewController : MonoBehaviour
 	{
