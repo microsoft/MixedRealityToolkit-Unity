@@ -493,42 +493,46 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
 
         private float GetNormalizedLengthFromWorldPosInternal(Vector3 worldPosition, float currentLength, ref int iteration, int resolution, int maxIterations, float start, float end)
         {
-            // If we've maxed out our iterations, don't go any further
             iteration++;
 
+            // If we've maxed out our iterations, don't go any further
             if (iteration > maxIterations)
             {
                 return currentLength;
             }
 
-            float searchLength;
-            if (start > 0)
-            {
-                searchLength = (end - start) / resolution;
-            }
-            else
-            {
-                searchLength = end / resolution;
-            }
-
-            Vector3 currentPoint = Vector3.zero;
+            float searchLengthStep = (end - start) / resolution;
             float closestDistanceSoFar = Mathf.Infinity;
+            float currentSearchLength = start;
 
             for (int i = 0; i < resolution; i++)
             {
-                currentPoint = GetUnClampedPoint(start + (searchLength * i));
-                float distance = Vector3.Distance(currentPoint, worldPosition);
+                Vector3 currentPoint = GetUnClampedPoint(currentSearchLength);
 
-                if (distance < closestDistanceSoFar)
+                float distSquared = (currentPoint - worldPosition).sqrMagnitude;
+                if (distSquared < closestDistanceSoFar)
                 {
-                    currentLength = start + (searchLength * i);
-                    closestDistanceSoFar = distance;
+                    currentLength = currentSearchLength;
+                    closestDistanceSoFar = distSquared;
                 }
+                currentSearchLength += searchLengthStep;
             }
 
             // Our start and end lengths will now be 1 resolution to the left and right
-            float newStart = Mathf.Clamp01(currentLength - searchLength);
-            float newEnd = Mathf.Clamp01(currentLength + searchLength);
+            float newStart = currentLength - searchLengthStep;
+            float newEnd = currentLength + searchLengthStep;
+
+            if (newStart < 0)
+            {
+                newEnd -= newStart;
+                newStart = 0;
+            }
+
+            if (newEnd > 1)
+            {
+                newEnd = 1;
+            }
+
             return GetNormalizedLengthFromWorldPosInternal(worldPosition, currentLength, ref iteration, resolution, maxIterations, newStart, newEnd);
         }
 
