@@ -42,15 +42,37 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		/// <summary>
 		/// The actual Cubemap object we're stamping to. Not ready until after you call Create.
 		/// </summary>
-		public Cubemap  Map                 { get { return map; } }
+		public Cubemap  Map
+		{
+			get
+			{
+				return map;
+			}
+		}
 		/// <summary>
 		/// This class uses a Skybox material for stamping onto! Great to use for any of your own skybox needs!
 		/// </summary>
-		public Material SkyMaterial         { get { return skybox; } }
+		public Material SkyMaterial
+		{
+			get
+			{
+				return skybox;
+			}
+		}
 		/// <summary>
 		/// How far must one be (in meters) from a stamp in order for it to be removed from our cache? This whole idea is ignored if this value is zero or less.
 		/// </summary>
-		public float    StampExpireDistance { get { return stampExpireDistance; } set { stampExpireDistance = value; } }
+		public float    StampExpireDistance
+		{
+			get
+			{
+				return stampExpireDistance;
+			}
+			set
+			{
+				stampExpireDistance = value;
+			}
+		}
 		#endregion
 
 		#region Public Methods
@@ -109,12 +131,18 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		public void Destroy()
 		{
 			if (root == null)
+			{
 				return;
-		
+			}
+
 			if (Application.isPlaying)
+			{
 				Object.Destroy(root);
+			}
 			else
+			{
 				Object.DestroyImmediate(root);
+			}
 		}
 		/// <summary>
 		/// Stamp a texture onto this cubemap! Doesn't check any caching or anything, but 
@@ -149,8 +177,10 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 			imageQuad.transform.rotation = aOrientation;
 			imageQuad.sharedMaterial.mainTexture = aTex;
 			if (aTex != null)
+			{
 				imageQuad.transform.localScale = new Vector3(1, (aTex.height / (float)aTex.width), 1) ;
-		
+			}
+
 			// Figure out which faces of the Cubemap we need to render with this stamp, we don't generally need to 
 			// render all of them, (usually 3 at most) so it's a no-brainer optimization, even if it's not 100% accurate
 			int     render = 0;
@@ -212,7 +242,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 				}
 				float ang = Quaternion.Angle(orientation, s.direction);
 				if (min > ang)
+				{
 					min = ang;
+				}
 			}
 
 			// allow for a little overlap (using .4 fov instead of .5), especially since fov is horiontal, not vertical, and vertical is 
@@ -225,14 +257,23 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		private Mesh CreatePlane(float aZ, float aBlend = 0.2f)
 		{
 			Mesh m = new Mesh();
-			m.vertices = new Vector3[] { 
+			m.vertices = new Vector3[]
+			{ 
 				new Vector3(-1,1,aZ), new Vector3(1,1,aZ), new Vector3(1,-1,aZ), new Vector3(-1,-1,aZ),
-				new Vector3(-1 + aBlend, 1-aBlend*2, aZ), new Vector3(1-aBlend, 1-aBlend*2, aZ), new Vector3(1-aBlend, -1+aBlend*2, aZ), new Vector3(-1+aBlend, -1+aBlend*2, aZ) };
-			m.colors = new Color[] { new Color(1,1,1,0), new Color(1,1,1,0), new Color(1,1,1,0), new Color(1,1,1,0),
-				Color.white, Color.white, Color.white, Color.white };
-			m.uv = new Vector2[] { new Vector2(0, 1), new Vector2(1,1), new Vector2(1,0), new Vector2(0,0),
-				new Vector2(aBlend/2, 1-aBlend), new Vector2(1-aBlend/2, 1-aBlend), new Vector2(1-aBlend/2, aBlend), new Vector2(aBlend/2, aBlend)};
-			m.triangles = new int[] {
+				new Vector3(-1 + aBlend, 1-aBlend*2, aZ), new Vector3(1-aBlend, 1-aBlend*2, aZ), new Vector3(1-aBlend, -1+aBlend*2, aZ), new Vector3(-1+aBlend, -1+aBlend*2, aZ)
+			};
+			m.colors = new Color[]
+			{
+				new Color(1,1,1,0), new Color(1,1,1,0), new Color(1,1,1,0), new Color(1,1,1,0),
+				Color.white, Color.white, Color.white, Color.white
+			};
+			m.uv = new Vector2[]
+			{
+				new Vector2(0, 1), new Vector2(1,1), new Vector2(1,0), new Vector2(0,0),
+				new Vector2(aBlend/2, 1-aBlend), new Vector2(1-aBlend/2, 1-aBlend), new Vector2(1-aBlend/2, aBlend), new Vector2(aBlend/2, aBlend)
+			};
+			m.triangles = new int[]
+			{
 				0,1,5,  0,5,4,
 				5,1,2,  5,2,6,
 				6,2,7,  7,2,3,
@@ -323,9 +364,13 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		private bool IsExpired(int i, Vector3 cameraPosition)
 		{
 			if (stampExpireLife     > 0 && Time.time - stampCache[i].timestamp > stampExpireLife)
+			{
 				return true;
+			}
 			if (stampExpireDistance > 0 && Vector3.SqrMagnitude(stampCache[i].position - cameraPosition) > stampExpireDistance*stampExpireDistance)
+			{
 				return true;
+			}
 			return false;
 		}
 		#endregion
@@ -342,7 +387,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		public static Vector3 GetWeightedDirection(Cubemap map, int mipLevel, ref Histogram histogram)
 		{
 			if (histogram != null)
+			{
 				histogram.Clear();
+			}
 
 			Vector3 result = Vector3.zero;
 			result += Quaternion.Euler(0,-90,0) * GetWeightedDirection(map, CubemapFace.NegativeX, mipLevel, ref histogram);
@@ -372,7 +419,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 					Color color = colors[x+y*width];
 					float intensity = color.grayscale;
 					if (histogram != null)
+					{
 						histogram.Add(color.r, color.g, color.b, intensity);
+					}
 				
 					// TODO: get rid of this inner loop normalize
 					result += new Vector3(xP, yP, 1).normalized * intensity;
@@ -407,9 +456,11 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		{
 			Color[] faceData = map.GetPixels(face);
 
-			for (int y = 0; y < map.height; y++) {
+			for (int y = 0; y < map.height; y++)
+			{
 				int yStride = y * map.width * 6;
-				for (int x = 0; x < map.width; x++) {
+				for (int x = 0; x < map.width; x++)
+				{
 					int i = startX + x + yStride;
 					data[i] = faceData[x+((map.height-1)-y)*map.width];
 				}

@@ -18,17 +18,35 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		/// <summary>
 		/// Is the camera completely initialized and ready to begin taking pictures?
 		/// </summary>
-		public bool  IsReady           { get { return initialized; } }
+		public bool  IsReady
+		{
+			get
+			{
+				return initialized;
+			}
+		}
 		/// <summary>
 		/// Is the camera currently already busy with taking a picture?
 		/// </summary>
-		public bool  IsRequestingImage { get { return false;  } }
+		public bool  IsRequestingImage
+		{
+			get
+			{
+				return false;
+			}
+		}
 		/// <summary>
 		/// Field of View of the camera in degrees. This value is never ready until after 
 		/// initialization, and in many cases, isn't accurate until after a picture has
 		/// been taken. It's best to check this after each picture if you need it.
 		/// </summary>
-		public float FieldOfView       { get { return Camera.main.fieldOfView; } }
+		public float FieldOfView
+		{
+			get
+			{
+				return Camera.main.fieldOfView;
+			}
+		}
 
 		public CameraCaptureScreen(Camera aSourceCamera, int aRenderMask = ~(1 << 31))
 		{
@@ -49,14 +67,19 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			initialized = true;
 
 			if (aOnInitialized != null)
+			{
 				aOnInitialized();
+			}
 		}
 
 		private void GrabScreen(Vector2Int aSize)
 		{
 			if (captureTex == null || captureTex.width != aSize.x || captureTex.height != aSize.y)
 			{
-				if (captureTex != null) GameObject.Destroy(captureTex);
+				if (captureTex != null)
+				{
+					GameObject.Destroy(captureTex);
+				}
 				captureTex = new Texture2D(aSize.x, aSize.y, TextureFormat.RGB24, false);
 			}
 			RenderTexture rt  = RenderTexture.GetTemporary(aSize.x, aSize.y, 24);
@@ -85,7 +108,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			GrabScreen(size);
 
 			if (aOnImageAcquired != null)
+			{
 				aOnImageAcquired(captureTex.GetRawTextureData<Color24>(), sourceCamera.transform.localToWorldMatrix, size.x, size.y);
+			}
 		}
 
 		/// <summary>
@@ -98,7 +123,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			GrabScreen(size);
 
 			if (aOnImageAcquired != null)
+			{
 				aOnImageAcquired(captureTex, sourceCamera.transform.localToWorldMatrix);
+			}
 		}
 
 		/// <summary>
@@ -106,7 +133,10 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		/// </summary>
 		public void Shutdown()
 		{
-			if (captureTex != null) GameObject.Destroy(captureTex);
+			if (captureTex != null)
+			{
+				GameObject.Destroy(captureTex);
+			}
 		}
 	}
 }

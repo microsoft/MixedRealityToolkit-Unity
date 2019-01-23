@@ -6,7 +6,8 @@ using UnityEngine.Rendering;
 
 using Microsoft.MixedReality.Toolkit.Preview.CameraCapture;
 
-namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation {
+namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
+{
 	public class LightCapture : MonoBehaviour
 	{
 		#region Fields
@@ -54,7 +55,13 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation {
 		/// <summary>
 		/// Direct access to the CubeMapper class we're using!
 		/// </summary>
-		public CubeMapper CubeMapper { get { return map; } }
+		public CubeMapper CubeMapper
+		{
+			get
+			{
+				return map;
+			}
+		}
 		#endregion
 
 		#region Unity Events
@@ -73,7 +80,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation {
 
 			// Make sure we have access to a probe in the scene
 			if (probe == null) 
+			{
 				probe = FindObjectOfType<ReflectionProbe>();
+			}
 			if (probe == null)
 			{
 				GameObject probeObj = new GameObject("_LightCaptureProbe", typeof(ReflectionProbe));
@@ -86,7 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation {
 
 			// Same with a camera object
 			if (cameraOrientation == null)
+			{
 				cameraOrientation = Camera.main.transform;
+			}
 
 			// And check for a directional light in the scene
 			if (useDirectionalLight && directionalLight == null)
@@ -150,14 +161,18 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation {
 		private void OnValidate()
 		{
 			if (map != null)
+			{
 				map.StampExpireDistance = stampExpireDistance;
+			}
 		}
 
 		private void Update ()
 		{
 			// ditch out if we already have our first stamp
 			if ((stampCount > 0 && singleStampOnly) )
+			{
 				return;
+			}
 
 			// check the cache to see if our current orientation would benefit from a new stamp
 			if (captureCamera.IsReady && !captureCamera.IsRequestingImage)
@@ -173,7 +188,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation {
 			{
 				float t =  Mathf.Clamp01( (Time.time - lightStartTime) / lightTargetDuration );
 				if (t >= 1)
+				{
 					lightStartTime = 0;
+				}
 			
 				// This is a cheap cubic in/out easing function, so we aren't doing this linear (ew)
 				t = t<.5f ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1; 
@@ -191,12 +208,16 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation {
 			DynamicGI.UpdateEnvironment();
 
 			if (useDirectionalLight)
+			{
 				UpdateDirectionalLight();
+			}
 		}
 		private void UpdateDirectionalLight()
 		{
 			if (directionalLight == null)
+			{
 				return;
+			}
 
 			// Calculate the light direction
 			Vector3 dir = map.GetWeightedDirection(ref histogram);
@@ -242,7 +263,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation {
 			#if WINDOWS_UWP
 			CameraCaptureUWP cam = captureCamera as CameraCaptureUWP;
 			if (cam != null)
+			{
 				cam.Exposure = exp;
+			}
 			#endif
 		}
 		public void SetWhitebalance(int wb)
@@ -250,7 +273,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation {
 			#if WINDOWS_UWP
 			CameraCaptureUWP cam = captureCamera as CameraCaptureUWP;
 			if (cam != null)
+			{
 				cam.Whitebalance = wb;
+			}
 			#endif
 		}
 

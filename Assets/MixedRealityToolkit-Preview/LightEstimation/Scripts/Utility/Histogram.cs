@@ -88,7 +88,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 				curr += v[i];
 				float currPercent = curr/total;
 				if (currPercent >= percent)
+				{
 					return i / (float)buckets;
+				}
 			}
 			return 1;
 		}

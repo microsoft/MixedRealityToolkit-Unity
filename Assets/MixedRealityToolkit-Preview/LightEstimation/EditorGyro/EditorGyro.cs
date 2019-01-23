@@ -38,8 +38,14 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		/// </summary>
 		public static Quaternion GetRotation()
 		{
-			if (!isInitialized) isInitialized = Initialize() >= 0;
-			if (!isInitialized) return Quaternion.identity;
+			if (!isInitialized)
+			{
+				isInitialized = Initialize() >= 0;
+			}
+			if (!isInitialized)
+			{
+				return Quaternion.identity;
+			}
 			return Quaternion.AngleAxis(90, Vector3.right) * GetRawRotation();
 		}
 		#else

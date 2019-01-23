@@ -29,7 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			for (int i = 0; i < assemblies.Length; i++)
 			{
 				if (Type.GetType(typeName+", "+assemblies[i].FullName, false) != null)
+				{
 					return true;
+				}
 			}
 			return false;
 		}

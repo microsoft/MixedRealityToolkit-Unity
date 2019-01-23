@@ -36,23 +36,35 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		/// initialization, and in many cases, isn't accurate until after a picture has
 		/// been taken. It's best to check this after each picture if you need it.
 		/// </summary>
-		public float FieldOfView       { get { return fieldOfView; } }
+		public float FieldOfView
+		{
+			get
+			{
+				return fieldOfView;
+			}
+		}
 		public int   Exposure
-		{ set { 
-			IntPtr unknown = camera.GetUnsafePointerToVideoDeviceController();
-			using (VideoDeviceControllerWrapper wrapper = new VideoDeviceControllerWrapper(unknown))
-			{
-				wrapper.SetExposure(value);
-			}
-		} }
+		{
+			set
+			{ 
+				IntPtr unknown = camera.GetUnsafePointerToVideoDeviceController();
+				using (VideoDeviceControllerWrapper wrapper = new VideoDeviceControllerWrapper(unknown))
+				{
+					wrapper.SetExposure(value);
+				}
+			} 
+		}
 		public int   Whitebalance 
-		{ set { 
-			IntPtr unknown = camera.GetUnsafePointerToVideoDeviceController();
-			using (VideoDeviceControllerWrapper wrapper = new VideoDeviceControllerWrapper(unknown))
-			{
-				wrapper.SetWhiteBalance(value);
-			}
-		} }
+		{
+			set
+			{ 
+				IntPtr unknown = camera.GetUnsafePointerToVideoDeviceController();
+				using (VideoDeviceControllerWrapper wrapper = new VideoDeviceControllerWrapper(unknown))
+				{
+					wrapper.SetWhiteBalance(value);
+				}
+			} 
+		}
 		#endregion
 
 		#region Methods
@@ -83,14 +95,17 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 				cameraParams.pixelFormat            = CapturePixelFormat.BGRA32;
 			
 				IntPtr unknown = camera.GetUnsafePointerToVideoDeviceController();
-				using (VideoDeviceControllerWrapper wrapper = new VideoDeviceControllerWrapper(unknown)) {
+				using (VideoDeviceControllerWrapper wrapper = new VideoDeviceControllerWrapper(unknown))
+				{
 					wrapper.SetExposure(-7);
 					wrapper.SetWhiteBalance(5000);
 					wrapper.SetISO(80);
 				}
 
 				if (aOnInitialized != null)
+				{
 					aOnInitialized();
+				}
 
 				isReady = true;
 			});
@@ -101,7 +116,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			IsRequestingImage = true;
 		
 			if (camera == null)
+			{
 				Debug.LogError("[CameraCapture] camera hasn't been initialized!");
+			}
 
 			camera.StartPhotoModeAsync(cameraParams, startResult =>
 			{
@@ -113,7 +130,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 					{
 						Debug.Log("[CameraCapture] Can't get camera matrix!!");
 						transform = Camera.main.transform.localToWorldMatrix;
-					} else {
+					}
+					else
+					{
 						transform[0,2] = -transform[0,2];
 						transform[1,2] = -transform[1,2];
 						transform[2,2] = -transform[2,2];
@@ -121,17 +140,24 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 					}
 					Matrix4x4 proj;
 					if (!frame.TryGetProjectionMatrix(out proj))
+					{
 						fieldOfView = Mathf.Atan(1.0f / proj[0,0] ) * 2.0f * Mathf.Rad2Deg;
-					
+					}
+
 					frame.UploadImageDataToTexture(cacheTex);
 					Texture tex = resizedTex;
 					resolution.ResizeTexture(cacheTex, ref tex, true);
 					resizedTex = (Texture2D)tex;
 
 					if (aOnFinished != null)
+					{
 						aOnFinished(resizedTex, transform);
+					}
 
-					camera.StopPhotoModeAsync((a)=>{ IsRequestingImage = false; });
+					camera.StopPhotoModeAsync((a)=>
+					{
+						IsRequestingImage = false;
+					});
 				});
 			});
 		}
@@ -143,11 +169,16 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		public void RequestImage(Action<NativeArray<Color24>, Matrix4x4, int, int> aOnImageAcquired)
 		{
 			if (!isReady || IsRequestingImage)
+			{
 				return;
+			}
 
-			GetImage((tex, transform) => {
+			GetImage((tex, transform) =>
+			{
 				if (aOnImageAcquired != null)
+				{
 					aOnImageAcquired(tex.GetRawTextureData<Color24>(), transform, tex.width, tex.height);
+				}
 			});
 		}
 		/// <summary>
@@ -157,11 +188,16 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		public void RequestImage(Action<Texture, Matrix4x4> aOnImageAcquired)
 		{
 			if (!isReady || IsRequestingImage)
+			{
 				return;
+			}
 
-			GetImage((tex, transform) => {
+			GetImage((tex, transform) =>
+			{
 				if (aOnImageAcquired != null)
+				{
 					aOnImageAcquired(tex, transform);
+				}
 			});
 		}
 
@@ -170,11 +206,19 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		/// </summary>
 		public void Shutdown()
 		{
-			if (cacheTex   != null) GameObject.Destroy(cacheTex);
-			if (resizedTex != null) GameObject.Destroy(resizedTex);
+			if (cacheTex   != null)
+			{
+				GameObject.Destroy(cacheTex);
+			}
+			if (resizedTex != null)
+			{
+				GameObject.Destroy(resizedTex);
+			}
 
 			if (camera != null)
+			{
 				camera.Dispose();
+			}
 			camera = null;
 		}
 		#endregion
@@ -206,10 +250,14 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		{
 			//Debug.LogFormat("({3} : {0}-{1}) +{2}", controller.Exposure.Capabilities.Min, controller.Exposure.Capabilities.Max, controller.Exposure.Capabilities.Step, exposure);
 			if (!controller.Exposure.TrySetAuto(false))
+			{
 				Debug.LogErrorFormat("[{0}] HoloLens locatable camera has failed to set auto exposure off", typeof(VideoDeviceControllerWrapper));
+			}
 
 			if (!controller.Exposure.TrySetValue((double)exposure))
+			{
 				Debug.LogErrorFormat("[{0}] HoloLens locatable camera has failed to set exposure to {1} as requested", typeof(VideoDeviceControllerWrapper), exposure);
+			}
 		}
 		/// <summary>
 		/// Manually override the camera's white balance.
@@ -218,10 +266,14 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		public void SetWhiteBalance(int kelvin)
 		{
 			if (!controller.WhiteBalance.TrySetAuto(false))
+			{
 				Debug.LogErrorFormat("[{0}] HoloLens locatable camera has failed to set auto WhiteBalance off", typeof(VideoDeviceControllerWrapper));
+			}
 
 			if (!controller.WhiteBalance.TrySetValue((double)kelvin))
+			{
 				Debug.LogErrorFormat("[{0}] HoloLens locatable camera has failed to set WhiteBalance to {1} as requested", typeof(VideoDeviceControllerWrapper), kelvin);
+			}
 		}
 		/// <summary>
 		/// Manually override the camera's ISO.
@@ -252,7 +304,8 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		/// </summary>
 		public void Dispose(bool disposing)
 		{
-			if (!disposed){
+			if (!disposed)
+			{
 				if (controller != null)
 				{
 					Marshal.ReleaseComObject(controller);

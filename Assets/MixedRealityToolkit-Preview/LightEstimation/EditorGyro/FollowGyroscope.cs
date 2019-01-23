@@ -12,7 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		private void Awake()
 		{
 			if (!Application.isEditor && onlyRunInEditor)
+			{
 				enabled = false;
+			}
 		}
 		private void Update ()
 		{

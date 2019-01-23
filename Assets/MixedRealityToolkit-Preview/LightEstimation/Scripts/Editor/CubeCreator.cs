@@ -37,7 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		{
 			// Ensure we have a probe available
 			GameObject probeObject = Selection.activeGameObject;
-			if (probeObject.GetComponent<ReflectionProbe>() == null) {
+			if (probeObject.GetComponent<ReflectionProbe>() == null)
+			{
 				ReflectionProbe[] probes = FindObjectsOfType<ReflectionProbe>();
 				if (probes.Length > 1)
 				{
@@ -74,13 +75,17 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 			resolution.nativeResolution = NativeResolutionMode.Largest;
 			resolution.resize           = ResizeWhen.Never;
 
-			cam.Initialize(true, resolution, ()=>{ });
+			cam.Initialize(true, resolution, ()=>
+			{
+			});
 		}
 		private void OnDisable()
 		{
 			cam.Shutdown();
 			if (map != null)
+			{
 				map.Destroy();
+			}
 		}
 		private void OnGUI()
 		{
@@ -122,7 +127,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 			if (previewAsset != null)
 			{
 				if (previewEditor == null)
+				{
 					previewEditor = Editor.CreateEditor(previewAsset);
+				}
 			
 				previewEditor.OnInteractivePreviewGUI(r, previewStyle);
 			}
@@ -137,7 +144,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		private void Stamp()
 		{
 			if (map == null)
+			{
 				return;
+			}
 
 			cam.RequestImage((tex,mat) =>
 			{

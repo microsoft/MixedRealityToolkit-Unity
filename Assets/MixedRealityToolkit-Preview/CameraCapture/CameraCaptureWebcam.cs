@@ -20,17 +20,33 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		/// <summary>
 		/// Is the camera completely initialized and ready to begin taking pictures?
 		/// </summary>
-		public bool  IsReady           { get { return webcamTex != null && webcamTex.isPlaying && (Time.time - startTime) > 0.5f; } }
+		public bool  IsReady
+		{
+			get
+			{
+				return webcamTex != null && webcamTex.isPlaying && (Time.time - startTime) > 0.5f;
+			}
+		}
 		/// <summary>
 		/// Is the camera currently already busy with taking a picture?
 		/// </summary>
-		public bool  IsRequestingImage { get; private set; }
+		public bool  IsRequestingImage
+		{
+			get;
+			private set;
+		}
 		/// <summary>
 		/// Field of View of the camera in degrees. This value is never ready until after 
 		/// initialization, and in many cases, isn't accurate until after a picture has
 		/// been taken. It's best to check this after each picture if you need it.
 		/// </summary>
-		public float FieldOfView       { get { return fieldOfView; } }
+		public float FieldOfView
+		{
+			get
+			{
+				return fieldOfView;
+			}
+		}
 
 		public CameraCaptureWebcam(Transform aPoseSource, float aFieldOfView)
 		{
@@ -48,10 +64,14 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		public void Initialize(bool aPreferGPUTexture, CameraResolution aResolution, Action aOnInitialized)
 		{
 			if (webcamTex != null)
+			{
 				throw new Exception("[CameraCapture] Only need to initialize once!");
+			}
 			// No cameras? Ditch out!
 			if (WebCamTexture.devices.Length <= 0)
+			{
 				return;
+			}
 
 			resolution = aResolution;
 
@@ -61,23 +81,35 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			for (int i = 0; i < devices.Length; i++)
 			{
 				if (!devices[i].isFrontFacing || devices[i].name.ToLower().Contains("rear"))
+				{
 					device = devices[i];
+				}
 			}
 		
 			// Pick a camera resolution
 			if (resolution.nativeResolution == NativeResolutionMode.Largest)
+			{
 				webcamTex = new WebCamTexture(device.name, 10000, 10000, 2);
+			}
 			else if (resolution.nativeResolution == NativeResolutionMode.Smallest)
+			{
 				webcamTex = new WebCamTexture(device.name, 1, 1, 2);
+			}
 			else if (resolution.nativeResolution == NativeResolutionMode.Closest)
+			{
 				webcamTex = new WebCamTexture(device.name, resolution.size.x, resolution.size.y, 2);
+			}
 			else
+			{
 				throw new NotImplementedException(resolution.nativeResolution.ToString());
+			}
 			
 			webcamTex.Play();
 		
 			if (aOnInitialized != null)
+			{
 				aOnInitialized();
+			}
 			startTime = Time.time;
 		}
 
@@ -91,7 +123,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			NativeArray<Color24> pixels = ((Texture2D)resizedTexture).GetRawTextureData<Color24>();// _resizedTexture is Texture2D ? ((Texture2D)_resizedTexture).GetPixels32() : ((WebCamTexture)_resizedTexture).GetPixels32();
 
 			if (aOnImageAcquired != null)
+			{
 				aOnImageAcquired(pixels, poseSource == null ? Matrix4x4.identity : poseSource.localToWorldMatrix, resizedTexture.width, resizedTexture.height);
+			}
 		}
 
 		/// <summary>
@@ -103,7 +137,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			resolution.ResizeTexture(webcamTex, ref resizedTexture, false);
 
 			if (aOnImageAcquired != null)
+			{
 				aOnImageAcquired(resizedTexture, poseSource == null ? Matrix4x4.identity : poseSource.localToWorldMatrix);
+			}
 		}
 
 		/// <summary>
@@ -112,7 +148,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		public void Shutdown()
 		{
 			if (webcamTex != null && webcamTex.isPlaying)
+			{
 				webcamTex.Stop();
+			}
 			webcamTex = null;
 		}
 	}

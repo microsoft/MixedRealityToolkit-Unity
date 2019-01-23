@@ -21,22 +21,38 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		/// <summary>
 		/// Is the camera completely initialized and ready to begin taking pictures?
 		/// </summary>
-		public bool  IsReady           { get { return ready; } }
+		public bool  IsReady
+		{
+			get
+			{
+				return ready;
+			}
+		}
 		/// <summary>
 		/// Is the camera currently already busy with taking a picture?
 		/// </summary>
-		public bool  IsRequestingImage { get { return false;  } }
+		public bool  IsRequestingImage
+		{
+			get
+			{
+				return false;
+			}
+		}
 		/// <summary>
 		/// Field of View of the camera in degrees. This value is never ready until after 
 		/// initialization, and in many cases, isn't accurate until after a picture has
 		/// been taken. It's best to check this after each picture if you need it.
 		/// </summary>
-		public float FieldOfView       { get { 
-			Matrix4x4 proj = Matrix4x4.identity;
-			ARSubsystemManager.cameraSubsystem.TryGetProjectionMatrix(ref proj);
-			float     fov  = Mathf.Atan(1.0f / proj[1,1] ) * 2.0f * Mathf.Rad2Deg;
-			return fov;
-		} }
+		public float FieldOfView
+		{
+			get
+			{ 
+				Matrix4x4 proj = Matrix4x4.identity;
+				ARSubsystemManager.cameraSubsystem.TryGetProjectionMatrix(ref proj);
+				float     fov  = Mathf.Atan(1.0f / proj[1,1] ) * 2.0f * Mathf.Rad2Deg;
+				return fov;
+			}
+		}
 
 		/// <summary>
 		/// Starts up and selects a device's camera, and finds appropriate picture settings
@@ -58,7 +74,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 					ARSubsystemManager.systemStateChanged -= handler;
 					ready = true;
 					if (aOnInitialized != null)
+					{
 						aOnInitialized();
+					}
 				}
 			};
 			ARSubsystemManager.systemStateChanged += handler;
@@ -88,7 +106,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			if (captureTex == null || captureTex.width != size.x || captureTex.height != size.y)
 			{
 				if (captureTex != null)
+				{
 					GameObject.Destroy(captureTex);
+				}
 				captureTex = new Texture2D(size.x, size.y, TextureFormat.RGB24, false);
 			}
 			
@@ -113,28 +133,39 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			// 0 1 0 The source image is upside down as well, so this is identity
 			// 0 0 0 
 			if (Mathf.RoundToInt(matrix[0,0]) == 1 && Mathf.RoundToInt(matrix[1,1]) == 1)
+			{
 				matrix = Matrix4x4.Rotate( Quaternion.Euler(0,0,180) );
+			}
 
 			//-1 0 1 Landscape Right
 			// 0-1 1
 			// 0 0 0
 			else if (Mathf.RoundToInt(matrix[0,0]) == -1 && Mathf.RoundToInt(matrix[1,1]) == -1)
+			{
 				matrix = Matrix4x4.identity;
+			}
 
 			// 0 1 0 Portrait
 			//-1 0 1
 			// 0 0 0
 			else if (Mathf.RoundToInt(matrix[0,1]) == 1 && Mathf.RoundToInt(matrix[1,0]) == -1)
+			{
 				matrix = Matrix4x4.Rotate( Quaternion.Euler(0,0,90) );
+			}
 
 			// 0-1 1 Portrait (upside down)
 			// 1 0 0
 			// 0 0 0
 			else if (Mathf.RoundToInt(matrix[0,1]) == -1 && Mathf.RoundToInt(matrix[1,0]) == 1)
+			{
 				matrix = Matrix4x4.Rotate( Quaternion.Euler(0,0,-90) );
+			}
 
-			else Debug.LogWarningFormat("Unexpected Matrix provided from ARFoundation!\n{0}", matrix.ToString());
-			
+			else
+			{
+				Debug.LogWarningFormat("Unexpected Matrix provided from ARFoundation!\n{0}", matrix.ToString());
+			}
+
 			return matrix * Camera.main.transform.localToWorldMatrix;
 		}
 		
@@ -147,7 +178,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			GrabScreen();
 
 			if (aOnImageAcquired != null)
+			{
 				aOnImageAcquired(captureTex.GetRawTextureData<Color24>(), GetCamTransform(), captureTex.width, captureTex.height);
+			}
 		}
 		/// <summary>
 		/// Request an image from the camera, and provide it as a GPU Texture!
@@ -158,7 +191,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			GrabScreen();
 
 			if (aOnImageAcquired != null)
+			{
 				aOnImageAcquired(captureTex, GetCamTransform());
+			}
 		}
 
 		/// <summary>
@@ -167,7 +202,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		public void Shutdown()
 		{
 			if (captureTex != null)
+			{
 				GameObject.Destroy(captureTex);
+			}
 		}
 	}
 }

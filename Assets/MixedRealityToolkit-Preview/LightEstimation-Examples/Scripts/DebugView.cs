@@ -41,7 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 			}
 
 			if (lines.Count > logCount)
+			{
 				lines.RemoveAt(0);
+			}
 
 			string result = "";
 			for (int i = 0; i < lines.Count; i++)

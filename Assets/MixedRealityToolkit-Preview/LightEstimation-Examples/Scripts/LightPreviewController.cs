@@ -121,7 +121,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 		private void SourceUpdated(InteractionSourceUpdatedEventArgs obj)
 		{
 			if (obj.state.source.kind != InteractionSourceKind.Hand)
+			{
 				return;
+			}
 
 			Vector3 pos;
 			if (Time.time - lastTime > 0 && obj.state.sourcePose.TryGetPosition(out pos))
@@ -130,7 +132,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 				{
 					handVelocity = (pos - lastPos) / (Time.time - lastTime);
 					if (handVelocity.sqrMagnitude > maxVelocity*maxVelocity)
+					{
 						handVelocity = handVelocity.normalized* maxVelocity;
+					}
 				}
 
 				lastPos  = handPos;
@@ -138,7 +142,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 				handPos  = pos;
 				
 				if (pressed)
+				{
 					targetPos += (pos - lastPos) * moveScale;
+				}
 			}
 		}
 	
@@ -232,7 +238,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 			// Output results of the command
 			Debug.Log("Heard command: " + args.text);
 			if (tts != null)
+			{
 				speakMethod.Invoke(tts, new object[] { reply });
+			}
 		}
 		#endif
 

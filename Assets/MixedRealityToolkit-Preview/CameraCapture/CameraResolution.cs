@@ -96,11 +96,17 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 					(aSourceSize.y < size.y && resize == ResizeWhen.IsSmaller))
 				{
 					if (preserveAspectPriority == PreserveAspectPriority.Height)
+					{
 						result = new Vector2Int((int)(size.y * (aSourceSize.x/(float)aSourceSize.y)), size.y);
+					}
 					else if (preserveAspectPriority == PreserveAspectPriority.Width)
+					{
 						result = new Vector2Int(size.x, (int)(size.x * (aSourceSize.y/(float)aSourceSize.x)));
+					}
 					else
+					{
 						throw new System.NotImplementedException();
+					}
 				}
 			}
 			else
@@ -137,7 +143,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			if (aDestTexture == null || !(aDestTexture is Texture2D) || aDestTexture.width != destSize.x || aDestTexture.height != destSize.y)
 			{
 				if (aDestTexture != null && aDestTexture is Texture2D)
+				{
 					GameObject.Destroy(aDestTexture);
+				}
 				
 				aDestTexture = new Texture2D(destSize.x, destSize.y, TextureFormat.RGB24, false);
 			}
