@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,58 +18,14 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
     /// </summary>
     public class MixedRealitySpatialAwarenessSystem : BaseEventSystem, IMixedRealitySpatialAwarenessSystem
     {
-        public AutoStartBehavior DefaultObserverStartupBehavior { get; set; }
+        // TODO: replace with data providers collection
 
-        private GameObject spatialAwarenessParent = null;
+        //private IMixedRealitySpatialAwarenessObserver spatialAwarenessObserver = null;
 
-        /// <summary>
-        /// Parent <see cref="GameObject"/> which will encapsulate all of the spatial awareness system created scene objects.
-        /// </summary>
-        public GameObject SpatialAwarenessParent => spatialAwarenessParent != null ? spatialAwarenessParent : (spatialAwarenessParent = CreateSpatialAwarenessParent);
-
-        /// <summary>
-        /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="GameObject"/> to which spatial awareness created objects will be parented.
-        /// </returns>
-        private GameObject CreateSpatialAwarenessParent => new GameObject("Spatial Awareness System");
-
-        private GameObject meshParent = null;
-
-        /// <summary>
-        /// Parent <see cref="GameObject"/> which will encapsulate all of the system created mesh objects.
-        /// </summary>
-        private GameObject MeshParent => meshParent != null ? meshParent : (meshParent = CreateSecondGenerationParent("Meshes"));
-
-        private GameObject surfaceParent = null;
-
-        /// <summary>
-        /// Parent <see cref="GameObject"/> which will encapsulate all of the system created mesh objects.
-        /// </summary>
-        private GameObject SurfaceParent => surfaceParent != null ? surfaceParent : (surfaceParent = CreateSecondGenerationParent("Surfaces"));
-
-        /// <summary>
-        /// Creates the a parent, that is a child if the Spatial Awareness System parent so that the scene hierarchy does not get overly cluttered.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="GameObject"/> to which spatial awareness objects will be parented.
-        /// </returns>
-        private GameObject CreateSecondGenerationParent(string name)
-        {
-            GameObject secondGeneration = new GameObject(name);
-
-            secondGeneration.transform.parent = SpatialAwarenessParent.transform;
-
-            return secondGeneration;
-        }
-
-        private IMixedRealitySpatialAwarenessObserver spatialAwarenessObserver = null;
-
-        /// <summary>
-        /// The <see cref="IMixedRealitySpatialAwarenessObserver"/>, if any, that is active on the current platform.
-        /// </summary>
-        private IMixedRealitySpatialAwarenessObserver SpatialAwarenessObserver => spatialAwarenessObserver ?? (spatialAwarenessObserver = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessObserver>());
+        ///// <summary>
+        ///// The <see cref="IMixedRealitySpatialAwarenessObserver"/>, if any, that is active on the current platform.
+        ///// </summary>
+        //private IMixedRealitySpatialAwarenessObserver SpatialAwarenessObserver => spatialAwarenessObserver ?? (spatialAwarenessObserver = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessObserver>());
 
         #region IMixedRealityToolkit Implementation
 
@@ -151,41 +108,65 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
                     spatialAwarenessParent = null;
                 }
 
-                // Detach the mesh objects (they are to be cleaned up by the observer) and cleanup the parent
-                if (meshParent != null)
-                {
-                    meshParent.transform.DetachChildren();
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(meshParent);
-                    }
-                    else
-                    {
-                        Object.Destroy(meshParent);
-                    }
-                    meshParent = null;
-                }
+                // TODO: figure out the best way to handle object parents, etc
+                //// Detach the mesh objects (they are to be cleaned up by the observer) and cleanup the parent
+                //if (meshParent != null)
+                //{
+                //    meshParent.transform.DetachChildren();
+                //    if (Application.isEditor)
+                //    {
+                //        Object.DestroyImmediate(meshParent);
+                //    }
+                //    else
+                //    {
+                //        Object.Destroy(meshParent);
+                //    }
+                //    meshParent = null;
+                //}
 
-                // Detach the surface objects (they are to be cleaned up by the observer) and cleanup the parent
-                if (surfaceParent != null)
-                {
-                    surfaceParent.transform.DetachChildren();
-                    if (Application.isEditor)
-                    {
-                        Object.DestroyImmediate(surfaceParent);
-                    }
-                    else
-                    {
-                        Object.Destroy(surfaceParent);
-                    }
-                    surfaceParent = null;
-                }
+                //// Detach the surface objects (they are to be cleaned up by the observer) and cleanup the parent
+                //if (surfaceParent != null)
+                //{
+                //    surfaceParent.transform.DetachChildren();
+                //    if (Application.isEditor)
+                //    {
+                //        Object.DestroyImmediate(surfaceParent);
+                //    }
+                //    else
+                //    {
+                //        Object.Destroy(surfaceParent);
+                //    }
+                //    surfaceParent = null;
+                //}
             }
         }
 
         #endregion IMixedRealityToolkit Implementation
 
         #region IMixedRealitySpatialAwarenessSystem Implementation
+
+        private GameObject spatialAwarenessParent = null;
+
+        /// <inheritdoc />
+        public GameObject SpatialAwarenessParent => spatialAwarenessParent != null ? spatialAwarenessParent : (spatialAwarenessParent = CreateSpatialAwarenessParent);
+
+        /// <summary>
+        /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="GameObject"/> to which spatial awareness created objects will be parented.
+        /// </returns>
+        private GameObject CreateSpatialAwarenessParent => new GameObject("Spatial Awareness System");
+
+        /// <inheritdoc />
+        public GameObject CreateSpatialAwarenessObjectParent(string name)
+        {
+            GameObject objectParent = new GameObject(name);
+
+            objectParent.transform.parent = SpatialAwarenessParent.transform;
+
+            return objectParent;
+        }
 
         private uint nextSourceId = 0;
 
@@ -195,69 +176,84 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
             return nextSourceId++;
         }
 
-        // TODO
+        /// <inheritdoc />
+        public IList<IMixedRealitySpatialAwarenessObserver> GetObservers()
+        {
+            // todo
+            return new List<IMixedRealitySpatialAwarenessObserver>();
+        }
 
-        ///// <inheritdoc />
-        //public void ResumeObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        /// <inheritdoc />
+        public IList<IMixedRealitySpatialAwarenessObserver> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
+        {
+            // todo
+            return new List<IMixedRealitySpatialAwarenessObserver>();
+        }
 
-        ///// <inheritdoc />
-        //public void ResumeObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
-        //{
-        //}
+        /// <inheritdoc />
+        public IMixedRealitySpatialAwarenessObserver GetObserver(string name)
+        {
+            // todo
+            return null;
+        }
 
-        ///// <inheritdoc />
-        //public void ResumeObserver<T>(int id) where T : IMixedRealitySpatialAwarenessObserver
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        /// <inheritdoc />
+        public IMixedRealitySpatialAwarenessObserver GetObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
+        {
+            // todo
+            return null;
+        }
 
-        ///// <inheritdoc />
-        //public void SuspendObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
-        //{
-        //    MixedRealityToolkit.Instance.GetService(T);
-        //    //for each
-        //}
+        /// <inheritdoc />
+        public void ResumeObservers()
+        {
+            // todo
+        }
 
-        ///// <inheritdoc />
-        //public void SuspendObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        /// <inheritdoc />
+        public void ResumeObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
+        {
+            // todo
+        }
 
-        ///// <inheritdoc />
-        //public void SuspendObserver<T>(int id) where T : IMixedRealitySpatialAwarenessObserver
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        /// <inheritdoc />
+        public void ResumeObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
+        {
+            // todo
+        }
 
-        ///// <inheritdoc />
-        //public T GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        /// <inheritdoc />
+        public void ResumeObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
+        {
+            // todo
+        }
 
-        ///// <inheritdoc />
-        //public T GetObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        /// <inheritdoc />
+        public void SuspendObservers()
+        {
+            // todo
+        }
 
-        ///// <inheritdoc />
-        //public T GetObserver<T>(int id) where T : IMixedRealitySpatialAwarenessObserver
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        /// <inheritdoc />
+        public void SuspendObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
+        {
+            // todo
+        }
+
+        /// <inheritdoc />
+        public void SuspendObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
+        {
+            // todo
+        }
 
         // TODO: update
 
         /// <inheritdoc />
         public void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, GameObject mesh)
         {
-            // Parent the mesh object
-            mesh.transform.parent = MeshParent.transform;
+            // TODO
+            //// Parent the mesh object
+            //mesh.transform.parent = MeshParent.transform;
 
             meshEventData.Initialize(observer, meshId, mesh);
             HandleEvent(meshEventData, OnMeshAdded);
@@ -276,8 +272,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         /// <inheritdoc />
         public void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, GameObject mesh)
         {
-            // Parent the mesh object
-            mesh.transform.parent = MeshParent.transform;
+            // TODO
+            //// Parent the mesh object
+            //mesh.transform.parent = MeshParent.transform;
 
             meshEventData.Initialize(observer, meshId, mesh);
             HandleEvent(meshEventData, OnMeshUpdated);
