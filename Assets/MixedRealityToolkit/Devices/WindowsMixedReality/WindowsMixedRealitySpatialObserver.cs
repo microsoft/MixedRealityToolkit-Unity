@@ -5,6 +5,9 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
@@ -190,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 observer = new SurfaceObserver();
                 ConfigureObserverVolume();
 
-                if (SpatialAwarenessSystem.StartupBehavior == AutoStartBehavior.AutoStart)
+                if (StartupBehavior == AutoStartBehavior.AutoStart)
                 {
                     Resume();
                 }
@@ -255,12 +258,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                     RequestMesh(meshWorkQueue.Dequeue());
                 }
                 // If enough time has passed since the previous observer update...
-                else if (Time.time - lastUpdated >= SpatialAwarenessSystem.UpdateInterval)
+                else if (Time.time - lastUpdated >= UpdateInterval)
                 {
                     // Update the observer location if it is not stationary
-                    if (!SpatialAwarenessSystem.IsStationaryObserver)
+                    if (!IsStationaryObserver)
                     {
-                        SpatialAwarenessSystem.ObserverOrigin = CameraCache.Main.transform.position;
+                        ObserverOrigin = CameraCache.Main.transform.position;
                     }
 
                     // The application can update the observer volume at any time, make sure we are using the latest.
@@ -342,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 ReclaimMeshObject(mesh);
 
                 // Send the mesh removed event
-                SpatialAwarenessSystem.RaiseMeshRemoved(this, id);
+                SpatialAwarenessSystem.RaiseMeshRemoved(this, id); // TODO: what did this change to?
             }
         }
 
@@ -376,8 +379,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// </summary>
         private void ConfigureObserverVolume()
         {
-            Vector3 newExtents = SpatialAwarenessSystem.ObservationExtents;
-            Vector3 newOrigin = SpatialAwarenessSystem.ObserverOrigin;
+            Vector3 newExtents = ObservationExtents;
+            Vector3 newOrigin = ObserverOrigin;
 
             if (currentObserverExtents.Equals(newExtents) &&
                 currentObserverOrigin.Equals(newOrigin))
@@ -445,13 +448,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             outstandingMeshObject = null;
 
             // Apply the appropriate material to the mesh.
-            SpatialObjectDisplayOptions displayOption = SpatialAwarenessSystem.MeshDisplayOption;
-            if (displayOption != SpatialObjectDisplayOptions.None)
+            SpatialMeshDisplayOptions displayOption = DisplayOption;
+            if (displayOption != SpatialMeshDisplayOptions.None)
             {
                 meshObject.Renderer.enabled = true;
-                meshObject.Renderer.sharedMaterial = (displayOption == SpatialObjectDisplayOptions.Visible) ?
-                    SpatialAwarenessSystem.MeshVisibleMaterial :
-                    SpatialAwarenessSystem.MeshOcclusionMaterial;
+                meshObject.Renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
+                    VisibleMaterial :
+                    OcclusionMaterial;
             }
             else
             {
@@ -459,7 +462,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             }
 
             // Recalculate the mesh normals if requested.
-            if (SpatialAwarenessSystem.MeshRecalculateNormals)
+            if (RecalculateNormals)
             {
                 meshObject.Filter.sharedMesh.RecalculateNormals();
             }

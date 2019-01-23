@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers
 {
-    public interface IMixedRealitySpatialAwarenessObserver : IMixedRealityExtensionService, IMixedRealityEventSource
+    public interface IMixedRealitySpatialAwarenessObserver : IMixedRealityDataProvider, IMixedRealityEventSource
     {
         /// <summary>
         /// Indicates the developer's intended startup behavior.
