@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
 
             if (Application.platform == RuntimePlatform.WindowsEditor)
             {
-                supportedPlatforms |= SupportedPlatforms.WindowsStandalone;
+                supportedPlatforms |= SupportedPlatforms.WindowsEditor;
             }
 
             switch (editorBuildTarget)
