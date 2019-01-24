@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			ARSubsystemManager.systemStateChanged += handler;
 		}
 		
-		private unsafe void GrabScreen()
+		private void GrabScreen(Action aOnFinished)
 		{
 			// Grab the latest image from ARFoundation
 			CameraImage image;
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 				inputRect        = new RectInt(0, 0, image.width, image.height),
 				outputDimensions = new Vector2Int(size.x, size.y),
 				outputFormat     = TextureFormat.RGB24,
-				transformation   = CameraImageTransformation.MirrorY
+				transformation   = CameraImageTransformation.MirrorY,
 			};
 			
 			// make sure we have a texture to store the resized image
@@ -113,10 +113,17 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			}
 			
 			// And do the resize!
-			var rawTextureData = captureTex.GetRawTextureData<byte>();
-			image.Convert(conversionParams, new IntPtr(rawTextureData.GetUnsafePtr()), rawTextureData.Length);
-			image.Dispose();
-			captureTex.Apply();
+			image.ConvertAsync(conversionParams, (status, p, data) =>
+			{
+				if (status == AsyncCameraImageConversionStatus.Ready) {
+					captureTex.LoadRawTextureData(data);
+					captureTex.Apply();
+				}
+				if (status == AsyncCameraImageConversionStatus.Ready || status == AsyncCameraImageConversionStatus.Failed) {
+					image.Dispose();
+					aOnFinished();
+				}
+			});
 		}
 
 		private Matrix4x4 GetCamTransform()
@@ -175,12 +182,14 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		/// <param name="onImageAcquired">This is the function that will be called when the image is ready. Matrix is the transform of the device when the picture was taken, and integers are width and height of the NativeArray.</param>
 		public void RequestImage(Action<NativeArray<Color24>, Matrix4x4, int, int> aOnImageAcquired)
 		{
-			GrabScreen();
-
-			if (aOnImageAcquired != null)
-			{
-				aOnImageAcquired(captureTex.GetRawTextureData<Color24>(), GetCamTransform(), captureTex.width, captureTex.height);
-			}
+			Matrix4x4 transform = GetCamTransform();
+			GrabScreen(()=>
+			{ 
+				if (aOnImageAcquired != null)
+				{
+					aOnImageAcquired(captureTex.GetRawTextureData<Color24>(), transform, captureTex.width, captureTex.height);
+				}
+			});
 		}
 		/// <summary>
 		/// Request an image from the camera, and provide it as a GPU Texture!
@@ -188,12 +197,14 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		/// <param name="onImageAcquired">This is the function that will be called when the image is ready. Texture is not guaranteed to be a Texture2D, could also be a WebcamTexture. Matrix is the transform of the device when the picture was taken.</param>
 		public void RequestImage(Action<Texture, Matrix4x4> aOnImageAcquired)
 		{
-			GrabScreen();
-
-			if (aOnImageAcquired != null)
+			Matrix4x4 transform = GetCamTransform();
+			GrabScreen(()=>
 			{
-				aOnImageAcquired(captureTex, GetCamTransform());
-			}
+				if (aOnImageAcquired != null)
+				{
+					aOnImageAcquired(captureTex, transform);
+				}
+			});
 		}
 
 		/// <summary>

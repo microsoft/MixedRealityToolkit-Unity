@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 			#if WINDOWS_UWP && !UNITY_EDITOR
 			captureCamera = new CameraCaptureUWP();
 			#elif (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
-			_camera = new CameraCaptureARFoundation();
+			captureCamera = new CameraCaptureARFoundation();
 			#else
 			captureCamera = new CameraCaptureWebcam(Camera.main.transform, Camera.main.fieldOfView);
 			#endif
