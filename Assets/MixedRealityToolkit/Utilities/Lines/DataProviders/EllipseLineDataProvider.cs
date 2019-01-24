@@ -49,16 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         public override int PointCount => resolution;
 
         /// <inheritdoc />
-        public override bool Loops
-        {
-            get
-            {
-                base.Loops = true;
-                return true;
-            }
-        }
-
-        /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
             return LineUtility.GetEllipsePoint(radius, normalizedDistance * 2f * Mathf.PI);

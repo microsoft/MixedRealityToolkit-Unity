@@ -464,6 +464,78 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
             SetPointInternal(pointIndex, LineTransform.InverseTransformPoint(point));
         }
 
+        /// <summary>
+        /// Iterates along line until it finds the point closest to worldPosition
+        /// </summary>
+        /// <param name="worldPosition"></param>
+        /// <param name="resolution"></param>
+        /// <param name="maxIterations"></param>
+        /// <returns></returns>
+        public Vector3 GetClosestPoint(Vector3 worldPosition, int resolution = 5, int maxIterations = 5)
+        {
+            float length = GetNormalizedLengthFromWorldPos(worldPosition, resolution, maxIterations);
+            return GetPoint(length);
+        }
+
+        /// <summary>
+        /// Iterates along line until it finds the length closest to worldposition.
+        /// </summary>
+        /// <param name="worldPosition"></param>
+        /// <param name="resolution"></param>
+        /// <param name="maxIterations"></param>
+        /// <returns></returns>
+        public float GetNormalizedLengthFromWorldPos(Vector3 worldPosition, int resolution = 5, int maxIterations = 5)
+        {
+            int iteration = 0;
+            float length = GetNormalizedLengthFromWorldPosInternal(worldPosition, 0f, ref iteration, resolution, maxIterations, 0f, 1f);
+            return length;
+        }
+
+        private float GetNormalizedLengthFromWorldPosInternal(Vector3 worldPosition, float currentLength, ref int iteration, int resolution, int maxIterations, float start, float end)
+        {
+            iteration++;
+
+            // If we've maxed out our iterations, don't go any further
+            if (iteration > maxIterations)
+            {
+                return currentLength;
+            }
+
+            float searchLengthStep = (end - start) / resolution;
+            float closestDistanceSoFar = Mathf.Infinity;
+            float currentSearchLength = start;
+
+            for (int i = 0; i < resolution; i++)
+            {
+                Vector3 currentPoint = GetUnClampedPoint(currentSearchLength);
+
+                float distSquared = (currentPoint - worldPosition).sqrMagnitude;
+                if (distSquared < closestDistanceSoFar)
+                {
+                    currentLength = currentSearchLength;
+                    closestDistanceSoFar = distSquared;
+                }
+                currentSearchLength += searchLengthStep;
+            }
+
+            // Our start and end lengths will now be 1 resolution to the left and right
+            float newStart = currentLength - searchLengthStep;
+            float newEnd = currentLength + searchLengthStep;
+
+            if (newStart < 0)
+            {
+                newEnd -= newStart;
+                newStart = 0;
+            }
+
+            if (newEnd > 1)
+            {
+                newEnd = 1;
+            }
+
+            return GetNormalizedLengthFromWorldPosInternal(worldPosition, currentLength, ref iteration, resolution, maxIterations, newStart, newEnd);
+        }
+
         private Vector3 DistortPoint(Vector3 point, float normalizedLength)
         {
             float strength = uniformDistortionStrength;
