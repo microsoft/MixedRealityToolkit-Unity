@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Devices;
@@ -19,7 +20,13 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     public class WindowsSpeechInputProvider : BaseDeviceManager, IMixedRealitySpeechSystem
     {
-        public WindowsSpeechInputProvider(string name, uint priority, ScriptableObject profile) : base(name, priority, profile) { }
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's con</param>
+        public WindowsSpeechInputProvider(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.

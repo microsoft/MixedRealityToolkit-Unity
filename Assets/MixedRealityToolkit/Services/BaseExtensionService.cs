@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using UnityEngine;
 
@@ -15,18 +16,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
     public abstract class BaseExtensionService : BaseServiceWithConstructor, Interfaces.IMixedRealityExtensionService
     {
         /// <summary>
-        /// Configuration Profil
+        /// Configuration Profile
         /// </summary>
-        protected ScriptableObject configurationProfile;
+        protected BaseMixedRealityProfile ConfigurationProfile { get; set; } = null;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="priority"></param>
-        public BaseExtensionService(string name, uint priority, ScriptableObject profile) : base(name, priority)
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's con</param>
+        public BaseExtensionService(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority)
         {
-            configurationProfile = profile;
+            ConfigurationProfile = profile;
         }
     }
 }

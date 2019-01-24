@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
@@ -12,6 +13,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
 {
     public class BaseSpatialObserver : BaseExtensionService, IMixedRealitySpatialAwarenessObserver
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's con</param>
+        public BaseSpatialObserver(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile)
+        {
+            SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
+            SourceName = name;
+        }
+
         #region IMixedRealityEventSource Implementation
 
         /// <inheritdoc />
@@ -56,17 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         public string SourceName { get; }
 
         #endregion IMixedRealityEventSource Implementation
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="priority"></param>
-        public BaseSpatialObserver(string name, uint priority, ScriptableObject profile) : base(name, priority, profile)
-        {
-            SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
-            SourceName = name;
-        }
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 

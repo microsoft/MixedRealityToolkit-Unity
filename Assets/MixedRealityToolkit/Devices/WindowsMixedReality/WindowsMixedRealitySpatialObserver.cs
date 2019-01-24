@@ -1,15 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 #if UNITY_WSA
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
@@ -20,9 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="priority"></param>
-        public WindowsMixedRealitySpatialObserver(string name, uint priority, ScriptableObject profile) : base(name, priority, profile) { }
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's con</param>
+        public WindowsMixedRealitySpatialObserver(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
 
         #region IMixedRealityToolkit implementation
 
