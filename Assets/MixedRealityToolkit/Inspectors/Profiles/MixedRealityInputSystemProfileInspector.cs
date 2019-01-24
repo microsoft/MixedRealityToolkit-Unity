@@ -12,15 +12,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityInputSystemProfile))]
     public class MixedRealityInputSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
+        private static bool showFocusProperties = true;
         private SerializedProperty focusProviderType;
+
+        private static bool showPointerProperties = true;
+        private SerializedProperty pointerProfile;
+
+        private static bool showActionsProperties = true;
         private SerializedProperty inputActionsProfile;
         private SerializedProperty inputActionRulesProfile;
-        private SerializedProperty pointerProfile;
-        private SerializedProperty gesturesProfile;
-        private SerializedProperty speechCommandsProfile;
+
+        private static bool showControllerProperties = true;
         private SerializedProperty enableControllerMapping;
         private SerializedProperty controllerMappingProfile;
         private SerializedProperty controllerVisualizationProfile;
+
+        private static bool showGestureProperties = true;
+        private SerializedProperty gesturesProfile;
+
+        private static bool showSpeechCommandsProperties = true;
+        private SerializedProperty speechCommandsProfile;
 
         protected override void OnEnable()
         {
@@ -68,16 +79,68 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUI.BeginChangeCheck();
             bool changed = false;
 
-            EditorGUILayout.PropertyField(focusProviderType);
+            EditorGUILayout.Space();
+            showFocusProperties = EditorGUILayout.Foldout(showFocusProperties, "Focus Settings", true);
+            if (showFocusProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(focusProviderType);
+                }
+            }
 
-            changed |= RenderProfile(inputActionsProfile);
-            changed |= RenderProfile(inputActionRulesProfile);
-            changed |= RenderProfile(pointerProfile);
-            changed |= RenderProfile(gesturesProfile);
-            changed |= RenderProfile(speechCommandsProfile);
-            EditorGUILayout.PropertyField(enableControllerMapping);
-            changed |= RenderProfile(controllerMappingProfile);
-            changed |= RenderProfile(controllerVisualizationProfile);
+            EditorGUILayout.Space();
+            showPointerProperties = EditorGUILayout.Foldout(showPointerProperties, "Pointer Settings", true);
+            if (showPointerProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    changed |= RenderProfile(pointerProfile);
+                }
+            }
+
+            EditorGUILayout.Space();
+            showActionsProperties = EditorGUILayout.Foldout(showActionsProperties, "Action Settings", true);
+            if (showActionsProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    changed |= RenderProfile(inputActionsProfile);
+                    changed |= RenderProfile(inputActionRulesProfile);
+                }
+            }
+
+            EditorGUILayout.Space();
+            showControllerProperties = EditorGUILayout.Foldout(showControllerProperties, "Controller Settings", true);
+            if (showControllerProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(enableControllerMapping);
+                    changed |= RenderProfile(controllerMappingProfile);
+                    changed |= RenderProfile(controllerVisualizationProfile);
+                }
+            }
+
+            EditorGUILayout.Space();
+            showGestureProperties = EditorGUILayout.Foldout(showGestureProperties, "Gesture Settings", true);
+            if (showGestureProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    changed |= RenderProfile(gesturesProfile);
+                }
+            }
+
+            EditorGUILayout.Space();
+            showSpeechCommandsProperties = EditorGUILayout.Foldout(showSpeechCommandsProperties, "Speech Command Settings", true);
+            if (showSpeechCommandsProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    changed |= RenderProfile(speechCommandsProfile);
+                }
+            }
 
             if (!changed)
             {
