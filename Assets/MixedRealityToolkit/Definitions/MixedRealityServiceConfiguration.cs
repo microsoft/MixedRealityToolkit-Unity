@@ -22,8 +22,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// <param name="componentName">The simple, human readable name for the system, feature, or manager.</param>
         /// <param name="priority">The priority this system, feature, or manager will be initialized in.</param>
         /// <param name="runtimePlatform">The runtime platform(s) to run this system, feature, or manager on.</param>
-        /// <param name="configurationProfile">The configuration profile for the system, feature, or manager.</param>
-        public MixedRealityServiceConfiguration(SystemType componentType, string componentName, uint priority, SupportedPlatforms runtimePlatform, ScriptableObject configurationProfile)
+        /// <param name="configurationProfile">The configuration profile for the service.</param>
+        public MixedRealityServiceConfiguration(
+            SystemType componentType, 
+            string componentName, 
+            uint priority, 
+            SupportedPlatforms runtimePlatform, 
+            BaseMixedRealityProfile configurationProfile)
         {
             this.componentType = componentType;
             this.componentName = componentName;
@@ -62,16 +67,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         private SupportedPlatforms runtimePlatform;
 
         /// <summary>
-        /// The runtime platform(s) to run this system, feature, or manager on.
+        /// The runtime platform(s) to run this service.
         /// </summary>
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
 
         [SerializeField]
-        private ScriptableObject configurationProfile;
+        private BaseMixedRealityProfile configurationProfile;
 
         /// <summary>
-        /// The configuration profile for the system, feature, or manager.
+        /// The configuration profile for the service.
         /// </summary>
-        public ScriptableObject ConfigurationProfile => configurationProfile;
+        public BaseMixedRealityProfile ConfigurationProfile => configurationProfile;
     }
 }
