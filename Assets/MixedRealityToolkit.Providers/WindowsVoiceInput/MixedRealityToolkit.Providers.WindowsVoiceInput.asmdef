@@ -1,12 +1,16 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
-        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor",
+        "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Core.Utilities.Async"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor",
+        "WSA",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

@@ -1,8 +1,8 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit",
+    "name": "Microsoft.MixedReality.Toolkit.Examples",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
-        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor",
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit.Core.Utilities.Async"
     ],
     "optionalUnityReferences": [],
