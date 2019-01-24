@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
     public class ControllerPopupWindow : EditorWindow
     {
-        private const string EditorWindowOptionsPath = "/MixedRealityToolkit/_Core/Inspectors/Data/EditorWindowOptions.json";
+        private const string EditorWindowOptionsPath = "/MixedRealityToolkit/Inspectors/Data/EditorWindowOptions.json";
         private const float InputActionLabelWidth = 128f;
 
         /// <summary>
