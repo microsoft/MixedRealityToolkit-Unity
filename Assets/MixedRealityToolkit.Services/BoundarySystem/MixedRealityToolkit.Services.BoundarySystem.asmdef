@@ -1,9 +1,7 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit",
+    "name": "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
-        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor",
-        "Microsoft.MixedReality.Toolkit.Core.Utilities.Async"
+        "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
