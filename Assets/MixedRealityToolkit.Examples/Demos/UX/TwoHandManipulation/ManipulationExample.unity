@@ -325,7 +325,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   ManipulationMode: 4
   constraintOnRotation: 0
-  handMoveType: 1
+  handMoveType: 2
   debugText: {fileID: 0}
 --- !u!65 &306008945
 BoxCollider:
@@ -581,7 +581,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 693516675}
-  m_Text: 'One Handed Manipulation
+  m_Text: 'One Handed Manipulation Only
 
     Move only'
   m_OffsetZ: 0
@@ -928,7 +928,7 @@ MonoBehaviour:
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 2a65a96aa29341b0a25ab4be7dff429a, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -1129,7 +1129,7 @@ MonoBehaviour:
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 2a65a96aa29341b0a25ab4be7dff429a, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -1186,7 +1186,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1351263276}
-  m_Text: 'Two Handed Manipulation
+  m_Text: 'One & Two Handed Manipulation
 
     Rotation Y-axis Only / Scale'
   m_OffsetZ: 0
@@ -1305,7 +1305,7 @@ MonoBehaviour:
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 2a65a96aa29341b0a25ab4be7dff429a, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -1464,7 +1464,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1594379783}
-  m_Text: 'Two Handed Manipulation
+  m_Text: 'One & Two Handed Manipulation
 
     Move/Rotate/Scale'
   m_OffsetZ: 0
@@ -1544,6 +1544,7 @@ GameObject:
   - component: {fileID: 1626314871}
   - component: {fileID: 1626314870}
   - component: {fileID: 1626314869}
+  - component: {fileID: 1626314872}
   m_Layer: 0
   m_Name: TextContent
   m_TagString: Untagged
@@ -1630,7 +1631,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1856437854}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1641,6 +1642,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1626314872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626314867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4e3b9019304b5aaec5664de0778d21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1635786677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,7 +1864,7 @@ MonoBehaviour:
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 2a65a96aa29341b0a25ab4be7dff429a, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -2052,7 +2065,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1962129631}
-  m_Text: 'Two Handed Manipulation
+  m_Text: 'Two Handed Manipulation Only
 
     Scale Only'
   m_OffsetZ: 0
