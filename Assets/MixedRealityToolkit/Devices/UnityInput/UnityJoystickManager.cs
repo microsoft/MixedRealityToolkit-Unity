@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         /// </summary>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
-        /// <param name="profile">The service's con</param>
+        /// <param name="profile">The service's configuration profile.</param>
         public UnityJoystickManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
 
         private const float DeviceRefreshInterval = 3.0f;
