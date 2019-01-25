@@ -373,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
                     rotationVector = (point - origin).normalized;
                     break;
                 case LineRotationMode.None:
-                    break;
+                    return LineTransform.rotation;
             }
 
             if (rotationVector.magnitude < MinRotationMagnitude)
@@ -570,6 +570,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
                 return;
             }
 #endif
+
             DrawUnselectedGizmosPreview();
         }
 
