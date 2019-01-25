@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines;
 using System;
 using UnityEngine;
 
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             {
                 showConnector = value;
 
-                var lineScript = GetComponent<BaseMixedRealityLineDataProvider>();
+                var lineScript = GetComponent<BaseLineDataProvider>();
                 if (lineScript)
                 { lineScript.enabled = value; }
             }
@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [SerializeField]
         [Tooltip("The line connecting the anchor to the pivot. If present, this component will be updated automatically.\n\nRecommended: SimpleLine, Spline, and ParabolaConstrainted")]
-        private BaseMixedRealityLineDataProvider toolTipLine;
+        private BaseLineDataProvider toolTipLine;
 
         private Vector2 localContentSize;
 
@@ -386,7 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             // Get our line if it exists
             if (toolTipLine == null)
             {
-                toolTipLine = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
+                toolTipLine = gameObject.GetComponent<BaseLineDataProvider>();
             }
 
             RefreshLocalContent();

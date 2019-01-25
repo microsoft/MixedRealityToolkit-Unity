@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 {
     /// <summary>
     /// Creates a parabolic line based on physics.

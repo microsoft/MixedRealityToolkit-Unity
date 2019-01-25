@@ -2,36 +2,39 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Lines;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 {
     /// <summary>
     /// Base class for Mixed Reality Line Renderers.
     /// </summary>
     [ExecuteInEditMode]
-    public abstract class BaseMixedRealityLineRenderer : MonoBehaviour
+    public abstract class BaseLineRenderer : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("The line data this component will render")]
-        private BaseMixedRealityLineDataProvider lineDataSource;
+        private BaseLineDataProvider lineDataSource;
 
         /// <summary>
         /// The line data this component will render
         /// </summary>
-        public BaseMixedRealityLineDataProvider LineDataSource
+        public BaseLineDataProvider LineDataSource
         {
             get
             {
                 if (lineDataSource == null)
                 {
-                    lineDataSource = GetComponent<BaseMixedRealityLineDataProvider>();
-                    var lineDataType = lineDataSource.GetType();
+                    lineDataSource = GetComponent<BaseLineDataProvider>();
 
-                    if (lineDataType == typeof(RectangleLineDataProvider))
+                    if (lineDataSource != null)
                     {
-                        StepMode = StepMode.FromSource;
+                        var lineDataType = lineDataSource.GetType();
+
+                        if (lineDataType == typeof(RectangleLineDataProvider))
+                        {
+                            StepMode = StepMode.FromSource;
+                        }
                     }
                 }
 
@@ -176,11 +179,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 #if UNITY_EDITOR
         protected virtual void OnDrawGizmos()
         {
-            if (Application.isPlaying) { return; }
+            if (UnityEditor.Selection.activeGameObject == gameObject || Application.isPlaying) { return; }
 
             if (lineDataSource == null)
             {
-                lineDataSource = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
+                lineDataSource = gameObject.GetComponent<BaseLineDataProvider>();
             }
 
             if (lineDataSource == null || !lineDataSource.enabled)
@@ -209,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             Vector3 lastPos = firstPos;
 
             Color gColor = GetColor(0);
-            gColor.a = 0.5f;
+            gColor.a = 0.15f;
             Gizmos.color = gColor;
             Gizmos.DrawSphere(firstPos, GetWidth(0) * 0.5f);
 
@@ -222,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
                 Gizmos.color = gColor.Invert();
                 Gizmos.DrawLine(lastPos, currentPos);
 
-                gColor.a = 0.5f;
+                gColor.a = 0.15f;
                 Gizmos.color = gColor;
                 Gizmos.DrawSphere(currentPos, GetWidth(normalizedLength) * 0.5f);
 
@@ -242,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             Vector3 lastPos = firstPos;
             Color gColor = GetColor(0f);
 
-            gColor.a = 0.5f;
+            gColor.a = 0.15f;
             Gizmos.color = gColor;
             Gizmos.DrawSphere(firstPos, GetWidth(0f) * 0.5f);
 
@@ -255,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
                 Gizmos.color = gColor.Invert();
                 Gizmos.DrawLine(lastPos, currentPos);
 
-                gColor.a = 0.5f;
+                gColor.a = 0.15f;
                 Gizmos.color = gColor;
                 Gizmos.DrawSphere(currentPos, GetWidth(normalizedLength) * 0.5f);
                 lastPos = currentPos;

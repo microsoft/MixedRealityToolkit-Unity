@@ -4,12 +4,12 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 {
     /// <summary>
     /// A simple line with two points.
     /// </summary>
-    public class SimpleLineDataProvider : BaseMixedRealityLineDataProvider
+    public class SimpleLineDataProvider : BaseLineDataProvider
     {
         [SerializeField]
         private MixedRealityPose startPoint = MixedRealityPose.ZeroIdentity;

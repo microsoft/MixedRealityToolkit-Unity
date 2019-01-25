@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 {
     /// <summary>
     /// Creates instances of a mesh along the line
     /// </summary>
-    public class MeshLineRenderer : BaseMixedRealityLineRenderer
+    public class MeshLineRenderer : BaseLineRenderer
     {
         private const string InvisibleShaderName = "MixedRealityToolkit/InvisibleShader";
 

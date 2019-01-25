@@ -3,13 +3,13 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 {
     /// <summary>
     /// Creates an elliptical line shape.
     /// </summary>
     /// <remarks>This line loops.</remarks>
-    public class EllipseLineDataProvider : BaseMixedRealityLineDataProvider
+    public class EllipseLineDataProvider : BaseLineDataProvider
     {
         [SerializeField]
         [Range(0, 2048)]

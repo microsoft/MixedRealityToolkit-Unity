@@ -1,17 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers;
+using System;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
 {
-    [CustomEditor(typeof(BaseMixedRealityLineDataProvider))]
-    public class BaseMixedRealityLineDataProviderInspector : Editor
+    [CustomEditor(typeof(BaseLineDataProvider))]
+    public class BaseLineDataProviderInspector : Editor
     {
         private const string DrawLinePointsKey = "MRTK_Line_Inspector_DrawLinePoints";
         private const string BasicSettingsFoldoutKey = "MRTK_Line_Inspector_BasicSettings";
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataPro
 
         private ReorderableList manualUpVectorList;
 
-        protected BaseMixedRealityLineDataProvider LineData;
+        protected BaseLineDataProvider LineData;
         protected bool RenderLinePreview = true;
 
         protected virtual void OnEnable()
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataPro
             DrawLineManualUpVectors = SessionState.GetBool(DrawLineManualUpVectorsKey, DrawLineManualUpVectors);
             ManualUpVectorLength = SessionState.GetFloat(ManualUpVectorLengthKey, ManualUpVectorLength);
 
-            LineData = (BaseMixedRealityLineDataProvider)target;
+            LineData = (BaseLineDataProvider)target;
             customLineTransform = serializedObject.FindProperty("customLineTransform");
             lineStartClamp = serializedObject.FindProperty("lineStartClamp");
             lineEndClamp = serializedObject.FindProperty("lineEndClamp");
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataPro
             manualUpVectorList.drawElementCallback += DrawManualUpVectorListElement;
             manualUpVectorList.drawHeaderCallback += DrawManualUpVectorHeader;
 
-            RenderLinePreview = LineData.gameObject.GetComponent<BaseMixedRealityLineRenderer>() == null;
+            RenderLinePreview = LineData.gameObject.GetComponent<BaseLineRenderer>() == null;
 
             var newDistorters = LineData.gameObject.GetComponents<Distorter>();
             distorters.arraySize = newDistorters.Length;
@@ -270,6 +270,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataPro
             }
 
             serializedObject.ApplyModifiedProperties();
+
+            EditorUtility.SetDirty(LineData);
         }
 
         protected virtual void OnSceneGUI()
@@ -292,6 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataPro
 
             if (Application.isPlaying)
             {
+                Handles.EndGUI();
                 return;
             }
 

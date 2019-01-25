@@ -4,13 +4,13 @@
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 {
     /// <summary>
     /// attaches a set of particles to the line
     /// </summary>
     [RequireComponent(typeof(ParticleSystem))]
-    public class ParticleSystemLineRenderer : BaseMixedRealityLineRenderer
+    public class ParticleSystemLineRenderer : BaseLineRenderer
     {
         private const int GlobalMaxParticles = 2048;
 

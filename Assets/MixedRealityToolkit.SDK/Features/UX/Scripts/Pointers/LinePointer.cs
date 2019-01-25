@@ -2,8 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
 using UnityEngine;
 
@@ -35,16 +34,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected int LineCastResolution = 25;
 
         [SerializeField]
-        private BaseMixedRealityLineDataProvider lineBase;
+        private BaseLineDataProvider lineBase;
 
         /// <summary>
         /// The Line Data Provider driving this pointer.
         /// </summary>
-        public BaseMixedRealityLineDataProvider LineBase => lineBase;
+        public BaseLineDataProvider LineBase => lineBase;
 
         [SerializeField]
         [Tooltip("If no line renderers are specified, this array will be auto-populated on startup.")]
-        private BaseMixedRealityLineRenderer[] lineRenderers;
+        private BaseLineRenderer[] lineRenderers;
 
         /// <summary>
         /// The current line renderers that this pointer is utilizing.
@@ -52,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <remarks>
         /// If no line renderers are specified, this array will be auto-populated on startup.
         /// </remarks>
-        public BaseMixedRealityLineRenderer[] LineRenderers
+        public BaseLineRenderer[] LineRenderers
         {
             get { return lineRenderers; }
             set { lineRenderers = value; }
@@ -62,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         private DistorterGravity gravityDistorter = null;
 
         /// <summary>
-        /// The Gravity Distorter that is affecting the <see cref="BaseMixedRealityLineDataProvider"/> attached to this pointer.
+        /// The Gravity Distorter that is affecting the <see cref="BaseLineDataProvider"/> attached to this pointer.
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
 
@@ -70,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             if (lineBase == null)
             {
-                lineBase = GetComponent<BaseMixedRealityLineDataProvider>();
+                lineBase = GetComponent<BaseLineDataProvider>();
             }
 
             if (lineBase == null)
@@ -85,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (lineBase != null && (lineRenderers == null || lineRenderers.Length == 0))
             {
-                lineRenderers = lineBase.GetComponentsInChildren<BaseMixedRealityLineRenderer>();
+                lineRenderers = lineBase.GetComponentsInChildren<BaseLineRenderer>();
             }
 
             if (lineRenderers == null || lineRenderers.Length == 0)

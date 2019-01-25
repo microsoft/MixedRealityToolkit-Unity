@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
@@ -66,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 
         [SerializeField]
         [HideInInspector]
-        private BaseMixedRealityLineDataProvider source = null;
+        private BaseLineDataProvider source = null;
 
         #region MonoBehaviour Implementation
 
@@ -93,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 
             if (source == null)
             {
-                source = GetComponent<BaseMixedRealityLineDataProvider>();
+                source = GetComponent<BaseLineDataProvider>();
             }
 
             if (source == null)

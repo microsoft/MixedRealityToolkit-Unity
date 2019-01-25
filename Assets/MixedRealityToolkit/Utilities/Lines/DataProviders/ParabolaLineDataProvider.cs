@@ -4,12 +4,12 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 {
     /// <summary>
     /// Base Parabola line data provider.
     /// </summary>
-    public abstract class ParabolaLineDataProvider : BaseMixedRealityLineDataProvider
+    public abstract class ParabolaLineDataProvider : BaseLineDataProvider
     {
         [SerializeField]
         private MixedRealityPose startPoint = MixedRealityPose.ZeroIdentity;

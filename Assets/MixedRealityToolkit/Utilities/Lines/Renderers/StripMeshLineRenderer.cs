@@ -5,12 +5,12 @@ using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 {
     /// <summary>
     /// Draws a strip of polygons along the line
     /// </summary>
-    public class StripMeshLineRenderer : BaseMixedRealityLineRenderer
+    public class StripMeshLineRenderer : BaseLineRenderer
     {
         [Header("Strip Mesh Settings")]
 

@@ -3,12 +3,12 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 {
     /// <summary>
     /// Defines a line in the shape of a rectangle.
     /// </summary>
-    public class RectangleLineDataProvider : BaseMixedRealityLineDataProvider
+    public class RectangleLineDataProvider : BaseLineDataProvider
     {
         [SerializeField]
         private Vector3[] points = new Vector3[8];
@@ -145,6 +145,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         {
             // Rectangle 'up' vector always points out from center
             return (GetPoint(normalizedLength) - transform.position).normalized;
+        }
+
+        protected override void DrawUnselectedGizmosPreview()
+        {
+            Vector3 firstPos = GetPoint(0);
+            Vector3 lastPos = firstPos;
+            Gizmos.color = Color.magenta;
+
+            for (int i = 1; i < PointCount; i++)
+            {
+                Vector3 currentPos = GetPoint(i);
+                Gizmos.DrawLine(lastPos, currentPos);
+                lastPos = currentPos;
+            }
+
+            Gizmos.DrawLine(lastPos, firstPos);
         }
 
         #endregion BaseMixedRealityLineDataProvider Implementation

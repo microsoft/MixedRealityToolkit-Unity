@@ -3,18 +3,16 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Lines;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 {
     /// <summary>
     /// Implements Unity's built in line renderer component, and applies the line data to it.
     /// </summary>
     [RequireComponent(typeof(LineRenderer))]
-    [RequireComponent(typeof(BaseMixedRealityLineDataProvider))]
-    public class MixedRealityLineRenderer : BaseMixedRealityLineRenderer
+    public class MixedRealityLineRenderer : BaseLineRenderer
     {
         [Header("Mixed Reality Line Renderer Settings")]
 
@@ -58,9 +56,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 
             if (lineMaterial == null)
             {
-                Debug.LogError("MixedRealityLineRenderer needs a material.");
-                gameObject.SetActive(false);
+                lineMaterial = lineRenderer.sharedMaterial;
             }
+
+            if (lineMaterial == null)
+            {
+                Debug.LogError("MixedRealityLineRenderer needs a material.");
+                enabled = false;
+            }
+        }
+
+        private void OnDisable()
+        {
+            lineRenderer.enabled = false;
         }
 
         private void Update()

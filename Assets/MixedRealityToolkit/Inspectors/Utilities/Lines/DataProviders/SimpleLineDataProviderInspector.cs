@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
 {
     [CustomEditor(typeof(SimpleLineDataProvider))]
-    public class SimpleLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
+    public class SimpleLineDataProviderInspector : BaseLineDataProviderInspector
     {
         private SerializedProperty endPoint;
         private SerializedProperty endPointPosition;
