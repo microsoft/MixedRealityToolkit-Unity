@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		#endregion
 
 		#region Menu Items
+		/// <summary> Called from the menu, opens the editor window. </summary>
 		[MenuItem("Mixed Reality Toolkit/Light Estimation/Camera Cubemap Creator")]
 		private static void Init()
 		{
@@ -32,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 			window.Show();
 		}
 
+		/// <summary> Saves the cubemap from the active or first reflection probe. </summary>
 		[UnityEditor.MenuItem("Mixed Reality Toolkit/Light Estimation/Save Cubemap From Probe")]
 		private static void SaveFromProbe()
 		{
@@ -141,6 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		#endregion
 
 		#region Helper Methods
+		/// <summary> Stamps the current camera to the cubemap. </summary>
 		private void Stamp()
 		{
 			if (map == null)
@@ -181,6 +184,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		#endregion
 
 		#region Static Helper Methods
+		/// <summary> Saves the cubemap as a 6x1 png file to the indicated file. Format is recognized by Unity automatically as a Cubemap. </summary>
+		/// <param name="aMap">Cubemap to save.</param>
+		/// <param name="aPath">Filename.</param>
 		private static void SaveCubemap(Cubemap aMap, string aPath)
 		{
 			// Save the cubemap to file

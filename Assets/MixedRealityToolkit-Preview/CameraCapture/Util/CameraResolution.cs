@@ -77,6 +77,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		/// </summary>
 		public PreserveAspectPriority preserveAspectPriority = PreserveAspectPriority.Height;
 		
+		/// <summary> Calculate the difference between your size and our target resolution. </summary>
+		/// <param name="aSize">Your resolution size (pixels).</param>
+		/// <returns>The number of pixels different between the resolution sizes.</returns>
 		private int       SizeDifference(Vector2Int aSize)
 		{
 			return Mathf.Abs(aSize.x*aSize.y - size.x*size.y);

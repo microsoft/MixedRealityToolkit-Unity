@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 	[CustomEditor(typeof(LightCapture))]
 	public class LightCaptureEditor : Editor
 	{
+		// SerializedProperties representing LightCapture fields.
 		private SerializedProperty mapResolution;
 		private SerializedProperty singleStampOnly;
 		private SerializedProperty stampFovMultiplier;

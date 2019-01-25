@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 	public class CubeMapper
 	{
 		#region Support data
+		/// <summary> Data for tracking what stamps have already been added to the cubemap. </summary>
 		struct StampDir
 		{
 			public Quaternion direction;
@@ -16,25 +17,39 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 			public float      timestamp;
 		}
 
+		// constants for generating the sphere mesh
 		private const int   cSphereRows    = 12;
 		private const int   cSphereColumns = 18;
 		private const float cSphereSize    = 10;
+		// layer to use for stamp rendering
 		private const int   cGeometryLayer = 30;
 		#endregion
 
 		#region Fields
+		/// <summary> Root gameobject for stamp objects. </summary>
 		private GameObject root;
+		/// <summary> Our own camera for rendering stamps. </summary>
 		private Camera     cam;
+		/// <summary> Cubemap asset we're stamping to. </summary>
 		private Cubemap    map;
+		/// <summary> Renderer component of our stamp quad mesh. </summary>
 		private Renderer   imageQuad;
+		/// <summary> Renderer component of our stamp sphere mesh. </summary>
 		private Renderer   imageSphere;
+		/// <summary> Skybox material for stamp scene. </summary>
 		private Material   skybox;
+		/// <summary> Field of view for stamp size. </summary>
 		private float      fov;
+		/// <summary> Does the cubemap use floats for HDR, or just regular 24 bit? Don't do much else with this yet. </summary>
 		private bool       hdr;
 	
+		/// <summary> Does the cubemap need a sphere stamp? </summary>
 		private bool           needsFullStamp      = true;
+		/// <summary> How far must the camera be from an old stamp for it to expire? 0 means no expiry. </summary>
 		private float          stampExpireDistance = 0;
+		/// <summary> How long does a stamp live for before it expires? 0 means no expiry. </summary>
 		private float          stampExpireLife     = 0;
+		/// <summary> Cache of all the stamps taken. </summary>
 		private List<StampDir> stampCache          = new List<StampDir>();
 		#endregion
 
@@ -96,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 			root = new GameObject("_Cubemap Generator Root");
 			root.SetActive(false);
 			// This throws errors when destroying objects at runtime
-			//_root.hideFlags = HideFlags.DontSave;
+			//root.hideFlags = HideFlags.DontSave;
 
 			// Create a camera to render with
 			GameObject camObj = new GameObject("RenderCamera");
@@ -254,6 +269,10 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		#endregion
 
 		#region Private Methods
+		/// <summary> Makes an XY plane with fade-out vertex colors. </summary>
+		/// <param name="aZ">What z value does this XY plane want to use.</param>
+		/// <param name="aBlend">How far in should we start blending at (percent).</param>
+		/// <returns>A ready plane mesh!</returns>
 		private Mesh CreatePlane(float aZ, float aBlend = 0.2f)
 		{
 			Mesh m = new Mesh();
@@ -348,11 +367,17 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 			m.RecalculateBounds();
 			return m;
 		}
+		/// <summary> Checks to see if a direction is visible from another direction. </summary>
+		/// <param name="dir">Direction to check against.</param>
+		/// <param name="camDir">Direction to check with.</param>
 		private bool AngleVisible(Vector3 dir, Vector3 camDir)
 		{
 			float angle = Vector3.Angle(dir, camDir);
 			return angle < 45 + (fov/2);
 		}
+		/// <summary> Add this direction and orientation to the stamp cache. </summary>
+		/// <param name="position">Position of where the stamp was captured.</param>
+		/// <param name="orientation">Rotation of how the stamp was captured.</param>
 		private void CacheStamp(Vector3 position, Quaternion orientation)
 		{
 			StampDir stamp = new StampDir();
@@ -361,6 +386,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 			stamp.timestamp = Time.time;
 			stampCache.Add(stamp);
 		}
+		/// <summary> Checks if a stamp has expired. </summary>
+		/// <param name="i">Which stamp?</param>
+		/// <param name="cameraPosition">Where's the camera? It's relevant for expiration calculation.</param>
 		private bool IsExpired(int i, Vector3 cameraPosition)
 		{
 			if (stampExpireLife     > 0 && Time.time - stampCache[i].timestamp > stampExpireLife)
@@ -384,6 +412,11 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 			int mipLevel = (int)(Mathf.Log( map.width ) / Mathf.Log(2)) - 2;
 			return GetWeightedDirection(map, mipLevel, ref histogram).normalized;
 		}
+		/// <summary> Finds where the the brightness on our cubemap is generally pointing.  </summary>
+		/// <param name="map">Cubemap to look at.</param>
+		/// <param name="mipLevel">The mip-map level to look at.</param>
+		/// <param name="histogram">As long as we're touching everything, lets fill out a histogram for light color.</param>
+		/// <returns>Direction of a primary light source.</returns>
 		public static Vector3 GetWeightedDirection(Cubemap map, int mipLevel, ref Histogram histogram)
 		{
 			if (histogram != null)
@@ -400,6 +433,14 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 			result += GetWeightedDirection(map, CubemapFace.PositiveZ, mipLevel, ref histogram);
 			return result/6f;
 		}
+		/// <summary>
+		/// Checks the brightness of each pixel and returns a vector representing the average direction of the brightness. Also fills
+		/// out a histogram since it's touching all the pixels anyhow.
+		/// </summary>
+		/// <param name="map">Where do we get our brightness information from?</param>
+		/// <param name="face">Which face of the cubemap are we looking at right now?</param>
+		/// <param name="mipLevel">Which mip-map level do we pull color data from? Generaly, we don't want to be parsing lots of pixels.</param>
+		/// <param name="histogram">The histogram we're filling out</param>
 		private static Vector3 GetWeightedDirection(Cubemap map, CubemapFace face, int mipLevel, ref Histogram histogram)
 		{
 			// TODO: Switch to nativeArray
@@ -416,12 +457,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 				for (int x = 0; x < width; x++)
 				{
 					float xP        = start + texelSize * x;
-					Color color = colors[x+y*width];
+					Color color     = colors[x+y*width];
 					float intensity = color.grayscale;
-					if (histogram != null)
-					{
-						histogram.Add(color.r, color.g, color.b, intensity);
-					}
+					histogram.Add(color.r, color.g, color.b, intensity);
 				
 					// TODO: get rid of this inner loop normalize
 					result += new Vector3(xP, yP, 1).normalized * intensity;
@@ -452,6 +490,11 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 
 			return tex;
 		}
+		/// <summary>Copies a cubemap face to a raw array of colors.</summary>
+		/// <param name="data">Raw array to store the colors.</param>
+		/// <param name="map">The cubemap to pull from.</param>
+		/// <param name="face">The cubemap face to pull from.</param>
+		/// <param name="startX">The pixel column to start writing data to.</param>
 		private static void CopyFace(ref Color[] data, Cubemap map, CubemapFace face, int startX)
 		{
 			Color[] faceData = map.GetPixels(face);

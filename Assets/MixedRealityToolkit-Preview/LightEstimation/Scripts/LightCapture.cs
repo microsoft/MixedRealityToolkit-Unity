@@ -39,12 +39,16 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		[Tooltip("Default will pick the first directional light in the scene. If no directional light is found, one will be created!")]
 		[SerializeField] private Light           directionalLight;
 	
+		/// <summary> Interface to the camera we're using. This is different on different platforms. </summary>
 		private ICameraCapture captureCamera;
+		/// <summary> The Cubemap tool we're using to generate the light information for Unity's probes. </summary>
 		private CubeMapper     map = null;
+		/// <summary> Histogram of the Cubemap's colors. Used for primary light source color calculations. </summary>
 		private Histogram      histogram = new Histogram();
+		/// <summary> Used to track the original skybox material, in case we want to disable Light Estimation and restore state. </summary>
 		private Material       startSky;
+		/// <summary> The number of stamps currently in our cubemap.  Used for singleStampOnly option. </summary>
 		private int            stampCount;
-		private Texture2D      tex;
 
 		// For easing the light directions                  
 		private Quaternion lightTargetDir;
@@ -67,9 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation
 		#region Unity Events
 		private void Awake ()
 		{
-			// Pick camera based on platform, PhotoCaptureCamera has camera controls,
-			// but doesn't use front camera on PC like WebcamCamera does.
-		
+			// Pick camera based on platform
 			#if WINDOWS_UWP && !UNITY_EDITOR
 			captureCamera = new CameraCaptureUWP();
 			#elif (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR

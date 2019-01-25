@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Preview.LightEstimation {
 	public class LightEstimationMenus
 	{
+		/// <summary> Creates a starter Light Estimation object in the scene. </summary>
 		[MenuItem("Mixed Reality Toolkit/Light Estimation/Create Estimation Object", priority = 1)]
 		private static void CreateLEObject()
 		{

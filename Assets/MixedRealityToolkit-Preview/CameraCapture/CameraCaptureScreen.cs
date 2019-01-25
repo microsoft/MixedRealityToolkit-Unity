@@ -9,10 +9,15 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 {
 	public class CameraCaptureScreen : ICameraCapture
 	{
+		/// <summary>Which screen are we rendering?</summary>
 		private Camera           sourceCamera;
+		/// <summary>Preferred resolution for taking pictures, note that resolutions are not guaranteed! Refer to CameraResolution for details.</summary>
+		private CameraResolution resolution;
+		/// <summary>Cache tex for storing the screen.</summary>
 		private Texture2D        captureTex  = null;
-		private bool             initialized = false;
-		private CameraResolution resolution  = null;
+		/// <summary>Is this ICameraCapture ready for capturing pictures?</summary>
+		private bool             ready       = false;
+		/// <summary>For controlling which render layers get rendered for this capture.</summary>
 		private int              renderMask  = ~(1 << 31);
 
 		/// <summary>
@@ -22,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		{
 			get
 			{
-				return initialized;
+				return ready;
 			}
 		}
 		/// <summary>
@@ -47,7 +52,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 				return Camera.main.fieldOfView;
 			}
 		}
-
+		
+		/// <param name="aSourceCamera">Which screen are we rendering?</param>
+		/// <param name="aRenderMask">For controlling which render layers get rendered for this capture.</param>
 		public CameraCaptureScreen(Camera aSourceCamera, int aRenderMask = ~(1 << 31))
 		{
 			sourceCamera = aSourceCamera;
@@ -64,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 		public void Initialize(bool aPreferGPUTexture, CameraResolution aResolution, Action aOnInitialized)
 		{
 			resolution  = aResolution;
-			initialized = true;
+			ready = true;
 
 			if (aOnInitialized != null)
 			{
@@ -72,6 +79,10 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			}
 		}
 
+		/// <summary>
+		/// Render the current scene to a texture.
+		/// </summary>
+		/// <param name="aSize">Desired size to render.</param>
 		private void GrabScreen(Vector2Int aSize)
 		{
 			if (captureTex == null || captureTex.width != aSize.x || captureTex.height != aSize.y)

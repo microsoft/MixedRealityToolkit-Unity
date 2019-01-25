@@ -9,9 +9,12 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 	[RequireComponent(typeof(TextMesh))]
 	public class DebugView : MonoBehaviour
 	{
+		[Tooltip("Number of log entries to display at once.")]
 		[SerializeField] private int logCount = 10;
 
+		/// <summary> Link to the TextMesh component on this GameObject. </summary>
 		private TextMesh     text;
+		/// <summary> A list of log entry lines. Only stores enough to fit the logCount. </summary>
 		private List<string> lines = new List<string>();
 		
 		private void Awake ()

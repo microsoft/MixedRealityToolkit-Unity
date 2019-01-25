@@ -9,12 +9,19 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 {
 	public class CameraCaptureWebcam : ICameraCapture
 	{
+		/// <summary> A transform to reference for the position of the camera. </summary>
 		private Transform        poseSource     = null;
+		/// <summary> The WebCamTexture we're using to get a webcam image. </summary>
 		private WebCamTexture    webcamTex      = null;
+		/// <summary> Webcam device that we picked to read from. </summary>
 		private WebCamDevice     device;
+		/// <summary> When was this created? WebCamTexture isn't ready right way, so we'll need to wait a bit.</summary>
 		private float            startTime      = 0;
+		/// <summary> What field of view should this camera report? </summary>
 		private float            fieldOfView    = 45;
+		/// <summary>Preferred resolution for taking pictures, note that resolutions are not guaranteed! Refer to CameraResolution for details.</summary>
 		private CameraResolution resolution     = null;
+		/// <summary>Cache tex for storing the final image.</summary>
 		private Texture          resizedTexture = null;
 
 		/// <summary>

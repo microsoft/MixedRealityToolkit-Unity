@@ -14,8 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 {
 	public class CameraCaptureARFoundation : ICameraCapture
 	{
+		/// <summary>Preferred resolution for taking pictures, note that resolutions are not guaranteed! Refer to CameraResolution for details.</summary>
 		private CameraResolution resolution;
+		/// <summary>Texture cache for storing captured images.</summary>
 		private Texture2D        captureTex;
+		/// <summary>Is this ICameraCapture ready for capturing pictures?</summary>
 		private bool             ready = false;
 
 		/// <summary>
@@ -82,6 +85,10 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			ARSubsystemManager.systemStateChanged += handler;
 		}
 		
+		/// <summary>
+		/// Gets the image data from ARFoundation, preps it, and drops it into captureTex.
+		/// </summary>
+		/// <param name="aOnFinished">Gets called when this method is finished with getting the image.</param>
 		private void GrabScreen(Action aOnFinished)
 		{
 			// Grab the latest image from ARFoundation
@@ -126,6 +133,10 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			});
 		}
 
+		/// <summary>
+		/// Gets the camera's current transform in Unity coordinates, including any magic or trickery for offsets from ARFoundation.
+		/// </summary>
+		/// <returns>Camera's current transform in Unity coordinates.</returns>
 		private Matrix4x4 GetCamTransform()
 		{
 			Matrix4x4 matrix = Matrix4x4.identity;

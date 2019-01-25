@@ -14,6 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			CheckAndAdd("UnityEngine.XR.ARFoundation.ARSubsystemManager", "USE_ARFOUNDATION");
 		}
 
+		/// <summary>Checks if a class is present in any loaded assemblies, and adds a script define to Unity's list if it's not already there.</summary>
+		/// <param name="type">The Type name to check for including namespace, but not the fully qualified assembly name.</param>
+		/// <param name="define">The scripting define to add.</param>
 		private static void CheckAndAdd(string type, string define)
 		{
 			if (HasType(type) && EnsureDefine(define))
@@ -22,6 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			}
 		}
 
+		/// <summary> Checks if any of the loaded assemblies have the indicated Type. </summary>
+		/// <param name="typeName">The Type name to check for including namespace, but not the fully qualified assembly name.</param>
+		/// <returns>Is it present?</returns>
 		private static bool HasType(string typeName)
 		{
 			// Look through all loaded assemblies to find this type!
@@ -36,6 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.Preview.CameraCapture
 			return false;
 		}
 
+		/// <summary> Checks Unity's scripting defines, and ensures ours is present in it. This will trigger a recompile if it's added. </summary>
+		/// <returns>Was it added?</returns>
 		private static bool EnsureDefine(string defineName)
 		{
 			// Get all the scripting defines as a nice friendly list
