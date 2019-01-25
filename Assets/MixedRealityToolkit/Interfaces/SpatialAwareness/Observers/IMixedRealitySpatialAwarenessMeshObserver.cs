@@ -14,6 +14,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
     public interface IMixedRealitySpatialAwarenessMeshObserver : IMixedRealitySpatialAwarenessObserver
     {
         /// <summary>
+        /// Gets or sets a value indicating how the mesh subsystem is to display surface meshes within the application.
+        /// </summary>
+        /// <remarks>
+        /// Applications that wish to process the <see cref="Mesh"/>es should set this value to None.
+        /// </remarks>
+        SpatialMeshDisplayOptions DisplayOption { get; set; }
+
+        /// <summary>
+        /// Gets or sets the level of detail, as a MixedRealitySpatialAwarenessMeshLevelOfDetail value, for the returned spatial mesh.
+        /// Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter. 
+        /// </summary>
+        /// <remarks>
+        /// Specifying any other value will cause <see cref="MeshTrianglesPerCubicMeter"/> to be overwritten.
+        /// </remarks>
+        SpatialAwarenessMeshLevelOfDetail LevelOfDetail { get; set; }
+
+        /// <summary>
+        /// Gets the collection of <see cref="SpatialAwarenessMeshObject"/>s being managed by the observer.
+        /// </summary>
+        IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes { get; }
+
+        /// <summary>
         /// Get or sets the desired Unity Physics Layer on which to set the spatial mesh.
         /// </summary>
         /// <remarks>
@@ -27,13 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         int MeshPhysicsLayerMask { get; }
 
         /// <summary>
-        /// Gets or sets the level of detail, as a MixedRealitySpatialAwarenessMeshLevelOfDetail value, for the returned spatial mesh.
-        /// Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter. 
+        /// Indicates whether or not mesh normals should be recalculated by the observer.
         /// </summary>
-        /// <remarks>
-        /// Specifying any other value will cause <see cref="MeshTrianglesPerCubicMeter"/> to be overwritten.
-        /// </remarks>
-        SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail { get; set; }
+        bool RecalculateNormals { get; set; }
 
         /// <summary>
         /// Gets or sets the level of detail, in triangles per cubic meter, for the returned spatial mesh.
@@ -41,20 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// <remarks>
         /// When specifying Coarse or Fine for the <see cref="MeshLevelOfDetail"/>, this value will be automatically overwritten with system default values.
         /// </remarks>
-        int MeshTrianglesPerCubicMeter { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating how the mesh subsystem is to display surface meshes within the application.
-        /// </summary>
-        /// <remarks>
-        /// Applications that wish to process the <see cref="Mesh"/>es should set this value to None.
-        /// </remarks>
-        SpatialMeshDisplayOptions DisplayOption { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="Material"/> to be used when displaying <see cref="Mesh"/>es.
-        /// </summary>
-        Material VisibleMaterial { get; set; }
+        int TrianglesPerCubicMeter { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Material"/> to be used when spatial <see cref="Mesh"/>es should occlude other objects.
@@ -62,14 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         Material OcclusionMaterial { get; set; }
 
         /// <summary>
-        /// todo
+        /// Gets or sets the <see cref="Material"/> to be used when displaying <see cref="Mesh"/>es.
         /// </summary>
-        GameObject MeshParent { get; }
-
-        /// <summary>
-        /// Gets the collection of <see cref="SpatialAwarenessMeshObject"/>s being managed by the observer.
-        /// </summary>
-        IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes { get; }
-
-    }
+        Material VisibleMaterial { get; set; }
+   }
 }

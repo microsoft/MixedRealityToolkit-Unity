@@ -24,10 +24,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
                 if (!EditorGUI.EndChangeCheck()) { return; }
                 if (property.objectReferenceValue == null) { return; }
 
-                if (PrefabUtility.GetPrefabInstanceStatus(property.objectReferenceValue) == PrefabInstanceStatus.NotAPrefab)
+                if (PrefabUtility.GetPrefabAssetType(property.objectReferenceValue) == PrefabAssetType.NotAPrefab)
                 {
                     property.objectReferenceValue = null;
-                    Debug.LogWarning("Assigned GameObject must be a prefab");
+                    Debug.LogWarning("Assigned GameObject must be a prefab.");
                 }
             }
             else

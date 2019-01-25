@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
@@ -242,9 +241,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             if (modelPrefab == null) { return true; }
 
-            if (PrefabUtility.GetPrefabInstanceStatus(modelPrefab) == PrefabInstanceStatus.NotAPrefab)
+            if (PrefabUtility.GetPrefabAssetType(modelPrefab) == PrefabAssetType.NotAPrefab)
             {
-                Debug.LogWarning("Assigned GameObject must be a prefab");
+                Debug.LogWarning("Assigned GameObject must be a prefab.");
                 return false;
             }
 

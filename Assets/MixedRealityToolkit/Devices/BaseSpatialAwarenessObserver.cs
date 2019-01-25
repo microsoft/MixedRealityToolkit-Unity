@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
@@ -9,8 +10,20 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices
 {
-    public abstract class BaseSpatialAwarenessObserver : BaseExtensionService, IMixedRealitySpatialAwarenessObserver
+    public class BaseSpatialAwarenessObserver : BaseDataProvider, IMixedRealitySpatialAwarenessObserver
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public BaseSpatialAwarenessObserver(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile)
+        {
+            SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
+            SourceName = name;
+        }
+
         #region IMixedRealityEventSource Implementation
 
         /// <inheritdoc />
@@ -49,23 +62,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         }
 
         /// <inheritdoc />
-        public uint SourceId { get; protected set; }
+        public uint SourceId { get; }
 
         /// <inheritdoc />
-        public string SourceName { get; protected set; }
+        public string SourceName { get; }
 
         #endregion IMixedRealityEventSource Implementation
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="priority"></param>
-        public BaseSpatialAwarenessObserver(string name, uint priority, ScriptableObject profile) : base(name, priority, profile)
-        {
-            SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
-            SourceName = name;
-        }
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
@@ -73,45 +75,40 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         public AutoStartBehavior StartupBehavior { get; set; }
 
         /// <inheritdoc />
-        public int DefaultPhysicsLayer { get; set; }
+        public int DefaultPhysicsLayer { get; set; } = 31;
 
         /// <inheritdoc />
-        public int DefaultPhysicsLayerMask { get; set; }
+        public int DefaultPhysicsLayerMask => (1 << DefaultPhysicsLayer);
 
         /// <inheritdoc />
-        public bool IsRunning { get; set; }
+        public bool IsRunning { get; protected set; }
 
         /// <inheritdoc />
-        public bool IsStationaryObserver { get; set; }
+        public bool IsStationaryObserver { get; set; } = false;
 
         /// <inheritdoc />
-        public VolumeType ObserverVolumeType { get; set; }
+        // todo ObserverVolumeAlignment (Axis or Oriented)
 
         /// <inheritdoc />
-        public Vector3 ObservationExtents { get; set; }
+        public VolumeType ObserverVolumeType { get; set; } = VolumeType.Cubic;
 
         /// <inheritdoc />
-        public Vector3 ObserverOrigin { get; set; }
+        public Vector3 ObservationExtents { get; set; } = Vector3.one * 3; // 3 meters
 
         /// <inheritdoc />
-        public float ObserverRadius { get; set; }
+        public Quaternion ObserverOrientation { get; set; } = Quaternion.identity;
 
         /// <inheritdoc />
-        public float UpdateInterval { get; set; }
-
-        ///<inheritdoc />
-        public bool RecalculateNormals { get; set; }
+        public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
 
         /// <inheritdoc />
-        public abstract void Resume();
+        public float UpdateInterval { get; set; } = 3.5f;   // 3.5 seconds
 
         /// <inheritdoc />
-        public abstract void Suspend();
+        public virtual void Resume() { }
 
-        /// <summary>
-        /// Cleans up objects managed by the observer.
-        /// </summary>
-        protected abstract void CleanUpSpatialObjectList();
+        /// <inheritdoc />
+        public virtual void Suspend() { }
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }

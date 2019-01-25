@@ -15,7 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         /// <summary>
         /// The axis about which the object will rotate.
         /// </summary>
-        public PivotAxis PivotAxis => pivotAxis;
+        public PivotAxis PivotAxis
+        {
+            get { return pivotAxis; }
+            set { pivotAxis = value; }
+        }
 
         [Tooltip("Specifies the axis about which the object will rotate.")]
         [SerializeField]

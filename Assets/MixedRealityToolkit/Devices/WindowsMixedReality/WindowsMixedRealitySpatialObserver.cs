@@ -1,28 +1,31 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using UnityEngine;
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
+using Microsoft.MixedReality.Toolkit.Core.Services;
+using System.Collections.Generic;
+using UnityEngine;
 
 #if UNITY_WSA
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 {
-    public class WindowsMixedRealitySpatialObserver : BaseSpatialAwarenessMeshObserver
+    public class WindowsMixedRealitySpatialObserver : BaseSpatialAwarenessObserver, IMixedRealitySpatialAwarenessMeshObserver
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="priority"></param>
-        public WindowsMixedRealitySpatialObserver(string name, uint priority, ScriptableObject profile) : base(name, priority, profile) { }
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public WindowsMixedRealitySpatialObserver(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
 
         #region IMixedRealityToolkit implementation
 
@@ -82,10 +85,53 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         #region IMixedRealitySpatialAwarenessObserver implementation
 
         private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+ 
         /// <summary>
         /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
         private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
+
+        /// <inheritdoc />
+        public SpatialMeshDisplayOptions DisplayOption { get; set; } = SpatialMeshDisplayOptions.Visible;
+
+        /// <inheritdoc />
+        public SpatialAwarenessMeshLevelOfDetail LevelOfDetail { get; set; } = SpatialAwarenessMeshLevelOfDetail.Coarse;
+
+        private readonly Dictionary<int, SpatialAwarenessMeshObject> meshes = new Dictionary<int, SpatialAwarenessMeshObject>();
+
+        /// <inheritdoc />
+        public IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes => new Dictionary<int, SpatialAwarenessMeshObject>(meshes) as IReadOnlyDictionary<int, SpatialAwarenessMeshObject>;
+
+        private int? meshPhysicsLayer = null;
+
+        /// <inheritdoc />
+        public int MeshPhysicsLayer
+        {
+            get
+            {
+                return meshPhysicsLayer.HasValue ? meshPhysicsLayer.Value : DefaultPhysicsLayer;
+            }
+
+            set
+            {
+                meshPhysicsLayer = value;
+            }
+        }
+
+        /// <inheritdoc />
+        public int MeshPhysicsLayerMask => (1 << MeshPhysicsLayer);
+
+        /// <inheritdoc />
+        public Material OcclusionMaterial { get; set; } = null;
+
+        /// <inheritdoc />
+        public bool RecalculateNormals { get; set; } = true;
+
+        /// <inheritdoc />
+        public int TrianglesPerCubicMeter { get; set; } = 0;
+
+        /// <inheritdoc />
+        public Material VisibleMaterial { get; set; } = null;
 
 #if UNITY_WSA
         /// <summary>
@@ -128,20 +174,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         private float lastUpdated = 0;
 #endif // UNITY_WSA
 
-        /// <inheritdoc />
-        public override IDictionary<int, GameObject> Meshes
-        {
-            get
-            {
-                Dictionary<int, GameObject> meshes = new Dictionary<int, GameObject>();
-                // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
-                foreach (int id in meshObjects.Keys)
-                {
-                    meshes.Add(id, meshObjects[id].GameObject);
-                }
-                return meshes;
-            }
-        }
+        ///// <inheritdoc />
+        //public override IDictionary<int, GameObject> Meshes
+        //{
+        //    get
+        //    {
+        //        Dictionary<int, GameObject> meshes = new Dictionary<int, GameObject>();
+        //        // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
+        //        foreach (int id in meshObjects.Keys)
+        //        {
+        //            meshes.Add(id, meshObjects[id].GameObject);
+        //        }
+        //        return meshes;
+        //    }
+        //}
 
         /// <inheritdoc/>
         public override void Resume()
@@ -217,8 +263,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
             if (Application.isPlaying)
             {
-                // Cleanup the mesh objects that are being manaaged by this observer.
-                base.CleanUpSpatialObjectList();
                 // Cleanup the outstanding mesh object.
                 if (outstandingMeshObject != null)
                 {
@@ -235,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                     spareMeshObject = null;
                 }
 
-                // Clean up planar surface objects
+                // Cleanup mesh objects
                 // todo
             }
         }
@@ -281,50 +325,51 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <param name="surfaceId">ID of the mesh to bake.</param>
         private void RequestMesh(SurfaceId surfaceId)
         {
-            string meshName = ("SpatialMesh - " + surfaceId.handle);
+            // todo - update to use the SpatialMeshObject constructor
 
-            SpatialAwarenessMeshObject newMesh;
-            WorldAnchor worldAnchor;
+            //string meshName = ("SpatialMesh - " + surfaceId.handle);
 
-            if (spareMeshObject != null)
-            {
-                newMesh = SpatialAwarenessMeshObject.CreateSpatialMeshObject(null, requiredMeshComponents, MeshPhysicsLayer, meshName, surfaceId.handle);
+            //SpatialAwarenessMeshObject newMesh;
+            //WorldAnchor worldAnchor;
 
-                worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
-            }
-            else
-            {
-                newMesh = spareMeshObject;
-                spareMeshObject = null;
+            //if (spareMeshObject != null)
+            //{
+            //    newMesh = SpatialAwarenessMeshObject.CreateSpatialMeshObject(null, requiredMeshComponents, MeshPhysicsLayer, meshName, surfaceId.handle);
 
-                newMesh.GameObject.name = meshName;
-                newMesh.Id = surfaceId.handle;
-                newMesh.GameObject.SetActive(true);
+            //    worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
+            //}
+            //else
+            //{
+            //    newMesh = spareMeshObject;
+            //    spareMeshObject = null;
 
-                worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
-            }
+            //    newMesh.GameObject.name = meshName;
+            //    newMesh.Id = surfaceId.handle;
+            //    newMesh.GameObject.SetActive(true);
 
-            Debug.Assert(worldAnchor != null);
+            //    worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
+            //}
 
-            SurfaceData surfaceData = new SurfaceData(
-                surfaceId,
-                newMesh.Filter,
-                worldAnchor,
-                newMesh.Collider,
-                MeshTrianglesPerCubicMeter,
-                //SpatialAwarenessSystem.MeshTrianglesPerCubicMeter,
-                true);
+            //Debug.Assert(worldAnchor != null);
 
-            if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
-            {
-                outstandingMeshObject = newMesh;
-            }
-            else
-            {
-                Debug.LogError($"Mesh request failed for Id == surfaceId.handle");
-                Debug.Assert(outstandingMeshObject == null);
-                ReclaimMeshObject(newMesh);
-            }
+            //SurfaceData surfaceData = new SurfaceData(
+            //    surfaceId,
+            //    newMesh.Filter,
+            //    worldAnchor,
+            //    newMesh.Collider,
+            //    TrianglesPerCubicMeter,
+            //    true);
+
+            //if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
+            //{
+            //    outstandingMeshObject = newMesh;
+            //}
+            //else
+            //{
+            //    Debug.LogError($"Mesh request failed for Id == surfaceId.handle");
+            //    Debug.Assert(outstandingMeshObject == null);
+            //    ReclaimMeshObject(newMesh);
+            //}
         }
 
 
@@ -336,10 +381,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         {
             SpatialAwarenessMeshObject mesh;
 
-            if (meshObjects.TryGetValue(id, out mesh))
+            if (meshes.TryGetValue(id, out mesh))
             {
                 // Remove the mesh object from the collection.
-                meshObjects.Remove(id);
+                meshes.Remove(id);
 
                 // Reclaim the mesh object for future use.
                 ReclaimMeshObject(mesh);
@@ -469,15 +514,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
             // Add / update the mesh to our collection
             bool sendUpdatedEvent = false;
-            if (meshObjects.ContainsKey(cookedData.id.handle))
+            if (meshes.ContainsKey(cookedData.id.handle))
             {
                 // Reclaim the old mesh object for future use.
-                ReclaimMeshObject(meshObjects[cookedData.id.handle]);
-                meshObjects.Remove(cookedData.id.handle);
+                ReclaimMeshObject(meshes[cookedData.id.handle]);
+                meshes.Remove(cookedData.id.handle);
 
                 sendUpdatedEvent = true;
             }
-            meshObjects.Add(cookedData.id.handle, meshObject);
+            meshes.Add(cookedData.id.handle, meshObject);
 
             if (sendUpdatedEvent)
             {
