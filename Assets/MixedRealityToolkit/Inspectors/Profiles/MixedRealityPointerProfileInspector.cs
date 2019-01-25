@@ -16,14 +16,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     {
         private static readonly GUIContent ControllerTypeContent = new GUIContent("Controller Type", "The type of Controller this pointer will attach itself to at runtime.");
 
+        private static bool showPointerProperties = true;
         private SerializedProperty pointingExtent;
         private SerializedProperty pointingRaycastLayerMasks;
-        private SerializedProperty debugDrawPointingRays;
-        private SerializedProperty debugDrawPointingRayColors;
-        private SerializedProperty gazeCursorPrefab;
-        private SerializedProperty gazeProviderType;
+        private static bool showPointerOptionProperties = true;
         private SerializedProperty pointerOptions;
         private ReorderableList pointerOptionList;
+        private static bool showPointerDebugProperties = true;
+        private SerializedProperty debugDrawPointingRays;
+        private SerializedProperty debugDrawPointingRayColors;
+        private static bool showGazeProperties = true;
+        private SerializedProperty gazeCursorPrefab;
+        private SerializedProperty gazeProviderType;
 
         private int currentlySelectedPointerOption = -1;
 
@@ -38,11 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             pointingExtent = serializedObject.FindProperty("pointingExtent");
             pointingRaycastLayerMasks = serializedObject.FindProperty("pointingRaycastLayerMasks");
+            pointerOptions = serializedObject.FindProperty("pointerOptions");
             debugDrawPointingRays = serializedObject.FindProperty("debugDrawPointingRays");
             debugDrawPointingRayColors = serializedObject.FindProperty("debugDrawPointingRayColors");
             gazeCursorPrefab = serializedObject.FindProperty("gazeCursorPrefab");
             gazeProviderType = serializedObject.FindProperty("gazeProviderType");
-            pointerOptions = serializedObject.FindProperty("pointerOptions");
 
             pointerOptionList = new ReorderableList(serializedObject, pointerOptions, false, false, true, true)
             {
@@ -68,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Pointer Options", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Pointer Profile", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Pointers attach themselves onto controllers as they are initialized.", MessageType.Info);
             EditorGUILayout.Space();
 
@@ -76,27 +80,58 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             serializedObject.Update();
             currentlySelectedPointerOption = -1;
 
-            EditorGUILayout.PropertyField(pointingExtent);
-            EditorGUILayout.PropertyField(pointingRaycastLayerMasks, true);
-            EditorGUILayout.PropertyField(debugDrawPointingRays);
-            EditorGUILayout.PropertyField(debugDrawPointingRayColors, true);
-
             EditorGUILayout.Space();
-            EditorGUILayout.HelpBox("The gaze provider uses the default settings above, but further customization of the gaze can be done on the Gaze Provider.", MessageType.Info);
-
-            EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(gazeCursorPrefab);
-            EditorGUILayout.PropertyField(gazeProviderType);
-
-            EditorGUILayout.Space();
-            if (GUILayout.Button("Customize Gaze Provider Settings"))
+            showPointerProperties = EditorGUILayout.Foldout(showPointerProperties, "Pointer Settings", true);
+            if (showPointerProperties)
             {
-                Selection.activeObject = CameraCache.Main.gameObject;
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(pointingExtent);
+                    EditorGUILayout.PropertyField(pointingRaycastLayerMasks, true);
+
+                    EditorGUILayout.Space();
+                    showPointerOptionProperties = EditorGUILayout.Foldout(showPointerOptionProperties, "Pointer Options", true);
+                    if (showPointerOptionProperties)
+                    {
+                        using (new EditorGUI.IndentLevelScope())
+                        {
+                            pointerOptionList.DoLayoutList();
+                            serializedObject.ApplyModifiedProperties();
+                        }
+                    }
+
+                    EditorGUILayout.Space();
+                    showPointerDebugProperties = EditorGUILayout.Foldout(showPointerDebugProperties, "Debug Settings", true);
+                    if (showPointerDebugProperties)
+                    {
+                        using (new EditorGUI.IndentLevelScope())
+                        {
+                            EditorGUILayout.PropertyField(debugDrawPointingRays);
+                            EditorGUILayout.PropertyField(debugDrawPointingRayColors, true);
+                        }
+                    }
+                }
             }
 
             EditorGUILayout.Space();
-            pointerOptionList.DoLayoutList();
-            serializedObject.ApplyModifiedProperties();
+            showGazeProperties = EditorGUILayout.Foldout(showGazeProperties, "Gaze Settings", true);
+            if (showGazeProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.HelpBox("The gaze provider uses the default settings above, but further customization of the gaze can be done on the Gaze Provider.", MessageType.Info);
+
+                    EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(gazeCursorPrefab);
+                    EditorGUILayout.PropertyField(gazeProviderType);
+
+                    EditorGUILayout.Space();
+                    if (GUILayout.Button("Customize Gaze Provider Settings"))
+                    {
+                        Selection.activeObject = CameraCache.Main.gameObject;
+                    }
+                }
+            }
         }
 
         private void DrawPointerOptionElement(Rect rect, int index, bool isActive, bool isFocused)
