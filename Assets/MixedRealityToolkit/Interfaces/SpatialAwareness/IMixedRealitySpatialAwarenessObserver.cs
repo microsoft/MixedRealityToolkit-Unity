@@ -52,8 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// Gets or sets the extents( 1/2 size) of the volume, in meters per axis, from which individual observations will be made.
         /// </summary>
         /// <remarks>
-        /// When used when <see cref="ObserverVolumeType"/> is set to <see cref="VolumeType.Spherical"/> the X axis value of the vector will be
-        /// used as the radius of the sphere.
+        /// When used when <see cref="ObserverVolumeType"/> is set to <see cref="VolumeType.Sphere"/> the X  value of the extents will be
+        /// used as the radius.
         /// </remarks>
         Vector3 ObservationExtents { get; set; }
 

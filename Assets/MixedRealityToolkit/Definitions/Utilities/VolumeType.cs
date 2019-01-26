@@ -12,13 +12,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         /// No Specified type.
         /// </summary>
         None = 0,
+
         /// <summary>
-        /// Cubic volume.
+        /// Cubic volume aligned with the coordinate axes.
         /// </summary>
-        Cubic,
+        AxisAlignedCube,
+
+        /// <summary>
+        /// Cubic volume aligned with the user.
+        /// </summary>
+        OrientedCube,
+
         /// <summary>
         /// Spherical volume.
         /// </summary>
-        Spherical
+        Sphere
     }
 }

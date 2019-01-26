@@ -99,10 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         public GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent(Name));
 
         /// <inheritdoc />
-        // todo ObserverVolumeAlignment (Axis or Oriented)
-
-        /// <inheritdoc />
-        public VolumeType ObserverVolumeType { get; set; } = VolumeType.Cubic;
+        public VolumeType ObserverVolumeType { get; set; } = VolumeType.AxisAlignedCube;
 
         /// <inheritdoc />
         public Vector3 ObservationExtents { get; set; } = Vector3.one * 3; // 3 meters
