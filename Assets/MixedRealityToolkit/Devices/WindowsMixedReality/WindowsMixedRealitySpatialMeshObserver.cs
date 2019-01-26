@@ -314,51 +314,49 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <param name="surfaceId">ID of the mesh to bake.</param>
         private void RequestMesh(SurfaceId surfaceId)
         {
-            // todo - update to use the SpatialMeshObject constructor
+            string meshName = ("Spatial Mesh - " + surfaceId.handle);
 
-            //string meshName = ("SpatialMesh - " + surfaceId.handle);
+            SpatialAwarenessMeshObject newMesh;
+            WorldAnchor worldAnchor;
 
-            //SpatialAwarenessMeshObject newMesh;
-            //WorldAnchor worldAnchor;
+            if (spareMeshObject != null)
+            {
+                newMesh = SpatialAwarenessMeshObject.CreateSpatialMeshObject(null, MeshPhysicsLayer, meshName, surfaceId.handle);
 
-            //if (spareMeshObject != null)
-            //{
-            //    newMesh = SpatialAwarenessMeshObject.CreateSpatialMeshObject(null, requiredMeshComponents, MeshPhysicsLayer, meshName, surfaceId.handle);
+                worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
+            }
+            else
+            {
+                newMesh = spareMeshObject;
+                spareMeshObject = null;
 
-            //    worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
-            //}
-            //else
-            //{
-            //    newMesh = spareMeshObject;
-            //    spareMeshObject = null;
+                newMesh.GameObject.name = meshName;
+                newMesh.Id = surfaceId.handle;
+                newMesh.GameObject.SetActive(true);
 
-            //    newMesh.GameObject.name = meshName;
-            //    newMesh.Id = surfaceId.handle;
-            //    newMesh.GameObject.SetActive(true);
+                worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
+            }
 
-            //    worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
-            //}
+            Debug.Assert(worldAnchor != null);
 
-            //Debug.Assert(worldAnchor != null);
+            SurfaceData surfaceData = new SurfaceData(
+                surfaceId,
+                newMesh.Filter,
+                worldAnchor,
+                newMesh.Collider,
+                TrianglesPerCubicMeter,
+                true);
 
-            //SurfaceData surfaceData = new SurfaceData(
-            //    surfaceId,
-            //    newMesh.Filter,
-            //    worldAnchor,
-            //    newMesh.Collider,
-            //    TrianglesPerCubicMeter,
-            //    true);
-
-            //if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
-            //{
-            //    outstandingMeshObject = newMesh;
-            //}
-            //else
-            //{
-            //    Debug.LogError($"Mesh request failed for Id == surfaceId.handle");
-            //    Debug.Assert(outstandingMeshObject == null);
-            //    ReclaimMeshObject(newMesh);
-            //}
+            if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
+            {
+                outstandingMeshObject = newMesh;
+            }
+            else
+            {
+                Debug.LogError($"Mesh request failed for Id == surfaceId.handle");
+                Debug.Assert(outstandingMeshObject == null);
+                ReclaimMeshObject(newMesh);
+            }
         }
 
 

@@ -21,15 +21,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <inheritdoc />
         public MeshFilter Filter { get; set; }
 
-        public void CleanObject()
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void CleanObject()
         {
-            throw new System.NotImplementedException();
+            // todo: consider if this should be virtual, and what params it should contain
         }
 
         /// <summary>
         /// constructor
         /// </summary>
-        public BaseSpatialAwarenessObject()
+        protected BaseSpatialAwarenessObject()
         {
             //empty for now
         }

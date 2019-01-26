@@ -9,20 +9,30 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Devices
 {
     /// <summary>
-    /// todo
+    /// Object encapsulating the components of a spatial awareness mesh object.
     /// </summary>
     public class SpatialAwarenessMeshObject : BaseSpatialAwarenessObject
     {
-        // todo
+        /// <summary>
+        /// When a mesh is created we will need to create a game object with a minimum 
+        /// set of components to contain the mesh.  These are the required component types.
+        /// </summary>
+        private static Type[] requiredMeshComponents =
+        {
+            typeof(MeshFilter),
+            typeof(MeshRenderer),
+            typeof(MeshCollider)
+        };
+
+        /// <summary>
+        /// The collider for the mesh object.
+        /// </summary>
         public MeshCollider Collider { get; set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SpatialAwarenessMeshObject() : base()
-        {
-            //todo?
-        }
+        private SpatialAwarenessMeshObject() : base() { }
 
         /// <summary>
         /// Creates a <see cref="SpatialAwarenessMeshObject"/>.
@@ -33,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <returns>
         /// SpatialMeshObject containing the fields that describe the mesh.
         /// </returns>
-        public static SpatialAwarenessMeshObject CreateSpatialMeshObject(Mesh mesh, Type[] requiredMeshComponents, int layer, string name, int meshId)
+        public static SpatialAwarenessMeshObject CreateSpatialMeshObject(Mesh mesh, int layer, string name, int meshId)
         {
             SpatialAwarenessMeshObject newMesh = new SpatialAwarenessMeshObject();
 

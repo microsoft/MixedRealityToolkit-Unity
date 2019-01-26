@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         /// <summary>
         /// Cubic volume aligned with the user.
         /// </summary>
-        OrientedCube,
+        UserAlignedCube,
 
         /// <summary>
         /// Spherical volume.
