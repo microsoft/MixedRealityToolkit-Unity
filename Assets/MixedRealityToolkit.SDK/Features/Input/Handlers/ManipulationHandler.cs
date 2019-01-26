@@ -27,9 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         #region Private Enums
         private enum HandMovementType
         {
-            oneHandedOnly = 0,
-            twoHandedOnly,
-            oneAndTwoHanded
+            OneHandedOnly = 0,
+            TwoHandedOnly,
+            OneAndTwoHanded
         }
         private enum TwoHandedManipulation
         {
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         private RotationConstraintType constraintOnRotation = RotationConstraintType.None;
 
         [SerializeField]
-        private HandMovementType handMoveType = HandMovementType.oneAndTwoHanded;
+        private HandMovementType handMoveType = HandMovementType.OneAndTwoHanded;
 
         [System.Flags]
         private enum State
@@ -123,11 +123,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
                         newState = State.Start;
                     }
                     else
-                        if (handsPressedCount == 1 && handMoveType != HandMovementType.twoHandedOnly)
+                        if (handsPressedCount == 1 && handMoveType != HandMovementType.TwoHandedOnly)
                     {
                         newState = State.Moving;
                     }
-                    else if (handsPressedCount > 1 && handMoveType != HandMovementType.oneHandedOnly)
+                    else if (handsPressedCount > 1 && handMoveType != HandMovementType.OneHandedOnly)
                     {
                         switch (ManipulationMode)
                         {

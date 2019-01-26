@@ -17,8 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
     /// </summary>
     public class TwoHandScaleLogic
     {
-        private Vector3 m_startObjectScale;
-        private float m_startHandDistanceMeters;
+        private Vector3 startObjectScale;
+        private float startHandDistanceMeters;
 
         /// <summary>
         /// Initialize system with source info from controllers/hands
@@ -27,8 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// <param name="manipulationRoot">Transform of gameObject to be manipulated</param>
         public virtual void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
         {
-            m_startHandDistanceMeters = GetMinDistanceBetweenHands(handsPressedMap);
-            m_startObjectScale = manipulationRoot.transform.localScale;
+            startHandDistanceMeters = GetMinDistanceBetweenHands(handsPressedMap);
+            startObjectScale = manipulationRoot.transform.localScale;
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// <returns>a Vector3 describing the new Scale of the object being manipulated</returns>
         public virtual Vector3 UpdateMap(Dictionary<uint, Vector3> handsPressedMap)
         {
-            var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedMap) / m_startHandDistanceMeters;
-            return m_startObjectScale * ratioMultiplier;
+            var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedMap) / startHandDistanceMeters;
+            return startObjectScale * ratioMultiplier;
         }
 
         private float GetMinDistanceBetweenHands(Dictionary<uint, Vector3> handsPressedMap)
