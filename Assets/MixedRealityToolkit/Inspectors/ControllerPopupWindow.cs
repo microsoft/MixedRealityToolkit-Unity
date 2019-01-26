@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Data;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
     public class ControllerPopupWindow : EditorWindow
     {
-        private const string EditorWindowOptionsPath = "/MixedRealityToolkit/_Core/Inspectors/Data/EditorWindowOptions.json";
         private const float InputActionLabelWidth = 128f;
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             window.currentInteractionList = interactionsList;
             isMouseInRects = new bool[interactionsList.arraySize];
 
-            if (!File.Exists($"{Application.dataPath}{EditorWindowOptionsPath}"))
+            if (!File.Exists(MixedRealityEditorSettings.EditorWindowOptionsPath))
             {
                 var empty = new ControllerInputActionOptions
                 {
@@ -221,12 +221,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                     }
                 };
 
-                File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(empty));
+                File.WriteAllText(MixedRealityEditorSettings.EditorWindowOptionsPath, JsonUtility.ToJson(empty));
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             }
             else
             {
-                controllerInputActionOptions = JsonUtility.FromJson<ControllerInputActionOptions>(File.ReadAllText($"{Application.dataPath}{EditorWindowOptionsPath}"));
+                controllerInputActionOptions = JsonUtility.FromJson<ControllerInputActionOptions>(File.ReadAllText(MixedRealityEditorSettings.EditorWindowOptionsPath));
 
                 if (controllerInputActionOptions.Controllers.Any(option => option.Controller == controllerType && option.Handedness == handedness))
                 {
@@ -336,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 {
                     if (!editInputActionPositions)
                     {
-                        File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(controllerInputActionOptions));
+                        File.WriteAllText(MixedRealityEditorSettings.EditorWindowOptionsPath, JsonUtility.ToJson(controllerInputActionOptions));
                     }
                     else
                     {
@@ -360,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                                         option.Controller == SupportedControllerType.None));
                             }
 
-                            File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(controllerInputActionOptions));
+                            File.WriteAllText(MixedRealityEditorSettings.EditorWindowOptionsPath, JsonUtility.ToJson(controllerInputActionOptions));
                         }
                     }
                 }

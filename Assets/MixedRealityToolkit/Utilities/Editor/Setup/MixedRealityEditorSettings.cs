@@ -24,6 +24,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         private static string mixedRealityToolkit_RelativeFolderPath = string.Empty;
 
+        public static string MixedRealityCoreFolder = string.Empty;
+
+        public static string EditorWindowOptionsPath = MixedRealityToolkit_RelativeFolderPath + MixedRealityCoreFolder + "/Inspectors/Data/EditorWindowOptions.json";
+
         public static string MixedRealityToolkit_AbsoluteFolderPath
         {
             get
@@ -177,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                 return;
             }
 
-            var icons = Directory.GetFiles(MixedRealityToolkit_AbsoluteFolderPath + "/_Core/Resources/Icons");
+            var icons = Directory.GetFiles(MixedRealityToolkit_AbsoluteFolderPath + MixedRealityCoreFolder + "/Resources/Icons");
             var icon = new Texture2D(2, 2);
             var iconColor = new Color32(4, 165, 240, 255);
 
