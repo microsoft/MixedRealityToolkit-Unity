@@ -93,51 +93,22 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
             // Cleanup game objects created during execution.
             if (Application.isPlaying)
             {
+                // todo: ensure this does the right thing wrt observers.
+
                 // Detach the child objects and clean up the parent.
-                if (spatialAwarenessParent != null)
+                if (spatialAwarenessObjectParent != null)
                 {
-                    spatialAwarenessParent.transform.DetachChildren();
+                    spatialAwarenessObjectParent.transform.DetachChildren();
                     if (Application.isEditor)
                     {
-                        Object.DestroyImmediate(spatialAwarenessParent);
+                        Object.DestroyImmediate(spatialAwarenessObjectParent);
                     }
                     else
                     {
-                        Object.Destroy(spatialAwarenessParent);
+                        Object.Destroy(spatialAwarenessObjectParent);
                     }
-                    spatialAwarenessParent = null;
+                    spatialAwarenessObjectParent = null;
                 }
-
-                // TODO: figure out the best way to handle object parents, etc
-                //// Detach the mesh objects (they are to be cleaned up by the observer) and cleanup the parent
-                //if (meshParent != null)
-                //{
-                //    meshParent.transform.DetachChildren();
-                //    if (Application.isEditor)
-                //    {
-                //        Object.DestroyImmediate(meshParent);
-                //    }
-                //    else
-                //    {
-                //        Object.Destroy(meshParent);
-                //    }
-                //    meshParent = null;
-                //}
-
-                //// Detach the surface objects (they are to be cleaned up by the observer) and cleanup the parent
-                //if (surfaceParent != null)
-                //{
-                //    surfaceParent.transform.DetachChildren();
-                //    if (Application.isEditor)
-                //    {
-                //        Object.DestroyImmediate(surfaceParent);
-                //    }
-                //    else
-                //    {
-                //        Object.Destroy(surfaceParent);
-                //    }
-                //    surfaceParent = null;
-                //}
             }
         }
 
@@ -145,10 +116,10 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
 
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
-        private GameObject spatialAwarenessParent = null;
+        private GameObject spatialAwarenessObjectParent = null;
 
         /// <inheritdoc />
-        public GameObject SpatialAwarenessParent => spatialAwarenessParent != null ? spatialAwarenessParent : (spatialAwarenessParent = CreateSpatialAwarenessParent);
+        public GameObject SpatialAwarenessObjectParent => spatialAwarenessObjectParent != null ? spatialAwarenessObjectParent : (spatialAwarenessObjectParent = CreateSpatialAwarenessParent);
 
         /// <summary>
         /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
@@ -163,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         {
             GameObject objectParent = new GameObject(name);
 
-            objectParent.transform.parent = SpatialAwarenessParent.transform;
+            objectParent.transform.parent = SpatialAwarenessObjectParent.transform;
 
             return objectParent;
         }

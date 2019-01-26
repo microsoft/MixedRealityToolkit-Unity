@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
@@ -26,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsMixedRealitySpatialMeshObserver(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
-
+      
         #region IMixedRealityToolkit implementation
 
         /// <inheritdoc />
@@ -82,14 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         #endregion IMixedRealityToolkit implementation
 
-        #region IMixedRealitySpatialAwarenessObserver implementation
-
-        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
- 
-        /// <summary>
-        /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
-        /// </summary>
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
+        #region IMixedRealitySpatialAwarenessMeshObserver implementation
 
         /// <inheritdoc />
         public SpatialMeshDisplayOptions DisplayOption { get; set; } = SpatialMeshDisplayOptions.Visible;
@@ -107,10 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <inheritdoc />
         public int MeshPhysicsLayer
         {
-            get
-            {
-                return meshPhysicsLayer.HasValue ? meshPhysicsLayer.Value : DefaultPhysicsLayer;
-            }
+            get => meshPhysicsLayer ?? DefaultPhysicsLayer;
 
             set
             {
@@ -535,6 +524,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         }
 #endif // UNITY_WSA
 
-        #endregion IMixedRealitySpatialAwarenessObserver implementation
+        #endregion IMixedRealitySpatialAwarenessMeshObserver implementation
     }
 }

@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections;
@@ -71,6 +72,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
+        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+
+        /// <summary>
+        /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
+        /// </summary>
+        protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
+
         /// <inheritdoc />
         public AutoStartBehavior StartupBehavior { get; set; }
 
@@ -85,6 +93,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
 
         /// <inheritdoc />
         public bool IsStationaryObserver { get; set; } = false;
+
+        private GameObject observedObjectParent = null;
+
+        public GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent(Name));
 
         /// <inheritdoc />
         // todo ObserverVolumeAlignment (Axis or Oriented)

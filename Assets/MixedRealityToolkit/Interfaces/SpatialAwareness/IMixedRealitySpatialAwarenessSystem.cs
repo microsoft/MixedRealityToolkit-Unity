@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets the parent object to which all spatial awareness <see cref="GameObject"/>s are to be parented.
         /// </summary>
-        GameObject SpatialAwarenessParent { get; }
+        GameObject SpatialAwarenessObjectParent { get; }
 
         /// <summary>
         /// Creates the a parent, that is a child if the Spatial Awareness System parent so that the scene hierarchy does not get overly cluttered.
