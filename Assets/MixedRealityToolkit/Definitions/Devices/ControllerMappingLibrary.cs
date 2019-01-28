@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (genericControllerWhiteScaled == null)
                 {
-                    genericControllerWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/Generic_controller_white_scaled.png", typeof(Texture2D));
+                    genericControllerWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/Generic_controller_white_scaled.png", typeof(Texture2D));
                 }
 
                 return genericControllerWhiteScaled;
@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (genericControllerBlackScaled == null)
                 {
-                    genericControllerBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/Generic_controller_black_scaled.png", typeof(Texture2D));
+                    genericControllerBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/Generic_controller_black_scaled.png", typeof(Texture2D));
                 }
 
                 return genericControllerBlackScaled;
@@ -268,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (xboxControllerWhite == null)
                 {
-                    xboxControllerWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/XboxController_white.png", typeof(Texture2D));
+                    xboxControllerWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/XboxController_white.png", typeof(Texture2D));
                 }
 
                 return xboxControllerWhite;
@@ -283,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (xboxControllerWhiteScaled == null)
                 {
-                    xboxControllerWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/XboxController_white_scaled.png", typeof(Texture2D));
+                    xboxControllerWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/XboxController_white_scaled.png", typeof(Texture2D));
                 }
 
                 return xboxControllerWhiteScaled;
@@ -298,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (xboxControllerBlack == null)
                 {
-                    xboxControllerBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/XboxController_black.png", typeof(Texture2D));
+                    xboxControllerBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/XboxController_black.png", typeof(Texture2D));
                 }
 
                 return xboxControllerBlack;
@@ -313,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (xboxControllerBlackScaled == null)
                 {
-                    xboxControllerBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/XboxController_black_scaled.png", typeof(Texture2D));
+                    xboxControllerBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/XboxController_black_scaled.png", typeof(Texture2D));
                 }
 
                 return xboxControllerBlackScaled;
@@ -328,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (oculusRemoteControllerWhite == null)
                 {
-                    oculusRemoteControllerWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusRemoteController_white.png", typeof(Texture2D));
+                    oculusRemoteControllerWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusRemoteController_white.png", typeof(Texture2D));
                 }
 
                 return oculusRemoteControllerWhite;
@@ -343,7 +343,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (oculusRemoteControllerWhiteScaled == null)
                 {
-                    oculusRemoteControllerWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusRemoteController_white_scaled.png", typeof(Texture2D));
+                    oculusRemoteControllerWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusRemoteController_white_scaled.png", typeof(Texture2D));
                 }
 
                 return oculusRemoteControllerWhiteScaled;
@@ -358,7 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (oculusRemoteControllerBlack == null)
                 {
-                    oculusRemoteControllerBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusRemoteController_black.png", typeof(Texture2D));
+                    oculusRemoteControllerBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusRemoteController_black.png", typeof(Texture2D));
                 }
 
                 return oculusRemoteControllerBlack;
@@ -373,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (oculusRemoteControllerBlackScaled == null)
                 {
-                    oculusRemoteControllerBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusRemoteController_black_scaled.png", typeof(Texture2D));
+                    oculusRemoteControllerBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusRemoteController_black_scaled.png", typeof(Texture2D));
                 }
 
                 return oculusRemoteControllerBlackScaled;
@@ -388,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (wmrControllerLeftWhite == null)
                 {
-                    wmrControllerLeftWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MotionController_left_white.png", typeof(Texture2D));
+                    wmrControllerLeftWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MotionController_left_white.png", typeof(Texture2D));
                 }
 
                 return wmrControllerLeftWhite;
@@ -403,7 +403,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (wmrControllerLeftWhiteScaled == null)
                 {
-                    wmrControllerLeftWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MotionController_left_white_scaled.png", typeof(Texture2D));
+                    wmrControllerLeftWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MotionController_left_white_scaled.png", typeof(Texture2D));
                 }
 
                 return wmrControllerLeftWhiteScaled;
@@ -418,7 +418,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (wmrControllerLeftBlack == null)
                 {
-                    wmrControllerLeftBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MotionController_left_black.png", typeof(Texture2D));
+                    wmrControllerLeftBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MotionController_left_black.png", typeof(Texture2D));
                 }
 
                 return wmrControllerLeftBlack;
@@ -433,7 +433,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (wmrControllerLeftBlackScaled == null)
                 {
-                    wmrControllerLeftBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MotionController_left_black_scaled.png", typeof(Texture2D));
+                    wmrControllerLeftBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MotionController_left_black_scaled.png", typeof(Texture2D));
                 }
 
                 return wmrControllerLeftBlackScaled;
@@ -448,7 +448,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (wmrControllerRightWhite == null)
                 {
-                    wmrControllerRightWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MotionController_right_white.png", typeof(Texture2D));
+                    wmrControllerRightWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MotionController_right_white.png", typeof(Texture2D));
                 }
 
                 return wmrControllerRightWhite;
@@ -463,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (wmrControllerRightWhiteScaled == null)
                 {
-                    wmrControllerRightWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MotionController_right_white_scaled.png", typeof(Texture2D));
+                    wmrControllerRightWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MotionController_right_white_scaled.png", typeof(Texture2D));
                 }
 
                 return wmrControllerRightWhiteScaled;
@@ -478,7 +478,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (wmrControllerRightBlack == null)
                 {
-                    wmrControllerRightBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MotionController_right_black.png", typeof(Texture2D));
+                    wmrControllerRightBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MotionController_right_black.png", typeof(Texture2D));
                 }
 
                 return wmrControllerRightBlack;
@@ -493,7 +493,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (wmrControllerRightBlackScaled == null)
                 {
-                    wmrControllerRightBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MotionController_right_black_scaled.png", typeof(Texture2D));
+                    wmrControllerRightBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MotionController_right_black_scaled.png", typeof(Texture2D));
                 }
 
                 return wmrControllerRightBlackScaled;
@@ -508,7 +508,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (touchControllerLeftWhite == null)
                 {
-                    touchControllerLeftWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusControllersTouch_left_white.png", typeof(Texture2D));
+                    touchControllerLeftWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusControllersTouch_left_white.png", typeof(Texture2D));
                 }
 
                 return touchControllerLeftWhite;
@@ -523,7 +523,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (touchControllerLeftWhiteScaled == null)
                 {
-                    touchControllerLeftWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusControllersTouch_left_white_scaled.png", typeof(Texture2D));
+                    touchControllerLeftWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusControllersTouch_left_white_scaled.png", typeof(Texture2D));
                 }
 
                 return touchControllerLeftWhiteScaled;
@@ -538,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (touchControllerLeftBlack == null)
                 {
-                    touchControllerLeftBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusControllersTouch_left_black.png", typeof(Texture2D));
+                    touchControllerLeftBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusControllersTouch_left_black.png", typeof(Texture2D));
                 }
 
                 return touchControllerLeftBlack;
@@ -553,7 +553,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (touchControllerLeftBlackScaled == null)
                 {
-                    touchControllerLeftBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusControllersTouch_left_black_scaled.png", typeof(Texture2D));
+                    touchControllerLeftBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusControllersTouch_left_black_scaled.png", typeof(Texture2D));
                 }
 
                 return touchControllerLeftBlackScaled;
@@ -568,7 +568,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (touchControllerRightWhite == null)
                 {
-                    touchControllerRightWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusControllersTouch_right_white.png", typeof(Texture2D));
+                    touchControllerRightWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusControllersTouch_right_white.png", typeof(Texture2D));
                 }
 
                 return touchControllerRightWhite;
@@ -583,7 +583,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (touchControllerRightWhiteScaled == null)
                 {
-                    touchControllerRightWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusControllersTouch_right_white_scaled.png", typeof(Texture2D));
+                    touchControllerRightWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusControllersTouch_right_white_scaled.png", typeof(Texture2D));
                 }
 
                 return touchControllerRightWhiteScaled;
@@ -598,7 +598,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (touchControllerRightBlack == null)
                 {
-                    touchControllerRightBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusControllersTouch_right_black.png", typeof(Texture2D));
+                    touchControllerRightBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusControllersTouch_right_black.png", typeof(Texture2D));
                 }
 
                 return touchControllerRightBlack;
@@ -613,7 +613,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (touchControllerRightBlackScaled == null)
                 {
-                    touchControllerRightBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/OculusControllersTouch_right_black_scaled.png", typeof(Texture2D));
+                    touchControllerRightBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/OculusControllersTouch_right_black_scaled.png", typeof(Texture2D));
                 }
 
                 return touchControllerRightBlackScaled;
@@ -628,7 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (viveWandControllerLeftWhite == null)
                 {
-                    viveWandControllerLeftWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/ViveWandController_left_white.png", typeof(Texture2D));
+                    viveWandControllerLeftWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/ViveWandController_left_white.png", typeof(Texture2D));
                 }
 
                 return viveWandControllerLeftWhite;
@@ -643,7 +643,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (viveWandControllerLeftWhiteScaled == null)
                 {
-                    viveWandControllerLeftWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/ViveWandController_left_white_scaled.png", typeof(Texture2D));
+                    viveWandControllerLeftWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/ViveWandController_left_white_scaled.png", typeof(Texture2D));
                 }
 
                 return viveWandControllerLeftWhiteScaled;
@@ -658,7 +658,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (viveWandControllerLeftBlack == null)
                 {
-                    viveWandControllerLeftBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/ViveWandController_left_black.png", typeof(Texture2D));
+                    viveWandControllerLeftBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/ViveWandController_left_black.png", typeof(Texture2D));
                 }
 
                 return viveWandControllerLeftBlack;
@@ -673,7 +673,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (viveWandControllerLeftBlackScaled == null)
                 {
-                    viveWandControllerLeftBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/ViveWandController_left_black_scaled.png", typeof(Texture2D));
+                    viveWandControllerLeftBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/ViveWandController_left_black_scaled.png", typeof(Texture2D));
                 }
 
                 return viveWandControllerLeftBlackScaled;
@@ -688,7 +688,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (viveWandControllerRightWhite == null)
                 {
-                    viveWandControllerRightWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/ViveWandController_right_white.png", typeof(Texture2D));
+                    viveWandControllerRightWhite = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/ViveWandController_right_white.png", typeof(Texture2D));
                 }
 
                 return viveWandControllerRightWhite;
@@ -703,7 +703,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (viveWandControllerRightWhiteScaled == null)
                 {
-                    viveWandControllerRightWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/ViveWandController_right_white_scaled.png", typeof(Texture2D));
+                    viveWandControllerRightWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/ViveWandController_right_white_scaled.png", typeof(Texture2D));
                 }
 
                 return viveWandControllerRightWhiteScaled;
@@ -718,7 +718,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (viveWandControllerRightBlack == null)
                 {
-                    viveWandControllerRightBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/ViveWandController_right_black.png", typeof(Texture2D));
+                    viveWandControllerRightBlack = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/ViveWandController_right_black.png", typeof(Texture2D));
                 }
 
                 return viveWandControllerRightBlack;
@@ -733,7 +733,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             {
                 if (viveWandControllerRightBlackScaled == null)
                 {
-                    viveWandControllerRightBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/ViveWandController_right_black_scaled.png", typeof(Texture2D));
+                    viveWandControllerRightBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/ViveWandController_right_black_scaled.png", typeof(Texture2D));
                 }
 
                 return viveWandControllerRightBlackScaled;

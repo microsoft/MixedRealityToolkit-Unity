@@ -28,12 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             if (logoLightTheme == null)
             {
-                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MRTK_Logo_Black.png", typeof(Texture2D));
+                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MRTK_Logo_Black.png", typeof(Texture2D));
             }
 
             if (logoDarkTheme == null)
             {
-                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Textures/MRTK_Logo_White.png", typeof(Texture2D));
+                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MRTK_Logo_White.png", typeof(Texture2D));
             }
         }
 

@@ -25,11 +25,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             new GUIContent("Right Hand"),
         };
 
+        private static bool showVisualizationProperties = true;
         private SerializedProperty renderMotionControllers;
         private SerializedProperty controllerVisualizationType;
+
+        private static bool showModelProperties = true;
         private SerializedProperty useDefaultModels;
         private SerializedProperty globalLeftHandModel;
         private SerializedProperty globalRightHandModel;
+
+        private static bool showControllerDefinitions = true;
         private SerializedProperty controllerVisualizationSettings;
 
         private MixedRealityControllerVisualizationProfile thisProfile;
@@ -93,47 +98,69 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             CheckProfileLock(target);
 
             EditorGUIUtility.labelWidth = 168f;
-            EditorGUILayout.PropertyField(renderMotionControllers);
 
-            if (renderMotionControllers.boolValue)
+            EditorGUILayout.Space();
+            showVisualizationProperties = EditorGUILayout.Foldout(showVisualizationProperties, "Visualization Settings", true);
+            if (showVisualizationProperties)
             {
-                var leftHandModelPrefab = globalLeftHandModel.objectReferenceValue as GameObject;
-                var rightHandModelPrefab = globalRightHandModel.objectReferenceValue as GameObject;
-
-                EditorGUILayout.PropertyField(controllerVisualizationType);
-
-                if (thisProfile.ControllerVisualizationType == null ||
-                    thisProfile.ControllerVisualizationType.Type == null)
+                using (new EditorGUI.IndentLevelScope())
                 {
-                    EditorGUILayout.HelpBox("A controller visualization type must be defined!", MessageType.Error);
+                    EditorGUILayout.PropertyField(renderMotionControllers);
+
+                    EditorGUILayout.PropertyField(controllerVisualizationType);
+
+                    if (thisProfile.ControllerVisualizationType == null ||
+                        thisProfile.ControllerVisualizationType.Type == null)
+                    {
+                        EditorGUILayout.HelpBox("A controller visualization type must be defined!", MessageType.Error);
+                    }
                 }
+            }
 
-                EditorGUILayout.PropertyField(useDefaultModels);
+            var leftHandModelPrefab = globalLeftHandModel.objectReferenceValue as GameObject;
+            var rightHandModelPrefab = globalRightHandModel.objectReferenceValue as GameObject;
 
-                if (useDefaultModels.boolValue && (leftHandModelPrefab != null || rightHandModelPrefab != null))
+            EditorGUILayout.Space();
+            showModelProperties = EditorGUILayout.Foldout(showModelProperties, "Controller Model Settings", true);
+            if (showModelProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
                 {
-                    EditorGUILayout.HelpBox("When default models are used, the global left and right hand models will only be used if the default models cannot be loaded from the driver.", MessageType.Warning);
+                    EditorGUILayout.PropertyField(useDefaultModels);
+
+                    if (useDefaultModels.boolValue && (leftHandModelPrefab != null || rightHandModelPrefab != null))
+                    {
+                        EditorGUILayout.HelpBox("When default models are used, the global left and right hand models will only be used if the default models cannot be loaded from the driver.", MessageType.Warning);
+                    }
+
+                    EditorGUI.BeginChangeCheck();
+                    leftHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalLeftHandModel.displayName, "Note: If the default model is not found, the fallback is the global left hand model."), leftHandModelPrefab, typeof(GameObject), false) as GameObject;
+
+                    if (EditorGUI.EndChangeCheck() && CheckVisualizer(leftHandModelPrefab))
+                    {
+                        globalLeftHandModel.objectReferenceValue = leftHandModelPrefab;
+                    }
+
+                    EditorGUI.BeginChangeCheck();
+                    rightHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalRightHandModel.displayName, "Note: If the default model is not found, the fallback is the global right hand model."), rightHandModelPrefab, typeof(GameObject), false) as GameObject;
+
+                    if (EditorGUI.EndChangeCheck() && CheckVisualizer(rightHandModelPrefab))
+                    {
+                        globalRightHandModel.objectReferenceValue = rightHandModelPrefab;
+                    }
                 }
+            }
 
-                EditorGUI.BeginChangeCheck();
-                leftHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalLeftHandModel.displayName, "Note: If the default model is not found, the fallback is the global left hand model."), leftHandModelPrefab, typeof(GameObject), false) as GameObject;
+            EditorGUIUtility.labelWidth = defaultLabelWidth;
 
-                if (EditorGUI.EndChangeCheck() && CheckVisualizer(leftHandModelPrefab))
+            EditorGUILayout.Space();
+            showControllerDefinitions = EditorGUILayout.Foldout(showControllerDefinitions, "Controller Definitions", true);
+            if (showControllerDefinitions)
+            {
+                using (new EditorGUI.IndentLevelScope())
                 {
-                    globalLeftHandModel.objectReferenceValue = leftHandModelPrefab;
+                    RenderControllerList(controllerVisualizationSettings);
                 }
-
-                EditorGUI.BeginChangeCheck();
-                rightHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalRightHandModel.displayName, "Note: If the default model is not found, the fallback is the global right hand model."), rightHandModelPrefab, typeof(GameObject), false) as GameObject;
-
-                if (EditorGUI.EndChangeCheck() && CheckVisualizer(rightHandModelPrefab))
-                {
-                    globalRightHandModel.objectReferenceValue = rightHandModelPrefab;
-                }
-
-                EditorGUIUtility.labelWidth = defaultLabelWidth;
-
-                RenderControllerList(controllerVisualizationSettings);
             }
 
             serializedObject.ApplyModifiedProperties();

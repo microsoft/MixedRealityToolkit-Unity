@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             profileToCopy = profile;
             ScriptableObject newProfile = CreateInstance(profile.GetType().ToString());
-            profile = newProfile.CreateAsset("Assets/MixedRealityToolkit-Generated/CustomProfiles") as BaseMixedRealityProfile;
+            profile = newProfile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles") as BaseMixedRealityProfile;
             Debug.Assert(profile != null);
 
             await new WaitUntil(() => profileToCopy != profile);
