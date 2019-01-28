@@ -34,12 +34,42 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             // Only initialize if the Spatial Awareness system has been enabled in the configuration profile.
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled) { return; }
 
+            InitializeInternal();
+
 #if UNITY_WSA
             CreateObserver();
 
             // Apply the initial observer volume settings.
             ConfigureObserverVolume();
 #endif // UNITY_WSA
+        }
+
+        /// <summary>
+        /// Perform internal initialization tasks.
+        /// </summary>
+        private void InitializeInternal()
+        {
+            MixedRealitySpatialAwarenessMeshObserverProfile profile = ConfigurationProfile as MixedRealitySpatialAwarenessMeshObserverProfile;
+            if (profile == null)
+            {
+                // todo: better error message
+                Debug.LogError("Incorrect profile type.");
+                return;
+            }
+
+            // Read the profile settings.
+            StartupBehavior = profile.StartupBehavior;
+            ObservationExtents = profile.ObservationExtents;
+            IsStationaryObserver = profile.IsStationaryObserver;
+            UpdateInterval = profile.UpdateInterval;
+
+            MeshPhysicsLayer = profile.MeshPhysicsLayer;
+            RecalculateNormals = profile.RecalculateNormals;
+            LevelOfDetail = profile.MeshLevelOfDetail;
+            TrianglesPerCubicMeter = profile.TrianglesPerCubicMeter;
+            DisplayOption = profile.DisplayOption;
+            VisibleMaterial = profile.VisibleMaterial;
+            OcclusionMaterial = profile.OcclusionMaterial;
         }
 
         /// <inheritdoc />

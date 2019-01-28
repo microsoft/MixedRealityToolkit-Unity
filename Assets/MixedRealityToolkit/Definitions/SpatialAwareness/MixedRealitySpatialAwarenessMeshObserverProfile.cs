@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 
         [SerializeField]
         [Tooltip("How should spatial meshes be displayed?")]
-        private SpatialMeshDisplayOptions displayOption = SpatialMeshDisplayOptions.None;
+        private SpatialMeshDisplayOptions displayOption = SpatialMeshDisplayOptions.Visible;
 
         /// <summary>
         /// Indicates how the mesh subsystem is to display surface meshes within the application.

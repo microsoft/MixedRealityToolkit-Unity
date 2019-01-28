@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     EditorGUILayout.PropertyField(levelOfDetail, lodContent);
                     EditorGUILayout.PropertyField(trianglesPerCubicMeter, trianglesPerCubicMeterContent);
-                    // todo: need message here...
+                    EditorGUILayout.HelpBox("The value of Triangls per Cubic Meter is ignored unless Level of Detail is set to Custom.", MessageType.Info);
                 }
             }
 

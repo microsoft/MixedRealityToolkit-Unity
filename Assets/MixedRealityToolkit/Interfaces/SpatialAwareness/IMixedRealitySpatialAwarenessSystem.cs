@@ -40,18 +40,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// Gets the collection of registered <see cref="IMixedRealitySpatialAwarenessObserver"/> data providers.
         /// </summary>
         /// <returns>
-        /// The list of all registered observers.
+        /// Read only copy of the list of registered observers.
         /// </returns>
-        IList<IMixedRealitySpatialAwarenessObserver> GetObservers();
+        IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers();
 
         /// <summary>
         /// Getd thr collection of registered observers of the specified type.
         /// </summary>
         /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
         /// <returns>
-        /// The list of registered observers that implement the specified type.
+        /// Readonly copy of the list of registered observers that implement the specified type.
         /// </returns>
-        IList<IMixedRealitySpatialAwarenessObserver> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver;
+        IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
         /// Get the <see cref="IMixedRealitySpatialAwarenessObserver"/> that is registered under the specified name.

@@ -18,19 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
     /// </summary>
     public class MixedRealitySpatialAwarenessSystem : BaseEventSystem, IMixedRealitySpatialAwarenessSystem
     {
-        // TODO: replace with data providers collection
-
-        //private IMixedRealitySpatialAwarenessObserver spatialAwarenessObserver = null;
-
-        ///// <summary>
-        ///// The <see cref="IMixedRealitySpatialAwarenessObserver"/>, if any, that is active on the current platform.
-        ///// </summary>
-        //private IMixedRealitySpatialAwarenessObserver SpatialAwarenessObserver => spatialAwarenessObserver ?? (spatialAwarenessObserver = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessObserver>());
-
         #region IMixedRealityToolkit Implementation
 
         private MixedRealitySpatialAwarenessEventData meshEventData = null;
-        private MixedRealitySpatialAwarenessEventData surfaceFindingEventData = null;
 
         /// <inheritdoc/>
         public override void Initialize()
@@ -45,14 +35,42 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         private void InitializeInternal()
         {
             meshEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
-            surfaceFindingEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
+        }
+
+        /// <inheritdoc/>
+        public override void Disable()
+        {
+            base.Disable();
+
+            // Clear the collection of registered observers.
+            observers.Clear();
+        }
+
+        /// <inheritdoc/>
+        public override void Enable()
+        {
+            base.Enable();
+
+            if (observers.Count != 0)
+            {
+                // todo: ensure this is a clean pattern
+                Debug.LogWarning("The spatial awareness system is already enabled.");
+                return;
+            }
+
+            // Get the collection of registered observers.
+            List<Core.Interfaces.IMixedRealityService> services = MixedRealityToolkit.Instance.GetActiveServices(typeof(IMixedRealitySpatialAwarenessObserver));
+            for (int i = 0; i < services.Count; i++)
+            {
+                observers.Add(services[i] as IMixedRealitySpatialAwarenessObserver);
+            }
         }
 
         /// <inheritdoc/>
         public override void Reset()
         {
             base.Reset();
-            // todo: cleanup some objects but not the root scene items
+            // todo: base Reset should likly call Disable, then Initialize
             InitializeInternal();
         }
 
@@ -62,8 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
             // Cleanup game objects created during execution.
             if (Application.isPlaying)
             {
-                // todo: ensure this does the right thing wrt observers.
-
                 // Detach the child objects and clean up the parent.
                 if (spatialAwarenessObjectParent != null)
                 {
@@ -85,6 +101,14 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
 
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
+        /// <summary>
+        ///  The collection of registered spatial awareness observers.
+        /// </summary>
+        private List<IMixedRealitySpatialAwarenessObserver> observers = new List<IMixedRealitySpatialAwarenessObserver>();
+
+        /// <summary>
+        /// The parent object, in the hierarchy, under which all observed game objects will be placed.
+        /// </summary>
         private GameObject spatialAwarenessObjectParent = null;
 
         /// <inheritdoc />
@@ -117,73 +141,121 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         }
 
         /// <inheritdoc />
-        public IList<IMixedRealitySpatialAwarenessObserver> GetObservers()
+        public IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers()
         {
-            // todo
-            return new List<IMixedRealitySpatialAwarenessObserver>();
+            return new List<IMixedRealitySpatialAwarenessObserver>(observers) as IReadOnlyList<IMixedRealitySpatialAwarenessObserver>;
         }
-
+        
         /// <inheritdoc />
-        public IList<IMixedRealitySpatialAwarenessObserver> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
+        public IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            // todo
-            return new List<IMixedRealitySpatialAwarenessObserver>();
+            List<IMixedRealitySpatialAwarenessObserver> selected = new List<IMixedRealitySpatialAwarenessObserver>();
+
+            for (int i = 0; i < observers.Count; i++)
+            {
+                if (observers[i] is T)
+                {
+                    selected.Add(observers[i]);
+                }
+            }
+
+            return selected as IReadOnlyList<IMixedRealitySpatialAwarenessObserver>;
         }
 
         /// <inheritdoc />
         public IMixedRealitySpatialAwarenessObserver GetObserver(string name)
         {
-            // todo
+            for (int i = 0; i < observers.Count; i++)
+            {
+                if (observers[i].Name == name)
+                {
+                    return observers[i];
+                }
+            }
+
             return null;
         }
 
         /// <inheritdoc />
         public IMixedRealitySpatialAwarenessObserver GetObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
         {
-            // todo
+            for (int i = 0; i < observers.Count; i++)
+            {
+                if ((observers[i] is T) && (observers[i].Name == name))
+                {
+                    return observers[i];
+                }
+            }
+
             return null;
         }
 
         /// <inheritdoc />
         public void ResumeObservers()
         {
-            // todo
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].Resume();
+            }
         }
 
         /// <inheritdoc />
         public void ResumeObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            // todo
-        }
-
-        /// <inheritdoc />
-        public void ResumeObserver<T>() where T : IMixedRealitySpatialAwarenessObserver
-        {
-            // todo
+            for (int i = 0; i < observers.Count; i++)
+            {
+                if (observers[i] is T)
+                {
+                    observers[i].Resume();
+                }
+            }
         }
 
         /// <inheritdoc />
         public void ResumeObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
         {
-            // todo
+            for (int i = 0; i < observers.Count; i++)
+            {
+                if ((observers[i] is T) && (observers[i].Name == name))
+                {
+                    observers[i].Resume();
+                    break;
+                }
+            }
         }
 
         /// <inheritdoc />
         public void SuspendObservers()
         {
-            // todo
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].Suspend();
+            }
         }
 
         /// <inheritdoc />
         public void SuspendObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            // todo
+            for (int i = 0; i < observers.Count; i++)
+            {
+                if (observers[i] is T)
+                {
+                    observers[i].Suspend();
+                }
+            }
         }
 
         /// <inheritdoc />
         public void SuspendObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
         {
-            // todo
+            for (int i = 0; i < observers.Count; i++)
+            {
+                if ((observers[i] is T) && (observers[i].Name == name))
+                {
+                    observers[i].Suspend();
+                    break;
+                }
+            }
         }
 
         // TODO: update
