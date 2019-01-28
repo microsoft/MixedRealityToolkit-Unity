@@ -18,7 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         Speech,
         BoundaryVisualization,
         ControllerVisualization,
-        SpatialAwareness,
+        SpatialAwareness,   // todo: remove
+        SpatialAwarenessMeshObserver,
+        SpatialAwarenessSurfaceObserver,
         Gestures,
         Diagnostics,
         RegisteredServiceProviders,

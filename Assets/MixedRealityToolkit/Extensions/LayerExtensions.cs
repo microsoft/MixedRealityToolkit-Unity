@@ -3,6 +3,10 @@
 
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 {
     /// <summary>
@@ -88,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 
 #if UNITY_EDITOR
 
-        private static UnityEditor.SerializedProperty tagManagerLayers = null;
+        private static SerializedProperty tagManagerLayers = null;
 
         /// <summary>
         /// The current layers defined in the Tag Manager.
@@ -125,40 +129,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Attempts to set the layer in Project Settings Tag Manager.
         /// </summary>
-        /// <remarks>
-        /// If the layer is already set, then it attempts to set the next available layer.
-        /// </remarks>
         /// <param name="layerId">The layer Id to attempt to set the layer on.</param>
         /// <param name="layerName">The layer name to attempt to set the layer on.</param>
-        public static int SetupLayer(int layerId, string layerName)
+        /// <returns>
+        /// True if the specified layerId was newly configured, false otherwise.
+        /// </returns>
+        public static bool  SetupLayer(int layerId, string layerName)
         {
-            while (layerId != InvalidLayerId)
+            SerializedProperty layer = TagManagerLayers.GetArrayElementAtIndex(layerId);
+
+            if (!string.IsNullOrEmpty(layer.stringValue))
             {
-                var layer = TagManagerLayers.GetArrayElementAtIndex(layerId);
-
-                if (layer.stringValue == layerName)
-                {
-                    // layer already set.
-                    return layerId;
-                }
-
-                if (layer.stringValue != string.Empty)
-                {
-                    layerId--;
-                    // Target layer in use and may be being used for something else already
-                    // so let's set it to the next empty layer
-                    continue;
-                }
-
-                // Set the layer name.
-                layer.stringValue = layerName;
-                layer.serializedObject.ApplyModifiedProperties();
-                UnityEditor.AssetDatabase.SaveAssets();
-                return layerId;
+                // layer already set.
+                return false;
             }
 
-            Debug.LogError($"Failed to set layer {layerName}. All Layers are in use.");
-            return InvalidLayerId;
+            layer.stringValue = layerName;
+            layer.serializedObject.ApplyModifiedProperties();
+            AssetDatabase.SaveAssets();
+            return true;
         }
 
         /// <summary>
@@ -176,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
                 {
                     layer.stringValue = string.Empty;
                     layer.serializedObject.ApplyModifiedProperties();
-                    UnityEditor.AssetDatabase.SaveAssets();
+                    AssetDatabase.SaveAssets();
                     break;
                 }
             }
