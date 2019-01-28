@@ -316,8 +316,8 @@ MonoBehaviour:
   _aRPointCloudManager: {fileID: 1676352559}
   _showDebugVisual: 0
   _debugVisualHelper: {fileID: 656083068}
-  _markerDetector: {fileID: 557799837}
-  _markerVisual: {fileID: 1999357168}
+  MarkerDetector: {fileID: 557799837}
+  MarkerVisual: {fileID: 1999357168}
 --- !u!114 &656083068
 MonoBehaviour:
   m_ObjectHideFlags: 0
