@@ -1,0 +1,251 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using UnityEngine;
+
+using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
+
+namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
+{
+    public class UDPBroadcastNetworkingService : MonoBehaviour,
+        IMatchMakingService,
+        IPlayerService,
+        INetworkingService
+    {
+        #region Helper classes
+        class PlayerData
+        {
+            public string Id { get; set; }
+            public float LastMessageTimestamp { get; set; }
+
+            public PlayerData()
+            {
+                Id = Guid.NewGuid().ToString();
+                LastMessageTimestamp = Time.time;
+            }
+
+            public PlayerData(string id, float lastMessageTimestamp)
+            {
+                Id = id;
+                LastMessageTimestamp = LastMessageTimestamp;
+            }
+        }
+        #endregion
+
+        [SerializeField] int ServerBroadcastPort = 48888;
+        [SerializeField] int ClientBroadcastPort = 48889;
+        [SerializeField] float BroadcastInterval = 0.25f;
+        [SerializeField] float _disconnectTimeout = 120.0f;
+
+        bool _actAsServer = false;
+        bool _connected = false;
+
+        UdpClient _senderUdp;
+        List<IPEndPoint> _broadcastIpEndPoints;
+        UdpClient _receiverUdp;
+        int _receiverPort;
+        Dictionary<IPEndPoint, PlayerData> _receiverIpEndPoints;
+
+        byte[] _currentMessage = null;
+        float _prevBroadcastTime = 0;
+
+        void Awake()
+        {
+            // TODO - update here if future scenario requires device other than hololens to act as server
+#if UNITY_WSA
+            _actAsServer = true;
+#elif UNITY_ANDROID || UNITY_IOS
+            _actAsServer = false;
+#endif
+        }
+
+        void Update()
+        {
+            var diff = Time.time - _prevBroadcastTime;
+            if (_senderUdp != null &&
+                _currentMessage != null &&
+                diff > BroadcastInterval)
+            {
+                BroadcastData();
+                _prevBroadcastTime = Time.time;
+            }
+
+            if (_receiverIpEndPoints != null)
+            {
+                if (_receiverUdp != null &&
+                    _receiverUdp.Available > 0)
+                {
+                    Debug.Log("Received data: " + _receiverUdp.Available + " bytes");
+                    IPEndPoint endPoint = null;
+                    var rawData = _receiverUdp.Receive(ref endPoint);
+
+                    PlayerData playerData = null;
+                    if (!_receiverIpEndPoints.TryGetValue(endPoint, out playerData))
+                    {
+                        playerData = new PlayerData();
+                        _receiverIpEndPoints.Add(endPoint, playerData);
+                        PlayerConnected?.Invoke(playerData.Id);
+                    }
+
+                    _receiverIpEndPoints[endPoint].LastMessageTimestamp = Time.time;
+                    DataReceived?.Invoke(playerData.Id, rawData);
+                }
+
+                List<IPEndPoint> itemsToRemove = new List<IPEndPoint>();
+                foreach (var playerPair in _receiverIpEndPoints)
+                {
+                    if ((Time.time - playerPair.Value.LastMessageTimestamp) > _disconnectTimeout)
+                    {
+                        Debug.Log("Player (" + playerPair.Value.Id + ") timed out. Timeout set at " + _disconnectTimeout + " seconds");
+                        PlayerDisconnected?.Invoke(playerPair.Value.Id);
+                        itemsToRemove.Add(playerPair.Key);
+                    }
+                }
+
+                foreach (var ipEndpoint in itemsToRemove)
+                {
+                    _receiverIpEndPoints.Remove(ipEndpoint);
+                }
+            }
+        }
+
+        public event DataHandler DataReceived;
+        public event PlayerConnectedHandler PlayerConnected;
+        public event PlayerDisconnectedHandler PlayerDisconnected;
+
+        public void Connect()
+        {
+            Debug.Log("Connecting. Acting as server: " + _actAsServer.ToString());
+
+            _senderUdp = new UdpClient();
+            _senderUdp.EnableBroadcast = true;
+            var senderPort = _actAsServer ?
+                ServerBroadcastPort :
+                ClientBroadcastPort;
+            _broadcastIpEndPoints = GetBroadcastIPEndPoints(senderPort);
+            Debug.Log("Broadcasting messages on port: " + senderPort);
+
+            _receiverPort = _actAsServer ?
+                ClientBroadcastPort :
+                ServerBroadcastPort;
+            _receiverUdp = new UdpClient(_receiverPort);
+            Debug.Log("Receiving messages on port: " + _receiverPort);
+
+            _receiverIpEndPoints = new Dictionary<IPEndPoint, PlayerData>();
+
+            _connected = true;
+        }
+
+        public bool Disconnect()
+        {
+            if (!_connected)
+                return false;
+
+            if (_senderUdp != null)
+                _senderUdp.Close();
+            _senderUdp = null;
+
+            if (_receiverUdp != null)
+                _receiverUdp.Close();
+            _receiverUdp = null;
+
+            return true;
+        }
+
+        public bool IsConnected()
+        {
+            return _connected;
+        }
+
+        public bool SendData(byte[] data)
+        {
+            if (!_connected)
+            {
+                return false;
+            }
+
+            _currentMessage = data;
+            return true;
+        }
+
+        void BroadcastData()
+        {
+            if (_broadcastIpEndPoints != null &&
+                _connected &&
+                _currentMessage != null)
+            {
+                foreach (var endpoint in _broadcastIpEndPoints)
+                {
+                    Debug.Log("Broadcasting payload (" + endpoint.Address.ToString() + ", " + endpoint.Port + "): " + _currentMessage.Length + " Bytes");
+                    try
+                    {
+                        if (_currentMessage.Length != _senderUdp.Send(_currentMessage, _currentMessage.Length, endpoint))
+                        {
+                            Debug.LogError("Failed to send payload (" + endpoint.Address.ToString() + ", " + endpoint.Port + "): " + _currentMessage.Length + " Bytes");
+                        }
+                    }
+                    catch
+                    {
+                        Debug.LogError("Exception thrown sending payload (" + endpoint.Address.ToString() + ", " + endpoint.Port + "): " + _currentMessage.Length + " Bytes");
+                    }
+                }
+            }
+        }
+
+        List<IPEndPoint> GetBroadcastIPEndPoints(int port)
+        {
+            List<IPEndPoint> result = new List<IPEndPoint>();
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    // Convert ip address to broadcast ip address
+                    var broadcastIp = GetBroadcastAddress(ip);
+                    result.Add(new IPEndPoint(broadcastIp, port));
+                    Debug.Log("Found broadcast ip end point: " + broadcastIp.ToString() + " port: " + port);
+                }
+            }
+
+            // This end point appears needed for an android device to hear broadcasts on its own hotspot network
+            result.Add(new IPEndPoint(IPAddress.Broadcast, port));
+
+            return result;
+        }
+
+        IPAddress GetBroadcastAddress(IPAddress ipAddress)
+        {
+            uint orig = BitConverter.ToUInt32(ipAddress.GetAddressBytes(), 0);
+            IPAddress subnetMaskIp = GetSubnetMask(ipAddress);
+            uint mask = BitConverter.ToUInt32(subnetMaskIp.GetAddressBytes(), 0);
+            uint broadcast = orig | ~mask;
+            return new IPAddress(BitConverter.GetBytes(broadcast));
+        }
+
+        IPAddress GetSubnetMask(IPAddress ipAddress)
+        {
+            foreach (NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                foreach (UnicastIPAddressInformation info in adapter.GetIPProperties().UnicastAddresses)
+                {
+                    if (info.Address.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        if (ipAddress.Equals(info.Address))
+                        {
+                            Debug.Log("Found subnet mask: " + info.IPv4Mask.ToString() + " for ip address: " + ipAddress.ToString());
+                            return info.IPv4Mask;
+                        }
+                    }
+                }
+            }
+
+            Debug.LogError("Unable to find subnet mask.");
+            return IPAddress.Broadcast;
+        }
+    }
+}
