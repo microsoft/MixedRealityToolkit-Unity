@@ -246,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         void OnValidate()
         {
             FieldHelper.ValidateType<IMarkerDetector>(MarkerDetector);
-            FieldHelper.ValidateType<IMarkerDetector>(MarkerVisual);
+            FieldHelper.ValidateType<IMarkerVisual>(MarkerVisual);
         }
 
         void Awake()

@@ -2,20 +2,17 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.IO;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
 {
-    public class FieldHelper
+    public class PluginHelper
     {
-        public static bool ValidateType<T>(object obj) where T : class
+        public static bool ValidateExists(string file)
         {
-            if (obj == null)
-                return true;
-
-            var castedObj = obj as T;
-            if (castedObj == null)
+            if (!File.Exists(file))
             {
-                throw new Exception("Object did not implement expected type: " + obj.ToString());
+                throw new Exception("Plugin file not found: " + file);
             }
 
             return true;

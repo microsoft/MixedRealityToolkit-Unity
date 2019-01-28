@@ -11,6 +11,7 @@ using UnityEngine.XR.WSA;
 #endif
 
 using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
+using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection
 {
@@ -44,6 +45,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         private Dictionary<int, List<Marker>> _markerObservations = new Dictionary<int, List<Marker>>();
         private Dictionary<int, Marker> _verifiedMarkers = new Dictionary<int, Marker>();
 
+        public static void CheckForDependencies()
+        {
+#if UNITY_EDITOR
+            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\HoloLensForCV.dll");
+            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\HoloLensForCV.winmd");
+            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\UnityArUcoMarkerDetectorPlugin.dll");
+#endif
+        }
+
         public bool Initialize(float markerSize)
         {
             _markerSize = markerSize;
@@ -56,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
 
             if (!dllExists)
             {
-                Debug.Log("DLL does not exist or is configured incorrectly");
+                Debug.LogError("DLL does not exist or is configured incorrectly");
                 return false;
             }
 

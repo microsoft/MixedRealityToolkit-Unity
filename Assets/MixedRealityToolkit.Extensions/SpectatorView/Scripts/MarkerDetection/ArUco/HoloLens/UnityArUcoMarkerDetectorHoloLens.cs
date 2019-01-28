@@ -18,6 +18,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
 
         public event MarkersUpdatedHandler MarkersUpdated;
 
+        void OnValidate()
+        {
+#if UNITY_WSA
+            UnityArUcoMarkerDetectorPluginAPI.CheckForDependencies();
+#endif
+        }
+
         public void StartDetecting()
         {
             this.gameObject.SetActive(true);
@@ -26,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             _api = new UnityArUcoMarkerDetectorPluginAPI();
             if (!_api.Initialize(_markerSize))
             {
-                Debug.Log("Failed to initialize api");
+                Debug.LogError("Failed to initialize api");
                 return;
             }
 
