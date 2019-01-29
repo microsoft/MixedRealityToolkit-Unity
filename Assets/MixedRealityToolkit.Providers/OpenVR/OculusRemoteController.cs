@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
 {
     public class OculusRemoteController : GenericOpenVRController
     {

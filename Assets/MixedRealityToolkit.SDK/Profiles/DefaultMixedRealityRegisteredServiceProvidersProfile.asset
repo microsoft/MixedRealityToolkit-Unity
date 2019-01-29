@@ -22,8 +22,8 @@ MonoBehaviour:
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OpenVRDeviceManager,
-        Microsoft.MixedReality.Toolkit
+      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.OpenVRDeviceManager,
+        Microsoft.MixedReality.Toolkit.Providers.OpenVR
     componentName: Unity Open VR Device Manager
     priority: 10
     runtimePlatform: 7

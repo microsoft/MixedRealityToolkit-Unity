@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
 {
     public class GenericOpenVRController : GenericJoystickController
     {

@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
 {
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
