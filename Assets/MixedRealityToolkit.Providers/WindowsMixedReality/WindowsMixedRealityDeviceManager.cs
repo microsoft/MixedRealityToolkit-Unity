@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+using Microsoft.MixedReality.Toolkit.Core.Devices;
 
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
@@ -18,7 +19,7 @@ using UnityEngine.XR.WSA.Input;
 using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 #endif // UNITY_WSA
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
+namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 {
     public class WindowsMixedRealityDeviceManager : BaseDeviceManager, IMixedRealityExtensionService
     {

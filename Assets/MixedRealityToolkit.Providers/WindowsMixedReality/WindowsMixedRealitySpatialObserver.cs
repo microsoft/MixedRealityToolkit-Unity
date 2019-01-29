@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Core.Devices;
 
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
@@ -14,7 +15,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
+namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 {
     public class WindowsMixedRealitySpatialObserver : BaseSpatialObserver
     {

@@ -4,14 +4,16 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+
 #if UNITY_WSA
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
+namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 {
     /// <summary>
     /// A Windows Mixed Reality Controller Instance.
