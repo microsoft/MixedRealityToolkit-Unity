@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _markerSize: 0.03
-  _timeBetweenCapture: 0.25
+  _timeBetweenCapture: 0.15
 --- !u!1 &594247840
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,7 +314,7 @@ MonoBehaviour:
   _aRFoundationGameObject: {fileID: 505499290}
   _aRFoundationCamera: {fileID: 1613124990}
   _aRPointCloudManager: {fileID: 1676352559}
-  _showDebugVisual: 0
+  _showDebugVisual: 1
   _debugVisualHelper: {fileID: 656083068}
   MarkerDetector: {fileID: 557799837}
   MarkerVisual: {fileID: 1999357168}

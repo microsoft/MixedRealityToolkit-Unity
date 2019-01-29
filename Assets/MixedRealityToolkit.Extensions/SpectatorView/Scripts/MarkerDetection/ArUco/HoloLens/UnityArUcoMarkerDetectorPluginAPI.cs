@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         internal static extern bool GetDetectedMarkerPoseNative(int detectedId, float[] position, float[] quaternion, float[] cameraToWorldUnity);
 
         [SerializeField] float _markerSize = 0.03f; // meters
-        [SerializeField] int _requiredObservations = 5;
+        [SerializeField] int _requiredObservations = 15;
         private const int _arucoDictionaryId = 10; // equivalent to cv::aruco::DICT_6X6_250
         private bool _initialized = false;
         private Dictionary<int, List<Marker>> _markerObservations = new Dictionary<int, List<Marker>>();
