@@ -52,5 +52,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             Debug.Log(message);
         }
+
+        /// <summary>
+        /// Draws a point in the Scene window.
+        /// </summary>
+        public static void DrawPoint(Vector3 point, Color color, float size = 0.05f)
+        {
+            Vector3[] axes = { Vector3.up, Vector3.right, Vector3.forward };
+
+            for (int i = 0; i < axes.Length; ++i)
+            {
+                Vector3 a = point + size * axes[i];
+                Vector3 b = point - size * axes[i];
+                Debug.DrawLine(a, b, color);
+            }
+        }
     }
 }
