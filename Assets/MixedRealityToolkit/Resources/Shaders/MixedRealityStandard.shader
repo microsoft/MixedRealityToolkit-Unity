@@ -19,7 +19,7 @@ Shader "Mixed Reality Toolkit/Standard"
         [NoScaleOffset] _NormalMap("Normal Map", 2D) = "bump" {}
         _NormalMapScale("Scale", Float) = 1.0
         [Toggle(_EMISSION)] _EnableEmission("Enable Emission", Float) = 0.0
-        _EmissiveColor("Emissive Color", Color) = (0.0, 0.0, 0.0, 1.0)
+        [HDR]_EmissiveColor("Emissive Color", Color) = (0.0, 0.0, 0.0, 1.0)
         [Toggle(_TRIPLANAR_MAPPING)] _EnableTriplanarMapping("Triplanar Mapping", Float) = 0.0
         [Toggle(_LOCAL_SPACE_TRIPLANAR_MAPPING)] _EnableLocalSpaceTriplanarMapping("Local Space", Float) = 0.0
         _TriplanarMappingBlendSharpness("Blend Sharpness", Range(1.0, 16.0)) = 4.0
@@ -27,12 +27,14 @@ Shader "Mixed Reality Toolkit/Standard"
         // Rendering options.
         [Toggle(_DIRECTIONAL_LIGHT)] _DirectionalLight("Directional Light", Float) = 1.0
         [Toggle(_SPECULAR_HIGHLIGHTS)] _SpecularHighlights("Specular Highlights", Float) = 1.0
+        [Toggle(_SPHERICAL_HARMONICS)] _SphericalHarmonics("Spherical Harmonics", Float) = 0.0
         [Toggle(_REFLECTIONS)] _Reflections("Reflections", Float) = 0.0
         [Toggle(_REFRACTION)] _Refraction("Refraction", Float) = 0.0
         _RefractiveIndex("Refractive Index", Range(0.0, 3.0)) = 0.0
         [Toggle(_RIM_LIGHT)] _RimLight("Rim Light", Float) = 0.0
         _RimColor("Rim Color", Color) = (0.5, 0.5, 0.5, 1.0)
         _RimPower("Rim Power", Range(0.0, 8.0)) = 0.25
+        [Toggle(_VERTEX_COLORS)] _VertexColors("Vertex Colors", Float) = 0.0
         [Toggle(_CLIPPING_PLANE)] _ClippingPlane("Clipping Plane", Float) = 0.0
         [Toggle(_CLIPPING_SPHERE)] _ClippingSphere("Clipping Sphere", Float) = 0.0
         [Toggle(_CLIPPING_BOX)] _ClippingBox("Clipping Box", Float) = 0.0
@@ -51,7 +53,7 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_HOVER_COLOR_OPAQUE_OVERRIDE)] _EnableHoverColorOpaqueOverride("Hover Color Opaque Override", Float) = 0.0
         _HoverColorOpaqueOverride("Hover Color Override for Transparent Pixels", Color) = (1.0, 1.0, 1.0, 1.0)
         [Toggle(_ROUND_CORNERS)] _RoundCorners("Round Corners", Float) = 0.0
-        _RoundCornerRadius("Round Corner Radius", Range(0.01, 0.5)) = 0.25
+        _RoundCornerRadius("Round Corner Radius", Range(0.011, 0.5)) = 0.25
         _RoundCornerMargin("Round Corner Margin", Range(0.0, 0.5)) = 0.01
         [Toggle(_BORDER_LIGHT)] _BorderLight("Border Light", Float) = 0.0
         [Toggle(_BORDER_LIGHT_USES_HOVER_COLOR)] _BorderLightUsesHoverColor("Border Light Uses Hover Color", Float) = 1.0
@@ -88,8 +90,71 @@ Shader "Mixed Reality Toolkit/Standard"
 
     SubShader
     {
+        // Extracts information for lightmapping, GI (emission, albedo, ...)
+        // This pass it not used during regular rendering.
         Pass
         {
+            Name "Meta"
+            Tags { "LightMode" = "Meta" }
+
+            CGPROGRAM
+
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #pragma shader_feature _EMISSION
+            #pragma shader_feature _CHANNEL_MAP
+
+            #include "UnityCG.cginc"
+            #include "UnityMetaPass.cginc"
+
+            struct v2f
+            {
+                float4 vertex : SV_POSITION;
+                float2 uv : TEXCOORD0;
+            };
+
+            float4 _MainTex_ST;
+
+            v2f vert(appdata_full v)
+            {
+                v2f o;
+                o.vertex = UnityMetaVertexPosition(v.vertex, v.texcoord1.xy, v.texcoord2.xy, unity_LightmapST, unity_DynamicLightmapST);
+                o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
+
+                return o;
+            }
+
+            sampler2D _MainTex;
+            sampler2D _ChannelMap;
+
+            fixed4 _Color;
+            fixed4 _EmissiveColor;
+            fixed4 _LightColor0;
+
+            half4 frag(v2f i) : SV_Target
+            {
+                UnityMetaInput output;
+                UNITY_INITIALIZE_OUTPUT(UnityMetaInput, output);
+
+                output.Albedo = tex2D(_MainTex, i.uv) * _Color;
+#if defined(_EMISSION)
+#if defined(_CHANNEL_MAP)
+                output.Emission += tex2D(_ChannelMap, i.uv).b * _EmissiveColor;
+#else
+                output.Emission += _EmissiveColor;
+#endif
+#endif
+                output.SpecularColor = _LightColor0.rgb;
+
+                return UnityMetaFragment(output);
+            }
+            ENDCG
+        }
+
+        Pass
+        {
+            Name "Main"
             Tags{ "RenderType" = "Opaque" "LightMode" = "ForwardBase" "PerformanceChecks" = "False" }
             LOD 100
             Blend[_SrcBlend][_DstBlend]
@@ -116,21 +181,24 @@ Shader "Mixed Reality Toolkit/Standard"
 
             #pragma multi_compile_instancing
             #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ UNITY_COLORSPACE_GAMMA
             #pragma multi_compile _ _MULTI_HOVER_LIGHT
 
             #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON
             #pragma shader_feature _DISABLE_ALBEDO_MAP
             #pragma shader_feature _ _METALLIC_TEXTURE_ALBEDO_CHANNEL_A _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _CHANNEL_MAP            
+            #pragma shader_feature _CHANNEL_MAP
             #pragma shader_feature _NORMAL_MAP
             #pragma shader_feature _EMISSION
             #pragma shader_feature _TRIPLANAR_MAPPING
             #pragma shader_feature _LOCAL_SPACE_TRIPLANAR_MAPPING
             #pragma shader_feature _DIRECTIONAL_LIGHT
             #pragma shader_feature _SPECULAR_HIGHLIGHTS
+            #pragma shader_feature _SPHERICAL_HARMONICS
             #pragma shader_feature _REFLECTIONS
             #pragma shader_feature _REFRACTION
             #pragma shader_feature _RIM_LIGHT
+            #pragma shader_feature _VERTEX_COLORS
             #pragma shader_feature _CLIPPING_PLANE
             #pragma shader_feature _CLIPPING_SPHERE
             #pragma shader_feature _CLIPPING_BOX
@@ -154,7 +222,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #include "UnityStandardConfig.cginc"
             #include "UnityStandardUtils.cginc"
 
-#if defined(_TRIPLANAR_MAPPING) || defined(_DIRECTIONAL_LIGHT) || defined(_REFLECTIONS) || defined(_RIM_LIGHT) || defined(_ENVIRONMENT_COLORING)
+#if defined(_TRIPLANAR_MAPPING) || defined(_DIRECTIONAL_LIGHT) || defined(_SPHERICAL_HARMONICS) || defined(_REFLECTIONS) || defined(_RIM_LIGHT) || defined(_ENVIRONMENT_COLORING)
             #define _NORMAL
 #else
             #undef _NORMAL
@@ -216,6 +284,9 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(LIGHTMAP_ON)
                 float2 lightMapUV : TEXCOORD1;
 #endif
+#if defined(_VERTEX_COLORS)
+                fixed4 color : COLOR;
+#endif
                 fixed3 normal : NORMAL;
 #if defined(_NORMAL_MAP)
                 fixed4 tangent : TANGENT;
@@ -233,6 +304,9 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 #if defined(LIGHTMAP_ON)
                 float2 lightMapUV : TEXCOORD1;
+#endif
+#if defined(_VERTEX_COLORS)
+                fixed4 color : COLOR;
 #endif
 #if defined(_WORLD_POSITION)
 #if defined(_NEAR_PLANE_FADE)
@@ -379,7 +453,8 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_DIRECTIONAL_LIGHT)
-            static const fixed3 _Ambient = fixed3(0.2, 0.2, 0.2);
+            static const fixed _MinMetallicLightContribution = 0.7;
+            static const fixed _IblContribution = 0.1;
 #endif
 
 #if defined(_SPECULAR_HIGHLIGHTS)
@@ -531,6 +606,10 @@ Shader "Mixed Reality Toolkit/Standard"
                 o.lightMapUV.xy = v.lightMapUV.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 #endif
 
+#if defined(_VERTEX_COLORS)
+                o.color = v.color;
+#endif
+
 #if defined(_NORMAL)
                 fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);
 
@@ -603,7 +682,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed4 channel = tex2D(_ChannelMap, i.uv);
                 _Metallic = channel.r;
                 albedo.rgb *= channel.g;
-                _Smoothness = channel.a * 2.0;
+                _Smoothness = channel.a;
 #else
 #if defined(_METALLIC_TEXTURE_ALBEDO_CHANNEL_A)
                 _Metallic = albedo.a;
@@ -657,6 +736,10 @@ Shader "Mixed Reality Toolkit/Standard"
                 albedo *= UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
 #else
                 albedo *= _Color;
+#endif
+
+#if defined(_VERTEX_COLORS)
+                albedo *= i.color;
 #endif
 
                 // Hover light.
@@ -770,7 +853,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_SPECULAR_HIGHLIGHTS)
                 fixed halfVector = max(0.0, dot(worldNormal, normalize(_WorldSpaceLightPos0 + worldViewDir)));
-                fixed specular = saturate(pow(halfVector, _Shininess * pow(_Smoothness, 4.0)) * _Smoothness);
+                fixed specular = saturate(pow(halfVector, _Shininess * pow(_Smoothness, 4.0)) * _Smoothness * 0.5);
 #else
                 fixed specular = 0.0;
 #endif
@@ -795,22 +878,32 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_RIM_LIGHT)
                 fixed3 fresnelColor = _RimColor * pow(fresnel, _RimPower);
 #else
-                fixed3 fresnelColor = unity_IndirectSpecColor.rgb * (pow(fresnel, _FresnelPower) * _Smoothness);
+                fixed3 fresnelColor = unity_IndirectSpecColor.rgb * (pow(fresnel, _FresnelPower) * max(_Smoothness, 0.5));
 #endif
 #endif
                 // Final lighting mix.
                 fixed4 output = albedo;
-
-#if defined(_DIRECTIONAL_LIGHT)
+#if defined(_SPHERICAL_HARMONICS)
+                fixed3 ambient = ShadeSH9(float4(worldNormal, 1.0));
+#else
+                fixed3 ambient = glstate_lightmodel_ambient + fixed3(0.25, 0.25, 0.25);
+#endif
                 fixed minProperty = min(_Smoothness, _Metallic);
-                output.rgb += ibl * min((1.0 - _Metallic), 0.5);
+#if defined(_DIRECTIONAL_LIGHT)
+                fixed oneMinusMetallic = (1.0 - _Metallic);
                 output.rgb = lerp(output.rgb, ibl, minProperty);
-                output.rgb *= lerp(_Ambient + UNITY_LIGHTMODEL_AMBIENT + (albedo.rgb * _LightColor0.rgb * diffuse + _LightColor0.rgb * specular), albedo, minProperty);
+                output.rgb *= lerp((ambient + _LightColor0.rgb * diffuse + _LightColor0.rgb * specular) * max(oneMinusMetallic, _MinMetallicLightContribution), albedo, minProperty);
                 output.rgb += (_LightColor0.rgb * albedo * specular) + (_LightColor0.rgb * specular * _Smoothness);
+                output.rgb += ibl * oneMinusMetallic * _IblContribution;
+#elif defined(_REFLECTIONS)
+                output.rgb = lerp(output.rgb, ibl, minProperty);
+                output.rgb *= lerp(ambient, albedo, minProperty);
+#elif defined(_SPHERICAL_HARMONICS)
+                output.rgb *= ambient;
 #endif
 
 #if defined(_FRESNEL)
-#if defined(_RIM_LIGHT)
+#if defined(_RIM_LIGHT) || !defined(_REFLECTIONS)
                 output.rgb += fresnelColor;
 #else
                 output.rgb += fresnelColor * (1.0 - minProperty);
