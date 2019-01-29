@@ -20,11 +20,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Editor
             // Editor button for HoloLens platform and functionality
             if (GUILayout.Button("HoloLens", GUILayout.Height(_buttonHeight)))
             {
+                EditorUserBuildSettings.wsaArchitecture = "x86";
+                EditorUserBuildSettings.wsaSubtarget = WSASubtarget.HoloLens;
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WSA, BuildTarget.WSAPlayer);
+                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClientServer, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PrivateNetworkClientServer, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.WebCam, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true);
+                PlayerSettings.WSA.SetTargetDeviceFamily(PlayerSettings.WSATargetFamily.Holographic, true);
             }
 
             // Editor button for Android platform and functionality
