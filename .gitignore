@@ -63,3 +63,8 @@ Assets/ThirdParty.meta
 Assets/TextMesh Pro.meta
 Assets/TextMesh Pro/
 --Version/
+
+# ================= #
+# Android generated #
+# ================= #
+*.apk
