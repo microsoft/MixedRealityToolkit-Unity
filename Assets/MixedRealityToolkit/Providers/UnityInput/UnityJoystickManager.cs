@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
+namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
 {
     /// <summary>
     /// Manages joysticks using unity input system.

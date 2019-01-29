@@ -138,247 +138,247 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private void RenderControllerList(SerializedProperty controllerList)
         {
-            if (thisProfile.MixedRealityControllerMappingProfiles.Length != controllerList.arraySize) { return; }
+            //if (thisProfile.MixedRealityControllerMappingProfiles.Length != controllerList.arraySize) { return; }
 
-            EditorGUILayout.Space();
+            //EditorGUILayout.Space();
 
-            // todo
-            //if (GUILayout.Button(ControllerAddButtonContent, EditorStyles.miniButton))
+            //// todo
+            ////if (GUILayout.Button(ControllerAddButtonContent, EditorStyles.miniButton))
+            ////{
+            ////    AddController(controllerList, typeof(GenericJoystickController));
+            ////    return;
+            ////}
+
+            //bool reset = false;
+            ////if (controllerRenderList.Count > 0)
+            ////{
+            ////    for (var type = 1; type <= (int)SupportedControllerType.Mouse; type++)
+            ////    {
+            ////        if (controllerRenderList.All(profile => profile.ControllerType != (SupportedControllerType)type))
+            ////        {
+            ////            if ((SupportedControllerType)type == SupportedControllerType.TouchScreen)
+            ////            {
+            ////                AddController(controllerList, typeof(UnityTouchController));
+            ////                reset = true;
+            ////            }
+
+            ////            if ((SupportedControllerType)type == SupportedControllerType.Mouse)
+            ////            {
+            ////                AddController(controllerList, typeof(MouseController));
+            ////                reset = true;
+            ////            }
+            ////        }
+            ////    }
+            ////}
+
+            //controllerRenderList.Clear();
+            //if (reset) { return; }
+
+            //GUILayout.Space(12f);
+            //GUILayout.BeginVertical();
+
+            //for (int i = 0; i < controllerList.arraySize; i++)
             //{
-            //    AddController(controllerList, typeof(GenericJoystickController));
-            //    return;
-            //}
+            //    var controllerType = thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type;
+            //    var supportedControllerType = SupportedControllerType.None;
+            //    var mixedRealityControllerMapping = controllerList.GetArrayElementAtIndex(i);
+            //    var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
+            //    var handedness = (Handedness)controllerHandedness.intValue;
+            //    var interactionsList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
+            //    var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
 
-            bool reset = false;
-            //if (controllerRenderList.Count > 0)
-            //{
-            //    for (var type = 1; type <= (int)SupportedControllerType.Mouse; type++)
+            //    // todo
+            //    //if (controllerType == typeof(XboxController))
+            //    //{
+            //    //    supportedControllerType = SupportedControllerType.Xbox;
+            //    //}
+            //    //else if (controllerType == typeof(WindowsMixedRealityController) ||
+            //    //         controllerType == typeof(WindowsMixedRealityOpenVRMotionController))
+            //    //{
+            //    //    supportedControllerType = SupportedControllerType.WindowsMixedReality;
+            //    //}
+            //    //else if (controllerType == typeof(OculusTouchController))
+            //    //{
+            //    //    supportedControllerType = SupportedControllerType.OculusTouch;
+            //    //}
+            //    //else if (controllerType == typeof(OculusRemoteController))
+            //    //{
+            //    //    supportedControllerType = SupportedControllerType.OculusRemote;
+            //    //}
+            //    //else if (controllerType == typeof(ViveWandController))
+            //    //{
+            //    //    supportedControllerType = SupportedControllerType.ViveWand;
+            //    //}
+            //    //else if (controllerType == typeof(GenericOpenVRController))
+            //    //{
+            //    //    supportedControllerType = SupportedControllerType.GenericOpenVR;
+            //    //}
+            //    //else if (controllerType == typeof(GenericJoystickController))
+            //    //{
+            //    //    supportedControllerType = SupportedControllerType.GenericUnity;
+            //    //}
+            //    //else if (controllerType == typeof(UnityTouchController))
+            //    //{
+            //    //    supportedControllerType = SupportedControllerType.TouchScreen;
+            //    //}
+            //    //else if (controllerType == typeof(MouseController))
+            //    //{
+            //    //    supportedControllerType = SupportedControllerType.Mouse;
+            //    //}
+
+            //    bool skip = false;
+
+            //    for (int j = 0; j < controllerRenderList.Count; j++)
             //    {
-            //        if (controllerRenderList.All(profile => profile.ControllerType != (SupportedControllerType)type))
+            //        if (// todo supportedControllerType == SupportedControllerType.GenericOpenVR ||
+            //            supportedControllerType == SupportedControllerType.GenericUnity)
             //        {
-            //            if ((SupportedControllerType)type == SupportedControllerType.TouchScreen)
-            //            {
-            //                AddController(controllerList, typeof(UnityTouchController));
-            //                reset = true;
-            //            }
+            //            continue;
+            //        }
 
-            //            if ((SupportedControllerType)type == SupportedControllerType.Mouse)
-            //            {
-            //                AddController(controllerList, typeof(MouseController));
-            //                reset = true;
-            //            }
+            //        if (controllerRenderList[j].ControllerType == supportedControllerType &&
+            //            controllerRenderList[j].Handedness == handedness)
+            //        {
+            //            thisProfile.MixedRealityControllerMappingProfiles[i].SynchronizeInputActions(controllerRenderList[j].Interactions);
+            //            serializedObject.ApplyModifiedProperties();
+            //            skip = true;
             //        }
             //    }
+
+            //    if (skip) { continue; }
+
+            //    controllerRenderList.Add(new ControllerRenderProfile(supportedControllerType, handedness, thisProfile.MixedRealityControllerMappingProfiles[i].Interactions));
+
+            //    var handednessTitleText = handedness != Handedness.None ? $"{handedness} Hand " : string.Empty;
+            //    var controllerTitle = $"{supportedControllerType.ToString().ToProperCase()} {handednessTitleText}Controller";
+
+            //    if (useCustomInteractionMappings.boolValue)
+            //    {
+            //        GUILayout.Space(24f);
+
+            //        EditorGUILayout.BeginVertical();
+            //        EditorGUILayout.BeginHorizontal();
+
+            //        EditorGUIUtility.labelWidth = 64f;
+            //        EditorGUIUtility.fieldWidth = 64f;
+            //        EditorGUILayout.LabelField(controllerTitle);
+            //        EditorGUIUtility.fieldWidth = defaultFieldWidth;
+            //        EditorGUIUtility.labelWidth = defaultLabelWidth;
+
+            //        if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+            //        {
+            //            controllerList.DeleteArrayElementAtIndex(i);
+            //            EditorGUILayout.EndHorizontal();
+            //            GUILayout.EndVertical();
+            //            return;
+            //        }
+
+            //        EditorGUILayout.EndHorizontal();
+            //        EditorGUI.indentLevel++;
+
+            //        EditorGUIUtility.labelWidth = 128f;
+            //        EditorGUIUtility.fieldWidth = 64f;
+
+            //        EditorGUI.BeginChangeCheck();
+
+            //        // todo
+            //        //int currentGenericType = -1;
+
+            //        //if (controllerType == typeof(GenericJoystickController))
+            //        //{
+            //        //    currentGenericType = 0;
+            //        //}
+
+            //        //if (controllerType == typeof(GenericOpenVRController))
+            //        //{
+            //        //    currentGenericType = 1;
+            //        //}
+
+            //        //Debug.Assert(currentGenericType != -1);
+
+            //        //currentGenericType = EditorGUILayout.IntPopup(GenericTypeContent, currentGenericType, GenericTypeListContent, GenericTypeIds);
+
+            //        //if (controllerType != typeof(GenericJoystickController))
+            //        //{
+            //        //    EditorGUILayout.PropertyField(controllerHandedness);
+            //        //}
+
+            //        //if (EditorGUI.EndChangeCheck())
+            //        //{
+            //        //    switch (currentGenericType)
+            //        //    {
+            //        //        case 0:
+            //        //            controllerType = typeof(GenericJoystickController);
+            //        //            controllerHandedness.intValue = 0;
+            //        //            break;
+            //        //        case 1:
+            //        //            controllerType = typeof(GenericOpenVRController);
+            //        //            break;
+            //        //    }
+
+            //        //    interactionsList.ClearArray();
+            //        //    serializedObject.ApplyModifiedProperties();
+            //        //    thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type = controllerType;
+            //        //    GUILayout.EndVertical();
+            //        //    return;
+            //        //}
+
+            //        //if (interactionsList.arraySize == 0 && controllerType == typeof(GenericOpenVRController))
+            //        //{
+            //        //    thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping(true);
+            //        //    serializedObject.ApplyModifiedProperties();
+            //        //}
+
+            //        EditorGUIUtility.labelWidth = defaultLabelWidth;
+            //        EditorGUIUtility.fieldWidth = defaultFieldWidth;
+
+            //        EditorGUI.indentLevel--;
+
+            //        if (GUILayout.Button("Edit Input Action Map"))
+            //        {
+            //            ControllerPopupWindow.Show(supportedControllerType, interactionsList, (Handedness)controllerHandedness.intValue);
+            //        }
+
+            //        if (GUILayout.Button("Reset Input Actions"))
+            //        {
+            //            interactionsList.ClearArray();
+            //            serializedObject.ApplyModifiedProperties();
+            //            thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping(true);
+            //            serializedObject.ApplyModifiedProperties();
+            //        }
+
+            //        EditorGUILayout.EndVertical();
+            //    }
+            //    else
+            //    {
+            //        if (supportedControllerType == SupportedControllerType.WindowsMixedReality &&
+            //            handedness == Handedness.None)
+            //        {
+            //            controllerTitle = "HoloLens Gestures";
+            //        }
+
+            //        if (handedness != Handedness.Right)
+            //        {
+            //            GUILayout.BeginHorizontal();
+            //        }
+
+            //        var buttonContent = new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTextureScaled(supportedControllerType, handedness));
+
+            //        if (GUILayout.Button(buttonContent, controllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32f), GUILayout.ExpandWidth(true)))
+            //        {
+            //            ControllerPopupWindow.Show(supportedControllerType, interactionsList, (Handedness)controllerHandedness.intValue);
+            //        }
+
+            //        if (handedness != Handedness.Left)
+            //        {
+            //            GUILayout.EndHorizontal();
+            //        }
+            //    }
+
+            //    GUILayout.Space(8f);
             //}
 
-            controllerRenderList.Clear();
-            if (reset) { return; }
-
-            GUILayout.Space(12f);
-            GUILayout.BeginVertical();
-
-            for (int i = 0; i < controllerList.arraySize; i++)
-            {
-                var controllerType = thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type;
-                var supportedControllerType = SupportedControllerType.None;
-                var mixedRealityControllerMapping = controllerList.GetArrayElementAtIndex(i);
-                var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
-                var handedness = (Handedness)controllerHandedness.intValue;
-                var interactionsList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
-                var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
-
-                // todo
-                //if (controllerType == typeof(XboxController))
-                //{
-                //    supportedControllerType = SupportedControllerType.Xbox;
-                //}
-                //else if (controllerType == typeof(WindowsMixedRealityController) ||
-                //         controllerType == typeof(WindowsMixedRealityOpenVRMotionController))
-                //{
-                //    supportedControllerType = SupportedControllerType.WindowsMixedReality;
-                //}
-                //else if (controllerType == typeof(OculusTouchController))
-                //{
-                //    supportedControllerType = SupportedControllerType.OculusTouch;
-                //}
-                //else if (controllerType == typeof(OculusRemoteController))
-                //{
-                //    supportedControllerType = SupportedControllerType.OculusRemote;
-                //}
-                //else if (controllerType == typeof(ViveWandController))
-                //{
-                //    supportedControllerType = SupportedControllerType.ViveWand;
-                //}
-                //else if (controllerType == typeof(GenericOpenVRController))
-                //{
-                //    supportedControllerType = SupportedControllerType.GenericOpenVR;
-                //}
-                //else if (controllerType == typeof(GenericJoystickController))
-                //{
-                //    supportedControllerType = SupportedControllerType.GenericUnity;
-                //}
-                //else if (controllerType == typeof(UnityTouchController))
-                //{
-                //    supportedControllerType = SupportedControllerType.TouchScreen;
-                //}
-                //else if (controllerType == typeof(MouseController))
-                //{
-                //    supportedControllerType = SupportedControllerType.Mouse;
-                //}
-
-                bool skip = false;
-
-                for (int j = 0; j < controllerRenderList.Count; j++)
-                {
-                    if (supportedControllerType == SupportedControllerType.GenericOpenVR ||
-                        supportedControllerType == SupportedControllerType.GenericUnity)
-                    {
-                        continue;
-                    }
-
-                    if (controllerRenderList[j].ControllerType == supportedControllerType &&
-                        controllerRenderList[j].Handedness == handedness)
-                    {
-                        thisProfile.MixedRealityControllerMappingProfiles[i].SynchronizeInputActions(controllerRenderList[j].Interactions);
-                        serializedObject.ApplyModifiedProperties();
-                        skip = true;
-                    }
-                }
-
-                if (skip) { continue; }
-
-                controllerRenderList.Add(new ControllerRenderProfile(supportedControllerType, handedness, thisProfile.MixedRealityControllerMappingProfiles[i].Interactions));
-
-                var handednessTitleText = handedness != Handedness.None ? $"{handedness} Hand " : string.Empty;
-                var controllerTitle = $"{supportedControllerType.ToString().ToProperCase()} {handednessTitleText}Controller";
-
-                if (useCustomInteractionMappings.boolValue)
-                {
-                    GUILayout.Space(24f);
-
-                    EditorGUILayout.BeginVertical();
-                    EditorGUILayout.BeginHorizontal();
-
-                    EditorGUIUtility.labelWidth = 64f;
-                    EditorGUIUtility.fieldWidth = 64f;
-                    EditorGUILayout.LabelField(controllerTitle);
-                    EditorGUIUtility.fieldWidth = defaultFieldWidth;
-                    EditorGUIUtility.labelWidth = defaultLabelWidth;
-
-                    if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
-                    {
-                        controllerList.DeleteArrayElementAtIndex(i);
-                        EditorGUILayout.EndHorizontal();
-                        GUILayout.EndVertical();
-                        return;
-                    }
-
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUI.indentLevel++;
-
-                    EditorGUIUtility.labelWidth = 128f;
-                    EditorGUIUtility.fieldWidth = 64f;
-
-                    EditorGUI.BeginChangeCheck();
-
-                    // todo
-                    //int currentGenericType = -1;
-
-                    //if (controllerType == typeof(GenericJoystickController))
-                    //{
-                    //    currentGenericType = 0;
-                    //}
-
-                    //if (controllerType == typeof(GenericOpenVRController))
-                    //{
-                    //    currentGenericType = 1;
-                    //}
-
-                    //Debug.Assert(currentGenericType != -1);
-
-                    //currentGenericType = EditorGUILayout.IntPopup(GenericTypeContent, currentGenericType, GenericTypeListContent, GenericTypeIds);
-
-                    //if (controllerType != typeof(GenericJoystickController))
-                    //{
-                    //    EditorGUILayout.PropertyField(controllerHandedness);
-                    //}
-
-                    //if (EditorGUI.EndChangeCheck())
-                    //{
-                    //    switch (currentGenericType)
-                    //    {
-                    //        case 0:
-                    //            controllerType = typeof(GenericJoystickController);
-                    //            controllerHandedness.intValue = 0;
-                    //            break;
-                    //        case 1:
-                    //            controllerType = typeof(GenericOpenVRController);
-                    //            break;
-                    //    }
-
-                    //    interactionsList.ClearArray();
-                    //    serializedObject.ApplyModifiedProperties();
-                    //    thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type = controllerType;
-                    //    GUILayout.EndVertical();
-                    //    return;
-                    //}
-
-                    //if (interactionsList.arraySize == 0 && controllerType == typeof(GenericOpenVRController))
-                    //{
-                    //    thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping(true);
-                    //    serializedObject.ApplyModifiedProperties();
-                    //}
-
-                    EditorGUIUtility.labelWidth = defaultLabelWidth;
-                    EditorGUIUtility.fieldWidth = defaultFieldWidth;
-
-                    EditorGUI.indentLevel--;
-
-                    if (GUILayout.Button("Edit Input Action Map"))
-                    {
-                        ControllerPopupWindow.Show(supportedControllerType, interactionsList, (Handedness)controllerHandedness.intValue);
-                    }
-
-                    if (GUILayout.Button("Reset Input Actions"))
-                    {
-                        interactionsList.ClearArray();
-                        serializedObject.ApplyModifiedProperties();
-                        thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping(true);
-                        serializedObject.ApplyModifiedProperties();
-                    }
-
-                    EditorGUILayout.EndVertical();
-                }
-                else
-                {
-                    if (supportedControllerType == SupportedControllerType.WindowsMixedReality &&
-                        handedness == Handedness.None)
-                    {
-                        controllerTitle = "HoloLens Gestures";
-                    }
-
-                    if (handedness != Handedness.Right)
-                    {
-                        GUILayout.BeginHorizontal();
-                    }
-
-                    var buttonContent = new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTextureScaled(supportedControllerType, handedness));
-
-                    if (GUILayout.Button(buttonContent, controllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32f), GUILayout.ExpandWidth(true)))
-                    {
-                        ControllerPopupWindow.Show(supportedControllerType, interactionsList, (Handedness)controllerHandedness.intValue);
-                    }
-
-                    if (handedness != Handedness.Left)
-                    {
-                        GUILayout.EndHorizontal();
-                    }
-                }
-
-                GUILayout.Space(8f);
-            }
-
-            GUILayout.EndVertical();
+            //GUILayout.EndVertical();
         }
 
         private void AddController(SerializedProperty controllerList, Type controllerType)

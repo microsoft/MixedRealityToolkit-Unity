@@ -9,7 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices
+namespace Microsoft.MixedReality.Toolkit.Core.Providers
 {
     public class BaseSpatialObserver : BaseExtensionService, IMixedRealitySpatialAwarenessObserver
     {

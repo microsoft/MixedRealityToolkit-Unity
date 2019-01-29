@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices
+namespace Microsoft.MixedReality.Toolkit.Core.Providers
 {
     /// <summary>
     /// Base Controller class to inherit from for all controllers.

@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
+namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
 {
     /// <summary>
     /// Xbox Controller using Unity Input System

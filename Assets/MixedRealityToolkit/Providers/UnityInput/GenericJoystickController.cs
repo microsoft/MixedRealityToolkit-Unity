@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
+namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
 {
     public class GenericJoystickController : BaseController
     {

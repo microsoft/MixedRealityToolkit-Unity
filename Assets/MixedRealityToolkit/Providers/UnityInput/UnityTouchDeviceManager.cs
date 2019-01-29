@@ -11,7 +11,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
+namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
 {
     /// <summary>
     /// Manages Touch devices using unity input system.

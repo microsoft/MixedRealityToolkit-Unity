@@ -10,7 +10,7 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
+namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
 {
     public class MouseDeviceManager : BaseDeviceManager, IMixedRealityExtensionService
     {

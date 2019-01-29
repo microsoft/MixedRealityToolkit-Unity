@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using Microsoft.MixedReality.Toolkit.Core.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Providers;
 
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;

@@ -11,7 +11,7 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Devices
+namespace Microsoft.MixedReality.Toolkit.Core.Providers
 {
     /// <summary>
     /// Base Class for pointers that don't inherit from MonoBehaviour.

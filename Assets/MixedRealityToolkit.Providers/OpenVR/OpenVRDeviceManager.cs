@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
+using Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using UnityEngine;

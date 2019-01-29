@@ -3,10 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Providers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Core.Devices;
 
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
@@ -84,12 +84,12 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
-        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+        //private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
-        /// <summary>
-        /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
-        /// </summary>
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
+        ///// <summary>
+        ///// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
+        ///// </summary>
+        //private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 
 #if UNITY_WSA
         /// <summary>
