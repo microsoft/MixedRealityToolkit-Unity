@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 {
     /// <summary>
-    /// This class must be instantiated by a script that implements the IMixedRealitySourceStateHandler and IMixedRealityInputHandler<MixedRealityPose> interfaces.
+    /// This class must be instantiated by a script that implements the IMixedRealitySourceStateHandler, IMixedRealityInputHandler and IMixedRealityInputHandler<MixedRealityPose> interfaces.
     /// 
     /// ***It must receive EventData arguments from OnInputDown(), OnInputUp(), OnInputChanged() and OnSourceLost().***
     /// 
