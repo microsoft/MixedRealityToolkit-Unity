@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 
 #if UNITY_WSA
@@ -20,6 +22,9 @@ using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 {
+    [MixedRealityDataProvider(
+        typeof(Interfaces.InputSystem.IMixedRealityInputSystem),
+        SupportedPlatforms.WindowsUniversal)]
     public class WindowsMixedRealityDeviceManager : BaseDeviceManager, IMixedRealityExtensionService
     {
         /// <summary>

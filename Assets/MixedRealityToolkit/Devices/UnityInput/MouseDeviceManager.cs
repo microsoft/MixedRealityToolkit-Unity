@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
@@ -12,6 +13,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 {
+    [MixedRealityDataProvider(
+        typeof(Interfaces.InputSystem.IMixedRealityInputSystem),
+        (SupportedPlatforms)(-1))]  // All platforms supported by Unity
     public class MouseDeviceManager : BaseDeviceManager, IMixedRealityExtensionService
     {
         /// <summary>
