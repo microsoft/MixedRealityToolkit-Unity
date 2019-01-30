@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
@@ -13,6 +14,10 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
 {
+    [MixedRealityController(
+        SupportedControllerType.GenericOpenVR,
+        new[] { Handedness.Left, Handedness.Right },
+        flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
     public class GenericOpenVRController : GenericJoystickController
     {
         public GenericOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)

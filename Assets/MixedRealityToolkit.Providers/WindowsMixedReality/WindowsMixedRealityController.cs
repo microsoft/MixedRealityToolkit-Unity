@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
@@ -18,6 +19,10 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
     /// <summary>
     /// A Windows Mixed Reality Controller Instance.
     /// </summary>
+    [MixedRealityController(
+        SupportedControllerType.WindowsMixedReality,
+        new[] { Handedness.Left, Handedness.Right, Handedness.None },
+        "Resources/Textures/MotionController")]
     public class WindowsMixedRealityController : BaseController
     {
         /// <summary>

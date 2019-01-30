@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
@@ -9,6 +10,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
 {
+    [MixedRealityController(
+        SupportedControllerType.ViveWand,
+        new[] { Handedness.Left, Handedness.Right },
+        "Resources/Textures/ViveWandController")]
     public class ViveWandController : GenericOpenVRController
     {
         /// <summary>

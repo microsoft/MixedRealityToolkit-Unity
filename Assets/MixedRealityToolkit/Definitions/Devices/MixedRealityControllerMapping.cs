@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Providers;
 using System;
@@ -21,26 +22,44 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="description">Description of the Device.</param>
         /// <param name="controllerType">Controller Type to instantiate at runtime.</param>
         /// <param name="handedness">The designated hand that the device is managing.</param>
-        /// <param name="useCustomInteractionMappings">Details the list of available buttons / interactions available from the device.</param>
-        public MixedRealityControllerMapping(string description, Type controllerType, Handedness handedness = Handedness.None, bool useCustomInteractionMappings = false) : this()
+        public MixedRealityControllerMapping(Type controllerType, Handedness handedness = Handedness.None) : this()
         {
-            this.description = description;
             this.controllerType = new SystemType(controllerType);
             this.handedness = handedness;
-            this.useCustomInteractionMappings = useCustomInteractionMappings;
             interactions = null;
         }
-
-        [SerializeField]
-        private string description;
 
         /// <summary>
         /// Description of the Device.
         /// </summary>
-        public string Description => description;
+        public string Description
+        {
+            get
+            {
+                string controllerName = "Unknown";
+                if (controllerType.Type != null)
+                {
+                    var attr = MixedRealityControllerAttribute.Find(controllerType);
+                    if (attr != null)
+                    {
+                        controllerName = attr.SupportedControllerType.ToString().ToProperCase();
+                    }
+                }
+
+                    string handednessText = string.Empty;
+                switch (handedness)
+                {
+                    case Handedness.Left:
+                    case Handedness.Right:
+                        handednessText = $"{handedness} Hand ";
+                        break;
+                }
+
+                return $"{controllerName} {handednessText}Controller";
+            }
+        }
 
         [SerializeField]
         [Tooltip("Controller type to instantiate at runtime.")]
@@ -52,6 +71,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// </summary>
         public SystemType ControllerType => controllerType;
 
+        public SupportedControllerType SupportedControllerType
+        {
+            get
+            {
+                if (controllerType.Type != null)
+                {
+                    var attr = MixedRealityControllerAttribute.Find(controllerType);
+                    if (attr != null)
+                    {
+                        return attr.SupportedControllerType;
+                    }
+                }
+                return SupportedControllerType.None;
+            }
+        }
+
         [SerializeField]
         [Tooltip("The designated hand that the device is managing.")]
         private Handedness handedness;
@@ -61,14 +96,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// </summary>
         public Handedness Handedness => handedness;
 
-        [SerializeField]
-        [Tooltip("Override the default interaction mappings.")]
-        private bool useCustomInteractionMappings;
-
         /// <summary>
         /// Is this controller mapping using custom interactions?
         /// </summary>
-        public bool HasCustomInteractionMappings => useCustomInteractionMappings;
+        public bool HasCustomInteractionMappings
+        {
+            get
+            {
+                if (controllerType.Type != null)
+                {
+                    var attr = MixedRealityControllerAttribute.Find(controllerType);
+                    if (attr != null)
+                    {
+                        return attr.Flags.HasFlag(MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings);
+                    }
+                }
+                return false;
+            }
+        }
 
         [SerializeField]
         [Tooltip("Details the list of available buttons / interactions available from the device.")]

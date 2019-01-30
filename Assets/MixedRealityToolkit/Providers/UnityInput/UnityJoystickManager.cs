@@ -54,11 +54,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// <inheritdoc />
         public override void Disable()
         {
-            foreach (var genericOpenVRController in ActiveControllers)
+            foreach (var genericJoystick in ActiveControllers)
             {
-                if (genericOpenVRController.Value != null)
+                if (genericJoystick.Value != null)
                 {
-                    MixedRealityToolkit.InputSystem?.RaiseSourceLost(genericOpenVRController.Value.InputSource, genericOpenVRController.Value);
+                    MixedRealityToolkit.InputSystem?.RaiseSourceLost(genericJoystick.Value.InputSource, genericJoystick.Value);
                 }
             }
 
@@ -173,6 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// <returns>The supported controller type</returns>
         protected virtual SupportedControllerType GetCurrentControllerType(string joystickName)
         {
+            // todo: this should be using an allow list, not a disallow list
             if (string.IsNullOrEmpty(joystickName) ||
                 joystickName.Contains("OpenVR") ||
                 joystickName.Contains("Spatial"))
@@ -180,10 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
                 return SupportedControllerType.None;
             }
 
-            if (joystickName.Contains("Xbox Controller") ||
-                joystickName.Contains("Xbox One For Windows") ||
-                joystickName.Contains("Xbox Bluetooth Gamepad") ||
-                joystickName.Contains("Xbox Wireless Controller"))
+            if (joystickName.StartsWith("Xbox"))
             {
                 return SupportedControllerType.Xbox;
             }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
@@ -12,6 +13,10 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
     /// <summary>
     /// Open VR Implementation of the Windows Mixed Reality Motion Controllers.
     /// </summary>
+    [MixedRealityController(
+        SupportedControllerType.WindowsMixedReality,
+        new[] { Handedness.Left, Handedness.Right },
+        "Resources/Textures/MotionController")]
     public class WindowsMixedRealityOpenVRMotionController : GenericOpenVRController
     {
         /// <summary>
@@ -34,8 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
             new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(2, "Grip Press", AxisType.SingleAxis, DeviceInputType.TriggerPress, ControllerMappingLibrary.AXIS_11),
             new MixedRealityInteractionMapping(3, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger, ControllerMappingLibrary.AXIS_9),
-            new MixedRealityInteractionMapping(4, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.TriggerPress,  KeyCode.JoystickButton14),
-            new MixedRealityInteractionMapping(5, "Trigger Touch", AxisType.SingleAxis, DeviceInputType.TriggerTouch, ControllerMappingLibrary.AXIS_9),
+            new MixedRealityInteractionMapping(4, "Trigger Touch", AxisType.SingleAxis, DeviceInputType.TriggerTouch, ControllerMappingLibrary.AXIS_9),
+            new MixedRealityInteractionMapping(5, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.TriggerPress,  KeyCode.JoystickButton14),
             new MixedRealityInteractionMapping(6, "Touchpad Position", AxisType.DualAxis, DeviceInputType.Touchpad, ControllerMappingLibrary.AXIS_17, ControllerMappingLibrary.AXIS_18),
             new MixedRealityInteractionMapping(7, "Touchpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, KeyCode.JoystickButton16),
             new MixedRealityInteractionMapping(8, "Touchpad Press", AxisType.Digital, DeviceInputType.TouchpadPress, KeyCode.JoystickButton8),
