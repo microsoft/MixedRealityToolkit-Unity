@@ -20,25 +20,32 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         private Vector3 startObjectScale;
         private float startHandDistanceMeters;
 
+        /// <summary>
+        /// Initialize system with source info from controllers/hands
+        /// </summary>
+        /// <param name="handsPressedMap">Dictionary that maps inputSources to states</param>
+        /// <param name="manipulationRoot">Transform of gameObject to be manipulated</param>
         public virtual void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
         {
             startHandDistanceMeters = GetMinDistanceBetweenHands(handsPressedMap);
             startObjectScale = manipulationRoot.transform.localScale;
         }
 
-        public virtual Vector3 Update(Dictionary<uint, Vector3> handsPressedMap)
+        /// <summary>
+        /// update Gameobject with new Scale state
+        /// </summary>
+        /// <param name="handsPressedMap"></param>
+        /// <returns>a Vector3 describing the new Scale of the object being manipulated</returns>
+        public virtual Vector3 UpdateMap(Dictionary<uint, Vector3> handsPressedMap)
         {
-            return startObjectScale * (GetMinDistanceBetweenHands(handsPressedMap) / startHandDistanceMeters);
+            var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedMap) / startHandDistanceMeters;
+            return startObjectScale * ratioMultiplier;
         }
 
-        /// <summary>
-        /// Finds the minimum distance between all pairs of hands
-        /// </summary>
-        /// <returns></returns>
-        private static float GetMinDistanceBetweenHands(Dictionary<uint, Vector3> handsPressedMap)
+        private float GetMinDistanceBetweenHands(Dictionary<uint, Vector3> handsPressedMap)
         {
             var result = float.MaxValue;
-            var handLocations = new Vector3[handsPressedMap.Values.Count];
+            Vector3[] handLocations = new Vector3[handsPressedMap.Values.Count];
             handsPressedMap.Values.CopyTo(handLocations, 0);
             for (int i = 0; i < handLocations.Length; i++)
             {
@@ -51,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
                     }
                 }
             }
-
             return result;
         }
     }

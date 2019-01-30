@@ -26,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         private Quaternion gazeAngularOffset;
 
         private const float DistanceScale = 2f;
-
         public void Setup(Vector3 startHandPositionMeters, Transform manipulationRoot)
         {
             var newHandPosition = startHandPositionMeters;
