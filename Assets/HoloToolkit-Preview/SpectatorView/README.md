@@ -52,11 +52,25 @@ Requirements
 
 Building the SpectatorView Native Plugin
 ----------------------------------------
+The SpectatorViewPlugin will only be used in the HoloLens application. It needs to be built on a PC with visual studio.
 - See: https://github.com/Microsoft/MixedRealityToolkit/blob/master/SpectatorViewPlugin/README.md
 
- 
+After building the SpectatorViewPlugin project, you will need to copy the generated dlls into your unity project's plugins directory.
+- The compile output for SpectatorViewPlugin will likely be found at:
+>MixedRealityToolkit\SpectatorViewPlugin\SpectatorViewPlugin\Release\SpectatorViewPlugin\
+
+- The unity plugin directory will likely be found at:
+>MixedRealityToolkit-Unity\Assets\Plugins\WSA\x86\
+
+>NOTE: This unity plugin directory may not exist by default. You can create this directory in windows file explorer or in the unity editor. The Plugins directory is one of unity's special folders (https://docs.unity3d.com/Manual/SpecialFolders.html). The \WSA\x86\ subdirectories signal that these dlls are for a windows store application with x86 architecture (These are the specifications for HoloLens).
+
 Project Setup
 -------------
+### Example
+- It may prove helpful to look at an example scene before integrating SpectatorView components into your application. After having added the SpectatorViewPlugin dlls to your unity project, you should be able to build and run the provided example scene:
+    - HoloToolkit-Examples\SpectatorView\Scenes\SpectatorViewExample.unity
+
+### Integrating into your Application
 - Prepare your scene
     - Ensure all visable gameobjects, within your scene, are contained under a world root gameobject.
     ![World Root](Images/WorldRoot.PNG)
@@ -70,13 +84,15 @@ Project Setup
 
 Building for the Different Platforms
 ------------------------------------
-- When building for iOS ensure to remove the GLTF component of MRTK as this is not yet compatibile with this platform. 
-- At the top level of the SpectatorView prefab there is a component called 'Platform Switcher'.
+- The HoloLens application will have to be built on a PC using visual studio. The iOS application will have to be built on a mac using Xcode. However, generating solutions for visual studio and Xcode can all be completed using a PC.
+- At the top level of the SpectatorView prefab there is a component called 'Platform Switcher'. 
 ![Platform Switcher](Images/PlatformSwitcher.PNG)
 - Select the platform you want to build for.
 - If selecting 'Hololens' you should see all gameobjects beneath the iPhone gameobject in the SpectatorView prefab become inactive and all the gameobjects under 'Hololens' become active.
 - This can take a little while as depending on the platform you choose the HoloToolkit is being added or removed from the project.
-- Ensure you build all versions of the application using the same Unity editor instance (do not close Unity between builds), this is due to an unresolved issue with Unity.
+>NOTE: When building for iOS on mac make sure to remove the GLTF component of MRTK as it is not yet compatibile with this platform. It's suggested to rename \MixedRealityToolkit-Unity\Assets\HoloToolkit\Utilities\Scripts\GLTF\ to \MixedRealityToolkit-Unity\Assets\HoloToolkit\Utilities\Scripts\\~GLTF\ when building for iOS. The '\~' at the beginning of the GLTF directory name will cause it to register as a hidden asset in unity (https://docs.unity3d.com/Manual/SpecialFolders.html). You will have to remove the '\~' when building in unity for HoloLens.
+- After switching platforms, you can build your visual studio/xcode solution from Unity in the Build Settings dialogue (File -> Build Settings). Press build after opening this dialogue.
+>NOTE: Ensure you build both the visual studio and xcode solution for your application using the same Unity editor instance (do not close Unity between builds), this is due to an unresolved issue with Unity.
 
 Running your Application
 ------------------------
@@ -104,10 +120,6 @@ Networking your Application
 - SpectatorView uses UNET for its networking and manages all host-client connections for you.
 - Any app specific data has to be synced and implemented by you, using e.g. SyncVars, NetworkTransform, NetworkBehaviour.
 - For more information and tutorials on Unity Networking please visit https://unity3d.com/learn/tutorials/s/multiplayer-networking
-
-Example Scene
--------------
-- An example scene can be found in HoloToolkit-Examples\SpectatorView\Scenes\SpectatorViewExample.unity
 
 Troubleshooting
 ---------------
