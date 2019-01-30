@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         public static string MixedRealityToolkit_RelativeFolderPath
         {
-            get { return MixedRealityToolkit_AbsoluteFolderPath.Replace(Application.dataPath + "\\", "Assets/"); }
+            get { return MakePathRelativeToProject(MixedRealityToolkit_AbsoluteFolderPath); }
         }
 
         static MixedRealityEditorSettings()
@@ -144,7 +144,38 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             }
         }
 
-        private static bool FindDirectory(string directoryPathToSearch, string directoryName, out string path)
+        /// <summary>
+        /// Finds the path of a directory relative to the project folder.
+        /// </summary>
+        /// <param name="directoryPathToSearch">
+        /// The subtree's root path to search in.
+        /// </param>
+        /// <param name="directoryName">
+        /// The name of the directory to search for.
+        /// </param>
+        public static bool FindRelativeDirectory(string directoryPathToSearch, string directoryName, out string path)
+        {
+            string absolutePath;
+            if (FindDirectory(directoryPathToSearch, directoryName, out absolutePath))
+            {
+                path = MakePathRelativeToProject(absolutePath);
+                return true;
+            }
+
+            path = string.Empty;
+            return false;
+        }
+
+        /// <summary>
+        /// Finds the absolute path of a directory.
+        /// </summary>
+        /// <param name="directoryPathToSearch">
+        /// The subtree's root path to search in.
+        /// </param>
+        /// <param name="directoryName">
+        /// The name of the directory to search for.
+        /// </param>
+        public static bool FindDirectory(string directoryPathToSearch, string directoryName, out string path)
         {
             path = string.Empty;
 
@@ -167,6 +198,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             }
 
             return false;
+        }
+
+        private static string MakePathRelativeToProject(string absolutePath)
+        {
+            return absolutePath.Replace(Application.dataPath + "\\", "Assets/");
         }
 
         private static void SetIconTheme()
