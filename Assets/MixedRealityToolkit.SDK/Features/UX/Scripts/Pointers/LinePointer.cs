@@ -2,7 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
 using UnityEngine;
 
@@ -43,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [SerializeField]
         [Tooltip("If no line renderers are specified, this array will be auto-populated on startup.")]
-        private BaseLineRenderer[] lineRenderers;
+        private BaseMixedRealityLineRenderer[] lineRenderers;
 
         /// <summary>
         /// The current line renderers that this pointer is utilizing.
@@ -51,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <remarks>
         /// If no line renderers are specified, this array will be auto-populated on startup.
         /// </remarks>
-        public BaseLineRenderer[] LineRenderers
+        public BaseMixedRealityLineRenderer[] LineRenderers
         {
             get { return lineRenderers; }
             set { lineRenderers = value; }
@@ -84,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (lineBase != null && (lineRenderers == null || lineRenderers.Length == 0))
             {
-                lineRenderers = lineBase.GetComponentsInChildren<BaseLineRenderer>();
+                lineRenderers = lineBase.GetComponentsInChildren<BaseMixedRealityLineRenderer>();
             }
 
             if (lineRenderers == null || lineRenderers.Length == 0)
