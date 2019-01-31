@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         public Vector3 ObservationExtents { get; set; } = Vector3.one * 3; // 3 meters
 
         /// <inheritdoc />
-        public Quaternion ObserverOrientation { get; set; } = Quaternion.identity;
+        public Quaternion ObserverRotation { get; set; } = Quaternion.identity;
 
         /// <inheritdoc />
         public Vector3 ObserverOrigin { get; set; } = Vector3.zero;

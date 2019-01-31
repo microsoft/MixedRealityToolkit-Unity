@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
@@ -17,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private static bool showGeneralProperties = true;
         private SerializedProperty startupBehavior;
         private SerializedProperty observationExtents;
+        private SerializedProperty observerVolumeType;
         private SerializedProperty isStationaryObserver;
         private SerializedProperty updateInterval;
 
@@ -38,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private readonly GUIContent displayOptionContent = new GUIContent("Display Option");
         private readonly GUIContent lodContent = new GUIContent("Level of Detail");
+        private readonly GUIContent volumeTypeContent = new GUIContent("Observer Shape");
         private readonly GUIContent physicsLayerContent = new GUIContent("Physics Layer");
         private readonly GUIContent trianglesPerCubicMeterContent = new GUIContent("Triangles/Cubic Meter");
 
@@ -53,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             // General settings
             startupBehavior = serializedObject.FindProperty("startupBehavior");
             observationExtents = serializedObject.FindProperty("observationExtents");
+            observerVolumeType = serializedObject.FindProperty("observerVolumeType");
             isStationaryObserver = serializedObject.FindProperty("isStationaryObserver");
             updateInterval = serializedObject.FindProperty("updateInterval");
 
@@ -81,8 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Spatial Awareness Mesh Observer Profile", EditorStyles.boldLabel);
-            // TODO: needed? if so, updates are required
-            //EditorGUILayout.HelpBox("Spatial Awareness can enhance your experience by enabling objects to interact with the real world.", MessageType.Info);
+            EditorGUILayout.HelpBox("Configuration settings for how the real-world environment will be perceived and displayed.", MessageType.Info);
             EditorGUILayout.Space();
             serializedObject.Update();
 
@@ -97,9 +100,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.PropertyField(startupBehavior);
-                    EditorGUILayout.PropertyField(observationExtents);
-                    EditorGUILayout.PropertyField(isStationaryObserver);
+                    EditorGUILayout.Space();
                     EditorGUILayout.PropertyField(updateInterval);
+                    EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(isStationaryObserver);
+                    EditorGUILayout.PropertyField(observerVolumeType, volumeTypeContent);
+                    string message = string.Empty;
+                    if (observerVolumeType.intValue == (int)VolumeType.AxisAlignedCube)
+                    {
+                        message = "Observed meshes will be aligned to the world coordinate space.";
+                    }
+                    else if (observerVolumeType.intValue == (int)VolumeType.UserAlignedCube)
+                    {
+                        message = "Observed meshes will be aligned to the user's coordinate space.";
+                    }
+                    else if (observerVolumeType.intValue == (int)VolumeType.Sphere)
+                    {
+                        message = "The X value of the Observation Extents will be used as the sphere radius.";
+                    }
+                    EditorGUILayout.HelpBox(message, MessageType.Info);
+                    EditorGUILayout.PropertyField(observationExtents);
                 }
             }
 

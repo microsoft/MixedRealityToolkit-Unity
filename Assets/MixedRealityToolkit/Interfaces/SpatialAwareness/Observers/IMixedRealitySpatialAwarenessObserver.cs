@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// <summary>
         /// Gets or sets the orientation of the volume.
         /// </summary>
-        Quaternion ObserverOrientation { get; set; }
+        Quaternion ObserverRotation { get; set; }
 
         /// <summary>
         /// Gets or sets the origin of the observer.

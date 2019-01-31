@@ -43,6 +43,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         public Vector3 ObservationExtents => observationExtents;
 
         [SerializeField]
+        [Tooltip("The shape of observation volume")]
+        private VolumeType observerVolumeType = VolumeType.AxisAlignedCube;
+
+        /// <summary>
+        /// The shape (ex: axis aligned cube) of the observation volume.
+        /// </summary>
+        public VolumeType ObserverVolumeType => observerVolumeType;
+
+
+        [SerializeField]
         [Tooltip("How often, in seconds, should the spatial observer update?")]
         private float updateInterval = 3.5f;
 
@@ -72,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <summary>
         /// The level of detail used when creating the mesh.
         /// </summary>
-        public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail => levelOfDetail;
+        public SpatialAwarenessMeshLevelOfDetail LevelOfDetail => levelOfDetail;
 
         [SerializeField]
         [Tooltip("Level of detail, in triangles per cubic meter.\nIgnored unless LevelOfDetail is set to Custom.")]

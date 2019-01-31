@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <returns>
         /// SpatialMeshObject containing the fields that describe the mesh.
         /// </returns>
-        public static SpatialAwarenessMeshObject CreateSpatialMeshObject(Mesh mesh, int layer, string name, int meshId)
+        public static SpatialAwarenessMeshObject Create(Mesh mesh, int layer, string name, int meshId)
         {
             SpatialAwarenessMeshObject newMesh = new SpatialAwarenessMeshObject();
 
@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <param name="meshObject">The <see cref="SpatialAwarenessMeshObject"/> whose resources will be cleaned up.</param>
         /// <param name="destroyGameObject"></param>
         /// <param name="destroyMeshes"></param>
-        public static void CleanUpMeshObject(SpatialAwarenessMeshObject meshObject, bool destroyGameObject = true, bool destroyMeshes = true)
+        public static void Cleanup(SpatialAwarenessMeshObject meshObject, bool destroyGameObject = true, bool destroyMeshes = true)
         {
 
             if (destroyGameObject && (meshObject.GameObject != null))

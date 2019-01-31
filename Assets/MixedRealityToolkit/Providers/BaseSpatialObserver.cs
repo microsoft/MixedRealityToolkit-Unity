@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
         public GameObject ObservedObjectParent { get; protected set; } = null;
 
         /// <inheritdoc />
-        public Quaternion ObserverOrientation { get; set; } = Quaternion.identity;
+        public Quaternion ObserverRotation { get; set; } = Quaternion.identity;
 
         public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
 
