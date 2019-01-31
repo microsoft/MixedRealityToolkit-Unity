@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 {
     /// <summary>
     /// attaches a set of particles to the line

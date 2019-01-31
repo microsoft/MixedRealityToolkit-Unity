@@ -4,12 +4,12 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
 {
     /// <summary>
     /// Creates a spline based on control points.
     /// </summary>
-    public class SplineDataProvider : BaseLineDataProvider
+    public class SplineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
         private MixedRealityPose[] controlPoints =

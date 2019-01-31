@@ -2,9 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Lines;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 {
     /// <summary>
     /// Base class for Mixed Reality Line Renderers.
@@ -14,18 +15,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
     {
         [SerializeField]
         [Tooltip("The line data this component will render")]
-        private BaseLineDataProvider lineDataSource;
+        private BaseMixedRealityLineDataProvider lineDataSource;
 
         /// <summary>
         /// The line data this component will render
         /// </summary>
-        public BaseLineDataProvider LineDataSource
+        public BaseMixedRealityLineDataProvider LineDataSource
         {
             get
             {
                 if (lineDataSource == null)
                 {
-                    lineDataSource = GetComponent<BaseLineDataProvider>();
+                    lineDataSource = GetComponent<BaseMixedRealityLineDataProvider>();
 
                     if (lineDataSource != null)
                     {
@@ -183,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 
             if (lineDataSource == null)
             {
-                lineDataSource = gameObject.GetComponent<BaseLineDataProvider>();
+                lineDataSource = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
             }
 
             if (lineDataSource == null || !lineDataSource.enabled)

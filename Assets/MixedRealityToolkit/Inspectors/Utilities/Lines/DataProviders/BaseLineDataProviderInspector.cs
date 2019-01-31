@@ -2,7 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
 using UnityEditor;
 using UnityEditorInternal;
@@ -10,7 +11,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
 {
-    [CustomEditor(typeof(BaseLineDataProvider))]
+    [CustomEditor(typeof(BaseMixedRealityLineDataProvider))]
     public class BaseLineDataProviderInspector : Editor
     {
         private const string DrawLinePointsKey = "MRTK_Line_Inspector_DrawLinePoints";
@@ -63,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
 
         private ReorderableList manualUpVectorList;
 
-        protected BaseLineDataProvider LineData;
+        protected BaseMixedRealityLineDataProvider LineData;
         protected bool RenderLinePreview = true;
 
         protected virtual void OnEnable()
@@ -80,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
             DrawLineManualUpVectors = SessionState.GetBool(DrawLineManualUpVectorsKey, DrawLineManualUpVectors);
             ManualUpVectorLength = SessionState.GetFloat(ManualUpVectorLengthKey, ManualUpVectorLength);
 
-            LineData = (BaseLineDataProvider)target;
+            LineData = (BaseMixedRealityLineDataProvider)target;
             customLineTransform = serializedObject.FindProperty("customLineTransform");
             lineStartClamp = serializedObject.FindProperty("lineStartClamp");
             lineEndClamp = serializedObject.FindProperty("lineEndClamp");

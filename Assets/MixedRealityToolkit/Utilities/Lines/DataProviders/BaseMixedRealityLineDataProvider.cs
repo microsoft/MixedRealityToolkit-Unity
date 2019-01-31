@@ -6,13 +6,13 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
 {
     /// <summary>
     /// Base class that provides data about a line.
     /// </summary>
     /// <remarks>Data to be consumed by other classes like the <see cref="Renderers.BaseLineRenderer"/></remarks>
-    public abstract class BaseLineDataProvider : MonoBehaviour
+    public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
         private const float MinRotationMagnitude = 0.0001f;
 

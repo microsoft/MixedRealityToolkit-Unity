@@ -34,12 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected int LineCastResolution = 25;
 
         [SerializeField]
-        private BaseLineDataProvider lineBase;
+        private BaseMixedRealityLineDataProvider lineBase;
 
         /// <summary>
         /// The Line Data Provider driving this pointer.
         /// </summary>
-        public BaseLineDataProvider LineBase => lineBase;
+        public BaseMixedRealityLineDataProvider LineBase => lineBase;
 
         [SerializeField]
         [Tooltip("If no line renderers are specified, this array will be auto-populated on startup.")]
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         private DistorterGravity gravityDistorter = null;
 
         /// <summary>
-        /// The Gravity Distorter that is affecting the <see cref="BaseLineDataProvider"/> attached to this pointer.
+        /// The Gravity Distorter that is affecting the <see cref="BaseMixedRealityLineDataProvider"/> attached to this pointer.
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
 
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             if (lineBase == null)
             {
-                lineBase = GetComponent<BaseLineDataProvider>();
+                lineBase = GetComponent<BaseMixedRealityLineDataProvider>();
             }
 
             if (lineBase == null)

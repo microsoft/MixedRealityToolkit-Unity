@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 {
     /// <summary>
     /// Draws a strip of polygons along the line

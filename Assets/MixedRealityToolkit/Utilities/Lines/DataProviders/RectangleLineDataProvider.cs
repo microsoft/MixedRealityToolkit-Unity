@@ -3,12 +3,12 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
 {
     /// <summary>
     /// Defines a line in the shape of a rectangle.
     /// </summary>
-    public class RectangleLineDataProvider : BaseLineDataProvider
+    public class RectangleLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
         private Vector3[] points = new Vector3[8];

@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 {
     /// <summary>
     /// Implements Unity's built in line renderer component, and applies the line data to it.
