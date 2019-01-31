@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
@@ -14,6 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
     /// </summary>
+    [MixedRealityDataProvider(
+        typeof(IMixedRealityInputSystem),
+        SupportedPlatforms.WindowsStandalone | SupportedPlatforms.MacStandalone | SupportedPlatforms.LinuxStandalone)]
     public class OpenVRDeviceManager : UnityJoystickManager
     {
         /// <summary>
