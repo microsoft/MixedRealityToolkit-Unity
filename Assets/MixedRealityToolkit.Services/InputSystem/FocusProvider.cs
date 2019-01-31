@@ -797,8 +797,8 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 if (pointerData.CurrentPointerTarget != null)
                 {
                     float distance = 0f;
-                    for (int i = 0; i <= pointer.RayStepIndex; i++) {
-                        distance += pointer.Pointer.Rays[i].Length;
+                    for (int i = 0; i <= pointerData.RayStepIndex; i++) {
+                        distance += pointerData.Pointer.Rays[i].Length;
                     }
                     
                     // Check layer prioritization
