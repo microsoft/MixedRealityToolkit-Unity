@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
             manualUpVectorList.drawElementCallback += DrawManualUpVectorListElement;
             manualUpVectorList.drawHeaderCallback += DrawManualUpVectorHeader;
 
-            RenderLinePreview = LineData.gameObject.GetComponent<BaseLineRenderer>() == null;
+            RenderLinePreview = LineData.gameObject.GetComponent<BaseMixedRealityLineRenderer>() == null;
 
             var newDistorters = LineData.gameObject.GetComponents<Distorter>();
             distorters.arraySize = newDistorters.Length;

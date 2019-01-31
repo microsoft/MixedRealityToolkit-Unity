@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
     /// <summary>
     /// Creates instances of a mesh along the line
     /// </summary>
-    public class MeshLineRenderer : BaseLineRenderer
+    public class MeshLineRenderer : BaseMixedRealityLineRenderer
     {
         private const string InvisibleShaderName = "MixedRealityToolkit/InvisibleShader";
 

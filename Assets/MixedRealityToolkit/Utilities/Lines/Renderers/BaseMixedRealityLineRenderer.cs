@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
     /// Base class for Mixed Reality Line Renderers.
     /// </summary>
     [ExecuteInEditMode]
-    public abstract class BaseLineRenderer : MonoBehaviour
+    public abstract class BaseMixedRealityLineRenderer : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("The line data this component will render")]

@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
     /// Implements Unity's built in line renderer component, and applies the line data to it.
     /// </summary>
     [RequireComponent(typeof(LineRenderer))]
-    public class MixedRealityLineRenderer : BaseLineRenderer
+    public class MixedRealityLineRenderer : BaseMixedRealityLineRenderer
     {
         [Header("Mixed Reality Line Renderer Settings")]
 

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
     /// <summary>
     /// Base class that provides data about a line.
     /// </summary>
-    /// <remarks>Data to be consumed by other classes like the <see cref="Renderers.BaseLineRenderer"/></remarks>
+    /// <remarks>Data to be consumed by other classes like the <see cref="Renderers.BaseMixedRealityLineRenderer"/></remarks>
     public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
         private const float MinRotationMagnitude = 0.0001f;
