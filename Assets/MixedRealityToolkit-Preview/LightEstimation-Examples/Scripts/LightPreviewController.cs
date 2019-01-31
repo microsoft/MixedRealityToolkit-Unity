@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 		#pragma warning disable 414, 649
 		[Header("Scene/asset hooks")]
 		[SerializeField] private GameObject   spheres      = null;
-		[SerializeField] private GameObject   rabbits      = null;
+		[SerializeField] private GameObject   shaderBalls  = null;
 		[SerializeField] private GameObject   cubes        = null;
 		[SerializeField] private GameObject[] spawnPrefabs = null;
 
@@ -67,9 +67,9 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 			#endif
 
 			// Setup scene objects
-			spheres.SetActive(false);
-			rabbits.SetActive(true);
-			cubes  .SetActive(false);
+			spheres    .SetActive(false);
+			shaderBalls.SetActive(true);
+			cubes      .SetActive(false);
 
 			transform.position = Camera.main.transform.position + Camera.main.transform.forward * 3;
 			transform.LookAt(Camera.main.transform.position);
@@ -156,19 +156,19 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 			if (args.text == "circle")
 			{
 				spheres.SetActive(true);
-				rabbits.SetActive(false);
+				shaderBalls.SetActive(false);
 				cubes.SetActive(false);
 			}
-			else if (args.text == "rabbit")
+			else if (args.text == "ball")
 			{
 				spheres.SetActive(false);
-				rabbits.SetActive(true);
+				shaderBalls.SetActive(true);
 				cubes.SetActive(false);
 			}
 			else if (args.text == "cube")
 			{
 				spheres.SetActive(false);
-				rabbits.SetActive(false);
+				shaderBalls.SetActive(false);
 				cubes.SetActive(true);
 			}
 			else if (args.text == "reset")
