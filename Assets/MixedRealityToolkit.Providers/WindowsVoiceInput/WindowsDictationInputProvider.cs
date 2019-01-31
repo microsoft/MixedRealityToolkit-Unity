@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
 {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-    [MixedRealityExtensionServiceAttribute(SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor)]
+    [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor)]
     public class WindowsDictationInputProvider : BaseDeviceManager, IMixedRealityDictationSystem
     {
         /// <summary>
