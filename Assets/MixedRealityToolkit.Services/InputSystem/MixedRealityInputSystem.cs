@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Providers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
 using System.Collections.Generic;

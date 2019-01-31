@@ -1,0 +1,75 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using UnityEngine;
+
+namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
+{
+    [MixedRealityController(
+        SupportedControllerType.ViveKnuckles,
+        new[] { Handedness.Left, Handedness.Right })]
+    public class ViveKnucklesController : GenericOpenVRController
+    {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="trackingState"></param>
+        /// <param name="controllerHandedness"></param>
+        /// <param name="inputSource"></param>
+        /// <param name="interactions"></param>
+        public ViveKnucklesController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+                : base(trackingState, controllerHandedness, inputSource, interactions)
+        {
+        }
+
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
+        {
+            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(1, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger, ControllerMappingLibrary.AXIS_9),
+            new MixedRealityInteractionMapping(2, "Trigger Press", AxisType.Digital, DeviceInputType.TriggerPress, KeyCode.JoystickButton14),
+            new MixedRealityInteractionMapping(3, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch, ControllerMappingLibrary.AXIS_9),
+            new MixedRealityInteractionMapping(4, "Grip Average", AxisType.SingleAxis, DeviceInputType.Trigger, ControllerMappingLibrary.AXIS_11),
+            new MixedRealityInteractionMapping(5, "Trackpad Position", AxisType.DualAxis, DeviceInputType.Touchpad, ControllerMappingLibrary.AXIS_1, ControllerMappingLibrary.AXIS_2),
+            new MixedRealityInteractionMapping(6, "Trackpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, KeyCode.JoystickButton16),
+            new MixedRealityInteractionMapping(7, "Trackpad Press", AxisType.Digital, DeviceInputType.TouchpadPress, KeyCode.JoystickButton8),
+            new MixedRealityInteractionMapping(8, "Inner Face Button", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.JoystickButton2),
+            new MixedRealityInteractionMapping(9, "Outer Face Button", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.JoystickButton3),
+            new MixedRealityInteractionMapping(10, "Index Finger Cap Sensor", AxisType.SingleAxis, DeviceInputType.IndexFinger, ControllerMappingLibrary.AXIS_20),
+            new MixedRealityInteractionMapping(11, "Middle Finger Cap Sensor", AxisType.SingleAxis, DeviceInputType.MiddleFinger, ControllerMappingLibrary.AXIS_22),
+            new MixedRealityInteractionMapping(12, "Ring Finger Cap Sensor", AxisType.SingleAxis, DeviceInputType.RingFinger, ControllerMappingLibrary.AXIS_24),
+            new MixedRealityInteractionMapping(13, "Pinky Finger Cap Sensor", AxisType.SingleAxis, DeviceInputType.PinkyFinger, ControllerMappingLibrary.AXIS_26),
+        };
+
+
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => new[]
+        {
+            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(1, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger, ControllerMappingLibrary.AXIS_10),
+            new MixedRealityInteractionMapping(2, "Trigger Press", AxisType.Digital, DeviceInputType.TriggerPress, KeyCode.JoystickButton15),
+            new MixedRealityInteractionMapping(3, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch, ControllerMappingLibrary.AXIS_10),
+            new MixedRealityInteractionMapping(4, "Grip Average", AxisType.SingleAxis, DeviceInputType.Trigger, ControllerMappingLibrary.AXIS_12),
+            new MixedRealityInteractionMapping(5, "Trackpad Position", AxisType.DualAxis, DeviceInputType.Touchpad, ControllerMappingLibrary.AXIS_4, ControllerMappingLibrary.AXIS_5),
+            new MixedRealityInteractionMapping(6, "Trackpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, KeyCode.JoystickButton17),
+            new MixedRealityInteractionMapping(7, "Trackpad Press", AxisType.Digital, DeviceInputType.TouchpadPress, KeyCode.JoystickButton9),
+            new MixedRealityInteractionMapping(8, "Inner Face Button", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.JoystickButton0),
+            new MixedRealityInteractionMapping(9, "Outer Face Button", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.JoystickButton1),
+            new MixedRealityInteractionMapping(10, "Index Finger Cap Sensor", AxisType.SingleAxis, DeviceInputType.IndexFinger, ControllerMappingLibrary.AXIS_21),
+            new MixedRealityInteractionMapping(11, "Middle Finger Cap Sensor", AxisType.SingleAxis, DeviceInputType.MiddleFinger, ControllerMappingLibrary.AXIS_23),
+            new MixedRealityInteractionMapping(12, "Ring Finger Cap Sensor", AxisType.SingleAxis, DeviceInputType.RingFinger, ControllerMappingLibrary.AXIS_25),
+            new MixedRealityInteractionMapping(13, "Pinky Finger Cap Sensor", AxisType.SingleAxis, DeviceInputType.PinkyFinger, ControllerMappingLibrary.AXIS_27),
+        };
+
+        /// <inheritdoc />
+        public override void SetupDefaultInteractions(Handedness controllerHandedness)
+        {
+            AssignControllerMappings(controllerHandedness == Handedness.Left ? DefaultLeftHandedInteractions : DefaultRightHandedInteractions);
+        }
+    }
+}

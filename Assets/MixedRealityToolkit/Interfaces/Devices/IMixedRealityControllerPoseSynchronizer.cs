@@ -12,11 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
     /// Basic interface for synchronizing to a controller pose.
     /// </summary>
     public interface IMixedRealityControllerPoseSynchronizer : IMixedRealitySourcePoseHandler,
-            IMixedRealityInputHandler<float>,
-            IMixedRealityInputHandler<Vector2>,
-            IMixedRealityInputHandler<Vector3>,
-            IMixedRealityInputHandler<Quaternion>,
-            IMixedRealityInputHandler<MixedRealityPose>
+        IMixedRealityInputHandler,
+        IMixedRealityInputHandler<float>,
+        IMixedRealityInputHandler<Vector2>,
+        IMixedRealityInputHandler<Vector3>,
+        IMixedRealityInputHandler<Quaternion>,
+        IMixedRealityInputHandler<MixedRealityPose>
     {
         /// <summary>
         /// The controller handedness to synchronize with.

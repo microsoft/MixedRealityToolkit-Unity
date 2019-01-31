@@ -13,7 +13,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public class BoundingBox : BaseFocusHandler, IMixedRealityPointerHandler, IMixedRealityInputHandler<MixedRealityPose>, IMixedRealitySourceStateHandler
+    public class BoundingBox : BaseFocusHandler, 
+        IMixedRealityInputHandler,
+        IMixedRealityInputHandler<MixedRealityPose>,
+        IMixedRealityPointerHandler,
+        IMixedRealitySourceStateHandler
     {
         #region Enums
         /// <summary>
