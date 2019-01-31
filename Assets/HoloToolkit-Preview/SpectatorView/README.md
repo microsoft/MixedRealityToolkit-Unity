@@ -84,7 +84,7 @@ The logic in spectator view can be broken down into three main steps:
 > MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/SpatialSync/AnchorLocated.cs
 > MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/SpatialSync/WorldSync.cs
 
-It seems worth noting that SpectatorView does the work to effectively share a scene origin across devices. But SpectatorView does NOT currently synchronize all content across devices. Additional work is needed to synchronize animations or dynamically create/destroy game objects.
+It seems worth noting that SpectatorView does the work to share a scene origin across devices. But SpectatorView does NOT currently synchronize all content across devices. Additional work is needed to synchronize animations or dynamically create/destroy game objects.
 
 ### Integrating into your Application
 - Prepare your scene
