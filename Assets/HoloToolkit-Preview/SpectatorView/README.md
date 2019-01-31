@@ -70,6 +70,22 @@ Project Setup
 - It may prove helpful to look at an example scene before integrating SpectatorView components into your application. After having added the SpectatorViewPlugin dlls to your unity project, you should be able to build and run the provided example scene:
     - HoloToolkit-Examples\SpectatorView\Scenes\SpectatorViewExample.unity
 
+### High Level Overview
+The logic in spectator view can be broken down into three main steps:
+
+1) Initially, the HoloLens and iPhone go through a device discovery process. Using UNET, the HoloLens configures itself as a client and the iPhone configures itself as a server. The iPhone then broadcasts that it exists to the HoloLens. This functionality can be found in the following script:
+> MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/Networking/NewDeviceDiscovery.cs
+
+2) After going through device discovery, the iPhone and HoloLens switch roles. Using UNET, the HoloLens begins acting as a server while the iPhone acts as a client. At this point, the iPhone shows an ArUco marker on its screen. The HoloLens then searches for this marker in 3D space using its Photo/Video camera and OpenCV. After the HoloLens locates the marker, it broadcasts to the iPhone the marker's location in the HoloLens's scene.
+> Marker Detection: MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/SpatialSync/MarkerDetectionHololens.cs
+> Marker Location Broadcast: MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/Networking/SpectatorViewNetworkDiscovery.cs
+
+3) After the iPhone registers its marker's location in the HoloLens's scene, the iPhone locates the marker relative to its own scene origin. The transform from the marker to the iPhone scene origin is calculated as the transform from the marker to the iPhone camera combined with the transform of the iPhone camera to the iPhone's scene origin. The transform between the marker and the camera has some hard coded assumptions around phone dimensions/screen-camera-offsets. The transform of the iPhone camera to the scene origin is facilitated by AR Kit's device tracking. After finding the marker location in both the HoloLens and iPhone scenes a transform between scene origins is created. This transform between origins is then applied to the root game object, which updates content on the iPhone to be repositioned correctly relative to the HoloLens user. The logic in this third step is primarily facilitated in the following scripts:
+> MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/SpatialSync/AnchorLocated.cs
+> MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/SpatialSync/WorldSync.cs
+
+It seems worth noting that SpectatorView does the work to effectively share a scene origin across devices. But SpectatorView does NOT currently synchronize all content across devices. Additional work is needed to synchronize animations or dynamically create/destroy game objects.
+
 ### Integrating into your Application
 - Prepare your scene
     - Ensure all visable gameobjects, within your scene, are contained under a world root gameobject.
