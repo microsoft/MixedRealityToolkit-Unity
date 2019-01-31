@@ -21,7 +21,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
         /// <param name="profile">The service's configuration profile.</param>
         public BaseSpatialObserver(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile)
         {
-            SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
+            if (MixedRealityToolkit.SpatialAwarenessSystem != null)
+            {
+                SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
+            }
+            else
+            {
+                Debug.LogError($"A spatial observer is registered in your service providers profile, but the spatial awareness system is turned off. Please either turn on spatial awareness or remove {name}.");
+            }
+
             SourceName = name;
         }
 
