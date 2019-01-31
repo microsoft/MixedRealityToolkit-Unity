@@ -628,7 +628,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 694962453}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b81083f6e1e5d848a87fd2562328230, type: 3}
+  m_Script: {fileID: 11500000, guid: 23f9be7a3cb53794ead8b55e784b65aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boxColliderToUse: {fileID: 694962454}
@@ -639,9 +639,9 @@ MonoBehaviour:
   wireframePadding: {x: 0, y: 0, z: 0}
   flattenAxis: 4
   wireframeShape: 0
-  wireframeMaterial: {fileID: 2100000, guid: 55745f61582d02148a240adc2186ebc5, type: 2}
-  handleMaterial: {fileID: 2100000, guid: c760e0a251f2d554d81f3615e9c010e8, type: 2}
-  handleGrabbedMaterial: {fileID: 2100000, guid: b4ef46d59a9cf3d42b1c6e426c87b01a,
+  wireframeMaterial: {fileID: 2100000, guid: ccd13293eae6cd2498077eae3f18df0d, type: 2}
+  handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
+  handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
   showScaleHandles: 1
   showRotateHandles: 1
@@ -1305,7 +1305,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1561062653}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b81083f6e1e5d848a87fd2562328230, type: 3}
+  m_Script: {fileID: 11500000, guid: 23f9be7a3cb53794ead8b55e784b65aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boxColliderToUse: {fileID: 1561062655}
@@ -1316,9 +1316,9 @@ MonoBehaviour:
   wireframePadding: {x: 0, y: 0, z: 0}
   flattenAxis: 0
   wireframeShape: 0
-  wireframeMaterial: {fileID: 2100000, guid: 55745f61582d02148a240adc2186ebc5, type: 2}
-  handleMaterial: {fileID: 2100000, guid: c760e0a251f2d554d81f3615e9c010e8, type: 2}
-  handleGrabbedMaterial: {fileID: 2100000, guid: b4ef46d59a9cf3d42b1c6e426c87b01a,
+  wireframeMaterial: {fileID: 2100000, guid: ccd13293eae6cd2498077eae3f18df0d, type: 2}
+  handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
+  handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
   showScaleHandles: 1
   showRotateHandles: 1
@@ -1617,7 +1617,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1669979018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b81083f6e1e5d848a87fd2562328230, type: 3}
+  m_Script: {fileID: 11500000, guid: 23f9be7a3cb53794ead8b55e784b65aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boxColliderToUse: {fileID: 1669979020}
@@ -1628,9 +1628,9 @@ MonoBehaviour:
   wireframePadding: {x: 0, y: 0, z: 0}
   flattenAxis: 0
   wireframeShape: 0
-  wireframeMaterial: {fileID: 2100000, guid: 55745f61582d02148a240adc2186ebc5, type: 2}
-  handleMaterial: {fileID: 2100000, guid: c760e0a251f2d554d81f3615e9c010e8, type: 2}
-  handleGrabbedMaterial: {fileID: 2100000, guid: b4ef46d59a9cf3d42b1c6e426c87b01a,
+  wireframeMaterial: {fileID: 2100000, guid: ccd13293eae6cd2498077eae3f18df0d, type: 2}
+  handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
+  handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
   showScaleHandles: 1
   showRotateHandles: 1
@@ -1791,7 +1791,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2036781102}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b81083f6e1e5d848a87fd2562328230, type: 3}
+  m_Script: {fileID: 11500000, guid: 23f9be7a3cb53794ead8b55e784b65aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boxColliderToUse: {fileID: 2036781104}
@@ -1802,9 +1802,9 @@ MonoBehaviour:
   wireframePadding: {x: 0, y: 0, z: 0}
   flattenAxis: 0
   wireframeShape: 0
-  wireframeMaterial: {fileID: 2100000, guid: 55745f61582d02148a240adc2186ebc5, type: 2}
-  handleMaterial: {fileID: 2100000, guid: c760e0a251f2d554d81f3615e9c010e8, type: 2}
-  handleGrabbedMaterial: {fileID: 2100000, guid: b4ef46d59a9cf3d42b1c6e426c87b01a,
+  wireframeMaterial: {fileID: 2100000, guid: ccd13293eae6cd2498077eae3f18df0d, type: 2}
+  handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
+  handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
   showScaleHandles: 1
   showRotateHandles: 1
