@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
     /// Attribute that defines the properties of a Mixed Reality Toolkit extension service.
     /// </summary>
     [AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
-    public class MixedRealityExensionServiceAttribute : Attribute
+    public class MixedRealityExtensionServiceAttributeAttribute : Attribute
     {
         /// <summary>
         /// The runtime platform(s) to run this service.
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
         /// <param name="runtimePlatforms">The platforms on which the extension service is supported.</param>
         /// <param name="profilePath">The relative path to the profile asset.</param>
         /// <param name="packageFolder">The folder to which the path is relative.</param>
-        public MixedRealityExensionServiceAttribute(
+        public MixedRealityExtensionServiceAttributeAttribute(
             SupportedPlatforms runtimePlatforms,
             string profilePath = "", 
             string packageFolder = "MixedRealityToolkit")

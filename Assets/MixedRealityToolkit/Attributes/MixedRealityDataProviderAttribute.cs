@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
     /// Attribute that defines the properties of a Mixed Reality Toolkit data provider.
     /// </summary>
     [AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
-    public class MixedRealityDataProviderAttribute : MixedRealityExensionServiceAttribute
+    public class MixedRealityDataProviderAttribute : MixedRealityExtensionServiceAttributeAttribute
     {
         /// <summary>
         /// The interface type of the IMixedRealityService for which the data provider is supported.
