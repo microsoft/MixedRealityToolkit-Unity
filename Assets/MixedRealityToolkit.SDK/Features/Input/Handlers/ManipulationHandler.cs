@@ -22,7 +22,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
     /// for instructions on how to use the script.
     /// </summary>
     /// 
-    public class ManipulationHandler : BaseFocusHandler, IMixedRealityInputHandler<MixedRealityPose>, IMixedRealitySourceStateHandler
+    public class ManipulationHandler : BaseFocusHandler,
+        IMixedRealityInputHandler,
+        IMixedRealityInputHandler<MixedRealityPose>, 
+        IMixedRealitySourceStateHandler
     {
         #region Private Enums
         private enum HandMovementType
