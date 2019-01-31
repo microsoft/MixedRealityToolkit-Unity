@@ -3,12 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup;
 using System;
-using System.Linq;
 using UnityEngine;
 
 #if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
 using UnityEditor;
 #endif
 
@@ -44,13 +43,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
             {
 #if UNITY_EDITOR
                 string path;
-                if (MixedRealityEditorSettings.FindRelativeDirectory(Application.dataPath, PackageFolder, out path))
+                if (EditorProjectUtilities.FindRelativeDirectory(PackageFolder, out path))
                 {
                     return AssetDatabase.LoadAssetAtPath<BaseMixedRealityProfile>(System.IO.Path.Combine(path, ProfilePath));
                 }
 
                 Debug.LogError("Unable to find or load the profile.");
-#endif
+#endif  
                 return null;
             }
         }
