@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
     /// <remarks>
     /// Valid input types:
     /// </remarks>
-    public interface IMixedRealityInputHandler<T> : IMixedRealityInputHandler
+    public interface IMixedRealityInputHandler<T> : IEventSystemHandler
     {
         /// <summary>
         /// Raised input event updates from the type of input specified in the interface handler implementation.

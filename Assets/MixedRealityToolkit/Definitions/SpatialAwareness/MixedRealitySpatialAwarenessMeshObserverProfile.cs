@@ -96,12 +96,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 
         [SerializeField]
         [Tooltip("How should spatial meshes be displayed?")]
-        private SpatialMeshDisplayOptions displayOption = SpatialMeshDisplayOptions.Visible;
+        private SpatialAwarenessMeshDisplayOptions displayOption = SpatialAwarenessMeshDisplayOptions.Visible;
 
         /// <summary>
         /// Indicates how the mesh subsystem is to display surface meshes within the application.
         /// </summary>
-        public SpatialMeshDisplayOptions DisplayOption => displayOption;
+        public SpatialAwarenessMeshDisplayOptions DisplayOption => displayOption;
 
         [SerializeField]
         [Tooltip("Material to use when displaying observed meshes")]

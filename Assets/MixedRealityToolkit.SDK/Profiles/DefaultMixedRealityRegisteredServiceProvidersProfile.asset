@@ -15,22 +15,22 @@ MonoBehaviour:
   isCustomProfile: 0
   configurations:
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityJoystickManager,
+      reference: Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.UnityJoystickManager,
         Microsoft.MixedReality.Toolkit
     componentName: Unity Joystick Manager
     priority: 10
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OpenVRDeviceManager,
-        Microsoft.MixedReality.Toolkit
+      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.OpenVRDeviceManager,
+        Microsoft.MixedReality.Toolkit.Providers.OpenVR
     componentName: Unity Open VR Device Manager
     priority: 10
     runtimePlatform: 7
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityDeviceManager,
-        Microsoft.MixedReality.Toolkit
+      reference: Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.WindowsMixedRealityDeviceManager,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
     componentName: Windows Mixed Reality Provider
     priority: 10
     runtimePlatform: 8
@@ -50,15 +50,15 @@ MonoBehaviour:
     runtimePlatform: 9
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityTouchDeviceManager,
+      reference: Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.UnityTouchDeviceManager,
         Microsoft.MixedReality.Toolkit
     componentName: Unity Touch Input Manger
     priority: 10
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver,
-        Microsoft.MixedReality.Toolkit
+      reference: Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.WindowsMixedRealitySpatialObserver,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
     componentName: Windows Mixed Reality Spatial Mesh Observer
     priority: 10
     runtimePlatform: 8

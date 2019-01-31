@@ -18,7 +18,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
     /// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
     /// and then repositioning the object based on that.
     /// </summary>
-    public class DragAndDropHandler : BaseFocusHandler, IMixedRealitySourceStateHandler, IMixedRealityPointerHandler, IMixedRealityInputHandler<MixedRealityPose>
+    public class DragAndDropHandler : BaseFocusHandler,
+        IMixedRealityInputHandler,
+        IMixedRealityInputHandler<MixedRealityPose>,
+        IMixedRealityPointerHandler,
+        IMixedRealitySourceStateHandler
     {
         private enum RotationModeEnum
         {

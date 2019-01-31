@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// <remarks>
         /// Applications that wish to process the <see cref="Mesh"/>es should set this value to None.
         /// </remarks>
-        SpatialMeshDisplayOptions DisplayOption { get; set; }
+        SpatialAwarenessMeshDisplayOptions DisplayOption { get; set; }
 
         /// <summary>
         /// Gets or sets the level of detail, as a MixedRealitySpatialAwarenessMeshLevelOfDetail value, for the returned spatial mesh.

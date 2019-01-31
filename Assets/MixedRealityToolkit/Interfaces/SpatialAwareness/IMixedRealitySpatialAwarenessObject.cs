@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
 {
     public interface IMixedRealitySpatialAwarenessObject
     {

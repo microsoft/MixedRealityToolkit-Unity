@@ -17,12 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// <summary>
         /// Get or sets the default Unity Physics Layer on which to set the spatial object.
         /// </summary>
-        int DefaultPhysicsLayer { get; set; }
-
-        /// <summary>
-        /// Gets the bit mask that corresponds to the value specified in <see cref="DefaultPhysicsLayer"/>.
-        /// </summary>
-        int DefaultPhysicsLayerMask { get; }
+        int DefaultPhysicsLayer { get; }
 
         /// <summary>
         /// Is the observer running (actively accumulating spatial data)?
