@@ -17,5 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// Tooltip pivot will be set relative to object/camera based on specified direction and line length
         /// </summary>
         Automatic,
+        /// <summary>
+        /// Tooltip pivot will be set relative to target based on a local position
+        /// </summary>
+        LocalPosition,
     }
 }

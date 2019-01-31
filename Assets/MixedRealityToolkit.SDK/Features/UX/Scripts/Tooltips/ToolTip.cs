@@ -4,6 +4,7 @@
 //
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
@@ -13,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     /// Creates a floating tooltip that is attached to an object and moves to stay in view as object rotates with respect to the view.
     /// </summary>
     [RequireComponent(typeof(ToolTipConnector))]
+    [ExecuteAlways]
     public class ToolTip : MonoBehaviour
     {
         [SerializeField]
@@ -36,24 +38,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         [SerializeField]
-        [Tooltip("Shows white trim around edge of tooltip.")]
-        private bool showOutline = false;
+        private bool showHighlight = false;
 
         /// <summary>
         /// Shows white trim around edge of tooltip.
         /// </summary>
-        public bool ShowOutline
+        public bool ShowHighlight
         {
             get
             {
-                return showOutline;
+                return showHighlight;
             }
             set
             {
-                showOutline = value;
-                GameObject tipBackground = contentParent.transform.GetChild(1).gameObject;
-                var rectangle = tipBackground.GetComponent<RectangleLineDataProvider>();
-                rectangle.enabled = value;
+                showHighlight = value;
             }
         }
 
@@ -73,10 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             set
             {
                 showConnector = value;
-
-                var lineScript = GetComponent<BaseMixedRealityLineDataProvider>();
-                if (lineScript)
-                { lineScript.enabled = value; }
             }
         }
 
@@ -187,8 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 if (value != toolTipText)
                 {
                     toolTipText = value;
-                    RefreshLocalContent();
-                    ContentChange?.Invoke();
+                    RefreshLocalContent();                   
                 }
             }
             get
@@ -199,11 +192,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [SerializeField]
         [Tooltip("The padding around the content (height / width)")]
-        private Vector2 backgroundPadding = Vector2.zero;
+        private Vector2 backgroundPadding;
 
         [SerializeField]
         [Tooltip("The offset of the background (x / y / z)")]
-        private Vector3 backgroundOffset = Vector3.zero;
+        private Vector3 backgroundOffset;
 
         /// <summary>
         /// The offset of the background (x / y / z)
@@ -237,6 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         private int fontSize = 30;
 
         [SerializeField]
+        [Tooltip("Determines where the line will attach to the tooltip content.")]
         private ToolTipAttachPoint attachPointType = ToolTipAttachPoint.Closest;
 
         public ToolTipAttachPoint PivotType
@@ -267,6 +261,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         private Vector3 attachPointOffset;
 
         private Vector3[] localAttachPointPositions;
+
+        private List<IToolTipBackground> backgrounds = new List<IToolTipBackground>();
+
+        private List<IToolTipHighlight> highlights = new List<IToolTipHighlight>();
 
         /// <summary>
         /// point about which ToolTip pivots to face camera
@@ -316,67 +314,67 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         {
             get
             {
-                switch (masterTipState)
-                {
-                    case DisplayMode.None:
-                    default:
-                        // Use our group state
-                        switch (groupTipState)
-                        {
-                            case DisplayMode.None:
-                            default:
-                                // Use our local State
-                                switch (tipState)
-                                {
-                                    case DisplayMode.None:
-                                    case DisplayMode.Off:
-                                    default:
-                                        return false;
+                return ResolveTipState(masterTipState, groupTipState, tipState, HasFocus);              
+            }
+        }
+        
+        public static bool ResolveTipState(DisplayMode masterTipState, DisplayMode groupTipState, DisplayMode tipState, bool hasFocus)
+        {
+            switch (masterTipState)
+            {
+                case DisplayMode.None:
+                default:
+                    // Use our group state
+                    switch (groupTipState)
+                    {
+                        case DisplayMode.None:
+                        default:
+                            // Use our local State
+                            switch (tipState)
+                            {
+                                case DisplayMode.None:
+                                case DisplayMode.Off:
+                                default:
+                                    return false;
 
-                                    case DisplayMode.On:
-                                        return true;
+                                case DisplayMode.On:
+                                    return true;
 
-                                    case DisplayMode.OnFocus:
-                                        return HasFocus;
-                                }
+                                case DisplayMode.OnFocus:
+                                    return hasFocus;
+                            }
 
-                            case DisplayMode.On:
-                                return true;
+                        case DisplayMode.On:
+                            return true;
 
-                            case DisplayMode.Off:
-                                return false;
+                        case DisplayMode.Off:
+                            return false;
 
-                            case DisplayMode.OnFocus:
-                                return HasFocus;
-                        }
+                        case DisplayMode.OnFocus:
+                            return hasFocus;
+                    }
 
-                    case DisplayMode.On:
-                        return true;
+                case DisplayMode.On:
+                    return true;
 
-                    case DisplayMode.Off:
-                        return false;
+                case DisplayMode.Off:
+                    return false;
 
-                    case DisplayMode.OnFocus:
-                        return HasFocus;
-                }
+                case DisplayMode.OnFocus:
+                    return hasFocus;
             }
         }
 
         /// <summary>
         /// does the ToolTip have focus.
         /// </summary>
-        public bool HasFocus
+        public virtual bool HasFocus
         {
             get
             {
                 return false;
             }
         }
-
-        /// <summary>
-        /// Used for Content Change update in text
-        /// </summary>
-        public Action ContentChange;
 
         /// <summary>
         /// virtual functions
@@ -389,10 +387,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 toolTipLine = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
             }
 
+            backgrounds.Clear();
+            foreach (IToolTipBackground background in GetComponents(typeof(IToolTipBackground)))
+            {
+                backgrounds.Add(background);
+            }
+
+            highlights.Clear();
+            foreach (IToolTipHighlight highlight in GetComponents(typeof(IToolTipHighlight)))
+            {
+                highlights.Add(highlight);
+            }
+
             RefreshLocalContent();
+
             contentParent.SetActive(false);
             ShowBackground = showBackground;
-            ShowOutline = showOutline;
+            ShowHighlight = showHighlight;
             ShowConnector = showConnector;
         }
 
@@ -401,9 +412,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             // Enable / disable our line if it exists
             if (toolTipLine != null)
             {
+                toolTipLine.enabled = showConnector;
+
                 if (!(toolTipLine is ParabolaConstrainedLineDataProvider))
                 {
-                    toolTipLine.enabled = IsOn;
                     toolTipLine.FirstPoint = AnchorPosition;
                 }
 
@@ -419,6 +431,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             {
                 contentParent.SetActive(false);
             }
+
+            RefreshLocalContent();
         }
 
         protected virtual void RefreshLocalContent()
@@ -438,13 +452,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 text.anchor = TextAnchor.MiddleCenter;
                 // Get the world scale of the text
                 // Convert that to local scale using the content parent
-                Vector3 localScale = text.transform.localScale;
+                Vector3 localScale = GetTextMeshLocalScale(text);
                 localContentSize.x = localScale.x + backgroundPadding.x;
                 localContentSize.y = localScale.y + backgroundPadding.y;
             }
             // Now that we have the size of our content, get our pivots
             ToolTipUtility.GetAttachPointPositions(ref localAttachPointPositions, localContentSize);
             localAttachPoint = ToolTipUtility.FindClosestAttachPointToAnchor(anchor.transform, contentParent.transform, localAttachPointPositions, PivotType);
+
+            foreach (IToolTipBackground background in backgrounds)
+            {
+                background.IsVisible = showBackground;
+                background.OnContentChange(localContentSize, LocalContentOffset, contentParent.transform);
+            }
+
+            foreach (IToolTipHighlight highlight in highlights)
+            {
+                highlight.ShowHighlight = ShowHighlight;
+            }
         }
 
         protected virtual bool EnforceHierarchy()
@@ -503,26 +528,49 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             return true;
         }
 
-#if UNITY_EDITOR
-        private void OnDrawGizmos()
+        public static Vector3 GetTextMeshLocalScale(TextMesh textMesh)
         {
+            Vector3 localScale = Vector3.zero;
 
-            if (Application.isPlaying)
-                return;
+            if (textMesh.text == null)
+                return localScale;
 
-            if (!EnforceHierarchy())
+            string[] splitStrings = textMesh.text.Split(new string[] { System.Environment.NewLine, "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+
+            // Calculate the width of the text using character info
+            float widestLine = 0f;
+            foreach (string splitString in splitStrings)
             {
-                return;
+                float lineWidth = 0f;
+                foreach (char symbol in splitString)
+                {
+                    CharacterInfo info;
+                    if (textMesh.font.GetCharacterInfo(symbol, out info, textMesh.fontSize, textMesh.fontStyle))
+                    {
+                        lineWidth += info.advance;
+                    }
+                }
+                if (lineWidth > widestLine)
+                    widestLine = lineWidth;
             }
+            localScale.x = widestLine;
 
-            RefreshLocalContent();
+            // Use this to multiply the character size
+            Vector3 transformScale = textMesh.transform.localScale;
+            localScale.x = (localScale.x * textMesh.characterSize * 0.1f) * transformScale.x;
+            localScale.z = transformScale.z;
 
-            if (toolTipLine != null)
-            {
-                toolTipLine.FirstPoint = AnchorPosition;
-                toolTipLine.LastPoint = AttachPointPosition;
-            }
+            // We could calcualte the height based on line height and character size
+            // But I've found that method can be flakey and has a lot of magic numbers
+            // that may break in future Unity versions
+            Vector3 eulerAngles = textMesh.transform.eulerAngles;
+            Vector3 rendererScale = Vector3.zero;
+            textMesh.transform.rotation = Quaternion.identity;
+            rendererScale = textMesh.GetComponent<MeshRenderer>().bounds.size;
+            textMesh.transform.eulerAngles = eulerAngles;
+            localScale.y = textMesh.transform.worldToLocalMatrix.MultiplyVector(rendererScale).y * transformScale.y;
+
+            return localScale;
         }
-#endif
     }
 }

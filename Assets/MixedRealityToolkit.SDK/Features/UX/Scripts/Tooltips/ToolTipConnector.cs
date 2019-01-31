@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     /// Connects a ToolTip to a target
     /// Maintains that connection even if the target moves
     /// </summary>
-    [RequireComponent(typeof(MeshFilter))]
+    [ExecuteAlways]
     public class ToolTipConnector : MonoBehaviour
     {
         [SerializeField]
@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 return;
             }
 
-            ManualPivotLocalPosition = transform.InverseTransformPoint(toolTip.PivotPosition);
+            UpdatePosition();
         }
 
         private void UpdatePosition()
@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             {
                 return;
             }
-
+            
             switch (connectorFollowType)
             {
                 case ConnectorFollowType.AnchorOnly:
@@ -185,13 +185,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                                 relativeTo) * PivotDistance;
                             break;
 
+                        case ConnectorPivotMode.LocalPosition:
+                            toolTip.PivotPosition = target.transform.position + target.transform.TransformPoint(manualPivotLocalPosition);
+                            break;
+
                         case ConnectorPivotMode.Manual:
                             // Do nothing
                             break;
                     }
                     break;
 
-                case ConnectorFollowType.YRotation:
+                case ConnectorFollowType.PositionAndYRotation:
                     // Set the transform of the entire tool tip
                     // Set the pivot relative to target/camera
                     toolTip.transform.position = target.transform.position;
@@ -218,13 +222,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                             toolTip.PivotPosition = target.transform.position + localPosition;
                             break;
 
+                        case ConnectorPivotMode.LocalPosition:
+                            toolTip.PivotPosition = target.transform.position + target.transform.TransformPoint(manualPivotLocalPosition);
+                            break;
+
                         case ConnectorPivotMode.Manual:
                             // Do nothing
                             break;
                     }
                     break;
 
-                case ConnectorFollowType.XRotation:
+                case ConnectorFollowType.PositionAndXYRotation:
                     // Set the transform of the entire tool tip
                     // Set the pivot relative to target/camera
                     toolTip.transform.position = target.transform.position;
@@ -249,6 +257,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                                 relativeTo) * PivotDistance;
                             break;
 
+                        case ConnectorPivotMode.LocalPosition:
+                            toolTip.PivotPosition = target.transform.position + target.transform.TransformPoint(manualPivotLocalPosition);
+                            break;
+
                         case ConnectorPivotMode.Manual:
                             // Do nothing
                             break;
@@ -259,16 +271,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         private void Update()
         {
-            UpdatePosition();
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (Application.isPlaying)
-            {
-                return;
-            }
-
             UpdatePosition();
         }
 
