@@ -72,7 +72,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
     - id: 4
-      description: Trigger Touched
+      description: Trigger Touch
       axisType: 2
       inputType: 11
       inputAction:
@@ -233,7 +233,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
     - id: 4
-      description: Trigger Touched
+      description: Trigger Touch
       axisType: 2
       inputType: 11
       inputAction:
@@ -394,7 +394,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
     - id: 4
-      description: Trigger Touched
+      description: Trigger Touch
       axisType: 2
       inputType: 11
       inputAction:
@@ -2139,14 +2139,14 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 1
     - id: 11
-      description: Thumbstick Click
+      description: Thumbstick Press
       axisType: 2
       inputType: 7
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 338
+      keyCode: 348
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -2209,28 +2209,28 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
     - id: 4
-      description: Trigger Press (Select)
-      axisType: 2
-      inputType: 13
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 345
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 5
       description: Trigger Touch
       axisType: 3
       inputType: 11
       inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: AXIS_10
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Trigger Press (Select)
+      axisType: 2
+      inputType: 13
+      inputAction:
         id: 1
         description: Select
         axisConstraint: 2
-      keyCode: 0
-      axisCodeX: AXIS_10
+      keyCode: 345
+      axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
@@ -2300,14 +2300,14 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 1
     - id: 11
-      description: Thumbstick Click
+      description: Thumbstick Press
       axisType: 2
       inputType: 7
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 339
+      keyCode: 349
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
