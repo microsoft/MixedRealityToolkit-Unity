@@ -2085,7 +2085,7 @@ MonoBehaviour:
       axisCodeX: AXIS_17
       axisCodeY: AXIS_18
       invertXAxis: 0
-      invertYAxis: 0
+      invertYAxis: 1
     - id: 7
       description: Touchpad Touch
       axisType: 2
@@ -2246,7 +2246,7 @@ MonoBehaviour:
       axisCodeX: AXIS_19
       axisCodeY: AXIS_20
       invertXAxis: 0
-      invertYAxis: 0
+      invertYAxis: 1
     - id: 7
       description: Touchpad Touch
       axisType: 2
