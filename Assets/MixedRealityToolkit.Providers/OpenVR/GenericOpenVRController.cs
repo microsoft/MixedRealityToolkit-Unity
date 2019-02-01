@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
             // HTC Vive Controller - Left Controller Trackpad (2)
             // Oculus Touch Controller - Button.PrimaryThumbstick
             // Valve Knuckles Controller - Left Controller Trackpad
-            // Windows Mixed Reality Controller - Left Touchpad Press
+            // Windows Mixed Reality Controller - Left Thumbstick Press
             new MixedRealityInteractionMapping(7, "Trackpad-Thumbstick Press", AxisType.Digital, DeviceInputType.TouchpadPress, KeyCode.JoystickButton8),
             // HTC Vive Controller - Left Controller Menu Button (1)
             // Oculus Touch Controller - Button.Three Press
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
             // HTC Vive Controller - Right Controller Trackpad (2)
             // Oculus Touch Controller - Button.SecondaryThumbstick
             // Valve Knuckles Controller - Right Controller Trackpad
-            // Windows Mixed Reality Controller - Right Touchpad Press
+            // Windows Mixed Reality Controller - Right Thumbstick Press
             new MixedRealityInteractionMapping(7, "Trackpad-Thumbstick Press", AxisType.Digital, DeviceInputType.TouchpadPress, KeyCode.JoystickButton9),
             // HTC Vive Controller - Right Controller Menu Button (1)
             // Oculus Remote - Button.One Press
