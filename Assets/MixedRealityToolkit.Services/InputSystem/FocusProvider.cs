@@ -419,16 +419,17 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         /// <returns>The UIRaycastCamera</returns>
         private void EnsureUiRaycastCameraSetup()
         {
+            Transform cameraTransform = CameraCache.Main.transform.Find("UIRaycastCamera");
             GameObject cameraObject;
 
-            if (CameraCache.Main.transform.childCount == 0)
+            if (cameraTransform == null)
             {
                 cameraObject = new GameObject { name = "UIRaycastCamera" };
                 cameraObject.transform.parent = CameraCache.Main.transform;
             }
             else
             {
-                cameraObject = CameraCache.Main.transform.Find("UIRaycastCamera").gameObject;
+                cameraObject = cameraTransform.gameObject;
                 Debug.Assert(cameraObject.transform.parent == CameraCache.Main.transform);
             }
 
