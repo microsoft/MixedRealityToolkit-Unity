@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,9 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         public int Id { get; private set; }
 
         /// <summary>
-        /// <see cref="GameObject"/>, managed by the spatial awareness system, representing the data in this event.
+        /// <see cref="SpatialAwarenessMeshObject"/>, managed by the spatial awareness system, representing the data in this event.
         /// </summary>
-        public GameObject GameObject { get; private set; }
+        public SpatialAwarenessMeshObject MeshObject{ get; private set; }
 
         /// <summary>
         /// Constructor.
@@ -32,11 +33,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         public void Initialize(
             IMixedRealitySpatialAwarenessObserver observer,
             int id,
-            GameObject gameObject)
+            SpatialAwarenessMeshObject meshObject)
         {
             BaseInitialize(observer);
             Id = id;
-            GameObject = gameObject;
+            MeshObject = meshObject;
         }
     }
 }

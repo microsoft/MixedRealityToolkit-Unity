@@ -120,6 +120,14 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
+        private GameObject observedObjectParent = null;
+
+        /// <summary>
+        /// The <see cref="GameObject"/> to which observed objects are parented.
+        /// </summary>
+        private GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent("WindowsMixedRealitySpatialMeshObserver"));
+
+
         private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
         /// <summary>
@@ -132,27 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// The surface observer providing the spatial data.
         /// </summary>
         private SurfaceObserver observer = null;
-
-        /// <summary>
-        /// The current location of the surface observer.
-        /// </summary>
-        private Vector3 currentObserverOrigin = Vector3.zero;
-
-        /// <summary>
-        /// The current rotation of the surface observer.
-        /// </summary>
-        /// <remarks>
-        /// Ignored unless using <see cref="ObserverVolumeType.UserAlignedCube"/>
-        /// </remarks>
-        private Quaternion currentObserverRotation = Quaternion.identity;
-
-        /// <summary> 
-        /// The observation extents that are currently in use by the surface observer. 
-        /// </summary>
-        /// <remarks>
-        /// If using <see cref="ObserverVolumeType.Sphere"/>, the x valuye of the extents will be used as the sphere radius.
-        /// </remarks>
-        private Vector3 currentObserverExtents = Vector3.zero;
 
         /// <summary>
         /// A queue of <see cref="SurfaceId"/> that need their meshes created (or updated).
@@ -179,8 +166,24 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         private float lastUpdated = 0;
 #endif // UNITY_WSA
 
+        public SpatialAwarenessMeshDisplayOptions displayOption = SpatialAwarenessMeshDisplayOptions.Visible;
         /// <inheritdoc />
-        public SpatialAwarenessMeshDisplayOptions DisplayOption { get; set; } = SpatialAwarenessMeshDisplayOptions.Visible;
+        public SpatialAwarenessMeshDisplayOptions DisplayOption
+        {
+            get
+            {
+                return displayOption;
+            }
+
+            set
+            {
+                if (value != displayOption)
+                {
+                    displayOption = value;
+                    ApplyUpdatedMeshDisplayOption(displayOption);
+                }
+            }
+        }
 
         public SpatialAwarenessMeshLevelOfDetail levelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;
 
@@ -298,7 +301,10 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             if (Application.isPlaying)
             {
                 // Cleanup the scene objects are managing
-                ObservedObjectParent.transform.DetachChildren();
+                if (ObservedObjectParent != null)
+                {
+                    ObservedObjectParent.transform.DetachChildren();
+                }
                 foreach (SpatialAwarenessMeshObject meshObject in meshes.Values)
                 {
                     if (meshObject != null)
@@ -334,10 +340,12 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         {
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled ||
                 (SpatialAwarenessSystem == null))
-            { return; }
+            {
+                return;
+            }
 
             // Only update the observer if it is running.
-            if (IsRunning && (outstandingMeshObject != null))
+            if (IsRunning && (outstandingMeshObject == null))
             {
                 // If we have a mesh to work on...
                 if (meshWorkQueue.Count > 0)
@@ -416,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             else
             {
                 Debug.LogError($"Mesh request failed for Id == surfaceId.handle");
-                Debug.Assert(outstandingMeshObject == null);
+                outstandingMeshObject = null;
                 ReclaimMeshObject(newMesh);
             }
         }
@@ -439,7 +447,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                 ReclaimMeshObject(mesh);
 
                 // Send the mesh removed event
-                SpatialAwarenessSystem.RaiseMeshRemoved(this, id);
+                SpatialAwarenessSystem?.RaiseMeshRemoved(this, id);
             }
         }
 
@@ -473,42 +481,26 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// </summary>
         private void ConfigureObserverVolume()
         {
-            Vector3 newExtents = ObservationExtents;
-            Vector3 newOrigin = ObserverOrigin;
-            Quaternion newRotation = ObserverRotation;
-
-            if (currentObserverExtents.Equals(newExtents) &&
-                currentObserverOrigin.Equals(newOrigin) &&
-                currentObserverRotation.Equals(newRotation))
-            {
-                // Nothing to do.
-                return;
-            }
-
             // Update the observer
             switch(ObserverVolumeType)
             {
                 case VolumeType.AxisAlignedCube:
-                    observer.SetVolumeAsAxisAlignedBox(newOrigin, newExtents);
+                    observer.SetVolumeAsAxisAlignedBox(ObserverOrigin, ObservationExtents);
                     break;
 
                 case VolumeType.Sphere:
                     // We use the x value of the extents as the sphere radius
-                    observer.SetVolumeAsSphere(newOrigin, newExtents.x);
+                    observer.SetVolumeAsSphere(ObserverOrigin, ObservationExtents.x);
                     break;
 
                 case VolumeType.UserAlignedCube:
-                    observer.SetVolumeAsOrientedBox(newOrigin, newExtents, newRotation);
+                    observer.SetVolumeAsOrientedBox(ObserverOrigin, ObservationExtents, ObserverRotation);
                     break;
 
                 default:
                     Debug.LogError($"Unsupported ObserverVolumeType value {ObserverVolumeType}");
                     break;
             }
-
-            currentObserverExtents = newExtents;
-            currentObserverOrigin = newOrigin;
-            currentObserverRotation = newRotation;
         }
 
         /// <summary>
@@ -545,7 +537,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         {
             if (!IsRunning) { return; }
 
-            if (outstandingMeshObject != null)
+            if (outstandingMeshObject == null)
             {
                 Debug.LogWarning($"OnDataReady called for mesh id {cookedData.id.handle} while no request was outstanding.");
                 return;
@@ -597,16 +589,41 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             }
             meshes.Add(cookedData.id.handle, meshObject);
 
+            meshObject.GameObject.transform.parent = (ObservedObjectParent.transform != null) ? ObservedObjectParent.transform : null;
+
             if (sendUpdatedEvent)
             {
-                SpatialAwarenessSystem.RaiseMeshUpdated(this, cookedData.id.handle, meshObject.GameObject);
+                SpatialAwarenessSystem?.RaiseMeshUpdated(this, cookedData.id.handle, meshObject);
             }
             else
             {
-                SpatialAwarenessSystem.RaiseMeshAdded(this, cookedData.id.handle, meshObject.GameObject);
+                SpatialAwarenessSystem?.RaiseMeshAdded(this, cookedData.id.handle, meshObject);
             }
         }
 #endif // UNITY_WSA
+
+        /// <summary>
+        /// Applies the mesh display option to existing meshes when modified at runtime.
+        /// </summary>
+        /// <param name="option">The <see cref="SpatialAwarenessMeshDisplayOptions"/> to apply to the meshes.</param>
+        private void ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions option)
+        {
+            bool enable = (option != SpatialAwarenessMeshDisplayOptions.None);
+
+            foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
+            {
+                if ((meshObject == null) || (meshObject.Renderer == null)) { continue; }
+
+                if (enable)
+                {
+                    meshObject.Renderer.sharedMaterial = (option == SpatialAwarenessMeshDisplayOptions.Visible) ?
+                        VisibleMaterial :
+                        OcclusionMaterial;
+                }
+
+                meshObject.Renderer.enabled = enable;
+            }
+        }
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }

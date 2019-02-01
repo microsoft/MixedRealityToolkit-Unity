@@ -73,7 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <param name="destroyMeshes"></param>
         public static void Cleanup(SpatialAwarenessMeshObject meshObject, bool destroyGameObject = true, bool destroyMeshes = true)
         {
-
             if (destroyGameObject && (meshObject.GameObject != null))
             {
                 UnityEngine.Object.Destroy(meshObject.GameObject);

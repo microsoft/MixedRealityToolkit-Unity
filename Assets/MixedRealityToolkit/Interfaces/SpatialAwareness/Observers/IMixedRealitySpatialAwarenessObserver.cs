@@ -34,11 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         bool IsStationaryObserver { get; set; }
 
         /// <summary>
-        /// Gets the parent <see cref="GameObject"/> to which this observer parents created objects.
-        /// </summary>
-        GameObject ObservedObjectParent { get; }
-
-        /// <summary>
         /// Gets or sets the type of volume the observer should operate in.
         /// </summary>
         VolumeType ObserverVolumeType { get; set; }

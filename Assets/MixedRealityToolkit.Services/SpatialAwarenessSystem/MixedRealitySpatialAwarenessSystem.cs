@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
@@ -260,9 +261,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         // TODO: update
 
         /// <inheritdoc />
-        public void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, GameObject mesh)
+        public void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject)
         {
-            meshEventData.Initialize(observer, meshId, mesh);
+            meshEventData.Initialize(observer, meshId, meshObject);
             HandleEvent(meshEventData, OnMeshAdded);
         }
 
@@ -277,9 +278,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
             };
 
         /// <inheritdoc />
-        public void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, GameObject mesh)
+        public void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject)
         {
-            meshEventData.Initialize(observer, meshId, mesh);
+            meshEventData.Initialize(observer, meshId, meshObject);
             HandleEvent(meshEventData, OnMeshUpdated);
         }
 
