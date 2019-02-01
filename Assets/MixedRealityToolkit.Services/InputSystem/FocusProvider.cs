@@ -361,12 +361,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             FocusDetails focusDetails;
             if (!TryGetFocusDetails(pointingSource, out focusDetails)) { return null; }
 
-            GraphicInputEventData graphicInputEventData;
-            if (TryGetSpecificPointerGraphicEventData(pointingSource, out graphicInputEventData))
-            {
-                graphicInputEventData.selectedObject = focusDetails.Object;
-            }
-
             return focusDetails.Object;
         }
 
@@ -391,6 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             if (TryGetPointerData(pointer, out pointerData))
             {
                 graphicInputEventData = pointerData.GraphicEventData;
+                graphicInputEventData.selectedObject = pointerData.GraphicEventData.pointerCurrentRaycast.gameObject;
                 return true;
             }
 
@@ -424,16 +419,17 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         /// <returns>The UIRaycastCamera</returns>
         private void EnsureUiRaycastCameraSetup()
         {
+            Transform cameraTransform = CameraCache.Main.transform.Find("UIRaycastCamera");
             GameObject cameraObject;
 
-            if (CameraCache.Main.transform.childCount == 0)
+            if (cameraTransform == null)
             {
                 cameraObject = new GameObject { name = "UIRaycastCamera" };
                 cameraObject.transform.parent = CameraCache.Main.transform;
             }
             else
             {
-                cameraObject = CameraCache.Main.transform.Find("UIRaycastCamera").gameObject;
+                cameraObject = cameraTransform.gameObject;
                 Debug.Assert(cameraObject.transform.parent == CameraCache.Main.transform);
             }
 
@@ -801,6 +797,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             {
                 if (pointerData.CurrentPointerTarget != null)
                 {
+                    float distance = 0f;
+                    for (int i = 0; i <= pointerData.RayStepIndex; i++) {
+                        distance += pointerData.Pointer.Rays[i].Length;
+                    }
+                    
                     // Check layer prioritization
                     if (prioritizedLayerMasks.Length > 1)
                     {
@@ -814,7 +815,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                         }
                         else if (threeDLayerIndex == uiLayerIndex)
                         {
-                            if (pointerData.Details.LastRaycastHit.distance > uiRaycastResult.distance)
+                            if (distance > uiRaycastResult.distance)
                             {
                                 overridePhysicsRaycast = true;
                             }
@@ -822,7 +823,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                     }
                     else
                     {
-                        if (pointerData.Details.LastRaycastHit.distance > uiRaycastResult.distance)
+                        if (distance > uiRaycastResult.distance)
                         {
                             overridePhysicsRaycast = true;
                         }

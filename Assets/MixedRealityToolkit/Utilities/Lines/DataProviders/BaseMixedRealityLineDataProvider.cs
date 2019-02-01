@@ -12,7 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
     /// Base class that provides data about a line.
     /// </summary>
     /// <remarks>Data to be consumed by other classes like the <see cref="Renderers.BaseMixedRealityLineRenderer"/></remarks>
-    [DisallowMultipleComponent]
     public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
         private const float MinRotationMagnitude = 0.0001f;
@@ -374,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
                     rotationVector = (point - origin).normalized;
                     break;
                 case LineRotationMode.None:
-                    break;
+                    return LineTransform.rotation;
             }
 
             if (rotationVector.magnitude < MinRotationMagnitude)
@@ -560,6 +559,52 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         private float ClampedLength(float normalizedLength)
         {
             return Mathf.Lerp(Mathf.Max(lineStartClamp, 0.0001f), Mathf.Min(lineEndClamp, 0.9999f), Mathf.Clamp01(normalizedLength));
+        }
+
+        private void OnDrawGizmos()
+        {
+#if UNITY_EDITOR
+            // Draw a crude, performant gizmo for lines that are unselected
+            if (Application.isPlaying || UnityEditor.Selection.activeGameObject == gameObject)
+            {
+                return;
+            }
+#endif
+
+            DrawUnselectedGizmosPreview();
+        }
+
+        protected virtual void DrawUnselectedGizmosPreview()
+        {
+            int linePreviewResolution = Mathf.Max(16, PointCount / 4);
+            Vector3 firstPosition = FirstPoint;
+            Vector3 lastPosition = firstPosition;
+
+            for (int i = 1; i < linePreviewResolution; i++)
+            {
+                Vector3 currentPosition;
+
+                if (i == linePreviewResolution - 1)
+                {
+                    currentPosition = LastPoint;
+                }
+                else
+                {
+                    float normalizedLength = (1f / (linePreviewResolution - 1)) * i;
+                    currentPosition = GetPoint(normalizedLength);
+                }
+
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawLine(lastPosition, currentPosition);
+
+                lastPosition = currentPosition;
+            }
+
+            if (Loops)
+            {
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawLine(lastPosition, firstPosition);
+            }
         }
     }
 }

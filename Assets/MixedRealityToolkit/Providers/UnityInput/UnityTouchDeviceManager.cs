@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
@@ -16,6 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
     /// <summary>
     /// Manages Touch devices using unity input system.
     /// </summary>
+    [MixedRealityDataProvider(
+        typeof(IMixedRealityInputSystem),
+        (SupportedPlatforms)(-1))]  // All platforms supported by Unity
     public class UnityTouchDeviceManager : BaseDeviceManager, IMixedRealityExtensionService
     {
         /// <summary>
