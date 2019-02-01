@@ -40,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private static bool showSpatialAwarenessProperties = true;
         private SerializedProperty enableSpatialAwarenessSystem;
         private SerializedProperty spatialAwarenessSystemType;
-        private SerializedProperty spatialAwarenessProfile;
         // Diagnostic system properties
         private static bool showDiagnosticProperties = true;
         private SerializedProperty enableDiagnosticsSystem;
@@ -114,7 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             // Spatial Awareness system configuration
             enableSpatialAwarenessSystem = serializedObject.FindProperty("enableSpatialAwarenessSystem");
             spatialAwarenessSystemType = serializedObject.FindProperty("spatialAwarenessSystemType");
-            spatialAwarenessProfile = serializedObject.FindProperty("spatialAwarenessProfile");
             // Diagnostics system configuration
             enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
@@ -276,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
                     EditorGUILayout.PropertyField(spatialAwarenessSystemType);
-                    changed |= RenderProfile(spatialAwarenessProfile);
+                    EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer. Spatial Awareness observers are registered as Additional Service Providers.", MessageType.Info);
                 }
             }
 

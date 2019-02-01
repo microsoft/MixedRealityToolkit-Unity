@@ -6,24 +6,24 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers
 {
-    public interface IMixedRealitySpatialAwarenessSurfaceFindingHandler : IEventSystemHandler
+    public interface IMixedRealitySpatialAwarenessObservationHandler<T> : IEventSystemHandler
     {
         /// <summary>
-        /// Called when the spatial awareness surface finding subsystem adds a new planar surface.
+        /// Called when a spatial observer adds a new observation.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnSurfaceAdded(MixedRealitySpatialAwarenessEventData eventData);
+        void OnObservationAdded(MixedRealitySpatialAwarenessEventData<T> eventData);
 
         /// <summary>
-        /// Called when the spatial awareness surface finding subsystem updates an existing planar surface.
+        /// Called when a spatial observer updates a previous observation.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnSurfaceUpdated(MixedRealitySpatialAwarenessEventData eventData);
+        void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<T> eventData);
 
         /// <summary>
-        /// Called when the spatial awareness surface finding subsystem removes an existing planar surface.
+        /// Called when a spatial observer removes a previous observation.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnSurfaceRemoved(MixedRealitySpatialAwarenessEventData eventData);
+        void OnObservationRemoved(MixedRealitySpatialAwarenessEventData<T> eventData);
     }
 }

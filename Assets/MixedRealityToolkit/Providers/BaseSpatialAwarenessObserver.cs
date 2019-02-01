@@ -3,15 +3,15 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Providers
+namespace Microsoft.MixedReality.Toolkit.Core.Devices
 {
-    public class BaseSpatialObserver : BaseDataProvider, IMixedRealitySpatialAwarenessObserver
+    public class BaseSpatialAwarenessObserver : BaseDataProvider, IMixedRealitySpatialAwarenessObserver
     {
         /// <summary>
         /// Constructor.
@@ -19,17 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public BaseSpatialObserver(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile)
+        public BaseSpatialAwarenessObserver(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile)
         {
-            if (MixedRealityToolkit.SpatialAwarenessSystem != null)
-            {
-                SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
-            }
-            else
-            {
-                Debug.LogError($"A spatial observer is registered in your service providers profile, but the spatial awareness system is turned off. Please either turn on spatial awareness or remove {name}.");
-            }
-
+            SourceId = MixedRealityToolkit.SpatialAwarenessSystem.GenerateNewSourceId();
             SourceName = name;
         }
 
@@ -80,31 +72,46 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
-        /// <inheritdoc />
-        public AutoStartBehavior StartupBehavior { get; set; } = AutoStartBehavior.AutoStart;
+        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+
+        /// <summary>
+        /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
+        /// </summary>
+        protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 
         /// <inheritdoc />
-        public int DefaultPhysicsLayer { get; } = 31;
+        public AutoStartBehavior StartupBehavior { get; set; }
 
         /// <inheritdoc />
-        public bool IsRunning { get; protected set; } = false;
+        public int DefaultPhysicsLayer { get; set; } = 31;
+
+        /// <inheritdoc />
+        public int DefaultPhysicsLayerMask => (1 << DefaultPhysicsLayer);
+
+        /// <inheritdoc />
+        public bool IsRunning { get; protected set; }
 
         /// <inheritdoc />
         public bool IsStationaryObserver { get; set; } = false;
 
-        /// <inheritdoc />
-        public Quaternion ObserverRotation { get; set; } = Quaternion.identity;
+        private GameObject observedObjectParent = null;
 
-        public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
+        public GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent(Name));
 
         /// <inheritdoc />
         public VolumeType ObserverVolumeType { get; set; } = VolumeType.AxisAlignedCube;
 
         /// <inheritdoc />
-        public Vector3 ObservationExtents { get; set; } = Vector3.one * 3f; // 3 meter sides / radius
+        public Vector3 ObservationExtents { get; set; } = Vector3.one * 3; // 3 meters
 
         /// <inheritdoc />
-        public float UpdateInterval { get; set; } = 3.5f; // 3.5 seconds
+        public Quaternion ObserverRotation { get; set; } = Quaternion.identity;
+
+        /// <inheritdoc />
+        public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
+
+        /// <inheritdoc />
+        public float UpdateInterval { get; set; } = 3.5f;   // 3.5 seconds
 
         /// <inheritdoc />
         public virtual void Resume() { }

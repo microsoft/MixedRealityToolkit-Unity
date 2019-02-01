@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
-//using Microsoft.MixedReality.Toolkit.Core.Interfaces.DataProviders.SpatialObservers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
@@ -226,19 +225,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Spatial Awareness system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsSpatialAwarenessSystemEnabled)
             {
-                if (RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) && SpatialAwarenessSystem != null)
-                {
-                    //if (ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders != null &&
-                    //    ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders.RegisteredSpatialObserverDataProviders != null)
-                    //{
-                    //    for (int i = 0; i < ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders.RegisteredSpatialObserverDataProviders.Length; i++)
-                    //    {
-                    //        var spatialObserver = ActiveProfile.SpatialAwarenessProfile.SpatialObserverDataProviders.RegisteredSpatialObserverDataProviders[i];
-                    //        RegisterService<IMixedRealitySpatialAwarenessObserver>(spatialObserver.SpatialObserverType, spatialObserver.RuntimePlatform, spatialObserver.SpatialObserverName, spatialObserver.Priority);
-                    //    }
-                    //}
-                }
-                else
+#if UNITY_EDITOR                
+                LayerExtensions.SetupLayer(31, "Spatial Awareness");
+#endif
+                if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) && SpatialAwarenessSystem != null)
                 {
                     Debug.LogError("Failed to start the Spatial Awareness System!");
                 }
