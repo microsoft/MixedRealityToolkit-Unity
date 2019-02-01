@@ -5,10 +5,10 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
 {
     [CustomEditor(typeof(SimpleLineDataProvider))]
-    public class SimpleLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
+    public class SimpleLineDataProviderInspector : BaseLineDataProviderInspector
     {
         private SerializedProperty endPoint;
         private SerializedProperty endPointPosition;

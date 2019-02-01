@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
 {
     [CustomEditor(typeof(RectangleLineDataProvider))]
-    public class RectangleLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
+    public class RectangleLineDataProviderInspector : BaseLineDataProviderInspector
     {
         private SerializedProperty height;
         private SerializedProperty width;

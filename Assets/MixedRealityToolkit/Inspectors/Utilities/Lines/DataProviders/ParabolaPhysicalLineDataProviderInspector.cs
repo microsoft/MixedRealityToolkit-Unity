@@ -4,10 +4,10 @@
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
 {
     [CustomEditor(typeof(ParabolaPhysicalLineDataProvider))]
-    public class ParabolaPhysicalLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
+    public class ParabolaPhysicalLineDataProviderInspector : BaseLineDataProviderInspector
     {
         private SerializedProperty gravity;
         private SerializedProperty velocity;

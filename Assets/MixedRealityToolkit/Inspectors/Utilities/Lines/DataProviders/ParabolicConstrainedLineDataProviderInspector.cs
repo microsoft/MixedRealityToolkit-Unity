@@ -5,10 +5,10 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
 {
     [CustomEditor(typeof(ParabolaConstrainedLineDataProvider))]
-    public class ParabolicConstrainedLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
+    public class ParabolicConstrainedLineDataProviderInspector : BaseLineDataProviderInspector
     {
         private SerializedProperty height;
         private SerializedProperty endPoint;
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataPro
         protected override void OnSceneGUI()
         {
             base.OnSceneGUI();
-
+        
             serializedObject.Update();
 
             var rotation = endPoint.FindPropertyRelative("rotation");

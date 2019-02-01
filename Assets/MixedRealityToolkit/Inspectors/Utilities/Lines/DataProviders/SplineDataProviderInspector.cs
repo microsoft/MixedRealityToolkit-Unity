@@ -8,10 +8,10 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
 {
     [CustomEditor(typeof(SplineDataProvider))]
-    public class SplineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
+    public class SplineDataProviderInspector : BaseLineDataProviderInspector
     {
         private const float OverlappingPointThreshold = 0.015f;
         private const float HandleSizeModifier = 0.04f;

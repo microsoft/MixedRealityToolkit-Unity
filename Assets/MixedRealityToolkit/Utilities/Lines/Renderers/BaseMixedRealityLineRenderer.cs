@@ -27,11 +27,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
                 if (lineDataSource == null)
                 {
                     lineDataSource = GetComponent<BaseMixedRealityLineDataProvider>();
-                    var lineDataType = lineDataSource.GetType();
 
-                    if (lineDataType == typeof(RectangleLineDataProvider))
+                    if (lineDataSource != null)
                     {
-                        StepMode = StepMode.FromSource;
+                        var lineDataType = lineDataSource.GetType();
+
+                        if (lineDataType == typeof(RectangleLineDataProvider))
+                        {
+                            StepMode = StepMode.FromSource;
+                        }
                     }
                 }
 
@@ -176,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 #if UNITY_EDITOR
         protected virtual void OnDrawGizmos()
         {
-            if (Application.isPlaying) { return; }
+            if (UnityEditor.Selection.activeGameObject == gameObject || Application.isPlaying) { return; }
 
             if (lineDataSource == null)
             {
@@ -209,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             Vector3 lastPos = firstPos;
 
             Color gColor = GetColor(0);
-            gColor.a = 0.5f;
+            gColor.a = 0.15f;
             Gizmos.color = gColor;
             Gizmos.DrawSphere(firstPos, GetWidth(0) * 0.5f);
 
@@ -222,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
                 Gizmos.color = gColor.Invert();
                 Gizmos.DrawLine(lastPos, currentPos);
 
-                gColor.a = 0.5f;
+                gColor.a = 0.15f;
                 Gizmos.color = gColor;
                 Gizmos.DrawSphere(currentPos, GetWidth(normalizedLength) * 0.5f);
 
@@ -242,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             Vector3 lastPos = firstPos;
             Color gColor = GetColor(0f);
 
-            gColor.a = 0.5f;
+            gColor.a = 0.15f;
             Gizmos.color = gColor;
             Gizmos.DrawSphere(firstPos, GetWidth(0f) * 0.5f);
 
@@ -255,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
                 Gizmos.color = gColor.Invert();
                 Gizmos.DrawLine(lastPos, currentPos);
 
-                gColor.a = 0.5f;
+                gColor.a = 0.15f;
                 Gizmos.color = gColor;
                 Gizmos.DrawSphere(currentPos, GetWidth(normalizedLength) * 0.5f);
                 lastPos = currentPos;
