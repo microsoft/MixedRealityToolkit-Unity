@@ -316,53 +316,49 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
                     continue;
                 }
 
-                switch (colliders[i].GetType().Name)
+                if(colliders[i] is SphereCollider)
                 {
-                    case "SphereCollider":
-                        SphereCollider sc = colliders[i] as SphereCollider;
-                        Bounds sphereBounds = new Bounds(sc.center, Vector3.one * sc.radius * 2);
-                        sphereBounds.GetFacePositions(sc.transform, ref corners);
-                        boundsPoints.AddRange(corners);
-                        break;
-
-                    case "BoxCollider":
-                        BoxCollider bc = colliders[i] as BoxCollider;
-                        Bounds boxBounds = new Bounds(bc.center, bc.size);
-                        boxBounds.GetCornerPositions(bc.transform, ref corners);
-                        boundsPoints.AddRange(corners);
-                        break;
-
-                    case "MeshCollider":
-                        MeshCollider mc = colliders[i] as MeshCollider;
-                        Bounds meshBounds = mc.sharedMesh.bounds;
-                        meshBounds.GetCornerPositions(mc.transform, ref corners);
-                        boundsPoints.AddRange(corners);
-                        break;
-
-                    case "CapsuleCollider":
-                        CapsuleCollider cc = colliders[i] as CapsuleCollider;
-                        Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
-                        switch (cc.direction)
-                        {
-                            case 0:
-                                capsuleBounds.size = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
-                                break;
-
-                            case 1:
-                                capsuleBounds.size = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
-                                break;
-
-                            case 2:
-                                capsuleBounds.size = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
-                                break;
-                        }
-                        capsuleBounds.GetFacePositions(cc.transform, ref corners);
-                        boundsPoints.AddRange(corners);
-                        break;
-
-                    default:
-                        break;
+                    SphereCollider sc = colliders[i] as SphereCollider;
+                    Bounds sphereBounds = new Bounds(sc.center, Vector3.one * sc.radius * 2);
+                    sphereBounds.GetFacePositions(sc.transform, ref corners);
+                    boundsPoints.AddRange(corners);
                 }
+                else if(colliders[i] is BoxCollider)
+                {
+                    BoxCollider bc = colliders[i] as BoxCollider;
+                    Bounds boxBounds = new Bounds(bc.center, bc.size);
+                    boxBounds.GetCornerPositions(bc.transform, ref corners);
+                    boundsPoints.AddRange(corners);
+
+                }
+                else if(colliders[i] is MeshCollider)
+                {
+                    MeshCollider mc = colliders[i] as MeshCollider;
+                    Bounds meshBounds = mc.sharedMesh.bounds;
+                    meshBounds.GetCornerPositions(mc.transform, ref corners);
+                    boundsPoints.AddRange(corners);
+                }
+                else if(colliders[i] is CapsuleCollider)
+                {
+                    CapsuleCollider cc = colliders[i] as CapsuleCollider;
+                    Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
+                    switch (cc.direction)
+                    {
+                        case 0:
+                            capsuleBounds.size = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
+                            break;
+
+                        case 1:
+                            capsuleBounds.size = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
+                            break;
+
+                        case 2:
+                            capsuleBounds.size = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
+                            break;
+                    }
+                    capsuleBounds.GetFacePositions(cc.transform, ref corners);
+                    boundsPoints.AddRange(corners);
+                }             
             }
         }
 
