@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
@@ -14,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// This class is an example of the <see cref="IMixedRealitySpatialAwarenessMeshHandler"/> interface. It keeps track
     /// of the IDs of each mesh and tracks the number of updates they have received.
     /// </summary>
-    public class DemoSpatialMeshHandler : MonoBehaviour, IMixedRealitySpatialAwarenessMeshHandler
+    public class DemoSpatialMeshHandler : MonoBehaviour, IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>
     {
         /// <summary>
         /// Collection that tracks the IDs and count of updates for each active spatial awareness mesh.
@@ -33,10 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <inheritdoc />
-        public virtual void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnObservationAdded(MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> eventData)
         {
-            Debug.Log("DemoSpatialMeshHandler.OnMeshAdded");
-
             // A new mesh has been added.
             if (!meshUpdateData.ContainsKey(eventData.Id))
             {
@@ -46,11 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <inheritdoc />
-        public virtual void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> eventData)
         {
             uint updateCount = 0;
-
-            Debug.Log("DemoSpatialMeshHandler.OnMeshUpdated");
 
             // A mesh has been updated. Find it and increment the update count.
             if (meshUpdateData.TryGetValue(eventData.Id, out updateCount))
@@ -63,10 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <inheritdoc />
-        public virtual void OnMeshRemoved(MixedRealitySpatialAwarenessEventData eventData)
+        public virtual void OnObservationRemoved(MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> eventData)
         {
-            Debug.Log("DemoSpatialMeshHandler.OnMeshRemoved");
-
             // A mesh has been removed. We no longer need to track the count of updates.
             if (meshUpdateData.ContainsKey(eventData.Id))
             {

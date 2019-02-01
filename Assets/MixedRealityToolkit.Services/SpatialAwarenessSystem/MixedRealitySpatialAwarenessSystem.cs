@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
     {
         #region IMixedRealityToolkit Implementation
 
-        private MixedRealitySpatialAwarenessEventData meshEventData = null;
+        private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
 
         /// <inheritdoc/>
         public override void Initialize()
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         /// </summary>
         private void InitializeInternal()
         {
-            meshEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
+            meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
         }
 
         /// <inheritdoc/>
@@ -258,8 +258,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
             }
         }
 
-        // TODO: update
-
         /// <inheritdoc />
         public void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject)
         {
@@ -270,11 +268,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         /// <summary>
         /// Event sent whenever a mesh is added.
         /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshAdded =
-            delegate (IMixedRealitySpatialAwarenessMeshHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshAdded =
+            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
             {
-                MixedRealitySpatialAwarenessEventData spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
-                handler.OnMeshAdded(spatialEventData);
+                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
+                handler.OnObservationAdded(spatialEventData);
             };
 
         /// <inheritdoc />
@@ -287,11 +285,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         /// <summary>
         /// Event sent whenever a mesh is updated.
         /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshUpdated =
-            delegate (IMixedRealitySpatialAwarenessMeshHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshUpdated =
+            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
             {
-                MixedRealitySpatialAwarenessEventData spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
-                handler.OnMeshUpdated(spatialEventData);
+                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
+                handler.OnObservationUpdated(spatialEventData);
             };
 
 
@@ -305,11 +303,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         /// <summary>
         /// Event sent whenever a mesh is discarded.
         /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshRemoved =
-            delegate (IMixedRealitySpatialAwarenessMeshHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshRemoved =
+            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
             {
-                MixedRealitySpatialAwarenessEventData spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData>(eventData);
-                handler.OnMeshRemoved(spatialEventData);
+                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
+                handler.OnObservationRemoved(spatialEventData);
             };
 
         #endregion IMixedRealitySpatialAwarenessSystem Implementation
