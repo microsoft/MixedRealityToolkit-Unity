@@ -2335,9 +2335,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
+        id: 6
+        description: Trigger
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_9
       axisCodeY: 
@@ -2348,9 +2348,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 13
       inputAction:
-        id: 7
-        description: Grip Press
-        axisConstraint: 3
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 344
       axisCodeX: 
       axisCodeY: 
@@ -2361,9 +2361,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 11
       inputAction:
-        id: 6
-        description: Trigger
-        axisConstraint: 3
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 0
       axisCodeX: AXIS_9
       axisCodeY: 
@@ -2374,9 +2374,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_11
       axisCodeY: 
@@ -2387,9 +2387,9 @@ MonoBehaviour:
       axisType: 4
       inputType: 21
       inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: AXIS_1
       axisCodeY: AXIS_2
@@ -2426,9 +2426,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 7
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 2
+        description: Menu
+        axisConstraint: 2
       keyCode: 332
       axisCodeX: 
       axisCodeY: 
@@ -2439,9 +2439,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 7
       inputAction:
-        id: 2
-        description: Menu
-        axisConstraint: 2
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 333
       axisCodeX: 
       axisCodeY: 
@@ -2452,9 +2452,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 22
       inputAction:
-        id: 5
-        description: Teleport Direction
-        axisConstraint: 4
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 348
       axisCodeX: 
       axisCodeY: 
@@ -2496,9 +2496,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
+        id: 6
+        description: Trigger
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_10
       axisCodeY: 
@@ -2509,9 +2509,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 13
       inputAction:
-        id: 7
-        description: Grip Press
-        axisConstraint: 3
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 345
       axisCodeX: 
       axisCodeY: 
@@ -2522,9 +2522,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 11
       inputAction:
-        id: 6
-        description: Trigger
-        axisConstraint: 3
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 0
       axisCodeX: AXIS_10
       axisCodeY: 
@@ -2535,9 +2535,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_12
       axisCodeY: 
@@ -2548,9 +2548,9 @@ MonoBehaviour:
       axisType: 4
       inputType: 21
       inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: AXIS_4
       axisCodeY: AXIS_5
@@ -2587,9 +2587,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 7
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 2
+        description: Menu
+        axisConstraint: 2
       keyCode: 330
       axisCodeX: 
       axisCodeY: 
@@ -2600,9 +2600,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 7
       inputAction:
-        id: 2
-        description: Menu
-        axisConstraint: 2
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 331
       axisCodeX: 
       axisCodeY: 
@@ -2613,9 +2613,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 22
       inputAction:
-        id: 5
-        description: Teleport Direction
-        axisConstraint: 4
+        id: 2
+        description: Menu
+        axisConstraint: 2
       keyCode: 349
       axisCodeX: 
       axisCodeY: 
