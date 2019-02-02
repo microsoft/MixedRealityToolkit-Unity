@@ -2613,9 +2613,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 22
       inputAction:
-        id: 2
-        description: Menu
-        axisConstraint: 2
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 349
       axisCodeX: 
       axisCodeY: 
