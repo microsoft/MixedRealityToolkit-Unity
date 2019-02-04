@@ -244,6 +244,47 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
         {
+            Debug.Assert(eventData != null);
+            Debug.Assert(!(eventData is  MixedRealityPointerEventData), "HandleEvent called with a pointer event. All events raised by pointer should call HandlePointerEvent");
+
+            if (disabledRefCount > 0)
+            {
+                return;
+            }
+
+            var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
+            DispatchEventToGlobalListeners(baseInputEventData, eventHandler);
+            
+            if (baseInputEventData.used)
+            {
+                // All global listeners get a chance to see the event,
+                // but if any of them marked it used,
+                // we stop the event from going any further.
+                return;
+            }
+
+            Debug.Assert(baseInputEventData.InputSource.Pointers != null, $"InputSource {baseInputEventData.InputSource.SourceName} doesn't have any registered pointers! Input Sources without pointers should use the GazeProvider's pointer as a default fallback.");
+
+            var modalEventHandled = false;
+            // Get the focused object for each pointer of the event source
+            for (int i = 0; i < baseInputEventData.InputSource.Pointers.Length && !baseInputEventData.used; i++)
+            {
+                modalEventHandled = DispatchEventToObjectFocusedByPointer(baseInputEventData.InputSource.Pointers[i], baseInputEventData, modalEventHandled, eventHandler);
+            }
+
+            if (!baseInputEventData.used)
+            {
+                DispatchEventToFallbackHandlers(baseInputEventData, eventHandler);
+            }
+        }
+        
+        /// <summary>
+        /// Handles a pointer event
+        /// Assumption: We only send pointer events to the objects that pointers are focusing, except for global event listeners (which listen to everything)
+        /// In contract, all other events get sent to all other pointers attached to a given input source
+        /// </summary>
+        private void HandlePointerEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IMixedRealityPointerHandler
+        {
             if (disabledRefCount > 0)
             {
                 return;
@@ -251,17 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Debug.Assert(eventData != null);
             var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
-            Debug.Assert(baseInputEventData != null);
-            Debug.Assert(!baseInputEventData.used);
-
-            if (baseInputEventData.InputSource == null)
-            {
-                Debug.LogError($"Failed to find an input source for {baseInputEventData}");
-                return;
-            }
-
-            // Send the event to global listeners
-            base.HandleEvent(eventData, eventHandler);
+            DispatchEventToGlobalListeners(baseInputEventData, eventHandler);
 
             if (baseInputEventData.used)
             {
@@ -271,70 +302,86 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            if (baseInputEventData.InputSource.Pointers == null)
+            Debug.Assert(pointerEventData.Pointer != null, "Trying to dispatch event on pointer but pointerEventData is null");
+
+            DispatchEventToObjectFocusedByPointer(pointerEventData.Pointer, baseInputEventData, false, eventHandler);                
+
+            if (!baseInputEventData.used)
             {
-                Debug.LogError($"InputSource {baseInputEventData.InputSource.SourceName} doesn't have any registered pointers! Input Sources without pointers should use the GazeProvider's pointer as a default fallback.");
-                return;
+                DispatchEventToFallbackHandlers(baseInputEventData, eventHandler);
             }
+        }
 
-            var modalEventHandled = false;
+        /// <summary>
+        /// Dispatch an input event to all global event listeners
+        /// Return true if the event has been handled by a global event listener
+        /// </summary>
+        private void DispatchEventToGlobalListeners<T>(BaseInputEventData baseInputEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
+        {
+            Debug.Assert(baseInputEventData != null);
+            Debug.Assert(!baseInputEventData.used);
+            Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}");
 
-            // Get the focused object for each pointer of the event source
-            for (int i = 0; i < baseInputEventData.InputSource.Pointers.Length; i++)
-            {
-                GameObject focusedObject = FocusProvider?.GetFocusedObject(baseInputEventData.InputSource.Pointers[i]);
+            // Send the event to global listeners
+            base.HandleEvent(baseInputEventData, eventHandler);            
+        }
 
-                // Handle modal input if one exists
-                if (modalInputStack.Count > 0 && !modalEventHandled)
-                {
-                    GameObject modalInput = modalInputStack.Peek();
-
-                    if (modalInput != null)
-                    {
-                        modalEventHandled = true;
-
-                        // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
-                        if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
-                        {
-                            if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
-                            {
-                                return;
-                            }
-                        }
-                        // Otherwise, just invoke the event on the modal handler itself
-                        else
-                        {
-                            if (ExecuteEvents.ExecuteHierarchy(modalInput, baseInputEventData, eventHandler) && baseInputEventData.used)
-                            {
-                                return;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError("ModalInput GameObject reference was null!\nDid this GameObject get destroyed?");
-                    }
-                }
-
-                // If event was not handled by modal, pass it on to the current focused object
-                if (focusedObject != null)
-                {
-                    if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
-                    {
-                        return;
-                    }
-                }
-            }
-
+        private void DispatchEventToFallbackHandlers<T>(BaseInputEventData baseInputEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
+        {
             // If event was not handled by the focused object, pass it on to any fallback handlers
-            if (fallbackInputStack.Count > 0)
+            if (!baseInputEventData.used && fallbackInputStack.Count > 0)
             {
                 GameObject fallbackInput = fallbackInputStack.Peek();
-                if (ExecuteEvents.ExecuteHierarchy(fallbackInput, baseInputEventData, eventHandler) && baseInputEventData.used)
+                ExecuteEvents.ExecuteHierarchy(fallbackInput, baseInputEventData, eventHandler);
+            }
+        }
+
+        
+        /// <summary>
+        /// Dispatch an input event to the object focused by the given IMixedRealityPointer.
+        /// If a modal dialog is active, dispatch the pointer event to that modal dialog
+        /// Returns true if the event was handled by a modal handler
+        private bool DispatchEventToObjectFocusedByPointer<T>(IMixedRealityPointer mixedRealityPointer, BaseInputEventData baseInputEventData, 
+            bool modalEventHandled, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
+        {
+            GameObject focusedObject = FocusProvider?.GetFocusedObject(mixedRealityPointer);
+
+            // Handle modal input if one exists
+            if (modalInputStack.Count > 0 && !modalEventHandled)
+            {
+                GameObject modalInput = modalInputStack.Peek();
+
+                if (modalInput != null)
                 {
-                    // return;
+                    // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
+                    if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
+                    {
+                        if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
+                        {
+                            return true;
+                        }
+                    }
+                    // Otherwise, just invoke the event on the modal handler itself
+                    else
+                    {
+                        if (ExecuteEvents.ExecuteHierarchy(modalInput, baseInputEventData, eventHandler) && baseInputEventData.used)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.LogError("ModalInput GameObject reference was null!\nDid this GameObject get destroyed?");
                 }
             }
+
+            // If event was not handled by modal, pass it on to the current focused object
+            if (focusedObject != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler);
+            }
+            return modalEventHandled;
         }
 
         /// <summary>
@@ -820,7 +867,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private GraphicInputEventData HandlePointerDown(IMixedRealityPointer pointer)
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(pointerEventData, OnPointerDownEventHandler);
+            HandlePointerEvent(pointerEventData, OnPointerDownEventHandler);
+
             GraphicInputEventData graphicEventData;
             FocusProvider.TryGetSpecificPointerGraphicEventData(pointer, out graphicEventData);
             return graphicEventData;
@@ -866,7 +914,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void HandleClick()
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(pointerEventData, OnInputClickedEventHandler);
+            HandlePointerEvent(pointerEventData, OnInputClickedEventHandler);
 
             // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the pointerClickHandler.
         }
@@ -917,7 +965,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private GraphicInputEventData HandlePointerUp(IMixedRealityPointer pointer)
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(pointerEventData, OnPointerUpEventHandler);
+            HandlePointerEvent(pointerEventData, OnPointerUpEventHandler);
 
             GraphicInputEventData graphicEventData;
             FocusProvider.TryGetSpecificPointerGraphicEventData(pointer, out graphicEventData);
