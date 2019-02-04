@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 toolTip = toolTipGo.GetComponent<ToolTip>();
                 toolTip.gameObject.SetActive(false);
                 toolTip.ShowBackground = showBackground;
-                toolTip.ShowOutline = showOutline;
+                toolTip.ShowHighlight = showOutline;
                 toolTip.ShowConnector = showConnector;
                 toolTip.transform.position = transform.position;
                 toolTip.transform.parent = transform;
