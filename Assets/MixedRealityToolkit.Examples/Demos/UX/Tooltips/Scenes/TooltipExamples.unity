@@ -7299,26 +7299,26 @@ MonoBehaviour:
   toolTipPrefab: {fileID: 1083549605185280, guid: afaef0108a478c44a9eac26658bc29bf,
     type: 3}
   tooltipToggleAction:
-    id: 0
-    description: None
-    axisConstraint: 0
+    id: 7
+    description: Grip Press
+    axisConstraint: 3
   appearType: 1
   vanishType: 1
   remainType: 1
   appearDelay: 0
   vanishDelay: 5
   lifetime: 10
-  settingsMode: 0
+  settingsMode: 1
   showBackground: 1
   showOutline: 0
   showConnector: 1
   followType: 1
-  pivotMode: 0
-  pivotDirection: 1
+  pivotMode: 1
+  pivotDirection: 8
   pivotDirectionOrient: 1
   manualPivotDirection: {x: 0, y: 1, z: 0}
   manualPivotLocalPosition: {x: 0, y: -1.64, z: -0.73}
-  pivotDistance: 0.051
+  pivotDistance: 0.65
   toolTipText: New Tooltip
   anchor: {fileID: 0}
 --- !u!64 &1220608073
@@ -8261,7 +8261,7 @@ MonoBehaviour:
   pivotDirectionOrient: 1
   manualPivotDirection: {x: 0, y: 1, z: 0}
   manualPivotLocalPosition: {x: -1.2, y: -2.2, z: 0.43}
-  pivotDistance: 0.85
+  pivotDistance: 0.65
   toolTipText: New Tooltip
   anchor: {fileID: 0}
 --- !u!64 &1286762435
@@ -8652,6 +8652,7 @@ MonoBehaviour:
     Tooltips also utilize the new LineDataProvider concept allowing for straight lines,
     parabola lines and spline lines.
 
+
     You can utilize a variety of colors for lines.
 
 
@@ -8724,12 +8725,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1505022811}
-    characterCount: 534
+    characterCount: 535
     spriteCount: 0
-    spaceCount: 85
+    spaceCount: 86
     wordCount: 84
     linkCount: 0
-    lineCount: 15
+    lineCount: 16
     pageCount: 1
     materialCount: 1
   m_havePropertiesChanged: 0
