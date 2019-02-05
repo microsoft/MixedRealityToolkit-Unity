@@ -606,7 +606,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                         {
                             if (description == "Grip Press" ||
                                 description == "Trigger Position" ||
-                                description == "Trigger Touched" ||
+                                description == "Trigger Touch" ||
                                 description == "Touchpad Position" ||
                                 description == "Touchpad Touch" ||
                                 description == "Touchpad Press" ||
