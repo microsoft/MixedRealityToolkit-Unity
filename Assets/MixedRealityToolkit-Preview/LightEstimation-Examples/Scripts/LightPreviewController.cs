@@ -70,10 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 			spheres    .SetActive(false);
 			shaderBalls.SetActive(true);
 			cubes      .SetActive(false);
-
-			transform.position = Camera.main.transform.position + Camera.main.transform.forward * 3;
-			transform.LookAt(Camera.main.transform.position);
-			transform.eulerAngles = new Vector3(0,transform.eulerAngles.y,0);
+			
 			targetPos = transform.position;
 		
 			// Hook up resources

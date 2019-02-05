@@ -10,11 +10,22 @@ You can check out the 'Minimum' scene for an example of the bare minimum require
 
 ## Project Configuration
 
-Please use Unity 2018.2 or greater, and ensure your application has permission to access the WebCam. For the 'Demo' scene running on HoloLens, permissions for Microphone (voice commands) and PicturesLibrary (saving active Cubemap to user's photo library) should be enabled.
+Please use Unity 2018.2 or greater, and ensure your application has permission to access the WebCam.
 
 Light Estimation has no hard dependencies on MRTK, so if you wish to use it separately from MRTK, just copy these folders into your own project:
 >MixedRealityToolkit-Preview / LightEstimation<br/>
 >MixedRealityToolkit-Preview / CameraCapture
+
+## Configuration for Example Scene Functionality
+
+For the 'Demo' scene running on HoloLens, permissions for Microphone (voice commands) and PicturesLibrary (saving active Cubemap to user's photo library) should be enabled.
+
+The Demo scene uses the Spatial Mapping Collider for placing objects on surfaces in HoloLens. For this to work you need the WMR package:
+>Package Manager->Show Preview Packages->Windows Mixed Reality->Install
+
+For ARFoundation functionality, please make sure you add the ARFoundation package, along with the associated platform specific AR packge:
+>Package Manager->Show Preview Packages->AR Foundation->Install<br/>
+>Package Manager->Show Preview Packages->ARCore XR Plugin->Install
 
 **NOTE:** This project is capable of using a laptop's gyroscope in the Unity Editor through [UnityEditorGyro](https://github.com/maluoi/UnityEditorGyro) to emulate the head rotation of a tracked device. The pre-compiled DLLs will not be included until they are properly signed, but you can add them yourself in the meantime! This can be quite helpful for debugging or development. Check the comments at the top of [EditorGyro.cs](/Assets/MixedRealityToolkit-Preview/LightEstimation-Examples/EditorGyro/EditorGyro.cs) in the project for details!
 
