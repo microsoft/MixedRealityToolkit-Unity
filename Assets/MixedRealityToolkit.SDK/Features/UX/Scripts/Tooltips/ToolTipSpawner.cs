@@ -19,6 +19,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     /// </summary>
     public class ToolTipSpawner : BaseFocusHandler, IMixedRealityInputHandler
     {
+        private enum SettingsMode
+        {
+            UseDefaults = 0,
+            Override
+        }
+
         private enum VanishType
         {
             VanishOnFocusExit = 0,
@@ -38,68 +44,55 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         [SerializeField]
-        private Vector3 defaultDimensions = new Vector3(0.182f, 0.028f, 1.0f);
+        private GameObject toolTipPrefab = null;
 
-        [SerializeField]
-        private bool showBackground = true;
-
-        [SerializeField]
-        private bool showOutline = false;
-
-        [SerializeField]
-        private bool showConnector = true;
-
-        [SerializeField]
-        private AppearType appearType = AppearType.AppearOnFocusEnter;
-
-        [SerializeField]
-        private VanishType vanishType = VanishType.VanishOnFocusExit;
-
-        [SerializeField]
-        private RemainType remainType = RemainType.Timeout;
-
+        [Header("Input Settings")]
         [SerializeField]
         [Tooltip("The action that will be used for when to spawn or toggle the tooltip.")]
         private MixedRealityInputAction tooltipToggleAction = MixedRealityInputAction.None;
 
+        [Header("Appear / Vanish Behavior Settings")]
+        [SerializeField]
+        private AppearType appearType = AppearType.AppearOnFocusEnter;
+        [SerializeField]
+        private VanishType vanishType = VanishType.VanishOnFocusExit;
+        [SerializeField]
+        private RemainType remainType = RemainType.Timeout;
         [SerializeField]
         [Range(0f, 5f)]
         private float appearDelay = 0.0f;
-
         [SerializeField]
         [Range(0f, 5f)]
         private float vanishDelay = 2.0f;
-
         [SerializeField]
         [Range(0.5f, 10.0f)]
         private float lifetime = 1.0f;
 
+        [Header("ToolTip Override Settings")]
+        [Tooltip("Prefab's settings will be used unless this is set to Override")]
         [SerializeField]
-        private GameObject toolTipPrefab = null;
-
+        private SettingsMode settingsMode = SettingsMode.UseDefaults;
+        [SerializeField]
+        private bool showBackground = true;
+        [SerializeField]
+        private bool showOutline = false;
+        [SerializeField]
+        private bool showConnector = true;
         [SerializeField]
         private ConnectorFollowType followType = ConnectorFollowType.AnchorOnly;
-
         [SerializeField]
         private ConnectorPivotMode pivotMode = ConnectorPivotMode.Manual;
-
         [SerializeField]
         private ConnectorPivotDirection pivotDirection = ConnectorPivotDirection.North;
-
         [SerializeField]
         private ConnectorOrientType pivotDirectionOrient = ConnectorOrientType.OrientToObject;
-
         [SerializeField]
         private Vector3 manualPivotDirection = Vector3.up;
-
         [SerializeField]
         private Vector3 manualPivotLocalPosition = Vector3.up;
-
-#if UNITY_EDITOR
         [SerializeField]
-        [Range(0f, 1f)]
+        [Range(0f, 2f)]
         private float pivotDistance = 0.25f;
-#endif
 
         [SerializeField]
         private string toolTipText = "New Tooltip";
@@ -108,11 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         private Transform anchor = null;
 
         private float focusEnterTime = 0f;
-
         private float focusExitTime = 0f;
-
         private float tappedTime = 0f;
-
         private ToolTip toolTip;
 
         /// <inheritdoc />
@@ -144,31 +134,31 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// <inheritdoc />
         void IMixedRealityInputHandler.OnInputPressed(InputEventData<float> eventData)
         {
-            //if (eventData.InputData > .95f)
-            //{
-            //tappedTime = Time.unscaledTime;
-            //}
-            //if (toolTip == null || !toolTip.gameObject.activeSelf)
-            //{
-            //  switch (vanishType)
-            //  {
-            //      case VanishType.VanishOnTap:
-            //          toolTip.gameObject.SetActive(false);
-            //          break;
+            if (eventData.InputData < .95f)
+            {
+                return;
+            }
 
-            //      default:
-            //          break;
-            //  }
-            //  switch (appearType)
-            //  {
-            //      case AppearType.AppearOnTap:
-            //          ShowToolTip();
-            //          break;
+            tappedTime = Time.unscaledTime;
 
-            //      default:
-            //          break;
-            //  }
-            //}
+            if (toolTip == null || !toolTip.gameObject.activeSelf)
+            {
+                switch (appearType)
+                {
+                    case AppearType.AppearOnTap:
+                        ShowToolTip();
+                        break;
+                }
+            }
+            else
+            {
+                switch (vanishType)
+                {
+                    case VanishType.VanishOnTap:
+                        toolTip.gameObject.SetActive(false);
+                        break;
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -183,9 +173,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
                 if (toolTip == null || !toolTip.gameObject.activeSelf)
                 {
-                    if (appearType == AppearType.AppearOnTap)
+                    switch (appearType)
                     {
-                        ShowToolTip();
+                        case AppearType.AppearOnTap:
+                            ShowToolTip();
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (vanishType)
+                    {
+                        case VanishType.VanishOnTap:
+                            toolTip.gameObject.SetActive(false);
+                            break;
                     }
                 }
             }
@@ -206,12 +207,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 var toolTipGo = Instantiate(toolTipPrefab);
                 toolTip = toolTipGo.GetComponent<ToolTip>();
                 toolTip.gameObject.SetActive(false);
-                toolTip.ShowBackground = showBackground;
-                toolTip.ShowHighlight = showOutline;
-                toolTip.ShowConnector = showConnector;
                 toolTip.transform.position = transform.position;
                 toolTip.transform.parent = transform;
-                toolTip.ContentParentTransform.localScale = defaultDimensions;
             }
 
             if (appearType == AppearType.AppearOnFocusEnter)
@@ -230,16 +227,30 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             toolTip.gameObject.SetActive(true);
             var connector = toolTip.GetComponent<ToolTipConnector>();
             connector.Target = (anchor != null) ? anchor.gameObject : gameObject;
-            connector.PivotDirection = pivotDirection;
-            connector.PivotDirectionOrient = pivotDirectionOrient;
-            connector.ManualPivotLocalPosition = manualPivotLocalPosition;
-            connector.ManualPivotDirection = manualPivotDirection;
-            connector.ConnectorFollowingType = followType;
-            connector.PivotMode = pivotMode;
 
-            if (pivotMode == ConnectorPivotMode.Manual)
+            switch (settingsMode)
             {
-                toolTip.PivotPosition = transform.TransformPoint(manualPivotLocalPosition);
+                case SettingsMode.UseDefaults:
+                    break;
+
+                case SettingsMode.Override:
+                    toolTip.ShowBackground = showBackground;
+                    toolTip.ShowHighlight = showOutline;
+                    toolTip.ShowConnector = showConnector;
+
+                    connector.PivotDirection = pivotDirection;
+                    connector.PivotDistance = pivotDistance;
+                    connector.PivotDirectionOrient = pivotDirectionOrient;
+                    connector.ManualPivotLocalPosition = manualPivotLocalPosition;
+                    connector.ManualPivotDirection = manualPivotDirection;
+                    connector.ConnectorFollowingType = followType;
+                    connector.PivotMode = pivotMode;
+
+                    if (connector.PivotMode == ConnectorPivotMode.Manual)
+                    {
+                        toolTip.PivotPosition = transform.TransformPoint(manualPivotLocalPosition);
+                    }
+                    break;
             }
 
             while (toolTip.gameObject.activeSelf)
@@ -306,10 +317,33 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         {
             if (Application.isPlaying) { return; }
 
+            if (toolTipPrefab == null) { return; }
+
             if (gameObject == UnityEditor.Selection.activeGameObject)
             {
                 Gizmos.color = Color.cyan;
                 Transform relativeTo = null;
+
+                ConnectorOrientType pivotDirectionOrient = this.pivotDirectionOrient;
+                ConnectorPivotDirection pivotDirection = this.pivotDirection;
+                ConnectorPivotMode pivotMode = this.pivotMode;
+                Vector3 manualPivotDirection = this.manualPivotDirection;
+                Vector3 manualPivotLocalPosition = this.manualPivotLocalPosition;
+                float pivotDistance = this.pivotDistance;
+
+                switch (settingsMode)
+                {
+                    case SettingsMode.UseDefaults:
+                        ToolTipConnector connector = toolTipPrefab.GetComponent<ToolTipConnector>();
+                        pivotDirectionOrient = connector.PivotDirectionOrient;
+                        pivotDirection = connector.PivotDirection;
+                        pivotMode = connector.PivotMode;
+                        manualPivotDirection = connector.ManualPivotDirection;
+                        manualPivotLocalPosition = connector.ManualPivotLocalPosition;
+                        pivotDistance = connector.PivotDistance; 
+                        break;
+                }
+
                 switch (pivotDirectionOrient)
                 {
                     case ConnectorOrientType.OrientToCamera:
