@@ -1,0 +1,10 @@
+{
+    "name": "MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields",
+    "references": [
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
