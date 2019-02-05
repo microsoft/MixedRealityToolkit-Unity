@@ -2165,7 +2165,7 @@ Transform:
   m_Children:
   - {fileID: 959819893}
   m_Father: {fileID: 782535781}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &523188691
 GameObject:
@@ -4680,8 +4680,8 @@ Transform:
   m_Children:
   - {fileID: 1239162144}
   - {fileID: 413619962}
-  - {fileID: 864078434}
   - {fileID: 461846838}
+  - {fileID: 864078434}
   - {fileID: 1220608071}
   - {fileID: 1286762433}
   - {fileID: 1000547033}
@@ -4859,7 +4859,7 @@ MonoBehaviour:
   focusEnabled: 1
   hostTransform: {fileID: 0}
   ManipulationMode: 1
-  constraintOnRotation: 0
+  constraintOnRotation: 2
   handMoveType: 2
   debugText: {fileID: 0}
 --- !u!65 &836834072
@@ -7312,12 +7312,12 @@ MonoBehaviour:
   showBackground: 1
   showOutline: 0
   showConnector: 1
-  followType: 1
+  followType: 2
   pivotMode: 1
   pivotDirection: 8
   pivotDirectionOrient: 1
   manualPivotDirection: {x: 0, y: 1, z: 0}
-  manualPivotLocalPosition: {x: 0, y: -1.64, z: -0.73}
+  manualPivotLocalPosition: {x: 0, y: 0.55, z: 0}
   pivotDistance: 0.65
   toolTipText: New Tooltip
   anchor: {fileID: 0}
@@ -8241,20 +8241,20 @@ MonoBehaviour:
   toolTipPrefab: {fileID: 1379707608131922, guid: 44ac04f8e1e21474991e4b59809859f4,
     type: 3}
   tooltipToggleAction:
-    id: 6
-    description: Trigger
-    axisConstraint: 3
+    id: 0
+    description: None
+    axisConstraint: 0
   appearType: 0
   vanishType: 0
   remainType: 1
   appearDelay: 0
-  vanishDelay: 0.5
+  vanishDelay: 1
   lifetime: 2.5
   settingsMode: 1
   showBackground: 1
   showOutline: 0
   showConnector: 1
-  followType: 1
+  followType: 2
   pivotMode: 1
   pivotDirection: 2
   pivotDirectionOrient: 1
@@ -8888,13 +8888,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8ddcf767354d5f90704bb40ddec60a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointingExtent: 10
-  uiRaycastCamera: {fileID: 748189782}
-  pointingRaycastLayerMasks:
-  - serializedVersion: 2
-    m_Bits: 4294967291
-  debugDrawPointingRays: 0
-  debugDrawPointingRayColors: []
 --- !u!114 &1524062336
 MonoBehaviour:
   m_ObjectHideFlags: 0

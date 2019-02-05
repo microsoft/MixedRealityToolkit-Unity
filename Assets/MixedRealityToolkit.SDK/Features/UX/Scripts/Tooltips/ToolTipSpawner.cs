@@ -110,17 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         {
             base.OnFocusEnter(eventData);
 
-            focusEnterTime = Time.unscaledTime;
-
-            if (toolTip == null || !toolTip.gameObject.activeSelf)
-            {
-                switch (appearType)
-                {
-                    case AppearType.AppearOnFocusEnter:
-                        ShowToolTip();
-                        break;
-                }
-            }
+            HandleFocusEnter();
         }
 
         /// <inheritdoc />
@@ -128,17 +118,35 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         {
             base.OnFocusExit(eventData);
 
-            focusExitTime = Time.unscaledTime;
+            HandleFocusExit();
         }
 
         /// <inheritdoc />
         void IMixedRealityInputHandler.OnInputPressed(InputEventData<float> eventData)
         {
-            if (eventData.InputData < .95f)
+            if (eventData.InputData > .95f)
             {
-                return;
+                HandleTap();
             }
+        }
 
+        /// <inheritdoc />
+        void IMixedRealityInputHandler.OnPositionInputChanged(InputEventData<Vector2> eventData) { }
+
+        /// <inheritdoc />
+        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData)
+        {
+            if (tooltipToggleAction.Id == eventData.MixedRealityInputAction.Id)
+            {
+                HandleTap();
+            }
+        }
+
+        /// <inheritdoc />
+        void IMixedRealityInputHandler.OnInputUp(InputEventData eventData) { }
+
+        private void HandleTap()
+        {
             tappedTime = Time.unscaledTime;
 
             if (toolTip == null || !toolTip.gameObject.activeSelf)
@@ -161,39 +169,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             }
         }
 
-        /// <inheritdoc />
-        void IMixedRealityInputHandler.OnPositionInputChanged(InputEventData<Vector2> eventData) { }
-
-        /// <inheritdoc />
-        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData)
+        private void HandleFocusEnter()
         {
-            if (tooltipToggleAction.Id == eventData.MixedRealityInputAction.Id)
-            {
-                tappedTime = Time.unscaledTime;
+            focusEnterTime = Time.unscaledTime;
 
-                if (toolTip == null || !toolTip.gameObject.activeSelf)
+            if (toolTip == null || !toolTip.gameObject.activeSelf)
+            {
+                switch (appearType)
                 {
-                    switch (appearType)
-                    {
-                        case AppearType.AppearOnTap:
-                            ShowToolTip();
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (vanishType)
-                    {
-                        case VanishType.VanishOnTap:
-                            toolTip.gameObject.SetActive(false);
-                            break;
-                    }
+                    case AppearType.AppearOnFocusEnter:
+                        ShowToolTip();
+                        break;
                 }
             }
         }
 
-        /// <inheritdoc />
-        void IMixedRealityInputHandler.OnInputUp(InputEventData eventData) { }
+        private void HandleFocusExit()
+        {
+            focusExitTime = Time.unscaledTime;
+        }
 
         private async void ShowToolTip()
         {
@@ -324,6 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 Gizmos.color = Color.cyan;
                 Transform relativeTo = null;
 
+                ConnectorFollowType followType = this.followType;
                 ConnectorOrientType pivotDirectionOrient = this.pivotDirectionOrient;
                 ConnectorPivotDirection pivotDirection = this.pivotDirection;
                 ConnectorPivotMode pivotMode = this.pivotMode;
@@ -335,6 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 {
                     case SettingsMode.UseDefaults:
                         ToolTipConnector connector = toolTipPrefab.GetComponent<ToolTipConnector>();
+                        followType = connector.ConnectorFollowingType;
                         pivotDirectionOrient = connector.PivotDirectionOrient;
                         pivotDirection = connector.PivotDirection;
                         pivotMode = connector.PivotMode;
@@ -354,22 +350,35 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                         relativeTo = (anchor != null) ? anchor.transform : transform;
                         break;
                 }
-                if (pivotMode == ConnectorPivotMode.Automatic)
+
+                Vector3 targetPosition = (anchor != null) ? anchor.transform.position : transform.position;
+
+                switch (followType)
                 {
-                    Vector3 targetPosition = (anchor != null) ? anchor.transform.position : transform.position;
-                    Vector3 toolTipPosition = targetPosition + ToolTipConnector.GetDirectionFromPivotDirection(
-                                    pivotDirection,
-                                    manualPivotDirection,
-                                    relativeTo) * pivotDistance;
-                    Gizmos.DrawLine(targetPosition, toolTipPosition);
-                    Gizmos.DrawWireCube(toolTipPosition, Vector3.one * 0.05f);
-                }
-                else
-                {
-                    Vector3 targetPosition = (anchor != null) ? anchor.transform.position : transform.position;
-                    Vector3 toolTipPosition = transform.TransformPoint(manualPivotLocalPosition);
-                    Gizmos.DrawLine(targetPosition, toolTipPosition);
-                    Gizmos.DrawWireCube(toolTipPosition, Vector3.one * 0.05f);
+                    case ConnectorFollowType.AnchorOnly:
+                        Gizmos.DrawLine(targetPosition, transform.TransformPoint(manualPivotLocalPosition));
+                        Gizmos.DrawWireCube(transform.TransformPoint(manualPivotLocalPosition), Vector3.one * 0.05f);
+                        break;
+
+                    case ConnectorFollowType.Position:
+                    case ConnectorFollowType.PositionAndXYRotation:
+                    case ConnectorFollowType.PositionAndYRotation:
+                        if (pivotMode == ConnectorPivotMode.Automatic)
+                        {
+                            Vector3 toolTipPosition = targetPosition + ToolTipConnector.GetDirectionFromPivotDirection(
+                                            pivotDirection,
+                                            manualPivotDirection,
+                                            relativeTo) * pivotDistance;
+                            Gizmos.DrawLine(targetPosition, toolTipPosition);
+                            Gizmos.DrawWireCube(toolTipPosition, Vector3.one * 0.05f);
+                        }
+                        else
+                        {
+                            Vector3 toolTipPosition = transform.TransformPoint(manualPivotLocalPosition);
+                            Gizmos.DrawLine(targetPosition, toolTipPosition);
+                            Gizmos.DrawWireCube(toolTipPosition, Vector3.one * 0.05f);
+                        }
+                        break;
                 }
             }
         }
