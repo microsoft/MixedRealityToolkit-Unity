@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 			InteractionManager.InteractionSourceUpdated  += SourceUpdated;
 
 			// Setup voice control events
-			keywordRecognizer = new KeywordRecognizer(new string[] { "circle", "rabbit", "cube", "reset", "clear", "enable", "disable", "add", "up", "down", "white up", "white down", "save" });
+			keywordRecognizer = new KeywordRecognizer(new string[] { "circle", "ball", "cube", "reset", "clear", "enable", "disable", "add", "up", "down", "white up", "white down", "save" });
 			keywordRecognizer.OnPhraseRecognized += HeardKeyword;
 			keywordRecognizer.Start();
 			#endif
@@ -192,7 +192,8 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 				RaycastHit hit;
 				if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit))
 				{
-					Instantiate(spawnPrefabs[addIndex%spawnPrefabs.Length], hit.point, Quaternion.identity);
+					GameObject prefab = spawnPrefabs[addIndex%spawnPrefabs.Length];
+					Instantiate(prefab, hit.point, prefab.transform.rotation);
 					addIndex++;
 				}
 			}
@@ -265,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.Preview.Examples.LightEstimation
 			else
 			{
 				// Blend rotation towards the player
-				Quaternion dest = Quaternion.LookRotation( Camera.main.transform.position-transform.position );
+				Quaternion dest = Quaternion.LookRotation( transform.position-Camera.main.transform.position );
 				Vector3    rot  = dest.eulerAngles;
 				rot.x = rot.z = 0;
 				dest = Quaternion.Euler(rot);
