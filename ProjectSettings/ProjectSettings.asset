@@ -113,7 +113,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 2018.0.0.0
+  bundleVersion: 2.0.0-Beta2
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -580,7 +580,7 @@ PlayerSettings:
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: Microsoft.MixedReality.Toolkit
-  metroPackageVersion: 2018.9.0.0
+  metroPackageVersion: 2.0.0.0
   metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
@@ -640,7 +640,14 @@ PlayerSettings:
       VideosLibrary: False
       VoipCall: False
       WebCam: False
-  metroTargetDeviceFamilies: {}
+  metroTargetDeviceFamilies:
+    Desktop: False
+    Holographic: False
+    IoT: False
+    IoTHeadless: False
+    Mobile: False
+    Team: False
+    Xbox: False
   metroFTAName: 
   metroFTAFileTypes: []
   metroProtocolName: 
