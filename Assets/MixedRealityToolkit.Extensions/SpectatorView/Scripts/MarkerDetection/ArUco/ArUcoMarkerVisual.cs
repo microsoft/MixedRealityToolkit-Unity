@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection
 {
     /// <summary>
-    /// Controls displaying of the AR marker on the mobile device
+    /// Controls displaying a ArUco marker on a canvas
     /// </summary>
     public class ArUcoMarkerVisual : MonoBehaviour,
         IMarkerVisual
@@ -68,116 +69,59 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             "100110001000110110101000010011010100"
         };
 
-        #region Fields
-        [Tooltip("Background plane")]
-        [SerializeField] GameObject backgroundPlane;
-        [Tooltip("GameObject that will contain the code")]
-        [SerializeField] Transform _arUcoCodeContainer;
-        [Tooltip("Material applied to white sections of SpectatorView marker")]
-        [SerializeField] Material _whiteMaterial;
-        [Tooltip("Material applied to black sections of SpectatorView marker")]
-        [SerializeField] Material _blackMaterial;
-
-        List<GameObject> _cubes = new List<GameObject>();
-        ScreenOrientation _originalOrientation;
-        #endregion
-
-        #region Events
-        private void OnEnable()
-        {
-            // Setting screen rotation to portrait when dispalying AR code
-            if (Application.platform == RuntimePlatform.Android ||
-                Application.platform == RuntimePlatform.IPhonePlayer)
-            {
-                _originalOrientation = Screen.orientation;
-                Screen.orientation = ScreenOrientation.Portrait;
-            }
-        }
-
-        private void OnDisable()
-        {
-            OnDismiss();
-        }
-
-        private void OnDestroy()
-        {
-            OnDismiss();
-        }
-
-        private void OnDismiss()
-        {
-            // Setting screen rotation to autorotation when AR code is dismissed
-            if (Application.platform == RuntimePlatform.Android ||
-                Application.platform == RuntimePlatform.IPhonePlayer)
-            {
-                Screen.orientation = _originalOrientation;
-            }
-        }
-        #endregion
+        [SerializeField]
+        RawImage _rawImage;
+        [SerializeField]
+        float _markerSize = 0.03f;
 
         public void ShowMarker(int id)
         {
+            if (_rawImage == null)
+            {
+                Debug.LogError("RawImage was not set for ArUcoMarkerVisual. Unable to display marker.");
+                return;
+            }
+
             gameObject.SetActive(true);
-            _arUcoCodeContainer.localRotation = Quaternion.Euler(360, 360, 360);
-            CreateMarker(id);
+
+            if (_rawImage != null)
+            {
+                _rawImage.texture = MakeMarkerTex(cCodes[id]);
+                var size = GetMarkerSizeInPixels();
+                _rawImage.rectTransform.sizeDelta = new Vector2(size, size);
+            }
         }
 
         public void HideMarker()
         {
-            ClearMarker();
-            backgroundPlane.GetComponent<Renderer>().sharedMaterial.color = Color.white;
+            if (_rawImage == null)
+            {
+                Debug.LogError("RawImage was not set for ArUcoMarkerVisual. Unable to hide marker.");
+                return;
+            }
+
             gameObject.SetActive(false);
         }
 
-        #region Marker Code
-        [ContextMenu("Generate")]
-        void TestGenerator()
+        public float GetMarkerSizeInPixels()
         {
-            CreateMarker(0);
-        }
+            float dpi = Screen.dpi;
 
-        void ClearMarker()
-        {
-            for (int i = 0; i < _cubes.Count; i++)
+#if UNITY_IOS
+            // Screen.dpi returns an incorrect value for the iPhoneX
+            // Look for screens with its dimensions (in both orientations)
+            // and manually set the screen dpi here.
+            if ((Screen.width == 2436 && Screen.height == 1125) || (Screen.height == 2436 && Screen.width == 1125))
             {
-                if (Application.isPlaying)
-                {
-                    Destroy(_cubes[i]);
-                }
-                else
-                {
-                    DestroyImmediate(_cubes[i]);
-                }
+                dpi = 458;
             }
-            _cubes.Clear();
-        }
+#endif
 
-        void CreateMarker(int id)
-        {
-            ClearMarker();
-            Texture2D marker = MakeMarkerTex(cCodes[id]);
+            float screenWidth = Screen.width;
+            float screenWidthInMeters = (screenWidth / dpi) * 0.0254f;
+            float markerWidthPercentageOfScreen = _markerSize / screenWidthInMeters;
 
-            int xW = (marker.width) * 2;
-            for (int x = 0; x < xW; x++)
-            {
-                for (int y = 0; y < xW; y++)
-                {
-                    float col = marker.GetPixel((x / 2), (y / 2)).r;
-
-                    var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cube.layer = gameObject.layer;
-                    cube.transform.parent = _arUcoCodeContainer;
-                    cube.transform.localPosition = new Vector3(x / (float)xW - 0.5f, 0, y / (float)xW - 0.5f);
-                    cube.transform.localScale = Vector3.one * 1.0f / xW;
-                    cube.transform.localRotation = Quaternion.identity;
-
-                    _cubes.Add(cube);
-                    if (col > 0.1f)
-                        cube.GetComponent<Renderer>().enabled = false;
-                    else
-                        cube.GetComponent<Renderer>().sharedMaterial = _blackMaterial;
-                }
-            }
+            return markerWidthPercentageOfScreen * Screen.width;
         }
 
         static Texture2D MakeMarkerTex(string data, int dataSize = 6, int border = 1)
@@ -221,6 +165,5 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
 
             return result;
         }
-        #endregion
     }
 }
