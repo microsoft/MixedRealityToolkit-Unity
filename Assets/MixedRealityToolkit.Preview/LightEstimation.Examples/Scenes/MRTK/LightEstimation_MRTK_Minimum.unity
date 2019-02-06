@@ -1094,7 +1094,15 @@ PrefabInstance:
 
         Mixed Reality Toolkit/Standard
 
-        Unity Standard Shader'
+        Unity Standard Shader
+
+
+
+
+        The LightEstimation GameObject in this scene contains all that you need in
+        order to get started using this tech! For a quick start in your own scene,
+        choose from the dropdown menu: Mixed Reality Toolkit->Light Estimation->Create
+        Estimation Object.'
       objectReference: {fileID: 0}
     - target: {fileID: 114125765304321574, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
@@ -1137,7 +1145,7 @@ PrefabInstance:
     - target: {fileID: 114121190672569774, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
-      value: 
+      value: Using Light Estimation
       objectReference: {fileID: 0}
     - target: {fileID: 114713125240876806, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
