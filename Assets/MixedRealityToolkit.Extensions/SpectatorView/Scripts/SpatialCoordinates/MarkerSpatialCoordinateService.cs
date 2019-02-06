@@ -12,6 +12,13 @@ using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordinates
 {
+    public interface IMarkerSpatialCoordinateServiceVisual
+    {
+        void UpdateText(string text);
+        void ShowVisual();
+        void HideVisual();
+    }
+
     public class MarkerSpatialCoordinateService : MonoBehaviour,
         ISpatialCoordinateService,
         IPlayerStateObserver
@@ -243,10 +250,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         IMarkerVisual _markerVisual;
         bool _showingMarker = false;
 
+        [SerializeField] bool _useMarkerSpatialCoordinateVisual;
+        [SerializeField] MonoBehaviour MarkerSpatialCoordinateVisual;
+        IMarkerSpatialCoordinateServiceVisual _markerSpatialCoordinateVisual;
+
         void OnValidate()
         {
+#if UNITY_EDITOR
             FieldHelper.ValidateType<IMarkerDetector>(MarkerDetector);
             FieldHelper.ValidateType<IMarkerVisual>(MarkerVisual);
+            FieldHelper.ValidateType<IMarkerSpatialCoordinateServiceVisual>(MarkerSpatialCoordinateVisual);
+#endif
         }
 
         void Awake()
@@ -259,6 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
 #endif
             _markerDetector = MarkerDetector as IMarkerDetector;
             _markerVisual = MarkerVisual as IMarkerVisual;
+            _markerSpatialCoordinateVisual = MarkerSpatialCoordinateVisual as IMarkerSpatialCoordinateServiceVisual;
 
             Initialize();
         }
@@ -438,7 +453,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 // Tear down any cached self spectator state
                 if (_showingMarker)
                 {
-                    _markerVisual.HideMarker();
+                    HideMarker();
                 }
 
                 _cachedSelfUser.AvailableMarkerId = -1;
