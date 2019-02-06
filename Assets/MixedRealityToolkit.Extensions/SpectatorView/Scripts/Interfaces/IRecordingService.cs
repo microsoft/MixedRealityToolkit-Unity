@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
     public interface IRecordingService : IDisposable
     {
         void Initialize();
-        void StartRecording();
+        bool StartRecording();
         void StopRecording();
     }
 }
