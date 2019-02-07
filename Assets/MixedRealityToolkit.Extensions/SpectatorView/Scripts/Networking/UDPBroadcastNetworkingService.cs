@@ -9,9 +9,19 @@ using System.Net.Sockets;
 using UnityEngine;
 
 using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
+using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
 {
+    public delegate void UDPBroadcastConnectHandler(int serverPort, int clientPort);
+
+    public interface IUDPBroadcastNetworkingServiceVisual
+    {
+        event UDPBroadcastConnectHandler OnConnect;
+        void ShowVisual();
+        void HideVisual();
+    }
+
     public class UDPBroadcastNetworkingService : MonoBehaviour,
         IMatchMakingService,
         IPlayerService,
@@ -37,9 +47,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
         }
         #endregion
 
-        [SerializeField] int ServerBroadcastPort = 48888;
-        [SerializeField] int ClientBroadcastPort = 48889;
-        [SerializeField] float BroadcastInterval = 0.25f;
+        [SerializeField] bool _useUdpBroadcastVisual;
+        [SerializeField] MonoBehaviour UdpBroadcastVisual;
+        IUDPBroadcastNetworkingServiceVisual _udpBroadcastVisual;
+
+        [SerializeField] int _serverBroadcastPort = 48888;
+        [SerializeField] int _clientBroadcastPort = 48889;
+        [SerializeField] float _broadcastInterval = 0.25f;
         [SerializeField] float _disconnectTimeout = 120.0f;
 
         bool _actAsServer = false;
@@ -54,6 +68,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
         byte[] _currentMessage = null;
         float _prevBroadcastTime = 0;
 
+        void OnValidate()
+        {
+#if UNITY_EDITOR
+            FieldHelper.ValidateType<IUDPBroadcastNetworkingServiceVisual>(UdpBroadcastVisual);
+#endif
+        }
+
         void Awake()
         {
             // TODO - update here if future scenario requires device other than hololens to act as server
@@ -62,6 +83,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
 #elif UNITY_ANDROID || UNITY_IOS
             _actAsServer = false;
 #endif
+            _udpBroadcastVisual = UdpBroadcastVisual as IUDPBroadcastNetworkingServiceVisual;
+
+            if (_useUdpBroadcastVisual)
+            {
+                if (_udpBroadcastVisual == null)
+                {
+                    Debug.LogError("Error: UdpBroadcastVisual not specified, network connection attempts will fail");
+                }
+
+                _udpBroadcastVisual.OnConnect += OnVisualConnect;
+            }
         }
 
         void Update()
@@ -69,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
             var diff = Time.time - _prevBroadcastTime;
             if (_senderUdp != null &&
                 _currentMessage != null &&
-                diff > BroadcastInterval)
+                diff > _broadcastInterval)
             {
                 BroadcastData();
                 _prevBroadcastTime = Time.time;
@@ -120,19 +152,53 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
 
         public void Connect()
         {
+            if (_useUdpBroadcastVisual)
+            {
+                if (_udpBroadcastVisual == null)
+                {
+                    Debug.LogError("Error: UdpBroadcastVisual not specified, unable to setup network connection");
+                    return;
+                }
+
+                _udpBroadcastVisual.ShowVisual();
+            }
+            else
+            {
+                ConnectImpl();
+            }
+        }
+
+        private void OnVisualConnect(int serverPort, int clientPort)
+        {
+            if (_useUdpBroadcastVisual)
+            {
+                _serverBroadcastPort = serverPort;
+                _clientBroadcastPort = clientPort;
+                ConnectImpl();
+
+                if (_connected &&
+                    _udpBroadcastVisual != null)
+                {
+                    _udpBroadcastVisual.HideVisual();
+                }
+            }
+        }
+
+        private void ConnectImpl()
+        {
             Debug.Log("Connecting. Acting as server: " + _actAsServer.ToString());
 
             _senderUdp = new UdpClient();
             _senderUdp.EnableBroadcast = true;
             var senderPort = _actAsServer ?
-                ServerBroadcastPort :
-                ClientBroadcastPort;
+                _serverBroadcastPort :
+                _clientBroadcastPort;
             _broadcastIpEndPoints = GetBroadcastIPEndPoints(senderPort);
             Debug.Log("Broadcasting messages on port: " + senderPort);
 
             _receiverPort = _actAsServer ?
-                ClientBroadcastPort :
-                ServerBroadcastPort;
+                _clientBroadcastPort :
+                _serverBroadcastPort;
             _receiverUdp = new UdpClient(_receiverPort);
             Debug.Log("Receiving messages on port: " + _receiverPort);
 
