@@ -52,11 +52,44 @@ Requirements
 
 Building the SpectatorView Native Plugin
 ----------------------------------------
+The SpectatorViewPlugin will only be used in the HoloLens application. It needs to be built on a PC with visual studio.
 - See: https://github.com/Microsoft/MixedRealityToolkit/blob/master/SpectatorViewPlugin/README.md
 
- 
+After building the SpectatorViewPlugin project, you will need to copy the generated dlls into your unity project's plugins directory.
+- The compile output for SpectatorViewPlugin will likely be found at:
+>MixedRealityToolkit\SpectatorViewPlugin\SpectatorViewPlugin\Release\SpectatorViewPlugin\
+
+- The unity plugin directory will likely be found at:
+>MixedRealityToolkit-Unity\Assets\Plugins\WSA\x86\
+
+>NOTE: This unity plugin directory may not exist by default. You can create this directory in windows file explorer or in the unity editor. The Plugins directory is one of unity's special folders (https://docs.unity3d.com/Manual/SpecialFolders.html). The \WSA\x86\ subdirectories signal that these dlls are for a windows store application with x86 architecture (These are the specifications for HoloLens).
+
 Project Setup
 -------------
+### Example
+- It may prove helpful to look at an example scene before integrating SpectatorView components into your application. After having added the SpectatorViewPlugin dlls to your unity project, you should be able to build and run the provided example scene:
+    - HoloToolkit-Examples\SpectatorView\Scenes\SpectatorViewExample.unity
+
+### High Level Overview
+The logic in spectator view can be broken down into three main steps:
+
+#### 1) Device Discovery
+SpectatorView supports having multiple iPhones view a single HoloLens's experience. For devices to discover one another, SpectatorView relies on UNET. The HoloLens configures itself as a client. iPhones joining the scene configure themselves as servers. iPhones broadcast that they exists to the HoloLens. And after hearing these broadcasts, the HoloLens starts looking for ArUco markers. Device discovery functionality can be found in the following script:
+> MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/Networking/NewDeviceDiscovery.cs
+
+#### 2) Marker Detection
+After going through device discovery, a different networking component is used for telling the iPhone where its marker is located in the HoloLens scene. Using UNET, the HoloLens configures itself as a server while the iPhone acts as a client. At this point, the iPhone is showing a random ArUco marker on its screen. The HoloLens searches for any ArUco markers in 3D space using its Photo/Video camera and OpenCV. After the HoloLens locates a marker, it broadcasts to all iPhones the marker's location. The iPhone who is showing a marker assesses whether the located marker is the one they are displaying based on marker ids. If it is the correct marker, the iPhone moves onto spatial synchronization. If it's not, the iPhone continues listening (Note: there is a timeout for how long the HoloLens searches for a marker).
+> Marker Detection: MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/SpatialSync/MarkerDetectionHololens.cs
+> Marker Location Broadcast: MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/Networking/SpectatorViewNetworkDiscovery.cs
+
+#### 3) Spatial Synchronization
+After the iPhone registers its marker's location in the HoloLens's scene, the iPhone locates the marker relative to its own scene origin. The transform from the marker to the iPhone scene origin is calculated as the transform from the marker to the iPhone camera combined with the transform of the iPhone camera to the iPhone's scene origin. The transform between the marker and the camera has some hard coded assumptions around phone dimensions/screen-camera-offsets. The transform of the iPhone camera to the scene origin is facilitated by AR Kit's device tracking. After finding the marker location in both the HoloLens and iPhone scenes a transform between scene origins is created. This transform between origins is then applied to the root game object, which updates content on the iPhone to be repositioned correctly relative to the HoloLens user. The logic in this third step is primarily facilitated in the following scripts:
+> MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/SpatialSync/AnchorLocated.cs
+> MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/SpatialSync/WorldSync.cs
+
+It seems worth noting that SpectatorView does the work to share a scene origin across devices. But SpectatorView does NOT currently synchronize all content across devices. Additional work is needed to synchronize animations or dynamically create/destroy game objects.
+
+### Integrating into your Application
 - Prepare your scene
     - Ensure all visable gameobjects, within your scene, are contained under a world root gameobject.
     ![World Root](Images/WorldRoot.PNG)
@@ -70,13 +103,15 @@ Project Setup
 
 Building for the Different Platforms
 ------------------------------------
-- When building for iOS ensure to remove the GLTF component of MRTK as this is not yet compatibile with this platform. 
-- At the top level of the SpectatorView prefab there is a component called 'Platform Switcher'.
+- The HoloLens application will have to be built on a PC using visual studio. The iOS application will have to be built on a mac using Xcode. However, generating solutions for visual studio and Xcode can all be completed using a PC.
+- At the top level of the SpectatorView prefab there is a component called 'Platform Switcher'. 
 ![Platform Switcher](Images/PlatformSwitcher.PNG)
 - Select the platform you want to build for.
 - If selecting 'Hololens' you should see all gameobjects beneath the iPhone gameobject in the SpectatorView prefab become inactive and all the gameobjects under 'Hololens' become active.
 - This can take a little while as depending on the platform you choose the HoloToolkit is being added or removed from the project.
-- Ensure you build all versions of the application using the same Unity editor instance (do not close Unity between builds), this is due to an unresolved issue with Unity.
+>NOTE: When building for iOS on mac make sure to remove the GLTF component of MRTK as it is not yet compatibile with this platform. It's suggested to rename \MixedRealityToolkit-Unity\Assets\HoloToolkit\Utilities\Scripts\GLTF\ to \MixedRealityToolkit-Unity\Assets\HoloToolkit\Utilities\Scripts\\~GLTF\ when building for iOS. The '\~' at the beginning of the GLTF directory name will cause it to register as a hidden asset in unity (https://docs.unity3d.com/Manual/SpecialFolders.html). You will have to remove the '\~' when building in unity for HoloLens.
+- After switching platforms, you can build your visual studio/xcode solution from Unity in the Build Settings dialogue (File -> Build Settings). Press build after opening this dialogue.
+>NOTE: Ensure you build both the visual studio and xcode solution for your application using the same Unity editor instance (do not close Unity between builds), this is due to an unresolved issue with Unity.
 
 Running your Application
 ------------------------
@@ -104,10 +139,6 @@ Networking your Application
 - SpectatorView uses UNET for its networking and manages all host-client connections for you.
 - Any app specific data has to be synced and implemented by you, using e.g. SyncVars, NetworkTransform, NetworkBehaviour.
 - For more information and tutorials on Unity Networking please visit https://unity3d.com/learn/tutorials/s/multiplayer-networking
-
-Example Scene
--------------
-- An example scene can be found in HoloToolkit-Examples\SpectatorView\Scenes\SpectatorViewExample.unity
 
 Troubleshooting
 ---------------
