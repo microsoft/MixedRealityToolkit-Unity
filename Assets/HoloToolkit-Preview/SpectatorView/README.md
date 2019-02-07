@@ -74,11 +74,11 @@ Project Setup
 The logic in spectator view can be broken down into three main steps:
 
 #### 1) Device Discovery
-Initially, the HoloLens and iPhone go through a device discovery process. Using UNET, the HoloLens configures itself as a client and the iPhone configures itself as a server. The iPhone then broadcasts that it exists to the HoloLens. This functionality can be found in the following script:
+SpectatorView supports having multiple iPhones view a single HoloLens's experience. For devices to discover one another, SpectatorView relies on UNET. The HoloLens configures itself as a client. iPhones joining the scene configure themselves as servers. iPhones broadcast that they exists to the HoloLens. And after hearing these broadcasts, the HoloLens starts looking for ArUco markers. Device discovery functionality can be found in the following script:
 > MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/Networking/NewDeviceDiscovery.cs
 
 #### 2) Marker Detection
-After going through device discovery, the iPhone and HoloLens switch roles. Using UNET, the HoloLens begins acting as a server while the iPhone acts as a client. At this point, the iPhone shows an ArUco marker on its screen. The HoloLens then searches for this marker in 3D space using its Photo/Video camera and OpenCV. After the HoloLens locates the marker, it broadcasts to the iPhone the marker's location in the HoloLens's scene.
+After going through device discovery, a different networking component is used for telling the iPhone where its marker is located in the HoloLens scene. Using UNET, the HoloLens configures itself as a server while the iPhone acts as a client. At this point, the iPhone is showing a random ArUco marker on its screen. The HoloLens searches for any ArUco markers in 3D space using its Photo/Video camera and OpenCV. After the HoloLens locates a marker, it broadcasts to all iPhones the marker's location. The iPhone who is showing a marker assesses whether the located marker is the one they are displaying based on marker ids. If it is the correct marker, the iPhone moves onto spatial synchronization. If it's not, the iPhone continues listening (Note: there is a timeout for how long the HoloLens searches for a marker).
 > Marker Detection: MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/SpatialSync/MarkerDetectionHololens.cs
 > Marker Location Broadcast: MixedRealityToolkit-Unity/Assets/HoloToolkit-Preview/SpectatorView/Scripts/Networking/SpectatorViewNetworkDiscovery.cs
 
