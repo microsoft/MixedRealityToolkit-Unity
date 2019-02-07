@@ -304,7 +304,7 @@ namespace HoloToolkit.Sharing
 
             if (Manager != null)
             {
-                // Force a disconnection so that we can stop and start Unity without connections hanging around.
+                // Force a disconnection so that we can stop and start Unity without connections remaining.
                 Manager.GetPairedConnection().Disconnect();
                 Manager.GetServerConnection().Disconnect();
                 Manager.Dispose();

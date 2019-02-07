@@ -20,8 +20,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public float InputGain = 1;
 
         /// <summary>
-        /// if keepAllData==false, you'll always get the newest data no matter how long the program hangs for any reason,
-        /// but will lose some data if the program does hang.
+        /// if keepAllData==false, you'll always get the newest data no matter how long the program becomes unresponsive
+        /// for any reason. It will lose some data if the program does not respond.
         /// <remarks>Can only be set on initialization.</remarks>
         /// </summary>
         public bool KeepAllData;
