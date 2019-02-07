@@ -99,44 +99,43 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
                 var controllerMappings = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
 
                 // Have to test that a controller type has been registered in the profiles,
-                // else it's Unity Input manager mappings will not have been setup by the inspector
+                // else its Unity Input manager mappings will not have been set up by the inspector.
                 bool profileFound = false;
 
                 for (int i = 0; i < controllerMappings?.Length; i++)
                 {
-                    if (!profileFound && controllerMappings[i].ControllerType.Type == controllerType)
+                    if (controllerMappings[i].ControllerType.Type == controllerType)
                     {
                         profileFound = true;
-                    }
 
-                    // Assign any known interaction mappings.
-                    if (controllerMappings[i].ControllerType.Type == controllerType &&
-                        controllerMappings[i].Handedness == ControllerHandedness &&
-                        controllerMappings[i].Interactions.Length > 0)
-                    {
-                        MixedRealityInteractionMapping[] profileInteractions = controllerMappings[i].Interactions;
-                        MixedRealityInteractionMapping[] newInteractions = new MixedRealityInteractionMapping[profileInteractions.Length];
-
-                        for (int j = 0; j < profileInteractions.Length; j++)
+                        // If it is an exact match, assign interaction mappings.
+                        if (controllerMappings[i].Handedness == ControllerHandedness &&
+                            controllerMappings[i].Interactions.Length > 0)
                         {
-                            newInteractions[j] = new MixedRealityInteractionMapping(profileInteractions[j]);
+                            MixedRealityInteractionMapping[] profileInteractions = controllerMappings[i].Interactions;
+                            MixedRealityInteractionMapping[] newInteractions = new MixedRealityInteractionMapping[profileInteractions.Length];
+
+                            for (int j = 0; j < profileInteractions.Length; j++)
+                            {
+                                newInteractions[j] = new MixedRealityInteractionMapping(profileInteractions[j]);
+                            }
+
+                            AssignControllerMappings(newInteractions);
+                            break;
                         }
-
-                        AssignControllerMappings(newInteractions);
-                        break;
                     }
+                }
 
-                    // If no controller mappings found, warn the user.  Does not stop the project from running.
+                // If no controller mappings found, warn the user.  Does not stop the project from running.
+                if (Interactions == null || Interactions.Length < 1)
+                {
+                    SetupDefaultInteractions(ControllerHandedness);
+
+                    // We still don't have controller mappings, so this may be a custom controller. 
                     if (Interactions == null || Interactions.Length < 1)
                     {
-                        SetupDefaultInteractions(ControllerHandedness);
-
-                        // We still don't have controller mappings, so this may be a custom controller. 
-                        if (Interactions == null || Interactions.Length < 1)
-                        {
-                            Debug.LogWarning($"No Controller interaction mappings found for {controllerMappings[i].Description}.");
-                            return false;
-                        }
+                        Debug.LogWarning($"No Controller interaction mappings found for {controllerType}.");
+                        return false;
                     }
                 }
 
