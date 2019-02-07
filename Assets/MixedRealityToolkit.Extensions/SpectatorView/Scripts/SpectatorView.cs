@@ -19,11 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
         [SerializeField] MonoBehaviour NetworkingService;
         [SerializeField] MonoBehaviour SpatialCoordinateService;
         [SerializeField] List<MonoBehaviour> PlayerStateObservers;
+
         IMatchMakingService _matchMakingService;
         IPlayerService _playerService;
         INetworkingService _networkingService;
         ISpatialCoordinateService _spatialCoordinateService;
         List<IPlayerStateObserver> _playerStateObservers;
+        IRecordingService _recordingService;
 
         bool _validState = true;
 
@@ -63,6 +65,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
                 if (observer != null)
                     _playerStateObservers.Add(observer);
             }
+
+            SetupRecordingService();
         }
 
         void Start()
@@ -142,6 +146,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
                     Debug.Log("Updated root transform: position:" + _sceneRoot.transform.position.ToString() + ", rotation: " + _sceneRoot.transform.rotation.ToString());
                 }
             }
+        }
+
+        private void SetupRecordingService()
+        {
+#if UNITY_IOS
+            _recordingService = new Recording.iOSRecordingService();
+#elif UNITY_ANDROID
+            _recordingService = new Recording.AndroidRecordingService();
+#endif
         }
     }
 }
