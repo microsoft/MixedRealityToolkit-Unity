@@ -1,0 +1,17 @@
+# Plugin items
+*.dll
+*.dll.meta
+*.pfx
+*.pfx.meta
+*.exp
+*.exp.meta
+*.iobj
+*.iobj.meta
+*.lib
+*.lib.meta
+*.ipdb
+*.ipdb.meta
+*.pri
+*.pri.meta
+*.winmd
+*.winmd.meta
