@@ -304,10 +304,11 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             if (Application.isPlaying)
             {
                 // Cleanup the scene objects are managing
-                if (ObservedObjectParent != null)
+                if (observedObjectParent != null)
                 {
-                    ObservedObjectParent.transform.DetachChildren();
+                    observedObjectParent.transform.DetachChildren();
                 }
+                
                 foreach (SpatialAwarenessMeshObject meshObject in meshes.Values)
                 {
                     if (meshObject != null)
