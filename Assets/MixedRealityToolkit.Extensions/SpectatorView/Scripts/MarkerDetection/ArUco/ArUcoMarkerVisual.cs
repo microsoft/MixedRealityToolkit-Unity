@@ -72,7 +72,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         [SerializeField]
         RawImage _rawImage;
         [SerializeField]
-        float _markerSize = 0.03f;
+        float _markerSize = 0.03f; // meters
+        [SerializeField]
+        public float _additionalScaleFactor = 1.0f;
 
         public void ShowMarker(int id)
         {
@@ -103,6 +105,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             gameObject.SetActive(false);
         }
 
+        public void SetMarkerSize(float size)
+        {
+            _markerSize = size;
+
+            if (_rawImage != null)
+            {
+                var sizeInPixels = GetMarkerSizeInPixels();
+                _rawImage.rectTransform.sizeDelta = new Vector2(sizeInPixels, sizeInPixels);
+            }
+        }
+
         public float GetMarkerSizeInPixels()
         {
             float dpi = Screen.dpi;
@@ -116,12 +129,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
                 dpi = 458;
             }
 #endif
-
             float screenWidth = Screen.width;
             float screenWidthInMeters = (screenWidth / dpi) * 0.0254f;
             float markerWidthPercentageOfScreen = _markerSize / screenWidthInMeters;
+            float markerWidthInPixels = markerWidthPercentageOfScreen * Screen.width;
+            float markerWidthInPixelsScaled = markerWidthInPixels * _additionalScaleFactor;
 
-            return markerWidthPercentageOfScreen * Screen.width;
+            Debug.Log("Calculating ArUco Marker Size, Screen Dimensions: " + Screen.width + "x" + Screen.height + 
+                ", dpi: " + Screen.dpi + ", Screen width in meters: " + screenWidthInMeters +
+                ", Marker width in pixels: " + markerWidthInPixels + ", Final marker width in pixels: " + markerWidthInPixelsScaled);
+
+            return markerWidthInPixelsScaled;
         }
 
         static Texture2D MakeMarkerTex(string data, int dataSize = 6, int border = 1)

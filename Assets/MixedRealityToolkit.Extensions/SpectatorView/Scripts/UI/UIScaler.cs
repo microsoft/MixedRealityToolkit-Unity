@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
+namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 {
     public class UIScaler : MonoBehaviour
     {

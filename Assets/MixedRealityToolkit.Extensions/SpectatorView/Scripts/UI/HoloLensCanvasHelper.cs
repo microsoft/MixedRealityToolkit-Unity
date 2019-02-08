@@ -3,9 +3,9 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
+namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 {
-    public class CanvasHelper : MonoBehaviour
+    public class HoloLensCanvasHelper : MonoBehaviour
     {
         [SerializeField] bool _bindToMainCamera = false;
         [SerializeField] float _zDistance = 1.0f;

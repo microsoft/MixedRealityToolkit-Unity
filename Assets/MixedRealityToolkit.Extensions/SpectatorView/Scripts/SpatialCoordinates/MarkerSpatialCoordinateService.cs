@@ -12,9 +12,17 @@ using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordinates
 {
+    public enum MarkerSpatialCoordinateServiceVisualState
+    {
+        waitingForUser,
+        locatingLocalOrigin,
+        locatingMarker,
+        none
+    }
+
     public interface IMarkerSpatialCoordinateServiceVisual
     {
-        void UpdateText(string text);
+        void UpdateVisualState(MarkerSpatialCoordinateServiceVisualState state);
         void ShowVisual();
         void HideVisual();
     }
@@ -223,15 +231,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         }
         #endregion
 
-        const string locatingLocalOriginText = "Locating local origin...";
-        const string locatingMarkerText = "Locating marker...";
-
         enum VisualState
         {
-            LOCATING_LOCAL_ORIGIN,
-            LOCATING_MARKER,
-            SHOWING_MARKER,
-            NONE
+            locatingLocalOrigin,
+            locatingMarker,
+            showingMarker,
+            waitingForUser,
+            none
         }
 
         [SerializeField] GameObject _aRFoundationGameObject;
@@ -239,11 +245,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         [SerializeField] ARPointCloudManager _aRPointCloudManager;
         [SerializeField] bool _showDebugVisual;
         [SerializeField] DebugVisualHelper _debugVisualHelper;
+        [SerializeField] float _markerSize = 0.04f;
 
         bool _actAsUser = false;
         bool _initialized = false;
         bool _localOriginEstablished = false;
-        VisualState _visualState = VisualState.NONE;
+        VisualState _visualState = VisualState.none;
 
         // User specific fields
         string _userPlayerId = "";
@@ -263,7 +270,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         IMarkerVisual _markerVisual;
 
         [SerializeField] bool _useMarkerSpatialCoordinateVisual;
-        [SerializeField] MonoBehaviour MarkerSpatialCoordinateVisual;
+        [SerializeField] MonoBehaviour HoloLensMarkerSpatialCoordinateVisual;
+        [SerializeField] MonoBehaviour MobileMarkerSpatialCoordinateVisual;
         IMarkerSpatialCoordinateServiceVisual _markerSpatialCoordinateVisual;
 
         void OnValidate()
@@ -271,7 +279,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
 #if UNITY_EDITOR
             FieldHelper.ValidateType<IMarkerDetector>(MarkerDetector);
             FieldHelper.ValidateType<IMarkerVisual>(MarkerVisual);
-            FieldHelper.ValidateType<IMarkerSpatialCoordinateServiceVisual>(MarkerSpatialCoordinateVisual);
+            FieldHelper.ValidateType<IMarkerSpatialCoordinateServiceVisual>(HoloLensMarkerSpatialCoordinateVisual);
+            FieldHelper.ValidateType<IMarkerSpatialCoordinateServiceVisual>(MobileMarkerSpatialCoordinateVisual);
 #endif
         }
 
@@ -280,14 +289,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             // TODO - update here if future scenario requires device other than hololens to act as user
 #if UNITY_WSA
             _actAsUser = true;
+            _markerSpatialCoordinateVisual = HoloLensMarkerSpatialCoordinateVisual as IMarkerSpatialCoordinateServiceVisual;
 #elif UNITY_ANDROID || UNITY_IOS
             _actAsUser = false;
+            _markerSpatialCoordinateVisual = MobileMarkerSpatialCoordinateVisual as IMarkerSpatialCoordinateServiceVisual;
 #endif
-            _markerDetector = MarkerDetector as IMarkerDetector;
-            _markerVisual = MarkerVisual as IMarkerVisual;
-            _markerSpatialCoordinateVisual = MarkerSpatialCoordinateVisual as IMarkerSpatialCoordinateServiceVisual;
 
-            _visualState = VisualState.NONE;
+            _markerDetector = MarkerDetector as IMarkerDetector;
+            if (_markerDetector != null)
+                _markerDetector.SetMarkerSize(_markerSize);
+
+            _markerVisual = MarkerVisual as IMarkerVisual;
+            if (_markerVisual != null)
+                _markerVisual.SetMarkerSize(_markerSize);
+
+            SetVisualState(VisualState.none);
 
             Initialize();
         }
@@ -298,14 +314,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             {
                 Populate();
             }
+            else if (WaitingOnUser())
+            {
+                SetVisualState(VisualState.waitingForUser);
+            }
 
             var state = GenerateStatePayload();
             if (state != null)
             {
                 SpatialCoordinateStateUpdated?.Invoke(state);
             }
-
-            UpdateVisualState();
 
             if (_showDebugVisual)
             {
@@ -467,9 +485,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             {
                 Debug.Log("User disconnected");
                 // Tear down any cached self spectator state
-                if (_visualState == VisualState.SHOWING_MARKER)
+                if (_visualState == VisualState.showingMarker)
                 {
-                    _visualState = VisualState.NONE;
+                    SetVisualState(VisualState.none);
                 }
 
                 _cachedSelfUser.AvailableMarkerId = -1;
@@ -532,9 +550,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             }
             else
             {
-                // An spectator needs to populate if it has a valid marker and hasn't been located
-                return Spectator.IsValidMarkerId(_cachedSelfSpectator.MarkerId) &&
-                    (!_cachedSelfSpectator.UserOriginToSpectatorMarker.Valid || (_visualState == VisualState.SHOWING_MARKER));
+                // A spectator needs to populate if it has a valid marker and hasn't been located
+                return _cachedSelfSpectator.HasValidMarkerId() &&
+                    (!_cachedSelfSpectator.UserOriginToSpectatorMarker.Valid || (_visualState == VisualState.showingMarker));
             }
         }
 
@@ -555,17 +573,23 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 if (!_localOriginEstablished)
                 {
                     Debug.Log("Local origin not yet established");
-                    _visualState = VisualState.LOCATING_LOCAL_ORIGIN;
+                    SetVisualState(VisualState.locatingLocalOrigin);
                 }
                 else if (!_cachedSelfSpectator.UserOriginToSpectatorMarker.Valid)
                 {
-                    ShowMarker();
+                    SetVisualState(VisualState.showingMarker);
                 }
                 else
                 {
-                    HideMarker();
+                    SetVisualState(VisualState.none);
                 }
             }
+        }
+
+        bool WaitingOnUser()
+        {
+            // A spectator is waiting on the user if it does not have a valid marker id
+            return !_actAsUser && !_cachedSelfSpectator.HasValidMarkerId();
         }
 
         void EstablishLocalOrigin()
@@ -629,7 +653,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             }
             else
             {
-                var marker = Spectator.IsValidMarkerId(_cachedSelfSpectator.MarkerId) ? _cachedSelfSpectator.MarkerId : _observedAvailableMarkerId;
+                var marker = _cachedSelfSpectator.HasValidMarkerId() ? _cachedSelfSpectator.MarkerId : _observedAvailableMarkerId;
                 var self = _cachedSelfSpectator;
                 self.MarkerId = marker;
                 Debug.Log("Creating spectator payload: " + self.ToString());
@@ -679,7 +703,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
 
         void ShowMarker()
         {
-            if (!Spectator.IsValidMarkerId(_cachedSelfSpectator.MarkerId))
+            if (!_cachedSelfSpectator.HasValidMarkerId())
             {
                 Debug.Log("Marker id not yet assigned");
                 return;
@@ -759,63 +783,93 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             return localCameraTransform;
         }
 
-        void UpdateVisualState()
+        void SetVisualState(VisualState visualState)
         {
+            if (_visualState != visualState)
+            {
+                _visualState = visualState;
+                Debug.Log("Updating UI visual state: " + _visualState.ToString());
+                UpdateVisualStateUI();
+            }
+        }
+
+        void UpdateVisualStateUI()
+        {
+            var showMarker = false;
+            var showVisual = false;
+            var state = MarkerSpatialCoordinateServiceVisualState.none;
+
             switch (_visualState)
             {
-                case VisualState.LOCATING_LOCAL_ORIGIN:
-                    HideMarker();
-                    if (_useMarkerSpatialCoordinateVisual &&
-                        _markerSpatialCoordinateVisual != null)
-                    {
-                        _markerSpatialCoordinateVisual.UpdateText(locatingLocalOriginText);
-                    }
+                case VisualState.locatingLocalOrigin:
+                    showMarker = false;
+                    showVisual = true;
+                    state = MarkerSpatialCoordinateServiceVisualState.locatingLocalOrigin;
                     break;
 
-                case VisualState.LOCATING_MARKER:
-                    HideMarker();
-                    if (_useMarkerSpatialCoordinateVisual &&
-                        _markerSpatialCoordinateVisual != null)
-                    {
-                        _markerSpatialCoordinateVisual.UpdateText(locatingMarkerText);
-                    }
+                case VisualState.locatingMarker:
+                    showMarker = false;
+                    showVisual = true;
+                    state = MarkerSpatialCoordinateServiceVisualState.locatingMarker;
                     break;
 
-                case VisualState.SHOWING_MARKER:
-                    ShowMarker();
-                    if (_useMarkerSpatialCoordinateVisual &&
-                        _markerSpatialCoordinateVisual != null)
-                    {
-                        _markerSpatialCoordinateVisual.HideVisual();
-                    }
+                case VisualState.showingMarker:
+                    showMarker = true;
+                    showVisual = false;
+                    state = MarkerSpatialCoordinateServiceVisualState.none;
                     break;
 
-                case VisualState.NONE:
+                case VisualState.waitingForUser:
+                    showMarker = false;
+                    showVisual = true;
+                    state = MarkerSpatialCoordinateServiceVisualState.waitingForUser;
+                    break;
+
+                case VisualState.none:
                 default:
-                    HideMarker();
-                    if (_useMarkerSpatialCoordinateVisual &&
-                        _markerSpatialCoordinateVisual != null)
-                    {
-                        _markerSpatialCoordinateVisual.HideVisual();
-                    }
+                    showMarker = false;
+                    showVisual = false;
+                    state = MarkerSpatialCoordinateServiceVisualState.none;
                     break;
+            }
+
+            if (_useMarkerSpatialCoordinateVisual &&
+                _markerSpatialCoordinateVisual != null)
+            {
+                _markerSpatialCoordinateVisual.UpdateVisualState(state);
+
+                if (showVisual)
+                {
+                    _markerSpatialCoordinateVisual.ShowVisual();
+                }
+                else
+                {
+                    _markerSpatialCoordinateVisual.HideVisual();
+                }
+            }
+
+            if (showMarker)
+            {
+                ShowMarker();
+            }
+            else
+            {
+                HideMarker();
             }
         }
 
         void ShowDebugVisuals()
         {
-            Debug.Log("Attempting to show debug visual");
             if (_actAsUser &&
                 _cachedSelfUser.Spectators != null)
             {
                 foreach (var spectatorPair in _cachedSelfUser.Spectators)
                 {
+                    // We first place the marker visual if we know a valid location
                     if (spectatorPair.Value.UserOriginToSpectatorMarker.Valid)
                     {
                         var position = spectatorPair.Value.UserOriginToSpectatorMarker.Position;
                         var rotation = spectatorPair.Value.UserOriginToSpectatorMarker.Rotation;
-
-                        Debug.Log("Placing marker visual: " + spectatorPair.Value.Id + ", " + position.ToString() + ", " + rotation.ToString());
 
                         if (_originVisuals.ContainsKey(spectatorPair.Value.Id))
                         {
@@ -827,6 +881,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                             _originVisuals[spectatorPair.Value.Id] = _debugVisualHelper.CreateVisual(position, rotation);
                         }
 
+                        // We then place the spectator camera visual if we know a valid location
                         if (spectatorPair.Value.SpectatorMarkerToSpectatorCamera.Valid &&
                             spectatorPair.Value.SpectatorCameraToSpectatorOriginWhenDetected.Valid &&
                             spectatorPair.Value.SpectatorOriginToSpectatorCamera.Valid)
@@ -844,8 +899,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
 
                             position = userOriginToSpectatorCamera.GetColumn(3);
                             rotation = Quaternion.LookRotation(userOriginToSpectatorCamera.GetColumn(2), userOriginToSpectatorCamera.GetColumn(1));
-
-                            Debug.Log("Placing camera visual: " + spectatorPair.Value.Id + ", " + position.ToString() + ", " + rotation.ToString());
 
                             if (_cameraVisuals.ContainsKey(spectatorPair.Value.Id))
                             {

@@ -10,8 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
     public class UnityArUcoMarkerDetectorHoloLens : MonoBehaviour,
         IMarkerDetector
     {
-        [SerializeField] float _markerSize = 0.03f; // meters
         [SerializeField] float _timeBetweenCapture = 0.250f;
+        [SerializeField] float _markerSize = 0.03f; // meters
+
         private UnityArUcoMarkerDetectorPluginAPI _api;
         private bool _detectingMarkers = false;
         private float _dt = 0;
@@ -45,6 +46,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         {
             CleanUp();
             this.gameObject.SetActive(false);
+        }
+
+        public void SetMarkerSize(float size)
+        {
+            _markerSize = size;
         }
 
         void Update()

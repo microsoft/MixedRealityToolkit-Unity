@@ -7,5 +7,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
     {
         void ShowMarker(int id);
         void HideMarker();
+        void SetMarkerSize(float size);
     }
 }

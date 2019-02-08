@@ -48,7 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
         #endregion
 
         [SerializeField] bool _useUdpBroadcastVisual;
-        [SerializeField] MonoBehaviour UdpBroadcastVisual;
+        [SerializeField] MonoBehaviour HoloLensUdpBroadcastVisual;
+        [SerializeField] MonoBehaviour MobileUdpBroadcastVisual;
         IUDPBroadcastNetworkingServiceVisual _udpBroadcastVisual;
 
         [SerializeField] int _serverBroadcastPort = 48888;
@@ -71,7 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
         void OnValidate()
         {
 #if UNITY_EDITOR
-            FieldHelper.ValidateType<IUDPBroadcastNetworkingServiceVisual>(UdpBroadcastVisual);
+            FieldHelper.ValidateType<IUDPBroadcastNetworkingServiceVisual>(HoloLensUdpBroadcastVisual);
+            FieldHelper.ValidateType<IUDPBroadcastNetworkingServiceVisual>(MobileUdpBroadcastVisual);
 #endif
         }
 
@@ -80,10 +82,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
             // TODO - update here if future scenario requires device other than hololens to act as server
 #if UNITY_WSA
             _actAsServer = true;
+            _udpBroadcastVisual = HoloLensUdpBroadcastVisual as IUDPBroadcastNetworkingServiceVisual;
 #elif UNITY_ANDROID || UNITY_IOS
             _actAsServer = false;
+            _udpBroadcastVisual = MobileUdpBroadcastVisual as IUDPBroadcastNetworkingServiceVisual;
 #endif
-            _udpBroadcastVisual = UdpBroadcastVisual as IUDPBroadcastNetworkingServiceVisual;
 
             if (_useUdpBroadcastVisual)
             {

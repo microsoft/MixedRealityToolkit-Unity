@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
         {
             if (prefab == null)
             {
-                Debug.Log("Prefab not defined. No visual created");
+                Debug.LogError("Prefab not defined. No visual created");
                 return null;
             }
 
@@ -30,7 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
 
         void SetTransform(ref GameObject visual, Vector3 position, Quaternion rotation)
         {
-            Debug.Log("Updating prefab visual. " + position.ToString() + ", " + rotation.ToString());
             visual.transform.position = position;
             visual.transform.rotation = rotation;
             visual.transform.localScale = _scale;

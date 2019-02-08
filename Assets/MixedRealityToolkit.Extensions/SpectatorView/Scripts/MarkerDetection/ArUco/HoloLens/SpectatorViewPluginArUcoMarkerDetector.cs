@@ -15,7 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
     {
         public event MarkersUpdatedHandler MarkersUpdated;
 
-        [Tooltip("The physical size of the marker to search for in metres")]
         [SerializeField]
         private float _markerSize = 0.03f;
 
@@ -78,6 +77,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
 #else
             Debug.LogError("Capturing is not supported on this platform");
 #endif
+        }
+
+        public void SetMarkerSize(float size)
+        {
+            _markerSize = size;
         }
 
         private async void SetupCamera()
