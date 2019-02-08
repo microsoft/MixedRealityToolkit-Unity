@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
@@ -15,6 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class SwapVolume : MonoBehaviour, IMixedRealityPointerHandler
     {
+        [SerializeField]
+        [Tooltip("The action to activate or deactivate the swapping volume.")]
+        private MixedRealityInputAction selectAction = MixedRealityInputAction.None;
+
         [SerializeField]
         [Tooltip("The scene object to be hidden when the active solver is enabled.")]
         private GameObject hideThisObject = null;
@@ -53,6 +58,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
+            if (eventData.MixedRealityInputAction != selectAction)
+            {
+                return;
+            }
+
             if (spawnedObject.activeSelf)
             {
                 spawnedObject.SetActive(false);
@@ -71,6 +81,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     else if (eventData.Handedness == Handedness.Left)
                     {
                         solverHandler.TrackedObjectToReference = TrackedObjectType.MotionControllerLeft;
+                    }
+                    else
+                    {
+                        solverHandler.TrackedObjectToReference = TrackedObjectType.Head;
                     }
                 }
 
