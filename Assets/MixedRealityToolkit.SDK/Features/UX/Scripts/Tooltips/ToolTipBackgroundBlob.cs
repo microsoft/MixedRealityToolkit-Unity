@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         private Transform attachPointOffset = null;
 
         [SerializeField]
-        private ToolTip toolTip;
+        private ToolTip toolTip = null;
 
         #endregion Transform Targets
 

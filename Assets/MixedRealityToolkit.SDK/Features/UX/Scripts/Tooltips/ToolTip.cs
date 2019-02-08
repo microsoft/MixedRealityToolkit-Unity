@@ -192,11 +192,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [SerializeField]
         [Tooltip("The padding around the content (height / width)")]
-        private Vector2 backgroundPadding;
+        private Vector2 backgroundPadding = Vector2.zero;
 
         [SerializeField]
         [Tooltip("The offset of the background (x / y / z)")]
-        private Vector3 backgroundOffset;
+        private Vector3 backgroundOffset = Vector3.zero;
 
         /// <summary>
         /// The offset of the background (x / y / z)

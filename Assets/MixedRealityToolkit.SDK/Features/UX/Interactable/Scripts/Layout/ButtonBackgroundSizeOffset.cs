@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         /// </summary>
         [Tooltip("The transform this object should be linked and aligned to")]
         [SerializeField]
-        private Transform AnchorTransform;
+        private Transform AnchorTransform = null;
 
         /// <summary>
         /// Make this object's size scaled relative to the Anchor's size

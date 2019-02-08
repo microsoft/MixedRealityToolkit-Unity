@@ -19,6 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         [SerializeField]
-        private BaseMixedRealityLineRenderer lineRenderer;
+        private BaseMixedRealityLineRenderer lineRenderer = null;
     }
 }

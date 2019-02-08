@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         /// </summary>
         [Tooltip("The transform this object should be linked and aligned to")]
         [SerializeField]
-        private Transform AnchorTransform;
+        private Transform AnchorTransform = null;
 
         /// <summary>
         /// Width of the border
@@ -55,14 +55,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         /// </summary>
         [Tooltip("Where to set this object's center point in relation to the Anchor's center point")]
         [SerializeField]
-        private Vector3 Alignment;
+        private Vector3 Alignment = Vector3.zero;
 
         /// <summary>
         /// An absolute value to offset the border from the Anchor's edge
         /// </summary>
         [Tooltip("That absolute amount to offset the position")]
         [SerializeField]
-        private Vector3 PositionOffset;
+        private Vector3 PositionOffset = Vector3.zero;
 
         /// <summary>
         /// Overlap the edge it is assigned to so there are not gaps in the corners
