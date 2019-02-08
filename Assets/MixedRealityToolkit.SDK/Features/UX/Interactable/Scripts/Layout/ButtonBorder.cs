@@ -8,20 +8,20 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
 {
     /// <summary>
-    /// Use a Unity primitive Cube or cylindar as a border segment relative to the scale of the AnchorTransform
+    /// Use a Unity primitive Cube or cylinder as a border segment relative to the scale of the AnchorTransform
     /// Use with ButtonSize on the component and the Anchor for consistent results
-    /// Works best when using with ButtonSize, but not requied - See ButtonSize for more info.
+    /// Works best when using with ButtonSize, but not required - See ButtonSize for more info.
     /// </summary>
     [ExecuteInEditMode]
     public class ButtonBorder : MonoBehaviour
     {
         /// <summary>
         /// A scale factor for button layouts, default is based on 2048 pixels to 1 meter.
-        /// Similar to values used in designer and 2D art programs and helps create consistancy across teams.
+        /// Similar to values used in designer and 2D art programs and helps create consistency across teams.
         /// 
         /// Use Case:
         /// A designer created a basic button background using a Cube and ButtonSize
-        /// Add some more borders, using more cubes or cylenders, that will scale to the edges of the background size
+        /// Add some more borders, using more cubes or cylinders, that will scale to the edges of the background size
         /// </summary>
         [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]
         [SerializeField]
