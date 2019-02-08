@@ -1237,7 +1237,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
             CaptureMode = captureMode;
 
             IntPtr coordinateSystemPtr;
-#if CAN_USE_UNITY_TYPES
+#if CAN_USE_UNITY_TYPES && UNITY_WSA
             // this must be done from the main thread, so done in 
             coordinateSystemPtr = UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr();
 #endif
