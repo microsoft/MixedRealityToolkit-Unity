@@ -457,7 +457,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e3942c792b9ae48846c549d0161c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bindToMainCamera: 1
+  _bindToMainCamera: 0
+  _zDistance: 1
 --- !u!1 &299826610
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,7 +1295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 191cdfaa16174b442a01cb3e2e597473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _useUdpBroadcastVisual: 1
+  _useUdpBroadcastVisual: 0
   UdpBroadcastVisual: {fileID: 1583127954}
   _serverBroadcastPort: 48888
   _clientBroadcastPort: 48889
@@ -2674,7 +2675,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e3942c792b9ae48846c549d0161c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bindToMainCamera: 0
+  _bindToMainCamera: 0
+  _zDistance: 1
 --- !u!114 &1838923093
 MonoBehaviour:
   m_ObjectHideFlags: 0

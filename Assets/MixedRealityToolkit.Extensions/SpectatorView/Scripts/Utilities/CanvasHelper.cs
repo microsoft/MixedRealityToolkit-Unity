@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
         [SerializeField] bool _bindToMainCamera = false;
         [SerializeField] float _zDistance = 1.0f;
 
-        private void Awake()
+        private void OnEnable()
         {
             var canvas = gameObject.GetComponentInChildren<Canvas>();
 
