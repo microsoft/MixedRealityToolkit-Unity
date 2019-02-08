@@ -18,11 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// </summary>
         public int Id { get; private set; }
 
-        ///// <summary>
-        ///// <see cref="SpatialAwarenessMeshObject"/>, managed by the spatial awareness system, representing the data in this event.
-        ///// </summary>
-        //public SpatialAwarenessMeshObject MeshObject{ get; private set; }
-
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -66,6 +61,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
             Initialize(observer, id);
             SpatialObject = spatialObject;
         }
-
     }
 }
