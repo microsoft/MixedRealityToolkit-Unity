@@ -147,19 +147,19 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         }
         
         /// <inheritdoc />
-        public IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
+        public IReadOnlyList<T> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            List<IMixedRealitySpatialAwarenessObserver> selected = new List<IMixedRealitySpatialAwarenessObserver>();
+            List<T> selected = new List<T>();
 
             for (int i = 0; i < observers.Count; i++)
             {
                 if (observers[i] is T)
                 {
-                    selected.Add(observers[i]);
+                    selected.Add((T)observers[i]);
                 }
             }
 
-            return selected as IReadOnlyList<IMixedRealitySpatialAwarenessObserver>;
+            return selected;
         }
 
         /// <inheritdoc />
@@ -177,17 +177,17 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         }
 
         /// <inheritdoc />
-        public IMixedRealitySpatialAwarenessObserver GetObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
+        public T GetObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
         {
             for (int i = 0; i < observers.Count; i++)
             {
                 if ((observers[i] is T) && (observers[i].Name == name))
                 {
-                    return observers[i];
+                    return (T)observers[i];
                 }
             }
-
-            return null;
+            
+            return default(T);
         }
 
         /// <inheritdoc />

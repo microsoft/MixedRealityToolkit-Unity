@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
 using Microsoft.MixedReality.Toolkit.Core.Providers;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
@@ -21,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsUniversal)]
-    public class WindowsMixedRealitySpatialMeshObserver : BaseSpatialObserver
+    public class WindowsMixedRealitySpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver
     {
         /// <summary>
         /// Constructor.
