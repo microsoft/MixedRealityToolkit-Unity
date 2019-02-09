@@ -712,6 +712,47 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
 
                 return pixelFormat;
             }
+
+            public static BitmapPixelFormat ConvertFormat(PixelFormat format)
+            {
+                BitmapPixelFormat bmpFormat = BitmapPixelFormat.Unknown;
+
+                switch (format)
+                {
+                    case PixelFormat.NV12:
+                        {
+                            bmpFormat = BitmapPixelFormat.Nv12;
+                            break;
+                        }
+                    case PixelFormat.YUY2:
+                        {
+                            bmpFormat = BitmapPixelFormat.Yuy2;
+                            break;
+                        }
+                    case PixelFormat.BGRA8:
+                        {
+                            bmpFormat = BitmapPixelFormat.Bgra8;
+                            break;
+                        }
+                    case PixelFormat.RGBA8:
+                        {
+                            bmpFormat = BitmapPixelFormat.Rgba8;
+                            break;
+                        }
+                    case PixelFormat.L8:
+                        {
+                            bmpFormat = BitmapPixelFormat.Gray8;
+                            break;
+                        }
+                    case PixelFormat.L16:
+                        {
+                            bmpFormat = BitmapPixelFormat.Gray16;
+                            break;
+                        }
+                }
+
+                return bmpFormat;
+            }
         }
 
         private class CameraFrameInternal : CameraFrame
@@ -775,13 +816,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
             /// </summary>
             /// <param name="bmpFrame">The software bitmap from the camera</param>
             /// <returns>The camera frame (with the pixel data copied already)</returns>
-            public CameraFrameInternal AcquireFrame(SoftwareBitmap bmpFrame)
+            public CameraFrameInternal AcquireFrame(SoftwareBitmap bmpFrame, PixelFormat desiredPixelFormat)
             {
                 CameraFrameInternal frame = null;
 
                 // convert the data format and get the data size - 
                 PixelFormat pixelFormat = PixelHelpers.ConvertFormat(bmpFrame.BitmapPixelFormat);
-                int dataSize = PixelHelpers.GetDataSize(bmpFrame.PixelWidth, bmpFrame.PixelHeight, pixelFormat);
+                if (pixelFormat != desiredPixelFormat)
+                {
+                    BitmapPixelFormat bitmapPixelFormat = PixelHelpers.ConvertFormat(desiredPixelFormat);
+                    bmpFrame = SoftwareBitmap.Convert(bmpFrame, PixelHelpers.ConvertFormat(desiredPixelFormat));
+                }
+
+                int dataSize = PixelHelpers.GetDataSize(bmpFrame.PixelWidth, bmpFrame.PixelHeight, desiredPixelFormat);
 
                 if (freeCameraFrames.Count > 0)
                 {
@@ -1229,10 +1276,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
         private CameraFrame latestFrame;
 #endif
         private Object stateLock = new Object();
+        private PixelFormat desiredPixelFormat;
         public CameraResolution Resolution { get; private set; }
 
-        public HoloLensCamera(CaptureMode captureMode)
+        public HoloLensCamera(CaptureMode captureMode, PixelFormat pixelFormat = PixelFormat.BGRA8)
         {
+            desiredPixelFormat = pixelFormat;
             CameraType = CameraType.Invalid;
             CaptureMode = captureMode;
 
@@ -1562,8 +1611,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
             if (frameBmp != null)
             {
                 // get a camera frame and populate with the correct data for this frame - acquire copies the bitmap to the frame
-                frame = framePool.AcquireFrame(frameBmp);
-                frame.PixelFormat = PixelHelpers.ConvertFormat(frameBmp.BitmapPixelFormat);
+                frame = framePool.AcquireFrame(frameBmp, desiredPixelFormat);
+                frame.PixelFormat = desiredPixelFormat;
                 frame.Resolution = Resolution;
                 frame.FrameTime = frameReference.SystemRelativeTime.HasValue ? frameReference.SystemRelativeTime.Value.TotalSeconds : 0.0;
                 frame.Exposure = frameReference.Duration.TotalSeconds;

@@ -142,17 +142,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
                                     rotationInOpenCVCameraSpace.eulerAngles.y,
                                     -1.0f * rotationInOpenCVCameraSpace.eulerAngles.z) * Quaternion.Euler(0, 0, 180);
 
-                                // CameraToWorld matrices assume a camera's front direction is in the negative z-direction
-                                // However, the values obtained from OpenCV assumes the camera's front direction is in the postiive z direction
-                                // Therefore, we negate the z components of our opencv camera transform
                                 var transformInOpenCVCameraSpace = Matrix4x4.TRS(positionInOpenCVCameraSpace, rotationInOpenCVCameraSpace, Vector3.one);
-                                var transformInUnityCameraSpace = transformInOpenCVCameraSpace;
-                                transformInUnityCameraSpace.m20 *= -1.0f;
-                                transformInUnityCameraSpace.m21 *= -1.0f;
-                                transformInUnityCameraSpace.m22 *= -1.0f;
-                                transformInUnityCameraSpace.m23 *= -1.0f;
 
-                                var transformInUnityWorld = cameraToWorldMatrix * transformInUnityCameraSpace;
+                                var transformInUnityWorld = cameraToWorldMatrix * transformInOpenCVCameraSpace;
 
                                 var positionInUnityWorld = transformInUnityWorld.GetColumn(3);
                                 var rotationInUnityWorld = Quaternion.LookRotation(transformInUnityWorld.GetColumn(2), transformInUnityWorld.GetColumn(1));

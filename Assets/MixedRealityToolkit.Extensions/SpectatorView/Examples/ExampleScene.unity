@@ -516,7 +516,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &219590316
 Transform:
   m_ObjectHideFlags: 0
@@ -1129,6 +1129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 505499291}
+  - component: {fileID: 505499292}
   m_Layer: 0
   m_Name: AR Foundation
   m_TagString: Untagged
@@ -1152,6 +1153,19 @@ Transform:
   m_Father: {fileID: 1862805968}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &505499292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505499290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b3afda51933d4e45b9c82ef60c58ac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _forHoloLens: 0
 --- !u!1 &554988044
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,13 +1255,14 @@ GameObject:
   m_Component:
   - component: {fileID: 557799835}
   - component: {fileID: 557799836}
+  - component: {fileID: 557799837}
   m_Layer: 0
   m_Name: ArUco Marker Detector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &557799835
 Transform:
   m_ObjectHideFlags: 0
@@ -1275,6 +1290,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _markerSize: 0.04
+--- !u!114 &557799837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557799834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b3afda51933d4e45b9c82ef60c58ac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _forHoloLens: 1
 --- !u!1 &578548821
 GameObject:
   m_ObjectHideFlags: 0
@@ -1456,6 +1484,7 @@ MonoBehaviour:
   _aRPointCloudManager: {fileID: 1676352559}
   _showDebugVisual: 1
   _debugVisualHelper: {fileID: 656083068}
+  _markerSize: 0.04
   MarkerDetector: {fileID: 557799836}
   _pointsRequiredForValidLocalOrigin: 4
   MarkerVisual: {fileID: 1384830538}

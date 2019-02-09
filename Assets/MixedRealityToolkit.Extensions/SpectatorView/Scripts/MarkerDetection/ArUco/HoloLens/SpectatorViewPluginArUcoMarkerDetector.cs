@@ -39,25 +39,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
 
         private void Update()
         {
-            if (_detecting &&
-                _holoLensCamera.State == CameraState.Ready)
+            if (_detecting)
             {
-                Debug.Log("Taking single photo with HoloLensCamera");
                 if(!_holoLensCamera.TakeSingle())
                 {
-                    Debug.LogError("Failed to take photo with HoloLensCamera");
+                    Debug.LogError("Failed to take photo with HoloLensCamera, Camera State: " + _holoLensCamera.State.ToString());
                 }
-            }
-            else if (_detecting)
-            {
-                Debug.Log("HoloLensCamera is still initializing, skipping photo capture for marker detection");
             }
         }
 
         public void StartDetecting()
         {
 #if UNITY_WSA
-            if(!_detecting)
+            if (!_detecting)
             {
                 _detecting = true;
                 Debug.Log("Starting ArUco marker detection");
@@ -88,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         {
             Debug.Log("Setting up HoloLensCamera");
             if (_holoLensCamera == null)
-                _holoLensCamera = new HoloLensCamera(CaptureMode.SingleLowLatency);
+                _holoLensCamera = new HoloLensCamera(CaptureMode.SingleLowLatency, PixelFormat.BGRA8);
 
             _holoLensCamera.OnCameraInitialized += CameraInitialized;
             _holoLensCamera.OnCameraStarted += CameraStarted;
