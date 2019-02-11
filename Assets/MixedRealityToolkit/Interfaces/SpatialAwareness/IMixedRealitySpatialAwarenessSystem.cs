@@ -46,13 +46,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers();
 
         /// <summary>
-        /// Getd thr collection of registered observers of the specified type.
+        /// Get the collection of registered observers of the specified type.
         /// </summary>
         /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
         /// <returns>
         /// Readonly copy of the list of registered observers that implement the specified type.
         /// </returns>
-        IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver;
+        IReadOnlyList<T> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
         /// Get the <see cref="IMixedRealitySpatialAwarenessObserver"/> that is registered under the specified name.
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         IMixedRealitySpatialAwarenessObserver GetObserver(string name);
 
         /// <summary>
-        /// Get the <see cref="IMixedRealitySpatialAwarenessObserver"/> that is registered under the specified name matching the specified type.
+        /// Get the observer that is registered under the specified name matching the specified type.
         /// </summary>
         /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
         /// <param name="name">The friendly name of the observer.</param>
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <remarks>
         /// If more than one observer is registered under the specified name, the first will be returned.
         /// </remarks>
-        IMixedRealitySpatialAwarenessObserver GetObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver;
+        T GetObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
         /// Starts / restarts all spatial observers of the specified type.
