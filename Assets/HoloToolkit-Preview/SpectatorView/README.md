@@ -27,12 +27,12 @@ Licenses
 Requirements
 ------------
 - SpectatorView plugin and required OpenCV binaries, which can be found here: https://github.com/Microsoft/MixedRealityToolkit/tree/master/SpectatorViewPlugin, listed here:
-    - opencv_aruco341.dll
-    - opencv_calib3d341.dll
-    - opencv_core341.dll
-    - opencv_features2d341.dll
-    - opencv_flann341.dll
-    - opencv_imgproc341.dll
+    - opencv_aruco343.dll
+    - opencv_calib3d343.dll
+    - opencv_core343.dll
+    - opencv_features2d343.dll
+    - opencv_flann343.dll
+    - opencv_imgproc343.dll
     - zlib1.dll
     - SpectatorViewPlugin.dll
 - UnityARKitPlugin
