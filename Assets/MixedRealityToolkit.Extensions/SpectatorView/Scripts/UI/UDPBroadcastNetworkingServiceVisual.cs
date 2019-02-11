@@ -3,6 +3,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking;
@@ -20,6 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
         
         public event UDPBroadcastConnectHandler OnConnect;
 
+#if UNITY_WSA
+        TouchScreenKeyboard keyboard = null;
+#endif
+
         public void ShowVisual()
         {
             gameObject.SetActive(true);
@@ -34,6 +39,61 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 
             gameObject.SetActive(false);
         }
+
+#if UNITY_WSA
+        void Update()
+        {
+            if (_serverPortInputField == null ||
+                _clientPortInputField == null)
+            {
+                Debug.LogError("Error: Input fields not specified for UDPBroadcastNetworkingServiceVisual");
+                return;
+            }
+
+            if (_serverPortInputField.isFocused)
+            {
+                if (keyboard == null)
+                {
+                    Debug.Log("Attempting to show keyboard for server port intput field");
+                    keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.NumberPad);
+                    keyboard.active = true;
+                }
+
+                if (keyboard != null)
+                {
+                    _serverPortInputField.text = keyboard.text;
+                }
+                else
+                {
+                    Debug.LogWarning("TouchScreenKeyboard was null when attempting to set server port input field text, which was not expected");
+                }
+            }
+            else if (_clientPortInputField.isFocused)
+            {
+                if (keyboard == null)
+                {
+                    Debug.Log("Attempting to show keyboard for client port intput field");
+                    keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.NumberPad);
+                    keyboard.active = true;
+                }
+
+                if (keyboard != null)
+                {
+                    _clientPortInputField.text = keyboard.text;
+                }
+                else
+                {
+                    Debug.LogWarning("TouchScreenKeyboard was null when attempting to set client port input field, which was not expected");
+                }
+            }
+            else if (keyboard != null)
+            {
+                Debug.Log("Clearing cached TouchScreenKeyboard");
+                keyboard.active = false;
+                keyboard = null;
+            }
+        }
+#endif
 
         public void OnConnectButtonPress()
         {
