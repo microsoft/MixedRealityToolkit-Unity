@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 {
-    public class UIScaler : MonoBehaviour
+    public class MobileUIScaler : MonoBehaviour
     {
         private void Awake()
         {

@@ -273,6 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         [SerializeField] MonoBehaviour HoloLensMarkerSpatialCoordinateVisual;
         [SerializeField] MonoBehaviour MobileMarkerSpatialCoordinateVisual;
         IMarkerSpatialCoordinateServiceVisual _markerSpatialCoordinateVisual;
+        bool _needUIUpdate = true;
 
         void OnValidate()
         {
@@ -294,7 +295,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             _actAsUser = false;
             _markerSpatialCoordinateVisual = MobileMarkerSpatialCoordinateVisual as IMarkerSpatialCoordinateServiceVisual;
 #endif
-
             _markerDetector = MarkerDetector as IMarkerDetector;
             if (_markerDetector != null)
                 _markerDetector.SetMarkerSize(_markerSize);
@@ -323,6 +323,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             if (state != null)
             {
                 SpatialCoordinateStateUpdated?.Invoke(state);
+            }
+
+            if (_needUIUpdate)
+            {
+                Debug.Log("Updating UI visual state: " + _visualState.ToString());
+                UpdateVisualStateUI();
             }
 
             if (_showDebugVisual)
@@ -678,6 +684,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 _markerDetector.StartDetecting();
 
                 _detectingMarkers = true;
+                SetVisualState(VisualState.locatingMarker);
             }
 
         }
@@ -698,6 +705,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 _markerDetector.MarkersUpdated -= OnMarkersUpdated;
 
                 _detectingMarkers = false;
+                SetVisualState(VisualState.none);
             }
         }
 
@@ -788,8 +796,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             if (_visualState != visualState)
             {
                 _visualState = visualState;
-                Debug.Log("Updating UI visual state: " + _visualState.ToString());
-                UpdateVisualStateUI();
+
+                // This function may get called from different threads, but we want to always update UI on the main thread
+                // So we flag the ui as needing an update for the next update call
+                _needUIUpdate = true;
             }
         }
 
@@ -856,6 +866,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             {
                 HideMarker();
             }
+
+            _needUIUpdate = false;
         }
 
         void ShowDebugVisuals()

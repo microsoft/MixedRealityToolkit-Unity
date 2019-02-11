@@ -52,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
                     break;
             }
 
+            Debug.Log("Updating marker spatial coordinate service visual content: " + text);
             _text.text = text;
         }
     }
