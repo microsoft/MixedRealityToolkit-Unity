@@ -18,8 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
     {
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Deselect", Tooltip = "The toggle is deselected")]
         public UnityEvent OnDeselect = new UnityEvent();
-        
-        private int lastIndex;
 
         public InteractableOnToggleReceiver(UnityEvent ev) : base(ev)
         {
@@ -34,20 +32,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         public override void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
             int currentIndex = source.GetDimensionIndex();
-
-            if (currentIndex != lastIndex)
+            
+            if (currentIndex % 2 == 0)
             {
-                if (currentIndex % 2 == 0)
-                {
-                    OnDeselect.Invoke();
-                }
-                else
-                {
-                    uEvent.Invoke();
-                }
+                OnDeselect.Invoke();
             }
-
-            lastIndex = currentIndex;
+            else
+            {
+                uEvent.Invoke();
+            }
         }
     }
 }
