@@ -251,6 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         bool _localOriginEstablished = false;
         bool _listeningToPointCloudChanges = false;
         VisualState _visualState = VisualState.none;
+        GameObject _sharedOriginVisual;
 
         // User specific fields
         string _userPlayerId = "";
@@ -259,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         [SerializeField] MonoBehaviour MarkerDetector;
         IMarkerDetector _markerDetector;
         bool _detectingMarkers = false;
-        Dictionary<string, GameObject> _originVisuals = new Dictionary<string, GameObject>();
+        Dictionary<string, GameObject> _markerVisuals = new Dictionary<string, GameObject>();
         Dictionary<string, GameObject> _cameraVisuals = new Dictionary<string, GameObject>();
 
         // Spectator specific fields
@@ -462,23 +463,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             }
             else
             {
-                if (!_cachedSelfSpectator.UserOriginToSpectatorMarker.Valid ||
-                    !_cachedSelfSpectator.SpectatorCameraToSpectatorOriginWhenDetected.Valid ||
-                    !_cachedSelfSpectator.SpectatorMarkerToSpectatorCamera.Valid ||
-                    !_cachedSelfSpectator.SpectatorOriginToSpectatorCamera.Valid)
+                Matrix4x4 spectatorOriginToUserOrigin;
+                if (TryCalculateSpectatorOriginToUserOriginTransform(_cachedSelfSpectator, out spectatorOriginToUserOrigin))
                 {
-                    return false;
+                    localOriginToSharedOrigin = spectatorOriginToUserOrigin;
+                    return true;
                 }
-
-                var userOriginToMarker = _cachedSelfSpectator.UserOriginToSpectatorMarker.GetTransform();
-                var markerToCamera = _cachedSelfSpectator.SpectatorMarkerToSpectatorCamera.GetTransform();
-                var cameraToSpectatorOriginWhenDetected = _cachedSelfSpectator.SpectatorCameraToSpectatorOriginWhenDetected.GetTransform();
-                var userOriginToSpectatorOrigin = cameraToSpectatorOriginWhenDetected * userOriginToMarker * markerToCamera;
-                var spectatorOriginToUserOrigin = userOriginToSpectatorOrigin.inverse;
-
-                localOriginToSharedOrigin = spectatorOriginToUserOrigin;
-                return true;
             }
+
+            return false;
         }
 
         public void PlayerConnected(string playerId)
@@ -794,14 +787,46 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             return localCameraTransform;
         }
 
+        static bool TryCalculateUserOriginToSpectatorOriginTransform(Spectator spectator, out Matrix4x4 userOriginToSpectatorOrigin)
+        {
+            userOriginToSpectatorOrigin = Matrix4x4.identity;
+
+            if (spectator.SpectatorCameraToSpectatorOriginWhenDetected.Valid &&
+                spectator.SpectatorMarkerToSpectatorCamera.Valid &&
+                spectator.UserOriginToSpectatorMarker.Valid)
+            {
+                var spectatorCameraToSpectatorOriginWhenDetected = spectator.SpectatorCameraToSpectatorOriginWhenDetected.GetTransform();
+                var spectatorMarkerToSpectatorCamera = spectator.SpectatorMarkerToSpectatorCamera.GetTransform();
+                var userOriginToSpectatorMarker = spectator.UserOriginToSpectatorMarker.GetTransform();
+                userOriginToSpectatorOrigin = userOriginToSpectatorMarker * spectatorMarkerToSpectatorCamera * spectatorCameraToSpectatorOriginWhenDetected;
+                return true;
+            }
+
+            return false;
+        }
+
+        static bool TryCalculateSpectatorOriginToUserOriginTransform(Spectator spectator, out Matrix4x4 spectatorOriginToUserOrigin)
+        {
+            spectatorOriginToUserOrigin = Matrix4x4.identity;
+
+            Matrix4x4 userOriginToSpectatorOrigin;
+            if (TryCalculateUserOriginToSpectatorOriginTransform(spectator, out userOriginToSpectatorOrigin))
+            {
+                spectatorOriginToUserOrigin = userOriginToSpectatorOrigin.inverse;
+                return true;
+            }
+
+            return false;
+        }
+
         void SetVisualState(VisualState visualState)
         {
             if (_visualState != visualState)
             {
                 _visualState = visualState;
 
-                // This function may get called from different threads, but we want to always update UI on the main thread
-                // So we flag the ui as needing an update for the next update call
+                // This setter may get called from different threads, but we want to always update UI on the main thread
+                // So we flag the ui as needing an update for the next update pass
                 _needUIUpdate = true;
             }
         }
@@ -875,9 +900,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
 
         void ShowDebugVisuals()
         {
+            // Note: This show debug visual functionality assumes that no parent transforms are applied to this game object
+
             if (_actAsUser &&
                 _cachedSelfUser.Spectators != null)
             {
+                // Place a marker at the scene origin to better understand the shared origin across devices
+                if (_sharedOriginVisual == null)
+                {
+                    // We should only need to do this once. For the user this origin marker shouldn't change
+                    _sharedOriginVisual = _debugVisualHelper.CreateVisual(Vector3.zero, Quaternion.identity);
+                }
+
                 foreach (var spectatorPair in _cachedSelfUser.Spectators)
                 {
                     // We first place the marker visual if we know a valid location
@@ -886,30 +920,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                         var position = spectatorPair.Value.UserOriginToSpectatorMarker.Position;
                         var rotation = spectatorPair.Value.UserOriginToSpectatorMarker.Rotation;
 
-                        if (_originVisuals.ContainsKey(spectatorPair.Value.Id))
+                        if (_markerVisuals.ContainsKey(spectatorPair.Value.Id))
                         {
-                            var visual = _originVisuals[spectatorPair.Value.Id];
+                            var visual = _markerVisuals[spectatorPair.Value.Id];
                             _debugVisualHelper.UpdateVisual(ref visual, position, rotation);
                         }
                         else
                         {
-                            _originVisuals[spectatorPair.Value.Id] = _debugVisualHelper.CreateVisual(position, rotation);
+                            _markerVisuals[spectatorPair.Value.Id] = _debugVisualHelper.CreateVisual(position, rotation);
                         }
 
                         // We then place the spectator camera visual if we know a valid location
-                        if (spectatorPair.Value.SpectatorMarkerToSpectatorCamera.Valid &&
-                            spectatorPair.Value.SpectatorCameraToSpectatorOriginWhenDetected.Valid &&
-                            spectatorPair.Value.SpectatorOriginToSpectatorCamera.Valid)
+                        Matrix4x4 spectatorOriginToUserOrigin;
+                        if (spectatorPair.Value.SpectatorOriginToSpectatorCamera.Valid &&
+                            TryCalculateSpectatorOriginToUserOriginTransform(spectatorPair.Value, out spectatorOriginToUserOrigin))
                         {
-                            var spectatorCameraToSpectatorOriginWhenDetected = spectatorPair.Value.SpectatorCameraToSpectatorOriginWhenDetected.GetTransform();
-                            var spectatorMarkerToSpectatorCamera = spectatorPair.Value.SpectatorMarkerToSpectatorCamera.GetTransform();
-                            var userOriginToSpectatorMarker = spectatorPair.Value.UserOriginToSpectatorMarker.GetTransform();
-
-                            var userOriginToSpectatorOrigin = spectatorCameraToSpectatorOriginWhenDetected * userOriginToSpectatorMarker * spectatorMarkerToSpectatorCamera;
-                            var spectatorOriginToUserOrigin = userOriginToSpectatorOrigin.inverse;
-
                             var spectatorCameraToSpectatorOrigin = spectatorPair.Value.SpectatorOriginToSpectatorCamera.GetTransform().inverse;
-                            var spectatorCameraToUserOrigin = spectatorOriginToUserOrigin * spectatorCameraToSpectatorOrigin;
+
+                            // TODO - flipped these values, remove todo if accurate
+                            var spectatorCameraToUserOrigin = spectatorCameraToSpectatorOrigin * spectatorOriginToUserOrigin;
                             var userOriginToSpectatorCamera = spectatorCameraToUserOrigin.inverse;
 
                             position = userOriginToSpectatorCamera.GetColumn(3);
@@ -926,6 +955,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                             }
                         }
                     }
+                }
+            }
+            else
+            {
+                Matrix4x4 spectatorOriginToUserOrigin;
+                if (_sharedOriginVisual == null &&
+                    TryCalculateSpectatorOriginToUserOriginTransform(_cachedSelfSpectator, out spectatorOriginToUserOrigin))
+                {
+                    // Place a marker to show where the spectator has registered the shared origin
+                    var position = spectatorOriginToUserOrigin.GetColumn(3);
+                    var rotation = Quaternion.LookRotation(spectatorOriginToUserOrigin.GetColumn(2), spectatorOriginToUserOrigin.GetColumn(1));
+
+                    _sharedOriginVisual = _debugVisualHelper.CreateVisual(position, rotation);
                 }
             }
         }

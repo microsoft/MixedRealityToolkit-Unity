@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 
         void Update()
         {
-            _previewButton.enabled = _recordingService.IsRecordingAvailable();
+            //_previewButton.enabled = _recordingService.IsRecordingAvailable();
         }
 
         private void OnRecordClick()
