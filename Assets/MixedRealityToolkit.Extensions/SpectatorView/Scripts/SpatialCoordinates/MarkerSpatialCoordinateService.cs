@@ -48,8 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
 
             public void SetTransform(Matrix4x4 transform)
             {
-                Position = transform.GetColumn(3);
-                Rotation = Quaternion.LookRotation(transform.GetColumn(2), transform.GetColumn(1));
+                Position = GetPosition(transform);
+                Rotation = GetRotation(transform);
             }
 
             public Matrix4x4 GetTransform()
@@ -269,6 +269,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         [SerializeField] int _pointsRequiredForValidLocalOrigin = 4;
         [SerializeField] MonoBehaviour MarkerVisual;
         IMarkerVisual _markerVisual;
+        User _cachedUser;
+        GameObject _userCameraVisual;
 
         [SerializeField] bool _useMarkerSpatialCoordinateVisual;
         [SerializeField] MonoBehaviour HoloLensMarkerSpatialCoordinateVisual;
@@ -409,6 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 if (User.TryDeserializeUser(payload, out user))
                 {
                     Debug.Log("Received user data: " + user.ToString());
+                    _cachedUser = user;
 
                     if (!String.IsNullOrEmpty(_userPlayerId) &&
                         _userPlayerId != playerId)
@@ -523,6 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 else
                 {
                     _cachedSelfSpectator = new Spectator(Guid.NewGuid().ToString());
+                    _cachedUser = new User();
                 }
 
                 _initialized = true;
@@ -819,6 +823,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             return false;
         }
 
+        static Vector4 GetPosition(Matrix4x4 matrix)
+        {
+            return matrix.GetColumn(3);
+        }
+
+        static Quaternion GetRotation(Matrix4x4 matrix)
+        {
+            return Quaternion.LookRotation(matrix.GetColumn(2), matrix.GetColumn(1));
+        }
+
         void SetVisualState(VisualState visualState)
         {
             if (_visualState != visualState)
@@ -905,54 +919,44 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             if (_actAsUser &&
                 _cachedSelfUser.Spectators != null)
             {
-                // Place a marker at the scene origin to better understand the shared origin across devices
-                if (_sharedOriginVisual == null)
-                {
-                    // We should only need to do this once. For the user this origin marker shouldn't change
-                    _sharedOriginVisual = _debugVisualHelper.CreateVisual(Vector3.zero, Quaternion.identity);
-                }
+                // Place a debug cvisual at the scene origin to better understand the shared origin across devices
+                _debugVisualHelper.CreateOrUpdateVisual(ref _sharedOriginVisual, Vector3.zero, Quaternion.identity);
 
                 foreach (var spectatorPair in _cachedSelfUser.Spectators)
                 {
-                    // We first place the marker visual if we know a valid location
+                    // Place a debug visual where the spectator's marker was detected
                     if (spectatorPair.Value.UserOriginToSpectatorMarker.Valid)
                     {
                         var position = spectatorPair.Value.UserOriginToSpectatorMarker.Position;
                         var rotation = spectatorPair.Value.UserOriginToSpectatorMarker.Rotation;
 
+                        GameObject visual = null;
                         if (_markerVisuals.ContainsKey(spectatorPair.Value.Id))
                         {
-                            var visual = _markerVisuals[spectatorPair.Value.Id];
-                            _debugVisualHelper.UpdateVisual(ref visual, position, rotation);
-                        }
-                        else
-                        {
-                            _markerVisuals[spectatorPair.Value.Id] = _debugVisualHelper.CreateVisual(position, rotation);
+                            visual = _markerVisuals[spectatorPair.Value.Id];
                         }
 
-                        // We then place the spectator camera visual if we know a valid location
+                        _debugVisualHelper.CreateOrUpdateVisual(ref visual, position, rotation);
+
+                        // If there was a known marker location for the spectator, we also attempt to place a debug visual at the spectator camera location
                         Matrix4x4 spectatorOriginToUserOrigin;
                         if (spectatorPair.Value.SpectatorOriginToSpectatorCamera.Valid &&
                             TryCalculateSpectatorOriginToUserOriginTransform(spectatorPair.Value, out spectatorOriginToUserOrigin))
                         {
                             var spectatorCameraToSpectatorOrigin = spectatorPair.Value.SpectatorOriginToSpectatorCamera.GetTransform().inverse;
-
-                            // TODO - flipped these values, remove todo if accurate
                             var spectatorCameraToUserOrigin = spectatorCameraToSpectatorOrigin * spectatorOriginToUserOrigin;
                             var userOriginToSpectatorCamera = spectatorCameraToUserOrigin.inverse;
 
-                            position = userOriginToSpectatorCamera.GetColumn(3);
-                            rotation = Quaternion.LookRotation(userOriginToSpectatorCamera.GetColumn(2), userOriginToSpectatorCamera.GetColumn(1));
+                            position = GetPosition(userOriginToSpectatorCamera);
+                            rotation = GetRotation(userOriginToSpectatorCamera);
 
+                            visual = null;
                             if (_cameraVisuals.ContainsKey(spectatorPair.Value.Id))
                             {
-                                var visual = _cameraVisuals[spectatorPair.Value.Id];
-                                _debugVisualHelper.UpdateVisual(ref visual, position, rotation);
+                               visual = _cameraVisuals[spectatorPair.Value.Id];
                             }
-                            else
-                            {
-                                _cameraVisuals[spectatorPair.Value.Id] = _debugVisualHelper.CreateVisual(position, rotation);
-                            }
+
+                            _debugVisualHelper.CreateOrUpdateVisual(ref visual, position, rotation);
                         }
                     }
                 }
@@ -964,10 +968,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                     TryCalculateSpectatorOriginToUserOriginTransform(_cachedSelfSpectator, out spectatorOriginToUserOrigin))
                 {
                     // Place a marker to show where the spectator has registered the shared origin
-                    var position = spectatorOriginToUserOrigin.GetColumn(3);
-                    var rotation = Quaternion.LookRotation(spectatorOriginToUserOrigin.GetColumn(2), spectatorOriginToUserOrigin.GetColumn(1));
+                    var position = GetPosition(spectatorOriginToUserOrigin);
+                    var rotation = GetRotation(spectatorOriginToUserOrigin);
 
-                    _sharedOriginVisual = _debugVisualHelper.CreateVisual(position, rotation);
+                    _debugVisualHelper.CreateOrUpdateVisual(ref _sharedOriginVisual, position, rotation);
+                }
+                
+                if (_cachedUser != null &&
+                    _cachedUser.UserOriginToUserCamera.Valid &&
+                    TryCalculateSpectatorOriginToUserOriginTransform(_cachedSelfSpectator, out spectatorOriginToUserOrigin))
+                {
+                    // Place a marker showing where the user camera is in the shared space
+                    var userOriginToUserCamera = _cachedUser.UserOriginToUserCamera.GetTransform();
+                    var spectatorOriginToUserCamera = spectatorOriginToUserOrigin * userOriginToUserCamera;
+
+                    var position = GetPosition(spectatorOriginToUserCamera);
+                    var rotation = GetRotation(spectatorOriginToUserCamera);
+
+                    _debugVisualHelper.CreateOrUpdateVisual(ref _userCameraVisual, position, rotation);
                 }
             }
         }
