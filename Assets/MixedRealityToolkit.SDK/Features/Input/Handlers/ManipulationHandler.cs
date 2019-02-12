@@ -58,6 +58,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         private RotationConstraintType constraintOnRotation = RotationConstraintType.None;
 
         [SerializeField]
+        [Tooltip("Constrain movement")]
+        private MovementConstraintType constraintOnMovement = MovementConstraintType.None;
+
+        [SerializeField]
         private HandMovementType handMoveType = HandMovementType.OneAndTwoHanded;
 
         [System.Flags]
@@ -88,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         private void Awake()
         {
             gazeHandHelper = new GazeHandHelper();
-            m_moveLogic = new TwoHandMoveLogic();
+            m_moveLogic = new TwoHandMoveLogic(constraintOnMovement);
             m_rotateLogic = new TwoHandRotateLogic(constraintOnRotation);
             m_scaleLogic = new TwoHandScaleLogic();
         }
