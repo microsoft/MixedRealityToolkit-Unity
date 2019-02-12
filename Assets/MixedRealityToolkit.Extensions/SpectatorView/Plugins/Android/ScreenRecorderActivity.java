@@ -4,6 +4,7 @@ import com.unity3d.player.UnityPlayerActivity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -31,11 +32,10 @@ public class ScreenRecorderActivity extends UnityPlayerActivity {
     final int SCREEN_CAPTURE_REQUEST_CODE = 99999;
     final String TAG = "ScreenRecorderActivity";
     final String VIRTUAL_DISPLAY_NAME = "ScreenRecorderActivityVirtualDisplay";
-    final String DEFAULT_FILE_NAME = "/sdcard/screenRecorderActivityFile.mp4";
     final String NO_ERROR_MESSAGE = "No errors";
 
     private String[] permissions;
-    private String fileName = DEFAULT_FILE_NAME;
+    private String fileName = "";
     private String lastErrorMessage = NO_ERROR_MESSAGE;
 
     private MediaProjectionManager manager;
@@ -143,6 +143,27 @@ public class ScreenRecorderActivity extends UnityPlayerActivity {
             return false;
         }
     }
+
+    public boolean IsRecordingAvailable(){
+        if (!fileName.isEmpty() &&
+            state == ScreenRecorderActivityState.READY){
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean ShowRecording() {
+        if (IsRecordingAvailable())
+        {
+            Intent showRecordingIntent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_GALLERY);
+            this.startActivity(showRecordingIntent);
+            return true;
+        }
+
+        return false;
+    }
+
 
     public String GetLastErrorMessage() {
         return lastErrorMessage;

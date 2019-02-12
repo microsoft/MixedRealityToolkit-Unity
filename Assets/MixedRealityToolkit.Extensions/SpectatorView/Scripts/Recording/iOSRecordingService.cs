@@ -77,10 +77,44 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Recording
             }
 
             ReplayKit.StopRecording();
+#endif
+        }
+
+        public bool IsRecordingAvailable()
+        {
+#if !UNITY_IOS
+            Debug.LogError("iOSRecordingService is not supported for the current platform");
+            return false;
+#else
+            if (!ReplayKit.APIAvailable)
+            {
+                Debug.LogError("ReplayKit API is not available");
+                return false;
+            }
+
+            return ReplayKit.recordingAvailable;
+#endif
+        }
+
+        public void ShowRecording()
+        {
+#if !UNITY_IOS
+            Debug.LogError("iOSRecordingService is not supported for the current platform");
+            return;
+#else
+            if (!ReplayKit.APIAvailable)
+            {
+                Debug.LogError("ReplayKit API is not available");
+                return;
+            }
 
             if (ReplayKit.recordingAvailable)
             {
                 ReplayKit.Preview();
+            }
+            else
+            {
+                Debug.LogError("Recording not available to show");
             }
 #endif
         }

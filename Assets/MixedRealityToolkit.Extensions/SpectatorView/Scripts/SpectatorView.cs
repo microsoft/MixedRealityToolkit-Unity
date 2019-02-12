@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
         [SerializeField] MonoBehaviour PlayerService;
         [SerializeField] MonoBehaviour NetworkingService;
         [SerializeField] MonoBehaviour SpatialCoordinateService;
+        [SerializeField] MonoBehaviour RecordingServiceVisual;
         [SerializeField] List<MonoBehaviour> PlayerStateObservers;
 
         IMatchMakingService _matchMakingService;
@@ -26,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
         ISpatialCoordinateService _spatialCoordinateService;
         List<IPlayerStateObserver> _playerStateObservers;
         IRecordingService _recordingService;
+        IRecordingServiceVisual _recordingServiceVisual;
 
         bool _validState = true;
 
@@ -35,8 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             FieldHelper.ValidateType<IPlayerService>(PlayerService);
             FieldHelper.ValidateType<INetworkingService>(NetworkingService);
             FieldHelper.ValidateType<ISpatialCoordinateService>(SpatialCoordinateService);
+            FieldHelper.ValidateType<IRecordingServiceVisual>(RecordingServiceVisual);
 
-            foreach(var observer in PlayerStateObservers)
+            foreach (var observer in PlayerStateObservers)
             {
                 FieldHelper.ValidateType<IPlayerStateObserver>(observer);
             }
@@ -48,6 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             _playerService = PlayerService as IPlayerService;
             _networkingService = NetworkingService as INetworkingService;
             _spatialCoordinateService = SpatialCoordinateService as ISpatialCoordinateService;
+            _recordingServiceVisual = RecordingServiceVisual as IRecordingServiceVisual;
 
             if (_matchMakingService == null ||
                 _playerService == null ||
@@ -155,6 +159,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 #elif UNITY_ANDROID
             _recordingService = new Recording.AndroidRecordingService();
 #endif
+
+            if (_recordingService != null &&
+                _recordingServiceVisual != null)
+            {
+                _recordingServiceVisual.SetRecordingService(_recordingService);
+            }
         }
     }
 }

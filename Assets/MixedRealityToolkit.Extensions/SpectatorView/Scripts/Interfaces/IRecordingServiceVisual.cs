@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Recording
+namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
 {
-    public delegate void RecordingStateChangedHandler(bool recording); 
-
     public interface IRecordingServiceVisual
     {
-        event RecordingStateChangedHandler RecordingStateChanged;
+        void SetRecordingService(IRecordingService service);
     }
 }

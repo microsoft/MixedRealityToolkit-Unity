@@ -99,6 +99,38 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Recording
             }
         }
 
+        public bool IsRecordingAvailable()
+        {
+            try
+            {
+                using (var screenRecorderActivity = GetScreenRecorderActivity())
+                {
+                    return screenRecorderActivity.Call<bool>("IsRecordingAvailable");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Failed to query whether recording was available for AndroidRecordingService: " + e.ToString());
+            }
+
+            return false;
+        }
+
+        public void ShowRecording()
+        {
+            try
+            {
+                using (var screenRecorderActivity = GetScreenRecorderActivity())
+                {
+                    screenRecorderActivity.Call<bool>("ShowRecording");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Failed to show recording for AndroidRecordingService: " + e.ToString());
+            }
+        }
+
         private AndroidJavaObject GetScreenRecorderActivity()
         {
             using (var classType = new AndroidJavaClass("java.lang.Class"))

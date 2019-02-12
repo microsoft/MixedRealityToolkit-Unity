@@ -10,6 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
         void Initialize();
         bool StartRecording();
         void StopRecording();
+        bool IsRecordingAvailable();
+        void ShowRecording();
     }
 }
 

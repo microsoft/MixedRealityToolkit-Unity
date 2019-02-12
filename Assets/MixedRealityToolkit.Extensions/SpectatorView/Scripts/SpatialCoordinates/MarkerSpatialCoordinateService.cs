@@ -240,7 +240,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             none
         }
 
-        [SerializeField] GameObject _aRFoundationGameObject;
         [SerializeField] Camera _aRFoundationCamera;
         [SerializeField] ARPointCloudManager _aRPointCloudManager;
         [SerializeField] bool _showDebugVisual;
@@ -250,6 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         bool _actAsUser = false;
         bool _initialized = false;
         bool _localOriginEstablished = false;
+        bool _listeningToPointCloudChanges = false;
         VisualState _visualState = VisualState.none;
 
         // User specific fields
@@ -603,25 +603,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
 #if UNITY_WSA
             _localOriginEstablished = true;
 #elif UNITY_ANDROID || UNITY_IOS
-            if (_aRFoundationGameObject == null)
+            if (!_listeningToPointCloudChanges)
             {
-                Debug.LogError("AR Foundation game object not defined");
-                return;
-            }
-            else if (_aRFoundationGameObject.activeSelf)
-            {
-                // If the ar foundation game object is active, we should already be listening to point cloud updates
-                return;
-            }
+                if (_aRPointCloudManager == null)
+                {
+                    Debug.LogError("Point cloud manager not defined for ar foundation device");
+                    return;
+                }
 
-            _aRFoundationGameObject.SetActive(true);
-
-            if (_aRPointCloudManager == null)
-            {
-                Debug.LogError("Point cloud manager not defined for ar foundation device");
-                return;
+                Debug.Log("Started observing point cloud changes");
+                _aRPointCloudManager.pointCloudUpdated += OnPointCloudUpdated;
+                _listeningToPointCloudChanges = true;
             }
-            _aRPointCloudManager.pointCloudUpdated += OnPointCloudUpdated;
 #endif
         }
 
@@ -643,7 +636,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                         Debug.LogError("Point cloud manager not defined for ar foundation device");
                         return;
                     }
-                    _aRPointCloudManager.pointCloudUpdated -= OnPointCloudUpdated;
+
+                    if (_listeningToPointCloudChanges)
+                    {
+                        Debug.Log("Stopped observing point cloud changes");
+                        _aRPointCloudManager.pointCloudUpdated -= OnPointCloudUpdated;
+                        _listeningToPointCloudChanges = false;
+                    }
+                }
+                else
+                {
+                    Debug.Log("Point cloud did not contain enough points to establish a local origin, current size: " + points.Count);
                 }
             }
         }
