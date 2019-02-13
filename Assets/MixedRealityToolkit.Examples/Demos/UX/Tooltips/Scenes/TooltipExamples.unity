@@ -7350,9 +7350,9 @@ MonoBehaviour:
   toolTipPrefab: {fileID: 1083549605185280, guid: afaef0108a478c44a9eac26658bc29bf,
     type: 3}
   tooltipToggleAction:
-    id: 7
-    description: Grip Press
-    axisConstraint: 3
+    id: 1
+    description: Select
+    axisConstraint: 2
   appearType: 1
   vanishType: 1
   remainType: 1
