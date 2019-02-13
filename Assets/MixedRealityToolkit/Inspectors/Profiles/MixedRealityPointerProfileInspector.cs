@@ -96,7 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                         using (new EditorGUI.IndentLevelScope())
                         {
                             pointerOptionList.DoLayoutList();
-                            serializedObject.ApplyModifiedProperties();
                         }
                     }
 
@@ -132,6 +131,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     }
                 }
             }
+            
+            serializedObject.ApplyModifiedProperties();
         }
 
         private void DrawPointerOptionElement(Rect rect, int index, bool isActive, bool isFocused)
