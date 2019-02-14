@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.Profiling
+namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
 {
     /// <summary>
     /// ABOUT: The VisualProfiler provides a drop in, single file, solution for viewing 
@@ -22,9 +22,17 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.Profiling
     {
         private const int maxTargetFrameRate = 120;
 
+        public Transform WindowParent { get; set; } = null;
+
         [Header("Profiler Settings")]
         [SerializeField]
         private bool initiallyActive = false;
+
+        public bool InitiallyActive
+        {
+            get { return initiallyActive; }
+            set { initiallyActive = value; }
+        }
 
         [SerializeField]
         [Range(1, 60)]
@@ -250,6 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.Profiling
             // Build the window root.
             {
                 window = CreateQuad("VisualProfiler", null);
+                window.transform.parent = WindowParent;
                 InitializeRenderer(window, backgroundMaterial, colorID, baseColor);
                 window.transform.localScale = new Vector3(0.2f, 0.04f, 1.0f);
                 windowRotation = Quaternion.AngleAxis(windowYawRotation, Vector3.right);

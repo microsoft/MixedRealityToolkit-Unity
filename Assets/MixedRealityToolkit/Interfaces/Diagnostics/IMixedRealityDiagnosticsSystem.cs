@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
         /// <summary>
         /// Enable / disable the diagnostic display
         /// </summary>
-        bool Visible { get; set; }
+        bool IsProfilerVisible { get; set; }
 
         /// <summary>
         /// Gets the <see cref="GameObject"/> that represents the diagnostic visualization
