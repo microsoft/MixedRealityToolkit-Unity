@@ -56,7 +56,7 @@ Gestures are input events based on human hands. There are two types of devices t
 
   ```UnityTouchController``` wraps the [Unity Touch class](https://docs.unity3d.com/ScriptReference/Touch.html) that supports physical touch screens.
 
-Both of these input sources use the _Gesture Settings_ profile to translate Unity's Touch and Gesture events respectively into MRTK's [Input Actions][Controllers and Input Actions]. This profile can be found under the _Input System Settings_ profile.
+Both of these input sources use the _Gesture Settings_ profile to translate Unity's Touch and Gesture events respectively into MRTK's [Input Actions](#Controllers and Input Actions). This profile can be found under the _Input System Settings_ profile.
 
 <img src="GestureProfile.png" width="256" align="center">
 
