@@ -19,16 +19,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             await new WaitUntil(() => MixedRealityToolkit.DiagnosticsSystem != null);
 
-            // Turn on the profiler for this demos.
-            MixedRealityToolkit.DiagnosticsSystem.IsProfilerVisible = true;
+            // Turn on the diagnotic visualizations for this demo.
+            MixedRealityToolkit.DiagnosticsSystem.ShowDiagnostics = true;
         }
 
         /// <summary>
-        /// Shows or hides the visual profiler display.
+        /// Shows or hides all enabled diagnostics.
+        /// </summary>
+        public void OnToggleDiagnostics()
+        {
+            MixedRealityToolkit.DiagnosticsSystem.ShowDiagnostics = !MixedRealityToolkit.DiagnosticsSystem.ShowDiagnostics;
+        }
+
+        /// <summary>
+        /// Shows or hides the profiler display.
         /// </summary>
         public void OnToggleProfiler()
         {
-            MixedRealityToolkit.DiagnosticsSystem.IsProfilerVisible = !MixedRealityToolkit.DiagnosticsSystem.IsProfilerVisible;
+            MixedRealityToolkit.DiagnosticsSystem.ShowProfiler = !MixedRealityToolkit.DiagnosticsSystem.ShowProfiler;
         }
     }
 }

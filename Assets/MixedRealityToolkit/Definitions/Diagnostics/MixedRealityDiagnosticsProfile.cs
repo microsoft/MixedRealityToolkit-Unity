@@ -15,12 +15,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
     {
         [SerializeField]
         [FormerlySerializedAs("visible")]
-        [Tooltip("Show on screen profiler?")]
-        private bool isProfilerVisible = false;
+        private bool showDiagnostics = false;
 
         /// <summary>
-        /// Should the on screen profiler be visible?
+        /// Show or hide diagnostic visualizations
         /// </summary>
-        public bool IsProfilerVisible => isProfilerVisible;
+        public bool ShowDiagnostics => showDiagnostics;
+
+        [SerializeField]
+        private bool showProfiler = false;
+
+        /// <summary>
+        /// Show or hide the profiler UI
+        /// </summary>
+        public bool ShowProfiler => showProfiler;
     }
 }

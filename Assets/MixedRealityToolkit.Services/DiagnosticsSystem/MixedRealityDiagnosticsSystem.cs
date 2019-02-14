@@ -14,6 +14,33 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
     /// </summary>
     public class MixedRealityDiagnosticsSystem : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
+        /// <summary>
+        /// The parent object under which all visualization game objects will be placed.
+        /// </summary>
+        private GameObject diagnosticVisualizationParent = null;
+
+        /// <summary>
+        /// Creates the parent for diagnostic visualizations so that the scene hierarchy does not get overly cluttered.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="GameObject"/> to which diagnostic visualizations will be parented.
+        /// </returns>
+        private GameObject CreateDiagnosticVisualizationParent()
+        {
+            diagnosticVisualizationParent = new GameObject("Diagnostics");
+            diagnosticVisualizationParent.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace.transform;
+            diagnosticVisualizationParent.SetActive(MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowDiagnostics);
+
+            // visual profiler settings
+            visualProfiler = diagnosticVisualizationParent.AddComponent<MixedRealityToolkitVisualProfiler>();
+            visualProfiler.WindowParent = diagnosticVisualizationParent.transform;
+            visualProfiler.IsVisible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowProfiler;
+
+            return diagnosticVisualizationParent;
+        }
+
+        private MixedRealityToolkitVisualProfiler visualProfiler = null;
+
         #region IMixedRealityService
 
         /// <inheritdoc />
@@ -23,80 +50,87 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
 
             eventData = new DiagnosticsEventData(EventSystem.current);
 
-            // Setting the visibility creates our GameObject reference, so set it last after we've configured our settings.
-            IsProfilerVisible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.IsProfilerVisible;
+            // Apply profile settings
+            ShowDiagnostics = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowDiagnostics;
+            ShowProfiler = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowProfiler;
 
-            RaiseDiagnosticsChanged();
+            diagnosticVisualizationParent = CreateDiagnosticVisualizationParent();
+
+            // todo: needed?
+            // RaiseDiagnosticsChanged();
         }
 
         /// <inheritdoc />
         public override void Destroy()
         {
-            if (diagnosticVisualization != null)
+            if (diagnosticVisualizationParent != null)
             {
+                diagnosticVisualizationParent.transform.DetachChildren();
                 if (Application.isEditor)
                 {
-                    Object.DestroyImmediate(diagnosticVisualization);
+                    Object.DestroyImmediate(diagnosticVisualizationParent);
                 }
                 else
                 {
-                    Object.Destroy(diagnosticVisualization);
+                    Object.Destroy(diagnosticVisualizationParent);
                 }
 
-                diagnosticVisualization = null;
+                diagnosticVisualizationParent = null;
             }
 
-            visible = false;
-
-            if (Application.isPlaying)
-            {
-                RaiseDiagnosticsChanged();
-            }
+            // todo: needed?
+            //if (Application.isPlaying)
+            //{
+            //    RaiseDiagnosticsChanged();
+            //}
         }
 
         #endregion IMixedRealityService
 
         #region IMixedRealityDiagnosticsSystem
 
-        private bool visible;
-
-        /// <inheritdoc />
-        public bool IsProfilerVisible
+        private bool showDiagnostics;
+        
+        public bool ShowDiagnostics
         {
-            get
-            {
-                return visible;
-            }
+            get { return showDiagnostics; }
 
             set
             {
-                if (value != visible)
+                if (value != showDiagnostics)
                 {
-                    visible = value;
-                    DiagnosticVisualization.SetActive(value);
+                    showDiagnostics = value;
+                    diagnosticVisualizationParent?.SetActive(value);
 
-                    RaiseDiagnosticsChanged();
+                    // todo: needed?
+                    //RaiseDiagnosticsChanged();
                 }
             }
         }
 
-        private GameObject diagnosticVisualization;
+        private bool showProfiler;
 
         /// <inheritdoc />
-        public GameObject DiagnosticVisualization
+        public bool ShowProfiler
         {
             get
             {
-                if (diagnosticVisualization == null)
-                {
-                    diagnosticVisualization = new GameObject("Diagnostics");
-                    diagnosticVisualization.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace.transform;
-                    MixedRealityToolkitVisualProfiler visualProfiler = diagnosticVisualization.AddComponent<MixedRealityToolkitVisualProfiler>();
-                    visualProfiler.IsVisible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.IsProfilerVisible;
-                    visualProfiler.WindowParent = diagnosticVisualization.transform;
-                }
+                return showProfiler;
+            }
 
-                return diagnosticVisualization;
+            set
+            {
+                if (value != showProfiler)
+                {
+                    showProfiler = value;
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.IsVisible = value;
+                    }
+
+                    // todo: needed?
+                    //RaiseDiagnosticsChanged();
+                }
             }
         }
 
@@ -120,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
 
         private void RaiseDiagnosticsChanged()
         {
-            eventData.Initialize(this, IsProfilerVisible);
+            eventData.Initialize(this, ShowProfiler);
             HandleEvent(eventData, OnDiagnosticsChanged);
         }
 

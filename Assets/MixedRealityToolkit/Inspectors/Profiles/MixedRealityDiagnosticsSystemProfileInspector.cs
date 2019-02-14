@@ -13,7 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     public class MixedRealityDiagnosticsSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private static bool showGeneralSettings = true;
-        private SerializedProperty isProfilerVisible;
+        private SerializedProperty showDiagnostics;
+        private SerializedProperty showProfiler;
         // todo: coming soon
         // private SerializedProperty isDebugPanelVisible;
 
@@ -26,7 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            isProfilerVisible = serializedObject.FindProperty("isProfilerVisible");
+            showDiagnostics = serializedObject.FindProperty("showDiagnostics");
+            showProfiler = serializedObject.FindProperty("showProfiler");
         }
 
         public override void OnInspectorGUI()
@@ -56,7 +58,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    EditorGUILayout.PropertyField(isProfilerVisible);
+                    EditorGUILayout.PropertyField(showDiagnostics);
+                    if(!showDiagnostics.boolValue)
+                    {
+                        EditorGUILayout.Space();
+                        EditorGUILayout.HelpBox("Diagnostic visualizations have been globally disabled.", MessageType.Info);
+                        EditorGUILayout.Space();
+                    }
+
+                    EditorGUILayout.PropertyField(showProfiler);
                 }
             }
 

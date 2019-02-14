@@ -13,13 +13,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
     public interface IMixedRealityDiagnosticsSystem : IMixedRealityEventSystem, IMixedRealityEventSource
     {
         /// <summary>
-        /// Enable / disable the diagnostic display
+        /// Enable / disable diagnotic display.
         /// </summary>
-        bool IsProfilerVisible { get; set; }
+        /// <remarks>
+        /// When set to true, visibility settings for individual diagnostics are honored. When set to false,
+        /// all visualizations are hidden.
+        /// </remarks>
+        bool ShowDiagnostics { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="GameObject"/> that represents the diagnostic visualization
+        /// Enable / disable the profiler display
         /// </summary>
-        GameObject DiagnosticVisualization { get; }
+        bool ShowProfiler { get; set; }
     }
 }

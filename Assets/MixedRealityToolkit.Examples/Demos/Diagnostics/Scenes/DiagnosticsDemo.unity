@@ -404,6 +404,23 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
+  - keyword: Toggle Diagnostics
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 797421873}
+          m_MethodName: OnToggleDiagnostics
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
   persistentKeywords: 0
 --- !u!1 &878628103
 GameObject:
@@ -562,7 +579,7 @@ PrefabInstance:
     - target: {fileID: 114186135864427680, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
-      value: 
+      value: '    Toggle Profiler'
       objectReference: {fileID: 0}
     - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -617,8 +634,8 @@ PrefabInstance:
       propertyPath: m_Text
       value: "This scene demonstrates using the diagnostics system to determine application
         performance at runtime.\n\n\n\nControls the diagnostic information display
-        by responding to the following keywords.\n\n\n     Shows or hides the visula
-        profiler.\n\n"
+        by responding to the following keywords.\n\n\n    Shows or hides all currently
+        enabled diagnostics.\n\n\n     Shows or hides the visual profiler.\n\n"
       objectReference: {fileID: 0}
     - target: {fileID: 224849082003076088, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
@@ -633,7 +650,7 @@ PrefabInstance:
     - target: {fileID: 114121190672569774, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
-      value: '    Toggle Profiler'
+      value: '    Toggle Diagnostics'
       objectReference: {fileID: 0}
     - target: {fileID: 224745427211728820, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
