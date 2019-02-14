@@ -26,12 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
 
         [Header("Profiler Settings")]
         [SerializeField]
-        private bool initiallyActive = false;
+        private bool isVisible = false;
 
-        public bool InitiallyActive
+        public bool IsVisible
         {
-            get { return initiallyActive; }
-            set { initiallyActive = value; }
+            get { return isVisible; }
+            set { isVisible = value; }
         }
 
         [SerializeField]
@@ -244,6 +244,8 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
 
                 peakMemoryUsage = memoryUsage;
             }
+
+            window.SetActive(isVisible);
         }
 
         private void BuildWindow()
@@ -317,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
                 }
             }
 
-            window.SetActive(initiallyActive);
+            window.SetActive(isVisible);
         }
 
         private void BuildFrameRateStrings()

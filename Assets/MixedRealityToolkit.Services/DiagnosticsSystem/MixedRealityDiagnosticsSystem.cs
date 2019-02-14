@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
                     diagnosticVisualization = new GameObject("Diagnostics");
                     diagnosticVisualization.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace.transform;
                     MixedRealityToolkitVisualProfiler visualProfiler = diagnosticVisualization.AddComponent<MixedRealityToolkitVisualProfiler>();
-                    visualProfiler.InitiallyActive = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.IsProfilerVisible;
+                    visualProfiler.IsVisible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.IsProfilerVisible;
                     visualProfiler.WindowParent = diagnosticVisualization.transform;
                 }
 

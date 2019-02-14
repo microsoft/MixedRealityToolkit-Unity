@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -21,28 +22,9 @@ MonoBehaviour:
       id: 2
       description: Menu
       axisConstraint: 2
-  - keyword: Toggle Diagnostics
-    keyCode: 100
+  - keyword: Toggle Profiler
+    keyCode: 112
     action:
       id: 1
       description: Toggle Diagnostics
       axisConstraint: 0
-  - keyword: Toggle Frame Rate
-    keyCode: 102
-    action:
-      id: 2
-      description: Toggle Frame Rate
-      axisConstraint: 0
-  - keyword: Toggle Processor
-    keyCode: 112
-    action:
-      id: 3
-      description: Toggle Processsor
-      axisConstraint: 0
-  - keyword: Toggle Memory
-    keyCode: 109
-    action:
-      id: 4
-      description: Toggle Memory
-      axisConstraint: 0
-
