@@ -85,7 +85,24 @@ These events notify changes in specific controller inputs. Check the *controller
 
 ### Gesture Events
 
-**TODO**
+```IMixedRealityGestureHandler``` defines the events that are raised by the input system:
+- *OnGestureStarted*: A new gesture has been started.
+- *OnGestureCompleted*: An active gesture successfully completed.
+- *OnGestureCanceled*: An active gesture has been cancelled.
+- *OnGestureUpdated*: An active gesture's state has been updated.
+
+The *OnGestureCompleted* and *OnGestureUpdated* events can receive typed data by implementing the generic ```IMixedRealityGestureHandler<TYPE>``` handler class. ```TYPE``` can be one of the following:
+- ```Vector2```
+  2D position gesture. Currently supported sources:
+  - [```deltaPosition```](https://docs.unity3d.com/ScriptReference/Touch-deltaPosition.html) on a touch screen
+- ```Vector3```
+  3D position gesture. Currently supported sources:
+  - [```cumulativeDelta```](https://docs.unity3d.com/ScriptReference/XR.WSA.Input.ManipulationUpdatedEventArgs-cumulativeDelta.html) of a Hololens manipulation event
+  - [```normalizedOffset```](https://docs.unity3d.com/ScriptReference/XR.WSA.Input.NavigationUpdatedEventArgs-normalizedOffset.html) of a Hololens navigation event
+- ```Quaternion```
+  3D rotation gesture. No currently supported sources.
+- ```MixedRealityPose```
+  Combined 3D position/rotation gesture. No currently supported sources.
 
 ### Speech and Dictation Events
 
