@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -23,13 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             if (!Application.isPlaying) { return; }
 
             eventData = new DiagnosticsEventData(EventSystem.current);
-
-            ShowCpu = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowCpu;
-            CpuUseTracker = new CpuUseTracker(MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.CpuBuffer);
-            ShowFps = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowFps;
-            FpsUseTracker = new FpsUseTracker(MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.FpsBuffer);
-            ShowMemory = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowMemory;
-            MemoryUseTracker = new MemoryUseTracker(MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.MemoryBuffer);
 
             // Setting the visibility creates our GameObject reference, so set it last after we've configured our settings.
             Visible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.Visible;
@@ -57,9 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             }
 
             visible = false;
-            showCpu = false;
-            showFps = false;
-            showMemory = false;
 
             if (Application.isPlaying)
             {
@@ -93,79 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             }
         }
 
-        private bool showCpu;
-
-        /// <inheritdoc />
-        public bool ShowCpu
-        {
-            get
-            {
-                return showCpu;
-            }
-
-            set
-            {
-                if (value != showCpu)
-                {
-                    showCpu = value;
-
-                    if (!value)
-                    {
-                        CpuUseTracker.Reset();
-                    }
-
-                    RaiseDiagnosticsChanged();
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public CpuUseTracker CpuUseTracker { get; private set; }
-
-        private bool showFps;
-
-        /// <inheritdoc />
-        public bool ShowFps
-        {
-            get
-            {
-                return showFps;
-            }
-            set
-            {
-                if (value != showFps)
-                {
-                    showFps = value;
-                    RaiseDiagnosticsChanged();
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public FpsUseTracker FpsUseTracker { get; private set; }
-
-        private bool showMemory;
-
-        /// <inheritdoc />
-        public bool ShowMemory
-        {
-            get
-            {
-                return showMemory;
-            }
-            set
-            {
-                if (value != showMemory)
-                {
-                    showMemory = value;
-                    RaiseDiagnosticsChanged();
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public MemoryUseTracker MemoryUseTracker { get; private set; }
-
         private IMixedRealityDiagnosticsHandler diagnosticsHandler;
 
         private GameObject diagnosticVisualization;
@@ -175,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         {
             get
             {
+                // todo: reorder these checks?
                 if (diagnosticVisualization != null)
                 {
                     return diagnosticVisualization;
@@ -186,16 +105,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
                     return null;
                 }
 
-                diagnosticVisualization = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                diagnosticVisualization.name = "Diagnostics";
+                diagnosticVisualization = new GameObject("Diagnostics");
+                diagnosticVisualization.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace.transform;
+                MixedRealityToolkitVisualProfiler visualProfiler = diagnosticVisualization.AddComponent<MixedRealityToolkitVisualProfiler>();
+                // todo: apply properties to the script
                 diagnosticVisualization.layer = Physics.IgnoreRaycastLayer;
 
-                // Place it 2 meters in front of the user.
-                //diagnosticVisualization.transform.position = CameraCache.Main.transform.forward * 2f;
-
                 var handlerType = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.HandlerType;
-
-                // TODO: Possibly add a collider and a solver to keep it in front of the users face?
 
                 if (handlerType.Type != null)
                 {
@@ -228,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
 
         private void RaiseDiagnosticsChanged()
         {
-            eventData.Initialize(this, Visible, ShowCpu, ShowFps, ShowMemory);
+            eventData.Initialize(this, Visible);
 
             // Manually send it to our diagnostics handler, no matter who's listening.
             diagnosticsHandler?.OnDiagnosticSettingsChanged(eventData);
