@@ -45,7 +45,15 @@ MRTK provides a set of pointer prefabs in *Assets/MixedRealityToolkit.SDK/Featur
 
 ## Gestures
 
-**TODO**
+Gestures are input events based on human hands. There are two types of devices that raise gesture input events in MRTK:
+- Windows Mixed Reality devices such as Hololens. This describes pinching motions ("Air Tap") and tap-and-hold gestures. For more information on Hololens gestures see the [Windows Mixed Reality Gestures documentation](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
+  ```WindowsMixedRealityDeviceManager``` wraps the [Unity XR.WSA.Input.GestureRecognizer](https://docs.unity3d.com/ScriptReference/XR.WSA.Input.GestureRecognizer.html) to consume Unity's gesture events from Hololens devices.
+- Touch screen devices
+  ```UnityTouchController``` wraps the [Unity Touch class](https://docs.unity3d.com/ScriptReference/Touch.html) that supports physical touch screens.
+
+Both of these input sources use the _Gesture Settings_ profile to translate Unity's Touch and Gesture events respectively into MRTK's [Input Actions][Controllers and Input Actions]. This profile can be found under the _Input System Settings_ profile.
+
+<img src="GestureProfile.png" width="256" align="center">
 
 ## Speech
 
