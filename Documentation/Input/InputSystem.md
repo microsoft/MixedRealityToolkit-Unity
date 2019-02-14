@@ -19,7 +19,7 @@ A controller in MRTK is an input device. Some of the controller types supported 
 - WMR Controller
 - Xbox Controller
 - Oculus Remote/Touch
-- Vive Knucles/Wand
+- Vive Knuckles/Wand
 - Generic Open VR Controller
 - Mouse and touch screen
 
