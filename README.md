@@ -23,6 +23,12 @@ The vNext branch is taking all the best lessons learned from the original Mixed 
 
 > Find this readme, other documentation articles and the MRTK api reference on our [developer documentation on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/). 
 
+# Build Status
+
+| Branch | Status |
+|---|---|
+| Development |[![Build Status](https://microsoft.visualstudio.com/Analog/_apis/build/status/internal/middleware/mixedrealitytoolkit/MRTK-release-CI?branchName=mrtk_release)](https://microsoft.visualstudio.com/Analog/_build/latest?definitionId=36334&branchName=mrtk_release)|
+
 # Feature areas
 The Mixed Reality Toolkit vNext will includes many APIs to accelerate the development of MR / XR / VR / AR projects for a range of supported devices, including (but not limited to)
 
