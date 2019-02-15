@@ -19,17 +19,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Mapping Profile", fileName = "MixedRealityControllerMappingProfile", order = (int)CreateProfileMenuItemIndices.ControllerMapping)]
     public class MixedRealityControllerMappingProfile : BaseMixedRealityProfile
     {
-        private static Type[] controllerMappingTypes;
-
-        public static Type[] ControllerMappingTypes { get { CollectControllerTypes(); return controllerMappingTypes; } }
-
-        public static Type[] CustomControllerMappingTypes { get => (from type in ControllerMappingTypes where UsesCustomInteractionMapping(type) select type).ToArray(); }
-
         [SerializeField]
         [Tooltip("The list of controller templates your application can use.")]
         private MixedRealityControllerMapping[] mixedRealityControllerMappingProfiles = new MixedRealityControllerMapping[0];
 
         public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
+
+#if UNITY_EDITOR
+
+        private static Type[] controllerMappingTypes;
+
+        public static Type[] ControllerMappingTypes { get { CollectControllerTypes(); return controllerMappingTypes; } }
+
+        public static Type[] CustomControllerMappingTypes { get => (from type in ControllerMappingTypes where UsesCustomInteractionMapping(type) select type).ToArray(); }
 
         private static void CollectControllerTypes()
         {
@@ -120,6 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
                 return isOptional1 ? 1 : -1; // Put custom mappings at the end. These can be added / removed in the inspector.
             });
         }
+
+#endif // UNITY_EDITOR
 
         private static bool UsesCustomInteractionMapping(Type controllerType)
         {
