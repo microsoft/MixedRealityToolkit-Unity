@@ -37,8 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         {
             if (controllerMappingTypes == null)
             {
-                var tmp = new List<Type>();
-                // todo: not supported on uwp/.net
+                List<Type> tmp = new List<Type>();
                 foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
                     try
