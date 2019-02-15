@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             for (int i = 0; i < Rays.Length; i++)
             {
                 Vector3 currentPoint = LineBase.GetUnClampedPoint(stepSize * (i + 1));
-                Rays[i] = new RayStep(lastPoint, currentPoint);
+                Rays[i].UpdateRayStep(ref lastPoint, ref currentPoint);
                 lastPoint = currentPoint;
             }
 

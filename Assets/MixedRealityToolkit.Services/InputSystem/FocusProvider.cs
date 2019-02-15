@@ -252,9 +252,12 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                     pointerWasLocked = true;
                 }
 
-                // In case the focused object is moving, we need to update the focus point based on the object's new transform.
-                focusDetails.Point = focusDetails.Object.transform.TransformPoint(pointLocalSpace);
-                focusDetails.Normal = focusDetails.Object.transform.TransformDirection(normalLocalSpace);
+                if (focusDetails.Object != null && focusDetails.Object.transform != null)
+                {
+                    // In case the focused object is moving, we need to update the focus point based on the object's new transform.
+                    focusDetails.Point = focusDetails.Object.transform.TransformPoint(pointLocalSpace);
+                    focusDetails.Normal = focusDetails.Object.transform.TransformDirection(normalLocalSpace);
+                }
 
                 StartPoint = Pointer.Rays[0].Origin;
 

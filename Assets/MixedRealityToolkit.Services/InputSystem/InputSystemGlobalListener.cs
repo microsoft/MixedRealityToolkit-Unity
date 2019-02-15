@@ -28,7 +28,17 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             if (lateInitialize)
             {
-                await WaitUntilInputSystemValid;
+                if (MixedRealityToolkit.InputSystem == null)
+                {
+                    await WaitUntilInputSystemValid;
+                }
+
+                if (this == null)
+                {
+                    // We've been destroyed during the await.
+                    return;
+                }
+
                 lateInitialize = false;
                 MixedRealityToolkit.InputSystem.Register(gameObject);
             }
