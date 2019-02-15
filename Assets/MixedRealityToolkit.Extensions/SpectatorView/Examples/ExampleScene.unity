@@ -544,7 +544,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3afda51933d4e45b9c82ef60c58ac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _forHoloLens: 0
+  _enableOnHoloLens: 0
+  _enableOnAndroid: 1
+  _enableOnIos: 1
 --- !u!1 &276039013
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,6 +817,65 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 207278101}
+--- !u!1 &394486089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 394486090}
+  - component: {fileID: 394486092}
+  - component: {fileID: 394486091}
+  m_Layer: 0
+  m_Name: iOS Recording Service
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &394486090
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394486089}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2118200644}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &394486091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394486089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b3afda51933d4e45b9c82ef60c58ac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enableOnHoloLens: 0
+  _enableOnAndroid: 0
+  _enableOnIos: 1
+--- !u!114 &394486092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394486089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e7b4a430f60ade47aee7724b026cff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &400658380
 GameObject:
   m_ObjectHideFlags: 0
@@ -1115,7 +1176,7 @@ Transform:
   - {fileID: 1416045323}
   - {fileID: 1676352557}
   m_Father: {fileID: 1862805968}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &505499292
 MonoBehaviour:
@@ -1129,7 +1190,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3afda51933d4e45b9c82ef60c58ac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _forHoloLens: 0
+  _enableOnHoloLens: 0
+  _enableOnAndroid: 1
+  _enableOnIos: 1
 --- !u!1 &507836551
 GameObject:
   m_ObjectHideFlags: 0
@@ -1313,7 +1376,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1862805968}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &557799836
 MonoBehaviour:
@@ -1340,7 +1403,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3afda51933d4e45b9c82ef60c58ac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _forHoloLens: 1
+  _enableOnHoloLens: 1
+  _enableOnAndroid: 0
+  _enableOnIos: 0
 --- !u!1 &562048209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1607,7 +1672,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1862805968}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &706046201
 GameObject:
@@ -1739,7 +1804,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1862805968}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &710693695
 GameObject:
@@ -2721,7 +2786,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3afda51933d4e45b9c82ef60c58ac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _forHoloLens: 1
+  _enableOnHoloLens: 1
+  _enableOnAndroid: 0
+  _enableOnIos: 0
 --- !u!1 &1086910270
 GameObject:
   m_ObjectHideFlags: 0
@@ -4154,6 +4221,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 460877639}
+  - {fileID: 2118200644}
   - {fileID: 708617536}
   - {fileID: 656083069}
   - {fileID: 557799835}
@@ -4195,6 +4263,8 @@ MonoBehaviour:
   PlayerService: {fileID: 708617535}
   NetworkingService: {fileID: 708617535}
   SpatialCoordinateService: {fileID: 656083067}
+  AndroidRecordingService: {fileID: 1934384034}
+  IosRecordingService: {fileID: 394486092}
   RecordingServiceVisual: {fileID: 2036057261}
   PlayerStateObservers:
   - {fileID: 656083067}
@@ -4418,6 +4488,65 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1928580456}
   m_CullTransparentMesh: 0
+--- !u!1 &1934384031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1934384032}
+  - component: {fileID: 1934384034}
+  - component: {fileID: 1934384033}
+  m_Layer: 0
+  m_Name: Android Recording Service
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1934384032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934384031}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2118200644}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1934384033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934384031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b3afda51933d4e45b9c82ef60c58ac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enableOnHoloLens: 0
+  _enableOnAndroid: 1
+  _enableOnIos: 0
+--- !u!114 &1934384034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934384031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b73c0990422718459a5958bbc7de308, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1944060895
 GameObject:
   m_ObjectHideFlags: 0
@@ -4906,6 +5035,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2114133914}
   m_CullTransparentMesh: 0
+--- !u!1 &2118200643
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2118200644}
+  m_Layer: 0
+  m_Name: SpectatorView Recording Services
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2118200644
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118200643}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1934384032}
+  - {fileID: 394486090}
+  m_Father: {fileID: 1862805968}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2125568319
 GameObject:
   m_ObjectHideFlags: 0

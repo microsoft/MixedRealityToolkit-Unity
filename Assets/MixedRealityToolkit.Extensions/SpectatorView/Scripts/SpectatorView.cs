@@ -18,6 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
         [SerializeField] MonoBehaviour PlayerService;
         [SerializeField] MonoBehaviour NetworkingService;
         [SerializeField] MonoBehaviour SpatialCoordinateService;
+        [SerializeField] MonoBehaviour AndroidRecordingService;
+        [SerializeField] MonoBehaviour IosRecordingService;
         [SerializeField] MonoBehaviour RecordingServiceVisual;
         [SerializeField] List<MonoBehaviour> PlayerStateObservers;
 
@@ -37,6 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             FieldHelper.ValidateType<IPlayerService>(PlayerService);
             FieldHelper.ValidateType<INetworkingService>(NetworkingService);
             FieldHelper.ValidateType<ISpatialCoordinateService>(SpatialCoordinateService);
+            FieldHelper.ValidateType<IRecordingService>(AndroidRecordingService);
+            FieldHelper.ValidateType<IRecordingService>(IosRecordingService);
             FieldHelper.ValidateType<IRecordingServiceVisual>(RecordingServiceVisual);
 
             foreach (var observer in PlayerStateObservers)
@@ -51,7 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             _playerService = PlayerService as IPlayerService;
             _networkingService = NetworkingService as INetworkingService;
             _spatialCoordinateService = SpatialCoordinateService as ISpatialCoordinateService;
-            _recordingServiceVisual = RecordingServiceVisual as IRecordingServiceVisual;
 
             if (_matchMakingService == null ||
                 _playerService == null ||
@@ -154,10 +157,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 
         private void SetupRecordingService()
         {
+            _recordingServiceVisual = RecordingServiceVisual as IRecordingServiceVisual;
+
 #if UNITY_IOS
-            _recordingService = new Recording.iOSRecordingService();
+            _recordingService = IosRecordingService as IRecordingService;
 #elif UNITY_ANDROID
-            _recordingService = new Recording.AndroidRecordingService();
+            _recordingService = AndroidRecordingService as IRecordingService;
 #endif
 
             if (_recordingService != null &&
