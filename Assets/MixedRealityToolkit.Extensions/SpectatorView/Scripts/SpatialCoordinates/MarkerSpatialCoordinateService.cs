@@ -919,7 +919,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             if (_actAsUser &&
                 _cachedSelfUser.Spectators != null)
             {
-                // Place a debug cvisual at the scene origin to better understand the shared origin across devices
+                // Place a debug visual at the scene origin to better understand the shared origin across devices
                 _debugVisualHelper.CreateOrUpdateVisual(ref _sharedOriginVisual, Vector3.zero, Quaternion.identity);
 
                 foreach (var spectatorPair in _cachedSelfUser.Spectators)
@@ -937,6 +937,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                         }
 
                         _debugVisualHelper.CreateOrUpdateVisual(ref visual, position, rotation);
+                        _markerVisuals[spectatorPair.Value.Id] = visual;
 
                         // If there was a known marker location for the spectator, we also attempt to place a debug visual at the spectator camera location
                         Matrix4x4 spectatorOriginToUserOrigin;
@@ -957,9 +958,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                             }
 
                             _debugVisualHelper.CreateOrUpdateVisual(ref visual, position, rotation);
+                            _cameraVisuals[spectatorPair.Value.Id] = visual;
                         }
                     }
                 }
+
+                // Cleanup camera visuals for any lost spectators
+                AssessAndCleanUpDebugVisuals(_cachedSelfUser.Spectators, _cameraVisuals);
+
+                // Cleanup marker visuals for any lost spectators
+                AssessAndCleanUpDebugVisuals(_cachedSelfUser.Spectators, _markerVisuals);
             }
             else
             {
@@ -986,6 +994,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                     var rotation = GetRotation(spectatorOriginToUserCamera);
 
                     _debugVisualHelper.CreateOrUpdateVisual(ref _userCameraVisual, position, rotation);
+                }
+            }
+        }
+
+        static void AssessAndCleanUpDebugVisuals(Dictionary<string, Spectator> knownSpectators, Dictionary<string, GameObject> debugVisuals)
+        {
+            if (knownSpectators.Count != debugVisuals.Count)
+            {
+                List<KeyValuePair<string, GameObject>> visualsToRemove = new List<KeyValuePair<string, GameObject>>();
+                foreach (var visualPair in debugVisuals)
+                {
+                    if (!knownSpectators.ContainsKey(visualPair.Key))
+                    {
+                        visualsToRemove.Add(visualPair);
+                    }
+                }
+
+                foreach (var visualPair in visualsToRemove)
+                {
+                    debugVisuals.Remove(visualPair.Key);
+                    Destroy(visualPair.Value);
                 }
             }
         }
