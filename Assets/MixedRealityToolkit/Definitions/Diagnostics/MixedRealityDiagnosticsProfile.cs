@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
     {
         [SerializeField]
         [FormerlySerializedAs("visible")]
+        [Tooltip("Display all enabled diagnostics")]
         private bool showDiagnostics = false;
 
         /// <summary>
@@ -23,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
         public bool ShowDiagnostics => showDiagnostics;
 
         [SerializeField]
+        [Tooltip("Display profiler")]
         private bool showProfiler = false;
 
         /// <summary>
