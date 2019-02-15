@@ -14,10 +14,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
         IRecordingServiceVisual
     {
         [SerializeField] Button _recordButton;
+        [SerializeField] Image _startRecordingImage;
+        [SerializeField] Image _stopRecordingImage;
         [SerializeField] Button _previewButton;
 
         IRecordingService _recordingService;
-        bool _recording = false;
+
+        enum RecordingState
+        {
+            Ready,
+            Initializing,
+            Recording
+        }
+
+        RecordingState state = RecordingState.Ready;
+
+        bool _updateUI = false;
 
         public void SetRecordingService(IRecordingService recordingService)
         {
@@ -38,7 +50,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 
         void Update()
         {
-            //_previewButton.enabled = _recordingService.IsRecordingAvailable();
+            if (_recordingService != null &&
+                _previewButton != null)
+            {
+                _previewButton.gameObject?.SetActive(_recordingService.IsRecordingAvailable());
+            }
+
+            if (state == RecordingState.Initializing &&
+                _recordingService.IsInitialized())
+            {
+                Debug.Log("Starting recording");
+                _recordingService.StartRecording();
+                state = RecordingState.Recording;
+            }
+
+            if (_updateUI)
+            {
+                UpdateUI();
+            }
         }
 
         private void OnRecordClick()
@@ -49,16 +78,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
                 return;
             }
 
-            if (!_recording)
+            if (state == RecordingState.Ready)
             {
-                Debug.Log("Starting recording");
-                _recording = _recordingService.StartRecording();
+                Debug.Log("Initializing recording");
+                _recordingService.Initialize();
+                state = RecordingState.Initializing;
+                _updateUI = true;
             }
-            else
+            else if (state == RecordingState.Recording)
             {
                 Debug.Log("Stopping recording");
                 _recordingService.StopRecording();
-                _recording = false;
+                _recordingService.Dispose();
+                state = RecordingState.Ready;
+                _updateUI = true;
             }
         }
 
@@ -78,6 +111,23 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             else
             {
                 Debug.LogError("Recording wasn't available to show");
+            }
+        }
+
+        private void UpdateUI()
+        {
+            _updateUI = false;
+
+            if (_startRecordingImage != null)
+            {
+                var startImageActive = (state == RecordingState.Ready);
+                _startRecordingImage.gameObject.SetActive(startImageActive);
+            }
+
+            if (_stopRecordingImage != null)
+            {
+                var stopImageActive = (state == RecordingState.Initializing) || (state == RecordingState.Recording);
+                _stopRecordingImage.gameObject.SetActive(stopImageActive);
             }
         }
     }

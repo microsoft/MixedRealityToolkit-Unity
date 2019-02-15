@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Recording
     public class AndroidRecordingService : MonoBehaviour,
     IRecordingService
     {
-        const string _fileNamePrefix = "/sdcard/spectatorView";
+        const string _fileNamePrefix = "spectatorView";
         const string _fileNameExt = ".mp4";
         private bool _initialized = false;
         private bool _recording = false;
@@ -43,6 +43,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Recording
                     Debug.LogError("Failed to initialize AndroidRecordingService: " + e.ToString());
                 }
             }
+        }
+
+        public bool IsInitialized()
+        {
+            if (_initialized)
+            {
+                try
+                {
+                    using (var screenRecorderActivity = GetScreenRecorderActivity())
+                    {
+                        return screenRecorderActivity.Call<bool>("IsInitialized");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Failed to assess whether AndroidRecordingService was initialized: " + e.ToString());
+                }
+            }
+
+            return false;
         }
 
         public bool StartRecording()
@@ -139,10 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Recording
                 {
                     using (var activity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity"))
                     {
-                        using (var screenRecorderActivity = screenRecorderClass.Call<AndroidJavaObject>("cast", activity))
-                        {
-                            return screenRecorderActivity;
-                        }
+                        return screenRecorderClass.Call<AndroidJavaObject>("cast", activity);
                     }
                 }
             }

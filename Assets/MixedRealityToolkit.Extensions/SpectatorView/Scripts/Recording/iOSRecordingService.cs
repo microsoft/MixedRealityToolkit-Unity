@@ -31,6 +31,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Recording
 #endif
         }
 
+        public bool IsInitialized()
+        {
+#if UNITY_IOS
+            return ReplayKit.APIAvailable;
+#else
+            return false;
+#endif
+        }
+
         public bool StartRecording()
         {
 

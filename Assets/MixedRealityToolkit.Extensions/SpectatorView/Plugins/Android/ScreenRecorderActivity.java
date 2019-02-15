@@ -19,6 +19,8 @@ import android.media.projection.*;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.io.File;
+
 enum ScreenRecorderActivityState {
     NO_PERMISSIONS,
     READY,
@@ -33,6 +35,7 @@ public class ScreenRecorderActivity extends UnityPlayerActivity {
     final String TAG = "ScreenRecorderActivity";
     final String VIRTUAL_DISPLAY_NAME = "ScreenRecorderActivityVirtualDisplay";
     final String NO_ERROR_MESSAGE = "No errors";
+    final String DIRECTORY_NAME = "/sdcard/";
 
     private String[] permissions;
     private String fileName = "";
@@ -43,6 +46,7 @@ public class ScreenRecorderActivity extends UnityPlayerActivity {
     private MediaRecorder recorder;
     private VirtualDisplay display;
     private ScreenRecorderActivityState state;
+    boolean recordingCaptured = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +116,10 @@ public class ScreenRecorderActivity extends UnityPlayerActivity {
         return false;
     }
 
+    public boolean IsInitialized(){
+        return (state == ScreenRecorderActivityState.INITIALIZED);
+    }
+
     public boolean StartRecording() {
         if (!IsReadyToRecord()) {
             return false;
@@ -135,7 +143,10 @@ public class ScreenRecorderActivity extends UnityPlayerActivity {
 
         if (state == ScreenRecorderActivityState.RECORDING) {
             recorder.stop();
+            state = ScreenRecorderActivityState.READY;
+            recordingCaptured = true;
             Log.d(TAG, "Stopped recording: " + fileName);
+
             CleanUp();
             return true;
         } else {
@@ -145,18 +156,14 @@ public class ScreenRecorderActivity extends UnityPlayerActivity {
     }
 
     public boolean IsRecordingAvailable(){
-        if (!fileName.isEmpty() &&
-            state == ScreenRecorderActivityState.READY){
-            return true;
-        }
-
-        return false;
+        return (state == ScreenRecorderActivityState.READY) && recordingCaptured;
     }
 
     public boolean ShowRecording() {
         if (IsRecordingAvailable())
         {
-            Intent showRecordingIntent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_GALLERY);
+            Intent showRecordingIntent = new Intent(Intent.ACTION_VIEW);
+            showRecordingIntent.setType("video/*");
             this.startActivity(showRecordingIntent);
             return true;
         }
@@ -243,7 +250,7 @@ public class ScreenRecorderActivity extends UnityPlayerActivity {
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             recorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
             recorder.setProfile(profile);
-            recorder.setOutputFile("/sdcard/spectatorViewCapture.mp4");
+            recorder.setOutputFile(DIRECTORY_NAME + fileName);
         } catch (Exception e)
         {
             Log.d(TAG, "Failed to create MediaRecorder");
