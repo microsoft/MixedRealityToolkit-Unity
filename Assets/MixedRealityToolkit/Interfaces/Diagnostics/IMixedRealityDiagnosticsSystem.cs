@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
     public interface IMixedRealityDiagnosticsSystem : IMixedRealityEventSystem, IMixedRealityEventSource
     {
         /// <summary>
-        /// Enable / disable diagnotic display.
+        /// Enable / disable diagnostic display.
         /// </summary>
         /// <remarks>
         /// When set to true, visibility settings for individual diagnostics are honored. When set to false,
