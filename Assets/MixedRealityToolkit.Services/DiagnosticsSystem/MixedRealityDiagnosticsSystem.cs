@@ -55,9 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             ShowProfiler = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowProfiler;
 
             diagnosticVisualizationParent = CreateDiagnosticVisualizationParent();
-
-            // todo: needed?
-            // RaiseDiagnosticsChanged();
         }
 
         /// <inheritdoc />
@@ -77,12 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
 
                 diagnosticVisualizationParent = null;
             }
-
-            // todo: needed?
-            //if (Application.isPlaying)
-            //{
-            //    RaiseDiagnosticsChanged();
-            //}
         }
 
         #endregion IMixedRealityService
@@ -101,9 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
                 {
                     showDiagnostics = value;
                     diagnosticVisualizationParent?.SetActive(value);
-
-                    // todo: needed?
-                    //RaiseDiagnosticsChanged();
                 }
             }
         }
@@ -127,9 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
                     {
                         visualProfiler.IsVisible = value;
                     }
-
-                    // todo: needed?
-                    //RaiseDiagnosticsChanged();
                 }
             }
         }
@@ -154,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
 
         private void RaiseDiagnosticsChanged()
         {
-            eventData.Initialize(this, ShowProfiler);
+            eventData.Initialize(this);
             HandleEvent(eventData, OnDiagnosticsChanged);
         }
 
