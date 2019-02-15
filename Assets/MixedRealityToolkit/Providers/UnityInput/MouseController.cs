@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
     /// <summary>
     /// Manages the mouse using unity input system.
     /// </summary>
-    [MixedRealityController(SupportedControllerType.Mouse, new[] { Handedness.None })]
+    [MixedRealityController(SupportedControllerType.Mouse, new[] { Handedness.Any })]
     public class MouseController : BaseController
     {
         /// <summary>
