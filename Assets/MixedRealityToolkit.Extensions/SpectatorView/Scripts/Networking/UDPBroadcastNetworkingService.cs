@@ -250,7 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
             {
                 foreach (var endpoint in _broadcastIpEndPoints)
                 {
-                    Debug.Log("Broadcasting payload (" + endpoint.Address.ToString() + ", " + endpoint.Port + "): " + _currentMessage.Length + " Bytes");
                     try
                     {
                         if (_currentMessage.Length != _senderUdp.Send(_currentMessage, _currentMessage.Length, endpoint))

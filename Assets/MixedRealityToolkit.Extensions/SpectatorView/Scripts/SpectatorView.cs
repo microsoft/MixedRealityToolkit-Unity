@@ -150,7 +150,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 
                     _sceneRoot.transform.position = LocalOriginToSharedOrigin.GetColumn(3);
                     _sceneRoot.transform.rotation = Quaternion.LookRotation(LocalOriginToSharedOrigin.GetColumn(2), LocalOriginToSharedOrigin.GetColumn(1));
-                    Debug.Log("Updated root transform: position:" + _sceneRoot.transform.position.ToString() + ", rotation: " + _sceneRoot.transform.rotation.ToString());
                 }
             }
         }

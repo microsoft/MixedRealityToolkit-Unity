@@ -11,15 +11,9 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 {
     public class RecordingServiceVisual : MonoBehaviour,
-        IRecordingServiceVisual
+        IRecordingServiceVisual,
+        IMobileOverlayVisualChild
     {
-        [SerializeField] Button _recordButton;
-        [SerializeField] Image _startRecordingImage;
-        [SerializeField] Image _stopRecordingImage;
-        [SerializeField] Button _previewButton;
-
-        IRecordingService _recordingService;
-
         enum RecordingState
         {
             Ready,
@@ -27,9 +21,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             Recording
         }
 
-        RecordingState state = RecordingState.Ready;
+        [SerializeField] Button _recordButton;
+        [SerializeField] Image _startRecordingImage;
+        [SerializeField] Image _stopRecordingImage;
+        [SerializeField] Button _previewButton;
+        [SerializeField] Image _countdownImage;
+        [SerializeField] Text _countdownText;
+        [SerializeField] float _countdownLength = 3;
 
+        IRecordingService _recordingService;
+        float _recordingStartTime = 0;
+        RecordingState state = RecordingState.Ready;
         bool _updateUI = false;
+        bool _readyToRecord = false;
+
+        public event OverlayVisibilityRequest OverlayVisibilityRequest;
 
         public void SetRecordingService(IRecordingService recordingService)
         {
@@ -56,12 +62,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
                 _previewButton.gameObject?.SetActive(_recordingService.IsRecordingAvailable());
             }
 
-            if (state == RecordingState.Initializing &&
-                _recordingService.IsInitialized())
+            if (state == RecordingState.Initializing)
             {
-                Debug.Log("Starting recording");
-                _recordingService.StartRecording();
-                state = RecordingState.Recording;
+                // When initializing, we need to always update the ui based on the countdown timer
+                _updateUI = true;
+
+                if (!_readyToRecord)
+                {
+                    var countdownComplete = (Time.time - _recordingStartTime) > _countdownLength;
+                    if (countdownComplete &&
+                        _recordingService.IsInitialized())
+                    {
+                        Debug.Log("Preparing to record");
+                        // Because recording is currently based on screen capture logic, we need to delay recording until we've
+                        // hidden our overlay visuals
+                        _readyToRecord = true;
+                        OverlayVisibilityRequest?.Invoke(false);
+                    }
+                }
             }
 
             if (_updateUI)
@@ -72,6 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 
         private void OnRecordClick()
         {
+            Debug.Log("Record button clicked");
+
             if (_recordingService == null)
             {
                 Debug.LogError("Error: Recording service not set for RecordingServiceVisual");
@@ -80,23 +100,40 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 
             if (state == RecordingState.Ready)
             {
-                Debug.Log("Initializing recording");
-                _recordingService.Initialize();
-                state = RecordingState.Initializing;
-                _updateUI = true;
+                StartRecording();
             }
             else if (state == RecordingState.Recording)
             {
-                Debug.Log("Stopping recording");
-                _recordingService.StopRecording();
-                _recordingService.Dispose();
-                state = RecordingState.Ready;
-                _updateUI = true;
+                StopRecording();
             }
+        }
+
+        private void StartRecording()
+        {
+            Debug.Log("Initializing recording");
+            _recordingService.Initialize();
+            state = RecordingState.Initializing;
+            _updateUI = true;
+            _recordingStartTime = Time.time;
+            _readyToRecord = false;
+        }
+
+        private void StopRecording()
+        {
+            // Todo - support stopping recording during initialization
+
+            Debug.Log("Stopping recording");
+            _recordingService.StopRecording();
+            _recordingService.Dispose();
+            state = RecordingState.Ready;
+            _updateUI = true;
+            _readyToRecord = false;
         }
 
         private void OnPreviewClick()
         {
+            Debug.Log("Preview button clicked");
+
             if (_recordingService == null)
             {
                 Debug.LogError("Error: Recording service not set for RecordingServiceVisual");
@@ -129,6 +166,50 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
                 var stopImageActive = (state == RecordingState.Initializing) || (state == RecordingState.Recording);
                 _stopRecordingImage.gameObject.SetActive(stopImageActive);
             }
+
+            if (_countdownImage != null)
+            {
+                var countdownActive = (state == RecordingState.Initializing) && (!_readyToRecord);
+                _countdownImage.gameObject.SetActive(countdownActive);
+
+                if (countdownActive)
+                {
+                    var dt = Time.time - _recordingStartTime;
+                    var countdownVal = (int)(_countdownLength - dt);
+                    if (countdownVal < 0)
+                    {
+                        countdownVal = 0;
+                    }
+                    _countdownText.text = countdownVal.ToString();
+                }
+            }
+        }
+
+        public void Show()
+        {
+            if (state == RecordingState.Recording)
+            {
+                StopRecording();
+            }
+
+            gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+
+            if (_readyToRecord)
+            {
+                Debug.Log("Starting recording");
+                _recordingService.StartRecording();
+                state = RecordingState.Recording;
+            }
+        }
+
+        public bool IsShowing()
+        {
+            return gameObject.activeSelf;
         }
     }
 }

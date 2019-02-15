@@ -653,7 +653,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         {
             if (_actAsUser)
             {
-                Debug.Log("Creating user payload: " + _cachedSelfUser.ToString());
                 var output = SerializationHelper.Serialize(_cachedSelfUser);
                 return output;
             }
@@ -662,7 +661,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 var marker = _cachedSelfSpectator.HasValidMarkerId() ? _cachedSelfSpectator.MarkerId : _observedAvailableMarkerId;
                 var self = _cachedSelfSpectator;
                 self.MarkerId = marker;
-                Debug.Log("Creating spectator payload: " + self.ToString());
                 var output = SerializationHelper.Serialize(self);
                 return output;
             }
@@ -981,7 +979,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
 
                     _debugVisualHelper.CreateOrUpdateVisual(ref _sharedOriginVisual, position, rotation);
                 }
-                
+                else if (_sharedOriginVisual != null)
+                {
+                    Destroy(_sharedOriginVisual);
+                    _sharedOriginVisual = null;
+                }
+
                 if (_cachedUser != null &&
                     _cachedUser.UserOriginToUserCamera.Valid &&
                     TryCalculateSpectatorOriginToUserOriginTransform(_cachedSelfSpectator, out spectatorOriginToUserOrigin))
@@ -994,6 +997,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                     var rotation = GetRotation(spectatorOriginToUserCamera);
 
                     _debugVisualHelper.CreateOrUpdateVisual(ref _userCameraVisual, position, rotation);
+                }
+                else if (_userCameraVisual)
+                {
+                    Destroy(_userCameraVisual);
+                    _userCameraVisual = null;
                 }
             }
         }
