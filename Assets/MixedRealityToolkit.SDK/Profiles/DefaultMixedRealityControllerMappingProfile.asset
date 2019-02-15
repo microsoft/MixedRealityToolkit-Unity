@@ -500,7 +500,7 @@ MonoBehaviour:
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.MouseController,
         Microsoft.MixedReality.Toolkit
-    handedness: 0
+    handedness: 7
     interactions:
     - id: 0
       description: Spatial Mouse Position
