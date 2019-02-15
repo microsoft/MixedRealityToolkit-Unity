@@ -54,13 +54,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
 
             MixedRealityRaycaster.DebugEnabled = true;
 
+            const Handedness handedness = Handedness.Any;
+            System.Type controllerType = typeof(MouseController);
+
+            // Make sure that the handedness declared in the controller attribute matches what we expect
+            {
+                var controllerAttribute = MixedRealityControllerAttribute.Find(controllerType);
+                if (controllerAttribute != null)
+                {
+                    Handedness[] handednesses = controllerAttribute.SupportedHandedness;
+                    Debug.Assert(handednesses.Length == 1 && handednesses[0] == Handedness.Any, "Unexpected mouse handedness declared in MixedRealityControllerAttribute");
+                }
+            }
+
             if (MixedRealityToolkit.InputSystem != null)
             {
-                var pointers = RequestPointers(new SystemType(typeof(MouseController)), Handedness.Any, true);
+                var pointers = RequestPointers(new SystemType(controllerType), handedness, true);
                 mouseInputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
             }
 
-            Controller = new MouseController(TrackingState.NotApplicable, Handedness.Any, mouseInputSource);
+            Controller = new MouseController(TrackingState.NotApplicable, handedness, mouseInputSource);
 
             if (mouseInputSource != null)
             {
