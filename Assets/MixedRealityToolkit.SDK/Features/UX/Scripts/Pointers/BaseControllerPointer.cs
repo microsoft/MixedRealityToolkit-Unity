@@ -139,14 +139,34 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.Start();
 
-            if (lateRegisterTeleport)
+            if (lateRegisterTeleport && MixedRealityToolkit.Instance.ActiveProfile.IsTeleportSystemEnabled)
             {
-                await new WaitUntil(() => MixedRealityToolkit.TeleportSystem != null);
+                if (MixedRealityToolkit.TeleportSystem == null)
+                {
+                    await new WaitUntil(() => MixedRealityToolkit.TeleportSystem != null);
+
+                    // We've been destroyed during the await.
+                    if (this == null)
+                    {
+                        return;
+                    }
+                }
+
                 lateRegisterTeleport = false;
                 MixedRealityToolkit.TeleportSystem.Register(gameObject);
             }
 
-            await WaitUntilInputSystemValid;
+            if (MixedRealityToolkit.InputSystem == null)
+            {
+                await WaitUntilInputSystemValid;
+            }
+
+            // We've been destroyed during the await.
+            if (this == null)
+            {
+                return;
+            }
+
             SetCursor();
         }
 
