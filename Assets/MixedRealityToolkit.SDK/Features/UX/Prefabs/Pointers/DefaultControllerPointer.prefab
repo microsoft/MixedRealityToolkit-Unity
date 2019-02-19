@@ -47,10 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c169a39f8e430d869bbc5d938b0e5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineStartClamp: 0
-  lineEndClamp: 1
+  lineStartClamp: 0.0001
+  lineEndClamp: 0.9999
   customLineTransform: {fileID: 0}
   loops: 0
+  transformMode: 0
   rotationMode: 1
   flipUpVector: 0
   originOffset: {x: 0, y: 0, z: 0}
@@ -132,7 +133,7 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: 1.1920929e-11}
+  - {x: 0, y: 0, z: 0.0001}
   - {x: 0, y: 0, z: 0.9999}
   m_Parameters:
     serializedVersion: 3
@@ -350,6 +351,7 @@ MonoBehaviour:
   overrideGlobalPointerExtent: 0
   pointerExtent: 10
   pointerOrientation: 0
+  LineCastResolution: 2
   LineColorSelected:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
@@ -495,7 +497,6 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 4
-  LineCastResolution: 2
   lineBase: {fileID: 114689919749246242}
   lineRenderers:
   - {fileID: 114903794112201558}
