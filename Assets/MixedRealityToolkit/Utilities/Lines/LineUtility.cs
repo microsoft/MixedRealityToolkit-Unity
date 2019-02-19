@@ -74,7 +74,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
         /// <returns>The calculated point.</returns>
         public static Vector3 GetPointAlongPhysicalParabola(Vector3 origin, Vector3 direction, float velocity, Vector3 gravity, float time)
         {
-            return (origin + ((direction.normalized * velocity) * time)) + (0.5f * gravity * (time * time));
+            //return (origin + ((direction.normalized * velocity) * time)) + (0.5f * gravity * (time * time));
+
+            direction = Vector3.Normalize(direction);
+
+            origin.x += ((direction.x * velocity * time) + (0.5f * gravity.x * (time * time)));
+            origin.y += ((direction.y * velocity * time) + (0.5f * gravity.y * (time * time)));
+            origin.z += ((direction.z * velocity * time) + (0.5f * gravity.z * (time * time)));
+
+            return origin;
         }
 
         /// <summary>
