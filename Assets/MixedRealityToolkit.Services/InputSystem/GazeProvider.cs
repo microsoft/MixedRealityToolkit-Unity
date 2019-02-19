@@ -199,7 +199,8 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                     newGazeNormal = stabilizer.StableRay.direction;
                 }
 
-                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * pointerExtent));
+                Vector3 endPoint = newGazeOrigin + (newGazeNormal * pointerExtent);
+                Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
 
                 gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
             }
