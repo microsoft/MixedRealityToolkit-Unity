@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
     [MixedRealityController(
         SupportedControllerType.OculusRemote,
         new[] { Handedness.None },
-        "Resources/Textures/OculusRemoteController")]
+        "StandardAssets/Textures/OculusRemoteController")]
     public class OculusRemoteController : GenericOpenVRController
     {
         /// <summary>

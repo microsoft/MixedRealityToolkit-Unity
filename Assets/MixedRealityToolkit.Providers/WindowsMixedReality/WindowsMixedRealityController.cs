@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right, Handedness.None },
-        "Resources/Textures/MotionController")]
+        "StandardAssets/Textures/MotionController")]
     public class WindowsMixedRealityController : BaseController
     {
         /// <summary>

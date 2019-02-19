@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
-        "Resources/Textures/MotionController")]
+        "StandardAssets/Textures/MotionController")]
     public class WindowsMixedRealityOpenVRMotionController : GenericOpenVRController
     {
         /// <summary>
