@@ -33,7 +33,7 @@ The Mixed Reality Toolkit vNext will includes many APIs to accelerate the develo
 | To develop apps for mixed reality headsets, you need the Windows 10 Fall Creators Update | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
 
 # Getting started with MRTK-vNext
-MRTK-vNext is currently under heavy development, utilizing the current state of the [Dev_Working_Branch](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch) as a starting point. Refer to this branch for working examples and experimental code.
+MRTK-vNext is currently under heavy development. To determine the best branch for starting out, please view the [Branch Guide](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/Branch-Guide) wiki page.
 
 > Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](/MRTK-SDK.md) here.  Which aims to help on-board developers quicker when building solutions.
 
