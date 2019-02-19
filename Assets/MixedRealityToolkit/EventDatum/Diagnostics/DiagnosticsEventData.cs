@@ -8,28 +8,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics
 {
     public class DiagnosticsEventData : GenericBaseEventData
     {
-        public bool Visible { get; private set; }
-
-        public bool ShowCpu { get; private set; }
-
-        public bool ShowFps { get; private set; }
-
-        public bool ShowMemory { get; private set; }
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="eventSystem"></param>
         public DiagnosticsEventData(EventSystem eventSystem) : base(eventSystem) { }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="diagnosticsSystem">The instance of the Diagnostic System that raised the event.</param>
         public void Initialize(
-            IMixedRealityDiagnosticsSystem diagnosticsSystem,
-            bool visible,
-            bool showCpu,
-            bool showFps,
-            bool showMemory)
+            IMixedRealityDiagnosticsSystem diagnosticsSystem)
         {
             BaseInitialize(diagnosticsSystem);
-            Visible = visible;
-            ShowCpu = showCpu;
-            ShowFps = showFps;
-            ShowMemory = showMemory;
         }
     }
 }
