@@ -104,4 +104,7 @@ help .\build.ps1 -Detailed
 ```
 
 > Note: If you don't specify `-Version <version>` the script will try to infer it from tags pointing to the current git commit. An error is produced if you don't have a tag and no version is provided.
+<<<<<<< HEAD
 | See code examples. Do a coding tutorial. Watch guest lectures.          | Get design guides. Build user interface. Learn interactions and input.     | Get development guides. Learn the technology. Understand the science.       | Join open source projects. Ask questions on forums. Attend events and meet-ups. |
+=======
+>>>>>>> 5e39dc455... Update README.md
