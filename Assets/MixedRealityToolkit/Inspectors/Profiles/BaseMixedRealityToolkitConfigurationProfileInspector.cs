@@ -26,14 +26,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         protected virtual void Awake()
         {
+            string assetPath = $"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/StandardAssets/Textures";
+
             if (logoLightTheme == null)
             {
-                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MRTK_Logo_Black.png", typeof(Texture2D));
+                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{assetPath}/MRTK_Logo_Black.png", typeof(Texture2D));
             }
 
             if (logoDarkTheme == null)
             {
-                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/Resources/Textures/MRTK_Logo_White.png", typeof(Texture2D));
+                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{assetPath}/MRTK_Logo_White.png", typeof(Texture2D));
             }
         }
 
