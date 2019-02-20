@@ -8,8 +8,8 @@ using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordinates
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 {
-    public class MarkerSpatialCoordinateServiceVisual : MonoBehaviour,
-        IMarkerSpatialCoordinateServiceVisual
+    public class MarkerSpatialCoordinateServiceOverlayVisual : MonoBehaviour,
+        IMarkerSpatialCoordinateServiceOverlayVisual
     {
         [SerializeField] Text _text;
 
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             gameObject.SetActive(false);
         }
 
-        public void UpdateVisualState(MarkerSpatialCoordinateServiceVisualState state)
+        public void UpdateVisualState(MarkerSpatialCoordinateServiceOverlayState state)
         {
             if (_text == null)
             {
@@ -37,16 +37,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             string text = "";
             switch (state)
             {
-                case MarkerSpatialCoordinateServiceVisualState.waitingForUser:
+                case MarkerSpatialCoordinateServiceOverlayState.waitingForUser:
                     text = waitingForUserText;
                     break;
-                case MarkerSpatialCoordinateServiceVisualState.locatingLocalOrigin:
+                case MarkerSpatialCoordinateServiceOverlayState.locatingLocalOrigin:
                     text = locatingLocalOriginText;
                     break;
-                case MarkerSpatialCoordinateServiceVisualState.locatingMarker:
+                case MarkerSpatialCoordinateServiceOverlayState.locatingMarker:
                     text = locatingMarkerText;
                     break;
-                case MarkerSpatialCoordinateServiceVisualState.none:
+                case MarkerSpatialCoordinateServiceOverlayState.none:
                 default:
                     text = "";
                     break;
