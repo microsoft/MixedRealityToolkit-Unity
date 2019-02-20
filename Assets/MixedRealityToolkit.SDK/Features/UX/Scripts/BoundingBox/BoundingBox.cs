@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public class BoundingBox : BaseFocusHandler, 
+    public class BoundingBox : BaseFocusHandler,
         IMixedRealityInputHandler,
         IMixedRealityInputHandler<MixedRealityPose>,
         IMixedRealityPointerHandler,
@@ -267,7 +267,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private GameObject targetObject;
         private Transform rigRoot;
         private BoxCollider cachedTargetCollider;
-        private Bounds cachedTargetColliderBounds;
         private Vector3[] boundsCorners;
         private Vector3 currentBoundsSize;
         private BoundsCalculationMethod boundsMethod;
@@ -305,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.InputSystem != null)
             {
-               MixedRealityToolkit.InputSystem.Register(targetObject);
+                MixedRealityToolkit.InputSystem.Register(targetObject);
             }
 
             if (activateOnStart == true)
@@ -968,14 +967,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (cachedTargetCollider != null)
             {
-                if (cachedTargetCollider.transform.hasChanged)
-                {
-                    cachedTargetCollider.transform.hasChanged = false;
-                    cachedTargetColliderBounds = cachedTargetCollider.bounds;
-                }
-
-                boundsSize = cachedTargetColliderBounds.extents;
-                centroid = cachedTargetColliderBounds.center;
+                Bounds colliderBounds = cachedTargetCollider.bounds;
+                boundsSize = colliderBounds.extents;
+                centroid = colliderBounds.center;
             }
 
             //after bounds are computed, restore rotation...
@@ -1044,7 +1038,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 }
 
                 //move rig into position and rotation
-                rigRoot.position = cachedTargetColliderBounds.center;
+                rigRoot.position = cachedTargetCollider.bounds.center;
                 rigRoot.rotation = targetObject.transform.rotation;
             }
         }
@@ -1270,7 +1264,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public void OnPointerUp(MixedRealityPointerEventData eventData) { }
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
         public void OnInputPressed(InputEventData<float> eventData) { }
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData){}
+        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
         public void OnPositionChanged(InputEventData<Vector3> eventData) { }
         public void OnRotationChanged(InputEventData<Quaternion> eventData) { }
         public void OnSourceDetected(SourceStateEventData eventData) { }
