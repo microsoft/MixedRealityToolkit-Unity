@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                 return;
             }
 
-            var icons = Directory.GetFiles(MixedRealityToolkit_AbsoluteFolderPath + "/Resources/Icons");
+            var icons = Directory.GetFiles(MixedRealityToolkit_AbsoluteFolderPath + "/StandardAssets/Icons");
             var icon = new Texture2D(2, 2);
             var iconColor = new Color32(4, 165, 240, 255);
 

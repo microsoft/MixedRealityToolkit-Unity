@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
     [MixedRealityController(
         SupportedControllerType.ViveWand,
         new[] { Handedness.Left, Handedness.Right },
-        "Resources/Textures/ViveWandController")]
+        "StandardAssets/Textures/ViveWandController")]
     public class ViveWandController : GenericOpenVRController
     {
         /// <summary>
