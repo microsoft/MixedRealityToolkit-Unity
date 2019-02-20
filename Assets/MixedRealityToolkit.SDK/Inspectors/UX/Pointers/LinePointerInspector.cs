@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         private SerializedProperty lineRenderers;
 
         private bool linePointerFoldout = true;
-        private const int maxRecommendedLinecastResolution = 25;
+        private const int maxRecommendedLinecastResolution = 20;
 
         protected override void OnEnable()
         {

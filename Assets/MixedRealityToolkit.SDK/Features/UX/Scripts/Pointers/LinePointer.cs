@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     [RequireComponent(typeof(DistorterGravity))]
     public class LinePointer : BaseControllerPointer
     {
-        [Range(2, 50)]
+        [Range(1, 50)]
         [SerializeField]
         [Tooltip("This setting has a high performance cost. Values above 20 are not recommended.")]
         protected int LineCastResolution = 10;

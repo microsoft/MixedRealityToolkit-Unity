@@ -51,7 +51,7 @@ MonoBehaviour:
   lineEndClamp: 0.9999
   customLineTransform: {fileID: 0}
   loops: 0
-  transformMode: 0
+  transformMode: 1
   rotationMode: 1
   flipUpVector: 0
   originOffset: {x: 0, y: 0, z: 0}
