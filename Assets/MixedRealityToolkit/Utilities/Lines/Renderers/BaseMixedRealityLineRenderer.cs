@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
     {
         [SerializeField]
         [Tooltip("The line data this component will render")]
-        private BaseMixedRealityLineDataProvider lineDataSource;
+        protected BaseMixedRealityLineDataProvider lineDataSource;
 
         /// <summary>
         /// The line data this component will render

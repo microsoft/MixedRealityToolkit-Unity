@@ -16,6 +16,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
         [SerializeField]
         private float distortStrength = 1f;
 
+        private bool distortionEnabled;
+
+        public bool DistortionEnabled
+        {
+            get { return distortionEnabled; }
+        }
+
         public float DistortStrength
         {
             get { return distortStrength; }
@@ -56,11 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
         /// <returns></returns>
         public Vector3 DistortPoint(Vector3 point, float strength = 1f)
         {
-            if (!isActiveAndEnabled)
-            {
-                return point;
-            }
-
             strength = Mathf.Clamp01(strength * DistortStrength);
 
             return strength <= 0 ? point : DistortPointInternal(point, strength);
@@ -105,12 +107,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
 
         protected virtual void OnEnable()
         {
-            // Used implicitly for enable/disable functionality of the MonoBehaviour
+            distortionEnabled = true;
         }
 
         protected virtual void OnDisable()
         {
-            // Used implicitly for enable/disable functionality of the MonoBehaviour
+            distortionEnabled = false;
         }
 
         #endregion MonoBehaviour Implementation

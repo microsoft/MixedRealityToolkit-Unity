@@ -15,6 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     [RequireComponent(typeof(DistorterGravity))]
     public class LinePointer : BaseControllerPointer
     {
+        [Range(1, 50)]
+        [SerializeField]
+        [Tooltip("This setting has a high performance cost. Values above 20 are not recommended.")]
+        protected int LineCastResolution = 10;
+
         [SerializeField]
         protected Gradient LineColorSelected = new Gradient();
 
@@ -29,10 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [SerializeField]
         protected Gradient LineColorLockFocus = new Gradient();
-
-        [Range(2, 100)]
-        [SerializeField]
-        protected int LineCastResolution = 25;
 
         [SerializeField]
         private BaseMixedRealityLineDataProvider lineBase;

@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         private SerializedProperty lineRenderers;
 
         private bool linePointerFoldout = true;
+        private const int maxRecommendedLinecastResolution = 20;
 
         protected override void OnEnable()
         {
@@ -42,12 +43,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             if (linePointerFoldout)
             {
                 EditorGUI.indentLevel++;
+
+                int lineCastResolutionValue = lineCastResolution.intValue;
+                if (lineCastResolutionValue > maxRecommendedLinecastResolution)
+                {
+                    EditorGUILayout.LabelField("Note: values above " + maxRecommendedLinecastResolution + " should only be used when your line is expected to be highly non-uniform.", EditorStyles.miniLabel);
+                }
+
+                EditorGUILayout.PropertyField(lineCastResolution);
                 EditorGUILayout.PropertyField(lineColorSelected);
                 EditorGUILayout.PropertyField(lineColorValid);
                 EditorGUILayout.PropertyField(lineColorInvalid);
                 EditorGUILayout.PropertyField(lineColorNoTarget);
                 EditorGUILayout.PropertyField(lineColorLockFocus);
-                EditorGUILayout.PropertyField(lineCastResolution);
                 EditorGUILayout.PropertyField(lineRenderers, true);
                 EditorGUI.indentLevel--;
             }

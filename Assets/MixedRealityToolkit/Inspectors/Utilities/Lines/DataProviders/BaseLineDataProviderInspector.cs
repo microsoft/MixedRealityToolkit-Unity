@@ -47,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
         protected static float ManualUpVectorLength = 1f;
         protected static float RotationArrowLength = 0.5f;
 
+        private SerializedProperty transformMode;
         private SerializedProperty customLineTransform;
         private SerializedProperty lineStartClamp;
         private SerializedProperty lineEndClamp;
@@ -82,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
             ManualUpVectorLength = SessionState.GetFloat(ManualUpVectorLengthKey, ManualUpVectorLength);
 
             LineData = (BaseMixedRealityLineDataProvider)target;
+            transformMode = serializedObject.FindProperty("transformMode");
             customLineTransform = serializedObject.FindProperty("customLineTransform");
             lineStartClamp = serializedObject.FindProperty("lineStartClamp");
             lineEndClamp = serializedObject.FindProperty("lineEndClamp");
@@ -198,6 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
             {
                 EditorGUI.indentLevel++;
 
+                EditorGUILayout.PropertyField(transformMode);
                 EditorGUILayout.PropertyField(customLineTransform);
                 EditorGUILayout.PropertyField(lineStartClamp);
                 EditorGUILayout.PropertyField(lineEndClamp);
