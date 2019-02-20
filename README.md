@@ -27,7 +27,7 @@ The vNext branch is taking all the best lessons learned from the original Mixed 
 
 | Branch | Status |
 |---|---|
-| Development |[![Build Status](https://microsoft.visualstudio.com/Analog/_apis/build/status/internal/middleware/mixedrealitytoolkit/MRTK-release-CI?branchName=mrtk_release)](https://microsoft.visualstudio.com/Analog/_build/latest?definitionId=36334&branchName=mrtk_release)|
+| Development |[![Build status](https://microsoft.visualstudio.com/Analog/_apis/build/status/internal/middleware/mixedrealitytoolkit/MRTK-public-dev-CI)](https://microsoft.visualstudio.com/Analog/_build/latest?definitionId=36334)|
 
 # Feature areas
 The Mixed Reality Toolkit vNext will includes many APIs to accelerate the development of MR / XR / VR / AR projects for a range of supported devices, including (but not limited to)
