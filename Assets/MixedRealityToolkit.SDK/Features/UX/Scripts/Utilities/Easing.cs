@@ -49,15 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         public void OnUpdate()
         {
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                // If we're in the editor and we're not playing
-                // always update the cached keys to reflect recent changes
-                cachedKeys = Curve.keys;
-            }
-#endif
-
             if (timer < LerpTime)
             {
                 timer = Mathf.Min(timer + Time.deltaTime, LerpTime);
@@ -113,8 +104,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         protected bool IsLinear()
         {
-            if (cachedKeys == null)
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                // If we're in the editor and we're not playing
+                // always update the cached keys to reflect recent changes
                 cachedKeys = Curve.keys;
+            }
+#endif
+            if (cachedKeys == null)
+            {
+                cachedKeys = Curve.keys;
+            }
 
             if (cachedKeys.Length > 1)
             {
@@ -147,6 +148,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
 
             Curve = animation;
+
+            // Update the cached keys
+            cachedKeys = Curve.keys;
         }
     }
 }
