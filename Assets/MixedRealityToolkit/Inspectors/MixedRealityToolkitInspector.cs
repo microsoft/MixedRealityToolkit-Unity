@@ -87,6 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             {
                 MixedRealityToolkit.Instance.ResetConfiguration((MixedRealityToolkitConfigurationProfile)activeProfile.objectReferenceValue);
             }
+
+            if (activeProfile.objectReferenceValue != null)
+            {
+                Editor activeProfileEditor = Editor.CreateEditor(activeProfile.objectReferenceValue);
+                activeProfileEditor.OnInspectorGUI();
+            }
         }
 
         [MenuItem("Mixed Reality Toolkit/Configure...")]
