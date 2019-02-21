@@ -10,6 +10,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 {
     public class InteractableScaleTheme : InteractableThemeBase
     {
+        private Transform hostTransform;
+
+        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        {
+            base.Init(host, settings);
+
+            hostTransform = Host.transform;
+        }
 
         public InteractableScaleTheme()
         {
@@ -28,13 +36,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             InteractableThemePropertyValue start = new InteractableThemePropertyValue();
-            start.Vector3 = Host.transform.localScale;
+            start.Vector3 = hostTransform.localScale;
             return start;
         }
 
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
-            Host.transform.localScale = Vector3.Lerp(property.StartValue.Vector3, property.Values[index].Vector3, percentage);
+            hostTransform.localScale = Vector3.Lerp(property.StartValue.Vector3, property.Values[index].Vector3, percentage);
         }
     }
 }

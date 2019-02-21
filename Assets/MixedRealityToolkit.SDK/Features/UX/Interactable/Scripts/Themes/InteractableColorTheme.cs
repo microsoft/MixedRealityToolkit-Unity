@@ -11,6 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 {
     public class InteractableColorTheme : InteractableShaderTheme
     {
+        private TextMesh mesh;
+        private Text text;
+
         public InteractableColorTheme()
         {
             Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text) };
@@ -26,17 +29,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 });
         }
 
+        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        {
+            base.Init(host, settings);
+            mesh = Host.GetComponent<TextMesh>();
+            text = Host.GetComponent<Text>();
+        }
+
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             InteractableThemePropertyValue color = new InteractableThemePropertyValue();
-            TextMesh mesh = Host.GetComponent<TextMesh>();
+
             if (mesh != null)
             {
                 color.Color = mesh.color;
                 return color;
             }
 
-            Text text = Host.GetComponent<Text>();
             if (text != null)
             {
                 color.Color = text.color;
@@ -49,14 +58,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
             Color color = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
-            TextMesh mesh = Host.GetComponent<TextMesh>();
+
             if (mesh != null)
             {
                 mesh.color = color;
                 return;
             }
 
-            Text text = Host.GetComponent<Text>();
             if (text != null)
             {
                 text.color = color;
