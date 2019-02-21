@@ -394,7 +394,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.TriggerPress:
-                    //Update the interaction data source
+                    // Update the interaction data source
                     interactionMapping.BoolData = interactionSourceState.grasped;
 
                     // If our value changed raise it.
