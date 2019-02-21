@@ -69,26 +69,24 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
         #region IMixedRealityToolkit implementation
 
+#if UNITY_WSA
+
         /// <inheritdoc />
         public override void Initialize()
         {
             // Only initialize if the Spatial Awareness system has been enabled in the configuration profile.
             if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled) { return; }
 
-#if UNITY_WSA
             CreateObserver();
 
             // Apply the initial observer volume settings.
             ConfigureObserverVolume();
-#endif // UNITY_WSA
         }
 
         /// <inheritdoc />
         public override void Reset()
         {
-#if UNITY_WSA
             CleanupObserver();
-#endif // UNITY_WSA
             Initialize();
         }
 
@@ -101,9 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// <inheritdoc />
         public override void Update()
         {
-#if UNITY_WSA
             UpdateObserver();
-#endif // UNITY_WSA
         }
 
         /// <inheritdoc />
@@ -115,10 +111,10 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// <inheritdoc />
         public override void Destroy()
         {
-#if UNITY_WSA
             CleanupObserver();
-#endif // UNITY_WSA
         }
+
+#endif // UNITY_WSA
 
         #endregion IMixedRealityToolkit implementation
 
@@ -140,6 +136,28 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 
 #if UNITY_WSA
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (disposed) { return; }
+
+            base.Dispose(disposing);
+
+            if (IsRunning)
+            {
+                Suspend();
+            }
+
+            if (disposing)
+            {
+                CleanupObservedObjects();
+            }
+
+            DisposeObserver();
+
+            disposed = true;
+        }
+
         /// <summary>
         /// The surface observer providing the spatial data.
         /// </summary>
@@ -292,16 +310,15 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// </summary>
         private void CleanupObserver()
         {
-            if (observer != null)
-            {
-                if (IsRunning)
-                {
-                    Suspend();
-                }
-                observer.Dispose();
-                observer = null;
-            }
+            // Destroys all observed objects and the observer.
+            Dispose(true);
+        }
 
+        /// <summary>
+        /// Cleans up the objects created during observation.
+        /// </summary>
+        private void CleanupObservedObjects()
+        {
             if (Application.isPlaying)
             {
                 // Cleanup the scene objects are managing
@@ -309,7 +326,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                 {
                     observedObjectParent.transform.DetachChildren();
                 }
-                
+
                 foreach (SpatialAwarenessMeshObject meshObject in meshes.Values)
                 {
                     if (meshObject != null)
@@ -335,6 +352,18 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                     SpatialAwarenessMeshObject.Cleanup(spareMeshObject);
                     spareMeshObject = null;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Implements proper cleanup of the SurfaceObserver.
+        /// </summary>
+        private void DisposeObserver()
+        {
+            if (observer != null)
+            {
+                observer.Dispose();
+                observer = null;
             }
         }
 
