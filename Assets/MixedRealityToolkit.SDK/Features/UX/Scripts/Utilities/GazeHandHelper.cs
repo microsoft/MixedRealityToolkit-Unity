@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine;
+using System;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 {
@@ -141,6 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         /// This function gets an array of all active hand positions
         /// </summary>
         /// <returns>array of Vector3</returns>
+        [Obsolete]
         public Vector3[] GetHandPositions()
         {
             List<Vector3> positions = new List<Vector3>();
@@ -157,13 +159,31 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         }
 
         /// <summary>
+        /// This function gets an array of all active hand positions
+        /// </summary>
+        /// <returns>enumerable of Vector3</returns>
+        public IEnumerable<Vector3> GetAllHandPositions()
+        {
+            foreach (uint key in positionAvailableMap.Keys)
+            {
+                if (positionAvailableMap[key] == true)
+                {
+                    yield return handPositionMap[key];
+                }
+            }
+            yield break;
+        }
+
+        /// <summary>
         /// This function retrieves the position of the first active hand.
         /// </summary>
         /// <returns>Vector3 representing position</returns>
         public Vector3 GetFirstHand()
         {
-            Vector3[] hands = GetHandPositions();
-            return hands.Length > 0 ? hands[0] : Vector3.zero;
+            foreach (Vector3 hand in GetAllHandPositions())
+                return hand;
+
+            return Vector3.zero;
         }
 
         /// <summary>

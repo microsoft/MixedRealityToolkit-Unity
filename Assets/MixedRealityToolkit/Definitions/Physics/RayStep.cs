@@ -9,12 +9,32 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
     [Serializable]
     public struct RayStep
     {
+        private static Vector3 dist;
+        private static Vector3 dir;
+        private static Vector3 pos;
+
         public RayStep(Vector3 origin, Vector3 terminus) : this()
         {
             Origin = origin;
             Terminus = terminus;
-            Length = Vector3.Distance(origin, terminus);
-            Direction = (Terminus - Origin).normalized;
+
+            dist.x = Terminus.x - Origin.x;
+            dist.y = Terminus.y - Origin.y;
+            dist.z = Terminus.z - Origin.z;
+            Length = Mathf.Sqrt((dist.x * dist.x) + (dist.y * dist.y) + (dist.z * dist.z));
+
+            if (Length > 0)
+            {
+                dir.x = dist.x / Length;
+                dir.y = dist.y / Length;
+                dir.z = dist.z / Length;
+            }
+            else
+            {
+                dir = dist;
+            }
+
+            Direction = dir;
 
             epsilon = 0.01f;
         }
@@ -28,7 +48,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
 
         public Vector3 GetPoint(float distance)
         {
-            return Vector3.MoveTowards(Origin, Terminus, distance);
+            if (Length <= distance || Length == 0f)
+                return Origin;
+
+            pos.x = Origin.x + Direction.x * distance;
+            pos.y = Origin.y + Direction.y * distance;
+            pos.z = Origin.z + Direction.z * distance;
+
+            return pos;
         }
 
         /// <summary>
@@ -41,8 +68,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
         {
             Origin = origin;
             Terminus = terminus;
-            Length = Vector3.Distance(origin, terminus);
-            Direction = (Terminus - Origin).normalized;
+
+            dist.x = Terminus.x - Origin.x;
+            dist.y = Terminus.y - Origin.y;
+            dist.z = Terminus.z - Origin.z;
+            Length = Mathf.Sqrt((dist.x * dist.x) + (dist.y * dist.y) + (dist.z * dist.z));
+
+            if (Length > 0)
+            {
+                dir.x = dist.x / Length;
+                dir.y = dist.y / Length;
+                dir.z = dist.z / Length;
+            }
+            else
+            {
+                dir = dist;
+            }
+
+            Direction = dir;
         }
 
         public void CopyRay(Ray ray, float rayLength)
@@ -50,12 +93,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
             Length = rayLength;
             Origin = ray.origin;
             Direction = ray.direction;
-            Terminus = Origin + (Direction * Length);
+
+            pos.x = Origin.x + Direction.x * Length;
+            pos.y = Origin.y + Direction.y * Length;
+            pos.z = Origin.z + Direction.z * Length;
+
+            Terminus = pos;
         }
 
         public bool Contains(Vector3 point)
         {
-            return Vector3.Distance(Origin, point) + Vector3.Distance(point, Terminus) - Length < epsilon;
+            dist.x = Origin.x - point.x;
+            dist.y = Origin.y - point.y;
+            dist.z = Origin.z - point.z;
+            float sqrMagOriginPoint = (dist.x * dist.x) + (dist.y * dist.y) + (dist.z * dist.z);
+
+            dist.x = point.x - Terminus.x;
+            dist.y = point.y - Terminus.y;
+            dist.z = point.z - Terminus.z;
+            float sqrMagPointTerminus = (dist.x * dist.x) + (dist.y * dist.y) + (dist.z * dist.z);
+
+            float sqrLength = Length * Length;
+            float sqrEpsilon = epsilon * epsilon;
+
+            return (sqrMagOriginPoint + sqrMagPointTerminus) - sqrLength > sqrEpsilon;
         }
 
         public static implicit operator Ray(RayStep r)
@@ -73,17 +134,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
         /// <returns></returns>
         public static Vector3 GetPointByDistance(RayStep[] steps, float distance)
         {
-             Debug.Assert(steps != null);
-             Debug.Assert(steps.Length > 0);
+            Debug.Assert(steps != null);
+            Debug.Assert(steps.Length > 0);
 
             Vector3 point = Vector3.zero;
             float remainingDistance = distance;
+            int numSteps = steps.Length;
 
-            for (int i = 0; i < steps.Length; i++)
+            for (int i = 0; i < numSteps; i++)
             {
-                if (remainingDistance > steps[i].Length)
+                if (remainingDistance > numSteps)
                 {
-                    remainingDistance -= steps[i].Length;
+                    remainingDistance -= numSteps;
                 }
                 else
                 {
@@ -96,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
             if (remainingDistance > 0)
             {
                 // If we reach the end and still have distance left, set the point to the terminus of the last step
-                point = steps[steps.Length - 1].Terminus;
+                point = steps[numSteps - 1].Terminus;
             }
 
             return point;
@@ -110,13 +172,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
         /// <returns></returns>
         public static RayStep GetStepByDistance(RayStep[] steps, float distance)
         {
-             Debug.Assert(steps != null);
-             Debug.Assert(steps.Length > 0);
+            Debug.Assert(steps != null);
+            Debug.Assert(steps.Length > 0);
 
             RayStep step = new RayStep();
             float remainingDistance = distance;
+            int numSteps = steps.Length;
 
-            for (int i = 0; i < steps.Length; i++)
+            for (int i = 0; i < numSteps; i++)
             {
                 if (remainingDistance > steps[i].Length)
                 {
@@ -147,8 +210,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
         /// <returns></returns>
         public static Vector3 GetDirectionByDistance(RayStep[] steps, float distance)
         {
-             Debug.Assert(steps != null);
-             Debug.Assert(steps.Length > 0);
+            Debug.Assert(steps != null);
+            Debug.Assert(steps.Length > 0);
 
             return GetStepByDistance(steps, distance).Direction;
         }

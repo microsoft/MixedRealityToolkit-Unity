@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         private Quaternion SnapToTetherAngleSteps(Quaternion rotationToSnap)
         {
-            if (!UseAngleSteppingForWorldOffset)
+            if (!UseAngleSteppingForWorldOffset || SolverHandler.TransformTarget == null)
             {
                 return rotationToSnap;
             }
@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             switch (orientationType)
             {
                 case SolverOrientationType.YawOnly:
-                    float targetYRotation = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.eulerAngles.y : 1;
+                    float targetYRotation = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.eulerAngles.y : 0.0f;
                     desiredRot = Quaternion.Euler(0f, targetYRotation, 0f);
                     break;
                 case SolverOrientationType.Unmodified:
@@ -141,10 +141,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                     desiredRot = CameraCache.Main.transform.rotation;
                     break;
                 case SolverOrientationType.FaceTrackedObject:
-                    desiredRot = Quaternion.LookRotation(SolverHandler.TransformTarget.position - desiredPos);
+                    desiredRot = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(SolverHandler.TransformTarget.position - desiredPos) : Quaternion.identity;
                     break;
                 case SolverOrientationType.CameraFacing:
-                    desiredRot = Quaternion.LookRotation(CameraCache.Main.transform.position - desiredPos);
+                    desiredRot = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(CameraCache.Main.transform.position - desiredPos) : Quaternion.identity;
                     break;
                 case SolverOrientationType.FollowTrackedObject:
                     desiredRot = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.rotation : Quaternion.identity;

@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public class BoundingBox : BaseFocusHandler, 
+    public class BoundingBox : BaseFocusHandler,
         IMixedRealityInputHandler,
         IMixedRealityInputHandler<MixedRealityPose>,
         IMixedRealityPointerHandler,
@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     if (value)
                     {
                         CreateRig();
-                        rigRoot.SetActive(true);
+                        rigRoot.gameObject.SetActive(true);
                     }
                     else
                     {
@@ -265,15 +265,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private IMixedRealityInputSource currentInputSource;
         private Vector3 initialGazePoint = Vector3.zero;
         private GameObject targetObject;
-        private GameObject rigRoot;
+        private Transform rigRoot;
         private BoxCollider cachedTargetCollider;
         private Vector3[] boundsCorners;
         private Vector3 currentBoundsSize;
         private BoundsCalculationMethod boundsMethod;
         private HandleMoveType handleMoveType = HandleMoveType.Point;
-        private List<GameObject> links;
-        private List<GameObject> corners;
-        private List<GameObject> balls;
+        private List<Transform> links;
+        private List<Transform> corners;
+        private List<Transform> balls;
         private List<Renderer> cornerRenderers;
         private List<Renderer> ballRenderers;
         private List<Renderer> linkRenderers;
@@ -304,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.InputSystem != null)
             {
-               MixedRealityToolkit.InputSystem.Register(targetObject);
+                MixedRealityToolkit.InputSystem.Register(targetObject);
             }
 
             if (activateOnStart == true)
@@ -344,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             UpdateRigHandles();
             Flatten();
             ResetHandleVisibility();
-            rigRoot.SetActive(false);
+            rigRoot.gameObject.SetActive(false);
         }
 
         private void DestroyRig()
@@ -530,7 +530,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 var cubeRenderer = cube.GetComponent<Renderer>();
                 cornerRenderers.Add(cubeRenderer);
                 cornerColliders.Add(cube.GetComponent<Collider>());
-                corners.Add(cube);
+                corners.Add(cube.transform);
 
                 if (handleMaterial != null)
                 {
@@ -556,7 +556,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 var ballRenderer = ball.GetComponent<Renderer>();
                 ballRenderers.Add(ballRenderer);
                 ballColliders.Add(ball.GetComponent<Collider>());
-                balls.Add(ball);
+                balls.Add(ball.transform);
 
                 if (handleMaterial != null)
                 {
@@ -615,7 +615,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     linkRenderer.material = wireframeMaterial;
                 }
 
-                links.Add(link);
+                links.Add(link.transform);
             }
         }
 
@@ -628,6 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             if (boxColliderToUse != null)
             {
                 cachedTargetCollider = boxColliderToUse;
+                cachedTargetCollider.transform.hasChanged = true;
             }
             else
             {
@@ -695,9 +696,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 for (int i = 0; i < colliders.Length; ++i)
                 {
-                    if (colliders[i].bounds.size != Vector3.zero)
+                    Bounds colliderBounds = colliders[i].bounds;
+                    if (colliderBounds.size != Vector3.zero)
                     {
-                        bounds.Encapsulate(colliders[i].bounds);
+                        bounds.Encapsulate(colliderBounds);
                     }
                 }
 
@@ -828,18 +830,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         private void InitializeDataStructures()
         {
-            rigRoot = new GameObject("rigRoot");
+            rigRoot = new GameObject("rigRoot").transform;
             rigRoot.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
 
             boundsCorners = new Vector3[8];
 
-            corners = new List<GameObject>();
+            corners = new List<Transform>();
             cornerColliders = new List<Collider>();
             cornerRenderers = new List<Renderer>();
-            balls = new List<GameObject>();
+            balls = new List<Transform>();
             ballRenderers = new List<Renderer>();
             ballColliders = new List<Collider>();
-            links = new List<GameObject>();
+            links = new List<Transform>();
             linkRenderers = new List<Renderer>();
         }
 
@@ -965,8 +967,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (cachedTargetCollider != null)
             {
-                boundsSize = cachedTargetCollider.bounds.extents;
-                centroid = cachedTargetCollider.bounds.center;
+                Bounds colliderBounds = cachedTargetCollider.bounds;
+                boundsSize = colliderBounds.extents;
+                centroid = colliderBounds.center;
             }
 
             //after bounds are computed, restore rotation...
@@ -1005,38 +1008,38 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             if (rigRoot != null && targetObject != null)
             {
-                rigRoot.transform.rotation = Quaternion.identity;
-                rigRoot.transform.position = Vector3.zero;
+                rigRoot.rotation = Quaternion.identity;
+                rigRoot.position = Vector3.zero;
 
                 for (int i = 0; i < corners.Count; ++i)
                 {
-                    corners[i].transform.position = boundsCorners[i];
+                    corners[i].position = boundsCorners[i];
                 }
 
                 Vector3 linkDimensions = GetLinkDimensions();
 
                 for (int i = 0; i < edgeCenters.Length; ++i)
                 {
-                    balls[i].transform.position = edgeCenters[i];
-                    links[i].transform.position = edgeCenters[i];
+                    balls[i].position = edgeCenters[i];
+                    links[i].position = edgeCenters[i];
 
                     if (edgeAxes[i] == CardinalAxisType.X)
                     {
-                        links[i].transform.localScale = new Vector3(linkRadius, linkDimensions.x, linkRadius);
+                        links[i].localScale = new Vector3(linkRadius, linkDimensions.x, linkRadius);
                     }
                     else if (edgeAxes[i] == CardinalAxisType.Y)
                     {
-                        links[i].transform.localScale = new Vector3(linkRadius, linkDimensions.y, linkRadius);
+                        links[i].localScale = new Vector3(linkRadius, linkDimensions.y, linkRadius);
                     }
                     else
                     {
-                        links[i].transform.localScale = new Vector3(linkRadius, linkDimensions.z, linkRadius);
+                        links[i].localScale = new Vector3(linkRadius, linkDimensions.z, linkRadius);
                     }
                 }
 
                 //move rig into position and rotation
-                rigRoot.transform.position = cachedTargetCollider.bounds.center;
-                rigRoot.transform.rotation = targetObject.transform.rotation;
+                rigRoot.position = cachedTargetCollider.bounds.center;
+                rigRoot.rotation = targetObject.transform.rotation;
             }
         }
 
@@ -1261,7 +1264,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public void OnPointerUp(MixedRealityPointerEventData eventData) { }
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
         public void OnInputPressed(InputEventData<float> eventData) { }
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData){}
+        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
         public void OnPositionChanged(InputEventData<Vector3> eventData) { }
         public void OnRotationChanged(InputEventData<Quaternion> eventData) { }
         public void OnSourceDetected(SourceStateEventData eventData) { }
