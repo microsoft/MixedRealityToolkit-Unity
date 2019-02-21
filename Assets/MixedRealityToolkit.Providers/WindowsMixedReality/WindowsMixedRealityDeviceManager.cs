@@ -59,6 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             return activeControllers.Values.ToArray();
         }
 
+        #region Gesture Settings
+
         private static bool gestureRecognizerEnabled;
 
         /// <summary>
@@ -222,6 +224,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         private static WsaGestureSettings WSANavigationSettings => (WsaGestureSettings)navigationSettings;
         private static WsaGestureSettings WSARailsNavigationSettings => (WsaGestureSettings)railsNavigationSettings;
 
+        #endregion Gesture Settings
+
         #region IMixedRealityDeviceManager Interface
 
         /// <inheritdoc/>
@@ -294,7 +298,9 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
             for (var i = 0; i < interactionmanagerStates?.Length; i++)
             {
-                var controller = GetController(interactionmanagerStates[i].source);
+                // SourceDetected gets raised when a new controller is detected and, if previously present, 
+                // when OnEnable is called. Do not create a new controller here.
+                var controller = GetController(interactionmanagerStates[i].source, false);
 
                 if (controller != null)
                 {

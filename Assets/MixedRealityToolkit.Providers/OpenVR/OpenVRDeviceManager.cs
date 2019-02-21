@@ -96,8 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
 
             if (!detectedController.SetupConfiguration(controllerType))
             {
-                // Controller failed to be setup correctly.
-                Debug.LogError($"Failed to Setup {controllerType.Name} controller");
+                // Controller failed to be set up correctly.
+                Debug.LogError($"Failed to set up {controllerType.Name} controller");
                 // Return null so we don't raise the source detected.
                 return null;
             }
