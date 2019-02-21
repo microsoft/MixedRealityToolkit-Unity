@@ -41,6 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         #region IDisposable Implementation
 
         /// <summary>
+        /// Value indicating if the object has completed disposal.
+        /// </summary>
+        /// <remarks>
+        /// Set by derived classes to indicate that disposal has been completed.
+        /// </remarks>
+        protected bool disposed = false;
+
+        /// <summary>
         /// Finalizer
         /// </summary>
         ~BaseService()
@@ -67,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// True will release all managed resources, unmanaged resources are always released.
         /// </param>
         protected virtual void Dispose(bool disposing) { }
-
+    
         #endregion IDisposable Implementation
     }
 }
