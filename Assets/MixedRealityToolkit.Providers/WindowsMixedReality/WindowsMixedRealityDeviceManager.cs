@@ -373,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
-                RemoveController(states[i]);
+                RemoveController(states[i].source);
             }
         }
 
@@ -438,16 +438,16 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// Remove the selected controller from the Active Store
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
-        private void RemoveController(InteractionSourceState interactionSourceState)
+        private void RemoveController(InteractionSource interactionSource)
         {
-            var controller = GetController(interactionSourceState.source, false);
+            var controller = GetController(interactionSource, false);
 
             if (controller != null)
             {
                 MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
             }
 
-            activeControllers.Remove(interactionSourceState.source.id);
+            activeControllers.Remove(interactionSource.id);
         }
 
         #endregion Controller Utilities
@@ -478,7 +478,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// <param name="args">SDK source updated event arguments</param>
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
         {
-            RemoveController(args.state);
+            RemoveController(args.state.source);
         }
 
         #endregion Unity InteractionManager Events
