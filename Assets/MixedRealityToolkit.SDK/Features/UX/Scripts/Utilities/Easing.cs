@@ -30,12 +30,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         public AnimationCurve Curve = AnimationCurve.Linear(0, 1, 1, 1);
 
+
         /// <summary>
         /// The amounnt of time the ease should run
         /// </summary>
         public float LerpTime = 0.5f;
 
         private float timer = 0.5f;
+        private Keyframe[] cachedKeys;
 
         public Easing()
         {
@@ -47,6 +49,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         public void OnUpdate()
         {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                // If we're in the editor and we're not playing
+                // always update the cached keys to reflect recent changes
+                cachedKeys = Curve.keys;
+            }
+#endif
+
             if (timer < LerpTime)
             {
                 timer = Mathf.Min(timer + Time.deltaTime, LerpTime);
@@ -102,9 +113,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         protected bool IsLinear()
         {
-            if (Curve.keys.Length > 1)
+            if (cachedKeys == null)
+                cachedKeys = Curve.keys;
+
+            if (cachedKeys.Length > 1)
             {
-                return (Curve.keys[0].value == 1 && Curve.keys[1].value == 1);
+                return (cachedKeys[0].value == 1 && cachedKeys[1].value == 1);
             }
 
             return false;
