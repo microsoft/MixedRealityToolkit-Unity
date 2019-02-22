@@ -400,7 +400,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                         _cachedSelfUser.Spectators[spectator.Id] = new Spectator(spectator.Id);
                     }
 
-                    if (!spectator.HasValidMarkerId())
+                    if (!_cachedSelfUser.Spectators[spectator.Id].HasValidMarkerId() &&
+                        !spectator.HasValidMarkerId())
                     {
                         _cachedSelfUser.Spectators[spectator.Id].MarkerId = _cachedSelfUser.AvailableMarkerId;
                         _cachedSelfUser.AvailableMarkerId += 1;
@@ -677,6 +678,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         {
             if (_actAsUser)
             {
+                Debug.Log("Generating state payload for cached self user: " + _cachedSelfUser.ToString());
                 var output = SerializationHelper.Serialize(_cachedSelfUser);
                 return output;
             }
