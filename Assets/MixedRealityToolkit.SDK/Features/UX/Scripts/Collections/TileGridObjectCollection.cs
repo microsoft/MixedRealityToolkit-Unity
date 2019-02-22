@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 {
     /// <summary>
-    /// A basic grid layout for game objects of a consistant size
+    /// A basic grid layout for game objects of a consistent size
     /// </summary>
     /// 
     [ExecuteInEditMode]
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         /// <param name="gutters">gutter size in pixels</param>
         /// <param name="layouDirection">normalized vector flow direction</param>
         /// <param name="startPosition">start position offset</param>
-        /// <param name="centered">center the grid or layotu from edge</param>
+        /// <param name="centered">center the grid or layout from edge</param>
         public virtual void ConfigureGrid(int columns, Vector3 tileSize, Vector3 gutters, Vector3 layouDirection, Vector3 startPosition, bool centered)
         {
             Columns = columns;

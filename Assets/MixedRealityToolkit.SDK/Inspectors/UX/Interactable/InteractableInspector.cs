@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             }
 
             SerializedProperty dimensions = serializedObject.FindProperty("Dimensions");
-            dimensions.intValue = EditorGUILayout.IntField(new GUIContent("Dimensions", "Toggle or squence button levels"), dimensions.intValue);
+            dimensions.intValue = EditorGUILayout.IntField(new GUIContent("Dimensions", "Toggle or sequence button levels"), dimensions.intValue);
 
             if (dimensions.intValue > 1)
             {
@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                         }
                     }
 
-                    // add themes when increading dimensions
+                    // add themes when increasing dimensions
                     if (themes.arraySize < dimensions.intValue)
                     {
                         int cnt = themes.arraySize;
@@ -315,10 +315,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                     for (int t = 0; t < themes.arraySize; t++)
                     {
                         SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
-                        EditorGUILayout.PropertyField(themeItem, new GUIContent("Theme", "Theme properties for interation feedback"));
+                        EditorGUILayout.PropertyField(themeItem, new GUIContent("Theme", "Theme properties for interaction feedback"));
                         
                         // TODO: we need the theme and target in order to figure out what properties to expose in the list
-                        // TODO: or do we show them all and show alerts when a theme property is not compatable
+                        // TODO: or do we show them all and show alerts when a theme property is not compatible
                         if (themeItem.objectReferenceValue != null && gameObject.objectReferenceValue)
                         {
                             if (themeItem.objectReferenceValue.name == "DefaultTheme")

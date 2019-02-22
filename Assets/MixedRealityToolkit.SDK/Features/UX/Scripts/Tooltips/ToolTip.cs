@@ -577,8 +577,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             localScale.x = (localScale.x * textMesh.characterSize * 0.1f) * transformScale.x;
             localScale.z = transformScale.z;
 
-            // We could calcualte the height based on line height and character size
-            // But I've found that method can be flakey and has a lot of magic numbers
+            // We could calculate the height based on line height and character size
+            // But I've found that method can be flaky and has a lot of magic numbers
             // that may break in future Unity versions
             Vector3 eulerAngles = textMesh.transform.eulerAngles;
             Vector3 rendererScale = Vector3.zero;

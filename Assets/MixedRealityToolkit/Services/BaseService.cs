@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // Clean up our resources (managed and unmanaged resources)
             Dispose(true);
 
-            // Suppress finalization as the  the finalizer also calls our cleanup code.
+            // Suppress finalization as the finalizer also calls our cleanup code.
             GC.SuppressFinalize(this);
         }
 

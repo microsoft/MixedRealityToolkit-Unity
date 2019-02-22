@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 {
     /// <summary>
     /// Uses input and action data to declare a set of states
-    /// Maintains a collection of themes that react to state changes and provide scensory feedback
+    /// Maintains a collection of themes that react to state changes and provide sensory feedback
     /// Passes state information and input data on to receivers that detect patterns and does stuff.
     /// </summary>
 
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         /// </summary>
         public bool FocusEnabled { get { return !IsGlobal; } set { IsGlobal = !value; } }
 
-        // list of profiles can match themes with gameObjects
+        // list of profiles can match themes with GameObjects
         public List<InteractableProfileItem> Profiles = new List<InteractableProfileItem>();
         // Base onclick event
         public UnityEvent OnClick;
@@ -117,10 +117,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         protected State lastState;
         protected bool wasDisabled = false;
 
-        // cache of current dimenion
+        // cache of current dimension
         protected int dimensionIndex = 0;
 
-        // allows for switching colliders without firing a lose focus imediately
+        // allows for switching colliders without firing a lose focus immediately
         // for advanced controls like drop-downs
         protected float rollOffTime = 0.25f;
         protected float rollOffTimer = 0.25f;
@@ -782,7 +782,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         }
 
         /// <summary>
-        /// internal deminsion cycling
+        /// internal dimension cycling
         /// </summary>
         protected void IncreaseDimensionIndex()
         {
@@ -975,7 +975,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         /// <summary>
         /// Setup voice commands from component VoiceCommand input field
-        /// Supports toggles using a comma to seperate keywords, no spaces please
+        /// Supports toggles using a comma to separate keywords, no spaces please
         /// </summary>
         protected void SetupVoiceCommand()
         {

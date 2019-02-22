@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             await new WaitUntil(() => MixedRealityToolkit.DiagnosticsSystem != null);
 
-            // Turn on the diagnotic visualizations for this demo.
+            // Turn on the diagnostic visualizations for this demo.
             MixedRealityToolkit.DiagnosticsSystem.ShowDiagnostics = true;
         }
 

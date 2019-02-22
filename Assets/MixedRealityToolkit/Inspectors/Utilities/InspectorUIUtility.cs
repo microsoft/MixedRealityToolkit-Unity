@@ -258,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         }
 
         /// <summary>
-        /// Draw a basic lable
+        /// Draw a basic label
         /// </summary>
         /// <param name="title"></param>
         /// <param name="size"></param>
@@ -425,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         }
 
         /// <summary>
-        /// Get an array of strings from a serialized list of strings, popup field helper
+        /// Get an array of strings from a serialized list of strings, pop-up field helper
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -441,7 +441,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         }
 
         /// <summary>
-        /// Get the index of a serialized array item based on it's name, popup field helper
+        /// Get the index of a serialized array item based on it's name, pop-up field helper
         /// </summary>
         /// <param name="options"></param>
         /// <param name="selection"></param>
@@ -460,7 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         }
 
         /// <summary>
-        /// Get the index of an array item based on it's name, popup field helper
+        /// Get the index of an array item based on it's name, pop-up field helper
         /// </summary>
         /// <param name="option"></param>
         /// <param name="options"></param>

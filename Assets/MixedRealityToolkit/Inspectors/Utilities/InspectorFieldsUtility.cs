@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 {
     /// <summary>
-    /// A colleciton of helper functions for adding InspectorFields to a custom Inspector
+    /// A collection of helper functions for adding InspectorFields to a custom Inspector
     /// </summary>
 
     public static class InspectorFieldsUtility

@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Utilities.InspectorField
 
             serializedObject.ApplyModifiedProperties();
 
-            // to apply during runtime - only needed for monobehaviors
+            // to apply during runtime - only needed for MonoBehaviours
             InspectorGenericFields<InspectorFieldsExample>.LoadSettings(example, example.Settings);
         }
     }

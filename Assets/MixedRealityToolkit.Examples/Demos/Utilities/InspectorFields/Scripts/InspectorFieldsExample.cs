@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
     /// Example of using InspectorFields attributes in a class to create custom inspectors
     /// This is on approach for building complex inspectors that need to be customized or the need to overcome lack of polymorphism support
     /// They provide a way to create one inspector for multiple classes
-    /// Example: Create a monobehavior or scriptable object with a custom inspector.
+    /// Example: Create a MonoBehaviour or scriptable object with a custom inspector.
     /// The functionality or settings can be changed by assigning a custom script to the object
     /// Use InspectorFields to render the custom properties inside the custom script in the inspector
     /// When the app launches, copy the properties to the new instance of the script

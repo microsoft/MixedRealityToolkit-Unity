@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         public override void Reset()
         {
             base.Reset();
-            // todo: base Reset should likly call Disable, then Initialize
+            // todo: base Reset should likely call Disable, then Initialize
             InitializeInternal();
         }
 

@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
 
         /// <summary>
-        /// The amounnt of time the ease should run
+        /// The amount of time the ease should run
         /// </summary>
         public float LerpTime = 0.5f;
 

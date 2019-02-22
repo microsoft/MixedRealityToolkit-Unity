@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 {
     /// <summary>
-    /// Uses Animator to control Interacable feedback based on state changes.
+    /// Uses Animator to control Interactable feedback based on state changes.
     /// </summary>
     public class InteractableAnimatorTheme : InteractableThemeBase
     {

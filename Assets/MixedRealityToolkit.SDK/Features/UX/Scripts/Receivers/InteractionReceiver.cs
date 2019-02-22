@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         [Tooltip("When true, this interaction receiver will draw connections in the editor to Interactables and Targets")]
         private bool drawEditorConnections = true;
 
-        #region MonoBehaviour implementation
+        #region MonoBehaviour Implementation
 
         /// <summary>
         /// On enable, set the BaseInputHandler's IsFocusRequired to false to receive all events.
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        #endregion MonoBehaviour implementation
+        #endregion MonoBehaviour Implementation
 
         /// <summary>
         /// Register an interactable with this receiver.
@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
 
         #endregion IMixedRealityFocusChangedHandler Implementation
 
-        #region IMixedRealityInputHandler Impmentations
+        #region IMixedRealityInputHandler Implementations
 
         /// <inheritdoc />
         void IMixedRealityInputHandler.OnInputUp(InputEventData eventData)
@@ -228,9 +228,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        #endregion IMixedRealityInputHandler Impmentations
+        #endregion IMixedRealityInputHandler Implementations
 
-        #region IMixedRealityGestureHandler Impmentations
+        #region IMixedRealityGestureHandler Implementations
 
         /// <inheritdoc />
         void IMixedRealityGestureHandler.OnGestureStarted(InputEventData eventData)
@@ -322,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        #endregion IMixedRealityGestureHandler Impmentations
+        #endregion IMixedRealityGestureHandler Implementations
 
         #region Protected Virtual Callback Functions
 
