@@ -3,10 +3,8 @@
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
 {
-    public interface IMarkerVisual
+    public interface IRecordingServiceVisual
     {
-        void ShowMarker(int id);
-        void HideMarker();
-        void SetMarkerSize(float size);
+        void SetRecordingService(IRecordingService service);
     }
 }

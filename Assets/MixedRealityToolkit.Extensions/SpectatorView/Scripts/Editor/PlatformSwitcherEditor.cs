@@ -27,6 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Editor
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClientServer, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PrivateNetworkClientServer, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.WebCam, true);
+                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true);
+                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PicturesLibrary, true);
+                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.VideosLibrary, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true);
                 PlayerSettings.WSA.SetTargetDeviceFamily(PlayerSettings.WSATargetFamily.Holographic, true);
             }
@@ -35,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Editor
             if (GUILayout.Button("Android", GUILayout.Height(_buttonHeight)))
             {
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+                EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
                 PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel24;
                 PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait; // Currently needed based on ArUco Visual logic
             }

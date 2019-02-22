@@ -10,27 +10,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
         [SerializeField] GameObject prefab;
         [SerializeField] Vector3 _scale = Vector3.one;
 
-        public GameObject CreateVisual(Vector3 position, Quaternion rotation)
+        public void CreateOrUpdateVisual(ref GameObject visual, Vector3 position, Quaternion rotation)
         {
             if (prefab == null)
             {
-                Debug.Log("Prefab not defined. No visual created");
-                return null;
+                Debug.LogError("Prefab not defined. No visual created");
             }
 
-            var visual = Instantiate(prefab);
-            SetTransform(ref visual, position, rotation);
-            return visual;
+            if (visual == null)
+            {
+                visual = Instantiate(prefab);
+            }
+
+            if (visual != null)
+            {
+                SetTransform(visual, position, rotation);
+            }
         }
 
-        public void UpdateVisual(ref GameObject visual, Vector3 position, Quaternion rotation)
+        void SetTransform(GameObject visual, Vector3 position, Quaternion rotation)
         {
-            SetTransform(ref visual, position, rotation);
-        }
-
-        void SetTransform(ref GameObject visual, Vector3 position, Quaternion rotation)
-        {
-            Debug.Log("Updating prefab visual. " + position.ToString() + ", " + rotation.ToString());
             visual.transform.position = position;
             visual.transform.rotation = rotation;
             visual.transform.localScale = _scale;

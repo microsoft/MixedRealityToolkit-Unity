@@ -18,12 +18,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
         [SerializeField] MonoBehaviour PlayerService;
         [SerializeField] MonoBehaviour NetworkingService;
         [SerializeField] MonoBehaviour SpatialCoordinateService;
+        [SerializeField] MonoBehaviour AndroidRecordingService;
+        [SerializeField] MonoBehaviour IosRecordingService;
+        [SerializeField] MonoBehaviour RecordingServiceVisual;
         [SerializeField] List<MonoBehaviour> PlayerStateObservers;
+
         IMatchMakingService _matchMakingService;
         IPlayerService _playerService;
         INetworkingService _networkingService;
         ISpatialCoordinateService _spatialCoordinateService;
         List<IPlayerStateObserver> _playerStateObservers;
+        IRecordingService _recordingService;
+        IRecordingServiceVisual _recordingServiceVisual;
 
         bool _validState = true;
 
@@ -33,8 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             FieldHelper.ValidateType<IPlayerService>(PlayerService);
             FieldHelper.ValidateType<INetworkingService>(NetworkingService);
             FieldHelper.ValidateType<ISpatialCoordinateService>(SpatialCoordinateService);
+            FieldHelper.ValidateType<IRecordingService>(AndroidRecordingService);
+            FieldHelper.ValidateType<IRecordingService>(IosRecordingService);
+            FieldHelper.ValidateType<IRecordingServiceVisual>(RecordingServiceVisual);
 
-            foreach(var observer in PlayerStateObservers)
+            foreach (var observer in PlayerStateObservers)
             {
                 FieldHelper.ValidateType<IPlayerStateObserver>(observer);
             }
@@ -63,6 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
                 if (observer != null)
                     _playerStateObservers.Add(observer);
             }
+
+            SetupRecordingService();
         }
 
         void Start()
@@ -139,8 +150,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 
                     _sceneRoot.transform.position = LocalOriginToSharedOrigin.GetColumn(3);
                     _sceneRoot.transform.rotation = Quaternion.LookRotation(LocalOriginToSharedOrigin.GetColumn(2), LocalOriginToSharedOrigin.GetColumn(1));
-                    Debug.Log("Updated root transform: position:" + _sceneRoot.transform.position.ToString() + ", rotation: " + _sceneRoot.transform.rotation.ToString());
                 }
+            }
+        }
+
+        private void SetupRecordingService()
+        {
+            _recordingServiceVisual = RecordingServiceVisual as IRecordingServiceVisual;
+
+#if UNITY_IOS
+            _recordingService = IosRecordingService as IRecordingService;
+#elif UNITY_ANDROID
+            _recordingService = AndroidRecordingService as IRecordingService;
+#endif
+
+            if (_recordingService != null &&
+                _recordingServiceVisual != null)
+            {
+                _recordingServiceVisual.SetRecordingService(_recordingService);
             }
         }
     }

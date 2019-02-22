@@ -54,5 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
         event MarkersUpdatedHandler MarkersUpdated;
         void StartDetecting();
         void StopDetecting();
+        void SetMarkerSize(float size);
     }
 }

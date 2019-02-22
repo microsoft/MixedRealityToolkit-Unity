@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+
 using UnityEngine.XR.ARFoundation;
 
 using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
@@ -12,6 +13,27 @@ using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordinates
 {
+    public enum MarkerSpatialCoordinateServiceOverlayState
+    {
+        waitingForUser,
+        locatingLocalOrigin,
+        locatingMarker,
+        none
+    }
+
+    public interface IMarkerSpatialCoordinateServiceOverlayVisual
+    {
+        void UpdateVisualState(MarkerSpatialCoordinateServiceOverlayState state);
+        void ShowVisual();
+        void HideVisual();
+    }
+
+    public delegate void ResetSpatialCoordinatesHandler();
+    public interface IMarkerSpatialCoordinateServiceResetVisual
+    {
+        event ResetSpatialCoordinatesHandler ResetSpatialCoordinates;
+    }
+
     public class MarkerSpatialCoordinateService : MonoBehaviour,
         ISpatialCoordinateService,
         IPlayerStateObserver
@@ -33,8 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
 
             public void SetTransform(Matrix4x4 transform)
             {
-                Position = transform.GetColumn(3);
-                Rotation = Quaternion.LookRotation(transform.GetColumn(2), transform.GetColumn(1));
+                Position = GetPosition(transform);
+                Rotation = GetRotation(transform);
             }
 
             public Matrix4x4 GetTransform()
@@ -57,6 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             public TransformData SpectatorMarkerToSpectatorCamera;
             public TransformData SpectatorCameraToSpectatorOriginWhenDetected;
             public TransformData SpectatorOriginToSpectatorCamera;
+            public bool RequestingReset;
 
             public Spectator()
             {
@@ -66,6 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 SpectatorMarkerToSpectatorCamera = new TransformData();
                 SpectatorCameraToSpectatorOriginWhenDetected = new TransformData();
                 SpectatorOriginToSpectatorCamera = new TransformData();
+                RequestingReset = false;
             }
 
             public Spectator(string id)
@@ -76,6 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 SpectatorMarkerToSpectatorCamera = new TransformData();
                 SpectatorCameraToSpectatorOriginWhenDetected = new TransformData();
                 SpectatorOriginToSpectatorCamera = new TransformData();
+                RequestingReset = false;
             }
 
             public static bool IsValidMarkerId(int marker)
@@ -86,6 +111,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             public bool HasValidMarkerId()
             {
                 return IsValidMarkerId(MarkerId);
+            }
+
+            public void ResetTransformData()
+            {
+                UserOriginToSpectatorMarker = new TransformData();
+                SpectatorMarkerToSpectatorCamera = new TransformData();
+                SpectatorCameraToSpectatorOriginWhenDetected = new TransformData();
+                SpectatorOriginToSpectatorCamera = new TransformData();
             }
 
             public static bool TryDeserializeSpectator(byte[] payload, out Spectator spectator)
@@ -107,8 +140,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                     ", Marker:" + MarkerId +
                     ", UserOriginToSpectatorMarker:" + UserOriginToSpectatorMarker.ToString() +
                     ", SpectatorMarkerToSpectatorCamera:" + SpectatorMarkerToSpectatorCamera.ToString() +
-                    ", SpectatorCameraToSpectatorOriginWhenDetected:" + SpectatorCameraToSpectatorOriginWhenDetected.ToString() + 
-                    ", SpectatorOriginToSpectatorcamera:" + SpectatorOriginToSpectatorCamera.ToString();
+                    ", SpectatorCameraToSpectatorOriginWhenDetected:" + SpectatorCameraToSpectatorOriginWhenDetected.ToString() +
+                    ", SpectatorOriginToSpectatorcamera:" + SpectatorOriginToSpectatorCamera.ToString() +
+                    ", RequestingReset: " + RequestingReset.ToString();
             }
         }
 
@@ -216,15 +250,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         }
         #endregion
 
-        [SerializeField] GameObject _aRFoundationGameObject;
+        enum VisualState
+        {
+            locatingLocalOrigin,
+            locatingMarker,
+            showingMarker,
+            waitingForUser,
+            none
+        }
+
         [SerializeField] Camera _aRFoundationCamera;
         [SerializeField] ARPointCloudManager _aRPointCloudManager;
         [SerializeField] bool _showDebugVisual;
         [SerializeField] DebugVisualHelper _debugVisualHelper;
+        [SerializeField] float _markerSize = 0.04f;
 
         bool _actAsUser = false;
         bool _initialized = false;
         bool _localOriginEstablished = false;
+        bool _listeningToPointCloudChanges = false;
+        VisualState _visualState = VisualState.none;
+        GameObject _sharedOriginVisual;
 
         // User specific fields
         string _userPlayerId = "";
@@ -233,20 +279,34 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         [SerializeField] MonoBehaviour MarkerDetector;
         IMarkerDetector _markerDetector;
         bool _detectingMarkers = false;
-        Dictionary<string, GameObject> _originVisuals = new Dictionary<string, GameObject>();
+        Dictionary<string, GameObject> _markerVisuals = new Dictionary<string, GameObject>();
         Dictionary<string, GameObject> _cameraVisuals = new Dictionary<string, GameObject>();
 
         // Spectator specific fields
-        int _observedAvailableMarkerId = -1;
         Spectator _cachedSelfSpectator = new Spectator();
+        [SerializeField] int _pointsRequiredForValidLocalOrigin = 4;
         [SerializeField] MonoBehaviour MarkerVisual;
         IMarkerVisual _markerVisual;
-        bool _showingMarker = false;
+        User _cachedUser;
+        GameObject _userCameraVisual;
+
+        [SerializeField] bool _useMarkerSpatialCoordinateVisual;
+        [SerializeField] MonoBehaviour HoloLensOverlayVisual;
+        [SerializeField] MonoBehaviour MobileOverlayVisual;
+        [SerializeField] MonoBehaviour MobileResetVisual;
+        IMarkerSpatialCoordinateServiceOverlayVisual _markerSpatialCoordinateOverlayVisual;
+        IMarkerSpatialCoordinateServiceResetVisual _markerSpatialCoordinateResetVisual;
+        bool _needUIUpdate = true;
 
         void OnValidate()
         {
+#if UNITY_EDITOR
             FieldHelper.ValidateType<IMarkerDetector>(MarkerDetector);
             FieldHelper.ValidateType<IMarkerVisual>(MarkerVisual);
+            FieldHelper.ValidateType<IMarkerSpatialCoordinateServiceOverlayVisual>(HoloLensOverlayVisual);
+            FieldHelper.ValidateType<IMarkerSpatialCoordinateServiceOverlayVisual>(MobileOverlayVisual);
+            FieldHelper.ValidateType<IMarkerSpatialCoordinateServiceResetVisual>(MobileResetVisual);
+#endif
         }
 
         void Awake()
@@ -254,11 +314,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             // TODO - update here if future scenario requires device other than hololens to act as user
 #if UNITY_WSA
             _actAsUser = true;
+            _markerSpatialCoordinateOverlayVisual = HoloLensOverlayVisual as IMarkerSpatialCoordinateServiceOverlayVisual;
+            _markerSpatialCoordinateResetVisual = null;
 #elif UNITY_ANDROID || UNITY_IOS
             _actAsUser = false;
+            _markerSpatialCoordinateOverlayVisual = MobileOverlayVisual as IMarkerSpatialCoordinateServiceOverlayVisual;
+            _markerSpatialCoordinateResetVisual = MobileResetVisual as IMarkerSpatialCoordinateServiceResetVisual;
 #endif
+            if (_markerSpatialCoordinateResetVisual != null)
+            {
+                _markerSpatialCoordinateResetVisual.ResetSpatialCoordinates += OnResetSpatialCoordinates;
+            }
+
             _markerDetector = MarkerDetector as IMarkerDetector;
+            if (_markerDetector != null)
+                _markerDetector.SetMarkerSize(_markerSize);
+
             _markerVisual = MarkerVisual as IMarkerVisual;
+            if (_markerVisual != null)
+                _markerVisual.SetMarkerSize(_markerSize);
+
+            SetVisualState(VisualState.none);
 
             Initialize();
         }
@@ -269,11 +345,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             {
                 Populate();
             }
+            else if (WaitingOnUser())
+            {
+                SetVisualState(VisualState.waitingForUser);
+            }
 
             var state = GenerateStatePayload();
             if (state != null)
             {
                 SpatialCoordinateStateUpdated?.Invoke(state);
+            }
+
+            if (_needUIUpdate)
+            {
+                Debug.Log("Updating UI visual state: " + _visualState.ToString());
+                UpdateVisualStateUI();
             }
 
             if (_showDebugVisual)
@@ -314,37 +400,23 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                         _cachedSelfUser.Spectators[spectator.Id] = new Spectator(spectator.Id);
                     }
 
-                    if ((_cachedSelfUser.Spectators[spectator.Id].MarkerId != spectator.MarkerId) &&
-                        (spectator.HasValidMarkerId()))
+                    if (!spectator.HasValidMarkerId())
                     {
-                        int potentialMarkerId = spectator.MarkerId;
-                        int maxMarkerId = potentialMarkerId;
-                        bool markerUsed = false;
-                        foreach (var cachedSpectatorPair in _cachedSelfUser.Spectators)
-                        {
-                            if (cachedSpectatorPair.Value.MarkerId == potentialMarkerId)
-                            {
-                                markerUsed = true;
-                                break;
-                            }
-
-                            if (cachedSpectatorPair.Value.MarkerId > maxMarkerId)
-                            {
-                                maxMarkerId = cachedSpectatorPair.Value.MarkerId;
-                            }
-                        }
-
-                        if (!markerUsed)
-                        {
-                            _cachedSelfUser.Spectators[spectator.Id].MarkerId = potentialMarkerId;
-                        }
-
-                        _cachedSelfUser.AvailableMarkerId = maxMarkerId + 1;
+                        _cachedSelfUser.Spectators[spectator.Id].MarkerId = _cachedSelfUser.AvailableMarkerId;
+                        _cachedSelfUser.AvailableMarkerId += 1;
                     }
 
-                    _cachedSelfUser.Spectators[spectator.Id].SpectatorMarkerToSpectatorCamera = spectator.SpectatorMarkerToSpectatorCamera;
-                    _cachedSelfUser.Spectators[spectator.Id].SpectatorCameraToSpectatorOriginWhenDetected = spectator.SpectatorCameraToSpectatorOriginWhenDetected;
-                    _cachedSelfUser.Spectators[spectator.Id].SpectatorOriginToSpectatorCamera = spectator.SpectatorOriginToSpectatorCamera;
+                    if (spectator.RequestingReset)
+                    {
+                        // If the spectator is requesting a reset, we clear its cached transform data
+                        _cachedSelfUser.Spectators[spectator.Id].ResetTransformData();
+                    }
+                    else
+                    {
+                        _cachedSelfUser.Spectators[spectator.Id].SpectatorMarkerToSpectatorCamera = spectator.SpectatorMarkerToSpectatorCamera;
+                        _cachedSelfUser.Spectators[spectator.Id].SpectatorCameraToSpectatorOriginWhenDetected = spectator.SpectatorCameraToSpectatorOriginWhenDetected;
+                        _cachedSelfUser.Spectators[spectator.Id].SpectatorOriginToSpectatorCamera = spectator.SpectatorOriginToSpectatorCamera;
+                    }
                 }
             }
             else
@@ -353,6 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 if (User.TryDeserializeUser(payload, out user))
                 {
                     Debug.Log("Received user data: " + user.ToString());
+                    _cachedUser = user;
 
                     if (!String.IsNullOrEmpty(_userPlayerId) &&
                         _userPlayerId != playerId)
@@ -376,7 +449,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                     {
                         _cachedSelfSpectator.MarkerId = self.MarkerId;
 
-                        if (self.UserOriginToSpectatorMarker.Valid)
+                        if (_cachedSelfSpectator.RequestingReset)
+                        {
+                            // The main user registered that we requested a reset
+                            _cachedSelfSpectator.ResetTransformData();
+                            _cachedSelfSpectator.RequestingReset = false;
+                        }
+                        else if (self.UserOriginToSpectatorMarker.Valid)
                         {
                             // Cache that the marker was located
                             _cachedSelfSpectator.UserOriginToSpectatorMarker = self.UserOriginToSpectatorMarker;
@@ -391,8 +470,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                             }
                         }
                     }
-
-                    _observedAvailableMarkerId = user.AvailableMarkerId;
                 }
             }
         }
@@ -407,23 +484,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             }
             else
             {
-                if (!_cachedSelfSpectator.UserOriginToSpectatorMarker.Valid ||
-                    !_cachedSelfSpectator.SpectatorCameraToSpectatorOriginWhenDetected.Valid ||
-                    !_cachedSelfSpectator.SpectatorMarkerToSpectatorCamera.Valid ||
-                    !_cachedSelfSpectator.SpectatorOriginToSpectatorCamera.Valid)
+                Matrix4x4 spectatorOriginToUserOrigin;
+                if (TryCalculateSpectatorOriginToUserOriginTransform(_cachedSelfSpectator, out spectatorOriginToUserOrigin))
                 {
-                    return false;
+                    localOriginToSharedOrigin = spectatorOriginToUserOrigin;
+                    return true;
                 }
-
-                var userOriginToMarker = _cachedSelfSpectator.UserOriginToSpectatorMarker.GetTransform();
-                var markerToCamera = _cachedSelfSpectator.SpectatorMarkerToSpectatorCamera.GetTransform();
-                var cameraToSpectatorOriginWhenDetected = _cachedSelfSpectator.SpectatorCameraToSpectatorOriginWhenDetected.GetTransform();
-                var userOriginToSpectatorOrigin = cameraToSpectatorOriginWhenDetected * userOriginToMarker * markerToCamera;
-                var spectatorOriginToUserOrigin = userOriginToSpectatorOrigin.inverse;
-
-                localOriginToSharedOrigin = spectatorOriginToUserOrigin;
-                return true;
             }
+
+            return false;
         }
 
         public void PlayerConnected(string playerId)
@@ -436,14 +505,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             {
                 Debug.Log("User disconnected");
                 // Tear down any cached self spectator state
-                if (_showingMarker)
+                if (_visualState == VisualState.showingMarker)
                 {
-                    _markerVisual.HideMarker();
+                    SetVisualState(VisualState.none);
                 }
 
-                _cachedSelfUser.AvailableMarkerId = -1;
-                _cachedSelfSpectator.MarkerId = -1;
-                _cachedSelfSpectator.UserOriginToSpectatorMarker = new TransformData();
+                var id = _cachedSelfSpectator.Id;
+                _cachedSelfSpectator = new Spectator();
+                _cachedSelfSpectator.Id = id;
+
                 _userPlayerId = "";
             }
 
@@ -475,6 +545,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 else
                 {
                     _cachedSelfSpectator = new Spectator(Guid.NewGuid().ToString());
+                    _cachedUser = new User();
                 }
 
                 _initialized = true;
@@ -501,8 +572,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             }
             else
             {
-                // An spectator needs to populate if it has a valid marker and hasn't been located
-                return Spectator.IsValidMarkerId(_cachedSelfSpectator.MarkerId) && (!_cachedSelfSpectator.UserOriginToSpectatorMarker.Valid || _showingMarker);
+                // A spectator needs to populate if it has a valid marker and hasn't been located
+                return _cachedSelfSpectator.HasValidMarkerId() &&
+                    (!_cachedSelfSpectator.UserOriginToSpectatorMarker.Valid || (_visualState == VisualState.showingMarker));
             }
         }
 
@@ -519,40 +591,51 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             }
             else
             {
-                // The spectator may populate by showing or finding a marker
                 if (!_localOriginEstablished)
                 {
                     Debug.Log("Local origin not yet established");
+                    SetVisualState(VisualState.locatingLocalOrigin);
                 }
-                else if (!_cachedSelfSpectator.UserOriginToSpectatorMarker.Valid)
+                else if (!_cachedSelfSpectator.HasValidMarkerId())
                 {
-                    ShowMarker();
+                    Debug.Log("Marker not yet assigned");
+                    SetVisualState(VisualState.waitingForUser);
+                }
+                else if (!_cachedSelfSpectator.UserOriginToSpectatorMarker.Valid ||
+                    _cachedSelfSpectator.RequestingReset)
+                {
+                    SetVisualState(VisualState.showingMarker);
                 }
                 else
                 {
-                    HideMarker();
+                    SetVisualState(VisualState.none);
                 }
             }
+        }
+
+        bool WaitingOnUser()
+        {
+            // A spectator is waiting on the user if it does not have a valid marker id
+            return !_actAsUser && !_cachedSelfSpectator.HasValidMarkerId();
         }
 
         void EstablishLocalOrigin()
         {
 #if UNITY_WSA
-        _localOriginEstablished = true;
+            _localOriginEstablished = true;
 #elif UNITY_ANDROID || UNITY_IOS
-            if (_aRFoundationGameObject == null)
+            if (!_listeningToPointCloudChanges)
             {
-                Debug.LogError("AR Foundation game object not defined");
-                return;
-            }
-            _aRFoundationGameObject.SetActive(true);
+                if (_aRPointCloudManager == null)
+                {
+                    Debug.LogError("Point cloud manager not defined for ar foundation device");
+                    return;
+                }
 
-            if (_aRPointCloudManager == null)
-            {
-                Debug.LogError("Point cloud manager not defined for ar foundation device");
-                return;
+                Debug.Log("Started observing point cloud changes");
+                _aRPointCloudManager.pointCloudUpdated += OnPointCloudUpdated;
+                _listeningToPointCloudChanges = true;
             }
-            _aRPointCloudManager.pointCloudUpdated += OnPointCloudUpdated;
 #endif
         }
 
@@ -564,17 +647,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             {
                 List<Vector3> points = new List<Vector3>();
                 args.pointCloud.GetPoints(points);
-                if (points.Count > 4)
+                if (points.Count > _pointsRequiredForValidLocalOrigin)
                 {
                     _localOriginEstablished = true;
 
-                    // TODO - there may be a follow up tasks to shift inbetween showing the marker/hiding the marker based on whether or not these points are found
+                    // TODO - there may be a follow up task to shift inbetween showing the marker/hiding the marker based on whether or not these points are found
                     if (_aRPointCloudManager == null)
                     {
                         Debug.LogError("Point cloud manager not defined for ar foundation device");
                         return;
                     }
-                    _aRPointCloudManager.pointCloudUpdated -= OnPointCloudUpdated;
+
+                    if (_listeningToPointCloudChanges)
+                    {
+                        Debug.Log("Stopped observing point cloud changes");
+                        _aRPointCloudManager.pointCloudUpdated -= OnPointCloudUpdated;
+                        _listeningToPointCloudChanges = false;
+                    }
+                }
+                else
+                {
+                    Debug.Log("Point cloud did not contain enough points to establish a local origin, current size: " + points.Count);
                 }
             }
         }
@@ -584,17 +677,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         {
             if (_actAsUser)
             {
-                Debug.Log("Creating user payload: " + _cachedSelfUser.ToString());
                 var output = SerializationHelper.Serialize(_cachedSelfUser);
                 return output;
             }
             else
             {
-                var marker = Spectator.IsValidMarkerId(_cachedSelfSpectator.MarkerId) ? _cachedSelfSpectator.MarkerId : _observedAvailableMarkerId;
-                var self = _cachedSelfSpectator;
-                self.MarkerId = marker;
-                Debug.Log("Creating spectator payload: " + self.ToString());
-                var output = SerializationHelper.Serialize(self);
+                var output = SerializationHelper.Serialize(_cachedSelfSpectator);
                 return output;
             }
         }
@@ -615,6 +703,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 _markerDetector.StartDetecting();
 
                 _detectingMarkers = true;
+                SetVisualState(VisualState.locatingMarker);
             }
 
         }
@@ -635,12 +724,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 _markerDetector.MarkersUpdated -= OnMarkersUpdated;
 
                 _detectingMarkers = false;
+                SetVisualState(VisualState.none);
             }
         }
 
         void ShowMarker()
         {
-            if (!Spectator.IsValidMarkerId(_cachedSelfSpectator.MarkerId))
+            if (!_cachedSelfSpectator.HasValidMarkerId())
             {
                 Debug.Log("Marker id not yet assigned");
                 return;
@@ -654,7 +744,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 return;
             }
 
-            _showingMarker = true;
             _markerVisual.ShowMarker(_cachedSelfSpectator.MarkerId);
         }
 
@@ -671,7 +760,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             if (_markerVisual != null)
             {
                 _markerVisual.HideMarker();
-                _showingMarker = false;
             }
         }
 
@@ -722,62 +810,258 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
             return localCameraTransform;
         }
 
+        static bool TryCalculateUserOriginToSpectatorOriginTransform(Spectator spectator, out Matrix4x4 userOriginToSpectatorOrigin)
+        {
+            userOriginToSpectatorOrigin = Matrix4x4.identity;
+
+            if (spectator.SpectatorCameraToSpectatorOriginWhenDetected.Valid &&
+                spectator.SpectatorMarkerToSpectatorCamera.Valid &&
+                spectator.UserOriginToSpectatorMarker.Valid)
+            {
+                var spectatorCameraToSpectatorOriginWhenDetected = spectator.SpectatorCameraToSpectatorOriginWhenDetected.GetTransform();
+                var spectatorMarkerToSpectatorCamera = spectator.SpectatorMarkerToSpectatorCamera.GetTransform();
+                var userOriginToSpectatorMarker = spectator.UserOriginToSpectatorMarker.GetTransform();
+                userOriginToSpectatorOrigin = userOriginToSpectatorMarker * spectatorMarkerToSpectatorCamera * spectatorCameraToSpectatorOriginWhenDetected;
+                return true;
+            }
+
+            return false;
+        }
+
+        static bool TryCalculateSpectatorOriginToUserOriginTransform(Spectator spectator, out Matrix4x4 spectatorOriginToUserOrigin)
+        {
+            spectatorOriginToUserOrigin = Matrix4x4.identity;
+
+            Matrix4x4 userOriginToSpectatorOrigin;
+            if (TryCalculateUserOriginToSpectatorOriginTransform(spectator, out userOriginToSpectatorOrigin))
+            {
+                spectatorOriginToUserOrigin = userOriginToSpectatorOrigin.inverse;
+                return true;
+            }
+
+            return false;
+        }
+
+        static Vector4 GetPosition(Matrix4x4 matrix)
+        {
+            return matrix.GetColumn(3);
+        }
+
+        static Quaternion GetRotation(Matrix4x4 matrix)
+        {
+            return Quaternion.LookRotation(matrix.GetColumn(2), matrix.GetColumn(1));
+        }
+
+        void SetVisualState(VisualState visualState)
+        {
+            if (_visualState != visualState)
+            {
+                _visualState = visualState;
+
+                // This setter may get called from different threads, but we want to always update UI on the main thread
+                // So we flag the ui as needing an update for the next update pass
+                _needUIUpdate = true;
+            }
+        }
+
+        void OnToggleDebugVisuals()
+        {
+            _showDebugVisual = !_showDebugVisual;
+        }
+
+        void OnResetSpatialCoordinates()
+        {
+            if (_actAsUser)
+            {
+                Debug.LogWarning("Resetting spatial coordinates not currently supported for main user");
+                return;
+            }
+
+            Debug.Log("Resetting spatial coordinates");
+            _cachedSelfSpectator.RequestingReset = true;
+            _cachedSelfSpectator.ResetTransformData();
+        }
+
+        void UpdateVisualStateUI()
+        {
+            var showMarker = false;
+            var showVisual = false;
+            var state = MarkerSpatialCoordinateServiceOverlayState.none;
+
+            switch (_visualState)
+            {
+                case VisualState.locatingLocalOrigin:
+                    showMarker = false;
+                    showVisual = true;
+                    state = MarkerSpatialCoordinateServiceOverlayState.locatingLocalOrigin;
+                    break;
+
+                case VisualState.locatingMarker:
+                    showMarker = false;
+                    showVisual = true;
+                    state = MarkerSpatialCoordinateServiceOverlayState.locatingMarker;
+                    break;
+
+                case VisualState.showingMarker:
+                    showMarker = true;
+                    showVisual = false;
+                    state = MarkerSpatialCoordinateServiceOverlayState.none;
+                    break;
+
+                case VisualState.waitingForUser:
+                    showMarker = false;
+                    showVisual = true;
+                    state = MarkerSpatialCoordinateServiceOverlayState.waitingForUser;
+                    break;
+
+                case VisualState.none:
+                default:
+                    showMarker = false;
+                    showVisual = false;
+                    state = MarkerSpatialCoordinateServiceOverlayState.none;
+                    break;
+            }
+
+            if (_useMarkerSpatialCoordinateVisual &&
+                _markerSpatialCoordinateOverlayVisual != null)
+            {
+                _markerSpatialCoordinateOverlayVisual.UpdateVisualState(state);
+
+                if (showVisual)
+                {
+                    _markerSpatialCoordinateOverlayVisual.ShowVisual();
+                }
+                else
+                {
+                    _markerSpatialCoordinateOverlayVisual.HideVisual();
+                }
+            }
+
+            if (showMarker)
+            {
+                ShowMarker();
+            }
+            else
+            {
+                HideMarker();
+            }
+
+            _needUIUpdate = false;
+        }
+
         void ShowDebugVisuals()
         {
-            Debug.Log("Attempting to show debug visual");
+            // Note: This show debug visual functionality assumes that no parent transforms are applied to this game object
+
             if (_actAsUser &&
                 _cachedSelfUser.Spectators != null)
             {
+                // Place a debug visual at the scene origin to better understand the shared origin across devices
+                _debugVisualHelper.CreateOrUpdateVisual(ref _sharedOriginVisual, Vector3.zero, Quaternion.identity);
+
                 foreach (var spectatorPair in _cachedSelfUser.Spectators)
                 {
+                    // Place a debug visual where the spectator's marker was detected
                     if (spectatorPair.Value.UserOriginToSpectatorMarker.Valid)
                     {
                         var position = spectatorPair.Value.UserOriginToSpectatorMarker.Position;
                         var rotation = spectatorPair.Value.UserOriginToSpectatorMarker.Rotation;
 
-                        Debug.Log("Placing marker visual: " + spectatorPair.Value.Id + ", " + position.ToString() + ", " + rotation.ToString());
-
-                        if (_originVisuals.ContainsKey(spectatorPair.Value.Id))
+                        GameObject visual = null;
+                        if (_markerVisuals.ContainsKey(spectatorPair.Value.Id))
                         {
-                            var visual = _originVisuals[spectatorPair.Value.Id];
-                            _debugVisualHelper.UpdateVisual(ref visual, position, rotation);
-                        }
-                        else
-                        {
-                            _originVisuals[spectatorPair.Value.Id] = _debugVisualHelper.CreateVisual(position, rotation);
+                            visual = _markerVisuals[spectatorPair.Value.Id];
                         }
 
-                        if (spectatorPair.Value.SpectatorMarkerToSpectatorCamera.Valid &&
-                            spectatorPair.Value.SpectatorCameraToSpectatorOriginWhenDetected.Valid &&
-                            spectatorPair.Value.SpectatorOriginToSpectatorCamera.Valid)
+                        _debugVisualHelper.CreateOrUpdateVisual(ref visual, position, rotation);
+                        _markerVisuals[spectatorPair.Value.Id] = visual;
+
+                        // If there was a known marker location for the spectator, we also attempt to place a debug visual at the spectator camera location
+                        Matrix4x4 spectatorOriginToUserOrigin;
+                        if (spectatorPair.Value.SpectatorOriginToSpectatorCamera.Valid &&
+                            TryCalculateSpectatorOriginToUserOriginTransform(spectatorPair.Value, out spectatorOriginToUserOrigin))
                         {
-                            var spectatorCameraToSpectatorOriginWhenDetected = spectatorPair.Value.SpectatorCameraToSpectatorOriginWhenDetected.GetTransform();
-                            var spectatorMarkerToSpectatorCamera = spectatorPair.Value.SpectatorMarkerToSpectatorCamera.GetTransform();
-                            var userOriginToSpectatorMarker = spectatorPair.Value.UserOriginToSpectatorMarker.GetTransform();
-
-                            var userOriginToSpectatorOrigin = spectatorCameraToSpectatorOriginWhenDetected * userOriginToSpectatorMarker * spectatorMarkerToSpectatorCamera;
-                            var spectatorOriginToUserOrigin = userOriginToSpectatorOrigin.inverse;
-
                             var spectatorCameraToSpectatorOrigin = spectatorPair.Value.SpectatorOriginToSpectatorCamera.GetTransform().inverse;
-                            var spectatorCameraToUserOrigin = spectatorOriginToUserOrigin * spectatorCameraToSpectatorOrigin;
+                            var spectatorCameraToUserOrigin = spectatorCameraToSpectatorOrigin * spectatorOriginToUserOrigin;
                             var userOriginToSpectatorCamera = spectatorCameraToUserOrigin.inverse;
 
-                            position = userOriginToSpectatorCamera.GetColumn(3);
-                            rotation = Quaternion.LookRotation(userOriginToSpectatorCamera.GetColumn(2), userOriginToSpectatorCamera.GetColumn(1));
+                            position = GetPosition(userOriginToSpectatorCamera);
+                            rotation = GetRotation(userOriginToSpectatorCamera);
 
-                            Debug.Log("Placing camera visual: " + spectatorPair.Value.Id + ", " + position.ToString() + ", " + rotation.ToString());
-
+                            visual = null;
                             if (_cameraVisuals.ContainsKey(spectatorPair.Value.Id))
                             {
-                                var visual = _cameraVisuals[spectatorPair.Value.Id];
-                                _debugVisualHelper.UpdateVisual(ref visual, position, rotation);
+                               visual = _cameraVisuals[spectatorPair.Value.Id];
                             }
-                            else
-                            {
-                                _cameraVisuals[spectatorPair.Value.Id] = _debugVisualHelper.CreateVisual(position, rotation);
-                            }
+
+                            _debugVisualHelper.CreateOrUpdateVisual(ref visual, position, rotation);
+                            _cameraVisuals[spectatorPair.Value.Id] = visual;
                         }
                     }
+                }
+
+                // Cleanup camera visuals for any lost spectators
+                AssessAndCleanUpDebugVisuals(_cachedSelfUser.Spectators, _cameraVisuals);
+
+                // Cleanup marker visuals for any lost spectators
+                AssessAndCleanUpDebugVisuals(_cachedSelfUser.Spectators, _markerVisuals);
+            }
+            else
+            {
+                Matrix4x4 spectatorOriginToUserOrigin;
+                if (_sharedOriginVisual == null &&
+                    TryCalculateSpectatorOriginToUserOriginTransform(_cachedSelfSpectator, out spectatorOriginToUserOrigin))
+                {
+                    // Place a marker to show where the spectator has registered the shared origin
+                    var position = GetPosition(spectatorOriginToUserOrigin);
+                    var rotation = GetRotation(spectatorOriginToUserOrigin);
+
+                    _debugVisualHelper.CreateOrUpdateVisual(ref _sharedOriginVisual, position, rotation);
+                }
+                else if (_sharedOriginVisual != null)
+                {
+                    Destroy(_sharedOriginVisual);
+                    _sharedOriginVisual = null;
+                }
+
+                if (_cachedUser != null &&
+                    _cachedUser.UserOriginToUserCamera.Valid &&
+                    TryCalculateSpectatorOriginToUserOriginTransform(_cachedSelfSpectator, out spectatorOriginToUserOrigin))
+                {
+                    // Place a marker showing where the user camera is in the shared space
+                    var userOriginToUserCamera = _cachedUser.UserOriginToUserCamera.GetTransform();
+                    var spectatorOriginToUserCamera = spectatorOriginToUserOrigin * userOriginToUserCamera;
+
+                    var position = GetPosition(spectatorOriginToUserCamera);
+                    var rotation = GetRotation(spectatorOriginToUserCamera);
+
+                    _debugVisualHelper.CreateOrUpdateVisual(ref _userCameraVisual, position, rotation);
+                }
+                else if (_userCameraVisual)
+                {
+                    Destroy(_userCameraVisual);
+                    _userCameraVisual = null;
+                }
+            }
+        }
+
+        static void AssessAndCleanUpDebugVisuals(Dictionary<string, Spectator> knownSpectators, Dictionary<string, GameObject> debugVisuals)
+        {
+            if (knownSpectators.Count != debugVisuals.Count)
+            {
+                List<KeyValuePair<string, GameObject>> visualsToRemove = new List<KeyValuePair<string, GameObject>>();
+                foreach (var visualPair in debugVisuals)
+                {
+                    if (!knownSpectators.ContainsKey(visualPair.Key))
+                    {
+                        visualsToRemove.Add(visualPair);
+                    }
+                }
+
+                foreach (var visualPair in visualsToRemove)
+                {
+                    debugVisuals.Remove(visualPair.Key);
+                    Destroy(visualPair.Value);
                 }
             }
         }
