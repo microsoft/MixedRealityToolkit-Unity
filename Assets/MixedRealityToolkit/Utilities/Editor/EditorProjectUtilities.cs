@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
 
         /// <summary>
         /// Displays a message indicating that a project was loaded in an unsupported version of Unity and allows the user
-        /// to continu or exit.
+        /// to continue or exit.
         /// </summary>
         private static void DisplayIncorrectEditorVersionDialog()
         {

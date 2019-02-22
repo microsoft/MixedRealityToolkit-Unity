@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         }
 
         /// <summary>
-        /// Set the size based on the Achor's size and the buffers
+        /// Set the size based on the Anchor's size and the buffers
         /// </summary>
         private void UpdateSize()
         {

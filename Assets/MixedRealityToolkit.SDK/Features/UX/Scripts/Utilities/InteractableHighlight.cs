@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 
         private Dictionary<Renderer, List<Material>> materialsBeforeFocus;
 
-        #region Monobehavior Implementation
+        #region MonoBehaviour Implementation
 
         public virtual void OnEnable()
         {

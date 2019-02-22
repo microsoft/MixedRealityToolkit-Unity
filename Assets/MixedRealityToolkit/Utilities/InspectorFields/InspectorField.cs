@@ -11,7 +11,7 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
 {
     /// <summary>
-    /// A set of field/proptery tags used to define how a property should render in a custom inspector
+    /// A set of field/property tags used to define how a property should render in a custom inspector
     /// </summary>
     public class InspectorField : Attribute
     {
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
         }
 
         /// <summary>
-        /// The type of field or propterty value type
+        /// The type of field or property value type
         /// </summary>
         public FieldTypes Type { get; set; }
 
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
         public string Tooltip { get; set; }
 
         /// <summary>
-        /// A string list of options for a popup list
+        /// A string list of options for a pop-up list
         /// </summary>
         public string[] Options { get; set; }
         

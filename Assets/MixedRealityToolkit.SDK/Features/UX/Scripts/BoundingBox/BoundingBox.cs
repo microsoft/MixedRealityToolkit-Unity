@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
 
         /// <summary>
-        /// This enum is used interally to define how an object's bounds are calculated in order to fit the boundingbox
+        /// This enum is used internally to define how an object's bounds are calculated in order to fit the boundingbox
         /// to it.
         /// </summary>
         private enum BoundsCalculationMethod
@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private HandleType currentHandleType;
         #endregion Private Properties
 
-        #region Monobehaviour Methods
+        #region MonoBehaviour Methods
         private void Start()
         {
             targetObject = this.gameObject;
@@ -327,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             UpdateRigHandles();
         }
-        #endregion Monobehaviour Methods
+        #endregion MonoBehaviour Methods
 
         #region Private Methods
         private void CreateRig()

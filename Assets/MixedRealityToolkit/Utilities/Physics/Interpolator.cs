@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
 
         /// <summary>
         /// Stops the transform in place and terminates any animations.<para/>
-        /// <remarks>Reset() is usually reserved as a MonoBehaviour API call in editor, but is used in this case as a convienence method.</remarks>
+        /// <remarks>Reset() is usually reserved as a MonoBehaviour API call in editor, but is used in this case as a convenience method.</remarks>
         /// </summary>
         public void Reset()
         {
