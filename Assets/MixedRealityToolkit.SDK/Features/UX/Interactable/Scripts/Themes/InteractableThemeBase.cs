@@ -81,7 +81,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         {
             if(state != lastState || force)
             {
-                for (int i = 0; i < ThemeProperties.Count; i++)
+                int themePropCount = ThemeProperties.Count;
+                for (int i = 0; i < themePropCount; i++)
                 {
                     InteractableThemeProperty current = ThemeProperties[i];
                     current.StartValue = GetProperty(current);
@@ -94,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     else
                     {
                         SetValue(current, state, 1);
-                        if(i >= ThemeProperties.Count - 1)
+                        if(i >= themePropCount - 1)
                         {
                             hasFirstState = true;
                         }
@@ -107,7 +108,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
             else if(Ease.Enabled && Ease.IsPlaying())
             {
                 Ease.OnUpdate();
-                for (int i = 0; i < ThemeProperties.Count; i++)
+                int themePropCount = ThemeProperties.Count;
+                for (int i = 0; i < themePropCount; i++)
                 {
                     InteractableThemeProperty current = ThemeProperties[i];
                     SetValue(current, state, Ease.GetCurved());

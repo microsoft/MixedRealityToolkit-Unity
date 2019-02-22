@@ -230,6 +230,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             Debug.Assert(HostTransform.GetComponent<Collider>() != null, $"A collider component is required on {hostTransform.gameObject.name} for the cursor modifier component on {gameObject.name} to function properly.");
         }
 
-        #endregion MonoBehaviour Implementaiton
+        #endregion MonoBehaviour Implementation
     }
 }

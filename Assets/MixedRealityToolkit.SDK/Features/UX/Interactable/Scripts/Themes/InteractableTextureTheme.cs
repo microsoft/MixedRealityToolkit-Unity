@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
     public class InteractableTextureTheme : InteractableThemeBase
     {
         private MaterialPropertyBlock propertyBlock;
+        private Renderer renderer;
 
         public InteractableTextureTheme()
         {
@@ -31,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         {
             base.Init(host, settings);
             propertyBlock = InteractableThemeShaderUtils.GetMaterialPropertyBlock(host, new ShaderProperties[0]);
+            renderer = Host.GetComponent<Renderer>();
         }
 
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
@@ -43,8 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
             propertyBlock.SetTexture("_MainTex", property.Values[index].Texture);
-
-            Renderer renderer = Host.GetComponent<Renderer>();
             renderer.SetPropertyBlock(propertyBlock);
         }
     }

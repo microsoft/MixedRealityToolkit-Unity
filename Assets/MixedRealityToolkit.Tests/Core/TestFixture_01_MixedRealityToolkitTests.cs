@@ -226,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             const string serviceName = "Test Data Provider";
 
-            // Add test test data provider
+            // Add test data provider
             MixedRealityToolkit.Instance.RegisterService(typeof(ITestDataProvider1), new TestDataProvider1(serviceName, 10));
 
             // Validate non-existent ExtensionService

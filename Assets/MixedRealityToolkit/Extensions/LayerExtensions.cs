@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         }
 
         /// <summary>
-        /// Gets a valid layer layer id using the layer name.
+        /// Gets a valid layer id using the layer name.
         /// </summary>
         /// <param name="cache">The cached layer id.</param>
         /// <param name="layerName">The name of the layer to look for if the <see cref="cache"/> is unset.</param>

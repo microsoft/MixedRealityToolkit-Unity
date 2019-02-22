@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
                     break;
 
                 case EventType.Repaint:
-                    // Remove assembly name and namespace from content of popup control.
+                    // Remove assembly name and namespace from content of pop-up control.
                     var classRefParts = classRef.Split(',');
                     var className = classRefParts[0].Trim();
                     className = className.Substring(className.LastIndexOf(".", StringComparison.Ordinal) + 1);

@@ -74,34 +74,5 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 | :--------------------- | :----------------- | :------------------ | :------------------------ |
 | See code examples. Do a coding tutorial. Watch guest lectures.          | Get design guides. Build user interface. Learn interactions and input.     | Get development guides. Learn the technology. Understand the science.       | Join open source projects. Ask questions on forums. Attend events and meetups. |
 
-# Building the Artifacts
-
-## Requirements
-
-### NuGet
-[NuGet](https://www.nuget.org/downloads) is the package manager for .Net and you'll need to have it available in the PATH.
-
-### UnitySetup
-The build process leverages [UnitySetup](https://www.powershellgallery.com/packages/UnitySetup), an OSS PowerShell Module from Microsoft. 
-
-Install from PowerShell:
-
-```powershell
-Install-Module UnitySetup -Scope CurrentUser
-```
-
-### Git
-If you do not specify a version, then [Git](https://git-scm.com/downloads) is used to find relevant tags. In this case it will need to be available in the PATH.
-
-## Run the Build
-Simply execute the build script as such:
-
-```powershell
-.\build.ps1 -Version '1.2.3'
-```
-For help and examples simply use the PowerShell help command:
-```
-help .\build.ps1 -Detailed
-```
-
-> Note: If you don't specify `-Version <version>` the script will try to infer it from tags pointing to the current git commit. An error is produced if you don't have a tag and no version is provided.
+# How to Contribute
+View the [**How To Contribute**](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/How-to-Contribute) wiki page for the most up to date instructions on contributing to the Mixed Reality Toolkit!

@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
             serializedObject.Update();
 
             InspectorUIUtility.DrawTitle("States");
-            InspectorUIUtility.DrawNotice("Manage state configurations to drive Interactables or Tansitions");
+            InspectorUIUtility.DrawNotice("Manage state configurations to drive Interactables or Transitions");
 
             // get the list of options and InteractableStates
             stateOptions = instance.StateOptions;

@@ -11,6 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
     public class InteractableMaterialTheme : InteractableThemeBase
     {
         private Material material = null;
+        private Renderer renderer;
+
+        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        {
+            base.Init(host, settings);
+
+            renderer = Host.GetComponent<Renderer>();
+        }
 
         public InteractableMaterialTheme()
         {
@@ -30,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             InteractableThemePropertyValue start = new InteractableThemePropertyValue();
-            Renderer renderer = Host.GetComponent<Renderer>();
+
             material = renderer.material;
             start.Material = material;
             return start;
@@ -40,7 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         {
             Host.SetActive(property.Values[index].Bool);
 
-            Renderer renderer = Host.GetComponent<Renderer>();
             material = property.Values[index].Material;
             renderer.material = material;
         }

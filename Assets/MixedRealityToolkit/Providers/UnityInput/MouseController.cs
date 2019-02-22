@@ -75,7 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
                 controllerPose.Rotation = InputSource.Pointers[0].BaseCursor.Rotation;
             }
 
-            // Don't ask me why it's mapped weird. Bc Unity...
             mouseDelta.x = -Input.GetAxis("Mouse Y");
             mouseDelta.y = Input.GetAxis("Mouse X");
             MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, mouseDelta);

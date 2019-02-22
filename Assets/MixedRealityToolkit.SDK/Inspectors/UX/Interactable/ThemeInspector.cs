@@ -921,7 +921,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                             EditorGUILayout.LabelField(new GUIContent("Text Property: " + (InteractableThemePropertyValueTypes)propId.intValue));
                         }
 
-                        // Handle isse where the material color id renders on objects it shouldn't!!!!!!!!!!!!!!
+                        // Handle issue where the material color id renders on objects it shouldn't!!!!!!!!!!!!!!
                         // theme is save for a game object with a renderer, but when put on a textmesh, rendering prop values show up.
                         // when changing the theme type on a TextMesh, everything works, but the rendering prop is removed from the theme on the renderer object.
                         // make this passive, only show up when needed.

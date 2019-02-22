@@ -414,14 +414,37 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                     break;
                 case DeviceInputType.Select:
                     {
+                        bool selectPressed = interactionSourceState.selectPressed;
+
+                        // BEGIN WORKAROUND: Unity issue #1033526
+                        // See https://issuetracker.unity3d.com/issues/hololens-interactionsourcestate-dot-selectpressed-is-false-when-air-tap-and-hold
+                        // Bug was discovered May 2018 and still exists as of today Feb 2019 in version 2018.3.4f1, timeline for fix is unknown
+                        // The bug only affects the development workflow via Holographic Remoting or Simulation
+                        if (interactionSourceState.source.kind == InteractionSourceKind.Hand)
+                        {
+                            Debug.Assert(!(UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected
+                                           && interactionSourceState.selectPressed),
+                                         "Unity issue #1033526 seems to have been resolved. Please remove this ugly workaround!");
+
+                            // This workaround is safe as long as all these assumptions hold:
+                            Debug.Assert(!interactionSourceState.source.supportsGrasp);
+                            Debug.Assert(!interactionSourceState.source.supportsMenu);
+                            Debug.Assert(!interactionSourceState.source.supportsPointing);
+                            Debug.Assert(!interactionSourceState.source.supportsThumbstick);
+                            Debug.Assert(!interactionSourceState.source.supportsTouchpad);
+
+                            selectPressed = interactionSourceState.anyPressed;
+                        }
+                        // END WORKAROUND: Unity issue #1033526
+
                         // Update the interaction data source
-                        interactionMapping.BoolData = interactionSourceState.selectPressed;
+                        interactionMapping.BoolData = selectPressed;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
                             // Raise input system Event if it enabled
-                            if (interactionSourceState.selectPressed)
+                            if (selectPressed)
                             {
                                 MixedRealityToolkit.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                             }

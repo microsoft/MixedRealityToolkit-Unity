@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
             /// </summary>
             Visited,
             /// <summary>
-            /// Botton is toggled state, on/off
+            /// Button is toggled state, on/off
             /// </summary>
             Toggled,
             /// <summary>

@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 {
     public class InteractableRotationTheme : InteractableThemeBase
     {
+        private Transform hostTransform;
 
         public InteractableRotationTheme()
         {
@@ -25,16 +26,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 });
         }
 
+        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        {
+            base.Init(host, settings);
+
+            hostTransform = Host.transform;
+        }
+
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             InteractableThemePropertyValue start = new InteractableThemePropertyValue();
-            start.Vector3 = Host.transform.eulerAngles;
+            start.Vector3 = hostTransform.eulerAngles;
             return start;
         }
 
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
-            Host.transform.localRotation = Quaternion.Euler( Vector3.Lerp(property.StartValue.Vector3, property.Values[index].Vector3, percentage));
+            hostTransform.localRotation = Quaternion.Euler( Vector3.Lerp(property.StartValue.Vector3, property.Values[index].Vector3, percentage));
         }
     }
 }

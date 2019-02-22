@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
     /// frames are displayed over time to visually find problem areas. Memory is reported 
     /// as current, peak and max usage in a bar graph. 
     /// 
-    /// USAGE: To use this profiler simply add this script as a component of any gameobject in 
+    /// USAGE: To use this profiler simply add this script as a component of any GameObject in 
     /// your Unity scene. The profiler is initially disabled (toggle-able via the initiallyActive 
     /// property), but can be toggled via the enabled/disable voice commands keywords.
     /// </summary>

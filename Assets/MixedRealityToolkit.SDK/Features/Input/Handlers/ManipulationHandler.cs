@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         private GazeHandHelper gazeHandHelper;
         #endregion
 
-        #region Monobehaviour Functions
+        #region MonoBehaviour Functions
         private void Awake()
         {
             gazeHandHelper = new GazeHandHelper();
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
                 UpdateStateMachine();
             }
         }
-        #endregion Monobehaviour Functions
+        #endregion MonoBehaviour Functions
 
         #region Private Methods
         private void SetManipulationMode(TwoHandedManipulation mode)

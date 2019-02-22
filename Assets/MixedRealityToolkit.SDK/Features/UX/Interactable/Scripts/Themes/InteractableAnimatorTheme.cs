@@ -9,11 +9,12 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 {
     /// <summary>
-    /// Uses Animator to control Interacable feedback based on state changes.
+    /// Uses Animator to control Interactable feedback based on state changes.
     /// </summary>
     public class InteractableAnimatorTheme : InteractableThemeBase
     {
         private int lastIndex = 0;
+        private Animator controller;
 
         public InteractableAnimatorTheme()
         {
@@ -29,6 +30,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 });
         }
 
+        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        {
+            base.Init(host, settings);
+            controller = Host.GetComponent<Animator>();
+        }
+
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             InteractableThemePropertyValue start = new InteractableThemePropertyValue();
@@ -40,7 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         {
             if(lastIndex != index)
             {
-                Animator controller = Host.GetComponent<Animator>();
                 if(controller != null)
                 {
                     controller.SetTrigger(property.Values[index].String);

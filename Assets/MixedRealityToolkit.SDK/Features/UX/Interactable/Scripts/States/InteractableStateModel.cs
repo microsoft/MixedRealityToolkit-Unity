@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
 {
     /// <summary>
-    /// State data model, state management and comparison instrucitons
+    /// State data model, state management and comparison instructions
     /// </summary>
     
     /*

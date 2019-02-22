@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     if (GUILayout.Button(new GUIContent("</>", "Replace with a copy of the default profile."), EditorStyles.miniButton, GUILayout.Width(32f)))
                     {
                         profileToCopy = renderedProfile;
-                        var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
+                        var profileTypeName = property.objectReferenceValue.GetType().Name;
                         Debug.Assert(profileTypeName != null, "No Type Found");
 
                         ScriptableObject instance = CreateInstance(profileTypeName);

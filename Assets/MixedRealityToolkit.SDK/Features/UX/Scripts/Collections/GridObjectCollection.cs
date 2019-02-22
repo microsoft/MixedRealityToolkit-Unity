@@ -260,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         }
 
         /// <summary>
-        /// Update the facing of a node given the nodes new position for facing orign with node and orientation type
+        /// Update the facing of a node given the nodes new position for facing origin with node and orientation type
         /// </summary>
         /// <param name="node"></param>
         protected void UpdateNodeFacing(ObjectCollectionNode node)
