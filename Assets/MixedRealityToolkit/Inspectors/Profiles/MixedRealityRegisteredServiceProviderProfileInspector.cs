@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Services;
@@ -95,6 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             GUILayout.EndHorizontal();
             EditorGUILayout.Space();
 
+            bool changed = false;
+
             for (int i = 0; i < list.arraySize; i++)
             {
                 SerializedProperty managerConfig = list.GetArrayElementAtIndex(i);
@@ -113,9 +116,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     list.DeleteArrayElementAtIndex(i);
                     serializedObject.ApplyModifiedProperties();
-                    MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
                     EditorGUILayout.EndHorizontal();
                     GUILayout.EndVertical();
+                    changed = true;
                     break;
                 }
 
@@ -124,21 +127,35 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 if (configFoldouts[i])
                 {
                     EditorGUI.indentLevel++;
+
                     EditorGUI.BeginChangeCheck();
-
                     EditorGUILayout.PropertyField(componentName);
-                    EditorGUILayout.PropertyField(componentType);
-                    EditorGUILayout.PropertyField(priority);
-                    EditorGUILayout.PropertyField(runtimePlatform);
-                    EditorGUILayout.PropertyField(configurationProfile);
+                    changed |= EditorGUI.EndChangeCheck();
 
+                    EditorGUI.BeginChangeCheck();
+                    EditorGUILayout.PropertyField(componentType);
                     if (EditorGUI.EndChangeCheck())
                     {
+                        // Try to assign default configuration profile when type changes.
                         serializedObject.ApplyModifiedProperties();
-                        MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
+                        AssignDefaultConfigurationProfile(
+                            ((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType, managerConfig);
+                        changed = true;
+
+                        GUILayout.EndVertical();
+                        break;
                     }
 
+                    EditorGUI.BeginChangeCheck();
+                    EditorGUILayout.PropertyField(priority);
+                    EditorGUILayout.PropertyField(runtimePlatform);
+                    changed |= EditorGUI.EndChangeCheck();
+
+                    changed |= RenderProfile(configurationProfile);
+
                     EditorGUI.indentLevel--;
+
+                    serializedObject.ApplyModifiedProperties();
                 }
 
                 GUILayout.EndVertical();
@@ -147,6 +164,29 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             GUILayout.EndVertical();
             GUILayout.EndVertical();
+
+            if (changed)
+            {
+                EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
+            }
+        }
+
+        private void AssignDefaultConfigurationProfile(System.Type componentType, SerializedProperty managerConfig)
+        {
+            SerializedProperty configurationProfile = managerConfig.FindPropertyRelative("configurationProfile");
+            configurationProfile.objectReferenceValue = null;
+
+            if (componentType != null &&
+                MixedRealityExtensionServiceAttribute.Find(componentType) is MixedRealityExtensionServiceAttribute attr)
+            {
+                configurationProfile.objectReferenceValue = attr.DefaultProfile;
+            }
+            else
+            {
+                configurationProfile.objectReferenceValue = null;
+            }
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
