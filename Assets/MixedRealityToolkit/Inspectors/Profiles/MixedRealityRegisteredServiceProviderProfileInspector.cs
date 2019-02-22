@@ -137,11 +137,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     EditorGUILayout.PropertyField(componentType);
                     if (EditorGUI.EndChangeCheck())
                     {
-                        SystemType configurationComponentType = ((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType;
                         // Try to assign default configuration profile when type changes.
                         serializedObject.ApplyModifiedProperties();
-                        AssignDefaultConfigurationProfile(configurationComponentType, configurationProfile);
-                        AssignDefaultPlatformValues(configurationComponentType, runtimePlatform);
+                        AssignDefaultConfigurationValues(((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType, configurationProfile, runtimePlatform);
                         changed = true;
 
                         GUILayout.EndVertical();
@@ -174,27 +172,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
         }
 
-        private void AssignDefaultPlatformValues(System.Type componentType, SerializedProperty runtimePlatform)
+        private void AssignDefaultConfigurationValues(System.Type componentType, SerializedProperty configurationProfile, SerializedProperty runtimePlatform)
         {
+            configurationProfile.objectReferenceValue = null;
             runtimePlatform.intValue = -1;
 
             if (componentType != null &&
                 MixedRealityExtensionServiceAttribute.Find(componentType) is MixedRealityExtensionServiceAttribute attr)
             {
-                runtimePlatform.intValue = (int)attr.RuntimePlatforms;
-            }
-
-            serializedObject.ApplyModifiedProperties();
-        }
-
-        private void AssignDefaultConfigurationProfile(System.Type componentType, SerializedProperty configurationProfile)
-        {
-            configurationProfile.objectReferenceValue = null;
-
-            if (componentType != null &&
-                MixedRealityExtensionServiceAttribute.Find(componentType) is MixedRealityExtensionServiceAttribute attr)
-            {
                 configurationProfile.objectReferenceValue = attr.DefaultProfile;
+                runtimePlatform.intValue = (int)attr.RuntimePlatforms;
             }
 
             serializedObject.ApplyModifiedProperties();
