@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
@@ -136,12 +137,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     EditorGUILayout.PropertyField(componentType);
                     if (EditorGUI.EndChangeCheck())
                     {
+                        SystemType configurationComponentType = ((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType;
                         // Try to assign default configuration profile when type changes.
                         serializedObject.ApplyModifiedProperties();
-                        AssignDefaultConfigurationProfile(
-                            ((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType, configurationProfile);
-                        AssignDefaultPlatformValues(
-                            ((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType, runtimePlatform);
+                        AssignDefaultConfigurationProfile(configurationComponentType, configurationProfile);
+                        AssignDefaultPlatformValues(configurationComponentType, runtimePlatform);
                         changed = true;
 
                         GUILayout.EndVertical();
