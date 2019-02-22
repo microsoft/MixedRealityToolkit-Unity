@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using System;
+using System.Linq;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -16,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
     /// <summary>
     /// Attribute that defines the properties of a Mixed Reality Toolkit extension service.
     /// </summary>
-    [AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class MixedRealityExtensionServiceAttribute : Attribute
     {
         /// <summary>
@@ -27,17 +28,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
         /// <summary>
         /// The file path to the default profile asset relative to the package folder.
         /// </summary>
-        public virtual string ProfilePath { get; }
+        public virtual string DefaultProfilePath { get; }
 
         /// <summary>
-        /// The package where the asset resides.
+        /// The package where the default profile asset resides.
         /// </summary>
         public virtual string PackageFolder { get; }
 
         /// <summary>
         /// The default profile.
         /// </summary>
-        public virtual BaseMixedRealityProfile Profile
+        public virtual BaseMixedRealityProfile DefaultProfile
         {
             get
             {
@@ -45,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
                 string path;
                 if (EditorProjectUtilities.FindRelativeDirectory(PackageFolder, out path))
                 {
-                    return AssetDatabase.LoadAssetAtPath<BaseMixedRealityProfile>(System.IO.Path.Combine(path, ProfilePath));
+                    return AssetDatabase.LoadAssetAtPath<BaseMixedRealityProfile>(System.IO.Path.Combine(path, DefaultProfilePath));
                 }
 
                 Debug.LogError("Unable to find or load the profile.");
@@ -58,16 +59,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
         /// Constructor
         /// </summary>
         /// <param name="runtimePlatforms">The platforms on which the extension service is supported.</param>
-        /// <param name="profilePath">The relative path to the profile asset.</param>
-        /// <param name="packageFolder">The folder to which the path is relative.</param>
+        /// <param name="profilePath">The relative path to the default profile asset.</param>
+        /// <param name="packageFolder">The package folder to which the path is relative.</param>
         public MixedRealityExtensionServiceAttribute(
             SupportedPlatforms runtimePlatforms,
-            string profilePath = "", 
+            string defaultProfilePath = "",
             string packageFolder = "MixedRealityToolkit")
         {
             RuntimePlatforms = runtimePlatforms;
-            ProfilePath = profilePath;
+            DefaultProfilePath = defaultProfilePath;
             PackageFolder = packageFolder;
+        }
+
+        /// <summary>
+        /// Convenience function for retrieving the attribute given a certain class type.
+        /// </summary>
+        public static MixedRealityExtensionServiceAttribute Find(Type type)
+        {
+            return type.GetCustomAttributes(typeof(MixedRealityExtensionServiceAttribute), true).FirstOrDefault() as MixedRealityExtensionServiceAttribute;
         }
     }
 }

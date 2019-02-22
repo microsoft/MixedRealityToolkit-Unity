@@ -202,7 +202,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         private static string MakePathRelativeToProject(string absolutePath)
         {
-            return absolutePath.Replace(Application.dataPath + "\\", "Assets/");
+            return absolutePath.Replace(
+                Application.dataPath + Path.DirectorySeparatorChar,
+                "Assets" + Path.DirectorySeparatorChar);
         }
 
         private static void SetIconTheme()
