@@ -418,13 +418,15 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
                         // BEGIN WORKAROUND: Unity issue #1033526
                         // See https://issuetracker.unity3d.com/issues/hololens-interactionsourcestate-dot-selectpressed-is-false-when-air-tap-and-hold
-                        // Bug was discovered May 2018 and still exists as of today Feb 2019 in version 2018.3.4f1, timeline for fix unknown
-                        // The bug only and the workaround affect only the development workflow via Holographic Remoting
-                        if (UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected
-                            && interactionSourceState.source.kind == InteractionSourceKind.Hand)
+                        // Bug was discovered May 2018 and still exists as of today Feb 2019 in version 2018.3.4f1, timeline for fix is unknown
+                        // The bug only affects the development workflow via Holographic Remoting or Simulation
+                        if (interactionSourceState.source.kind == InteractionSourceKind.Hand)
                         {
-                            Debug.Assert(!interactionSourceState.selectPressed, "Unity issue #1033526 seems to have been resolved. Please remove this ugly workaround!");
+                            Debug.Assert(!(UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected
+                                           && interactionSourceState.selectPressed),
+                                         "Unity issue #1033526 seems to have been resolved. Please remove this ugly workaround!");
 
+                            // This workaround is safe as long as all these assumptions hold:
                             Debug.Assert(!interactionSourceState.source.supportsGrasp);
                             Debug.Assert(!interactionSourceState.source.supportsMenu);
                             Debug.Assert(!interactionSourceState.source.supportsPointing);
