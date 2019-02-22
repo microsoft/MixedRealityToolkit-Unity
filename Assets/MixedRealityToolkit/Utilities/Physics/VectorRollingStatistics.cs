@@ -115,28 +115,99 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
 
             // remove the old sample from our accumulation
             Vector3 oldSample = samples[currentSampleIndex];
-            cumulativeFrame -= oldSample;
-            cumulativeFrameSquared -= (oldSample.Mul(oldSample));
+
+            // -- Below replaces operations:
+            // cumulativeFrame -= oldSample;
+            // cumulativeFrameSquared -= (oldSample.Mul(oldSample));
+
+            cumulativeFrame.x -= oldSample.x;
+            cumulativeFrame.y -= oldSample.y;
+            cumulativeFrame.z -= oldSample.z;
+
+            oldSample.x *= oldSample.x;
+            oldSample.y *= oldSample.y;
+            oldSample.z *= oldSample.z;
+
+            cumulativeFrameSquared.x -= oldSample.x;
+            cumulativeFrameSquared.y -= oldSample.y;
+            cumulativeFrameSquared.z -= oldSample.z;
+            // --
 
             // Add the new sample to the accumulation
             samples[currentSampleIndex] = value;
-            cumulativeFrame += value;
-            cumulativeFrameSquared += value.Mul(value);
+
+            // -- Below replaces operations:
+            // cumulativeFrame += value;
+            // cumulativeFrameSquared += value.Mul(value);
+            cumulativeFrame.x += value.x;
+            cumulativeFrame.y += value.y;
+            cumulativeFrame.z += value.z;
+
+            Vector3 valueSquared = value;
+            valueSquared.x = value.x * value.x;
+            valueSquared.y = value.y * value.y;
+            valueSquared.z = value.z * value.z;
+
+            cumulativeFrameSquared.x += valueSquared.x;
+            cumulativeFrameSquared.y += valueSquared.y;
+            cumulativeFrameSquared.z += valueSquared.z;
+            // --
 
             // Keep track of how many samples we have
             cumulativeFrameSamples++;
             ActualSampleCount = Mathf.Min(maxSamples, cumulativeFrameSamples);
 
             // see how many standard deviations the current sample is from the previous average
-            Vector3 deltaFromAverage = (Average - value);
+            // -- Below replaces operations:
+            // Vector3 deltaFromAverage = (Average - value);
+            Vector3 deltaFromAverage = Average;
+            deltaFromAverage.x -= value.x;
+            deltaFromAverage.y -= value.y;
+            deltaFromAverage.z -= value.z;
+            // --
+
             float oldStandardDeviation = CurrentStandardDeviation;
-            StandardDeviationsAwayOfLatestSample = oldStandardDeviation.Equals(0) ? 0 : (deltaFromAverage / oldStandardDeviation).magnitude;
+            // -- Below replaces operations:
+            // StandardDeviationsAwayOfLatestSample = oldStandardDeviation.Equals(0) ? 0 : (deltaFromAverage / oldStandardDeviation).magnitude;
+            if (oldStandardDeviation == 0)
+            {
+                StandardDeviationsAwayOfLatestSample = 0;
+            }
+            else
+            {
+                deltaFromAverage.x /= oldStandardDeviation;
+                deltaFromAverage.y /= oldStandardDeviation;
+                deltaFromAverage.z /= oldStandardDeviation;
+                StandardDeviationsAwayOfLatestSample = deltaFromAverage.magnitude;
+            }
+            // --
 
             // And calculate new averages and standard deviations
             // (note that calculating a standard deviation of a Vector3 might not 
             // be done properly, but the logic is working for the gaze stabilization scenario)
-            Average = cumulativeFrame / ActualSampleCount;
-            float newStandardDev = Mathf.Sqrt((cumulativeFrameSquared / ActualSampleCount - Average.Mul(Average)).magnitude);
+
+            // -- Below replaces operations:
+            // Average = cumulativeFrame / ActualSampleCount;
+            // float newStandardDev = Mathf.Sqrt((cumulativeFrameSquared / ActualSampleCount - Average.Mul(Average)).magnitude);
+            Vector3 average = Average;
+            average.x = cumulativeFrame.x / ActualSampleCount;
+            average.y = cumulativeFrame.y / ActualSampleCount;
+            average.z = cumulativeFrame.z / ActualSampleCount;
+
+            Average = average;
+
+            Vector3 frmSqrDivSamples = cumulativeFrameSquared;
+            frmSqrDivSamples.x /= ActualSampleCount;
+            frmSqrDivSamples.y /= ActualSampleCount;
+            frmSqrDivSamples.z /= ActualSampleCount;
+
+            frmSqrDivSamples.x -= (average.x * average.x);
+            frmSqrDivSamples.y -= (average.y * average.y);
+            frmSqrDivSamples.z -= (average.z * average.z);
+
+            float newStandardDev = Mathf.Sqrt(frmSqrDivSamples.magnitude);
+            // --
+
             StandardDeviationDeltaAfterLatestSample = oldStandardDeviation - newStandardDev;
             CurrentStandardDeviation = newStandardDev;
 

@@ -80,13 +80,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         [SerializeField]
         private bool OnlyInEditMode = true;
 
+        private Vector3 scale;
+        private Vector3 startPosition;
+        private Vector3 weighDirection;
+        private Vector3 localPosition;
+        private Vector3 anchorTransformLocalPosition;
+        private Vector3 anchorTransformLocalScale;
+
         /// <summary>
         /// Set the size and position
         /// </summary>
         private void UpdateSize()
         {
-            Vector3 weighDireciton = new Vector3(Mathf.Abs(Alignment.x), Mathf.Abs(Alignment.y), Mathf.Abs(Alignment.z));
-            Vector3 scale = weighDireciton * (Weight / BasePixelScale);// Vector3.Scale(Alignment, Scale) + Offset / BasePixelScale;
+            // Vector3 weighDireciton = new Vector3(Mathf.Abs(Alignment.x), Mathf.Abs(Alignment.y), Mathf.Abs(Alignment.z));
+            // Vector3 scale = weighDireciton * (Weight / BasePixelScale);// Vector3.Scale(Alignment, Scale) + Offset / BasePixelScale;
+
+            weighDirection.x = Mathf.Abs(Alignment.x);
+            weighDirection.y = Mathf.Abs(Alignment.y);
+            weighDirection.z = Mathf.Abs(Alignment.z);
+
+            scale.x = weighDirection.x * (Weight / BasePixelScale);
+            scale.y = weighDirection.y * (Weight / BasePixelScale);
+            scale.z = weighDirection.z * (Weight / BasePixelScale);
+
             float size = ((Weight * 2) / BasePixelScale);
             if (scale.x > scale.y)
             {
@@ -100,14 +116,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
 
             transform.localScale = scale;
 
-            Vector3 startPosition = AnchorTransform.localPosition;
+            anchorTransformLocalPosition = AnchorTransform.localPosition;
+            anchorTransformLocalScale = AnchorTransform.localScale;
+
+            startPosition = anchorTransformLocalPosition;
 
             if (AnchorTransform != this.transform)
             {
-                startPosition = AnchorTransform.localPosition + (Vector3.Scale(AnchorTransform.localScale * 0.5f, Alignment));
+                // startPosition = AnchorTransform.localPosition + (Vector3.Scale(AnchorTransform.localScale * 0.5f, Alignment));
+                startPosition.x = anchorTransformLocalPosition.x + ((anchorTransformLocalScale.x * 0.5f) * Alignment.x);
+                startPosition.y = anchorTransformLocalPosition.y + ((anchorTransformLocalScale.y * 0.5f) * Alignment.y);
+                startPosition.z = anchorTransformLocalPosition.z + ((anchorTransformLocalScale.z * 0.5f) * Alignment.z);
             }
 
-            transform.localPosition = startPosition + (Alignment * Weight * 0.5f / BasePixelScale) + (PositionOffset / BasePixelScale);
+            // transform.localPosition = startPosition + (Alignment * Weight * 0.5f / BasePixelScale) + (PositionOffset / BasePixelScale);
+            localPosition.x = startPosition.x + (Alignment.x * Weight * 0.5f / BasePixelScale) + (PositionOffset.x / BasePixelScale);
+            localPosition.y = startPosition.y + (Alignment.y * Weight * 0.5f / BasePixelScale) + (PositionOffset.y / BasePixelScale);
+            localPosition.z = startPosition.z + (Alignment.z * Weight * 0.5f / BasePixelScale) + (PositionOffset.z / BasePixelScale);
+            transform.localPosition = localPosition;
         }
 
         // Update is called once per frame

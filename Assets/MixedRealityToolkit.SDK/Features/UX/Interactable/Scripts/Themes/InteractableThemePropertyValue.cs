@@ -30,6 +30,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         public Quaternion Quaternion;
         public AudioClip AudioClip;
         public Animation Animation;
+
+        public void Reset()
+        {
+            Name = string.Empty;
+            String = string.Empty;
+            Bool = false;
+            Int = 0;
+            Float = 0;
+            Texture = null;
+            Material = null;
+            GameObject = null;
+            Vector2 = default(Vector2);
+            Vector3 = default(Vector3);
+            Vector4 = default(Vector4);
+            Color = default(Color);
+            Quaternion = default(Quaternion);
+            AudioClip = null;
+            Animation = null;
+        }
     }
 }
 
