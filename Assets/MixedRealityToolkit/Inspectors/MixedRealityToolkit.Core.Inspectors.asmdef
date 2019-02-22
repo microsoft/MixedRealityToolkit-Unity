@@ -1,0 +1,21 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Core.Inspectors",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions",
+        "Microsoft.MixedReality.Toolkit.Core.Build",
+        "Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor",
+        "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
+        "Microsoft.MixedReality.Toolkit.Core.Utilities.Async"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

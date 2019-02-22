@@ -3,6 +3,8 @@
 # What is MixedRealityToolkit-vNext
 The V1 Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.
 
+### For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/Branch-Guide).
+
 This new version of the MixedRealityToolkit aims to further extend the capabilities of the toolkit and also introduce new features, including the capability to support more VR/AR/XR platforms beyond Microsoft's own Mixed Reality setup.
 
 The vNext branch is taking all the best lessons learned from the original Mixed Reality Toolkit and refactoring / restructuring it to both:
@@ -35,7 +37,18 @@ The Mixed Reality Toolkit vNext will includes many APIs to accelerate the develo
 # Getting started with MRTK-vNext
 MRTK-vNext is currently under heavy development. To determine the best branch for starting out, please view the [Branch Guide](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/Branch-Guide) wiki page.
 
-> Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](/MRTK-SDK.md) here.  Which aims to help on-board developers quicker when building solutions.
+The Mixed Reality team have prepared a few guides for getting up to speed on using the new Mixed Reality Toolkit, which can be found here:
+
+* [Downloading the Mixed Reality Toolkit](/Documentation/DownloadingTheMRTK.md)
+* [Getting Started with the Mixed Reality Toolkit](/Documentation/GettingStartedWithTheMRTK.md)
+* [Mixed Reality Toolkit configuration guide](/Documentation/MixedRealityConfigurationGuide.md)
+
+More guides to follow.
+
+
+> Any queries, questions or feedback on using the Mixed Reality Toolkit should be [raised as Issues](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) on the site.  let us know what you like / dislike or think is incredibly awesome!
+> 
+> Alternatively, reach out to us on the [HoloDevelopers slack channels](https://holodevelopersslack.azurewebsites.net/)
 
 
 # Examples and QuickStart scenes
