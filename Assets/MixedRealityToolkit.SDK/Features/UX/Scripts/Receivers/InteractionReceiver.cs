@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
 
         #endregion IMixedRealityFocusChangedHandler Implementation
 
-        #region IMixedRealityInputHandler Implementations
+        #region IMixedRealityInputHandler Implementation
 
         /// <inheritdoc />
         void IMixedRealityInputHandler.OnInputUp(InputEventData eventData)
@@ -228,9 +228,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        #endregion IMixedRealityInputHandler Implementations
+        #endregion IMixedRealityInputHandler Implementation
 
-        #region IMixedRealityGestureHandler Implementations
+        #region IMixedRealityGestureHandler Implementation
 
         /// <inheritdoc />
         void IMixedRealityGestureHandler.OnGestureStarted(InputEventData eventData)
@@ -322,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        #endregion IMixedRealityGestureHandler Implementations
+        #endregion IMixedRealityGestureHandler Implementation
 
         #region Protected Virtual Callback Functions
 
