@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Editor
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
                 EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
                 PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel24;
-                PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait; // Currently needed based on ArUco Visual logic
+                PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait; // Currently needed based on Marker Visual logic
             }
 
             // Editor button for iOS platform and functionality
@@ -48,7 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Editor
             {
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
                 PlayerSettings.iOS.cameraUsageDescription = "Camera required for AR Foundation";
-                PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait; // Currently needed based on ArUco Visual logic
+                PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait; // Currently needed based on Marker Visual logic
+                PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, 1); // Set Architecture to ARM64
             }
 
             GUILayout.EndVertical();
