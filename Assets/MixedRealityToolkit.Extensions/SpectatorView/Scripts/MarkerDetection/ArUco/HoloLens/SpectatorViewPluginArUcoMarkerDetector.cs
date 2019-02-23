@@ -41,7 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         {
             if (_detecting)
             {
-                if(!_holoLensCamera.TakeSingle())
+                if(_holoLensCamera.State == CameraState.Ready &&
+                    !_holoLensCamera.TakeSingle())
                 {
                     Debug.LogError("Failed to take photo with HoloLensCamera, Camera State: " + _holoLensCamera.State.ToString());
                 }
