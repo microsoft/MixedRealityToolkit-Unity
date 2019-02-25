@@ -625,7 +625,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
 #if UNITY_WSA
             _localOriginEstablished = true;
 #elif UNITY_ANDROID || UNITY_IOS
-            if (!_listeningToPointCloudChanges)
+            if (!_localOriginEstablished &&
+                !_listeningToPointCloudChanges)
             {
                 if (_aRPointCloudManager == null)
                 {
