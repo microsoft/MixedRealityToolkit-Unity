@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Services;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup;
 using System;
 using UnityEditor;
@@ -18,11 +19,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     /// </summary>
     public abstract class BaseMixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityProfileInspector
     {
+        public bool RenderAsSubProfile
+        {
+            set { renderAsSubProfile = value; }
+        }
+
         [SerializeField]
         private Texture2D logoLightTheme = null;
 
         [SerializeField]
         private Texture2D logoDarkTheme = null;
+
+        private bool renderAsSubProfile = false;
 
         protected virtual void Awake()
         {
@@ -44,12 +52,36 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         /// </summary>
         protected void RenderMixedRealityToolkitLogo()
         {
+            // If we're being rendered as a sub profile, don't show the logo
+            if (renderAsSubProfile)
+                return;
+
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             GUILayout.Label(EditorGUIUtility.isProSkin ? logoDarkTheme : logoLightTheme, GUILayout.MaxHeight(128f));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.Space(12f);
+        }
+        
+        /// <summary>
+        /// Renders a button that will take user back to a specified profile object
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="activeObject"></param>
+        /// <returns>True if button was clicked</returns>
+        protected bool DrawBacktrackProfileButton(string message, UnityEngine.Object activeObject)
+        {
+            // If we're being rendered as a sub profile, don't show the button
+            if (renderAsSubProfile)
+                return false;
+
+            if (GUILayout.Button(message))
+            {
+                Selection.activeObject = activeObject;
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
