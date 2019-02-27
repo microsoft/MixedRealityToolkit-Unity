@@ -31,6 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         [Header("Bezier Settings")]
         [SerializeField]
         private BezierPointSet controlPoints = new BezierPointSet(0.5f);
+        [Tooltip("If true, control points 2 and 3 will be transformed relative to points 1 and 4 respectively")]
+        [SerializeField]
+        private bool useLocalTangentPoints = false;
+        private Vector3 localOffset;
 
         protected override Vector3 GetPointInternal(int pointIndex)
         {
@@ -58,7 +62,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
             switch (pointIndex)
             {
                 case 0:
+                    localOffset = Vector3.zero;
+                    // If we're using local tangent points, apply this change to control point 2
+                    if (useLocalTangentPoints)
+                        localOffset = point - controlPoints.Point1;
+
                     controlPoints.Point1 = point;
+                    controlPoints.Point2 = controlPoints.Point2 + localOffset;
                     break;
 
                 case 1:
@@ -70,7 +80,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
                     break;
 
                 case 3:
+                    localOffset = Vector3.zero;
+                    if (useLocalTangentPoints)
+                        localOffset = point - controlPoints.Point4;
+
                     controlPoints.Point4 = point;
+                    controlPoints.Point3 = controlPoints.Point3 + localOffset;
                     break;
 
                 default:

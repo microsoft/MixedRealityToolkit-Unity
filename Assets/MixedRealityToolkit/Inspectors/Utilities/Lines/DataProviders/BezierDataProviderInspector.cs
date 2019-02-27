@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
         private static readonly GUIContent PositionContent = new GUIContent("Position");
 
         private SerializedProperty controlPoints;
+        private SerializedProperty useLocalTangentPoints;
 
         private BezierDataProvider bezierData;
 
@@ -38,6 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
             base.OnEnable();
 
             controlPoints = serializedObject.FindProperty("controlPoints");
+            useLocalTangentPoints = serializedObject.FindProperty("useLocalTangentPoints");
 
             bezierData = (BezierDataProvider)target;
         }
@@ -51,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
             DrawLinePoints = true;
 
             EditorGUILayout.PropertyField(controlPoints, true);
+            EditorGUILayout.PropertyField(useLocalTangentPoints);
 
             serializedObject.ApplyModifiedProperties();
         }
