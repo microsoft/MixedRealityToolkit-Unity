@@ -103,10 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             {
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
 
-                if (GUILayout.Button("Back to Configuration Profile"))
-                {
-                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
-                }
+                DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
 
                 return;
             }
@@ -115,17 +112,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             {
                 EditorGUILayout.HelpBox("No Input Actions profile was specified.", MessageType.Error);
 
-                if (GUILayout.Button("Back to Input Profile"))
-                {
-                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
-                }
+                DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile);
 
                 return;
             }
 
-            if (GUILayout.Button("Back to Input Profile"))
+            if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                return;
             }
 
             EditorGUILayout.Space();
