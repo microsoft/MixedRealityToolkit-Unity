@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
-using Microsoft.MixedReality.Utilities.Gltf.Serialization;
+using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using System.IO;
 using UnityEngine;
 

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Utilities.Gltf.Schema
+namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
     /// Common mesh primitive attributes.

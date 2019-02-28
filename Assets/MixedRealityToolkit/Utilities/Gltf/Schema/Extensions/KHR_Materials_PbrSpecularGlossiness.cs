@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Utilities.Gltf.Schema.Extensions
+namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.Extensions
 {
     [Serializable]
     public class KHR_Materials_PbrSpecularGlossiness : GltfExtension

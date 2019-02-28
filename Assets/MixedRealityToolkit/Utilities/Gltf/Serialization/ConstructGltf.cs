@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
-using Microsoft.MixedReality.Utilities.Gltf.Schema;
+using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Microsoft.MixedReality.Utilities.Gltf.Serialization
+namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 {
     public static class ConstructGltf
     {

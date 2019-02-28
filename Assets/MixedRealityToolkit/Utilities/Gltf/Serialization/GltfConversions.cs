@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
-using Microsoft.MixedReality.Utilities.Gltf.Schema;
+using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Utilities.Gltf.Serialization
+namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 {
     public static class GltfConversions
     {

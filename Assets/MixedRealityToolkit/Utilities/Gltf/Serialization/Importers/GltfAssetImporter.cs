@@ -3,7 +3,7 @@
 
 using UnityEditor.Experimental.AssetImporters;
 
-namespace Microsoft.MixedReality.Utilities.Gltf.Serialization.Editor
+namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
 {
     [ScriptedImporter(1, "gltf")]
     public class GltfAssetImporter : ScriptedImporter

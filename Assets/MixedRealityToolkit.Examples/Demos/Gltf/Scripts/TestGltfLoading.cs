@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.IO;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
-using Microsoft.MixedReality.Utilities.Gltf.Serialization;
+using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
+using System.IO;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
