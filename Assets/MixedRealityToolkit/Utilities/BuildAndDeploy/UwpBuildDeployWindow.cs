@@ -357,6 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             EditorGUILayout.BeginHorizontal();
 
             // Generate C# Project References for debugging
+#if !UNITY_2019_1_OR_NEWER
             bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
 
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
@@ -371,6 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             }
 
             GUILayout.FlexibleSpace();
+#endif
 
             GUI.enabled = ShouldOpenSLNBeEnabled;
 
@@ -502,7 +504,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                 buildConfigOption = WSABuildType.Debug;
             }
 
+#if !UNITY_2019_1_OR_NEWER
             EditorUserBuildSettings.GetWSADotNetNative(buildConfigOption);
+#endif
+
             buildConfigOption = (WSABuildType)EditorGUILayout.EnumPopup("Build Configuration", buildConfigOption, GUILayout.Width(HalfWidth));
 
             string buildConfigString = buildConfigOption.ToString();
@@ -919,9 +924,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             GUILayout.EndVertical();
         }
 
-        #endregion Methods
+#endregion Methods
 
-        #region Utilities
+#region Utilities
 
         private async void ConnectToDevice(DeviceInfo currentConnection)
         {
@@ -1231,9 +1236,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             return string.Empty;
         }
 
-        #endregion Utilities
+#endregion Utilities
 
-        #region Device Portal Commands
+#region Device Portal Commands
 
         private static async void OpenDevicePortal(DevicePortalConnections targetDevices, DeviceInfo currentConnection)
         {
@@ -1481,6 +1486,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             }
         }
 
-        #endregion Device Portal Commands
+#endregion Device Portal Commands
     }
 }
