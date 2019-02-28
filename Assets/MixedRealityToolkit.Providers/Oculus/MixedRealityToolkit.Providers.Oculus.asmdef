@@ -1,0 +1,17 @@
+{
+    "name": "MixedRealityToolkit.Providers.Oculus",
+    "references": [
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Android",
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

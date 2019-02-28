@@ -16,5 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         LinuxStandalone = 1 << 2,
         WindowsUniversal = 1 << 3,
         WindowsEditor = 1 << 4,
+        OculusGo = 1 << 5
     }
 }
