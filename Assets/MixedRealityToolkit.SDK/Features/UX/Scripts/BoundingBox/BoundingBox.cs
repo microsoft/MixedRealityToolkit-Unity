@@ -946,17 +946,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             if (cachedTargetCollider != null)
             {
-                Vector3 boundsExtents = Vector3.zero;
-
                 // Store current rotation then zero out the rotation so that the bounds
                 // are computed when the object is in its 'axis aligned orientation'.
                 Quaternion currentRotation = targetObject.transform.rotation;
                 targetObject.transform.rotation = Quaternion.identity;
+                Physics.SyncTransforms(); // Update collider bounds
 
-                boundsExtents = cachedTargetCollider.bounds.extents;
+                Vector3 boundsExtents = cachedTargetCollider.bounds.extents;
 
                 // After bounds are computed, restore rotation...
                 targetObject.transform.rotation = currentRotation;
+                Physics.SyncTransforms();
 
                 if (boundsExtents != Vector3.zero)
                 {
