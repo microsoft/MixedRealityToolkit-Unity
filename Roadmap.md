@@ -12,7 +12,7 @@ This document outlines the roadmap of the Mixed Reality Toolkit.
 | --- | --- | --- | --- |
 |MRTK V2 RC 1 | Add HoloLens 2 support. API/contract complete. No more breaking changes after this | March 2019 |  |
 |MRTK V2 RC 2| UX update and polish to better support HoloLens 2 interactions. | May 2019 |  |
-|MRTK V2 Release | First release of MRTK V2 that supports HoloLens 1, HoloLens 2, WMR, OpenVR | July 2018 | |
+|MRTK V2 Release | First release of MRTK V2 that supports HoloLens 1, HoloLens 2, WMR, OpenVR | July 2019 | |
 
 Release details, including backlog items, can be found on the [GitHub project pages](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects).
 
