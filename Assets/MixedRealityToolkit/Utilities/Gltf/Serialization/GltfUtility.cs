@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             bool isGlb = false;
             bool loadAsynchronously = Application.isPlaying;
 
-            if (Application.isPlaying) { await BackgroundThread; }
+            if (loadAsynchronously) { await BackgroundThread; }
 
             if (uri.Contains(".gltf"))
             {
