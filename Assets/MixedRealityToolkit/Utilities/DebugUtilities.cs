@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <summary>
         /// Logs an error message.
         /// </summary>
-        /// <param name="condition">The message to log.</param>
+        /// <param name="message">The message to log.</param>
         public static void DebugLogError(string message)
         {
             Debug.LogError(message);
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <summary>
         /// Logs a warning message.
         /// </summary>
-        /// <param name="condition">The message to log.</param>
+        /// <param name="message">The message to log.</param>
         public static void DebugLogWarning(string message)
         {
             Debug.LogWarning(message);
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <summary>
         /// Logs a message.
         /// </summary>
-        /// <param name="condition">The message to log.</param>
+        /// <param name="message">The message to log.</param>
         public static void DebugLog(string message)
         {
             Debug.Log(message);

@@ -36,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// Creates a <see cref="SpatialAwarenessMeshObject"/>.
         /// </summary>
         /// <param name="mesh"></param> todo: add comments
+        /// <param name="layer"></param>
         /// <param name="name"></param>
         /// <param name="meshId"></param>
         /// <returns>
