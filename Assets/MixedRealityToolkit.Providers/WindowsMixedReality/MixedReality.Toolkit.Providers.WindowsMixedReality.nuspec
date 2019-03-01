@@ -11,6 +11,6 @@
     <description>The Mixed Reality Toolkit Windows Mixed Reality provider enables mixed reality applications to target the Windows Mixed Reality platform and devices, including Microsoft HoloLens and immersive devices.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
-    <tags>WindowsMixedReality HoloLens Immersive VR Unity MixedReality</tags>
+    <tags>MRTK MixedRealityToolkit WindowsMixedReality HoloLens Immersive VR Unity MixedReality</tags>
   </metadata>
 </package>

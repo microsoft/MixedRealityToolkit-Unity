@@ -11,6 +11,6 @@
     <description>The Mixed Reality Toolkit OpenVR provider enables mixed reality applications to target the OpenVR platform and devices.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
-    <tags>OpenVR Unity MixedReality</tags>
+    <tags>MRTK MixedRealityToolkit OpenVR Unity MixedReality</tags>
   </metadata>
 </package>
