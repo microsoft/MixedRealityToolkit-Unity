@@ -90,7 +90,7 @@ Gets the bit mask that corresponds to the value specified in MeshPhysicsLayer.
 
 | Type |
 | --- |
-| [SpatialAwarenessMeshLevelOfDetail](./SpatialAwarenessMeshLevelOfDetail.md) |
+| [SpatialAwarenessMeshLevelOfDetail](SpatialAwarenessMeshLevelOfDetail.md) |
 
 Gets or sets the level of detail for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter.
 
@@ -118,7 +118,7 @@ Gets or sets the value indicating if the spatial awareness system to generate no
 
 | Type |
 | --- |
-| [SpatialMeshDisplayOptions](./SpatialMeshDisplayOptions.md) |
+| [SpatialMeshDisplayOptions](SpatialMeshDisplayOptions.md) |
 
 Gets or sets a value indicating how the mesh subsystem is to display surface meshes within the application.
 
@@ -252,9 +252,9 @@ Returns the collection of GameObjects managed by the surface finding subsystem.
 
 ## See Also
 
-- [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
-- [MixedRealitySpatialAwarenessSystem Class](./MixedRealitySpatialAwarenessSystem.md)
-- [IMixedRealitySpatialAwarenessMeshDescription Interface](./IMixedRealitySpatialAwarenessMeshDescription.md)
-- [IMixedRealitySpatialAwarenessPlanarSurfaceDescription Interface](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)
-- [SpatialAwarenessMeshDisplayOptions Enumeration](./SpatialAwarenessMeshDisplayOptions.md)
-- [SpatialAwarenessMeshLevelOfDetail Enumeration](./SpatialAwarenessMeshLevelOfDetail.md)
+- [Mixed Reality Spatial Awareness System Architecture](SpatialAwarenessSystemArchitecture.md)
+- [MixedRealitySpatialAwarenessSystem Class](MixedRealitySpatialAwarenessSystem.md)
+- [IMixedRealitySpatialAwarenessMeshDescription Interface](IMixedRealitySpatialAwarenessMeshDescription.md)
+- [IMixedRealitySpatialAwarenessPlanarSurfaceDescription Interface](IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)
+- [SpatialAwarenessMeshDisplayOptions Enumeration](SpatialAwarenessMeshDisplayOptions.md)
+- [SpatialAwarenessMeshLevelOfDetail Enumeration](SpatialAwarenessMeshLevelOfDetail.md)

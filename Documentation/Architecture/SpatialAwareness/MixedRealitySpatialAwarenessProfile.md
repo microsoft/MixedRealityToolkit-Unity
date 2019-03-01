@@ -50,7 +50,7 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 
 | Type | Default Value | Range |
 | --- | --- | --- |
-| [SpatialAwarenessLevelOfDetail](./SpatialAwarenessLevelOfDetail.md) | Coarse | Custom, Coarse, Fine |
+| [SpatialAwarenessLevelOfDetail](SpatialAwarenessLevelOfDetail.md) | Coarse | Custom, Coarse, Fine |
 
 ### MeshTrianglesPerCubicMeter
 
@@ -68,7 +68,7 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 
 | Type | Default Value | Range |
 | --- | --- | --- |
-| [SpatialMeshDisplayOptions](./SpatialMeshDisplayOptions.md) | None | None, Visible, Occlusion |
+| [SpatialMeshDisplayOptions](SpatialMeshDisplayOptions.md) | None | None, Visible, Occlusion |
 
 ### MeshVisibleMaterial
 
@@ -152,8 +152,8 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 
 ## See Also
 
-- [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
-- [IMixedRealitySpatialAwarenessSystem Interface](./IMixedRealitySpatialAwarenessSystem.md)
-- [MixedRealitySpatialAwarenessProfileInspector Class](./MixedRealitySpatialAwarenessProfileInspector.md)
-- [SpatialAwarenessMeshDisplayOptions Enumeration](./SpatialAwarenessMeshDisplayOptions.md)
-- [SpatialAwarenessMeshLevelOfDetail Enumeration](./SpatialAwarenessMeshLevelOfDetail.md)
+- [Mixed Reality Spatial Awareness System Architecture](SpatialAwarenessSystemArchitecture.md)
+- [IMixedRealitySpatialAwarenessSystem Interface](IMixedRealitySpatialAwarenessSystem.md)
+- [MixedRealitySpatialAwarenessProfileInspector Class](MixedRealitySpatialAwarenessProfileInspector.md)
+- [SpatialAwarenessMeshDisplayOptions Enumeration](SpatialAwarenessMeshDisplayOptions.md)
+- [SpatialAwarenessMeshLevelOfDetail Enumeration](SpatialAwarenessMeshLevelOfDetail.md)
