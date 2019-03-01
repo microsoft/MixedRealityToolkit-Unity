@@ -48,22 +48,36 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal
                 if (instance == null)
                 {
                     var instanceGameObject = GameObject.Find("AsyncCoroutineRunner");
+
                     if (instanceGameObject != null)
                     {
                         instance = instanceGameObject.GetComponent<AsyncCoroutineRunner>();
+
                         if (instance == null)
                         {
                             Debug.Log("[AsyncCoroutineRunner] Found GameObject but didn't have component");
-                            Destroy(instanceGameObject);
+
+                            if (Application.isPlaying)
+                            {
+                                Destroy(instanceGameObject);
+                            }
+                            else
+                            {
+                                DestroyImmediate(instanceGameObject);
+                            }
                         }
                     }
-
-                    instance = new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
-                    instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
-#if !UNITY_EDITOR
-                    DontDestroyOnLoad(instance);
-#endif
                 }
+
+                if (instance == null)
+                {
+                    instance = new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
+                }
+
+                instance.gameObject.hideFlags = HideFlags.None;
+#if !UNITY_EDITOR
+                DontDestroyOnLoad(instance);
+#endif
 
                 return instance;
             }
