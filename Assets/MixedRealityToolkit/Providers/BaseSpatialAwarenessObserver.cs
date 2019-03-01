@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
 
         private GameObject observedObjectParent = null;
 
-        public GameObject ObservedObjectParent => observedObjectParent != null ? ObservedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent(Name));
+        public GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent(Name));
 
         /// <inheritdoc />
         public VolumeType ObserverVolumeType { get; set; } = VolumeType.AxisAlignedCube;
