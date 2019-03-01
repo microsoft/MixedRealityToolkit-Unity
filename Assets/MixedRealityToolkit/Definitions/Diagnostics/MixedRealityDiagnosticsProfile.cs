@@ -16,20 +16,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
         [SerializeField]
         [FormerlySerializedAs("visible")]
         [Tooltip("Display all enabled diagnostics")]
-        private bool showDiagnostics = false;
+        private bool showDiagnostics = true;
 
         /// <summary>
-        /// Show or hide diagnostic visualizations
+        /// Show or hide diagnostic visualizations.
         /// </summary>
         public bool ShowDiagnostics => showDiagnostics;
 
         [SerializeField]
         [Tooltip("Display profiler")]
-        private bool showProfiler = false;
+        private bool showProfiler = true;
 
         /// <summary>
-        /// Show or hide the profiler UI
+        /// Show or hide the profiler UI.
         /// </summary>
         public bool ShowProfiler => showProfiler;
+
+        [SerializeField]
+        [Tooltip("The amount of time, in seconds, to collect frames for frame rate calculation.")]
+        [Range(0.01f, 1.0f)]
+        private float frameRateDuration = 0.1f;
+
+        /// <summary>
+        /// The amount of time, in seconds, to collect frames for frame rate calculation.
+        /// </summary>
+        public float FrameRateDuration => frameRateDuration;
     }
 }

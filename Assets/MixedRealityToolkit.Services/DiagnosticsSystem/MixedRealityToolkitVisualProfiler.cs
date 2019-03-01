@@ -42,6 +42,12 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         [Range(0.0f, 1.0f)]
         private float frameSampleRate = 0.1f;
 
+        public float FrameSampleRate
+        {
+            get { return frameSampleRate; }
+            set { frameSampleRate = Mathf.Clamp(value, 0.0f, 1.0f); }
+        }
+
         [Header("UI Settings")]
         [SerializeField]
         [Range(0.0f, 100.0f)]
