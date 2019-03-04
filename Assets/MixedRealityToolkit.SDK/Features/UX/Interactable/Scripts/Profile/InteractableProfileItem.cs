@@ -29,13 +29,30 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile
         public GameObject Target;
         public List<Theme> Themes;
         public bool HadDefaultTheme;
-        
+
+        /// <summary>
+        /// True when theme types have been compiled once by GetThemeTypes
+        /// </summary>
+        private static bool themeListsCompiled = false;
+
+        /// <summary>
+        /// The shared list of compiled theme types
+        /// </summary>
+        private static ThemeLists themeLists;
+
         /// <summary>
         /// Get a list of themes
         /// </summary>
         /// <returns></returns>
         public static ThemeLists GetThemeTypes()
         {
+            // This only needs to be done once.
+            // Recompilation will reset this value.
+            if (themeListsCompiled)
+            {
+                return themeLists;
+            }
+
             List<Type> themeTypes = new List<Type>();
             List<string> names = new List<string>();
 
@@ -52,11 +69,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile
                     }
                 }
             }
-            
-            ThemeLists lists = new ThemeLists();
-            lists.Types = themeTypes;
-            lists.Names = names;
-            return lists;
+
+            themeLists = new ThemeLists();
+            themeLists.Types = themeTypes;
+            themeLists.Names = names;
+
+            themeListsCompiled = true;
+
+            return themeLists;
         }
 
         /// <summary>

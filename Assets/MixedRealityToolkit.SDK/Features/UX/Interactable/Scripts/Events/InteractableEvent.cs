@@ -92,11 +92,28 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         }
 
         /// <summary>
+        /// True when event types have been compiled once by GetEventTypes
+        /// </summary>
+        private static bool eventListsCompiled = false;
+
+        /// <summary>
+        /// The shared list of compiled event types
+        /// </summary>
+        private static EventLists eventLists;
+
+        /// <summary>
         /// Get the recieverBase types that contain event logic
         /// </summary>
         /// <returns></returns>
         public static EventLists GetEventTypes()
         {
+            // This only needs to be done once.
+            // Recompilation will reset this value.
+            if (eventListsCompiled)
+            {
+                return eventLists;
+            }
+
             List<Type> eventTypes = new List<Type>();
             List<string> names = new List<string>();
             
@@ -114,10 +131,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
                 }
             }
 
-            EventLists lists = new EventLists();
-            lists.EventTypes = eventTypes;
-            lists.EventNames = names;
-            return lists;
+            eventLists = new EventLists();
+            eventLists.EventTypes = eventTypes;
+            eventLists.EventNames = names;
+
+            eventListsCompiled = true;
+
+            return eventLists;
         }
         
         /// <summary>
