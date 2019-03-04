@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter. 
         /// </summary>
         /// <remarks>
-        /// Specifying any other value will cause <see cref="MeshTrianglesPerCubicMeter"/> to be overwritten.
+        /// Specifying any other value will cause <see cref="TrianglesPerCubicMeter"/> to be overwritten.
         /// </remarks>
         SpatialAwarenessMeshLevelOfDetail LevelOfDetail { get; set; }
 
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// Gets or sets the level of detail, in triangles per cubic meter, for the returned spatial mesh.
         /// </summary>
         /// <remarks>
-        /// When specifying Coarse or Fine for the <see cref="MeshLevelOfDetail"/>, this value will be automatically overwritten with system default values.
+        /// When specifying Coarse or Fine for the <see cref="LevelOfDetail"/>, this value will be automatically overwritten with system default values.
         /// </remarks>
         int TrianglesPerCubicMeter { get; set; }
 
@@ -70,5 +70,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// Gets or sets the <see cref="Material"/> to be used when displaying <see cref="Mesh"/>es.
         /// </summary>
         Material VisibleMaterial { get; set; }
-   }
+    }
 }
