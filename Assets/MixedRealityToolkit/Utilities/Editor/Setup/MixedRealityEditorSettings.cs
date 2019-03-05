@@ -68,12 +68,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                     message += "- Force Text Serialization\n";
                 }
 
+#if !UNITY_ANDROID
                 var il2Cpp = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) == ScriptingImplementation.IL2CPP;
 
                 if (!il2Cpp)
                 {
                     message += "- Change the Scripting Backend to use IL2CPP\n";
                 }
+#endif
 
                 var visibleMetaFiles = EditorSettings.externalVersionControl.Equals("Visible Meta Files");
 
@@ -89,7 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
                 message += "\nWould you like to make this change?";
 
-                if (!forceTextSerialization || !il2Cpp || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
+                if (!forceTextSerialization
+#if !UNITY_ANDROID
+                    || !il2Cpp 
+#endif
+                    || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
                 {
                     var choice = EditorUtility.DisplayDialogComplex("Apply Mixed Reality Toolkit Default Settings?", message, "Apply", "Ignore", "Later");
 
