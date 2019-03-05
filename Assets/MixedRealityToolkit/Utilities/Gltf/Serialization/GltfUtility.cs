@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 {
     public static class GltfUtility
     {
-        public const uint GltfMagicNumber = 0x46546C67;
+        internal const uint GltfMagicNumber = 0x46546C67;
 
         private static readonly WaitForUpdate Update = new WaitForUpdate();
         private static readonly WaitForBackgroundThread BackgroundThread = new WaitForBackgroundThread();
@@ -300,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// <param name="jsonString">The json string to search.</param>
         /// <param name="handle">The handle to look for.</param>
         /// <returns>A collection of snippets with the json string that defines the object.</returns>
-        public static Dictionary<string, string> GetGltfExtraObjects(string jsonString, string handle)
+        private static Dictionary<string, string> GetGltfExtraObjects(string jsonString, string handle)
         {
             // Bug: sometimes name isn't always before extra declaration
             var regex = new Regex($"(\"name\":\\s*\"\\w*\",\\s*\"extras\":\\s*{{\\s*?)(\"{handle}\"\\s*:\\s*{{)");
