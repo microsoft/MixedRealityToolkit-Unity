@@ -11,15 +11,15 @@ using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Providers.Oculus
+namespace Microsoft.MixedReality.Toolkit.Providers.OculusAndroid
 {
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
-        SupportedPlatforms.OculusGo)]
-    public class OculusDeviceManager : UnityJoystickManager
+        SupportedPlatforms.Android)]
+    public class OculusAndroidDeviceManager : UnityJoystickManager
     {
         /// <summary>
         /// Constructor.
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.Oculus
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public OculusDeviceManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        public OculusAndroidDeviceManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
 
         #region Controller Utilities
 
@@ -62,8 +62,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.Oculus
 
             switch (currentControllerType)
             {
-                case SupportedControllerType.GenericOculus:
-                    controllerType = typeof(GenericOculusController);
+                case SupportedControllerType.GenericOculusAndroid:
+                    controllerType = typeof(GenericOculusAndroidController);
                     break;
                 case SupportedControllerType.OculusGoRemote:
                     controllerType = typeof(OculusGoRemoteController);
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.Oculus
 
             var pointers = RequestPointers(controllerType, controllingHand);
             var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
-            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOculusController;
+            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOculusAndroidController;
 
             if (detectedController == null)
             {
@@ -102,39 +102,19 @@ namespace Microsoft.MixedReality.Toolkit.Providers.Oculus
         /// <inheritdoc />
         protected override SupportedControllerType GetCurrentControllerType(string joystickName)
         {
-            if (string.IsNullOrEmpty(joystickName) || !joystickName.Contains("OpenVR"))
+            if (string.IsNullOrEmpty(joystickName))
             {
                 return SupportedControllerType.None;
             }
 
-            if (joystickName.Contains("Oculus Rift CV1"))
+            if (joystickName.Contains("Oculus Tracked Remote"))
             {
-                return SupportedControllerType.OculusTouch;
-            }
-
-            if (joystickName.Contains("Oculus remote"))
-            {
-                return SupportedControllerType.OculusRemote;
-            }
-
-            if (joystickName.Contains("Vive Wand"))
-            {
-                return SupportedControllerType.ViveWand;
-            }
-
-            if (joystickName.Contains("Vive Knuckles"))
-            {
-                return SupportedControllerType.ViveKnuckles;
-            }
-
-            if (joystickName.Contains("WindowsMR"))
-            {
-                return SupportedControllerType.WindowsMixedReality;
+                return SupportedControllerType.OculusGoRemote;
             }
 
             Debug.Log($"{joystickName} does not have a defined controller type, falling back to generic controller type");
 
-            return SupportedControllerType.GenericOpenVR;
+            return SupportedControllerType.GenericOculusAndroid;
         }
 
         #endregion Controller Utilities

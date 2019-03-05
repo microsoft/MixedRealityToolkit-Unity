@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         ViveKnuckles,
         OculusTouch,
         OculusRemote,
-        GenericOculus,
+        GenericOculusAndroid,
         OculusGoRemote,
         WindowsMixedReality,
         GenericUnity,

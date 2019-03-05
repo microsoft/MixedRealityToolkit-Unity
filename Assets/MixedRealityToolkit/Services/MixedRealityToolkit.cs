@@ -618,6 +618,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 return false;
             }
 
+#if !UNITY_EDITOR
+            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
+#else
+            if (!UnityEditor.EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
+#endif
+            {
+                return false;
+            }
+
             if (interfaceType == null)
             {
                 Debug.LogError("Unable to register a service with a null concrete type.");
@@ -627,15 +636,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (!typeof(IMixedRealityService).IsAssignableFrom(interfaceType))
             {
                 Debug.LogError($"Unable to register the {interfaceType.Name} service. It does not implement {typeof(IMixedRealityService)}.");
-                return false;
-            }
-
-#if !UNITY_EDITOR
-            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
-#else
-            if (!UnityEditor.EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
-#endif
-            {
                 return false;
             }
 

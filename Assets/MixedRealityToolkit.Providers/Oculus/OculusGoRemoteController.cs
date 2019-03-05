@@ -8,13 +8,13 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Providers.Oculus
+namespace Microsoft.MixedReality.Toolkit.Providers.OculusAndroid
 {
     [MixedRealityController(
         SupportedControllerType.OculusGoRemote,
-        new[] { Handedness.None },
+        new[] { Handedness.Both },
         "StandardAssets/Textures/OculusGoRemoteController")]
-    public class OculusGoRemoteController : GenericOculusController
+    public class OculusGoRemoteController : GenericOculusAndroidController
     {
         /// <summary>
         /// Constructor.
@@ -31,12 +31,17 @@ namespace Microsoft.MixedReality.Toolkit.Providers.Oculus
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.ThreeDofRotation, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(1, "Trigger", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.JoystickButton15),
             new MixedRealityInteractionMapping(2, "Back", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.JoystickButton7),
-            new MixedRealityInteractionMapping(2, "PrimaryTouchpad Click", AxisType.Digital, DeviceInputType.TouchpadPress, KeyCode.JoystickButton9),
-            new MixedRealityInteractionMapping(2, "PrimaryTouchpad Axis", AxisType.DualAxis, DeviceInputType.DirectionalPad, ControllerMappingLibrary.AXIS_4, ControllerMappingLibrary.AXIS_5)
+            new MixedRealityInteractionMapping(3, "PrimaryTouchpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, KeyCode.JoystickButton9),
+            new MixedRealityInteractionMapping(4, "PrimaryTouchpad Click", AxisType.Digital, DeviceInputType.TouchpadPress, KeyCode.JoystickButton15),
+            new MixedRealityInteractionMapping(5, "PrimaryTouchpad Axis", AxisType.DualAxis, DeviceInputType.DirectionalPad, ControllerMappingLibrary.AXIS_4, ControllerMappingLibrary.AXIS_5)
         };
+
+        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
+
+        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
 
         /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)

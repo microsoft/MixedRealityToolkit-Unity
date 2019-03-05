@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using UnityEngine;
+using UnityEngine.XR;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
@@ -8,19 +11,16 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput;
 using Microsoft.MixedReality.Toolkit.Core.Services;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.Providers.Oculus
+namespace Microsoft.MixedReality.Toolkit.Providers.OculusAndroid
 {
     [MixedRealityController(
-        SupportedControllerType.GenericOculus,
+        SupportedControllerType.GenericOculusAndroid,
         new[] { Handedness.Left, Handedness.Right },
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
-    public class GenericOculusController : GenericJoystickController
+    public class GenericOculusAndroidController : GenericJoystickController
     {
-        public GenericOculusController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public GenericOculusAndroidController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             nodeType = controllerHandedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand;
@@ -197,28 +197,6 @@ namespace Microsoft.MixedReality.Toolkit.Providers.Oculus
 
             CurrentControllerPose.Position = CurrentControllerPosition;
             CurrentControllerPose.Rotation = CurrentControllerRotation;
-
-            // Raise input system events if it is enabled.
-            if (lastState != TrackingState)
-            {
-                MixedRealityToolkit.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
-            }
-
-            if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
-            {
-                if (IsPositionAvailable && IsRotationAvailable)
-                {
-                    MixedRealityToolkit.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
-                }
-                else if (IsPositionAvailable && !IsRotationAvailable)
-                {
-                    MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
-                }
-                else if (!IsPositionAvailable && IsRotationAvailable)
-                {
-                    MixedRealityToolkit.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
-                }
-            }
         }
     }
 }
