@@ -19,12 +19,12 @@
         "dest": "api"
       },
       {
-        "files": ["api_doc/**", "Documentation/**/*.md", "*.md", "*.yml", "toc.yml", "Documentation/**/*.yml", "Documentation/Architecture/**", "Assets/MixedRealityToolkit/**/*.md"]
+        "files": ["api_doc/**", "Documentation/**/*.md", "*.md", "*.yml", "toc.yml", "Documentation/**/*.yml", "Documentation/Architecture/**", "Assets/**/*.md", "External/Documentation/*.md", "External/HowTo/*.md"]
       }
     ],
     "resource": [
       {
-        "files": [ "External/**", "index.html", "Documentation/Architecture/SpatialAwareness/Images/**"]
+        "files": [ "External/ReadMeImages/**", "index.html"]
       }
     ],
     "overwrite": "specs/*.md",

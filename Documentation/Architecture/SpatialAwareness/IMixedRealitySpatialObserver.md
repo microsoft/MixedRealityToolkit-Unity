@@ -6,7 +6,7 @@
 
 The IMixedRealitySpatialObserver is the interface that defines the requirements for platform specific spatial observers which provide data to the spatial awareness system.
 
-<img src="Images/IMixedRealitySpatialObserver.png">
+<img src="../../../External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialObserver.png">
 
 ## IsRunning
 

@@ -50,7 +50,7 @@ To get started, simply follow these steps
 7. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](DocumentationGuide.md).
 8. Ensure the code works as intended on all [platforms](#supported-platforms).
     - For Windows UWP projects, your code must be [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; Store -> Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
-9. Update the [documentation](#update-documentation) with additional information as needed.
+9. Update the [documentation](#contributing) with additional information as needed.
 
 
 

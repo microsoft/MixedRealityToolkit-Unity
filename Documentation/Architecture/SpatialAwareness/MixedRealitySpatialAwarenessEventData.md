@@ -6,7 +6,7 @@
 
 The MixedRealitySpatialAwarenessEventData provides the data shared by all of the spatial awareness event types.
 
-<img src="Images/MixedRealitySpatialAwarenessEventData.png">
+<img src="../../../External/ReadMeImages/SpatialAwareness/MixedRealitySpatialAwarenessEventData.png">
 
 ## EventTime
 

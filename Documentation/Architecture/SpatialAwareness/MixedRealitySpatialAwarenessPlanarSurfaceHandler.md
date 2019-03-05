@@ -21,5 +21,5 @@ Called when an existing planar surface has been discarded by the spatial awarene
 ## See Also
 
 - [Mixed Reality Spatial Awareness System Architecture](SpatialAwarenessSystemArchitecture.md)
-- [IMixedRealitySpatialAwarenessPlanarSurfaceHandler Class](IMixedRealitySpatialAwarenessPlanarSurfaceHandler.md)
-- [IMixedRealitySpatialAwarenessBaseDescription](IMixedRealitySpatialAwarenessBaseDescription.md)
+- [IMixedRealitySpatialAwarenessSurfaceFindingHandler Class](IMixedRealitySpatialAwarenessSurfaceFindingHandler.md)
+

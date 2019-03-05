@@ -17,7 +17,7 @@ API documentation will be generated automatically from the MRTK source files. To
 
 - [Class, Struct, Enum Summary Blocks](#class-struct-enum-summary-blocks)
 - [Property, Method, Event Summary Blocks](#property-method-event-summary-blocks)
-- [Feature Introduction Version and Dependencies](#feature-introductuin-version-and-dependencies)
+- [Feature Introduction Version and Dependencies](#feature-introduction-version-and-dependencies)
 - [Serialized Fields](#serialized-fields)
 - [Enumeration Values](#enumeration-values)
 

@@ -8,7 +8,7 @@ It is expected that many platforms may not support one or more of the interfaces
 
 Each interface defined will implement one or more Properties, Methods and/or Events (PMEs) that can be accessed by application code.
 
-<img src="Images/SpatialAwarenessSystemArchitecture.png">
+<img src="../../../External/ReadMeImages/SpatialAwareness/SpatialAwarenessSystemArchitecture.png">
 
 ## Interfaces
 
@@ -21,7 +21,7 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 
 - [MixedRealitySpatialAwarenessSystem](MixedRealitySpatialAwarenessSystem.md)
 - [MixedRealitySpatialAwarenessMeshHandler](MixedRealitySpatialAwarenessMeshHandler.md)
-- [MixedRealitySpatialAwarenessSurfaceFindingHandler](MixedRealitySpatialAwarenessSurfaceFindingHandler.md)
+- [MixedRealitySpatialAwarenessPlanarSurfaceHandler](MixedRealitySpatialAwarenessPlanarSurfaceHandler.md)
 
 ## Enumerations
 
@@ -36,7 +36,7 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 ## Configuration Profile
 
 - [MixedRealitySpatialAwarenessProfile](MixedRealitySpatialAwarenessProfile.md)
-- [MixedRealitySpatialAwarenessProfileInspector](MixedRealitySpatialAwarenessProfileInspector/md)
+- [MixedRealitySpatialAwarenessProfileInspector](MixedRealitySpatialAwarenessProfileInspector.md)
  
 ## Example Implementation
 

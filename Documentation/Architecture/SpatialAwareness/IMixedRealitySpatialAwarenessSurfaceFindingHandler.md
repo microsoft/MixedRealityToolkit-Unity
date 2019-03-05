@@ -4,7 +4,7 @@
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers |
 
-<img src="Images/IMixedRealitySpatialAwarenessSurfaceFindingHandler.png">
+<img src="../../../External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialAwarenessSurfaceFindingHandler.png">
 
 ## OnSurfaceAdded([MixedRealitySpatialAwarenessEventData](MixedRealitySpatialAwarenessEventData.md) eventData)
 
@@ -21,4 +21,4 @@ Called when an existing planar surface has been discarded by the spatial awarene
 ## See Also
 
 - [Mixed Reality Spatial Awareness System Architecture](SpatialAwarenessSystemArchitecture.md)
-- [MixedRealitySpatialAwarenessSurfaceFindingHandler Class](MixedRealitySpatialAwarenessSurfaceFindingHandler.md)
+
