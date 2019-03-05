@@ -154,6 +154,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
 
             // Before building, need to run a nuget restore to generate a json.lock file. Failing to do this breaks the build in VS RTM
+
+#if !UNITY_2019_1_OR_NEWER
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
             {
                 if (!await RestoreNugetPackagesAsync(nugetPath, storePath) ||
@@ -165,6 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                     return IsBuilding = false;
                 }
             }
+#endif
 
             // Ensure that the generated .appx version increments by modifying Package.appxmanifest
             if (!SetPackageVersion(incrementVersion))

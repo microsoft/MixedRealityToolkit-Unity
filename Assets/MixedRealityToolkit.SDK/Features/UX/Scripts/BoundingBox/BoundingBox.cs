@@ -362,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 for (var i = 0; i < balls.Count; i++)
                 {
-                    Destroy(balls[i]);
+                    Destroy(balls[i].gameObject);
                 }
 
                 balls.Clear();
@@ -372,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 for (int i = 0; i < links.Count; i++)
                 {
-                    Destroy(links[i]);
+                    Destroy(links[i].gameObject);
                 }
 
                 links.Clear();
@@ -382,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 for (var i = 0; i < corners.Count; i++)
                 {
-                    Destroy(corners[i]);
+                    Destroy(corners[i].gameObject);
                 }
 
                 corners.Clear();
@@ -390,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (rigRoot != null)
             {
-                Destroy(rigRoot);
+                Destroy(rigRoot.gameObject);
             }
         }
 
@@ -496,7 +496,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             targetObject.transform.localScale = newScale;
         }
 
-        private Vector3 GetRotationAxis(GameObject handle)
+        private Vector3 GetRotationAxis(Transform handle)
         {
             for (int i = 0; i < balls.Count; ++i)
             {
@@ -926,10 +926,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             SetHiddenHandles();
         }
 
-        private void ShowOneHandle(GameObject handle)
+        private void ShowOneHandle(Transform handle)
         {
             //turn off all balls
-            if (balls != null)
+            if (ballRenderers != null)
             {
                 for (int i = 0; i < ballRenderers.Count; ++i)
                 {
@@ -938,7 +938,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
 
             //turn off all corners
-            if (corners != null)
+            if (cornerRenderers != null)
             {
                 for (int i = 0; i < cornerRenderers.Count; ++i)
                 {
@@ -1043,7 +1043,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
-        private HandleType GetHandleType(GameObject handle)
+        private HandleType GetHandleType(Transform handle)
         {
             for (int i = 0; i < balls.Count; ++i)
             {
@@ -1201,15 +1201,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         currentInputSource = eventData.InputSource;
                         currentPointer = pointer;
                         grabbedHandle = grabbedCollider.gameObject;
-                        currentHandleType = GetHandleType(grabbedHandle);
-                        currentRotationAxis = GetRotationAxis(grabbedHandle);
+                        Transform grabbedHandleTransform = grabbedHandle.transform;
+                        currentHandleType = GetHandleType(grabbedHandleTransform);
+                        currentRotationAxis = GetRotationAxis(grabbedHandleTransform);
                         currentPointer.TryGetPointingRay(out initialGrabRay);
                         initialGrabMag = distance;
                         initialGrabbedPosition = grabbedHandle.transform.position;
                         initialGrabbedCentroid = targetObject.transform.position;
                         initialScale = targetObject.transform.localScale;
                         pointer.TryGetPointerPosition(out initialGrabPoint);
-                        ShowOneHandle(grabbedHandle);
+                        ShowOneHandle(grabbedHandleTransform);
                         initialGazePoint = Vector3.zero;
                     }
                 }
