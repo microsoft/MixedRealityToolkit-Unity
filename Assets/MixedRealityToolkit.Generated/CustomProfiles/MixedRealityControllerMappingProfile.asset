@@ -915,7 +915,7 @@ MonoBehaviour:
         id: 1
         description: Select
         axisConstraint: 2
-      keyCode: 345
+      keyCode: 344
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -928,7 +928,7 @@ MonoBehaviour:
         id: 2
         description: Menu
         axisConstraint: 2
-      keyCode: 337
+      keyCode: 336
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -941,7 +941,7 @@ MonoBehaviour:
         id: 13
         description: Touch Pad
         axisConstraint: 2
-      keyCode: 339
+      keyCode: 346
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -954,7 +954,7 @@ MonoBehaviour:
         id: 14
         description: Press Pad
         axisConstraint: 2
-      keyCode: 345
+      keyCode: 338
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
