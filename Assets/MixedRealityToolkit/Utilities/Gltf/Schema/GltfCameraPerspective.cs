@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
     /// <summary>
     /// A perspective camera containing properties to create a perspective projection
     /// matrix.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/camera.perspective.schema.json
     /// </summary>
     [Serializable]
     public class GltfCameraPerspective : GltfProperty

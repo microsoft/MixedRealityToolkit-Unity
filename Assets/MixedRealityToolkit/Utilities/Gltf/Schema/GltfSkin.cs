@@ -7,6 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
     /// Joints and matrices defining a skin.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/skin.schema.json
     /// </summary>
     [Serializable]
     public class GltfSkin : GltfChildOfRootProperty

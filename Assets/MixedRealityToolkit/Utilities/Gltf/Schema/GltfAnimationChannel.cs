@@ -5,6 +5,10 @@ using System;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
+    /// <summary>
+    /// Targets an animation's sampler at a node's property.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/animation.channel.schema.json
+    /// </summary>
     [Serializable]
     public class GltfAnimationChannel : GltfProperty
     {

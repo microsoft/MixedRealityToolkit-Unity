@@ -115,7 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
                 if (!string.IsNullOrEmpty(gltfObject.Uri) && !string.IsNullOrEmpty(gltfImage.uri))
                 {
-                    // TODO update to download and use http paths.
                     var parentDirectory = Directory.GetParent(gltfObject.Uri).FullName;
                     var path = $"{parentDirectory}\\{gltfImage.uri}";
 
@@ -177,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         {
             if (gltfObject.LoadAsynchronously) await Update;
 
-            Material material = CreateMRTKShaderMaterial(gltfObject, gltfMaterial, materialId);
+            Material material = await CreateMRTKShaderMaterial(gltfObject, gltfMaterial, materialId);
             if (material == null)
             {
                 Debug.LogWarning("The Mixed Reality Toolkit/Standard Shader was not found. Falling back to Standard Shader");
@@ -196,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             if (gltfObject.LoadAsynchronously) await BackgroundThread;
         }
 
-        private static Material CreateMRTKShaderMaterial(GltfObject gltfObject, GltfMaterial gltfMaterial, int materialId)
+        private static async Task<Material> CreateMRTKShaderMaterial(GltfObject gltfObject, GltfMaterial gltfMaterial, int materialId)
         {
             var shader = Shader.Find("Mixed Reality Toolkit/Standard");
             if (shader == null)
@@ -212,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.mainTexture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.baseColorTexture.index].Texture;
             }
 
-            material.color = gltfMaterial.pbrMetallicRoughness.baseColorFactor.GetColorValue(); // I think this will still work
+            material.color = gltfMaterial.pbrMetallicRoughness.baseColorFactor.GetColorValue();
 
             if (gltfMaterial.alphaMode == "MASK")
             {
@@ -239,58 +238,58 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.renderQueue = 3000;
             }
 
-            // Doesn't seem to exist
-            //if (gltfMaterial.emissiveTexture.index >= 0 && material.HasProperty("_EmissionMap"))
-            //{
-            //    material.EnableKeyword("_EmissionMap");
-            //    material.EnableKeyword("_EMISSION");
-            //    material.SetTexture(EmissionMap, gltfObject.images[gltfMaterial.emissiveTexture.index].Texture);
-            //    material.SetColor(EmissionColor, gltfMaterial.emissiveFactor.GetColorValue());
-            //}
+            if (gltfMaterial.emissiveTexture.index >= 0 && material.HasProperty("_EmissionMap"))
+            {
+                material.EnableKeyword("_EMISSION");
+                material.SetColor("_EmissiveColor", gltfMaterial.emissiveFactor.GetColorValue());
+            }
 
-            // Doesn't seem to exist
-            //if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index >= 0 && material.HasProperty("_MetallicGlossMap"))
-            //{
-            //    var texture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture;
+            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index >= 0)
+            {
+                var texture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture;
 
-            //    if (texture.isReadable)
-            //    {
-            //        var pixels = texture.GetPixels();
-            //        if (gltfObject.LoadAsynchronously) await BackgroundThread;
+                if (texture.isReadable)
+                {
+                    var pixels = texture.GetPixels();
+                    if (gltfObject.LoadAsynchronously) await BackgroundThread;
 
-            //        var pixelCache = new Color[pixels.Length];
+                    var pixelCache = new Color[pixels.Length];
 
-            //        for (int c = 0; c < pixels.Length; c++)
-            //        {
-            //            // Unity only looks for metal in R channel, and smoothness in A.
-            //            pixelCache[c].r = pixels[c].g;
-            //            pixelCache[c].g = 0f;
-            //            pixelCache[c].b = 0f;
-            //            pixelCache[c].a = pixels[c].b;
-            //        }
+                    for (int c = 0; c < pixels.Length; c++)
+                    {
+                        // Unity only looks for metal in R channel, and smoothness in A.
+                        pixelCache[c].r = pixels[c].g;
+                        pixelCache[c].g = 0f;
+                        pixelCache[c].b = 0f;
+                        pixelCache[c].a = pixels[c].b;
+                    }
 
-            //        if (gltfObject.LoadAsynchronously) await Update;
-            //        texture.SetPixels(pixelCache);
-            //        texture.Apply();
+                    if (gltfObject.LoadAsynchronously) await Update;
+                    texture.SetPixels(pixelCache);
+                    texture.Apply();
 
-            //        material.SetTexture(MetallicGlossMap, gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture);
-            //    }
+                    material.SetTexture("_ChannelMap", texture);
+                    material.EnableKeyword("_CHANNEL_MAP");
+                }
 
-            //    material.SetFloat(Glossiness, Mathf.Abs((float)gltfMaterial.pbrMetallicRoughness.roughnessFactor - 1f));
-            //    material.SetFloat(Metallic, (float)gltfMaterial.pbrMetallicRoughness.metallicFactor);
-            //    material.EnableKeyword("_MetallicGlossMap");
-            //    material.EnableKeyword("_METALLICGLOSSMAP");
-            //}
+                material.SetFloat("_Smoothness", Mathf.Abs((float)gltfMaterial.pbrMetallicRoughness.roughnessFactor - 1f));
+                material.SetFloat("_Metallic", (float)gltfMaterial.pbrMetallicRoughness.metallicFactor);
+            }
 
-            // Doesn't seem to exist
-            //if (gltfMaterial.normalTexture.index >= 0 && material.HasProperty("_BumpMap"))
-            //{
-            //    material.SetTexture(BumpMap, gltfObject.images[gltfMaterial.normalTexture.index].Texture);
-            //    material.EnableKeyword("_BumpMap");
-            //}
 
-            // Enable emission?
-            //material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+            if (gltfMaterial.normalTexture.index >= 0)
+            {
+                material.SetTexture("_NormalMap", gltfObject.images[gltfMaterial.normalTexture.index].Texture);
+                material.SetFloat("_NormalMapScale", (float) gltfMaterial.normalTexture.scale);
+                material.EnableKeyword("_NORMAL_MAP");
+            }
+
+            if (gltfMaterial.doubleSided)
+            {
+                material.SetFloat("_CullMode", (float) CullMode.Off);
+            }
+
+            material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
             return material;
         }
 
@@ -337,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.renderQueue = 3000;
             }
 
-            if (gltfMaterial.emissiveTexture.index >= 0 && material.HasProperty("_EmissionMap"))
+            if (gltfMaterial.emissiveTexture.index >= 0)
             {
                 material.EnableKeyword("_EmissionMap");
                 material.EnableKeyword("_EMISSION");
@@ -345,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.SetColor(EmissionColor, gltfMaterial.emissiveFactor.GetColorValue());
             }
 
-            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index >= 0 && material.HasProperty("_MetallicGlossMap"))
+            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index >= 0)
             {
                 var texture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture;
 
@@ -378,7 +377,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.EnableKeyword("_METALLICGLOSSMAP");
             }
 
-            if (gltfMaterial.normalTexture.index >= 0 && material.HasProperty("_BumpMap"))
+            if (gltfMaterial.normalTexture.index >= 0)
             {
                 material.SetTexture(BumpMap, gltfObject.images[gltfMaterial.normalTexture.index].Texture);
                 material.EnableKeyword("_BumpMap");
