@@ -1,0 +1,593 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class BaseSpatialObserver
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class BaseSpatialObserver
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver" class="text-break">Class BaseSpatialObserver
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">BaseSpatialObserver</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMixedRealitySpatialAwarenessObserver</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.html">Microsoft.MixedReality.Toolkit.Core.Providers</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class BaseSpatialObserver : BaseDataProvider, IMixedRealitySpatialAwarenessObserver</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver__ctor_System_String_System_UInt32_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.#ctor(System.String,System.UInt32,BaseMixedRealityProfile)">BaseSpatialObserver(String, UInt32, BaseMixedRealityProfile)</h4>
+  <div class="markdown level1 summary"><p>Constructor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BaseSpatialObserver(string name, uint priority, BaseMixedRealityProfile profile)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Friendly name of the service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
+        <td><span class="parametername">priority</span></td>
+        <td><p>Service priority. Used to determine order of instantiation.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">BaseMixedRealityProfile</span></td>
+        <td><span class="parametername">profile</span></td>
+        <td><p>The service's configuration profile.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_DefaultPhysicsLayer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.DefaultPhysicsLayer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_DefaultPhysicsLayer" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.DefaultPhysicsLayer">DefaultPhysicsLayer</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int DefaultPhysicsLayer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_IsRunning_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.IsRunning*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_IsRunning" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.IsRunning">IsRunning</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRunning { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_IsStationaryObserver_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.IsStationaryObserver*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_IsStationaryObserver" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.IsStationaryObserver">IsStationaryObserver</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsStationaryObserver { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_ObservationExtents_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.ObservationExtents*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_ObservationExtents" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.ObservationExtents">ObservationExtents</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 ObservationExtents { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_ObserverOrigin_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.ObserverOrigin*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_ObserverOrigin" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.ObserverOrigin">ObserverOrigin</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 ObserverOrigin { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_ObserverRotation_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.ObserverRotation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_ObserverRotation" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.ObserverRotation">ObserverRotation</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Quaternion ObserverRotation { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_ObserverVolumeType_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.ObserverVolumeType*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_ObserverVolumeType" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.ObserverVolumeType">ObserverVolumeType</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VolumeType ObserverVolumeType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">VolumeType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_SourceId_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.SourceId*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_SourceId" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.SourceId">SourceId</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint SourceId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_SourceName_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.SourceName*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_SourceName" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.SourceName">SourceName</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string SourceName { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_StartupBehavior_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.StartupBehavior*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_StartupBehavior" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.StartupBehavior">StartupBehavior</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AutoStartBehavior StartupBehavior { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">AutoStartBehavior</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_UpdateInterval_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.UpdateInterval*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_UpdateInterval" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.UpdateInterval">UpdateInterval</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float UpdateInterval { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_Equals_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.Equals*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_Equals_System_Object_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_GetHashCode_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.GetHashCode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_GetHashCode" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_GetHashCode_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.GetHashCode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_GetHashCode_System_Object_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.GetHashCode(System.Object)">GetHashCode(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetHashCode(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_Resume_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.Resume*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_Resume" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.Resume">Resume()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Resume()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_Suspend_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.Suspend*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_BaseSpatialObserver_Suspend" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.BaseSpatialObserver.Suspend">Suspend()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Suspend()</code></pre>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealitySpatialAwarenessObserver</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

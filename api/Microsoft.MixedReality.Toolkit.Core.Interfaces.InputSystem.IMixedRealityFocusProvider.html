@@ -1,0 +1,573 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IMixedRealityFocusProvider
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IMixedRealityFocusProvider
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider" class="text-break">Interface IMixedRealityFocusProvider
+  </h1>
+  <div class="markdown level0 summary"><p>Implements the Focus Provider for handling focus of pointers.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_Core_Interfaces_IMixedRealityService_Name">IMixedRealityService.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_Core_Interfaces_IMixedRealityService_Priority">IMixedRealityService.Priority</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_Core_Interfaces_IMixedRealityService_Initialize">IMixedRealityService.Initialize()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_Core_Interfaces_IMixedRealityService_Reset">IMixedRealityService.Reset()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_Core_Interfaces_IMixedRealityService_Enable">IMixedRealityService.Enable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_Core_Interfaces_IMixedRealityService_Update">IMixedRealityService.Update()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_Core_Interfaces_IMixedRealityService_Disable">IMixedRealityService.Disable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_Core_Interfaces_IMixedRealityService_Destroy">IMixedRealityService.Destroy()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.html">Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IMixedRealityDataProvider, IMixedRealityExtensionService, IMixedRealityService, IDisposable</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_FocusLayerMasks_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.FocusLayerMasks*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_FocusLayerMasks" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.FocusLayerMasks">FocusLayerMasks</h4>
+  <div class="markdown level1 summary"><p>The layer masks for the focus pointers to raycast against.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">LayerMask[] FocusLayerMasks { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">LayerMask</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_GlobalPointingExtent_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.GlobalPointingExtent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_GlobalPointingExtent" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.GlobalPointingExtent">GlobalPointingExtent</h4>
+  <div class="markdown level1 summary"><p>Maximum distance at which all pointers can collide with a <see cref="!:GameObject"></see>, unless it has an override extent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">float GlobalPointingExtent { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_OverrideFocusedObject_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.OverrideFocusedObject*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_OverrideFocusedObject" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.OverrideFocusedObject">OverrideFocusedObject</h4>
+  <div class="markdown level1 summary"><p>To tap on a hologram even when not focused on,
+set OverrideFocusedObject to desired game object.
+If it's null, then focused object will be used.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">GameObject OverrideFocusedObject { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_UIRaycastCamera_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.UIRaycastCamera*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_UIRaycastCamera" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.UIRaycastCamera">UIRaycastCamera</h4>
+  <div class="markdown level1 summary"><p>The Camera the <see cref="!:UnityEngine.EventSystems.EventSystem"></see> uses to raycast against.</p>
+<p><remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Camera UIRaycastCamera { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Camera</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_GenerateNewPointerId_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.GenerateNewPointerId*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_GenerateNewPointerId" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.GenerateNewPointerId">GenerateNewPointerId()</h4>
+  <div class="markdown level1 summary"><p>Generate a new unique pointer id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">uint GenerateNewPointerId()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_GetFocusedObject_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.GetFocusedObject*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_GetFocusedObject_Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityPointer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.GetFocusedObject(Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer)">GetFocusedObject(IMixedRealityPointer)</h4>
+  <div class="markdown level1 summary"><p>Gets the currently focused object for the pointing source.</p>
+<p><remarks>If the pointing source is not registered, then the Gaze&apos;s Focused <see cref="!:GameObject"></see> is returned.</remarks></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">GameObject GetFocusedObject(IMixedRealityPointer pointingSource)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer.html">IMixedRealityPointer</a></td>
+        <td><span class="parametername">pointingSource</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><p>Currently Focused Object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_IsPointerRegistered_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.IsPointerRegistered*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_IsPointerRegistered_Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityPointer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.IsPointerRegistered(Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer)">IsPointerRegistered(IMixedRealityPointer)</h4>
+  <div class="markdown level1 summary"><p>Checks if the pointer is registered with the Focus Manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsPointerRegistered(IMixedRealityPointer pointer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer.html">IMixedRealityPointer</a></td>
+        <td><span class="parametername">pointer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True, if registered, otherwise false.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_RegisterPointer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.RegisterPointer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_RegisterPointer_Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityPointer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.RegisterPointer(Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer)">RegisterPointer(IMixedRealityPointer)</h4>
+  <div class="markdown level1 summary"><p>Registers the pointer with the Focus Manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool RegisterPointer(IMixedRealityPointer pointer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer.html">IMixedRealityPointer</a></td>
+        <td><span class="parametername">pointer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True, if the pointer was registered, false if the pointer was previously registered.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_TryGetFocusDetails_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.TryGetFocusDetails*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_TryGetFocusDetails_Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityPointer_FocusDetails__" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.TryGetFocusDetails(Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer,FocusDetails@)">TryGetFocusDetails(IMixedRealityPointer, out FocusDetails)</h4>
+  <div class="markdown level1 summary"><p>Gets the currently focused object for the pointing source.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool TryGetFocusDetails(IMixedRealityPointer pointer, out FocusDetails focusDetails)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer.html">IMixedRealityPointer</a></td>
+        <td><span class="parametername">pointer</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">FocusDetails</span></td>
+        <td><span class="parametername">focusDetails</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_TryGetSpecificPointerGraphicEventData_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.TryGetSpecificPointerGraphicEventData*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_TryGetSpecificPointerGraphicEventData_Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityPointer_GraphicInputEventData__" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.TryGetSpecificPointerGraphicEventData(Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer,GraphicInputEventData@)">TryGetSpecificPointerGraphicEventData(IMixedRealityPointer, out GraphicInputEventData)</h4>
+  <div class="markdown level1 summary"><p>Get the Graphic Event Data for the specified pointing source.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool TryGetSpecificPointerGraphicEventData(IMixedRealityPointer pointer, out GraphicInputEventData graphicInputEventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer.html">IMixedRealityPointer</a></td>
+        <td><span class="parametername">pointer</span></td>
+        <td><p>The pointer who's graphic event data we're looking for.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">GraphicInputEventData</span></td>
+        <td><span class="parametername">graphicInputEventData</span></td>
+        <td><p>The graphic event data for the specified pointer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True, if graphic event data exists.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_UnregisterPointer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.UnregisterPointer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityFocusProvider_UnregisterPointer_Microsoft_MixedReality_Toolkit_Core_Interfaces_InputSystem_IMixedRealityPointer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityFocusProvider.UnregisterPointer(Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer)">UnregisterPointer(IMixedRealityPointer)</h4>
+  <div class="markdown level1 summary"><p>Unregisters the pointer with the Focus Manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool UnregisterPointer(IMixedRealityPointer pointer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer.html">IMixedRealityPointer</a></td>
+        <td><span class="parametername">pointer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True, if the pointer was unregistered, false if the pointer was not registered.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

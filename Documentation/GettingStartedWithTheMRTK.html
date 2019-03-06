@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Getting started with the Mixed Reality Toolkit | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Getting started with the Mixed Reality Toolkit | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="getting-started-with-the-mixed-reality-toolkit">Getting started with the Mixed Reality Toolkit</h1>
+
+<p><img src="../External/ReadMeImages/MRTK_Logo_Rev.png" alt=""></p>
+<p>The Mixed Reality Toolkit (MRTK) is a new platform for building your Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR), aimed at accelerating your content production by removing any of the common complexities that complicate projects in a true multi-platform / multi-vr solution.
+The MRTK solves this by providing a common logical platform to build your dream, together with a rich set of services and SDK components for building your project.  Al these components are geared towards the new MRTK platform that abstracts out all the different ways that each platform delivers its experience.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>To get started with the Mixed Reality Toolkit you will need:</p>
+<ul>
+<li><a href="https://unity3d.com/get-unity/download/archive">Unity 2018.2.13f1 +</a></li>
+<li><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases">Latest MRTK release (Beta)</a></li>
+<li>A dream</li>
+</ul>
+<h2 id="upgrading-from-the-holotoolkit-htk">Upgrading from the HoloToolkit (HTK)</h2>
+<p>There is not a direct upgrade path from the HoloToolkit to the new Mixed Reality Toolkit due to the rebuilt framework.  However, it is possible to import the MRTK into your HoloToolkit project and start work migrating your implementation if you wish.</p>
+<blockquote>
+<p>The Mixed Reality Team will release a guide in the future on the key differences between HTK and MRTK project implementations.</p>
+</blockquote>
+<p>Our recommendation is that if you have an existing HTK project, then it is best to continue with the HTK as it is still a robust and feature rich platform for building HoloLens projects.</p>
+<p>If you are building a new Mixed Reality solution, then we encourage you to join us on the MRTK journey. Some of our key contributors are already building production-ready solutions already utilizing the MRTK and using their experiences to enrich the toolkit moving forward.</p>
+<h2 id="starting-your-new-project">Starting your new project</h2>
+<p>We have done an incredible amount of work to ensure the new project experience is as streamlined as possible.  To this end, we endeavoured to get you up and running as fast as possible.</p>
+<p>To get your first project up and running, the steps are as follows:</p>
+<h3 id="1-create-your-new-project-or-start-a-new-scene-in-your-current-project">1. Create your new project (or start a new scene in your current project)</h3>
+<blockquote>
+<p><em>Note</em> when creating a new project with Unity 2018, Unity gives you several templates to choose from.  Currently the <strong>MRTK does not yet support the Scriptable Render Pipeline</strong>, so the LWSRP, HDSRP and VRSRP projects are not compatible with MRTK projects.  Please stay tuned to the MRTK GitHub site for future announcements on SRP support.</p>
+</blockquote>
+<h3 id="2-import-the-mixed-reality-toolkit-asset">2. <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases">Import the Mixed Reality Toolkit asset</a></h3>
+<blockquote>
+<p>The Mixed Reality Toolkit is available via <a href="DownloadingTheMRTK.html">multiple delivery mechanisms</a> and in the future will also be available via the Unity package manager once Unity makes that option available.</p>
+</blockquote>
+<p>Get the asset and import it in to your Unity project using  &quot;Asset -&gt; Import Package -&gt; Custom Package&quot; from the Unity Editor menu.</p>
+<p><img src="../External/ReadMeImages/Unity_ImportAssetOption.png" alt=""></p>
+<p>Accept all the content and continue.</p>
+<p><img src="../External/ReadMeImages/MRTK_AssetImportDialog.png" alt=""></p>
+<blockquote>
+<p>The SDK is optional but highly recommended for new users.  Once you have a feel for how the toolkit works, you can remove these safely if you are not using them.</p>
+</blockquote>
+<blockquote>
+<p>The MRTK also provides a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases">separate &quot;Examples&quot; asset</a>, which currently contains demonstration scenes for current MRTK features.  In the future this will also contain educational &quot;Example&quot; scenes to aid with learning implementation tricks with the toolkit.</p>
+</blockquote>
+<h3 id="3-accept-the-setup-prompt-optional">3. Accept the Setup prompt (optional)</h3>
+<p><img src="../External/ReadMeImages/MRTK_UnitySetupPrompt.png" alt=""></p>
+<p>Once imported, the MRTK will attempt to setup your project automatically for building Mixed Reality solutions, namely setting:</p>
+<ul>
+<li>Enable XR Settings for your current platform (enabling the XR checkbox)</li>
+</ul>
+<blockquote>
+<p>Note, you need to do this for each platform you wish to deploy on</p>
+</blockquote>
+<ul>
+<li>Force Text Serialization / Visible Meta files (recommended for Unity projects using source control)</li>
+<li>Change the Scripting back-end to use IL2CPP (as Unity is deprecating the .NET scripting back-end)</li>
+</ul>
+<blockquote>
+<p>The only option which is mandatory (and not listed above) is to set Unity to use the .NET 4 scripting runtime by default, as the MRTK uses advanced coding functions only available in .NET4+.<br>
+From Unity 2018.3 and above, this will be the default for new Unity Projects.</p>
+</blockquote>
+<p>This prompt will automatically set the above options for you and restart Unity (for the .NET update) ready to start building your MRTK project.</p>
+<p>Accepting these options is completely optional (except .NET 4), if you click <strong>Later</strong>, the MRTK will not ask you again and leave you to it.  You can then choose to set these options manually later as you see fit.</p>
+<h3 id="4-configure-your-first-mixed-reality-toolkit-scene">4. Configure your first Mixed Reality Toolkit scene</h3>
+<p>The toolkit has been designed so that there is just one object that is mandatory in your scene.  This is there to provide the core configuration and runtime for the Mixed Reality Toolkit (one of the key advantages in the new framework).</p>
+<p>Configuring your scene is extremely simple by simply selecting the following from the Editor menu:</p>
+<blockquote>
+<p>Mixed Reality Toolkit -&gt; Configure</p>
+</blockquote>
+<p><img src="../External/ReadMeImages/MRTK_ConfigureScene.png" alt=""></p>
+<p>Once this completes, you will see the following in your Scene hierarchy:</p>
+<p><img src="../External/ReadMeImages/MRTK_SceneSetup.png" alt=""></p>
+<blockquote>
+<p>The MRTK will also select the configured profile, <a href="#configuring">click here for more details on this configuration screens</a></p>
+</blockquote>
+<p>Which contains the following:</p>
+<ul>
+<li>Mixed Reality Toolkit - The toolkit itself, providing the central configuration entry point for the entire framework.</li>
+<li>MixedRealityPlayspace - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.</li>
+<li>The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDK's</li>
+<li>UIRaycastCamera added as a child to the Main Camera - To enable seamless UI interactions through the toolkit</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong> While working in your scene, <strong>DON'T move the Main Camera</strong> (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
+If you need to move the players start point, then <strong>move the scene content and NOT the camera</strong>!</p>
+</blockquote>
+<h3 id="5-hit-play">5. Hit play</h3>
+<p>You are now ready to start building your Mixed Reality Solution, just start adding content and get building.
+Switch to other platforms (ensure they have XR enabled in their player settings) and your project will still run as expected without change.</p>
+<a name="configuring"></a>
+<h2 id="configuring-your-project">Configuring your project</h2>
+<p>The Mixed Reality Toolkit configuration is all centralized on one place and attached to the MixedRealityToolkit object in your active scene.</p>
+<p><img src="../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png" alt=""></p>
+<p>Clicking on this profile will show the configuration screens for the Mixed Reality Toolkit:</p>
+<p><img src="../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png" alt=""></p>
+<p>From here you can navigate to all the configuration profiles for the MRTK, including:</p>
+<blockquote>
+<p>The &quot;Default&quot; profiles provided by the Mixed Reality Toolkit are locked by default, so when you view these in the inspector they will appear greyed out.  This is to ensure you always have a common default for any project.  We recommend you create your own profiles (see below) when you need to customize the configuration for your project.</p>
+</blockquote>
+<ul>
+<li>Main Mixed Reality Toolkit Configuration</li>
+<li>Camera Settings</li>
+<li>Input System Settings</li>
+<li>Boundary Visualization Settings</li>
+<li>Teleporting Settings</li>
+<li>Spatial Awareness Settings</li>
+<li>Diagnostics Settings</li>
+<li>Additional Services Settings</li>
+<li>Input Actions Settings</li>
+<li>Input Actions Rules</li>
+<li>Pointer Configuration</li>
+<li>Gestures Configuration</li>
+<li>Speech Commands</li>
+<li>Controller Mapping Configuration</li>
+<li>Controller Visualization Settings</li>
+</ul>
+<p>As you can see there are lots of options available and more will come available as we progress through the beta.</p>
+<p>When you start a new project, we provide a default set of configurations with every option turned on, styled for a fully cross platform project.  These defaults are &quot;Locked&quot; to ensure you always have a common start point for your project and we encourage you to start defining your own settings as your project evolves.  For this we provide options to either:</p>
+<ul>
+<li>Copy the defaults in to a new profile for you to start customizing it for your project</li>
+<li>Start afresh with a brand-new profile.</li>
+</ul>
+<p><img src="../External/ReadMeImages/MRTK_CopyCreateConfigurationOptions.png" alt=""></p>
+<p>When profiles are created by the MRTK, they are then placed in the following folder:</p>
+<blockquote>
+<p>&quot;Assets\MixedRealityToolkit-Generated\CustomProfiles&quot;</p>
+</blockquote>
+<p>At each step in the configuration, you can choose to remove and create a new profile, or simply copy the existing settings and continue to customize:</p>
+<p><img src="../External/ReadMeImages/MRTK_CopyProfileOptions.png" alt=""></p>
+<h3 id="for-more-information-on-customizing-the-configuration-profiles"><strong><a href="MixedRealityConfigurationGuide.html">For more information on customizing the Configuration Profiles</a></strong></h3>
+<p>Please check out the <a href="MixedRealityConfigurationGuide.html">Mixed Reality Configuration Guide</a></p>
+<h2 id="get-building-your-project">Get building your project</h2>
+<p>Now your project is up and running, you can start building your Mixed Reality project.</p>
+<p>For more information on the rest of the toolkit, please check the following guides:</p>
+<ul>
+<li><a href="MixedRealityConfigurationGuide.html">Mixed Reality Configuration Guide</a></li>
+<li><a href="">Getting to know the Mixed Reality Toolkit Input System</a> (Coming Soon)</li>
+<li><a href="">Customizing your controllers in the MRTK</a> (Coming Soon)</li>
+<li><a href="">A walkthrough the UX components of the MRTK SDK</a> (Coming Soon)</li>
+<li><a href="">Using Solvers to bind your objects together</a> (Coming Soon)</li>
+<li><a href="">Creating interactions between the player and your project</a> (Coming Soon)</li>
+<li><a href="">Configuration Profile Usage Guide</a> (Coming Soon)</li>
+<li><a href="">Guide to building Registered Services</a> (Coming Soon)</li>
+<li><a href="">Guide to Pointers documentation</a> (Coming Soon)</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/thalbern/MixedRealityToolkit-Unity/blob/feature/docfx_gen/Documentation/GettingStartedWithTheMRTK.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

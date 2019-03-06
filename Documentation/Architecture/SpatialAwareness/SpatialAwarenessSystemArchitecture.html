@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Mixed Reality Toolkit Spatial Awareness System Architecture | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Mixed Reality Toolkit Spatial Awareness System Architecture | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="../../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="mixed-reality-toolkit-spatial-awareness-system-architecture">Mixed Reality Toolkit Spatial Awareness System Architecture</h1>
+
+<p>The Mixed Reality Spatial Awareness System is intended to abstract the specific implementation details of platforms, such as the Microsoft HoloLens, that provide support for mapping the real-world and providing the data to Mixed Reality experiences.</p>
+<p>Where possible, we are designing for common functionality (ex: identification of planar surfaces) well as access to the lowest level of available data (ex: mesh or point data).</p>
+<p>It is expected that many platforms may not support one or more of the interfaces defined herein. In fact, some may not support spatial awareness at all. On those platforms, the system must gracefully fail and provide the developer with appropriate data (null, empty collections, etc.) in return.</p>
+<p>Each interface defined will implement one or more Properties, Methods and/or Events (PMEs) that can be accessed by application code.</p>
+<img src="../../../External/ReadMeImages/SpatialAwareness/SpatialAwarenessSystemArchitecture.png">
+<h2 id="interfaces">Interfaces</h2>
+<ul>
+<li><a href="IMixedRealitySpatialAwarenessSystem.html">IMixedRealitySpatialAwarenessSystem</a></li>
+<li><a href="IMixedRealitySpatialAwarenessMeshHandler.html">IMixedRealitySpatialAwarenessMeshHandler</a></li>
+<li><a href="IMixedRealitySpatialAwarenessSurfaceFindingHandler.html">IMixedRealitySpatialAwarenessSurfaceFindingHandler</a></li>
+<li><a href="IMixedRealitySpatialObserver.html">IMixedRealitySpatialObserver</a></li>
+</ul>
+<h2 id="classes">Classes</h2>
+<ul>
+<li><a href="MixedRealitySpatialAwarenessSystem.html">MixedRealitySpatialAwarenessSystem</a></li>
+<li><a href="MixedRealitySpatialAwarenessMeshHandler.html">MixedRealitySpatialAwarenessMeshHandler</a></li>
+<li><a href="MixedRealitySpatialAwarenessPlanarSurfaceHandler.html">MixedRealitySpatialAwarenessPlanarSurfaceHandler</a></li>
+</ul>
+<h2 id="enumerations">Enumerations</h2>
+<ul>
+<li><a href="SpatialAwarenessMeshDisplayOptions.html">SpatialAwarenessMeshDisplayOptions</a></li>
+<li><a href="SpatialAwarenessMeshLevelOfDetail.html">SpatialAwarenessMeshLevelOfDetail</a></li>
+<li><a href="SpatialAwarenessSurfaceTypes.html">SpatialAwarenessSurfaceTypes</a></li>
+</ul>
+<h2 id="event-data-types">Event Data Types</h2>
+<ul>
+<li><a href="MixedRealitySpatialAwarenessEventData.html">MixedRealitySpatialAwarenessEventData</a></li>
+</ul>
+<h2 id="configuration-profile">Configuration Profile</h2>
+<ul>
+<li><a href="MixedRealitySpatialAwarenessProfile.html">MixedRealitySpatialAwarenessProfile</a></li>
+<li><a href="MixedRealitySpatialAwarenessProfileInspector.html">MixedRealitySpatialAwarenessProfileInspector</a></li>
+</ul>
+<h2 id="example-implementation">Example Implementation</h2>
+<p>The Mixed Reality Toolkit's default implementation of the spatial awareness system can be found in the Assets/MixedRealityToolkit/SDK/Features/SpatialAwarenessSystem folder. This implementation can be used as an example of how to build your own spatial awareness system. It is well documented and demonstrates each of the features described in this architecture specification.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/thalbern/MixedRealityToolkit-Unity/blob/feature/docfx_gen/Documentation/Architecture/SpatialAwareness/SpatialAwarenessSystemArchitecture.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

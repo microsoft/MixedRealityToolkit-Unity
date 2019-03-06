@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Mixed Reality Controller Configuration Profile | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Mixed Reality Controller Configuration Profile | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="../../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="mixed-reality-controller-configuration-profile">Mixed Reality Controller Configuration Profile</h1>
+
+<p>When you need to use input controllers for your Mixed Reality project, they are registered and configured centrally within the Controller configuration profile as you can see here:</p>
+<p><img src="../../../External/ReadMeImages/ControllerConfigurationProfile/01-MixedRealityControllerConfigurationProfileInspector.png" alt=""></p>
+<p>This enables you to very quickly define which SDK's / controllers you want to support in your project and configure how each are intended to work.</p>
+<p>The configuration is broken down in to several key components, as detailed below:</p>
+<h2 id="main-controller-template-definition">Main Controller Template definition</h2>
+<hr>
+<p><img src="../../../External/ReadMeImages/ControllerConfigurationProfile/02-ControllerTemplateDefinition.png" alt=""></p>
+<p>In the first section of the configuration, the options are detailed as follows:</p>
+<h3 id="render-motion-controllers">Render Motion Controllers</h3>
+<p>This defines whether or not controllers should be rendered or not.  By not adding a ControllerVisualizer in to the scene also has the same effect.</p>
+<blockquote>
+<p>This also disabled the Global Model options below.</p>
+</blockquote>
+<h3 id="use-default-models-for-future-implementation">Use Default Models (for future implementation)</h3>
+<p>This option will use the models for the controller direct from the SDK (where available), so that you don't have to configure a custom model.</p>
+<h3 id="global-left--right-hand-models">Global Left / Right hand models</h3>
+<p>These allow you at the top level to define the default model that will be drawn for each controlling hand.  If no hand is available, the Left most model will be used by default.</p>
+<p>To alter the position and rotation of the displayed model in relation to the Controller pose, then update the controllers Model Prefab transform values.</p>
+<blockquote>
+<p>See the &quot;Example Models&quot; section below for the controller models and their recommended transform settings provided in the SDK's &quot;<strong>Standard Assets</strong>&quot; folder.</p>
+</blockquote>
+<h3 id="add-a-new-controller-template">Add a New Controller Template</h3>
+<p>This enables you to add a new controller definition (detailed below) to the profile to add another supported SDK.</p>
+<h2 id="controller-template">Controller Template</h2>
+<hr>
+<p><img src="../../../External/ReadMeImages/ControllerConfigurationProfile/03-ControllerTemplate.png" alt=""></p>
+<p>Each controller template allows you to configure any of the supported controllers for the various SDK's that have been enabled through the Mixed Reality Toolkit.
+Each controller is added by SDK and the prevailing hand.</p>
+<blockquote>
+<p>Any SDK Controller types or hands NOT configured will not be detected or used in a running project.</p>
+</blockquote>
+<p>The options for configuring a template are detailed as follows:</p>
+<h3 id="controller">Controller</h3>
+<p>Your custom name for the controller, just for easy reference</p>
+<h3 id="controller-type-work-in-progress-see-list-for-enabled-devices">Controller Type (Work in progress, see list for enabled devices)</h3>
+<p>A drop down list of supported controllers by the Mixed Reality Toolkit, namely:</p>
+<ul>
+<li>Windows Mixed Reality
+<ul>
+<li>Motion Controllers</li>
+</ul>
+</li>
+<li>OpenVR
+<ul>
+<li>Default (fallback) controllers</li>
+<li>Oculus Touch</li>
+<li>Vive Wand</li>
+<li>Vive Knuckles (experimental as no one has any, using Unity spec)</li>
+</ul>
+</li>
+<li>OpenXR
+<ul>
+<li>To be supported when there is an OpenXR specification</li>
+</ul>
+</li>
+<li>Windows Gaming (these are coming soon*)
+<ul>
+<li>Arcade stick</li>
+<li>Gamepad</li>
+<li>Joystick</li>
+<li>Racing Wheel</li>
+</ul>
+</li>
+<li>Simulator (coming soon)</li>
+</ul>
+<h3 id="handedness">Handedness</h3>
+<p>Which hand is configured for this controller definition</p>
+<blockquote>
+<p>Both does not configure all controllers at this time.</p>
+</blockquote>
+<h3 id="use-default-model">Use Default model</h3>
+<p>For this controller only, use the model for the controller direct from the SDK (where available), so that you don't have to configure a custom model.</p>
+<blockquote>
+<p>This overrides the Global Model setting</p>
+</blockquote>
+<h3 id="override-model">Override Model</h3>
+<p>Like the Global Model options, allows you to provide a model to be drawn for this specific controller.</p>
+<blockquote>
+<p>This overrides the Global Model setting</p>
+</blockquote>
+<h3 id="interaction-mappings">Interaction Mappings</h3>
+<p>The interaction mappings allow you to map logical input actions for use in your project to the various controller inputs available from the physical device.</p>
+<p>These are different for each controller type, as shown below:</p>
+<table>
+<thead>
+<tr>
+<th>Motion Controller</th>
+<th>Oculus Touch</th>
+<th>Vive Wand</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../../../External/ReadMeImages/ControllerConfigurationProfile/04-WMRInteractions.png" alt=""></td>
+<td><img src="../../../External/ReadMeImages/ControllerConfigurationProfile/05-OculusTouchInteractions.png" alt=""></td>
+<td><img src="../../../External/ReadMeImages/ControllerConfigurationProfile/06-ViveWandInteractions.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>In the future custom mappings may become available, for now they are defined per the devices own specification according to the input definitions set out by Unity</p>
+</blockquote>
+<p>The Action each input can perform, is completely up to you.</p>
+<blockquote>
+<p>See the <a href="">Input Action</a> configuration profile for more information.</p>
+</blockquote>
+<h2 id="example-models">Example Models</h2>
+<hr>
+<p>The models provided in the Mixed Reality Toolkit &quot;Standard Assets&quot; folder are as follows:</p>
+<blockquote>
+<p>These can be found in &quot;Mixed Reality Toolkit SDK / Standard Assets / Controllers&quot;</p>
+</blockquote>
+<h3 id="debug-controllers">Debug Controllers</h3>
+<p>The Mixed Reality Toolkit provides a set of basic Gizmo style controllers, used to help align your models to the controller position output by the SDK, to help with offset settings.</p>
+<blockquote>
+<p>Note, the ability to display BOTH the Gizmo and the controller models isn't supported as yet. This will be included in a future release.</p>
+</blockquote>
+<p>We recommend applying the following Prefab transform values to align the controller model when using to align with the users view:</p>
+<ul>
+<li>Position - no change</li>
+<li>Rotation - X 90 (left) -90 (right), Y 0 , Z 0</li>
+</ul>
+<h2 id="additional-models-available-to-download">Additional models available to download</h2>
+<hr>
+<h3 id="oculus-hands-provided-via-the-oculus-opensource-project">Oculus Hands (provided via the Oculus Opensource project)</h3>
+<p>Oculus provide two basic hand models, including animation (although not available through the visualizer currently).</p>
+<p>Source -&gt; <a href="https://developer.oculus.com/downloads/package/oculus-hand-models/">Oculus Hand Package download</a></p>
+<p>We recommend applying the following Prefab transform values to align the controller model with the users view:</p>
+<ul>
+<li>Position - no change</li>
+<li>Rotation - X 0, Y 0 , Z 90 (left) -90 (right)</li>
+</ul>
+<h3 id="oculus-rift-touch-controllers-provided-via-the-oculus-opensource-project">Oculus Rift touch controllers (provided via the Oculus Opensource project)</h3>
+<p>Oculus also provide animated controller models for their touch controllers.</p>
+<p>Source -&gt; <a href="https://developer.oculus.com/downloads/package/oculus-sample-framework-for-unity-5-project/">Oculus Sample Framework for Unity Project</a></p>
+<p>We recommend applying the following Prefab transform values to align the controller model when using to align with the users view:</p>
+<ul>
+<li>Position - no change</li>
+<li>Rotation - no change</li>
+</ul>
+<h3 id="htc-vive-wand-controllers-available-in-the-steamvr-sdk">HTC Vive wand controllers (available in the SteamVR SDK)</h3>
+<p>Steam provide basic models for the HTC Vive Wand controllers.</p>
+<p>Source -&gt; Included as part of the Unity SteamVR SDK, or the Steam VR Client
+&quot;(Steam Install Folder)\Steam\steamapps\common\SteamVR\resources\rendermodels&quot;</p>
+<p>If you use Steams Models, we recommend applying the following Prefab transform values to align the controller model when using to align with the users view:</p>
+<ul>
+<li>Position - no change</li>
+<li>Rotation - no change</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/thalbern/MixedRealityToolkit-Unity/blob/feature/docfx_gen/Assets/MixedRealityToolkit.SDK/Profiles/MixedRealityControllerConfigurationProfile.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

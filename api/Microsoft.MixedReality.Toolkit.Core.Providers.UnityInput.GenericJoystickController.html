@@ -1,0 +1,513 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class GenericJoystickController
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class GenericJoystickController
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController" class="text-break">Class GenericJoystickController
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html">BaseController</a></div>
+    <div class="level2"><span class="xref">GenericJoystickController</span></div>
+      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.XboxController.html">XboxController</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_DefaultInteractions">BaseController.DefaultInteractions</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_DefaultLeftHandedInteractions">BaseController.DefaultLeftHandedInteractions</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_DefaultRightHandedInteractions">BaseController.DefaultRightHandedInteractions</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_Enabled">BaseController.Enabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_TrackingState">BaseController.TrackingState</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_ControllerHandedness">BaseController.ControllerHandedness</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_InputSource">BaseController.InputSource</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_Visualizer">BaseController.Visualizer</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_IsPositionAvailable">BaseController.IsPositionAvailable</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_IsPositionApproximate">BaseController.IsPositionApproximate</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_IsRotationAvailable">BaseController.IsRotationAvailable</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_Interactions">BaseController.Interactions</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_SetupConfiguration_System_Type_">BaseController.SetupConfiguration(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_AssignControllerMappings_MixedRealityInteractionMapping___">BaseController.AssignControllerMappings(MixedRealityInteractionMapping[])</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.html">Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class GenericJoystickController : BaseController</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController__ctor_TrackingState_Handedness_IMixedRealityInputSource_MixedRealityInteractionMapping___" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.#ctor(TrackingState,Handedness,IMixedRealityInputSource,MixedRealityInteractionMapping[])">GenericJoystickController(TrackingState, Handedness, IMixedRealityInputSource, MixedRealityInteractionMapping[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GenericJoystickController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TrackingState</span></td>
+        <td><span class="parametername">trackingState</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">controllerHandedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IMixedRealityInputSource</span></td>
+        <td><span class="parametername">inputSource</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">MixedRealityInteractionMapping</span>[]</td>
+        <td><span class="parametername">interactions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_CurrentControllerPose" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.CurrentControllerPose">CurrentControllerPose</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MixedRealityPose CurrentControllerPose</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityPose</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_CurrentControllerPosition" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.CurrentControllerPosition">CurrentControllerPosition</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Vector3 CurrentControllerPosition</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_CurrentControllerRotation" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.CurrentControllerRotation">CurrentControllerRotation</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Quaternion CurrentControllerRotation</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_LastControllerPose" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.LastControllerPose">LastControllerPose</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MixedRealityPose LastControllerPose</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityPose</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_PointerOffsetAngle_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.PointerOffsetAngle*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_PointerOffsetAngle" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.PointerOffsetAngle">PointerOffsetAngle</h4>
+  <div class="markdown level1 summary"><p>The pointer's offset angle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float PointerOffsetAngle { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_SetupDefaultInteractions_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.SetupDefaultInteractions*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_SetupDefaultInteractions_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.SetupDefaultInteractions(Handedness)">SetupDefaultInteractions(Handedness)</h4>
+  <div class="markdown level1 summary"><p>Assign the default interactions based on controller handedness if necessary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SetupDefaultInteractions(Handedness controllerHandedness)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">controllerHandedness</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.BaseController.html#Microsoft_MixedReality_Toolkit_Core_Providers_BaseController_SetupDefaultInteractions_Handedness_">BaseController.SetupDefaultInteractions(Handedness)</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdateButtonData_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.UpdateButtonData*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdateButtonData_MixedRealityInteractionMapping_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.UpdateButtonData(MixedRealityInteractionMapping)">UpdateButtonData(MixedRealityInteractionMapping)</h4>
+  <div class="markdown level1 summary"><p>Update an Interaction Bool data type from a Bool input</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void UpdateButtonData(MixedRealityInteractionMapping interactionMapping)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityInteractionMapping</span></td>
+        <td><span class="parametername">interactionMapping</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdateButtonData_MixedRealityInteractionMapping__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Raises an Input System &quot;Input Down&quot; event when the key is down, and raises an &quot;Input Up&quot; when it is released (e.g. a Button)
+Also raises a &quot;Pressed&quot; event while pressed</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdateController_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.UpdateController*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdateController" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.UpdateController">UpdateController()</h4>
+  <div class="markdown level1 summary"><p>Update the controller data from Unity's Input Manager</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void UpdateController()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdateDualAxisData_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.UpdateDualAxisData*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdateDualAxisData_MixedRealityInteractionMapping_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.UpdateDualAxisData(MixedRealityInteractionMapping)">UpdateDualAxisData(MixedRealityInteractionMapping)</h4>
+  <div class="markdown level1 summary"><p>Update the Touchpad / Thumbstick input from the device (in OpenVR, touchpad and thumbstick are the same input control)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void UpdateDualAxisData(MixedRealityInteractionMapping interactionMapping)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityInteractionMapping</span></td>
+        <td><span class="parametername">interactionMapping</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdatePoseData_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.UpdatePoseData*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdatePoseData_MixedRealityInteractionMapping_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.UpdatePoseData(MixedRealityInteractionMapping)">UpdatePoseData(MixedRealityInteractionMapping)</h4>
+  <div class="markdown level1 summary"><p>Update Spatial Pointer Data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void UpdatePoseData(MixedRealityInteractionMapping interactionMapping)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityInteractionMapping</span></td>
+        <td><span class="parametername">interactionMapping</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdateSingleAxisData_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.UpdateSingleAxisData*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdateSingleAxisData_MixedRealityInteractionMapping_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.GenericJoystickController.UpdateSingleAxisData(MixedRealityInteractionMapping)">UpdateSingleAxisData(MixedRealityInteractionMapping)</h4>
+  <div class="markdown level1 summary"><p>Update an Interaction Float data type from a SingleAxis (float) input</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityInteractionMapping</span></td>
+        <td><span class="parametername">interactionMapping</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Providers_UnityInput_GenericJoystickController_UpdateSingleAxisData_MixedRealityInteractionMapping__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Raises an Input System &quot;Pressed&quot; event when the float data changes</p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,749 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class LineUtility
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class LineUtility
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility" class="text-break">Class LineUtility
+  </h1>
+  <div class="markdown level0 summary"><p>Mixed Reality line utility class with helpful math functions for calculation, and other convenience methods.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">LineUtility</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.html">Microsoft.MixedReality.Toolkit.Core.Utilities.Lines</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class LineUtility</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_GetEllipsePoint_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.GetEllipsePoint*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_GetEllipsePoint_Vector2_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.GetEllipsePoint(Vector2,System.Single)">GetEllipsePoint(Vector2, Single)</h4>
+  <div class="markdown level1 summary"><p>Calculate the ellipse point at the angle provided.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 GetEllipsePoint(Vector2 radius, float angle)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector2</span></td>
+        <td><span class="parametername">radius</span></td>
+        <td><p>The radius of the ellipse.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">angle</span></td>
+        <td><p>Angle along the ellipse to find the point.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>The calculated point at the specified angle.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_GetPointAlongConstrainedParabola_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.GetPointAlongConstrainedParabola*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_GetPointAlongConstrainedParabola_Vector3_Vector3_Vector3_System_Single_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.GetPointAlongConstrainedParabola(Vector3,Vector3,Vector3,System.Single,System.Single)">GetPointAlongConstrainedParabola(Vector3, Vector3, Vector3, Single, Single)</h4>
+  <div class="markdown level1 summary"><p>Gets the point along a constrained parabola.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 GetPointAlongConstrainedParabola(Vector3 origin, Vector3 end, Vector3 upDirection, float height, float normalizedLength)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">origin</span></td>
+        <td><p>The point in space where the parabola starts.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">end</span></td>
+        <td><p>The point in space where the parabola ends.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">upDirection</span></td>
+        <td><p>The up direction of the arc.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">height</span></td>
+        <td><p>The height of the arc.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">normalizedLength</span></td>
+        <td><p>the normalized length along the line to calculate the point.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>The calculated point found along the normalized length.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_GetPointAlongPhysicalParabola_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.GetPointAlongPhysicalParabola*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_GetPointAlongPhysicalParabola_Vector3_Vector3_System_Single_Vector3_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.GetPointAlongPhysicalParabola(Vector3,Vector3,System.Single,Vector3,System.Single)">GetPointAlongPhysicalParabola(Vector3, Vector3, Single, Vector3, Single)</h4>
+  <div class="markdown level1 summary"><p>Gets the point along a physics based parabola.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 GetPointAlongPhysicalParabola(Vector3 origin, Vector3 direction, float velocity, Vector3 gravity, float time)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">origin</span></td>
+        <td><p>The point in space where the parabola starts</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">direction</span></td>
+        <td><p>The direction the line is intended to go</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">velocity</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">gravity</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">time</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>The calculated point.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_GetPointAlongSpline_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.GetPointAlongSpline*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_GetPointAlongSpline_MixedRealityPose___System_Single_InterpolationType_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.GetPointAlongSpline(MixedRealityPose[],System.Single,InterpolationType)">GetPointAlongSpline(MixedRealityPose[], Single, InterpolationType)</h4>
+  <div class="markdown level1 summary"><p>Gets the point along the spline.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 GetPointAlongSpline(MixedRealityPose[] points, float normalizedLength, InterpolationType interpolation = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityPose</span>[]</td>
+        <td><span class="parametername">points</span></td>
+        <td><p>the points of the whole spline.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">normalizedLength</span></td>
+        <td><p>the normalized length along the line to calculate the point.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">InterpolationType</span></td>
+        <td><span class="parametername">interpolation</span></td>
+        <td><p>Optional Interpolation type to use when calculating the point.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>The calculated point found along the normalized length.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_GetVectorCollectionBlend_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.GetVectorCollectionBlend*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_GetVectorCollectionBlend_Vector3___System_Single_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.GetVectorCollectionBlend(Vector3[],System.Single,System.Boolean)">GetVectorCollectionBlend(Vector3[], Single, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Returns a blended value from a collection of vectors</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 GetVectorCollectionBlend(Vector3[] vectorCollection, float normalizedLength, bool repeat)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span>[]</td>
+        <td><span class="parametername">vectorCollection</span></td>
+        <td><p>The collection to use to calculate the blend.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">normalizedLength</span></td>
+        <td><p>the normalized length along the line to calculate the point.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">repeat</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>The calculated point found along the normalized length.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_InterpolateBezierPoints_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.InterpolateBezierPoints*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_InterpolateBezierPoints_Vector3_Vector3_Vector3_Vector3_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.InterpolateBezierPoints(Vector3,Vector3,Vector3,Vector3,System.Single)">InterpolateBezierPoints(Vector3, Vector3, Vector3, Vector3, Single)</h4>
+  <div class="markdown level1 summary"><p>Interpolate the provided points using the standard Bezier algorithm.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 InterpolateBezierPoints(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, float normalizedLength)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point3</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point4</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">normalizedLength</span></td>
+        <td><p>the normalized length along the line to calculate the point.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>The calculated point found along the normalized length.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_InterpolateCatmullRomPoints_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.InterpolateCatmullRomPoints*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_InterpolateCatmullRomPoints_Vector3_Vector3_Vector3_Vector3_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.InterpolateCatmullRomPoints(Vector3,Vector3,Vector3,Vector3,System.Single)">InterpolateCatmullRomPoints(Vector3, Vector3, Vector3, Vector3, Single)</h4>
+  <div class="markdown level1 summary"><p>Interpolate the provided points using Catmull Rom algorithm.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 InterpolateCatmullRomPoints(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, float normalizedLength)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point3</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point4</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">normalizedLength</span></td>
+        <td><p>the normalized length along the line to calculate the point.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>The calculated point found along the normalized length.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_InterpolateHermitePoints_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.InterpolateHermitePoints*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_InterpolateHermitePoints_Vector3_Vector3_Vector3_Vector3_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.InterpolateHermitePoints(Vector3,Vector3,Vector3,Vector3,System.Single)">InterpolateHermitePoints(Vector3, Vector3, Vector3, Vector3, Single)</h4>
+  <div class="markdown level1 summary"><p>Interpolate the provided points using the Hermite algorithm.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 InterpolateHermitePoints(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, float normalizedLength)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point3</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point4</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">normalizedLength</span></td>
+        <td><p>the normalized length along the line to calculate the point.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>The calculated point found along the normalized length.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_InterpolateVectorArray_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.InterpolateVectorArray*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_InterpolateVectorArray_Vector3___System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.InterpolateVectorArray(Vector3[],System.Single)">InterpolateVectorArray(Vector3[], Single)</h4>
+  <div class="markdown level1 summary"><p>Interpolate a position between the provided points.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 InterpolateVectorArray(Vector3[] points, float normalizedLength)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span>[]</td>
+        <td><span class="parametername">points</span></td>
+        <td><p>The points to use in the calculation.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">normalizedLength</span></td>
+        <td><p>the normalized length along the line to calculate the point.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>The calculated point found along the normalized length.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_Invert_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.Invert*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Lines_LineUtility_Invert_Color_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.LineUtility.Invert(Color)">Invert(Color)</h4>
+  <div class="markdown level1 summary"><p>Inverts the color</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color Invert(this Color color)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">color</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

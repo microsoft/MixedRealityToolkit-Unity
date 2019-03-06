@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Contributing | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Contributing | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="Documentation/toc.html">
+    
+    <meta property="docfx:rel" content="">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="contributing">Contributing</h1>
+
+<p>The Mixed Reality Toolkit (MRTK) welcomes contributions from the community. Whether it is for a minor change like fixing typos and small bug fixes, or a new feature or component.</p>
+<p>For larger submissions, we have drafted contribution guidelines to ensure a smooth process and a good quality of code and documentation, so please be sure to review the  <a href="Feature_Contribution_Process.html">Feature Contribution guidelines / Process</a>.</p>
+<p>All changes be they small or large, need to adhere to the <a href="CodingGuidelines.html">MRTK Coding Standards</a>, so please ensure you are familiar with these while developing to avoid delays when the change is being reviewed.</p>
+<p>If you have any questions, please reach out on the <a href="https://forums.hololens.com/">HoloLens forums</a> or the <a href="https://holodevelopers.slack.com/">HoloDevelopers slack</a>. You can easily be granted access to the Slack community via the <a href="https://holodevelopersslack.azurewebsites.net/">automatic invitation sender</a>.</p>
+<h1 id="submission-process">Submission process</h1>
+<p>We provide several paths to enable developers to contribute to the Mixed Reality Toolkit, all starting with <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose">creating a new Issue</a></p>
+<p><img src="External/ReadMeImages/issue_selection_prompt.png" alt=""></p>
+<p>From here you can either:</p>
+<ul>
+<li><strong>Open a new issue</strong> - telling of us a bug or issue with the project you are facing.</li>
+</ul>
+<blockquote>
+<p>We recommend discussing issues in the <a href="https://holodevelopers.slack.com/">HoloDevelopers slack</a> channel first to ensure it's an issue with the MRTK.</p>
+</blockquote>
+<ul>
+<li><p><strong>Raise a new Feature request</strong> - some missing feature that you really need, or have even implemented your self that you would like to see added to the project</p>
+</li>
+<li><p><strong>Create a new Task for the Mixed Reality vNext project</strong> - defining a new feature or component for the next generation of the Mixed Reality Toolkit</p>
+</li>
+</ul>
+<h1 id="creating-proposals">Creating proposals</h1>
+<p>To ensure a smooth process when contributing new fixes or features, it's key that you start your journey by creating one of the issue types listed above.</p>
+<p>Start by <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose">opening a proposal</a> describing the change you want to make and how your proposed implementation, or simply the issue you are facing. This will enable us have a brief discussion about the proposal and, hopefully, identify some potential pitfalls before any work is started.</p>
+<p>If you're proposing a completely new feature (or a new platform support) please follow the <a href="Feature_Contribution_Process.html">Feature Contribution Process</a>.</p>
+<blockquote>
+<p>Note:  If you wish to work on something that already exists on our backlog, you can use that work item as your proposal. Be sure to also comment on the task notifying maintainers that you're working towards completing it.</p>
+</blockquote>
+<h1 id="beginning-development">Beginning development</h1>
+<p>Working with Git, the contribution process is quite simple (provided you have installed a good Git Client such as TortoiseGit or SourceTree)</p>
+<blockquote>
+<p>If you are new to to the Git workflow, <a href="https://www.pluralsight.com/blog/software-development/github-tutorial">check out this tutorial on Pluralsight</a></p>
+</blockquote>
+<p>To get started, simply follow these steps</p>
+<ol>
+<li>Fork the repository. Click on the &quot;Fork&quot; button on the top right of the page and follow the flow.</li>
+<li>Create a branch in your fork (off of the <a href="https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development">mrtk_development</a> branch) to make it easier for you to isolate your fork.</li>
+</ol>
+<blockquote>
+<p>for the legacy HoloToolkit use the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development">htk_development</a> branch
+3. Instructions for getting the project building and running the tests are in the <a href="README.html">README</a>.
+4. Make <strong>small and frequent</strong> commits that include tests which could be a unity scene showing usage of your feature.
+5. Make sure that all the tests continue to pass.
+6. Follow the <a href="CodingGuidelines.html">Coding Guidelines</a>.
+7. Ensure the code and feature(s) are documented as described in the <a href="DocumentationGuide.html">Documentation Guidelines</a>.
+8. Ensure the code works as intended on all <a href="#supported-platforms">platforms</a>.
+- For Windows UWP projects, your code must be <a href="https://developer.microsoft.com/en-us/windows/develop/app-certification-kit">WACK compliant</a>. To do this, generate a Visual Studio solution, right click on project; Store -&gt; Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
+9. Update the <a href="#contributing">documentation</a> with additional information as needed.</p>
+</blockquote>
+<h1 id="pull-request">Pull request</h1>
+<p>Once you have created your change, it's time to submit a Pull Request (PR) back to the project.  Please ensure all PR's are small and concise, DO NOT include other files / changes not related to the subject of the PR</p>
+<blockquote>
+<p>e.g. Don't update the <em>projectversion.txt</em> when you are making changes or adding a button</p>
+</blockquote>
+<p>If you haven't contributed to a Microsoft project before, you may be asked to sign a <a href="https://cla.microsoft.com/">contribution license agreement</a>.
+A comment in the PR will let you know if you do.</p>
+<blockquote>
+<p>If you are a Microsoft employee and are not a member of the <a href="https://github.com/Microsoft">Microsoft organization on GitHub</a>, please link your Microsoft and GitHub accounts on corpnet by visiting <a href="https://opensource.microsoft.com/">Open Source at Microsoft</a> before you start your pull request. There's some process stuff you'll need to do ahead of time.</p>
+</blockquote>
+<p>When you are ready:</p>
+<ul>
+<li>Start a GitHub pull request to merge your topic branch targetting the <a href="https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development">mrtk_development</a> branch.</li>
+<li>Ensure you fill in all details required by the Pull Request template, ensuring you reference any Issue / Feature Request or Task the PR relates to.</li>
+<li>Validate that you are only checking in files / changes related to the PR</li>
+<li>Check your documentation is up to date and included (unless submitted in a previous PR)</li>
+</ul>
+<p>The project maintainers will review your changes. We aim to review all changes within three business days.
+Please address any review comments, push to your topic branch, and post a comment letting us know that there's new stuff to review.</p>
+<blockquote>
+<p>All PR's submitted to the project will also be vetted according to the <a href="CodingGuidelines.html">MRTK coding standards guide</a>, so please review these before submitting your PR to ensure a smooth process.</p>
+</blockquote>
+<h1 id="merge">Merge</h1>
+<p>If the pull request review goes well, a project maintainer will merge your changes. Thank you for helping improve the Mixed Reality Toolkit!</p>
+<h1 id="documentation-requirements">Documentation Requirements</h1>
+<p>The Mixed Reality Toolkit requires the following forms of documentation for any new feature or component.  Also ensure if you are simply patching / fixing an existing feature that the documentation is also updated to match.</p>
+<h3 id="apis">APIs</h3>
+<p>This documentation is generated from the product code and is reviewed as part of <strong>all</strong> pull requests.</p>
+<h3 id="conceptual">Conceptual</h3>
+<p>Conceptual documentation is hosted on <a href="https://docs.microsoft.com/en-us/windows/mixed-reality">https://docs.microsoft.com/en-us/windows/mixed-reality</a>. Please submit your changes via Pull Request at <a href="https://github.com/MicrosoftDocs/mixed-reality">https://github.com/MicrosoftDocs/mixed-reality</a>.</p>
+<h3 id="readme-files">Readme files</h3>
+<p>As part of your pull request, please update (or create) the Readme markdown file in the appropriate feature folder. This will allow GitHub users to gain a high-level understanding of your new feature.</p>
+<h2 id="supported-platforms">Supported Platforms</h2>
+<p>The Mixed Reality Toolkit supports the following mixed reality (AR/VR/XR) platforms:</p>
+<ul>
+<li>Windows Standalone
+<ul>
+<li>OpenVR</li>
+</ul>
+</li>
+<li>Universal Windows Platform
+<ul>
+<li>Standalone PC</li>
+<li>Windows Mixed Reality Immersive devices</li>
+<li>Microsoft HoloLens</li>
+</ul>
+</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/thalbern/MixedRealityToolkit-Unity/blob/feature/docfx_gen/CONTRIBUTING.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

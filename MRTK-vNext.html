@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Mixed Reality Toolkit &#8211; Multi-VR approach (High level) | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Mixed Reality Toolkit &#8211; Multi-VR approach (High level) | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="Documentation/toc.html">
+    
+    <meta property="docfx:rel" content="">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="mixed-reality-toolkit--multi-vr-approach-high-level">Mixed Reality Toolkit – Multi-VR approach (High level)</h1>
+
+<h2 id="objective">Objective</h2>
+<p>To rearchitect the current Mixed Reality Toolkit to provide:</p>
+<ul>
+<li>An abstractable base interface that will support multiple VR platforms, predominately HL/MR/OpenVR/OpenXR</li>
+<li>A Building block style front end interface that is easy for new users to construct new Mixed Reality solutions easily, whilst still providing an open framework for intensive developers to consume.</li>
+</ul>
+<h2 id="outline-architecture">Outline Architecture</h2>
+<p><img src="External/ReadMeImages/MRTK-vNext-HLA.png" alt=""></p>
+<div style="text-align:center"> Figure 1 : Draft High-Level architecture </div>
+<p>The internal side of the MRTK, is internal / private, not something a user would need to use / access.  We can debate whether we still allow some of it to be “open” for customization.  But I feel that should be through users creating “extensions” rather than modifying base code.</p>
+<p>The SDK side is what the users will be consuming, either through a constructed set of prefabs or adding the management scripts.  The obvious aim being to enable (as much as possible) for a consumer to drag and drop the MRTK in to their existing scene and enable behaviors / movement and interactions.</p>
+<p> </p>
+<h2 id="high-level-architecture-breakdown">High-Level Architecture breakdown</h2>
+<p>The architecture approach lends from many different sources (VRTK, OpenXR, EditorVR) to provide a structure that aligns to the aims for the Multi-VR approach proposed for the Mixed Reality Toolkit.
+In all cases, the framework should follow the 80/20 rule, providing core mechanisms to deliver common use cases whilst also being open enough to allow for extension or even replacement of key components (for advanced users)</p>
+<ul>
+<li>Device Abstraction Layer</li>
+</ul>
+<p>The DAL creates a bridge layer between an external provider SDK and conforms the outputs / inputs of those devices to the MRTK construct definitions.
+Ideally, these interfaces should be at the script level consuming the vendor SDK directly rather than relying on vendor prefab definitions.</p>
+<ul>
+<li>MRTK Constructs</li>
+</ul>
+<p>A coordinated set of specifications that define a generalized system for describing and interacting with multiple VR/AR platforms.  The specifications detail the inner workings for the toolkit and define extendable contracts for the SDK to expose to both providers (devices) and consumers (SDK).</p>
+<ul>
+<li>MRTK Interface Layer</li>
+</ul>
+<p>The interface layer provides an extensible bridge to map and coordinate inputs coming from VR devices and controllers as well as providing an abstracted mechanism to output to VR systems (e.g. Haptics).  It also defines preset interactions that can be composited for use by the SDK.</p>
+<ul>
+<li>MRTK User Abstraction layer</li>
+</ul>
+<p>This is the frontend of the entire SDK, providing pre-built components for the most used implementations for Mixed Reality.  This should be provided through a set of easy to use components / scripts that can be “Drag and Dropped” to build a project.
+Like the Unity UI System, this does not preclude users building their own components and potentially submitting back to the project for inclusion.</p>
+<p> </p>
+<h2 id="key-principles">Key Principles</h2>
+<p>Following the feedback we’ve received both internally and through current consumers, I propose the following key principles we should follow building this new architecture:</p>
+<ul>
+<li>The new framework needs to provide “out of the box” components to enable rapid prototyping and development.  Future internal changes should not break these components or cause them to degrade in functionality.</li>
+<li>Every component / feature provided by the framework (either prefab or script) should have corresponding unit tests to validate its functionality.  Any future merge to the framework will have to validate these test before merging to ensure there is no degradation of service.</li>
+<li>The new framework should provide a programmatic interface along side the SDK components, to enable advanced users to extend or replace any component within the framework.</li>
+<li>Each new interface / component should be fully documented (where possible). These should detail all interactions and intended uses.  For the advanced cases, we’ll need to review how we explain how to replace components (e.g. replacing the input system with another, like InControl)</li>
+<li>Working examples / demos should be created for any specific system, these should have purpose and not just be a “test”.</li>
+<li>All testing components / scripts / prefabs / scenes should only be retained in the dev branch.  The master branch should only contain the “ToolKit” and working examples.  Master is for consumers only.</li>
+<li>Simulator options need to be provided as another device. This will also form the template for new MR/XR/VR devices / SDKs.
+ </li>
+</ul>
+<h1 id="reference-material">Reference Material</h1>
+<h2 id="notable-components-in-vrtk">Notable components in VRTK</h2>
+<p><strong>Pointer</strong> (VRTK Example Basic Pointer)(Pointer with Area Collision)</p>
+<ul>
+<li>Line type (Straight, Bezier)(VRTK Example Bezier Pointer)</li>
+<li>Tip type (teleport target, sphere, dot, none…)</li>
+<li>Color</li>
+<li>Thickness</li>
+<li>Pointer Interaction, Menu Selection with Pointer (VRTK Example)</li>
+<li>Grab, Move, Rotate, Scale with Pointer (Shell behavior)</li>
+</ul>
+<p><strong>Teleporting</strong> (VRTK Example)</p>
+<ul>
+<li>Pointer style</li>
+<li>Transition type</li>
+<li>Transition fade speed</li>
+<li>Exclude teleport location (VRTK Example)</li>
+</ul>
+<p><strong>Object Touching / Grabbing</strong> (VRTK Example)</p>
+<ul>
+<li>Object touched event</li>
+<li>Highlight / Outline on touched</li>
+<li>InteractableObject: Object grabbable, Highlight on touch</li>
+<li>Throwing</li>
+<li>Grab and Trigger (VRTK Example)</li>
+<li>Grab and Trigger Multiple (VRTK Example)</li>
+<li>Grab rotation snapping (VRTK Example)</li>
+<li>Grab attach mechanics: Fixed Joint / Spring Joint / Track Object (VRTK Example)</li>
+<li>Grab Force hold object (VRTK Example)</li>
+<li>Child on Grab: Bow and Arrow (VRTK Example)</li>
+<li>Controller Ghost or Physical (ghost passes through objects while)</li>
+</ul>
+<p><strong>Menu System</strong> (available in MRDL)</p>
+<ul>
+<li>Radial menu</li>
+<li>Grid menu</li>
+<li>Touchpad Axis Control (VRTK Example)</li>
+<li>Radial touchpad menu (VRTK Example)</li>
+</ul>
+<p><strong>Tooltips</strong> (available in MRDL)</p>
+<ul>
+<li>Tip</li>
+<li>Connector</li>
+<li>Spawner</li>
+<li>Manager (tutorials, spaces)</li>
+</ul>
+<p><strong>Headset collision fading</strong> (VRTK Example) (James)</p>
+<h1 id="open-xr-references">Open XR references</h1>
+<p>TBC</p>
+<p>The new MRTK approach would span across the Application and SDK/Device layers, seeing how OpenXR is a Device to the new architecture.</p>
+<p><img src="External/ReadMeImages/OpenXR-HLA.jpg" alt=""></p>
+<div style="text-align:center">Figure 2 : OpenXR architecture</div>
+<h1 id="expected-experience-reference-starter-for-10">Expected Experience reference (starter for 10)</h1>
+<ul>
+<li><strong>Interaction</strong></li>
+</ul>
+<ul>
+<li>Highlighting</li>
+<li>Pressing (e.g. buttons and a way to execute actions like UI Buttons)</li>
+<li>Activation (similar to pressing but an on/off state)</li>
+<li>Holding</li>
+<li>Raw Input (exposing individual inputs in a managed way)</li>
+<li>Speech</li>
+</ul>
+<ul>
+<li><strong>Manipulation</strong></li>
+</ul>
+<ul>
+<li>Grabbing</li>
+<li>Transforming</li>
+<li>Alteration (e.g. scaling, animation)</li>
+</ul>
+<ul>
+<li><strong>Experiences</strong></li>
+</ul>
+<ul>
+<li>Controller menus / actions</li>
+<li>Climbing / Moving with Controllers</li>
+<li>Pointers and Cursors (linked to each controller input)</li>
+<li>Doors and Interactions</li>
+</ul>
+<ul>
+<li><strong>Motion</strong></li>
+</ul>
+<ul>
+<li>Free Teleportation</li>
+<li>Restricted Teleportation</li>
+<li>Locomotion</li>
+<li>Twitch movement</li>
+</ul>
+<ul>
+<li><strong>Extended Experiences</strong></li>
+</ul>
+<ul>
+<li>FPS</li>
+<li>Bow and Arrow</li>
+<li>Common use cases</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/thalbern/MixedRealityToolkit-Unity/blob/feature/docfx_gen/MRTK-vNext.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

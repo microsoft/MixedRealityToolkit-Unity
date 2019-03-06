@@ -1,0 +1,884 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class GenericPointer
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class GenericPointer
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer" class="text-break">Class GenericPointer
+  </h1>
+  <div class="markdown level0 summary"><p>Base Class for pointers that don't inherit from MonoBehaviour.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">GenericPointer</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Providers.html">Microsoft.MixedReality.Toolkit.Core.Providers</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class GenericPointer : IMixedRealityPointer</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer__ctor_System_String_IMixedRealityInputSource_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.#ctor(System.String,IMixedRealityInputSource)">GenericPointer(String, IMixedRealityInputSource)</h4>
+  <div class="markdown level1 summary"><p>Constructor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">pointerName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IMixedRealityInputSource</span></td>
+        <td><span class="parametername">inputSourceParent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_BaseCursor_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.BaseCursor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_BaseCursor" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.BaseCursor">BaseCursor</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMixedRealityCursor BaseCursor { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityCursor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_Controller_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.Controller*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_Controller" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.Controller">Controller</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IMixedRealityController Controller { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityController</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_CursorModifier_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.CursorModifier*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_CursorModifier" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.CursorModifier">CursorModifier</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ICursorModifier CursorModifier { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ICursorModifier</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_FocusTarget_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.FocusTarget*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_FocusTarget" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.FocusTarget">FocusTarget</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMixedRealityFocusHandler FocusTarget { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityFocusHandler</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_InputSourceParent_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.InputSourceParent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_InputSourceParent" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.InputSourceParent">InputSourceParent</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IMixedRealityInputSource InputSourceParent { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityInputSource</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_IsFocusLocked_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.IsFocusLocked*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_IsFocusLocked" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.IsFocusLocked">IsFocusLocked</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsFocusLocked { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_IsInteractionEnabled_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.IsInteractionEnabled*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_IsInteractionEnabled" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.IsInteractionEnabled">IsInteractionEnabled</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsInteractionEnabled { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_PointerExtent_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.PointerExtent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_PointerExtent" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.PointerExtent">PointerExtent</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual float PointerExtent { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_PointerId_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.PointerId*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_PointerId" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.PointerId">PointerId</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint PointerId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_PointerName_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.PointerName*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_PointerName" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.PointerName">PointerName</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string PointerName { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_PointerOrientation_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.PointerOrientation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_PointerOrientation" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.PointerOrientation">PointerOrientation</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float PointerOrientation { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_PrioritizedLayerMasksOverride_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.PrioritizedLayerMasksOverride*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_PrioritizedLayerMasksOverride" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.PrioritizedLayerMasksOverride">PrioritizedLayerMasksOverride</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LayerMask[] PrioritizedLayerMasksOverride { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">LayerMask</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_RaycastMode_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.RaycastMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_RaycastMode" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.RaycastMode">RaycastMode</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RaycastMode RaycastMode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">RaycastMode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_Rays_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.Rays*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_Rays" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.Rays">Rays</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RayStep[] Rays { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">RayStep</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_RayStabilizer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.RayStabilizer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_RayStabilizer" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.RayStabilizer">RayStabilizer</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBaseRayStabilizer RayStabilizer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IBaseRayStabilizer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_Result_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.Result*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_Result" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.Result">Result</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IPointerResult Result { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IPointerResult</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_SphereCastRadius_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.SphereCastRadius*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_SphereCastRadius" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.SphereCastRadius">SphereCastRadius</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float SphereCastRadius { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_TeleportHotSpot_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.TeleportHotSpot*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_TeleportHotSpot" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.TeleportHotSpot">TeleportHotSpot</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityTeleportHotSpot</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_Equals_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.Equals*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_Equals_IMixedRealityPointer_IMixedRealityPointer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.Equals(IMixedRealityPointer,IMixedRealityPointer)">Equals(IMixedRealityPointer, IMixedRealityPointer)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityPointer</span></td>
+        <td><span class="parametername">left</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IMixedRealityPointer</span></td>
+        <td><span class="parametername">right</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_Equals_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.Equals*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_Equals_System_Object_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_GetHashCode_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.GetHashCode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_GetHashCode" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_OnPostRaycast_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.OnPostRaycast*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_OnPostRaycast" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.OnPostRaycast">OnPostRaycast()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnPostRaycast()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_OnPreRaycast_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.OnPreRaycast*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_OnPreRaycast" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.OnPreRaycast">OnPreRaycast()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnPreRaycast()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_TryGetPointerPosition_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.TryGetPointerPosition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_TryGetPointerPosition_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.TryGetPointerPosition(Vector3@)">TryGetPointerPosition(out Vector3)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool TryGetPointerPosition(out Vector3 position)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_TryGetPointerRotation_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.TryGetPointerRotation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_TryGetPointerRotation_Quaternion__" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.TryGetPointerRotation(Quaternion@)">TryGetPointerRotation(out Quaternion)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool TryGetPointerRotation(out Quaternion rotation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_TryGetPointingRay_" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.TryGetPointingRay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Providers_GenericPointer_TryGetPointingRay_Ray__" data-uid="Microsoft.MixedReality.Toolkit.Core.Providers.GenericPointer.TryGetPointingRay(Ray@)">TryGetPointingRay(out Ray)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool TryGetPointingRay(out Ray pointingRay)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Ray</span></td>
+        <td><span class="parametername">pointingRay</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

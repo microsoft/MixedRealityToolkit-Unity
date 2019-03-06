@@ -1,0 +1,516 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>IMixedRealitySpatialAwarenessSystem Interface | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="IMixedRealitySpatialAwarenessSystem Interface | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="../../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="imixedrealityspatialawarenesssystem-interface">IMixedRealitySpatialAwarenessSystem Interface</h1>
+
+<table>
+<thead>
+<tr>
+<th>Toolkit Layer</th>
+<th>Namespace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core</td>
+<td>Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem</td>
+</tr>
+</tbody>
+</table>
+<p>The IMixedRealitySpatialAwarenessSystem is the interface that defines the requirements of the spatial awareness system. The interface is divided, logically into multiple sections. As new functionality is added, the appropriate settings section is to be defined.</p>
+<img src="../../../External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialAwarenessSystem.png">
+<h2 id="general-system-controls">General System Controls</h2>
+<p>The spatial awareness system contains data and methods that configure and control the overall spatial awareness system.</p>
+<h3 id="startupbehavior">StartupBehavior</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AutoStartBehavior</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets a value that indicates that the developer intends for the spatial observer to start automatically or wait until explicitly resumed. This allows the application to decide precisely when it wishes to begin receiving spatial data notifications.</p>
+<h3 id="observationextents">ObservationExtents</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vector3</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the size of the volume from which individual observations will be made. This is not the total size of the observable space.</p>
+<h3 id="updateinterval">UpdateInterval</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>float</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the frequency, in seconds, at which the spatial observer updates.</p>
+<h3 id="isobserverrunning">IsObserverRunning</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<p>Indicates the current running state of the spatial observer.</p>
+<p><em>This is a read-only property, set by the spatial awareness system.</em></p>
+<h3 id="void-resumeobserver">void ResumeObserver()</h3>
+<p>Starts / restarts the spatial observer. This will cause spatial observation events (ex: MeshAddedEvent) to resume being sent.</p>
+<h3 id="void-suspendobserver">void SuspendObserver()</h3>
+<p>Stops / pauses the spatial observer. This will cause spatial observation events to be suspended until ResumeObserver is called.</p>
+<h2 id="mesh-handling-controls">Mesh Handling Controls</h2>
+<p>The mesh handling section contains the data and methods that configure and control the representation of data as a collection of meshes.</p>
+<p>For platforms that do not natively support returning observation data as a mesh, implementations can optionally process the native data before providing it to the caller.</p>
+<h3 id="use-mesh-system">Use Mesh System</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets a value that indicates if the spatial mesh subsystem is in use by the application. Turning this off will suspend all mesh events and cause the subsystem to return an empty collection when the GetMeshes method is called.</p>
+<h3 id="meshphysicslayer">MeshPhysicsLayer</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int</td>
+</tr>
+</tbody>
+</table>
+<p>Get or sets the desired Unity Physics Layer on which to set the spatial mesh.</p>
+<h3 id="meshphysicslayermask">MeshPhysicsLayerMask</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int</td>
+</tr>
+</tbody>
+</table>
+<p>Gets the bit mask that corresponds to the value specified in MeshPhysicsLayer.</p>
+<p><em>This is a read-only property set by the spatial awareness system.</em></p>
+<h3 id="meshlevelofdetail">MeshLevelOfDetail</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="SpatialAwarenessMeshLevelOfDetail.html">SpatialAwarenessMeshLevelOfDetail</a></td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the level of detail for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter.</p>
+<p>Specifying any other value will cause MeshTrianglesPerCubicMeter to be overwritten.</p>
+<h3 id="meshtrianglespercubicmeter">MeshTrianglesPerCubicMeter</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the level of detail, in triangles per cubic meter, for the returned spatial mesh.</p>
+<p>When specifying Coarse or Fine for the MeshLevelOfDetail, this value will be automatically overwritten.</p>
+<h3 id="meshrecalculatenormals">MeshRecalculateNormals</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the value indicating if the spatial awareness system to generate normal for the returned meshes as some platforms may not support returning normal along with the spatial mesh.</p>
+<h3 id="meshdisplayoption">MeshDisplayOption</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="SpatialAwarenessMeshDisplayOptions.html">SpatialMeshDisplayOptions</a></td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets a value indicating how the mesh subsystem is to display surface meshes within the application.</p>
+<p>Applications that wish to process the Meshes should set this value to None.</p>
+<h3 id="meshvisiblematerial">MeshVisibleMaterial</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Material</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the material to be used when displaying spatial meshes.</p>
+<h3 id="meshocclusionmaterial">MeshOcclusionMaterial</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Material</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the material to be used when spatial meshes should occlude other object.</p>
+<h3 id="idictionaryuint-gameobject-getmeshes">IDictionary&lt;uint, GameObject&gt; GetMeshes()</h3>
+<p>Returns the collection of GameObjects being managed by the spatial awareness mesh subsystem.</p>
+<h2 id="surface-finding-controls">Surface Finding Controls</h2>
+<p>The surface finding section contains the data and methods that configure and control the representation of data as a collection of planar surfaces.</p>
+<h3 id="usesurfacefindingsystem">UseSurfaceFindingSystem</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<p>Indicates if the surface finding subsystem is in use by the application. Turning this off will suspend all surface events.</p>
+<h3 id="surfacephysicslayer">SurfacePhysicsLayer</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int</td>
+</tr>
+</tbody>
+</table>
+<p>Get or sets the desired Unity Physics Layer on which to set spatial surfaces.</p>
+<h3 id="surfacephysicslayermask">SurfacePhysicsLayerMask</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int</td>
+</tr>
+</tbody>
+</table>
+<p>Gets the bit mask that corresponds to the value specified in SurfacePhysicsLayer.</p>
+<p><em>This is a read-only property set by the spatial awareness system.</em></p>
+<h3 id="surfacefindingminimumarea">SurfaceFindingMinimumArea</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>float</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the minimum surface area, in square meters, that must be satisfied before a surface is identified.</p>
+<h3 id="displayfloorsurfaces">DisplayFloorSurfaces</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets a value indicating if the surface subsystem is to automatically display floor surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured FloorSurfaceMaterial.</p>
+<h3 id="floorsurfacematerial">FloorSurfaceMaterial</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Material</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the material to be used when displaying planar surface(s) identified as a floor.</p>
+<h3 id="displayceilingsurfaces">DisplayCeilingSurfaces</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets a value indicating if the surface subsystem is to automatically display ceiling surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured CeilingSurfaceMaterial.</p>
+<h3 id="ceilingsurfacematerial">CeilingSurfaceMaterial</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Material</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the material to be used when displaying planar surface(s) identified as a ceiling.</p>
+<h3 id="displaywallsurfaces">DisplayWallSurfaces</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets a value indicating if the surface subsystem is to automatically display wall surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured WallSurfaceMaterial.</p>
+<h3 id="wallsurfacematerial">WallSurfaceMaterial</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Material</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the material to be used when displaying planar surface(s) identified as a wall.</p>
+<h3 id="displayplatformsurfaces">DisplayPlatformSurfaces</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets a value indicating if the surface subsystem is to automatically display raised horizontal platform surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured PlatformSurfaceMaterial.</p>
+<h3 id="platformsurfacematerial">PlatformSurfaceMaterial</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Material</td>
+</tr>
+</tbody>
+</table>
+<p>Gets or sets the material to be used when displaying planar surface(s) identified as a raised horizontal platform.</p>
+<h3 id="idictionaryint-gameobject-getsurfaceobjects">IDictionary&lt;int, GameObject&gt; GetSurfaceObjects()</h3>
+<p>Returns the collection of GameObjects managed by the surface finding subsystem.</p>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="SpatialAwarenessSystemArchitecture.html">Mixed Reality Spatial Awareness System Architecture</a></li>
+<li><a href="MixedRealitySpatialAwarenessSystem.html">MixedRealitySpatialAwarenessSystem Class</a></li>
+<li><a href="IMixedRealitySpatialAwarenessMeshHandler.html">IMixedRealitySpatialAwarenessMeshHandler Interface</a></li>
+<li><a href="IMixedRealitySpatialAwarenessSurfaceFindingHandler.html">IMixedRealitySpatialAwarenessSurfaceFindingHandler Interface</a></li>
+<li><a href="SpatialAwarenessMeshDisplayOptions.html">SpatialAwarenessMeshDisplayOptions Enumeration</a></li>
+<li><a href="SpatialAwarenessMeshLevelOfDetail.html">SpatialAwarenessMeshLevelOfDetail Enumeration</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/thalbern/MixedRealityToolkit-Unity/blob/feature/docfx_gen/Documentation/Architecture/SpatialAwareness/IMixedRealitySpatialAwarenessSystem.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

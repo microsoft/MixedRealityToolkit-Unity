@@ -1,0 +1,1323 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MixedRealityToolkit
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MixedRealityToolkit
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit" class="text-break">Class MixedRealityToolkit
+  </h1>
+  <div class="markdown level0 summary"><p>This class is responsible for coordinating the operation of the Mixed Reality Toolkit. It is the only Singleton in the entire project.
+It provides a service registry for all active services that are used within a project as well as providing the active configuration profile for the project.
+The Profile can be swapped out at any time to meet the needs of your project.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">MixedRealityToolkit</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.html">Microsoft.MixedReality.Toolkit.Core.Services</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class MixedRealityToolkit : MonoBehaviour</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_ActiveProfile_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.ActiveProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_ActiveProfile" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.ActiveProfile">ActiveProfile</h4>
+  <div class="markdown level1 summary"><p>The public property of the Active Profile, ensuring events are raised on the change of the configuration</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MixedRealityToolkitConfigurationProfile ActiveProfile { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityToolkitConfigurationProfile</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_ActiveSystems_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.ActiveSystems*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_ActiveSystems" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.ActiveSystems">ActiveSystems</h4>
+  <div class="markdown level1 summary"><p>Current active systems registered with the MixedRealityToolkit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IReadOnlyDictionary&lt;Type, IMixedRealityService&gt; ActiveSystems { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <span class="xref">IMixedRealityService</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_ActiveSystems_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Systems can only be registered once by <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_BoundarySystem_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.BoundarySystem*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_BoundarySystem" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.BoundarySystem">BoundarySystem</h4>
+  <div class="markdown level1 summary"><p>The current Boundary System registered with the Mixed Reality Toolkit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IMixedRealityBoundarySystem BoundarySystem { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityBoundarySystem</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_DiagnosticsSystem_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.DiagnosticsSystem*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_DiagnosticsSystem" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.DiagnosticsSystem">DiagnosticsSystem</h4>
+  <div class="markdown level1 summary"><p>The current Diagnostics System registered with the Mixed Reality Toolkit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IMixedRealityDiagnosticsSystem DiagnosticsSystem { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityDiagnosticsSystem</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_HasActiveProfile_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.HasActiveProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_HasActiveProfile" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.HasActiveProfile">HasActiveProfile</h4>
+  <div class="markdown level1 summary"><p>Checks if there is a valid instance of the MixedRealityToolkit, then checks if there is there a valid Active Profile.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool HasActiveProfile { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_InputSystem_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.InputSystem*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_InputSystem" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.InputSystem">InputSystem</h4>
+  <div class="markdown level1 summary"><p>The current Input System registered with the Mixed Reality Toolkit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IMixedRealityInputSystem InputSystem { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityInputSystem</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_Instance_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.Instance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_Instance" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.Instance">Instance</h4>
+  <div class="markdown level1 summary"><p>Returns the Singleton instance of the classes type.
+If no instance is found, then we search for an instance in the scene.
+If more than one instance is found, we log an error and no instance is returned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MixedRealityToolkit Instance { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.html">MixedRealityToolkit</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_IsInitialized_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.IsInitialized*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_IsInitialized" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.IsInitialized">IsInitialized</h4>
+  <div class="markdown level1 summary"><p>Returns whether the instance has been initialized or not.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsInitialized { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_MixedRealityComponents_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.MixedRealityComponents*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_MixedRealityComponents" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.MixedRealityComponents">MixedRealityComponents</h4>
+  <div class="markdown level1 summary"><p>Local service registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="!:IMixedRealityService"></see>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use RegisteredMixedRealityServices instead.&quot;)]
+public List&lt;Tuple&lt;Type, IMixedRealityExtensionService&gt;&gt; MixedRealityComponents { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.tuple-2">Tuple</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <span class="xref">IMixedRealityExtensionService</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_MixedRealityPlayspace_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.MixedRealityPlayspace*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_MixedRealityPlayspace" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.MixedRealityPlayspace">MixedRealityPlayspace</h4>
+  <div class="markdown level1 summary"><p>Returns the MixedRealityPlayspace for the local player</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transform MixedRealityPlayspace { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_RegisteredMixedRealityServices_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.RegisteredMixedRealityServices*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_RegisteredMixedRealityServices" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.RegisteredMixedRealityServices">RegisteredMixedRealityServices</h4>
+  <div class="markdown level1 summary"><p>Local service registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="!:IMixedRealityService"></see>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IReadOnlyList&lt;Tuple&lt;Type, IMixedRealityService&gt;&gt; RegisteredMixedRealityServices { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.tuple-2">Tuple</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <span class="xref">IMixedRealityService</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_SpatialAwarenessSystem_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.SpatialAwarenessSystem*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_SpatialAwarenessSystem" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.SpatialAwarenessSystem">SpatialAwarenessSystem</h4>
+  <div class="markdown level1 summary"><p>The current Spatial Awareness System registered with the Mixed Reality Toolkit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealitySpatialAwarenessSystem</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_TeleportSystem_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.TeleportSystem*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_TeleportSystem" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.TeleportSystem">TeleportSystem</h4>
+  <div class="markdown level1 summary"><p>The current Teleport System registered with the Mixed Reality Toolkit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IMixedRealityTeleportSystem TeleportSystem { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityTeleportSystem</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_AssertIsInitialized_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.AssertIsInitialized*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_AssertIsInitialized" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.AssertIsInitialized">AssertIsInitialized()</h4>
+  <div class="markdown level1 summary"><p>Expose an assertion whether the MixedRealityToolkit class is initialized.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AssertIsInitialized()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_ConfirmInitialized_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.ConfirmInitialized*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_ConfirmInitialized" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.ConfirmInitialized">ConfirmInitialized()</h4>
+  <div class="markdown level1 summary"><p>Static function to determine if the MixedRealityToolkit class has been initialized or not.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool ConfirmInitialized()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_DisableAllServicesByType_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.DisableAllServicesByType*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_DisableAllServicesByType_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.DisableAllServicesByType(System.Type)">DisableAllServicesByType(Type)</h4>
+  <div class="markdown level1 summary"><p>Disable all services in the Mixed Reality Toolkit active service registry for a given type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DisableAllServicesByType(Type interfaceType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_DisableAllServicesByTypeAndName_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.DisableAllServicesByTypeAndName*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_DisableAllServicesByTypeAndName_System_Type_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.DisableAllServicesByTypeAndName(System.Type,System.String)">DisableAllServicesByTypeAndName(Type, String)</h4>
+  <div class="markdown level1 summary"><p>Disable all services in the Mixed Reality Toolkit active service registry for a given type and name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DisableAllServicesByTypeAndName(Type interfaceType, string serviceName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The interface type for the system to be disabled.  E.G. InputSystem, BoundarySystem</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">serviceName</span></td>
+        <td><p>Name of the specific service</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_DisableService_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.DisableService*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_DisableService_System_Type_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.DisableService(System.Type,System.String)">DisableService(Type, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use DisableAllServicesByType instead.&quot;)]
+public void DisableService(Type interfaceType, string serviceName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">serviceName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_EnableAllServicesByType_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.EnableAllServicesByType*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_EnableAllServicesByType_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.EnableAllServicesByType(System.Type)">EnableAllServicesByType(Type)</h4>
+  <div class="markdown level1 summary"><p>Enable all services in the Mixed Reality Toolkit active service registry for a given type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void EnableAllServicesByType(Type interfaceType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The interface type for the system to be enabled.  E.G. InputSystem, BoundarySystem</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_EnableAllServicesByTypeAndName_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.EnableAllServicesByTypeAndName*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_EnableAllServicesByTypeAndName_System_Type_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.EnableAllServicesByTypeAndName(System.Type,System.String)">EnableAllServicesByTypeAndName(Type, String)</h4>
+  <div class="markdown level1 summary"><p>Enable all services in the Mixed Reality Toolkit active service registry for a given type and name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void EnableAllServicesByTypeAndName(Type interfaceType, string serviceName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The interface type for the system to be enabled.  E.G. InputSystem, BoundarySystem</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">serviceName</span></td>
+        <td><p>Name of the specific service</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_EnableService_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.EnableService*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_EnableService_System_Type_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.EnableService(System.Type,System.String)">EnableService(Type, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use EnableAllServicesByType instead.&quot;)]
+public void EnableService(Type interfaceType, string serviceName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">serviceName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_GetActiveServices_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.GetActiveServices*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_GetActiveServices_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.GetActiveServices(System.Type)">GetActiveServices(Type)</h4>
+  <div class="markdown level1 summary"><p>Retrieve all services from the Mixed Reality Toolkit active service registry for a given type and an optional name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;IMixedRealityService&gt; GetActiveServices(Type interfaceType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<span class="xref">IMixedRealityService</span>&gt;</td>
+        <td><p>An array of services that meet the search criteria</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_GetActiveServices_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.GetActiveServices*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_GetActiveServices_System_Type_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.GetActiveServices(System.Type,System.String)">GetActiveServices(Type, String)</h4>
+  <div class="markdown level1 summary"><p>Retrieve all services from the Mixed Reality Toolkit active service registry for a given type and name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;IMixedRealityService&gt; GetActiveServices(Type interfaceType, string serviceName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">serviceName</span></td>
+        <td><p>Name of the specific service</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<span class="xref">IMixedRealityService</span>&gt;</td>
+        <td><p>An array of services that meet the search criteria</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_GetService_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.GetService*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_GetService_System_Type_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.GetService(System.Type,System.Boolean)">GetService(Type, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Retrieve a service from the Mixed Reality Toolkit active service registry</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMixedRealityService GetService(Type interfaceType, bool showLogs = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">showLogs</span></td>
+        <td><p>Should the logs show when services cannot be found?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityService</span></td>
+        <td><p>The Mixed Reality Toolkit of the specified type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_GetService_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.GetService*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_GetService_System_Type_System_String_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.GetService(System.Type,System.String,System.Boolean)">GetService(Type, String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Retrieve a service from the Mixed Reality Toolkit active service registry</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMixedRealityService GetService(Type interfaceType, string serviceName, bool showLogs = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">serviceName</span></td>
+        <td><p>Name of the specific service</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">showLogs</span></td>
+        <td><p>Should the logs show when services cannot be found?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityService</span></td>
+        <td><p>The Mixed Reality Toolkit of the specified type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_GetService_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.GetService*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_GetService__1_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.GetService``1(System.Boolean)">GetService&lt;T&gt;(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Generic function used to retrieve a service from the Mixed Reality Toolkit active service registry</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T GetService&lt;T&gt;(bool showLogs = true)
+    where T : IMixedRealityService</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">showLogs</span></td>
+        <td><p>Should the logs show when services cannot be found?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The instance of the service class that is registered with the selected Interface</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem.
+*Note type should be the Interface of the system to be retrieved and not the class itself</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_IsServiceRegistered_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.IsServiceRegistered*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_IsServiceRegistered__1" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.IsServiceRegistered``1">IsServiceRegistered&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Generic function used to interrogate the Mixed Reality Toolkit registered services registry for the existence of a service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsServiceRegistered&lt;T&gt;()
+    where T : class</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True, there is a service registered with the selected interface, False, no service found for that interface</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The interface type for the service to be retrieved.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_IsServiceRegistered__1_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note: type should be the Interface of the system to be retrieved and not the concrete class itself.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_IsSystemRegistered_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.IsSystemRegistered*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_IsSystemRegistered__1" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.IsSystemRegistered``1">IsSystemRegistered&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSystemRegistered&lt;T&gt;()
+    where T : class</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True, there is a system registered with the selected interface, False, no system found for that interface</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_IsSystemRegistered__1_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note: type should be the Interface of the system to be retrieved and not the concrete class itself.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_RegisterService_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.RegisterService*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_RegisterService_System_Type_IMixedRealityService_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.RegisterService(System.Type,IMixedRealityService)">RegisterService(Type, IMixedRealityService)</h4>
+  <div class="markdown level1 summary"><p>Add a new service to the Mixed Reality Toolkit active service registry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RegisterService(Type interfaceType, IMixedRealityService serviceInstance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The interface type for the system to be registered.  E.G. InputSystem, BoundarySystem</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IMixedRealityService</span></td>
+        <td><span class="parametername">serviceInstance</span></td>
+        <td><p>The Instance of the service class to register</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_RegisterService_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.RegisterService*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_RegisterService__1_System_Type_SupportedPlatforms_System_Object___" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.RegisterService``1(System.Type,SupportedPlatforms,System.Object[])">RegisterService&lt;T&gt;(Type, SupportedPlatforms, Object[])</h4>
+  <div class="markdown level1 summary"><p>Create and register a new service to the Mixed Reality Toolkit service registry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RegisterService&lt;T&gt;(Type interfaceType, SupportedPlatforms supportedPlatforms = null, params object[] args)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The concrete type to instantiate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">SupportedPlatforms</span></td>
+        <td><span class="parametername">supportedPlatforms</span></td>
+        <td><p>The runtime platform to check against when registering.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>[]</td>
+        <td><span class="parametername">args</span></td>
+        <td><p>Optional arguments used when instantiating the concrete type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True, if the service was successfully registered.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The interface type for the system to be registered.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_ResetConfiguration_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.ResetConfiguration*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_ResetConfiguration_MixedRealityToolkitConfigurationProfile_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.ResetConfiguration(MixedRealityToolkitConfigurationProfile)">ResetConfiguration(MixedRealityToolkitConfigurationProfile)</h4>
+  <div class="markdown level1 summary"><p>When a configuration Profile is replaced with a new configuration, force all services to reset and read the new values</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetConfiguration(MixedRealityToolkitConfigurationProfile profile)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityToolkitConfigurationProfile</span></td>
+        <td><span class="parametername">profile</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_UnregisterService_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.UnregisterService*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_UnregisterService_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.UnregisterService(System.Type)">UnregisterService(Type)</h4>
+  <div class="markdown level1 summary"><p>Remove all services from the Mixed Reality Toolkit active service registry for a given type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UnregisterService(Type interfaceType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_UnregisterService_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.UnregisterService*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_MixedRealityToolkit_UnregisterService_System_Type_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.UnregisterService(System.Type,System.String)">UnregisterService(Type, String)</h4>
+  <div class="markdown level1 summary"><p>Remove services from the Mixed Reality Toolkit active service registry for a given type and name
+Name is only supported for Mixed Reality runtime services</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool UnregisterService(Type interfaceType, string serviceName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interfaceType</span></td>
+        <td><p>The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">serviceName</span></td>
+        <td><p>The name of the service to be removed. (Only for runtime services)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

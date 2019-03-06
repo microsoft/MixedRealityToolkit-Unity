@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Roadmap | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Roadmap | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="Documentation/toc.html">
+    
+    <meta property="docfx:rel" content="">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="roadmap">Roadmap</h1>
+
+<p>This document outlines the roadmap of the Mixed Reality Toolkit.</p>
+<h1 id="current-release">Current Release</h1>
+<p><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v2.0.0-Beta2">Microsoft Mixed Reality Toolkit v2.0.0 Beta 2</a></p>
+<h1 id="upcoming-releases">Upcoming Releases</h1>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Description</th>
+<th>Timeline</th>
+<th>Project board</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MRTK V2 RC 1</td>
+<td>Add HoloLens 2 support. API/contract complete. No more breaking changes after this</td>
+<td>March 2019</td>
+<td></td>
+</tr>
+<tr>
+<td>MRTK V2 RC 2</td>
+<td>UX update and polish to better support HoloLens 2 interactions.</td>
+<td>May 2019</td>
+<td></td>
+</tr>
+<tr>
+<td>MRTK V2 Release</td>
+<td>First release of MRTK V2 that supports HoloLens 1, HoloLens 2, WMR, OpenVR</td>
+<td>July 2018</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Release details, including backlog items, can be found on the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/projects">GitHub project pages</a>.</p>
+<h1 id="mixed-reality-toolkit-mrtk-roadmap">Mixed Reality Toolkit (MRTK) Roadmap</h1>
+<p>The Mixed Reality Toolkit (also known as &quot;vNext&quot;) is an all-new product, built to be cross MR/AR/VR/XR platform by design. There are two planned pre-releases after which the Mixed Reality Toolkit will become the primary product.</p>
+<p>The Mixed Reality Toolkit will require Unity 2018.3.</p>
+<blockquote>
+<p>When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will branch (ex: mrtk_2018_LTS) and require an LTS release. This branch will be targeted at developers who wish to have the most stable MRTK on which to build. It is expected that the branched Mixed Reality Toolkit will receive bug fixes and no new features. The mrtk_development branch will update to the next Unity Tech release (ex: 2019.1) and <strong>may</strong> drop backward compatibility.</p>
+</blockquote>
+<h2 id="new-architecture">New Architecture</h2>
+<p>The MRTK is being rewritten to be cross AR/VR/MR/XR platform and to be more modular. The core layer will contain the interfaces and definitions required to build manager components (ex: input manager) as well as the abstractions needed to support multiple platforms. The SDK layer is where pre-built / reusable components will be delivered. The SDK will be further modularized to make it simple to opt-in to specific functionality (ex: UX controls).</p>
+<h1 id="release-plans">Release Plans</h1>
+<h2 id="alpha---released">Alpha - Released</h2>
+<p>The Mixed Reality Toolkit (MRTK) Alpha, released in late July 2018 is being released as a single package (core, sdk and examples) as the team introduces the new architecture. This release does <strong>not</strong> contain all of the features and functionality of the HoloToolkit releases.</p>
+<p>The theme(s) for the Alpha release are</p>
+<ul>
+<li>Minimum Viable Product
+<ul>
+<li>New architecture</li>
+<li>VR Boundary support</li>
+<li>Input and Interactions</li>
+<li>Locomotion / Teleportation</li>
+<li>Standard shader</li>
+</ul>
+</li>
+</ul>
+<p>Supported platforms</p>
+<ul>
+<li>Windows Mixed Reality
+<ul>
+<li>Immersive Headsets</li>
+<li>Microsoft HoloLens</li>
+</ul>
+</li>
+<li>OpenVR</li>
+</ul>
+<h2 id="beta---released">Beta - Released</h2>
+<p>The MRTK Beta release will introduce initial support for modularization. It is also when the vast majority of HoloToolkit features will be added. Supported platforms will be unchanged from the Alpha release.</p>
+<blockquote>
+<p>It is important to note that the goal is feature parity and <strong>not</strong> zero app code change. There will be consolidation of duplicated functionality as well as namespace, component and API changes.</p>
+</blockquote>
+<p>The theme(s) for the Beta release are</p>
+<ul>
+<li>HoloToolkit feature parity
+<ul>
+<li>Not including the HoloLens-iOS Spectator View feature</li>
+</ul>
+</li>
+<li>Improved Core and SDK layer alignment
+<ul>
+<li>Components are expected to move to their &quot;final&quot; layer</li>
+</ul>
+</li>
+<li>Core and SDK feature packages
+<ul>
+<li>SDK features (ex: UX controls) will be in separate packages</li>
+</ul>
+</li>
+<li>Bug fixes</li>
+</ul>
+<p>Supported platforms</p>
+<ul>
+<li>Windows Mixed Reality
+<ul>
+<li>Immersive Headsets</li>
+<li>Microsoft HoloLens</li>
+</ul>
+</li>
+<li>OpenVR</li>
+</ul>
+<h2 id="beta-2---released">Beta 2 - Released</h2>
+<p>The September 2018 (2018.9.0.0) release marks the first official release of MRTK vNext and will support the same platforms as the Beta. With this release, the Mixed Reality Toolkit will replace the HoloToolkit, which will be transitioned into sustained engineering mode.</p>
+<p>The theme(s) for the 2018.9.0.0 release are</p>
+<ul>
+<li>Documentation</li>
+<li>Quality and Performance</li>
+</ul>
+<p>Supported platforms</p>
+<ul>
+<li>Windows Mixed Reality
+<ul>
+<li>Immersive Headsets</li>
+<li>Microsoft HoloLens</li>
+</ul>
+</li>
+<li>OpenVR</li>
+</ul>
+<h2 id="rc1---planned">RC1 - Planned</h2>
+<p>RC1 release is planned to be the first update to include HoloLens 2 capabilities</p>
+<p>The theme(s) for the release are</p>
+<ul>
+<li>HoloLens 2 support</li>
+<li>API contract complete</li>
+</ul>
+<p>Supported platforms</p>
+<ul>
+<li>Windows Mixed Reality
+<ul>
+<li>Immersive Headsets</li>
+<li>Microsoft HoloLens</li>
+<li>HoloLens 2</li>
+</ul>
+</li>
+<li>OpenVR</li>
+</ul>
+<h2 id="rc2---planned">RC2 - Planned</h2>
+<p>RC1 release is planned to add and polish features to support HoloLens 2 interactions with hands and eyes.</p>
+<p>The theme(s) for the release are</p>
+<ul>
+<li>UX Polish</li>
+<li>Performance</li>
+</ul>
+<p>Supported platforms</p>
+<ul>
+<li>Windows Mixed Reality
+<ul>
+<li>Immersive Headsets</li>
+<li>Microsoft HoloLens</li>
+<li>HoloLens 2</li>
+</ul>
+</li>
+<li>OpenVR</li>
+</ul>
+<h2 id="mrtk-v2-release---planned">MRTK V2 Release - Planned</h2>
+<p>First official release of MRTK V2 that includes HoloLens 2 support and addresses critical feedbacks from microsoft partners and community partners!</p>
+<p>The theme(s) for the release are</p>
+<ul>
+<li>Address feedback issues.</li>
+</ul>
+<p>Supported platforms</p>
+<ul>
+<li>Windows Mixed Reality
+<ul>
+<li>Immersive Headsets</li>
+<li>Microsoft HoloLens</li>
+<li>HoloLens 2</li>
+</ul>
+</li>
+<li>OpenVR</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/thalbern/MixedRealityToolkit-Unity/blob/feature/docfx_gen/Roadmap.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

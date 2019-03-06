@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Mixed Reality Toolkit &#8211; User SDK approach (High level) | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Mixed Reality Toolkit &#8211; User SDK approach (High level) | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="Documentation/toc.html">
+    
+    <meta property="docfx:rel" content="">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="mixed-reality-toolkit--user-sdk-approach-high-level">Mixed Reality Toolkit – User SDK approach <em>(High level)</em></h1>
+
+<h2 id="problem-statement">Problem Statement</h2>
+<p>Current examples / implementations are far too involved and require users to build new scripts / behaviours to build their project.  Users complain the project is too hard to pick up and the current examples are not conducive to implementation (only demonstration)</p>
+<h2 id="objective">Objective</h2>
+<p>To rearchitect the generic consumption of the Mixed Reality Toolkit to enable users to build scenes through easy to use “drag and drop” components.</p>
+<p>An example workflow should resemble:</p>
+<ul>
+<li>Consumer builds a 3D scene</li>
+<li>MRTK is added to the project</li>
+<li>Add a simple way to define walkable areas (Either through locomotion, free teleportation or restricted teleportation)</li>
+<li>Enable selecting of an object in a scene and configuring it for interaction (pickup, push, throw, etc)</li>
+<li>Enable animation interactions, e.g. opening doors</li>
+<li>Enable passive interactions, interacting one object with another that is in control by the player</li>
+<li>Quickly add Speech / Gesture / Focus / Controller services</li>
+</ul>
+<p>(purely a working set, needs refining)</p>
+<p>The ultimate goal is to deliver new users (and existing) with a rapid way to build projects / scenes, trying to cover the 80/20 rule.
+The simple promise for users building with these controls, is that they should always work, regardless of our plans under the hood for MRTK and preserve the projects they build. </p>
+<h2 id="high-level-required-components">High Level required components</h2>
+<p>In transforming the frontend of the MRTK for consumers to construct their projects / scenes with, we need to define and develop a simple set of prefabs / scripts / Editor options to quickly and easily add MRTK activities / behaviors to a 3D scene (or virtual scene in the case of HoloLens)
+These can be categorized as:</p>
+<h3 id="scene-elements">Scene elements</h3>
+<p>Scene elements relate to management style components / configuration to activate core components for the MRTK.  Current elements would include:</p>
+<ul>
+<li>Camera (current MRCP)</li>
+<li>Managers (focus / gaze / controllers / motion controllers / etc)</li>
+<li>Controllers (scene object collections, interactions)</li>
+</ul>
+<h3 id="interaction-controls">Interaction controls</h3>
+<p>Controls from how the user moves and interacts in the scene, ranging from:</p>
+<ul>
+<li>Locomotion / Teleportation control</li>
+<li>Locomotion / Teleportation boundaries / targets</li>
+<li>Speech commands</li>
+<li>Gestures</li>
+<li>Pointers / Hands</li>
+</ul>
+<h3 id="reaction-controls">Reaction Controls</h3>
+<p>These components relate to things the user will interact with in a scene, enabling the player to affect the scene, ranging from:</p>
+<ul>
+<li>Grabbing</li>
+<li>Pushing</li>
+<li>Opening</li>
+<li>Pointer targets</li>
+<li>Buttons / UX</li>
+<li>Hot Zones (reaction-based events from either the player or an interaction control collision)</li>
+<li>Highlighting</li>
+</ul>
+<h3 id="ux-systems">UX Systems</h3>
+<p>In any project the user will need a friendly UX system to assist in their scenes, for example:</p>
+<ul>
+<li>Menu Systems (Grid / Radial)</li>
+<li>Layout components (Grid / Radial / Curved / Layered)</li>
+<li>Controller systems (menu overlays for hands / controllers)</li>
+<li>Tooltips</li>
+<li>Fade Assist</li>
+</ul>
+<blockquote>
+<p><strong>This is not an extensive list and subject to debate.</strong></p>
+</blockquote>
+<h2 id="initial-plans">Initial Plans</h2>
+<p>The proposal is to build a small subset of controls that utilize the current functionality of the MRTK, applying the above objectives and principles to define some of the high-Level components.</p>
+<p>An initial scene which should support both HL &amp; Immersive (subject to discussion, separate may be easier for now), should walk a user in a common room style scenario.</p>
+<p>The example (lending from the Cliffhouse setup) should display a simple room, with hot spot teleport zones and activities that can be performed at each location, something akin to Rick and Morty VR or Job Simulator:</p>
+<p><img src="External/ReadMeImages/MRTK-SDK-Example1.jpg" alt=""><img src="External/ReadMeImages/MRTK-SDK-Example2.jpg" alt=""></p>
+<div style="text-align:center"> Figure 1 : Reference examples (Rick and Morty / Job Simulator) </div>
+<p>The example should include a walk-through example for building the scene in Unity that any consumer can follow, starting from the empty room populated with some simple elements, e.g.</p>
+<ul>
+<li>Buttons that show text on a wall – showing button interaction</li>
+<li>Mugs that you can pick up (stretch and empty liquid :P) – showing grabbing / dropping</li>
+<li>A puzzle where you slide tiles around a maze – showing pushing constrained objects around</li>
+</ul>
+<p>More examples can be added to the same room, building from a simple start.
+We ensure we build the components to meet these objectives and refine as necessary.  The example scene and starter components should then be added to the existing MRTK solution for testing / consumption whilst more are built.</p>
+<h2 id="work-in-progress">Work in progress</h2>
+<p>The team have been working on the initial SDK setup scene with the first components, aims to have (as a start):</p>
+<ul>
+<li>A starting workroom with defined workplaces</li>
+<li>An area to pick up and interact with objects</li>
+<li>An area to push objects around, possibly pick up</li>
+<li>An area with buttons and UX interactive elements</li>
+<li>A UX panel display area</li>
+</ul>
+<h3 id="current-working-scene">Current working scene</h3>
+<p><img src="External/ReadMeImages/MRTK-SDK-WIP1.png" alt=""></p>
+<div style="text-align:center"> Figure 2 : Work in progress example scene 1 </div> 
+<p>Elements being built in to the scene:</p>
+<ol>
+<li>Alcove for object to pick up, thinking a cube, cylinder, cup, picture frame</li>
+<li>A contained bin where balls will be dropped from *5 when buttons are pressed. Balls can be pushed around and possibly picked up and thrown</li>
+<li>Button table for push interaction UX items</li>
+<li>Display frame and information box area.  Should also have some switchable indicators</li>
+<li>Drop points for adding new spheres</li>
+</ol>
+<p>For HoloLens, the room would not be displayed, and objects should interact with the environment, e.g.</p>
+<ul>
+<li>Window or shelf for the Alcove (1)</li>
+<li>Table for buttons (3) with Display elements in 4 floating</li>
+<li>Elements dropped from (5) will just drop and interact with the Spatial Mesh</li>
+</ul>
+<h1 id="reference-example">Reference Example</h1>
+<p>VRTK are refactoring / rebuilding their new example scenes for their next release, which show an interesting path for example scenes:</p>
+<p><img src="External/ReadMeImages/MRTK-SDK-VRTKReference1.png" alt=""></p>
+<div style="text-align:center"> Figure 3 : Reference, VRTK new samples </div>
+<p>These do look cleaner and easier to digest, this doesn’t change how VRTK is currently implemented which is part of the work detailed here.
+But it is a great showcase for the quality level we should be aiming for which has started with Yoon’s updates to the examples.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/thalbern/MixedRealityToolkit-Unity/blob/feature/docfx_gen/MRTK-SDK.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

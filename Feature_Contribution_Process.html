@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Feature Contribution Process | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Feature Contribution Process | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="Documentation/toc.html">
+    
+    <meta property="docfx:rel" content="">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="feature-contribution-process">Feature Contribution Process</h1>
+
+<p>Adding features to the Mixed Reality Toolkit (MRTK) is split up into a few iteration steps, so maintainers can have time to review and and ensure the process goes smoothly. Please be sure to review the list of <a href="#new-feature-requirements">feature requirements</a> before you get started.</p>
+<h1 id="process">Process</h1>
+<p>The following process has been drafted to ensure all new work complies to the updated standards and architecture defined for the MRTK, this has been defined as:</p>
+<ol>
+<li><a href="#new-proposal">Open a new Proposal and related Tasks</a></li>
+<li><a href="#architecture-draft">Submit an Architecture Draft or Outline</a></li>
+<li><a href="#architecture-documentation">Review and finalize the Architecture documentation</a></li>
+<li><a href="#core-implementation">Submit a PR implementing the Core feature interfaces and event datum (if applicable)</a></li>
+<li><a href="#sdk-implementation">Submit a PR Implementing any required SDK components</a></li>
+<li><a href="#example-implementation">Submit a PR Implementing feature demos or full scale Examples</a></li>
+</ol>
+<h2 id="new-proposal">New Proposal</h2>
+<p>Start by opening a new Proposal or Task describing the feature or the problem you want to solve. Describe the approach and how it fits into the version of the Mixed Reality Toolkit you're targeting. This will enable everyone have a discussion about the proposal and, hopefully, identify some potential pitfalls before any work is started.</p>
+<p>New Proposals will be reviewed and discussed during our weekly ship room meetings and if a proposal is accepted, supplemental tasks will then be created and assigned.</p>
+<h2 id="architecture-draft">Architecture Draft</h2>
+<p>The first task once the initial proposal has been accepted, will be to draft the initial architecture document for the feature or work to be done. This document should typically be one or two pages long and include a high level overview of the feature and how it will relate to other parts of the Mixed Reality Toolkit.</p>
+<ul>
+<li>The draft must be easy to consume with key areas highlighted.</li>
+<li>The draft must include a list of the proposed core interfaces, configuration profiles, and event datum.</li>
+<li>The draft must include a simple graphic of the proposed architecture.</li>
+</ul>
+<p>Ensure that the architecture of the feature complies with the <a href="#new-feature-requirements">New Feature Requirements</a> set out by the Core MRTK architecture.</p>
+<blockquote>
+<p>TODO: Add link to architecture draft template</p>
+</blockquote>
+<p>Once the draft is completed, this can be appended to the Proposal / Task issue on GitHub for final public review.</p>
+<h2 id="architecture-documentation">Architecture Documentation</h2>
+<p>Once the draft architecture is accepted, additional pull requests can be made to submit the final full architecture documents to the repository.</p>
+<blockquote>
+<p>TODO: Add link to the full architecture template</p>
+</blockquote>
+<p>Once the architecture document is approved, only then can the first code submissions can be made.</p>
+<p>Development can begin in your own private branch and complete as normal, however, the PR's submitted back to the core MRTK project should be submitted in stages to ensure the review and approval is as smooth as it can be (and ensure core changes do not impact other features)</p>
+<h2 id="core-implementation">Core Implementation</h2>
+<p>The initial work that should be submitted, is to implement:</p>
+<ul>
+<li>Definitions</li>
+<li>Interfaces</li>
+<li>Configuration profiles</li>
+<li>Event data</li>
+</ul>
+<blockquote>
+<p>If needed, the architectural document can be updated to align with any changes to the implementation.</p>
+</blockquote>
+<p>Please ensure that all existing Unit Tests and any new tests are all passing prior to submission.</p>
+<h2 id="sdk-implementation">SDK Implementation</h2>
+<p>Once the core interfaces and events are merged in to development, work can then be submitted for the SDK components.  Adding the concrete implementation of the feature and testing against the supported platforms and unit tests.</p>
+<h2 id="example-implementation">Example Implementation</h2>
+<p>Once the SDK components are merged, then any demo scenes or updates to the example scenes can be submitted.</p>
+<ul>
+<li>Demos are for specific feature highlighting and demonstration</li>
+<li>Examples are full working scene learning examples</li>
+</ul>
+<h1 id="new-feature-requirements">New Feature Requirements</h1>
+<p>Most feature implementations can be broken down into 3 main parts:</p>
+<ol>
+<li><a href="#manager-implementation-requirements">The Feature Manager</a></li>
+<li><a href="#event-data-implementation-requirements">The Event Data</a> (Optional)</li>
+<li><a href="#handler-implementation-requirements">The Feature Handler</a> (Optional)</li>
+</ol>
+<h2 id="manager-implementation-requirements">Manager Implementation Requirements</h2>
+<ul>
+<li>Assembly Definitions for code outside of the <code>MixedRealityToolkit/_Core</code> folder.
+<ul>
+<li>This ensures features are self-contained and have no dependencies to other features.</li>
+<li>This only applies to <code>MixedRealityToolkit</code> folder.</li>
+</ul>
+</li>
+<li>Be defined using an interface found in <code>MixedRealityToolkit/_Core/definitions/&lt;FeatureName&gt;System</code>.</li>
+<li>A feature's concrete manager implementation should inherit directly from <code>BaseManager</code> or <code>MixedRealityEventManager</code> if they will raise events.</li>
+<li>A feature's concrete manager implementation should setup and verify scene is ready for that system to use in <code>Initialize</code>.</li>
+<li>A feature's concrete manager should also clean up after themselves removing anything created in the scene in <code>Destroy</code>.</li>
+<li>Be registered with the Mixed Reality Manager.
+<ul>
+<li>If the feature is a core feature, this should be hard coded into the <code>MixedRealityManager</code> and added to the <code>MixedRealityConfigurationProfile</code>.
+<ul>
+<li>This includes being able to specify a concrete implementation via dropdown using <code>SystemType</code>.</li>
+<li>Features should have a configuration profile that derives from a scriptable object.</li>
+<li>A default configuration profile located in <code>MixedRealityToolkit-SDK/Profiles</code> and be assigned in the default configuration profile for the Mixed Reality Manager</li>
+</ul>
+</li>
+<li>If this feature is <strong>not</strong> a core feature, then it must be registered using the component configuration profile and implement <code>IMixedRealityComponent</code>.</li>
+</ul>
+</li>
+<li>Have a default implementation located in <code>MixedRealityToolkit-SDK/Features/&lt;FeatureName&gt;</code></li>
+<li>Events that can be raised with the system should be defined in the interface, with all the required parameters for initializing the event data.</li>
+</ul>
+<h2 id="event-data-implementation-requirements">Event Data Implementation Requirements</h2>
+<p>The Event Data defines exactly what data the handler is expected to receive from the event.</p>
+<ul>
+<li>All Event Datum for the feature should be defined in <code>MixedRealityToolkit/_Core/EventDatum/&lt;FeatureName&gt;</code>.</li>
+<li>All new Event Data classes should inherit from <code>GenericBaseEventData</code></li>
+</ul>
+<h2 id="handler-implementation-requirements">Handler Implementation Requirements</h2>
+<p>The Handler Interface defines each event a component should be listening for and the types of data passed. End users will implement the interface to execute logic based on the event data received.</p>
+<ul>
+<li>Handler interfaces should be defined in <code>MixedRealityToolkit/_Core/Interfaces/&lt;FeatureName&gt;System/Handlers</code>.</li>
+<li>Handler interfaces should inherit from <code>UnityEngine.EventSystems.IEventSystemHandler</code></li>
+<li>Opt-in by default. To receive events from the system, the handler will need to register itself with the system to receive those events.</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/thalbern/MixedRealityToolkit-Unity/blob/feature/docfx_gen/Feature_Contribution_Process.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,615 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class InspectorField
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class InspectorField
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.11.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField" class="text-break">Class InspectorField
+  </h1>
+  <div class="markdown level0 summary"><p>A set of field/property tags used to define how a property should render in a custom inspector</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute">Attribute</a></div>
+    <div class="level2"><span class="xref">InspectorField</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.interopservices._attribute">_Attribute</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_MemberInfo_System_Type_">Attribute.GetCustomAttributes(MemberInfo, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_MemberInfo_System_Type_System_Boolean_">Attribute.GetCustomAttributes(MemberInfo, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_MemberInfo_">Attribute.GetCustomAttributes(MemberInfo)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_MemberInfo_System_Boolean_">Attribute.GetCustomAttributes(MemberInfo, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.isdefined#System_Attribute_IsDefined_System_Reflection_MemberInfo_System_Type_">Attribute.IsDefined(MemberInfo, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.isdefined#System_Attribute_IsDefined_System_Reflection_MemberInfo_System_Type_System_Boolean_">Attribute.IsDefined(MemberInfo, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattribute#System_Attribute_GetCustomAttribute_System_Reflection_MemberInfo_System_Type_">Attribute.GetCustomAttribute(MemberInfo, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattribute#System_Attribute_GetCustomAttribute_System_Reflection_MemberInfo_System_Type_System_Boolean_">Attribute.GetCustomAttribute(MemberInfo, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_ParameterInfo_">Attribute.GetCustomAttributes(ParameterInfo)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_ParameterInfo_System_Type_">Attribute.GetCustomAttributes(ParameterInfo, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_ParameterInfo_System_Type_System_Boolean_">Attribute.GetCustomAttributes(ParameterInfo, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_ParameterInfo_System_Boolean_">Attribute.GetCustomAttributes(ParameterInfo, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.isdefined#System_Attribute_IsDefined_System_Reflection_ParameterInfo_System_Type_">Attribute.IsDefined(ParameterInfo, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.isdefined#System_Attribute_IsDefined_System_Reflection_ParameterInfo_System_Type_System_Boolean_">Attribute.IsDefined(ParameterInfo, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattribute#System_Attribute_GetCustomAttribute_System_Reflection_ParameterInfo_System_Type_">Attribute.GetCustomAttribute(ParameterInfo, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattribute#System_Attribute_GetCustomAttribute_System_Reflection_ParameterInfo_System_Type_System_Boolean_">Attribute.GetCustomAttribute(ParameterInfo, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_Module_System_Type_">Attribute.GetCustomAttributes(Module, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_Module_">Attribute.GetCustomAttributes(Module)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_Module_System_Boolean_">Attribute.GetCustomAttributes(Module, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_Module_System_Type_System_Boolean_">Attribute.GetCustomAttributes(Module, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.isdefined#System_Attribute_IsDefined_System_Reflection_Module_System_Type_">Attribute.IsDefined(Module, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.isdefined#System_Attribute_IsDefined_System_Reflection_Module_System_Type_System_Boolean_">Attribute.IsDefined(Module, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattribute#System_Attribute_GetCustomAttribute_System_Reflection_Module_System_Type_">Attribute.GetCustomAttribute(Module, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattribute#System_Attribute_GetCustomAttribute_System_Reflection_Module_System_Type_System_Boolean_">Attribute.GetCustomAttribute(Module, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_Assembly_System_Type_">Attribute.GetCustomAttributes(Assembly, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_Assembly_System_Type_System_Boolean_">Attribute.GetCustomAttributes(Assembly, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_Assembly_">Attribute.GetCustomAttributes(Assembly)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattributes#System_Attribute_GetCustomAttributes_System_Reflection_Assembly_System_Boolean_">Attribute.GetCustomAttributes(Assembly, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.isdefined#System_Attribute_IsDefined_System_Reflection_Assembly_System_Type_">Attribute.IsDefined(Assembly, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.isdefined#System_Attribute_IsDefined_System_Reflection_Assembly_System_Type_System_Boolean_">Attribute.IsDefined(Assembly, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattribute#System_Attribute_GetCustomAttribute_System_Reflection_Assembly_System_Type_">Attribute.GetCustomAttribute(Assembly, Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.getcustomattribute#System_Attribute_GetCustomAttribute_System_Reflection_Assembly_System_Type_System_Boolean_">Attribute.GetCustomAttribute(Assembly, Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.equals#System_Attribute_Equals_System_Object_">Attribute.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.gethashcode#System_Attribute_GetHashCode">Attribute.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.match#System_Attribute_Match_System_Object_">Attribute.Match(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.isdefaultattribute#System_Attribute_IsDefaultAttribute">Attribute.IsDefaultAttribute()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.system-runtime-interopservices-_attribute-gettypeinfocount#System_Attribute_System_Runtime_InteropServices__Attribute_GetTypeInfoCount_System_UInt32__">Attribute._Attribute.GetTypeInfoCount(UInt32)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.system-runtime-interopservices-_attribute-gettypeinfo#System_Attribute_System_Runtime_InteropServices__Attribute_GetTypeInfo_System_UInt32_System_UInt32_System_IntPtr_">Attribute._Attribute.GetTypeInfo(UInt32, UInt32, IntPtr)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.system-runtime-interopservices-_attribute-getidsofnames#System_Attribute_System_Runtime_InteropServices__Attribute_GetIDsOfNames_System_Guid__System_IntPtr_System_UInt32_System_UInt32_System_IntPtr_">Attribute._Attribute.GetIDsOfNames(Guid, IntPtr, UInt32, UInt32, IntPtr)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.system-runtime-interopservices-_attribute-invoke#System_Attribute_System_Runtime_InteropServices__Attribute_Invoke_System_UInt32_System_Guid__System_UInt32_System_Int16_System_IntPtr_System_IntPtr_System_IntPtr_System_IntPtr_">Attribute._Attribute.Invoke(UInt32, Guid, UInt32, Int16, IntPtr, IntPtr, IntPtr, IntPtr)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute.typeid#System_Attribute_TypeId">Attribute.TypeId</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.html">Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class InspectorField : Attribute, _Attribute</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_Label_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.Label*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_Label" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.Label">Label</h4>
+  <div class="markdown level1 summary"><p>The label that will be rendered with the property field in the custom inspector</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Label { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_Options_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.Options*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_Options" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.Options">Options</h4>
+  <div class="markdown level1 summary"><p>A string list of options for a pop-up list</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] Options { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_Tooltip_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.Tooltip*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_Tooltip" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.Tooltip">Tooltip</h4>
+  <div class="markdown level1 summary"><p>A tooltip for the property field</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Tooltip { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_Type_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.Type*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_Type" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.Type">Type</h4>
+  <div class="markdown level1 summary"><p>The type of field or property value type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InspectorField.FieldTypes Type { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.FieldTypes.html">InspectorField.FieldTypes</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_Value_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.Value*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_Value" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.Value">Value</h4>
+  <div class="markdown level1 summary"><p>An object to hold the actual value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEngine.Object Value { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Object</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_FieldToProperty_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.FieldToProperty*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_FieldToProperty_Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_System_Object_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.FieldToProperty(Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField,System.Object,System.String)">FieldToProperty(InspectorField, Object, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static InspectorPropertySetting FieldToProperty(InspectorField attributes, object fieldValue, string fieldName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.html">InspectorField</a></td>
+        <td><span class="parametername">attributes</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">fieldValue</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">fieldName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorPropertySetting.html">InspectorPropertySetting</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_GetSettingValue_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.GetSettingValue*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_GetSettingValue_List_Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorPropertySetting__System_String_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.GetSettingValue(List{Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorPropertySetting},System.String)">GetSettingValue(List&lt;InspectorPropertySetting&gt;, String)</h4>
+  <div class="markdown level1 summary"><p>Get the propertySettings value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object GetSettingValue(List&lt;InspectorPropertySetting&gt; settings, string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorPropertySetting.html">InspectorPropertySetting</a>&gt;</td>
+        <td><span class="parametername">settings</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_ReverseLookup_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.ReverseLookup*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_ReverseLookup_System_String_System_String___" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.ReverseLookup(System.String,System.String[])">ReverseLookup(String, String[])</h4>
+  <div class="markdown level1 summary"><p>Get the index from a list of strings using string comparison</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int ReverseLookup(string option, string[] options)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">option</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><span class="parametername">options</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_UpdatePropertySetting_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.UpdatePropertySetting*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorField_UpdatePropertySetting_Microsoft_MixedReality_Toolkit_Core_Utilities_InspectorFields_InspectorPropertySetting_System_Object_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.UpdatePropertySetting(Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorPropertySetting,System.Object)">UpdatePropertySetting(InspectorPropertySetting, Object)</h4>
+  <div class="markdown level1 summary"><p>Set the value of the propertySetting</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static InspectorPropertySetting UpdatePropertySetting(InspectorPropertySetting setting, object update)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorPropertySetting.html">InspectorPropertySetting</a></td>
+        <td><span class="parametername">setting</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">update</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorPropertySetting.html">InspectorPropertySetting</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.interopservices._attribute">System.Runtime.InteropServices._Attribute</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
