@@ -19,7 +19,7 @@ MonoBehaviour:
         Microsoft.MixedReality.Toolkit
     componentName: Unity Joystick Manager
     priority: 10
-    runtimePlatform: -1
+    runtimePlatform: 31
     configurationProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.OpenVRDeviceManager,
