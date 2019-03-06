@@ -17,7 +17,7 @@ MonoBehaviour:
   enableCameraProfile: 1
   cameraProfile: {fileID: 11400000, guid: 8089ccfdd4494cd38f676f9fc1f46a04, type: 2}
   enableInputSystem: 1
-  inputSystemProfile: {fileID: 11400000, guid: 2c2f3507c8162464c96c05cf541d82ef, type: 2}
+  inputSystemProfile: {fileID: 11400000, guid: ad2080e8e71c35f4e8bcde94fa68f098, type: 2}
   inputSystemType:
     reference: Microsoft.MixedReality.Toolkit.Services.InputSystem.MixedRealityInputSystem,
       Microsoft.MixedReality.Toolkit.Services.InputSystem
@@ -41,5 +41,5 @@ MonoBehaviour:
   diagnosticsSystemType:
     reference: Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.MixedRealityDiagnosticsSystem,
       Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
-  registeredServiceProvidersProfile: {fileID: 11400000, guid: afdc61fb3d0dce042bd9914556ada24c,
+  registeredServiceProvidersProfile: {fileID: 11400000, guid: efbaf6ea540c69f4fb75415a5d145a53,
     type: 2}

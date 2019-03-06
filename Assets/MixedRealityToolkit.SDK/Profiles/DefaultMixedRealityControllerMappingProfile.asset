@@ -968,8 +968,8 @@ MonoBehaviour:
         description: Teleport Direction
         axisConstraint: 4
       keyCode: 0
-      axisCodeX: AXIS_4
-      axisCodeY: AXIS_5
+      axisCodeX: AXIS_1
+      axisCodeY: AXIS_2
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
