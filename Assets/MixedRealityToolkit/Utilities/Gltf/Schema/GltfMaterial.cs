@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
     /// The material appearance of a primitive.
+    /// https://github.com/KhronosGroup/glTF/tree/master/specification/2.0/schema
     /// </summary>
     [Serializable]
     public class GltfMaterial : GltfChildOfRootProperty
@@ -82,6 +83,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// </summary>
         public bool doubleSided;
 
+        /// <summary>
+        /// Unity Material wrapper for the GltfMaterial
+        /// </summary>
         public Material Material { get; internal set; }
     }
 }

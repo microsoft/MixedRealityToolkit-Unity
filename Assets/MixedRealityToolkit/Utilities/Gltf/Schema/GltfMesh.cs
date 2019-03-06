@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
     /// <summary>
     /// A set of primitives to be rendered. A node can contain one or more meshes.
     /// A node's transform places the mesh in the scene.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/mesh.schema.json
     /// </summary>
     [Serializable]
     public class GltfMesh : GltfChildOfRootProperty
@@ -26,6 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// </summary>
         public double[] weights;
 
+        /// <summary>
+        /// Unity Mesh wrapper for the GltfMesh
+        /// </summary>
         public Mesh Mesh { get; internal set; }
     }
 }

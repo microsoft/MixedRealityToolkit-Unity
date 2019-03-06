@@ -7,6 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
     /// A view into a buffer generally representing a subset of the buffer.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/bufferView.schema.json
     /// </summary>
     [Serializable]
     public class GltfBufferView : GltfChildOfRootProperty
@@ -43,6 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// </summary>
         public GltfBufferViewTarget target = GltfBufferViewTarget.None;
 
+        /// <summary>
+        /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/buffer.schema.json
+        /// </summary>
         public GltfBuffer Buffer { get; internal set; }
     }
 }

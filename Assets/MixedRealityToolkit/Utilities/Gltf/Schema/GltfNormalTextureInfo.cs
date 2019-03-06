@@ -5,6 +5,9 @@ using System;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
+    /// <summary>
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/material.normalTextureInfo.schema.json
+    /// </summary>
     [Serializable]
     public class GltfNormalTextureInfo : GltfTextureInfo
     {

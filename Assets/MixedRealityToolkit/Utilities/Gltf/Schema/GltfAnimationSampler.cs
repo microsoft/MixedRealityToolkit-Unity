@@ -5,6 +5,10 @@ using System;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
+    /// <summary>
+    /// Combines input and output accessors with an interpolation algorithm to define a keyframe graph (but not its target).
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/animation.sampler.schema.json
+    /// </summary>
     [Serializable]
     public class GltfAnimationSampler : GltfProperty
     {

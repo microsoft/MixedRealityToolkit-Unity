@@ -5,6 +5,10 @@ using System;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
+    /// <summary>
+    /// A set of parameter values that are used to define the metallic-roughness material model from Physically-Based Rendering (PBR) methodology.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/material.pbrMetallicRoughness.schema.json
+    /// </summary>
     [Serializable]
     public class GltfPbrMetallicRoughness : GltfProperty
     {

@@ -7,6 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
     /// Metadata about the glTF asset.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/asset.schema.json
     /// </summary>
     [Serializable]
     public class GltfAssetInfo : GltfProperty

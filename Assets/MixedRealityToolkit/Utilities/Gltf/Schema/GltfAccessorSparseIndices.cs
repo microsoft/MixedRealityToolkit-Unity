@@ -5,6 +5,10 @@ using System;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
+    /// <summary>
+    /// Indices of those attributes that deviate from their initialization value.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/accessor.sparse.indices.schema.json
+    /// </summary>
     [Serializable]
     public class GltfAccessorSparseIndices : GltfProperty
     {

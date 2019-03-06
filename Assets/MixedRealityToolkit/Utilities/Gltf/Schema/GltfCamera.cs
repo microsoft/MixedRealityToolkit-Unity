@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
     /// <summary>
     /// A camera's projection.  A node can reference a camera to apply a transform
     /// to place the camera in the scene
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/camera.schema.json
     /// </summary>
     [Serializable]
     public class GltfCamera : GltfChildOfRootProperty

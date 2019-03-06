@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
     /// <summary>
     /// Image data used to create a texture. Image can be referenced by URI or
     /// `bufferView` index. `mimeType` is required in the latter case.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/image.schema.json
     /// </summary>
     [Serializable]
     public class GltfImage : GltfChildOfRootProperty
@@ -36,6 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 
         #endregion Serialized Fields
 
+        /// <summary>
+        /// Unity Texture2D wrapper for the GltfImage
+        /// </summary>
         public Texture2D Texture { get; internal set; }
     }
 }
