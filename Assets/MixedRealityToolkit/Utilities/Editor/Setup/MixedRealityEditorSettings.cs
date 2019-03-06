@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                     message += "- Force Text Serialization\n";
                 }
 
-#if !UNITY_ANDROID
+#if UNITY_WSA
                 var il2Cpp = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) == ScriptingImplementation.IL2CPP;
 
                 if (!il2Cpp)
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                 message += "\nWould you like to make this change?";
 
                 if (!forceTextSerialization
-#if !UNITY_ANDROID
+#if UNITY_WSA
                     || !il2Cpp 
 #endif
                     || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
