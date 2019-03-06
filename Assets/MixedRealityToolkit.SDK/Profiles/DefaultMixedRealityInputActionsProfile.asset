@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -49,3 +50,9 @@ MonoBehaviour:
   - id: 12
     description: Mouse Delta
     axisConstraint: 4
+  - id: 13
+    description: Pad Touch
+    axisConstraint: 2
+  - id: 14
+    description: Pad Press
+    axisConstraint: 2

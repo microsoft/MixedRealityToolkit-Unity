@@ -64,3 +64,10 @@ MonoBehaviour:
     runtimePlatform: 8
     configurationProfile: {fileID: 11400000, guid: 8be0bcd2117dd214da41ed98f0def2e3,
       type: 2}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Providers.OculusAndroid.OculusAndroidDeviceManager,         MixedRealityToolkit.Providers.Oculus
+    componentName: Oculus Android Device Manager
+    priority: 10
+    runtimePlatform: 32
+    configurationProfile: {fileID: 11400000, guid: 8be0bcd2117dd214da41ed98f0def2e3,
+      type: 2}
