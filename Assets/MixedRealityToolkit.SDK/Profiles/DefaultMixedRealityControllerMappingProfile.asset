@@ -2518,14 +2518,14 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
     - id: 9
-      description: Unity Button Id 1
+      description: Unity Button Id 3
       axisType: 2
       inputType: 7
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 331
+      keyCode: 333
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
