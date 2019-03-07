@@ -153,7 +153,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         /// <param name="directoryName">
         /// The name of the directory to search for.
         /// </param>
-        /// <param name="path"></param>
         internal static bool FindRelativeDirectory(string directoryPathToSearch, string directoryName, out string path)
         {
             string absolutePath;
@@ -176,7 +175,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         /// <param name="directoryName">
         /// The name of the directory to search for.
         /// </param>
-        /// <param name="path"></param>
         internal static bool FindDirectory(string directoryPathToSearch, string directoryName, out string path)
         {
             path = string.Empty;
@@ -204,9 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         private static string MakePathRelativeToProject(string absolutePath)
         {
-            return absolutePath.Replace(
-                Application.dataPath + Path.DirectorySeparatorChar,
-                "Assets" + Path.DirectorySeparatorChar);
+            return absolutePath.Replace(Application.dataPath + "\\", "Assets/");
         }
 
         private static void SetIconTheme()
