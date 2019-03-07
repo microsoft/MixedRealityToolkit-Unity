@@ -5,7 +5,7 @@
         {
           "files": [ "**/*.sln", "**/*.cs" ],
           "exclude": [ "**/bin/**", "**/obj/**" ],
-          "src": "Assets/MixedRealityToolkit"
+          "src": "Assets"
         }
       ],
       "dest": "obj/api"
@@ -27,7 +27,6 @@
         "files": [ "External/ReadMeImages/**", "index.html"]
       }
     ],
-    "overwrite": "specs/*.md",
     "globalMetadata": {
       "_appTitle": "Mixed Reality Toolkit Documentation",
       "_enableSearch": true,

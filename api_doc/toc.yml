@@ -4,7 +4,7 @@
     href: ../Documentation/Architecture/SpatialAwareness/toc.yml
   - name: SDK
     href: ../Assets/MixedRealityToolkit.SDK/toc.yml
-  - name: Tookit
+  - name: Toolkit
     href: ../Assets/MixedRealityToolkit/toc.yml
   - name: Examples
     href: ../Assets/MixedRealityToolkit.Examples/toc.yml
