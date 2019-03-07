@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
@@ -118,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     EditorGUILayout.PropertyField(enableControllerMapping);
                     changed |= RenderProfile(controllerMappingProfile);
-                    changed |= RenderProfile(controllerVisualizationProfile);
+                    changed |= RenderProfile(controllerVisualizationProfile, true, typeof(IMixedRealityControllerVisualizer));
                 }
             }
 
