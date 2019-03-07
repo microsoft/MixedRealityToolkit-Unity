@@ -68,14 +68,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                     message += "- Force Text Serialization\n";
                 }
 
-#if UNITY_WSA
                 var il2Cpp = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) == ScriptingImplementation.IL2CPP;
 
                 if (!il2Cpp)
                 {
                     message += "- Change the Scripting Backend to use IL2CPP\n";
                 }
-#endif
 
                 var visibleMetaFiles = EditorSettings.externalVersionControl.Equals("Visible Meta Files");
 
@@ -91,11 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
                 message += "\nWould you like to make this change?";
 
-                if (!forceTextSerialization
-#if UNITY_WSA
-                    || !il2Cpp 
-#endif
-                    || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
+                if (!forceTextSerialization || !il2Cpp || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
                 {
                     var choice = EditorUtility.DisplayDialogComplex("Apply Mixed Reality Toolkit Default Settings?", message, "Apply", "Ignore", "Later");
 
@@ -159,6 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         /// <param name="directoryName">
         /// The name of the directory to search for.
         /// </param>
+        /// <param name="path"></param>
         internal static bool FindRelativeDirectory(string directoryPathToSearch, string directoryName, out string path)
         {
             string absolutePath;
@@ -181,6 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         /// <param name="directoryName">
         /// The name of the directory to search for.
         /// </param>
+        /// <param name="path"></param>
         internal static bool FindDirectory(string directoryPathToSearch, string directoryName, out string path)
         {
             path = string.Empty;
@@ -208,7 +204,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         private static string MakePathRelativeToProject(string absolutePath)
         {
-            return absolutePath.Replace(Application.dataPath + "\\", "Assets/");
+            return absolutePath.Replace(
+                Application.dataPath + Path.DirectorySeparatorChar,
+                "Assets" + Path.DirectorySeparatorChar);
         }
 
         private static void SetIconTheme()
