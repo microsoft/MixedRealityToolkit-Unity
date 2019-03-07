@@ -65,20 +65,20 @@ For specific constructs, the following information details the relationships bet
 ### Controllers
 
 The controller definition relationships are defined as shown below:
-![](/External/ReadMeImages/MRTK-ControllerDiagram.png)
+![](../../../External/ReadMeImages/MRTK-ControllerDiagram.png)
 
 ### Headsets
 
 The headset definition relationships are defined as shown below:
-![](/External/ReadMeImages/MRTK-HeadsetDefinition.png)
+![](../../../External/ReadMeImages/MRTK-HeadsetDefinition.png)
 
 ### Internal MRTK InputActions
 
 Input Actions are those internal mapped actions available to the MRTK.  Each controller button would be dynamically mapped to an MRTK action for use in the SDK or output from the InputSystem.
 
 These are listed as follows:
-![](/External/ReadMeImages/MRTK-InputActions.png)
+![](../../../External/ReadMeImages/MRTK-InputActions.png)
 
 ## Additional Information
 
-For additional information, please see the [MRTK vNext architecture outline](/MRTK-vNext.md) and the [vNext SDK Outline](/MRTK-SDK.md)
+For additional information, please see the [MRTK vNext architecture outline](../../../MRTK-vNext.md) and the [vNext SDK Outline](../../../MRTK-SDK.md)
