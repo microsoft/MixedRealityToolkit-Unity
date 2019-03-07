@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             lineRenderer.enabled = false;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             if (LineDataSource == null)
             {
