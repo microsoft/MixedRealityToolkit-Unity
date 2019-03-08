@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 {
     /// <summary>
-    /// This class handles the solver components that are attached to this <see cref="GameObject"/>
+    /// This class handles the solver components that are attached to this <see cref="UnityEngine.GameObject"/>
     /// </summary>
     public class SolverHandler : ControllerFinder
     {

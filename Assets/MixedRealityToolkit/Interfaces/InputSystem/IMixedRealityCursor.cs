@@ -53,9 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         bool SetVisibilityOnSourceDetected { get; set; }
 
         /// <summary>
-        /// Returns the <see cref="IMixedRealityCursor"/>'s <see cref="GameObject"/> reference.
+        /// Returns the <see cref="IMixedRealityCursor"/>'s <see cref="UnityEngine.GameObject"/> reference.
         /// </summary>
-        /// <returns>The <see cref="GameObject"/> this <see cref="IMixedRealityCursor"/> component is attached to.</returns>
+        /// <returns>The <see cref="UnityEngine.GameObject"/> this <see cref="IMixedRealityCursor"/> component is attached to.</returns>
         GameObject GameObjectReference { get; }
     }
 }

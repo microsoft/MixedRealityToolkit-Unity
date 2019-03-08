@@ -11,7 +11,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 {
     /// <summary>
-    /// This class must be instantiated by a script that implements the IMixedRealitySourceStateHandler, IMixedRealityInputHandler and IMixedRealityInputHandler<MixedRealityPose> interfaces.
+    /// This class must be instantiated by a script that implements the IMixedRealitySourceStateHandler, IMixedRealityInputHandler and IMixedRealityInputHandler{MixedRealityPose} interfaces.
     /// 
     /// ***It must receive EventData arguments from OnInputDown(), OnInputUp(), OnInputChanged() and OnSourceLost().***
     /// 
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 
         #region Public Methods
         /// <summary>
-        /// This function must be called from the OnInputDown handler in a script implementing the IMixedRealityInputHandler<MixedRealityPose> interface.
+        /// This function must be called from the OnInputDown handler in a script implementing the IMixedRealityInputHandler{MixedRealityPose} interface.
         /// </summary>
         /// <param name="eventData">The InputEventData argument 'eventData' is passed through to GazeHandHelper</param>
         public void AddSource(InputEventData eventData)
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         }
 
         /// <summary>
-        /// This function must be called from the OnInputUp hander in a script implementing the IMixedRealityInputHandler<MixedRealityPose> interface.
+        /// This function must be called from the OnInputUp hander in a script implementing the IMixedRealityInputHandler{MixedRealityPose} interface.
         /// </summary>
         /// <param name="eventData">he InputEventData argument 'eventData' is passed through to GazeHandHelper</param>
         public void RemoveSource(InputEventData eventData)
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         }
 
         /// <summary>
-        /// This function must be called from the OnInputChanged handler in a script implementing the  IMixedRealityInputHandler<MixedRealityPose> interface.
+        /// This function must be called from the OnInputChanged handler in a script implementing the  IMixedRealityInputHandler{MixedRealityPose} interface.
         /// </summary>
         /// <param name="eventData"></param>
         public void UpdateSource(InputEventData<MixedRealityPose> eventData)

@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
     public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IMixedRealityDataProvider
     {
         /// <summary>
-        /// Maximum distance at which all pointers can collide with a <see cref="GameObject"/>, unless it has an override extent.
+        /// Maximum distance at which all pointers can collide with a <see cref="UnityEngine.GameObject"/>, unless it has an override extent.
         /// </summary>
         float GlobalPointingExtent { get; }
 
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
 
         /// <summary>
         /// Gets the currently focused object for the pointing source.
-        /// <para><remarks>If the pointing source is not registered, then the Gaze's Focused <see cref="GameObject"/> is returned.</remarks></para>
+        /// <para><remarks>If the pointing source is not registered, then the Gaze's Focused <see cref="UnityEngine.GameObject"/> is returned.</remarks></para>
         /// </summary>
         /// <param name="pointingSource"></param>
         /// <returns>Currently Focused Object.</returns>

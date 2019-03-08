@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities
 {
     /// <summary>
-    /// The EdgeUtilities class provides functionality for working with <see cref="Edge"/> objects.
+    /// The EdgeUtilities class provides functionality for working with <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem.Edge"/> objects.
     /// </summary>
     public static class EdgeUtilities
     {
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         private static Vector2 intersectionPoint = Vector2.zero;
 
         /// <summary>
-        /// Returns the point at which two <see cref="Edge"/> values intersect.
+        /// Returns the point at which two <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem.Edge"/> values intersect.
         /// </summary>
         /// <param name="edgeA">The first edge</param>
         /// <param name="edgeB">The second edge</param>

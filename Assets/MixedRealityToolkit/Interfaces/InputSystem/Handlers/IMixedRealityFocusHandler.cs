@@ -19,13 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
         void OnFocusChanged(FocusEventData eventData);
 
         /// <summary>
-        /// The Focus Enter event is raised on this <see cref="UnityEngine.GameObject"/> whenever a <see cref="IMixedRealityPointer"/>'s focus enters this <see cref="UnityEngine.GameObject"/>'s <see cref="UnityEngine.Collider"/>.
+        /// The Focus Enter event is raised on this <see cref="UnityEngine.GameObject"/> whenever a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>'s focus enters this <see cref="UnityEngine.GameObject"/>'s <see cref="UnityEngine.Collider"/>.
         /// </summary>
         /// <param name="eventData"></param>
         void OnFocusEnter(FocusEventData eventData);
 
         /// <summary>
-        /// The Focus Exit event is raised on this <see cref="UnityEngine.GameObject"/> whenever a <see cref="IMixedRealityPointer"/>'s focus leaves this <see cref="UnityEngine.GameObject"/>'s <see cref="UnityEngine.Collider"/>.
+        /// The Focus Exit event is raised on this <see cref="UnityEngine.GameObject"/> whenever a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>'s focus leaves this <see cref="UnityEngine.GameObject"/>'s <see cref="UnityEngine.Collider"/>.
         /// </summary>
         /// <param name="eventData"></param>
         void OnFocusExit(FocusEventData eventData);

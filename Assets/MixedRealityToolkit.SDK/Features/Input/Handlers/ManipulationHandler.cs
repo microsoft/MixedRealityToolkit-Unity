@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         }
 
         /// <summary>
-        /// Event Handler receives input from IMixedRealityInputHandler<MixedRealityPose>
+        /// Event Handler receives input from IMixedRealityInputHandler{MixedRealityPose}
         /// </summary>
         /// <param name="eventData"></param>
         public void OnInputChanged(InputEventData<MixedRealityPose> eventData)

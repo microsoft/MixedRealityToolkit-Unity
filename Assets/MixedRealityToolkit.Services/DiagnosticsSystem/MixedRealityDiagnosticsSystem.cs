@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
 {
     /// <summary>
-    /// The default implementation of the <see cref="IMixedRealityDiagnosticsSystem"/>
+    /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
     public class MixedRealityDiagnosticsSystem : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         /// Creates the parent for diagnostic visualizations so that the scene hierarchy does not get overly cluttered.
         /// </summary>
         /// <returns>
-        /// The <see cref="GameObject"/> to which diagnostic visualizations will be parented.
+        /// The <see cref="UnityEngine.GameObject"/> to which diagnostic visualizations will be parented.
         /// </returns>
         private GameObject CreateDiagnosticVisualizationParent()
         {

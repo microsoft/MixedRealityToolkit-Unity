@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         public GraphicInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>
-        /// Clears the pointer data and calls the base <see cref="PointerEventData"/>'s Reset method.
+        /// Clears the pointer data and calls the base <see cref="UnityEngine.EventSystems.PointerEventData"/>'s Reset method.
         /// </summary>
         public void Clear()
         {

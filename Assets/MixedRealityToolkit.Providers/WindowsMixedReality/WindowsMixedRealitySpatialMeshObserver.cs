@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         private GameObject observedObjectParent = null;
 
         /// <summary>
-        /// The <see cref="GameObject"/> to which observed objects are parented.
+        /// The <see cref="UnityEngine.GameObject"/> to which observed objects are parented.
         /// </summary>
         private GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent("WindowsMixedRealitySpatialMeshObserver"));
 
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
         /// <summary>
-        /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
+        /// The currently active instance of <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
         private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 

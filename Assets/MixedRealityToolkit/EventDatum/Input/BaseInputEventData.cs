@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="eventSystem">Typically will be <see cref="EventSystem.current"/></param>
+        /// <param name="eventSystem">Typically will be <see cref="UnityEngine.EventSystems.EventSystem.current"/></param>
         protected BaseInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>

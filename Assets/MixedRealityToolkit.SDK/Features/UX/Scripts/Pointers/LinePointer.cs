@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         private DistorterGravity gravityDistorter = null;
 
         /// <summary>
-        /// The Gravity Distorter that is affecting the <see cref="BaseMixedRealityLineDataProvider"/> attached to this pointer.
+        /// The Gravity Distorter that is affecting the <see cref="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders.BaseMixedRealityLineDataProvider"/> attached to this pointer.
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
 
