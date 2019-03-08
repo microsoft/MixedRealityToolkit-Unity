@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
 {
     /// <summary>
-    /// Class that implements <see cref="IAudioInfluencer"/> to provide an audio occlusion effect, similar
+    /// Class that implements <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.Audio.IAudioInfluencer"/> to provide an audio occlusion effect, similar
     /// to listening to sound from outside of an enclosed space.
     /// </summary>
     /// <remarks>

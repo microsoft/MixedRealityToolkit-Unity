@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 namespace Microsoft.MixedReality.Toolkit.Core.Services
 {
     /// <summary>
-    /// Base <see cref="IMixedRealityService"/> with a constructor override.
+    /// Base <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService"/> with a constructor override.
     /// </summary>
     public abstract class BaseServiceWithConstructor : BaseService
     {

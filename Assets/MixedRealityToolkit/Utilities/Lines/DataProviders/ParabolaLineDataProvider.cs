@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <summary>
         /// The Starting point of this line.
         /// </summary>
-        /// <remarks>Always located at this <see cref="GameObject"/>'s <see cref="Transform.position"/></remarks>
+        /// <remarks>Always located at this <see cref="UnityEngine.GameObject"/>'s <see cref="UnityEngine.Transform.position"/></remarks>
         public MixedRealityPose StartPoint => startPoint;
 
         #region MonoBehaviour Implementation

@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
         /// <summary>
-        /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
+        /// The currently active instance of <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
         protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 

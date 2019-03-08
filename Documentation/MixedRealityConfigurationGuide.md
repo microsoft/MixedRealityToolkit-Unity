@@ -96,7 +96,7 @@ Behind the Input System provided by the MRTK are several other systems, these he
 
 Each of the individual profiles are detailed below:
 
-* [Focus Settings](#focus-settings)
+* Focus Settings
 * [Input Actions Settings](#input-actions-settings)
 * [Input Actions Rules](#inputactionrules)
 * [Pointer Configuration](#pointer)

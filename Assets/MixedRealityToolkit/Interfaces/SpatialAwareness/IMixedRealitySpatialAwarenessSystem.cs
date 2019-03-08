@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
     public interface IMixedRealitySpatialAwarenessSystem : IMixedRealityEventSystem
     {
         /// <summary>
-        /// Gets the parent object to which all spatial awareness <see cref="GameObject"/>s are to be parented.
+        /// Gets the parent object to which all spatial awareness <see cref="UnityEngine.GameObject"/>s are to be parented.
         /// </summary>
         GameObject SpatialAwarenessObjectParent { get; }
 
@@ -20,24 +20,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// Creates the a parent, that is a child if the Spatial Awareness System parent so that the scene hierarchy does not get overly cluttered.
         /// </summary>
         /// <returns>
-        /// The <see cref="GameObject"/> to which spatial awareness objects will be parented.
+        /// The <see cref="UnityEngine.GameObject"/> to which spatial awareness objects will be parented.
         /// </returns>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
+        /// This method is to be called by implementations of the <see cref="Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
         /// </remarks>
         GameObject CreateSpatialAwarenessObjectParent(string name);
 
         /// <summary>
-        /// Generates a new source identifier for an <see cref="IMixedRealitySpatialAwarenessObserver"/> implementation.
+        /// Generates a new source identifier for an <see cref="Observers.IMixedRealitySpatialAwarenessObserver"/> implementation.
         /// </summary>
-        /// <returns>The source identifier to be used by the <see cref="IMixedRealitySpatialAwarenessObserver"/> implementation.</returns>
+        /// <returns>The source identifier to be used by the <see cref="Observers.IMixedRealitySpatialAwarenessObserver"/> implementation.</returns>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
+        /// This method is to be called by implementations of the <see cref="Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
         /// </remarks>
         uint GenerateNewSourceId();
 
         /// <summary>
-        /// Gets the collection of registered <see cref="IMixedRealitySpatialAwarenessObserver"/> data providers.
+        /// Gets the collection of registered <see cref="Observers.IMixedRealitySpatialAwarenessObserver"/> data providers.
         /// </summary>
         /// <returns>
         /// Read only copy of the list of registered observers.
@@ -47,14 +47,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Get the collection of registered observers of the specified type.
         /// </summary>
-        /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
+        /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="Observers.IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
         /// <returns>
         /// Readonly copy of the list of registered observers that implement the specified type.
         /// </returns>
         IReadOnlyList<T> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
-        /// Get the <see cref="IMixedRealitySpatialAwarenessObserver"/> that is registered under the specified name.
+        /// Get the <see cref="Observers.IMixedRealitySpatialAwarenessObserver"/> that is registered under the specified name.
         /// </summary>
         /// <param name="name">The friendly name of the observer.</param>
         /// <returns>
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Get the observer that is registered under the specified name matching the specified type.
         /// </summary>
-        /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
+        /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="Observers.IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
         /// <param name="name">The friendly name of the observer.</param>
         /// <returns>
         /// The requested observer, or null if one cannot be found.
@@ -86,13 +86,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Starts / restarts all spatial observers of the specified type.
         /// </summary>
-        /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
+        /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="Observers.IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
         void ResumeObservers<T>() where T : IMixedRealitySpatialAwarenessObserver;
 
         /// <summary>
         /// Starts / restarts the spatial observer registered under the specified name matching the specified type.
         /// </summary>
-        /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
+        /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="Observers.IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
         /// <param name="name">The friendly name of the observer.</param>
         void ResumeObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver;
 
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Stops / pauses the spatial observer registered under the specified name matching the specified type.
         /// </summary>
-        /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
+        /// <typeparam name="T">The desired spatial awareness observer type (ex: <see cref="Observers.IMixedRealitySpatialAwarenessMeshObserver"/>)</typeparam>
         /// <param name="name">The friendly name of the observer.</param>
         void SuspendObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver;
 
@@ -120,9 +120,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// </summary>
         /// <param name="observer">The observer raising the event.</param>
         /// <param name="meshId">Value identifying the mesh.</param>
-        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
+        /// <param name="meshObject">The mesh <see cref="UnityEngine.GameObject"/>.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessMeshObserver"/> interface, not by application code.
+        /// This method is to be called by implementations of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
         /// </remarks>
         void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject);
 
@@ -131,12 +131,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// </summary>
         /// <param name="observer">The observer raising the event.</param>
         /// <param name="meshId">Value identifying the mesh.</param>
-        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
+        /// <param name="meshObject">The mesh <see cref="UnityEngine.GameObject"/>.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessMeshObserver"/> interface, not by application code.
+        /// This method is to be called by implementations of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
         /// </remarks>
         void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject);
-//        void RaiseObservedObjectUpdated<T>(IMixedRealitySpatialAwarenessObserver observer, int meshId, T observedObject);
+        //        void RaiseObservedObjectUpdated<T>(IMixedRealitySpatialAwarenessObserver observer, int meshId, T observedObject);
 
         /// <summary>
         /// <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>'s should call this method to indicate an existing mesh has been removed.
@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <param name="observer">The observer raising the event.</param>
         /// <param name="meshId">Value identifying the mesh.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessMeshObserver"/> interface, not by application code.
+        /// This method is to be called by implementations of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
         /// </remarks>
         void RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver observer, int meshId);
     }

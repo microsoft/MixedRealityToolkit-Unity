@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// Gets or sets a value indicating how the mesh subsystem is to display surface meshes within the application.
         /// </summary>
         /// <remarks>
-        /// Applications that wish to process the <see cref="Mesh"/>es should set this value to None.
+        /// Applications that wish to process the <see cref="UnityEngine.Mesh"/>es should set this value to None.
         /// </remarks>
         SpatialAwarenessMeshDisplayOptions DisplayOption { get; set; }
 
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         SpatialAwarenessMeshLevelOfDetail LevelOfDetail { get; set; }
 
         /// <summary>
-        /// Gets the collection of <see cref="SpatialAwarenessMeshObject"/>s being managed by the observer.
+        /// Gets the collection of <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem.SpatialAwarenessMeshObject"/>s being managed by the observer.
         /// </summary>
         IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes { get; }
 
@@ -62,12 +62,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         int TrianglesPerCubicMeter { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Material"/> to be used when spatial <see cref="Mesh"/>es should occlude other objects.
+        /// Gets or sets the <see cref="UnityEngine.Material"/> to be used when spatial <see cref="UnityEngine.Mesh"/>es should occlude other objects.
         /// </summary>
         Material OcclusionMaterial { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Material"/> to be used when displaying <see cref="Mesh"/>es.
+        /// Gets or sets the <see cref="UnityEngine.Material"/> to be used when displaying <see cref="UnityEngine.Mesh"/>es.
         /// </summary>
         Material VisibleMaterial { get; set; }
     }

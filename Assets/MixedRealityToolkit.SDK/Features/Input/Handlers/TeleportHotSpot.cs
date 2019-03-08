@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 {
     /// <summary>
     /// SDK component handling teleportation to a specific position &amp; orientation when a user focuses
-    /// this <see cref="GameObject"/> and triggers the teleport action.
+    /// this <see cref="UnityEngine.GameObject"/> and triggers the teleport action.
     /// </summary>
     public class TeleportHotSpot : BaseFocusHandler, IMixedRealityTeleportHotSpot
     {
