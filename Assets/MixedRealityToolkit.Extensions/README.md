@@ -1,0 +1,1 @@
+This folder is reserved for Microsoft Mixed Reality Toolkit team managed and supported extension packages.
