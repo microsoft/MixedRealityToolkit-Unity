@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         private InputActionRuleVectorAxis[] inputActionRulesVectorAxis = null;
 
         /// <summary>
-        /// All the Input Action Rules for <see cref="UnityEngine.Vector3"/> based <see cref="MixedRealityInputAction"/>s
+        /// All the Input Action Rules for <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> based <see cref="MixedRealityInputAction"/>s
         /// </summary>
         public InputActionRuleVectorAxis[] InputActionRulesVectorAxis => inputActionRulesVectorAxis;
 

@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
     public interface IMixedRealitySpatialAwarenessSystem : IMixedRealityEventSystem
     {
         /// <summary>
-        /// Gets the parent object to which all spatial awareness <see cref="UnityEngine.GameObject"/>s are to be parented.
+        /// Gets the parent object to which all spatial awareness <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s are to be parented.
         /// </summary>
         GameObject SpatialAwarenessObjectParent { get; }
 
@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// Creates the a parent, that is a child if the Spatial Awareness System parent so that the scene hierarchy does not get overly cluttered.
         /// </summary>
         /// <returns>
-        /// The <see cref="UnityEngine.GameObject"/> to which spatial awareness objects will be parented.
+        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which spatial awareness objects will be parented.
         /// </returns>
         /// <remarks>
         /// This method is to be called by implementations of the <see cref="Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// </summary>
         /// <param name="observer">The observer raising the event.</param>
         /// <param name="meshId">Value identifying the mesh.</param>
-        /// <param name="meshObject">The mesh <see cref="UnityEngine.GameObject"/>.</param>
+        /// <param name="meshObject">The mesh <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</param>
         /// <remarks>
         /// This method is to be called by implementations of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
         /// </remarks>
@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// </summary>
         /// <param name="observer">The observer raising the event.</param>
         /// <param name="meshId">Value identifying the mesh.</param>
-        /// <param name="meshObject">The mesh <see cref="UnityEngine.GameObject"/>.</param>
+        /// <param name="meshObject">The mesh <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</param>
         /// <remarks>
         /// This method is to be called by implementations of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
         /// </remarks>
