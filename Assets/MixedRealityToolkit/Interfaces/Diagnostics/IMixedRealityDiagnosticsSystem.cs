@@ -22,8 +22,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
         bool ShowDiagnostics { get; set; }
 
         /// <summary>
-        /// Enable / disable the profiler display
+        /// Enable / disable the profiler display.
         /// </summary>
         bool ShowProfiler { get; set; }
+
+        /// <summary>
+        /// The amount of time, in seconds, to collect frames for frame rate calculation.
+        /// </summary>
+        float FrameRateDuration { get; }
     }
 }

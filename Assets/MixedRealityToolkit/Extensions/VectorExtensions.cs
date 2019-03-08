@@ -210,9 +210,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <param name="radialRange">The total range of the radial in degrees as a <see cref="float"/></param>
         /// <param name="radius">This is a <see cref="float"/> for the radius of the radial</param>
         /// <param name="row">The current row as a <see cref="int"/> for the radial calculation</param>
-        /// <param name="totalRow">The total rows as a <see cref="int"/> for the radial calculation</param>
+        /// <param name="totalRows">The total rows as a <see cref="int"/> for the radial calculation</param>
         /// <param name="column">The current column as a <see cref="int"/> for the radial calculation</param>
-        /// <param name="totalColumn">The total columns as a <see cref="int"/> for the radial calculation</param>
+        /// <param name="totalColumns">The total columns as a <see cref="int"/> for the radial calculation</param>
         /// <returns></returns>
         public static Vector3 RadialMapping(Vector3 source, float radialRange, float radius, int row, int totalRows, int column, int totalColumns)
         {

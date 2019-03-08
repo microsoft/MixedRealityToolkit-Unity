@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         #region IMixedRealityDiagnosticsSystem
 
         private bool showDiagnostics;
-        
+
         public bool ShowDiagnostics
         {
             get { return showDiagnostics; }
@@ -91,7 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
                 if (value != showDiagnostics)
                 {
                     showDiagnostics = value;
-                    diagnosticVisualizationParent?.SetActive(value);
+
+                    if (diagnosticVisualizationParent != null)
+                    {
+                        diagnosticVisualizationParent.SetActive(value);
+                    }
                 }
             }
         }
@@ -114,6 +118,31 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
                     if (visualProfiler != null)
                     {
                         visualProfiler.IsVisible = value;
+                    }
+                }
+            }
+        }
+
+        private float frameRateDuration = 0.1f;
+        private readonly float minFrameRateDuration = 0.01f;
+        private readonly float maxFrameRateDuration = 1.0f;
+
+        /// <inheritdoc />
+        public float FrameRateDuration
+        {
+            get
+            {
+                return frameRateDuration;
+            }
+
+            set
+            {
+                if (!Mathf.Approximately(frameRateDuration, value))
+                {
+                    frameRateDuration = Mathf.Clamp(value, minFrameRateDuration, maxFrameRateDuration);
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.FrameSampleRate = frameRateDuration;
                     }
                 }
             }

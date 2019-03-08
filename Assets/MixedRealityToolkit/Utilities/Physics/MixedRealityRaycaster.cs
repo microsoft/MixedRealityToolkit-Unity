@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// Simple raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Physics.RayStep"/> within a specified maximum distance.
         /// </summary>
         /// <param name="step"></param>
+        /// <param name="maxDistance"></param>
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
@@ -127,6 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// </summary>
         /// <param name="step"></param>
         /// <param name="radius"></param>
+        /// <param name="maxDistance"></param>
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>

@@ -1,0 +1,40 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [ "**/*.sln", "**/*.cs" ],
+          "exclude": [ "**/bin/**", "**/obj/**" ],
+          "src": "Assets"
+        }
+      ],
+      "dest": "obj/api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [ "**/*.yml"],
+        "src": "obj/api",
+        "dest": "api"
+      },
+      {
+        "files": ["api_doc/**", "Documentation/**/*.md", "*.md", "*.yml", "toc.yml", "Documentation/**/*.yml", "Documentation/Architecture/**", "Assets/**/*.md", "External/Documentation/*.md", "External/HowTo/*.md"]
+      }
+    ],
+    "resource": [
+      {
+        "files": [ "External/ReadMeImages/**", "index.html"]
+      }
+    ],
+    "globalMetadata": {
+      "_appTitle": "Mixed Reality Toolkit Documentation",
+      "_enableSearch": true,
+	  "_appLogoPath": "External/ReadMeImages/mrt_logo_icon.png",
+	  "_appFaviconPath": "External/ReadMeImages/favicon.ico"
+    },
+    "markdownEngineName": "markdig",
+    "dest": "doc",
+    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ]
+  }
+}

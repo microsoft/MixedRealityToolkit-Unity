@@ -70,5 +70,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// Gets or sets the <see cref="UnityEngine.Material"/> to be used when displaying <see cref="UnityEngine.Mesh"/>es.
         /// </summary>
         Material VisibleMaterial { get; set; }
-   }
+    }
 }

@@ -87,9 +87,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            if (GUILayout.Button("Back to Configuration Profile"))
+            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
+                return;
             }
 
             EditorGUILayout.Space();

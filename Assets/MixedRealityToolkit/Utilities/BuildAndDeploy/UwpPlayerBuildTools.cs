@@ -147,12 +147,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                 EditorUserBuildSettings.wsaUWPBuildType = buildInfo.WSAUWPBuildType.Value;
             }
 
+#if !UNITY_2019_1_OR_NEWER
             var oldWSAGenerateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
 
             if (buildInfo.WSAGenerateReferenceProjects.HasValue)
             {
                 EditorUserBuildSettings.wsaGenerateReferenceProjects = buildInfo.WSAGenerateReferenceProjects.Value;
             }
+#endif
 
             var oldColorSpace = PlayerSettings.colorSpace;
 
@@ -196,17 +198,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             {
                 OnPostProcessBuild(buildInfo, buildReport);
 
+#if !UNITY_2019_1_OR_NEWER
                 if (buildInfo.BuildTarget == BuildTarget.WSAPlayer && EditorUserBuildSettings.wsaGenerateReferenceProjects)
                 {
                     UwpProjectPostProcess.Execute(buildInfo.OutputDirectory);
                 }
+
+                EditorUserBuildSettings.wsaGenerateReferenceProjects = oldWSAGenerateReferenceProjects;
+#endif
 
                 PlayerSettings.colorSpace = oldColorSpace;
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, oldBuildSymbols);
 
                 EditorUserBuildSettings.wsaUWPBuildType = oldWSAUWPBuildType.Value;
 
-                EditorUserBuildSettings.wsaGenerateReferenceProjects = oldWSAGenerateReferenceProjects;
                 EditorUserBuildSettings.SwitchActiveBuildTarget(oldBuildTargetGroup, oldBuildTarget);
             }
         }
