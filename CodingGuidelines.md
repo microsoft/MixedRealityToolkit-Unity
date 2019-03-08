@@ -40,7 +40,7 @@ This ensures documentation is properly generated and disseminated for all all cl
 
 The vNext structure adheres to a strict namespace culture of mapping the namespace 1-1 with the folder structure of the project.  This ensures that classes are easy to discover and maintain.  It also ensures the dependencies of any class are laid out in the beginning using definitions of the file.
 
-![](/External/ReadMeImages/MRTK-NameSpaceExample.png)
+![](External/ReadMeImages/MRTK-NameSpaceExample.png)
 
 ### Do:
 

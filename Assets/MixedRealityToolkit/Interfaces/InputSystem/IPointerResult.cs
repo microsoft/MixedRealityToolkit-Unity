@@ -17,12 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         Vector3 StartPoint { get; }
 
         /// <summary>
-        /// Details about the currently focused <see cref="GameObject"/>.
+        /// Details about the currently focused <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         FocusDetails Details { get; }
 
         /// <summary>
-        /// The current pointer's target <see cref="GameObject"/>
+        /// The current pointer's target <see cref="UnityEngine.GameObject"/>
         /// </summary>
         GameObject CurrentPointerTarget { get; }
 

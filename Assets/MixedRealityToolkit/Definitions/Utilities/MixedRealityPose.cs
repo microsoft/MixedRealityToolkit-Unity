@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         /// The default value for a Six Dof Transform.
         /// </summary>
         /// <returns>
-        /// <see cref="Vector3.zero"/> and <see cref="Quaternion.identity"/>.
+        /// <see cref="UnityEngine.Vector3.zero"/> and <see cref="UnityEngine.Quaternion.identity"/>.
         /// </returns>
         public static MixedRealityPose ZeroIdentity { get; } = new MixedRealityPose(Vector3.zero, Quaternion.identity);
 

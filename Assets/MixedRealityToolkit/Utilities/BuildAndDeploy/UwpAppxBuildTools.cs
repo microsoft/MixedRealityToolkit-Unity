@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
         /// Build the UWP appx bundle for this project.  Requires that <see cref="BuildUnityPlayer"/> has already be run or a user has
         /// previously built the Unity Player with the WSA Player as the Build Target.
         /// </summary>
-        /// <param name="productName">The applications product name. Typically <see cref="PlayerSettings.productName"/></param>
+        /// <param name="productName">The applications product name. Typically <see cref="UnityEditor.PlayerSettings.productName"/></param>
         /// <param name="forceRebuildAppx">Should we force rebuild the appx bundle?</param>
         /// <param name="buildConfig">Debug, Release, or Master configurations are valid.</param>
         /// <param name="buildPlatform">x86 or x64 build platforms are valid.</param>
@@ -154,6 +154,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
 
             // Before building, need to run a nuget restore to generate a json.lock file. Failing to do this breaks the build in VS RTM
+
+#if !UNITY_2019_1_OR_NEWER
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
             {
                 if (!await RestoreNugetPackagesAsync(nugetPath, storePath) ||
@@ -165,6 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                     return IsBuilding = false;
                 }
             }
+#endif
 
             // Ensure that the generated .appx version increments by modifying Package.appxmanifest
             if (!SetPackageVersion(incrementVersion))

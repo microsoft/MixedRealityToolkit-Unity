@@ -17,7 +17,7 @@ API documentation will be generated automatically from the MRTK source files. To
 
 - [Class, Struct, Enum Summary Blocks](#class-struct-enum-summary-blocks)
 - [Property, Method, Event Summary Blocks](#property-method-event-summary-blocks)
-- [Feature Introduction Version and Dependencies](#feature-introductuin-version-and-dependencies)
+- [Feature Introduction Version and Dependencies](#feature-introduction-version-and-dependencies)
 - [Serialized Fields](#serialized-fields)
 - [Enumeration Values](#enumeration-values)
 
@@ -158,7 +158,7 @@ Performance notes are recommended for CPU and/or GPU heavy components and **may*
 
 ## Breaking Changes
 
-Breaking changes documentation is to consist of a top level [file](/BreakingChanges.md) which links to each feature area's individual BreakingChanges.md.
+Breaking changes documentation is to consist of a top level [file](BreakingChanges.md) which links to each feature area's individual BreakingChanges.md.
 
 The feature area BreakingChanges.md files are to contain the list of all known breaking changes for a given release **as well as** the history of breaking changes from past releases.
 

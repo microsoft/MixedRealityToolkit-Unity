@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
 {
     /// <summary>
-    /// Component that can be added to any <see cref="GameObject"/> with a <see cref="Collider"/> to Modifies either the <see cref="IMixedRealityCursor"/> reacts when focused by a <see cref="IMixedRealityPointer"/>.
+    /// Component that can be added to any <see cref="UnityEngine.GameObject"/> with a <see cref="UnityEngine.Collider"/> to Modifies either the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityCursor"/> reacts when focused by a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>.
     /// </summary>
     public class CursorModifier : MonoBehaviour, ICursorModifier
     {

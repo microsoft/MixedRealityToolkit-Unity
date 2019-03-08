@@ -24,7 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <summary>
         /// Creates a <see cref="SpatialAwarenessPlanarObject"/>.
         /// </summary>
-        /// <param name="bounds"></param> todo: add comments
+        /// <param name="size"></param> todo: add comments
+        /// <param name="layer"></param>
         /// <param name="name"></param>
         /// <param name="planeId"></param>
         /// <returns>

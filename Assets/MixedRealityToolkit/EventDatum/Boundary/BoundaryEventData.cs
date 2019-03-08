@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary
         /// Is the ceiling being visualized by the boundary system.
         /// </summary>
         /// <remarks>
-        /// The boundary system defines the ceiling as a plane set at <see cref="IMixedRealityBoundarySystem.BoundaryHeight"/> above the floor.
+        /// The boundary system defines the ceiling as a plane set at <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem.IMixedRealityBoundarySystem.BoundaryHeight"/> above the floor.
         /// </remarks>
         public bool IsCeilingVisualized { get; private set; }
 

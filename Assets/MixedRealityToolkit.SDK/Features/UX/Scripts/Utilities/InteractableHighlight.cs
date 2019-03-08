@@ -10,8 +10,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 {
     /// <summary>
-    /// Adds or removes materials to target renderer for highlighting Focused <see cref="GameObject"/>s.
-    /// <remarks>Useful with focusable <see cref="GameObject"/>s</remarks>
+    /// Adds or removes materials to target renderer for highlighting Focused <see cref="UnityEngine.GameObject"/>s.
+    /// <remarks>Useful with focusable <see cref="UnityEngine.GameObject"/>s</remarks>
     /// </summary>
     public class InteractableHighlight : BaseFocusHandler
     {

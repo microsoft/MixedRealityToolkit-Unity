@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
 {
     /// <summary>
-    /// Interface for cursor modifiers that can modify a <see cref="GameObject"/>'s properties.
+    /// Interface for cursor modifiers that can modify a <see cref="UnityEngine.GameObject"/>'s properties.
     /// </summary>
     public interface ICursorModifier : IMixedRealityFocusChangedHandler
     {
@@ -18,17 +18,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         Transform HostTransform { get; set; }
 
         /// <summary>
-        /// How much a <see cref="IMixedRealityCursor"/>'s position should be offset from the surface of the <see cref="GameObject"/> when overlapping.
+        /// How much a <see cref="IMixedRealityCursor"/>'s position should be offset from the surface of the <see cref="UnityEngine.GameObject"/> when overlapping.
         /// </summary>
         Vector3 CursorPositionOffset { get; set; }
 
         /// <summary>
-        /// Should the <see cref="IMixedRealityCursor"/> snap to the <see cref="GameObject"/>'s position?
+        /// Should the <see cref="IMixedRealityCursor"/> snap to the <see cref="UnityEngine.GameObject"/>'s position?
         /// </summary>
         bool SnapCursorPosition { get; set; }
 
         /// <summary>
-        /// Scale of the <see cref="IMixedRealityCursor"/> when looking at this <see cref="GameObject"/>.
+        /// Scale of the <see cref="IMixedRealityCursor"/> when looking at this <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         Vector3 CursorScaleOffset { get; set; }
 
@@ -38,17 +38,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         Vector3 CursorNormalOffset { get; set; }
 
         /// <summary>
-        /// If true, the normal from the pointing vector will be used to orient the <see cref="IMixedRealityCursor"/> instead of the targeted <see cref="GameObject"/>'s normal at point of contact.
+        /// If true, the normal from the pointing vector will be used to orient the <see cref="IMixedRealityCursor"/> instead of the targeted <see cref="UnityEngine.GameObject"/>'s normal at point of contact.
         /// </summary>
         bool UseGazeBasedNormal { get; set; }
 
         /// <summary>
-        /// Should the <see cref="IMixedRealityCursor"/> be hidden when this <see cref="GameObject"/> is focused?
+        /// Should the <see cref="IMixedRealityCursor"/> be hidden when this <see cref="UnityEngine.GameObject"/> is focused?
         /// </summary>
         bool HideCursorOnFocus { get; set; }
 
         /// <summary>
-        /// <see cref="IMixedRealityCursor"/> animation parameters to set when this <see cref="GameObject"/> is focused. Leave empty for none.
+        /// <see cref="IMixedRealityCursor"/> animation parameters to set when this <see cref="UnityEngine.GameObject"/> is focused. Leave empty for none.
         /// </summary>
         AnimatorParameter[] CursorParameters { get; }
 
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         Vector3 GetModifiedScale(IMixedRealityCursor cursor);
 
         /// <summary>
-        /// Returns the modified <see cref="Transform"/> for the <see cref="IMixedRealityCursor"/> after considering this modifier.
+        /// Returns the modified <see cref="UnityEngine.Transform"/> for the <see cref="IMixedRealityCursor"/> after considering this modifier.
         /// </summary>
         /// <param name="cursor">Cursor that is being modified.</param>
         /// <param name="position">Modified position.</param>

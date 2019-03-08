@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
         /// </summary>
         /// <param name="eventData"></param>
         /// <remarks>
-        /// The <see cref="InputEventData{T}.InputData"/> is the pressed amount, if available.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Core.EventDatum.Input.InputEventData{T}.InputData"/> is the pressed amount, if available.
         /// </remarks>
         [Obsolete("Use IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)")]
         void OnInputPressed(InputEventData<float> eventData);
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
         /// Input Position updates from Thumbsticks, Touchpads, or any other dual axis input with a position.
         /// </summary>
         /// <remarks>
-        /// The <see cref="InputEventData{T}.InputData"/> is the current input position.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Core.EventDatum.Input.InputEventData{T}.InputData"/> is the current input position.
         /// </remarks>
         /// <param name="eventData"></param>
         [Obsolete("Use IMixedRealityInputHandler<Vector2>.OnInputChanged(InputEventData<Vector2> eventData)")]
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
         /// Raised input event updates from the type of input specified in the interface handler implementation.
         /// </summary>
         /// <remarks>
-        /// The <see cref="InputEventData{T}.InputData"/> is the current input data.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Core.EventDatum.Input.InputEventData{T}.InputData"/> is the current input data.
         /// </remarks>
         void OnInputChanged(InputEventData<T> eventData);
     }

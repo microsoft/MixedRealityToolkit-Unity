@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         private SystemType gazeProviderType;
 
         /// <summary>
-        /// The concrete type of <see cref="IMixedRealityGazeProvider"/> to use.
+        /// The concrete type of <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityGazeProvider"/> to use.
         /// </summary>
         public SystemType GazeProviderType
         {

@@ -285,6 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    EditorGUILayout.HelpBox("It is recommended to enable the Diagnostics system during development. Be sure to disable prior to building your shipping product.", MessageType.Warning);
                     EditorGUILayout.PropertyField(enableDiagnosticsSystem);
                     EditorGUILayout.PropertyField(diagnosticsSystemType);
                     changed |= RenderProfile(diagnosticsSystemProfile);

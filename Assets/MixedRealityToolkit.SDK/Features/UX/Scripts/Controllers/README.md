@@ -18,11 +18,11 @@ The framework is flexible enough to allow you to provide offsets to rotate and r
 
 Using the visualizer is extremely simple, just add it to an existing GameObject in your scene and provided you have configured your controller correctly, they will simply be instantiated into the scene at runtime when controllers are detected.
 
-![](/External/HowTo/ControlerVisualizer/ControllerVisualizerInspector.png)
+![](../../../../../../External/ReadMeImages/ControllerVisualizer/ControllerVisualizerInspector.png)
 
 Check the documentation on configuring Controller Profiles for more details:
 
-* [MixedReality Controller Configuration Profile configuration](/Assets/MixedRealityToolkit-SDK/Profiles/MixedRealityControllerConfigurationProfile.md)
+* [MixedReality Controller Configuration Profile configuration](../../../../Profiles/MixedRealityControllerConfigurationProfile.md)
 
 ### Controller Visualizer notes
 

@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="eventSystem">Typically will be <see cref="EventSystem.current"/></param>
+        /// <param name="eventSystem">Typically will be <see cref="UnityEngine.EventSystem.current"/></param>
         public TeleportEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>

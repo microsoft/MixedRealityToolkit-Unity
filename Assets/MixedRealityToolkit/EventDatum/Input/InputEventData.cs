@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
     public class InputEventData : BaseInputEventData
     {
         /// <summary>
-        /// Handedness of the <see cref="IMixedRealityInputSource"/>.
+        /// Handedness of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityInputSource"/>.
         /// </summary>
         public Handedness Handedness { get; private set; } = Handedness.None;
 
