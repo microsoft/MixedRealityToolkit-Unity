@@ -43,16 +43,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         public bool Initialize(float markerSize)
         {
             _markerSize = markerSize;
-            if (InitializeNative())
+
+            try
             {
-                IsInitialized = true;
-                return true;
+                if (InitializeNative())
+                {
+                    IsInitialized = true;
+                    return true;
+                }
             }
-            else
-            {
-                Debug.Log("SpectatorViewPlugin.dll did not initialize correctly");
-                return false;
-            }
+            catch { }
+
+            Debug.LogWarning("SpectatorViewPlugin.dll did not initialize correctly");
+            return false;
         }
 
         public Dictionary<int, Marker> ProcessImage(
@@ -63,9 +66,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             CameraIntrinsics intrinsics,
             CameraExtrinsics extrinsics)
         {
-            Debug.Log("ProcessImage called in SpectatorViewPluginAPI");
-
             var dictionary = new Dictionary<int, Marker>();
+
+            if (!IsInitialized)
+            {
+                Debug.LogError("Process image called but SpectatorViewPlugin.dll did not initialize correctly");
+                return dictionary;
+            }
 
             if (!IsValidPixelFormat(pixelFormat))
             {
