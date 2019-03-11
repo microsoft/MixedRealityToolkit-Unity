@@ -19,13 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
 
         public event MarkersUpdatedHandler MarkersUpdated;
 
-        void OnValidate()
-        {
-#if UNITY_WSA
-            UnityArUcoMarkerDetectorPluginAPI.CheckForDependencies();
-#endif
-        }
-
         public void StartDetecting()
         {
             this.gameObject.SetActive(true);
