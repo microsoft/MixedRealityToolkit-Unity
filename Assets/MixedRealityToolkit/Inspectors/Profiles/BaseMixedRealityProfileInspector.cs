@@ -84,8 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                 if (!profileTypeIsValid)
                 {
-                    EditorGUILayout.HelpBox("The profile is not configured to be used with a service of type " + serviceType.Name
-                        + "\nIs your profile missing the " + typeof(MixedRealityServiceProfileAttribute).Name + " attribute?", MessageType.Warning);
+                    EditorGUILayout.HelpBox("This profile is not supported for " + serviceType.Name + ". Using an unsupported service may result in unexpected behavior.", MessageType.Warning);
                 }
             }
 
