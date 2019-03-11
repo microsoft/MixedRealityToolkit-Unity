@@ -21,6 +21,8 @@ The vNext branch is taking all the best lessons learned from the original Mixed 
 
 > Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](MRTK-SDK.md) here.
 
+> Find this readme, other documentation articles and the MRTK api reference on our [developer documentation on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/). 
+
 # Feature areas
 The Mixed Reality Toolkit vNext will includes many APIs to accelerate the development of MR / XR / VR / AR projects for a range of supported devices, including (but not limited to)
 

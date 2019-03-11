@@ -20,7 +20,7 @@ The docfx build files in the MRTK repo can be used to create a local version of 
 * open a powershell or cmd prompt in the root of the MRTK project
 * execute docfx docfx.json (optionally with the -f option to force a rebuild of doc files)
 * execute docfx serve doc (optionally with -p *portnumber* if you don't want to use the 8888 default port)
-* open a webbrowser with localhost:*portnumber*
+* open a web browser with localhost:*portnumber*
 
 Note that on executing the docfx command on the json build file docfx will show any broken links in the documentation as warning. 
 Please make sure whenever you perform changes on any of the documentation files or API to update all links pointing to these articles or code.
@@ -29,7 +29,7 @@ Please make sure whenever you perform changes on any of the documentation files 
 Docfx supports crefs in /// documented code. It will translate those references to links pointing to the generated api documentation or to external documentation websites.
 External xref services for resolving links to external libraries/apis can be added to the docfx.json build settings file in the property *xrefService*.
 
-For external apis that don't provide an xref service hrefs to the documentaion website can be added to the comments.
+For external apis that don't provide an xref service hrefs to the documentation website can be added to the comments.
 
 Examples:
 
