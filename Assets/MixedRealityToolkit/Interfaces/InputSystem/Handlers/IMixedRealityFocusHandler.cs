@@ -19,13 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
         void OnFocusChanged(FocusEventData eventData);
 
         /// <summary>
-        /// The Focus Enter event is raised on this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> whenever a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>'s focus enters this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>'s <see cref="UnityEngine.Collider"/>.
+        /// The Focus Enter event is raised on this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> whenever a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>'s focus enters this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>'s <see href="https://docs.unity3d.com/ScriptReference/Collider.html">Collider</see>.
         /// </summary>
         /// <param name="eventData"></param>
         void OnFocusEnter(FocusEventData eventData);
 
         /// <summary>
-        /// The Focus Exit event is raised on this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> whenever a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>'s focus leaves this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>'s <see cref="UnityEngine.Collider"/>.
+        /// The Focus Exit event is raised on this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> whenever a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>'s focus leaves this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>'s <see href="https://docs.unity3d.com/ScriptReference/Collider.html">Collider</see>.
         /// </summary>
         /// <param name="eventData"></param>
         void OnFocusExit(FocusEventData eventData);

@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         LayerMask[] FocusLayerMasks { get; }
 
         /// <summary>
-        /// The Camera the <see cref="UnityEngine.EventSystems.EventSystem"/> uses to raycast against.
+        /// The Camera the <see href="https://docs.unity3d.com/ScriptReference/EventSystems.EventSystem.html">EventSystem</see> uses to raycast against.
         /// <para><remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks></para>
         /// </summary>
         Camera UIRaycastCamera { get; }

@@ -376,7 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <param name="handleSize">Optional, handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
-        /// <returns>The new <see cref="UnityEngine.Quaternion"/> value.</returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Quaternion.html">Quaternion</see> value.</returns>
         public static Quaternion RotationHandle(Object target, Vector3 position, Quaternion rotation, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorRotation;

@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         Vector3 GetModifiedScale(IMixedRealityCursor cursor);
 
         /// <summary>
-        /// Returns the modified <see cref="UnityEngine.Transform"/> for the <see cref="IMixedRealityCursor"/> after considering this modifier.
+        /// Returns the modified <see href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</see> for the <see cref="IMixedRealityCursor"/> after considering this modifier.
         /// </summary>
         /// <param name="cursor">Cursor that is being modified.</param>
         /// <param name="position">Modified position.</param>

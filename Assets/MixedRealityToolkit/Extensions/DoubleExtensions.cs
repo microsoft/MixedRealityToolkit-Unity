@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
     public static class DoubleExtensions
     {
         /// <summary>
-        /// Checks if two numbers are approximately equal. Similar to <see cref="UnityEngine.Mathf.Approximately(float, float)"/>, but the tolerance
+        /// Checks if two numbers are approximately equal. Similar to <see href="https://docs.unity3d.com/ScriptReference/Mathf.Approximately.html">Mathf.Approximately(float, float)</see>, but the tolerance
         /// can be specified.
         /// </summary>
         /// <param name="number">One of the numbers to compare.</param>

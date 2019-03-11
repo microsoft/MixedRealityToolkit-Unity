@@ -116,35 +116,35 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         // TODO: make these (and future plane) events more generic
 
         /// <summary>
-        /// <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>'s should call this method to indicate a mesh has been added.
+        /// <see cref="Observers.IMixedRealitySpatialAwarenessMeshObserver"/>'s should call this method to indicate a mesh has been added.
         /// </summary>
         /// <param name="observer">The observer raising the event.</param>
         /// <param name="meshId">Value identifying the mesh.</param>
         /// <param name="meshObject">The mesh <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
+        /// This method is to be called by implementations of the <see cref="Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
         /// </remarks>
         void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject);
 
         /// <summary>
-        /// <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>'s should call this method to indicate an existing mesh has been updated.
+        /// <see cref="Observers.IMixedRealitySpatialAwarenessMeshObserver"/>'s should call this method to indicate an existing mesh has been updated.
         /// </summary>
         /// <param name="observer">The observer raising the event.</param>
         /// <param name="meshId">Value identifying the mesh.</param>
         /// <param name="meshObject">The mesh <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
+        /// This method is to be called by implementations of the <see cref="Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
         /// </remarks>
         void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject);
         //        void RaiseObservedObjectUpdated<T>(IMixedRealitySpatialAwarenessObserver observer, int meshId, T observedObject);
 
         /// <summary>
-        /// <see cref="IMixedRealitySpatialAwarenessMeshObserver"/>'s should call this method to indicate an existing mesh has been removed.
+        /// <see cref="Observers.IMixedRealitySpatialAwarenessMeshObserver"/>'s should call this method to indicate an existing mesh has been removed.
         /// </summary>
         /// <param name="observer">The observer raising the event.</param>
         /// <param name="meshId">Value identifying the mesh.</param>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
+        /// This method is to be called by implementations of the <see cref="Observers.IMixedRealitySpatialAwarenessObserver"/> interface, not by application code.
         /// </remarks>
         void RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver observer, int meshId);
     }
