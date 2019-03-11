@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     string showFoldoutKey = GetSubProfileDropdownKey(property);
                     bool showFoldout = SessionState.GetBool(showFoldoutKey, false);
-                    showFoldout = EditorGUILayout.Foldout(showFoldout, showFoldout ? "Hide " + property.displayName + " contents" : "Show " + property.displayName + " contents");
+                    showFoldout = EditorGUILayout.Foldout(showFoldout, showFoldout ? "Hide " + property.displayName + " contents" : "Show " + property.displayName + " contents", true);
 
                     if (showFoldout)
                     {
