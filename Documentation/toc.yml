@@ -15,6 +15,8 @@
     href: ../CodingGuidelines.md
   - name: Documentation Guide
     href: ../DocumentationGuide.md
+  - name: Developer Docs Generation
+    href: DevDocGuide.md
 - name: How-tos
   href: ../External/HowTo/README.md
   items:
