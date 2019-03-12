@@ -227,13 +227,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 
         public void HandleEvent(FocusEventData eventData, GameObject focusedObject, ExecuteEvents.EventFunction<IMixedRealityFocusHandler> eventHandler)
         {
-            HandleEventInternal(eventData, eventHandler, (pointer) => focusedObject);
+            HandleEventInternal(eventData, eventHandler, pointer => focusedObject);
         }
 
         /// <inheritdoc />
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
         {
-            HandleEventInternal(eventData, eventHandler, (pointer) => FocusProvider?.GetFocusedObject(pointer));
+            HandleEventInternal(eventData, eventHandler, pointer => FocusProvider?.GetFocusedObject(pointer));
         }
 
         private void HandleEventInternal<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler, Func<IMixedRealityPointer, GameObject> getFocusedObject) where T : IEventSystemHandler
@@ -255,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             }
 
             // Send the event to global listeners
-            HandleEvent(eventData, eventHandler);
+            base.HandleEvent(eventData, eventHandler);
 
             if (baseInputEventData.used)
             {
