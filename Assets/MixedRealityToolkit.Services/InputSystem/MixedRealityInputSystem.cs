@@ -1,4 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
@@ -719,14 +718,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
                 {
                     var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-                    IMixedRealityFocusAmountHandler amountHandler = handler as IMixedRealityFocusAmountHandler;
-                    if (amountHandler != null && amountHandler.ReceiveAllFocusChanges)
+                    if (handler.ReceiveAllFocusChanges)
                     {
                         handler.OnFocusEnter(casted);
                     }
                     else
                     {
-                        if (casted.FocusProvider.IsFirstFocusEnter(casted.NewFocusedObject, casted.Pointer))
+                        if (casted.FocusProvider.IsOnlyFocusingPointer(casted.NewFocusedObject, casted.Pointer))
                         handler.OnFocusEnter(casted);
                     }
                 };
@@ -756,7 +754,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                     }
                     else
                     {
-                        if (casted.FocusProvider.IsLastFocusExit(casted.OldFocusedObject, casted.Pointer))
+                        if (casted.FocusProvider.IsOnlyFocusingPointer(casted.OldFocusedObject, casted.Pointer))
                             handler.OnFocusExit(casted);
                     }
                 };

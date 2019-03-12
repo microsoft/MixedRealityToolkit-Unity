@@ -29,5 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
         /// </summary>
         /// <param name="eventData"></param>
         void OnFocusExit(FocusEventData eventData);
+
+        /// <summary>
+        /// Determines if all OnFocusEnter and OnFocusExit events will be received
+        /// </summary>
+        bool ReceiveAllFocusChanges { get; }
     }
 }

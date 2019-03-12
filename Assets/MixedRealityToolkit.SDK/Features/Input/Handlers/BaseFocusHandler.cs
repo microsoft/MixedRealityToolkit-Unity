@@ -19,6 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         [Tooltip("Is focus enabled for this component?")]
         private bool focusEnabled = true;
 
+        [SerializeField]
+        [Tooltip("Receive all FocusEnter and FocusExit events?")]
+        private bool receiveAllFocusEvents = false;
+       
+        /// <inheritdoc />
+        public bool ReceiveAllFocusChanges => receiveAllFocusEvents;
+
         /// <summary>
         /// Is focus enabled for this <see cref="UnityEngine.Component"/>?
         /// </summary>
