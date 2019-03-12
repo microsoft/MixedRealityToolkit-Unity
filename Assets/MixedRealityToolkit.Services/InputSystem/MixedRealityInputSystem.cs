@@ -225,8 +225,18 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 
         #region IEventSystemManager Implementation
 
+        public void HandleEvent(FocusEventData eventData, GameObject focusedObject, ExecuteEvents.EventFunction<IMixedRealityFocusHandler> eventHandler)
+        {
+            HandleEventInternal(eventData, eventHandler, (pointer) => focusedObject);
+        }
+
         /// <inheritdoc />
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
+        {
+            HandleEventInternal(eventData, eventHandler, (pointer) => FocusProvider?.GetFocusedObject(pointer));
+        }
+
+        private void HandleEventInternal<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler, Func<IMixedRealityPointer, GameObject> getFocusedObject) where T : IEventSystemHandler
         {
             if (disabledRefCount > 0)
             {
@@ -245,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             }
 
             // Send the event to global listeners
-            base.HandleEvent(eventData, eventHandler);
+            HandleEvent(eventData, eventHandler);
 
             if (baseInputEventData.used)
             {
@@ -266,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             // Get the focused object for each pointer of the event source
             for (int i = 0; i < baseInputEventData.InputSource.Pointers.Length; i++)
             {
-                GameObject focusedObject = FocusProvider?.GetFocusedObject(baseInputEventData.InputSource.Pointers[i]);
+                GameObject focusedObject = getFocusedObject(baseInputEventData.InputSource.Pointers[i]);
 
                 // Handle modal input if one exists
                 if (modalInputStack.Count > 0 && !modalEventHandled)
@@ -654,30 +664,12 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
-            // Raise Focus Events on the old and new focused objects.
-            if (oldFocusedObject != null)
-            {
-                ExecuteEvents.ExecuteHierarchy(oldFocusedObject, focusEventData, OnPreFocusChangedHandler);
-            }
-
-            if (newFocusedObject != null)
-            {
-                ExecuteEvents.ExecuteHierarchy(newFocusedObject, focusEventData, OnPreFocusChangedHandler);
-            }
+            HandleEvent(focusEventData, OnPreFocusChangedHandler);
 
             // Raise Focus Events on the pointers cursor if it has one.
-            if (pointer.BaseCursor != null)
+            if (pointer?.BaseCursor?.GameObjectReference != null)
             {
-                try
-                {
-                    // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
-                    // We'll ignore when this happens.
-                    ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GameObjectReference, focusEventData, OnPreFocusChangedHandler);
-                }
-                catch (Exception)
-                {
-                    // ignored.
-                }
+                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GameObjectReference, focusEventData, OnPreFocusChangedHandler);
             }
         }
 
@@ -693,30 +685,12 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
-            // Raise Focus Events on the old and new focused objects.
-            if (oldFocusedObject != null)
-            {
-                ExecuteEvents.ExecuteHierarchy(oldFocusedObject, focusEventData, OnFocusChangedHandler);
-            }
-
-            if (newFocusedObject != null)
-            {
-                ExecuteEvents.ExecuteHierarchy(newFocusedObject, focusEventData, OnFocusChangedHandler);
-            }
+            HandleEvent(focusEventData, OnFocusChangedHandler);
 
             // Raise Focus Events on the pointers cursor if it has one.
-            if (pointer.BaseCursor != null)
+            if (pointer?.BaseCursor?.GameObjectReference != null)
             {
-                try
-                {
-                    // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
-                    // We'll ignore when this happens.
-                    ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GameObjectReference, focusEventData, OnFocusChangedHandler);
-                }
-                catch (Exception)
-                {
-                    // ignored.
-                }
+                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GameObjectReference, focusEventData, OnFocusChangedHandler);
             }
         }
 
@@ -732,7 +706,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             focusEventData.Initialize(pointer, FocusProvider);
 
-            ExecuteEvents.ExecuteHierarchy(focusedObject, focusEventData, OnFocusEnterEventHandler);
+            HandleEvent(focusEventData, focusedObject, OnFocusEnterEventHandler);
 
             GraphicInputEventData graphicEventData;
             if (FocusProvider.TryGetSpecificPointerGraphicEventData(pointer, out graphicEventData))
@@ -746,7 +720,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 {
                     var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
                     IMixedRealityFocusAmountHandler amountHandler = handler as IMixedRealityFocusAmountHandler;
-                    if (amountHandler != null && amountHandler.ReceiveAllFocusEvents)
+                    if (amountHandler != null && amountHandler.ReceiveAllFocusChanges)
                     {
                         handler.OnFocusEnter(casted);
                     }
@@ -762,7 +736,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             focusEventData.Initialize(pointer, FocusProvider);
 
-            ExecuteEvents.ExecuteHierarchy(unfocusedObject, focusEventData, OnFocusExitEventHandler);
+            HandleEvent(focusEventData, unfocusedObject, OnFocusExitEventHandler);
 
             GraphicInputEventData graphicEventData;
             if (FocusProvider.TryGetSpecificPointerGraphicEventData(pointer, out graphicEventData))
@@ -776,13 +750,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 {
                     var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
                     IMixedRealityFocusAmountHandler amountHandler = handler as IMixedRealityFocusAmountHandler;
-                    if (amountHandler != null && amountHandler.ReceiveAllFocusEvents)
+                    if (amountHandler != null && amountHandler.ReceiveAllFocusChanges)
                     {
                         handler.OnFocusExit(casted);
                     }
                     else
                     {
-                        if (casted.FocusProvider.IsLastFocusExit(casted.NewFocusedObject, casted.Pointer))
+                        if (casted.FocusProvider.IsLastFocusExit(casted.OldFocusedObject, casted.Pointer))
                             handler.OnFocusExit(casted);
                     }
                 };

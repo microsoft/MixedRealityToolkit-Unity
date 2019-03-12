@@ -522,6 +522,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         #region MixedRealityFocusHandlers
 
+        /// <inheritdoc />
+        public void OnBeforeFocusChange(FocusEventData eventData) { /*Unused*/ }
+
+        /// <inheritdoc />
+        public void OnFocusChanged(FocusEventData eventData) { /*Unused*/ }
+
         public void OnFocusEnter(FocusEventData eventData)
         {
             if (!CanInteract())
@@ -544,21 +550,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             SetFocus(pointers.Count > 0);
         }
 
-        public void OnBeforeFocusChange(FocusEventData eventData)
-        {
-            //do nothing
-        }
-
-        public void OnFocusChanged(FocusEventData eventData)
-        {
-            //do nothing
-        }
-
         #endregion MixedRealityFocusHandlers
 
         #region MixedRealityFocusAmountHandlers
 
-        public bool ReceiveAllFocusEvents => true;
+        public bool ReceiveAllFocusChanges => true;
 
         #endregion MixedRealityFocusAmountHandlers
 

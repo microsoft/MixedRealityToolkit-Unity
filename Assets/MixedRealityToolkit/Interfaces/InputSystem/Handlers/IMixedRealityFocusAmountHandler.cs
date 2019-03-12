@@ -8,5 +8,5 @@ public interface IMixedRealityFocusAmountHandler : IEventSystemHandler
     /// <summary>
     /// Determines if all OnFocusEnter and OnFocusExit events will be received
     /// </summary>
-    bool ReceiveAllFocusEvents { get; }
+    bool ReceiveAllFocusChanges { get; }
 }

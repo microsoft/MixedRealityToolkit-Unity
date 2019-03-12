@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
     /// <summary>
     /// Component that can be added to any <see cref="UnityEngine.GameObject"/> with a <see cref="UnityEngine.Collider"/> to Modifies either the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityCursor"/> reacts when focused by a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>.
     /// </summary>
-    public class CursorModifier : MonoBehaviour, ICursorModifier
+    public class CursorModifier : MonoBehaviour, ICursorModifier, IMixedRealityFocusChangedHandler
     {
         #region ICursorModifier Implementation
 
@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         #region IMixedRealityFocusChangedHandler Implementation
 
         /// <inheritdoc />
-        void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData)
+        public void OnBeforeFocusChange(FocusEventData eventData)
         {
             if (eventData.NewFocusedObject == gameObject)
             {
@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         }
 
         /// <inheritdoc />
-        void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData) { }
+        public void OnFocusChanged(FocusEventData eventData) { }
 
         #endregion IMixedRealityFocusChangedHandler Implementation
 

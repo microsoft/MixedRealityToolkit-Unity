@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
     /// <summary>
     /// Describes an Input Event associated with a specific pointer's focus state change.
     /// </summary>
-    public class FocusEventData : BaseEventData
+    public class FocusEventData : BaseInputEventData
     {
         /// <summary>
         /// The pointer associated with this event.
@@ -41,9 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <param name="pointer"></param>
         public void Initialize(IMixedRealityPointer pointer, IMixedRealityFocusProvider focusProvider)
         {
-            Reset();
+            BaseInitialize(pointer.InputSourceParent, Definitions.InputSystem.MixedRealityInputAction.None);
             Pointer = pointer;
-            FocusProvider = FocusProvider;
+            FocusProvider = focusProvider;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <param name="newFocusedObject"></param>
         public void Initialize(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
-            Reset();
+            BaseInitialize(pointer.InputSourceParent, Definitions.InputSystem.MixedRealityInputAction.None);
             Pointer = pointer;
             OldFocusedObject = oldFocusedObject;
             NewFocusedObject = newFocusedObject;

@@ -16,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
     /// based on events from those interactable objects. This is the base abstract class to extend from.
     /// </summary>
     public abstract class InteractionReceiver : BaseInputHandler,
-        IMixedRealityFocusChangedHandler,
+        IMixedRealityFocusHandler,
+        IMixedRealityFocusAmountHandler,
         IMixedRealityInputHandler,
         IMixedRealityInputHandler<float>,
         IMixedRealityInputHandler<Vector2>,
@@ -29,6 +30,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         [SerializeField]
         [Tooltip("Target interactable Object to receive events for")]
         private List<GameObject> interactables = new List<GameObject>();
+
+        [SerializeField]
+        [Tooltip("Do you want to receive all focus enter and exit events")]
+        private bool receiveAllFocusEvents = false;
 
         /// <summary>
         /// List of linked interactable objects to receive events for
@@ -159,23 +164,36 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         #region IMixedRealityFocusChangedHandler Implementation
 
         /// <inheritdoc />
-        void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { /*Unused*/ }
+        public void OnBeforeFocusChange(FocusEventData eventData) { /*Unused*/ }
 
         /// <inheritdoc />
-        void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
-        {
-            if (eventData.NewFocusedObject != null && IsInteractable(eventData.NewFocusedObject))
-            {
-                FocusEnter(eventData.NewFocusedObject, eventData);
-            }
+        public void OnFocusChanged(FocusEventData eventData) { /*Unused*/ }
 
+        /// <inheritdoc />
+        public void OnFocusExit(FocusEventData eventData)
+        {
             if (eventData.OldFocusedObject != null && IsInteractable(eventData.OldFocusedObject))
             {
                 FocusExit(eventData.OldFocusedObject, eventData);
             }
         }
 
+        /// <inheritdoc />
+        public void OnFocusEnter(FocusEventData eventData)
+        {
+            if (eventData.NewFocusedObject != null && IsInteractable(eventData.NewFocusedObject))
+            {
+                FocusEnter(eventData.NewFocusedObject, eventData);
+            }
+        }
+
         #endregion IMixedRealityFocusChangedHandler Implementation
+
+        #region IMixedRealityFocusAmountHandler Implementation
+
+        public bool ReceiveAllFocusChanges => receiveAllFocusEvents;
+
+        #endregion IMixedRealityFocusAmountHandler Implementation
 
         #region IMixedRealityInputHandler Implementation
 
