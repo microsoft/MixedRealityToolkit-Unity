@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
     /// based on events from those interactable objects. This is the base abstract class to extend from.
     /// </summary>
     public abstract class InteractionReceiver : BaseInputHandler,
-        IMixedRealityFocusChangedHandler,
+        IMixedRealityFocusHandler,
         IMixedRealityInputHandler,
         IMixedRealityInputHandler<float>,
         IMixedRealityInputHandler<Vector2>,
@@ -160,16 +160,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             return (interactables != null && interactables.Contains(interactable));
         }
 
-        #region IMixedRealityFocusChangedHandler Implementation
+        #region IMixedRealityFocusHandler Implementation
 
         /// <inheritdoc />
-        public void OnBeforeFocusChange(FocusEventData eventData) { /*Unused*/ }
+        void IMixedRealityFocusHandler.OnBeforeFocusChange(FocusEventData eventData) { /*Unused*/ }
 
         /// <inheritdoc />
-        public void OnFocusChanged(FocusEventData eventData) { /*Unused*/ }
+        void IMixedRealityFocusHandler.OnFocusChanged(FocusEventData eventData) { /*Unused*/ }
 
         /// <inheritdoc />
-        public void OnFocusExit(FocusEventData eventData)
+        void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
         {
             if (eventData.OldFocusedObject != null && IsInteractable(eventData.OldFocusedObject))
             {
@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         }
 
         /// <inheritdoc />
-        public void OnFocusEnter(FocusEventData eventData)
+        void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
         {
             if (eventData.NewFocusedObject != null && IsInteractable(eventData.NewFocusedObject))
             {
@@ -186,13 +186,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        #endregion IMixedRealityFocusChangedHandler Implementation
-
-        #region IMixedRealityFocusAmountHandler Implementation
-
         public bool ReceiveAllFocusChanges => receiveAllFocusEvents;
 
-        #endregion IMixedRealityFocusAmountHandler Implementation
+        #endregion IMixedRealityFocusHandler Implementation
 
         #region IMixedRealityInputHandler Implementation
 

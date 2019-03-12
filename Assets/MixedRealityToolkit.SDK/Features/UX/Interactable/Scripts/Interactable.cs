@@ -42,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         private static IMixedRealityInputSystem inputSystem = null;
         protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>());
 
-
         // list of pointers
         protected List<IMixedRealityPointer> pointers = new List<IMixedRealityPointer>();
         public List<IMixedRealityPointer> Focusers => pointers;
@@ -528,6 +527,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         /// <inheritdoc />
         public void OnFocusChanged(FocusEventData eventData) { /*Unused*/ }
 
+        /// <inheritdoc />
         public void OnFocusEnter(FocusEventData eventData)
         {
             if (!CanInteract())
@@ -539,6 +539,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             SetFocus(pointers.Count > 0);
         }
 
+        /// <inheritdoc />
         public void OnFocusExit(FocusEventData eventData)
         {
             if (!CanInteract() && !HasFocus)
@@ -550,13 +551,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             SetFocus(pointers.Count > 0);
         }
 
-        #endregion MixedRealityFocusHandlers
-
-        #region MixedRealityFocusAmountHandlers
-
+        /// <inheritdoc />
         public bool ReceiveAllFocusChanges => true;
 
-        #endregion MixedRealityFocusAmountHandlers
+        #endregion MixedRealityFocusHandlers
+
 
         #region MixedRealityPointerHandlers
 
