@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
     [System.Serializable]
 
-    public class Interactable : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityFocusAmountHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
+    public class Interactable : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
     {
         /// <summary>
         /// Setup the input system

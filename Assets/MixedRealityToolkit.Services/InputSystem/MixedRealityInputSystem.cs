@@ -747,8 +747,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
                 {
                     var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-                    IMixedRealityFocusAmountHandler amountHandler = handler as IMixedRealityFocusAmountHandler;
-                    if (amountHandler != null && amountHandler.ReceiveAllFocusChanges)
+                    if (handler.ReceiveAllFocusChanges)
                     {
                         handler.OnFocusExit(casted);
                     }

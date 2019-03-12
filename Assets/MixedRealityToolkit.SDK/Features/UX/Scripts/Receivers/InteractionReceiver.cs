@@ -17,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
     /// </summary>
     public abstract class InteractionReceiver : BaseInputHandler,
         IMixedRealityFocusHandler,
-        IMixedRealityFocusAmountHandler,
         IMixedRealityInputHandler,
         IMixedRealityInputHandler<float>,
         IMixedRealityInputHandler<Vector2>,
