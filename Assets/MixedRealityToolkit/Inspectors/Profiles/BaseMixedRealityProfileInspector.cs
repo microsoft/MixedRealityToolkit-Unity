@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                 if (!renderedProfile.IsCustomProfile && profile.IsCustomProfile)
                 {
-                    if (GUILayout.Button(new GUIContent("</>", "Replace with a copy of the default profile."), EditorStyles.miniButton, GUILayout.Width(32f)))
+                    if (GUILayout.Button(new GUIContent("Clone", "Replace with a copy of the default profile."), EditorStyles.miniButton, GUILayout.Width(42f)))
                     {
                         profileToCopy = renderedProfile;
                         var profileTypeName = property.objectReferenceValue.GetType().Name;
