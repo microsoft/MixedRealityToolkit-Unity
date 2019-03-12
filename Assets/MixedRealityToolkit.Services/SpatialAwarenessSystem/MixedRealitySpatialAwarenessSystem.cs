@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
         /// </summary>
         /// <returns>
-        /// The <see cref="UnityEngine.GameObject"/> to which spatial awareness created objects will be parented.
+        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which spatial awareness created objects will be parented.
         /// </returns>
         private GameObject CreateSpatialAwarenessParent => new GameObject("Spatial Awareness System");
 

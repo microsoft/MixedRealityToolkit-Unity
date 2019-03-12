@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <summary>
         /// Set a new cursor for this <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>
         /// </summary>
-        /// <remarks>This <see cref="UnityEngine.GameObject"/> must have a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityCursor"/> attached to it.</remarks>
+        /// <remarks>This <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> must have a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityCursor"/> attached to it.</remarks>
         /// <param name="newCursor">The new cursor</param>
         public virtual void SetCursor(GameObject newCursor = null)
         {

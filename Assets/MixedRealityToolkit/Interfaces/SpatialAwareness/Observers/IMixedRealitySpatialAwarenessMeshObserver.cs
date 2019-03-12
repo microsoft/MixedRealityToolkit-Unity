@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// Gets or sets a value indicating how the mesh subsystem is to display surface meshes within the application.
         /// </summary>
         /// <remarks>
-        /// Applications that wish to process the <see cref="UnityEngine.Mesh"/>es should set this value to None.
+        /// Applications that wish to process the <see href="https://docs.unity3d.com/ScriptReference/Mesh.html">Mesh</see>es should set this value to None.
         /// </remarks>
         SpatialAwarenessMeshDisplayOptions DisplayOption { get; set; }
 
@@ -62,12 +62,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         int TrianglesPerCubicMeter { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="UnityEngine.Material"/> to be used when spatial <see cref="UnityEngine.Mesh"/>es should occlude other objects.
+        /// Gets or sets the <see href="https://docs.unity3d.com/ScriptReference/Material.html">Material</see> to be used when spatial <see href="https://docs.unity3d.com/ScriptReference/Mesh.html">Mesh</see>es should occlude other objects.
         /// </summary>
         Material OcclusionMaterial { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="UnityEngine.Material"/> to be used when displaying <see cref="UnityEngine.Mesh"/>es.
+        /// Gets or sets the <see href="https://docs.unity3d.com/ScriptReference/Material.html">Material</see> to be used when displaying <see href="https://docs.unity3d.com/ScriptReference/Mesh.html">Mesh</see>es.
         /// </summary>
         Material VisibleMaterial { get; set; }
     }
