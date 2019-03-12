@@ -34,14 +34,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
     [System.Serializable]
 
-    public class Interactable : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
+    public class Interactable : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityFocusAmountHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
     {
         /// <summary>
         /// Setup the input system
         /// </summary>
         private static IMixedRealityInputSystem inputSystem = null;
         protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>());
-        
+
+
         // list of pointers
         protected List<IMixedRealityPointer> pointers = new List<IMixedRealityPointer>();
         public List<IMixedRealityPointer> Focusers => pointers;
@@ -555,8 +556,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         #endregion MixedRealityFocusHandlers
 
+        #region MixedRealityFocusAmountHandlers
+
+        public bool ReceiveAllFocusEvents => true;
+
+        #endregion MixedRealityFocusAmountHandlers
+
         #region MixedRealityPointerHandlers
-        
+
         /// <summary>
         /// pointer up event has fired
         /// </summary>

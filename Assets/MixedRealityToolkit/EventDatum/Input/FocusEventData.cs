@@ -18,6 +18,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         public IMixedRealityPointer Pointer { get; private set; }
 
         /// <summary>
+        /// The focusProvider associated with this event.
+        /// </summary>
+        public IMixedRealityFocusProvider FocusProvider { get; private set; }
+
+        /// <summary>
         /// The old focused object.
         /// </summary>
         public GameObject OldFocusedObject { get; private set; }
@@ -34,10 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
         /// <param name="pointer"></param>
-        public void Initialize(IMixedRealityPointer pointer)
+        public void Initialize(IMixedRealityPointer pointer, IMixedRealityFocusProvider focusProvider)
         {
             Reset();
             Pointer = pointer;
+            FocusProvider = FocusProvider;
         }
 
         /// <summary>

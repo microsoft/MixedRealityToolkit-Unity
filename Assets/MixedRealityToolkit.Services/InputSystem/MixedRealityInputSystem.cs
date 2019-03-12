@@ -730,7 +730,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         /// <inheritdoc />
         public void RaiseFocusEnter(IMixedRealityPointer pointer, GameObject focusedObject)
         {
-            focusEventData.Initialize(pointer);
+            focusEventData.Initialize(pointer, FocusProvider);
 
             ExecuteEvents.ExecuteHierarchy(focusedObject, focusEventData, OnFocusEnterEventHandler);
 
@@ -745,13 +745,22 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
                 {
                     var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-                    handler.OnFocusEnter(casted);
+                    IMixedRealityFocusAmountHandler amountHandler = handler as IMixedRealityFocusAmountHandler;
+                    if (amountHandler != null && amountHandler.ReceiveAllFocusEvents)
+                    {
+                        handler.OnFocusEnter(casted);
+                    }
+                    else
+                    {
+                        if (casted.FocusProvider.IsFirstFocusEnter(casted.NewFocusedObject, casted.Pointer))
+                        handler.OnFocusEnter(casted);
+                    }
                 };
 
         /// <inheritdoc />
         public void RaiseFocusExit(IMixedRealityPointer pointer, GameObject unfocusedObject)
         {
-            focusEventData.Initialize(pointer);
+            focusEventData.Initialize(pointer, FocusProvider);
 
             ExecuteEvents.ExecuteHierarchy(unfocusedObject, focusEventData, OnFocusExitEventHandler);
 
@@ -766,7 +775,16 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
                 {
                     var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-                    handler.OnFocusExit(casted);
+                    IMixedRealityFocusAmountHandler amountHandler = handler as IMixedRealityFocusAmountHandler;
+                    if (amountHandler != null && amountHandler.ReceiveAllFocusEvents)
+                    {
+                        handler.OnFocusExit(casted);
+                    }
+                    else
+                    {
+                        if (casted.FocusProvider.IsLastFocusExit(casted.NewFocusedObject, casted.Pointer))
+                            handler.OnFocusExit(casted);
+                    }
                 };
 
         #endregion Focus Events

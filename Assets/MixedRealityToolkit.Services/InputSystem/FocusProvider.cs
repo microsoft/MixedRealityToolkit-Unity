@@ -22,9 +22,10 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
     public class FocusProvider : BaseService, IMixedRealityFocusProvider
     {
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
-        private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
-        private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
+        private readonly Dictionary<GameObject, HashSet<IMixedRealityPointer>> pendingOverallFocusEnterSet = new Dictionary<GameObject, HashSet<IMixedRealityPointer>>();
+        private readonly Dictionary<GameObject, HashSet<IMixedRealityPointer>> pendingOverallFocusExitSet = new Dictionary<GameObject, HashSet<IMixedRealityPointer>>();
         private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
+
 
         #region IFocusProvider Properties
 
@@ -91,6 +92,18 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 
         /// <inheritdoc />
         public GameObject OverrideFocusedObject { get; set; }
+
+        /// <inheritdoc />
+        public bool IsFirstFocusEnter(GameObject focusedObject, IMixedRealityPointer pointer)
+        {
+            return pendingOverallFocusEnterSet.ContainsKey(focusedObject) && pendingOverallFocusEnterSet[focusedObject].Count == 1 && pendingOverallFocusEnterSet[focusedObject].Contains(pointer);
+        }
+
+        /// <inheritdoc />
+        public bool IsLastFocusExit(GameObject unfocusedObject, IMixedRealityPointer pointer)
+        {
+            return pendingOverallFocusExitSet.ContainsKey(unfocusedObject) && pendingOverallFocusExitSet[unfocusedObject].Count == 1 && pendingOverallFocusExitSet[unfocusedObject].Contains(pointer);
+        }
 
         #endregion IFocusProvider Properties
 
@@ -865,46 +878,59 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 
                     if (pointer.PreviousPointerTarget != null)
                     {
-                        pendingOverallFocusExitSet.Add(pointer.PreviousPointerTarget);
+                        if (!pendingOverallFocusExitSet.ContainsKey(pointer.PreviousPointerTarget))
+                            pendingOverallFocusExitSet.Add(pointer.PreviousPointerTarget, new HashSet<IMixedRealityPointer>());
+                        pendingOverallFocusExitSet[pointer.PreviousPointerTarget].Add(pointer.Pointer);
                     }
 
                     if (pointer.CurrentPointerTarget != null)
                     {
-                        pendingOverallFocusEnterSet.Add(pointer.CurrentPointerTarget);
+                        if (!pendingOverallFocusEnterSet.ContainsKey(pointer.PreviousPointerTarget))
+                            pendingOverallFocusEnterSet.Add(pointer.PreviousPointerTarget, new HashSet<IMixedRealityPointer>());
+                        pendingOverallFocusEnterSet[pointer.PreviousPointerTarget].Add(pointer.Pointer);
                     }
                 }
             }
 
             // ... but now we trim out objects whose overall focus was maintained the same by a different pointer:
 
-            foreach (var pointer in pointers)
-            {
-                pendingOverallFocusExitSet.Remove(pointer.CurrentPointerTarget);
-                pendingOverallFocusEnterSet.Remove(pointer.PreviousPointerTarget);
-            }
+            //foreach (var pointer in pointers)
+            //{
+            //    pendingOverallFocusExitSet.Remove(pointer.CurrentPointerTarget);
+            //    pendingOverallFocusEnterSet.Remove(pointer.PreviousPointerTarget);
+            //}
 
             // Now we raise the events:
             for (int iChange = 0; iChange < pendingPointerSpecificFocusChange.Count; iChange++)
             {
                 PointerData change = pendingPointerSpecificFocusChange[iChange];
+                IMixedRealityPointer pointer = change.Pointer;
                 GameObject pendingUnfocusObject = change.PreviousPointerTarget;
                 GameObject pendingFocusObject = change.CurrentPointerTarget;
 
-                MixedRealityToolkit.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                MixedRealityToolkit.InputSystem.RaisePreFocusChanged(pointer, pendingUnfocusObject, pendingFocusObject);
 
-                if (pendingOverallFocusExitSet.Contains(pendingUnfocusObject))
+                MixedRealityToolkit.InputSystem.RaiseFocusExit(pointer, pendingUnfocusObject);
+                Debug.Assert(pendingOverallFocusExitSet.ContainsKey(pendingUnfocusObject) && pendingOverallFocusExitSet[pendingUnfocusObject].Contains(change.Pointer));
+
+                if (pendingOverallFocusExitSet.ContainsKey(pendingUnfocusObject))
                 {
-                    MixedRealityToolkit.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
-                    pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
+                    pendingOverallFocusExitSet[pendingUnfocusObject].Remove(pointer);
+                    if (pendingOverallFocusExitSet[pendingUnfocusObject].Count == 0)
+                        pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
                 }
 
-                if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
+                MixedRealityToolkit.InputSystem.RaiseFocusEnter(pointer, pendingFocusObject);
+                Debug.Assert(pendingOverallFocusExitSet.ContainsKey(pendingFocusObject) && pendingOverallFocusExitSet[pendingFocusObject].Contains(change.Pointer));
+
+                if (pendingOverallFocusEnterSet.ContainsKey(pendingFocusObject))
                 {
-                    MixedRealityToolkit.InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
-                    pendingOverallFocusEnterSet.Remove(pendingFocusObject);
+                    pendingOverallFocusEnterSet[pendingFocusObject].Remove(pointer);
+                    if (pendingOverallFocusEnterSet[pendingFocusObject].Count == 0)
+                        pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                MixedRealityToolkit.InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                MixedRealityToolkit.InputSystem.RaiseFocusChanged(pointer, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
