@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
     /// based on events from those interactable objects. This is the base abstract class to extend from.
     /// </summary>
     public abstract class InteractionReceiver : BaseInputHandler,
-        IMixedRealityFocusHandler,
+        IMixedRealityFocusChangedHandler,
         IMixedRealityInputHandler,
         IMixedRealityInputHandler<float>,
         IMixedRealityInputHandler<Vector2>,

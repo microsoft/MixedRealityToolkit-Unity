@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
     /// </summary>
     public class TeleportHotSpot : BaseFocusHandler, IMixedRealityTeleportHotSpot
     {
-        #region IMixedRealityFocusHandler Implementation
+        #region IMixedRealityFocusChangedHandler Implementation
 
         /// <inheritdoc />
         public override void OnBeforeFocusChange(FocusEventData eventData)

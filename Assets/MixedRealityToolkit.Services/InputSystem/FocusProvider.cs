@@ -521,10 +521,12 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             {
                 GameObject unfocusedObject = pointerData.CurrentPointerTarget;
                 
+                MixedRealityToolkit.InputSystem.RaisePreFocusChanged(pointer, unfocusedObject, null);
+
                 MixedRealityToolkit.InputSystem.RaiseFocusExit(pointer, unfocusedObject);
                 overallFocusSet.Remove(unfocusedObject, pointer);
 
-                MixedRealityToolkit.InputSystem.RaisePreFocusChanged(pointer, unfocusedObject, null);
+                MixedRealityToolkit.InputSystem.RaiseFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
