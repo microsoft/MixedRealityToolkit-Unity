@@ -83,7 +83,7 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Core_Inspectors_PropertyDrawers_SystemTypeReferencePropertyDrawer" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers.SystemTypeReferencePropertyDrawer" class="text-break">Class SystemTypeReferencePropertyDrawer
   </h1>
-  <div class="markdown level0 summary"><p>Custom property drawer for <see cref="!:SystemType"></see> properties.</p>
+  <div class="markdown level0 summary"><p>Custom property drawer for <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.SystemType.html">SystemType</a> properties.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -129,12 +129,11 @@ no types are to be excluded.</p>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_Core_Inspectors_PropertyDrawers_SystemTypeReferencePropertyDrawer_ExcludedTypeCollectionGetter_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This property must be set immediately before presenting a class
-type reference property field using <see cref="!:EditorGUI.PropertyField(Rect,SerializedProperty)"></see>
-or <see cref="!:EditorGUILayout.PropertyField(SerializedProperty,UnityEngine.GUILayoutOption[])"></see> since the value of this
-property is reset to <code>null</code> each time the control is drawn.</p>
-<p>Since filtering makes extensive use of <see cref="!:ICollection&lt;Type>.Contains"></see>
+type reference property field using <a href="https://docs.unity3d.com/ScriptReference/EditorGUI.PropertyField.html">EditorGUI.PropertyField</a>
+since the value of this property is reset to <code>null</code> each time the control is drawn.</p>
+<p>Since filtering makes extensive use of <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1.contains#System_Collections_Generic_ICollection_1_Contains__0_">Contains(T)</a>
 it is recommended to use a collection that is optimized for fast
-look ups such as <see cref="!:HashSet&lt;Type>"></see> for better performance.</p>
+look ups such as HashSet for better performance.</p>
 </div>
   <h5 id="Microsoft_MixedReality_Toolkit_Core_Inspectors_PropertyDrawers_SystemTypeReferencePropertyDrawer_ExcludedTypeCollectionGetter_examples">Examples</h5>
   <p>Exclude a specific type from being selected:</p>

@@ -83,7 +83,7 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Core_Inspectors_Profiles_BaseMixedRealityToolkitConfigurationProfileInspector" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.BaseMixedRealityToolkitConfigurationProfileInspector" class="text-break">Class BaseMixedRealityToolkitConfigurationProfileInspector
   </h1>
-  <div class="markdown level0 summary"><p>Base class for all Mixed Reality Toolkit specific <see cref="!:BaseMixedRealityProfile"></see> inspectors to inherit from.</p>
+  <div class="markdown level0 summary"><p>Base class for all Mixed Reality Toolkit specific <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a> inspectors to inherit from.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -129,6 +129,33 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class BaseMixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityProfileInspector</code></pre>
   </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Inspectors_Profiles_BaseMixedRealityToolkitConfigurationProfileInspector_RenderAsSubProfile_" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.BaseMixedRealityToolkitConfigurationProfileInspector.RenderAsSubProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Inspectors_Profiles_BaseMixedRealityToolkitConfigurationProfileInspector_RenderAsSubProfile" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.BaseMixedRealityToolkitConfigurationProfileInspector.RenderAsSubProfile">RenderAsSubProfile</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderAsSubProfile { set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -171,6 +198,55 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">lockProfile</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Inspectors_Profiles_BaseMixedRealityToolkitConfigurationProfileInspector_DrawBacktrackProfileButton_" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.BaseMixedRealityToolkitConfigurationProfileInspector.DrawBacktrackProfileButton*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Inspectors_Profiles_BaseMixedRealityToolkitConfigurationProfileInspector_DrawBacktrackProfileButton_System_String_UnityEngine_Object_" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.BaseMixedRealityToolkitConfigurationProfileInspector.DrawBacktrackProfileButton(System.String,UnityEngine.Object)">DrawBacktrackProfileButton(String, UnityEngine.Object)</h4>
+  <div class="markdown level1 summary"><p>Renders a button that will take user back to a specified profile object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool DrawBacktrackProfileButton(string message, UnityEngine.Object activeObject)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Object</span></td>
+        <td><span class="parametername">activeObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if button was clicked</p>
+</td>
       </tr>
     </tbody>
   </table>

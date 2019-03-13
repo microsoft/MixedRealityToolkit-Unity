@@ -90,6 +90,17 @@
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorField.html">InspectorField</a></h4>
       <section><p>A set of field/property tags used to define how a property should render in a custom inspector</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorFieldsExample.html">InspectorFieldsExample</a></h4>
+      <section><p>Example of using InspectorFields attributes in a class to create custom inspectors
+This is on approach for building complex inspectors that need to be customized or the need to overcome lack of polymorphism support
+They provide a way to create one inspector for multiple classes
+Example: Create a MonoBehaviour or scriptable object with a custom inspector.
+The functionality or settings can be changed by assigning a custom script to the object
+Use InspectorFields to render the custom properties inside the custom script in the inspector
+When the app launches, copy the properties to the new instance of the script
+An example of this can be found in Interactables Receivers.
+Each Receiver is a custom class that renders their properties in the Interactables custom inspector</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields.InspectorGenericFields-1.html">InspectorGenericFields&lt;T&gt;</a></h4>
       <section><p>A set of Inspector fields for setting up properties in a
 component that can be automatically rendered in a custom inspector</p>
