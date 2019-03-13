@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
 {
     /// <summary>
-    /// The default implementation of the <see cref="IMixedRealityDiagnosticsSystem"/>
+    /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
     public class MixedRealityDiagnosticsSystem : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         /// Creates the parent for diagnostic visualizations so that the scene hierarchy does not get overly cluttered.
         /// </summary>
         /// <returns>
-        /// The <see cref="GameObject"/> to which diagnostic visualizations will be parented.
+        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which diagnostic visualizations will be parented.
         /// </returns>
         private GameObject CreateDiagnosticVisualizationParent()
         {
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         #region IMixedRealityDiagnosticsSystem
 
         private bool showDiagnostics;
-        
+
         public bool ShowDiagnostics
         {
             get { return showDiagnostics; }
@@ -91,7 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
                 if (value != showDiagnostics)
                 {
                     showDiagnostics = value;
-                    diagnosticVisualizationParent?.SetActive(value);
+
+                    if (diagnosticVisualizationParent != null)
+                    {
+                        diagnosticVisualizationParent.SetActive(value);
+                    }
                 }
             }
         }
@@ -114,6 +118,31 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
                     if (visualProfiler != null)
                     {
                         visualProfiler.IsVisible = value;
+                    }
+                }
+            }
+        }
+
+        private float frameRateDuration = 0.1f;
+        private readonly float minFrameRateDuration = 0.01f;
+        private readonly float maxFrameRateDuration = 1.0f;
+
+        /// <inheritdoc />
+        public float FrameRateDuration
+        {
+            get
+            {
+                return frameRateDuration;
+            }
+
+            set
+            {
+                if (!Mathf.Approximately(frameRateDuration, value))
+                {
+                    frameRateDuration = Mathf.Clamp(value, minFrameRateDuration, maxFrameRateDuration);
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.FrameSampleRate = frameRateDuration;
                     }
                 }
             }

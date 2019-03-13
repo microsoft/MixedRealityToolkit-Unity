@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         HashSet<IMixedRealityInputSource> DetectedInputSources { get; }
 
         /// <summary>
-        /// List of <see cref="IMixedRealityController"/>s currently detected by the input manager.
+        /// List of <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices.IMixedRealityController"/>s currently detected by the input manager.
         /// </summary>
         /// <remarks>
         /// This property is similar to <see cref="DetectedInputSources"/>, as this is a subset of those <see cref="IMixedRealityInputSource"/>s in that list.
@@ -200,14 +200,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// Raise the focus enter event.
         /// </summary>
         /// <param name="pointer">The pointer that has focus.</param>
-        /// <param name="focusedObject">The <see cref="GameObject"/> that the pointer has entered focus on.</param>
+        /// <param name="focusedObject">The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> that the pointer has entered focus on.</param>
         void RaiseFocusEnter(IMixedRealityPointer pointer, GameObject focusedObject);
 
         /// <summary>
         /// Raise the focus exit event.
         /// </summary>
         /// <param name="pointer">The pointer that has lost focus.</param>
-        /// <param name="unfocusedObject">The <see cref="GameObject"/> that the pointer has exited focus on.</param>
+        /// <param name="unfocusedObject">The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> that the pointer has exited focus on.</param>
         void RaiseFocusExit(IMixedRealityPointer pointer, GameObject unfocusedObject);
 
         #endregion Focus Events

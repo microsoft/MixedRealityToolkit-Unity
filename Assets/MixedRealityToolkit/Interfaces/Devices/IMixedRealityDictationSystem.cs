@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
         /// <summary>
         /// Ends the recording session.
         /// </summary>
-        /// <returns><see cref="AudioClip"/> of the last recording session.</returns>
+        /// <returns><see href="https://docs.unity3d.com/ScriptReference/AudioClip.html">AudioClip</see> of the last recording session.</returns>
         Task<AudioClip> StopRecordingAsync();
     }
 }

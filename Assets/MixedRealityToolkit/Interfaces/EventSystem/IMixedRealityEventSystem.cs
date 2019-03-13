@@ -27,15 +27,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Events
         void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler;
 
         /// <summary>
-        /// Registers a <see cref="GameObject"/> to listen for events from this Event System.
+        /// Registers a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen for events from this Event System.
         /// </summary>
-        /// <param name="listener"><see cref="GameObject"/> to add to <see cref="EventListeners"/>.</param>
+        /// <param name="listener"><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to add to <see cref="EventListeners"/>.</param>
         void Register(GameObject listener);
 
         /// <summary>
-        /// Unregisters a <see cref="GameObject"/> from listening for events from this Event System.
+        /// Unregisters a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening for events from this Event System.
         /// </summary>
-        /// <param name="listener"><see cref="GameObject"/> to remove from <see cref="EventListeners"/>.</param>
+        /// <param name="listener"><see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to remove from <see cref="EventListeners"/>.</param>
         void Unregister(GameObject listener);
     }
 }

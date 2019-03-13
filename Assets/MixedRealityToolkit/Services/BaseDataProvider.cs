@@ -7,10 +7,10 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 namespace Microsoft.MixedReality.Toolkit.Core.Services
 {
     /// <summary>
-    /// The base data provider implements <see cref="IMixedRealityDataProvider"/> and provides default properties for all data providers.
+    /// The base data provider implements <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityDataProvider"/> and provides default properties for all data providers.
     /// </summary>
     /// <remarks>
-    /// Empty, but reserved for future use, in case additional <see cref="IMixedRealityDataProvider"/> properties or methods are assigned.
+    /// Empty, but reserved for future use, in case additional <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityDataProvider"/> properties or methods are assigned.
     /// </remarks>
     public abstract class BaseDataProvider : BaseExtensionService, Interfaces.IMixedRealityDataProvider
     {
@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
+        /// <param name="profile"></param>
         public BaseDataProvider(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
     }
 }

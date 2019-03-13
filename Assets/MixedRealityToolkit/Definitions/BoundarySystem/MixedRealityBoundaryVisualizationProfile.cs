@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         private Material floorMaterial = null;
 
         /// <summary>
-        /// The material to use for the floor <see cref="GameObject"/> when created by the boundary system.
+        /// The material to use for the floor <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> when created by the boundary system.
         /// </summary>
         public Material FloorMaterial => floorMaterial;
 
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         private Vector2 floorScale = new Vector2(10f, 10f);
 
         /// <summary>
-        /// The size at which to display the rectangular floor plane <see cref="GameObject"/>.
+        /// The size at which to display the rectangular floor plane <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.
         /// </summary>
         public Vector2 FloorScale => floorScale;
 
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         private Material playAreaMaterial = null;
 
         /// <summary>
-        /// The material to use for the rectangular play area <see cref="GameObject"/>.
+        /// The material to use for the rectangular play area <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.
         /// </summary>
         public Material PlayAreaMaterial => playAreaMaterial;
 
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         private Material trackedAreaMaterial = null;
 
         /// <summary>
-        /// The material to use for the boundary geometry <see cref="GameObject"/>.
+        /// The material to use for the boundary geometry <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.
         /// </summary>
         public Material TrackedAreaMaterial => trackedAreaMaterial;
 

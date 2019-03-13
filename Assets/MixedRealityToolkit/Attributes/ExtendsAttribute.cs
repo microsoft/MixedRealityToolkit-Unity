@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
 {
     /// <summary>
     /// Constraint that allows selection of classes that extend a specific class when
-    /// selecting a <see cref="SystemType"/> with the Unity inspector.
+    /// selecting a <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.SystemType"/> with the Unity inspector.
     /// </summary>
     public sealed class ExtendsAttribute : SystemTypeAttribute
     {
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
         /// Initializes a new instance of the <see cref="ExtendsAttribute"/> class.
         /// </summary>
         /// <param name="baseType">Type of class that selectable classes must derive from.</param>
-        /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
+        /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
         public ExtendsAttribute(Type baseType, TypeGrouping grouping) : base(baseType, grouping)
         {
             BaseType = baseType;

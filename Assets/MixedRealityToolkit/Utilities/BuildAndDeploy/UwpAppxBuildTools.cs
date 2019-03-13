@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
         /// Build the UWP appx bundle for this project.  Requires that <see cref="BuildUnityPlayer"/> has already be run or a user has
         /// previously built the Unity Player with the WSA Player as the Build Target.
         /// </summary>
-        /// <param name="productName">The applications product name. Typically <see cref="PlayerSettings.productName"/></param>
+        /// <param name="productName">The applications product name. Typically <see href="https://docs.unity3d.com/ScriptReference/PlayerSettings-productName.html">UnityEditor.PlayerSettings.productName</see></param>
         /// <param name="forceRebuildAppx">Should we force rebuild the appx bundle?</param>
         /// <param name="buildConfig">Debug, Release, or Master configurations are valid.</param>
         /// <param name="buildPlatform">x86 or x64 build platforms are valid.</param>

@@ -185,6 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// Gets all the corner points and mid points from Renderer's Bounds
         /// </summary>
         /// <param name="bounds"></param>
+        /// <param name="transform"></param>
         /// <param name="positions"></param>
         public static void GetCornerAndMidPointPositions(this Bounds bounds, Transform transform, ref Vector3[] positions)
         {
@@ -235,7 +236,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// Gets all the corner points and mid points from Renderer's Bounds, ignoring the z axis
         /// </summary>
         /// <param name="bounds"></param>
+        /// <param name="transform"></param>
         /// <param name="positions"></param>
+        /// <param name="flattenAxis"></param>
         public static void GetCornerAndMidPointPositions2D(this Bounds bounds, Transform transform, ref Vector3[] positions, Axis flattenAxis)
         {
             // Calculate the local points to transform.
@@ -466,6 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Returns the screen space corner points of the specified 'Bounds' instance.
         /// </summary>
+        /// <param name="bounds"></param>
         /// <param name="camera">
         /// The camera used for rendering to the screen. This is needed to perform the
         /// transformation to screen space.

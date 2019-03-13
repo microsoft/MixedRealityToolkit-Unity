@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         private InputActionRuleDualAxis[] inputActionRulesDualAxis = null;
 
         /// <summary>
-        /// All the Input Action Rules for <see cref="Vector2"/> based <see cref="MixedRealityInputAction"/>s
+        /// All the Input Action Rules for <see href="https://docs.unity3d.com/ScriptReference/Vector2.html">Vector2</see> based <see cref="MixedRealityInputAction"/>s
         /// </summary>
         public InputActionRuleDualAxis[] InputActionRulesDualAxis => inputActionRulesDualAxis;
 
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         private InputActionRuleVectorAxis[] inputActionRulesVectorAxis = null;
 
         /// <summary>
-        /// All the Input Action Rules for <see cref="Vector3"/> based <see cref="MixedRealityInputAction"/>s
+        /// All the Input Action Rules for <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> based <see cref="MixedRealityInputAction"/>s
         /// </summary>
         public InputActionRuleVectorAxis[] InputActionRulesVectorAxis => inputActionRulesVectorAxis;
 
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         private InputActionRuleQuaternionAxis[] inputActionRulesQuaternionAxis = null;
 
         /// <summary>
-        /// All the Input Action Rules for <see cref="Quaternion"/> based <see cref="MixedRealityInputAction"/>s
+        /// All the Input Action Rules for <see href="https://docs.unity3d.com/ScriptReference/Quaternion.html">Quaternion</see> based <see cref="MixedRealityInputAction"/>s
         /// </summary>
         public InputActionRuleQuaternionAxis[] InputActionRulesQuaternionAxis => inputActionRulesQuaternionAxis;
 
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         private InputActionRulePoseAxis[] inputActionRulesPoseAxis = null;
 
         /// <summary>
-        /// All the Input Action Rules for <see cref="MixedRealityPose"/> based <see cref="MixedRealityInputAction"/>s
+        /// All the Input Action Rules for <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.MixedRealityPose"/> based <see cref="MixedRealityInputAction"/>s
         /// </summary>
         public InputActionRulePoseAxis[] InputActionRulesPoseAxis => inputActionRulesPoseAxis;
     }

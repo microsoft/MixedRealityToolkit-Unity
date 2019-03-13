@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         public bool IsTracked { get; protected set; } = false;
 
         /// <summary>
-        /// The current tracking state of the assigned <see cref="IMixedRealityController"/>
+        /// The current tracking state of the assigned <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices.IMixedRealityController"/>
         /// </summary>
         protected TrackingState TrackingState = TrackingState.NotTracked;
 

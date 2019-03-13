@@ -6,6 +6,10 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using System;
 using System.Linq;
 
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
+
 namespace Microsoft.MixedReality.Toolkit.Core.Attributes
 {
     /// <summary>

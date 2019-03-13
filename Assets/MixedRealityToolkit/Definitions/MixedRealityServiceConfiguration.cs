@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 {
     /// <summary>
-    /// Defines a system, feature, or manager to be registered with as a <see cref="IMixedRealityExtensionService"/> on startup.
+    /// Defines a system, feature, or manager to be registered with as a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityExtensionService"/> on startup.
     /// </summary>
     [Serializable]
     public struct MixedRealityServiceConfiguration

@@ -13,7 +13,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     /// <summary>
-    /// Base class for all <see cref="BaseMixedRealityProfile"/> Inspectors to inherit from.
+    /// Base class for all <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/> Inspectors to inherit from.
     /// </summary>
     public abstract class BaseMixedRealityProfileInspector : Editor
     {
@@ -38,9 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         }
 
         /// <summary>
-        /// Renders a <see cref="BaseMixedRealityProfile"/>.
+        /// Renders a <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/>.
         /// </summary>
-        /// <param name="property">the <see cref="BaseMixedRealityProfile"/> property.</param>
+        /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/> property.</param>
         /// <param name="guiContent">The GUIContent for the field.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
         /// <returns>True, if the profile changed.</returns>
@@ -50,9 +50,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         }
 
         /// <summary>
-        /// Renders a <see cref="BaseMixedRealityProfile"/>.
+        /// Renders a <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/>.
         /// </summary>
-        /// <param name="property">the <see cref="BaseMixedRealityProfile"/> property.</param>
+        /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/> property.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
         /// <returns>True, if the profile changed.</returns>
         protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true)
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     string showFoldoutKey = GetSubProfileDropdownKey(property);
                     bool showFoldout = SessionState.GetBool(showFoldoutKey, false);
-                    showFoldout = EditorGUILayout.Foldout(showFoldout, showFoldout ? "Hide " + property.displayName + "  contents" : "Show " + property.displayName + " contents");
+                    showFoldout = EditorGUILayout.Foldout(showFoldout, showFoldout ? "Hide " + property.displayName + " contents" : "Show " + property.displayName + " contents");
 
                     if (showFoldout)
                     {

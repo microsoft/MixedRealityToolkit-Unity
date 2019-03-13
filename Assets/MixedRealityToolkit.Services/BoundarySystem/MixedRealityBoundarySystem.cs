@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
         }
 
         /// <summary>
-        /// Registers the <see cref="GameObject"/> to listen for boundary events.
+        /// Registers the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen for boundary events.
         /// </summary>
         /// <param name="listener"></param>
         public override void Register(GameObject listener)
@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
         }
 
         /// <summary>
-        /// UnRegisters the <see cref="GameObject"/> to listen for boundary events.
+        /// UnRegisters the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen for boundary events.
         /// /// </summary>
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
@@ -261,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
         private GameObject boundaryVisualizationParent;
 
         /// <summary>
-        /// Parent <see cref="GameObject"/> which will encapsulate all of the teleportable boundary visualizations.
+        /// Parent <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> which will encapsulate all of the teleportable boundary visualizations.
         /// </summary>
         private GameObject BoundaryVisualizationParent
         {

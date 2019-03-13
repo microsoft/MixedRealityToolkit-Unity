@@ -18,7 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <inheritdoc />
         public MeshRenderer Renderer { get; set; }
 
-        /// <inheritdoc />
         public MeshFilter Filter { get; set; }
 
         /// <summary>
@@ -36,6 +35,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         {
             //empty for now
         }
-
     }
 }

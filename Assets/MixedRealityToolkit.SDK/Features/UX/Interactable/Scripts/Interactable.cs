@@ -543,16 +543,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             SetFocus(pointers.Count > 0);
         }
 
-        public void OnBeforeFocusChange(FocusEventData eventData)
-        {
-            //do nothing
-        }
-
-        public void OnFocusChanged(FocusEventData eventData)
-        {
-            //do nothing
-        }
-
         #endregion MixedRealityFocusHandlers
 
         #region MixedRealityPointerHandlers

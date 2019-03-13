@@ -190,7 +190,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
         public static void Show(MixedRealityControllerMapping controllerMapping, SerializedProperty interactionsList, Handedness handedness = Handedness.None)
         {
-            window?.Close();
+            if (window != null)
+            {
+                window.Close();
+            }
+
             window = null;
 
             window = CreateInstance<ControllerPopupWindow>();

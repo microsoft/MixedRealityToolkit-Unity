@@ -12,12 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
 {
     /// <summary>
     /// Base class for class selection constraints that can be applied when selecting
-    /// a <see cref="SystemType"/> with the Unity inspector.
+    /// a <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.SystemType"/> with the Unity inspector.
     /// </summary>
     public abstract class SystemTypeAttribute : PropertyAttribute
     {
         /// <summary>
-        /// Gets or sets grouping of selectable classes. Defaults to <see cref="TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.
+        /// Gets or sets grouping of selectable classes. Defaults to <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.
         /// </summary>
         public TypeGrouping Grouping { get; protected set; }
 
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
         /// 
         /// </summary>
         /// <param name="type">Initializes a new instance of the <see cref="SystemTypeAttribute"/> class.</param>
-        /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
+        /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
         public SystemTypeAttribute(Type type, TypeGrouping grouping = TypeGrouping.ByNamespaceFlat)
         {
 #if WINDOWS_UWP && !ENABLE_IL2CPP

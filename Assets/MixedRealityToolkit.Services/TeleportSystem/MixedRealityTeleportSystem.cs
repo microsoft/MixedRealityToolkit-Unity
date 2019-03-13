@@ -12,7 +12,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Services.Teleportation
 {
     /// <summary>
-    /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityTeleportSystem"/>
+    /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem.IMixedRealityTeleportSystem"/>
     /// </summary>
     public class MixedRealityTeleportSystem : BaseEventSystem, IMixedRealityTeleportSystem
     {
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.Teleportation
         }
 
         /// <summary>
-        /// Unregister a <see cref="GameObject"/> from listening to Teleport events.
+        /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to Teleport events.
         /// </summary>
         /// <param name="listener"></param>
         public override void Register(GameObject listener)
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.Teleportation
         }
 
         /// <summary>
-        /// Unregister a <see cref="GameObject"/> from listening to Teleport events.
+        /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to Teleport events.
         /// </summary>
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
