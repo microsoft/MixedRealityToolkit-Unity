@@ -726,7 +726,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                     else
                     {
                         if (casted.FocusProvider.IsOnlyFocusingPointer(casted.NewFocusedObject, casted.Pointer))
-                        handler.OnFocusEnter(casted);
+                        {
+                            handler.OnFocusEnter(casted);
+                        }
                     }
                 };
 
@@ -755,7 +757,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                     else
                     {
                         if (casted.FocusProvider.IsOnlyFocusingPointer(casted.OldFocusedObject, casted.Pointer))
+                        {
                             handler.OnFocusExit(casted);
+                        }
                     }
                 };
 
