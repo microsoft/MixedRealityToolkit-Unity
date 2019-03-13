@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private static bool showVisualizationProperties = true;
         private SerializedProperty renderMotionControllers;
-        private SerializedProperty controllerVisualizationType;
+        private SerializedProperty defaultControllerVisualizationType;
 
         private static bool showModelProperties = true;
         private SerializedProperty useDefaultModels;
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             thisProfile = target as MixedRealityControllerVisualizationProfile;
 
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
-            controllerVisualizationType = serializedObject.FindProperty("controllerVisualizationType");
+            defaultControllerVisualizationType = serializedObject.FindProperty("defaultControllerVisualizationType");
             useDefaultModels = serializedObject.FindProperty("useDefaultModels");
             globalLeftHandModel = serializedObject.FindProperty("globalLeftHandModel");
             globalRightHandModel = serializedObject.FindProperty("globalRightHandModel");
@@ -104,12 +104,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     EditorGUILayout.PropertyField(renderMotionControllers);
 
-                    EditorGUILayout.PropertyField(controllerVisualizationType);
+                    EditorGUILayout.PropertyField(defaultControllerVisualizationType);
 
-                    if (thisProfile.ControllerVisualizationType == null ||
-                        thisProfile.ControllerVisualizationType.Type == null)
+                    if (thisProfile.DefaultControllerVisualizationType == null ||
+                        thisProfile.DefaultControllerVisualizationType.Type == null)
                     {
-                        EditorGUILayout.HelpBox("A controller visualization type must be defined!", MessageType.Error);
+                        EditorGUILayout.HelpBox("A default controller visualization type must be defined!", MessageType.Error);
                     }
                 }
             }
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                     if (useDefaultModels.boolValue && (leftHandModelPrefab != null || rightHandModelPrefab != null))
                     {
-                        EditorGUILayout.HelpBox("When default models are used, the global left and right hand models will only be used if the default models cannot be loaded from the driver.", MessageType.Warning);
+                        EditorGUILayout.HelpBox("When default models are used, an attempt is made to obtain controller models from the platform sdk. The global left and right models are only shown if no model can be obtained.", MessageType.Warning);
                     }
 
                     EditorGUI.BeginChangeCheck();
@@ -219,6 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 EditorGUI.indentLevel++;
 
                 EditorGUILayout.PropertyField(controllerSetting.FindPropertyRelative("controllerType"));
+                EditorGUILayout.PropertyField(controllerSetting.FindPropertyRelative("controllerVisualizationType"));
 
                 if (!hasValidType)
                 {
@@ -275,10 +276,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (componentList == null || componentList.Length == 0)
             {
-                if (thisProfile.ControllerVisualizationType != null &&
-                    thisProfile.ControllerVisualizationType.Type != null)
+                if (thisProfile.DefaultControllerVisualizationType != null &&
+                    thisProfile.DefaultControllerVisualizationType.Type != null)
                 {
-                    modelPrefab.AddComponent(thisProfile.ControllerVisualizationType.Type);
+                    modelPrefab.AddComponent(thisProfile.DefaultControllerVisualizationType.Type);
                     return true;
                 }
 

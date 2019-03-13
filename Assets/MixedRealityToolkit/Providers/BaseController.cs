@@ -164,39 +164,43 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
             Interactions = mappings;
         }
 
-        private void TryRenderControllerModel(Type controllerType)
+        protected virtual void TryRenderControllerModel(Type controllerType)
         {
             GameObject controllerModel = null;
 
             if (!MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.RenderMotionControllers) { return; }
 
             // If a specific controller template wants to override the global model, assign that instead.
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled &&
-                !MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.UseDefaultModels)
+            if ((MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.IsControllerMappingEnabled ?? false) &&
+                !(MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GetUseDefaultModelsOverride(controllerType, ControllerHandedness)?? false))
             {
-                controllerModel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
+                controllerModel = MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GetControllerModelOverride(controllerType, ControllerHandedness) ?? null;
             }
 
             // Get the global controller model for each hand.
             if (controllerModel == null)
             {
-                if (ControllerHandedness == Handedness.Left && MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalLeftHandModel != null)
+                if (ControllerHandedness == Handedness.Left && (MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GlobalLeftHandModel ?? null) != null)
                 {
                     controllerModel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalLeftHandModel;
                 }
-                else if (ControllerHandedness == Handedness.Right && MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalRightHandModel != null)
+                else if (ControllerHandedness == Handedness.Right && (MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GlobalRightHandModel ?? null) != null)
                 {
                     controllerModel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalRightHandModel;
                 }
             }
 
-            // TODO: add default model assignment here if no prefabs were found, or if settings specified to use them.
+            // If we've got a controller model prefab, then create it and place it in the scene.
+            var controllerObject = UnityEngine.Object.Instantiate(controllerModel, MixedRealityToolkit.Instance.MixedRealityPlayspace);
+            AddControllerModelToSceneHierarchy(controllerObject);
+        }
 
-            // If we've got a controller model prefab, then place it in the scene.
-            if (controllerModel != null)
+        protected void AddControllerModelToSceneHierarchy(GameObject controllerObject)
+        {
+            if (controllerObject != null)
             {
-                var controllerObject = UnityEngine.Object.Instantiate(controllerModel, MixedRealityToolkit.Instance.MixedRealityPlayspace);
                 controllerObject.name = $"{ControllerHandedness}_{controllerObject.name}";
+                controllerObject.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace.transform;
                 Visualizer = controllerObject.GetComponent<IMixedRealityControllerVisualizer>();
 
                 if (Visualizer != null)

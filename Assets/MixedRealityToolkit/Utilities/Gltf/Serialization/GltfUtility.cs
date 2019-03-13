@@ -116,17 +116,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         {
             var gltfObject = JsonUtility.FromJson<GltfObject>(jsonString);
 
-            for (int i = 0; i < gltfObject.extensionsRequired?.Length; i++)
+            if (gltfObject.extensionsRequired != null)
             {
-                var extensionsRequired = GetGltfExtensionObjects(jsonString, gltfObject.extensionsRequired[i]);
-                Debug.LogError($"Required Extension Unsupported: {gltfObject.extensionsRequired[i]}");
-                return null;
+                for (int i = 0; i < gltfObject.extensionsRequired.Length; i++)
+                {
+                    var extensionsRequired = GetGltfExtensionObjects(jsonString, gltfObject.extensionsRequired[i]);
+                    Debug.LogError($"Required Extension Unsupported: {gltfObject.extensionsRequired[i]}");
+                    return null;
+                }
             }
 
-            for (int i = 0; i < gltfObject.extensionsUsed?.Length; i++)
+            if (gltfObject.extensionsUsed != null)
             {
-                var extensionsUsed = GetGltfExtensionObjects(jsonString, gltfObject.extensionsUsed[i]);
-                Debug.LogWarning($"Unsupported Extension: {gltfObject.extensionsUsed[i]}");
+                for (int i = 0; i < gltfObject.extensionsUsed.Length; i++)
+                {
+                    var extensionsUsed = GetGltfExtensionObjects(jsonString, gltfObject.extensionsUsed[i]);
+                    Debug.LogWarning($"Unsupported Extension: {gltfObject.extensionsUsed[i]}");
+                }
             }
 
             var meshPrimitiveAttributes = GetGltfMeshPrimitiveAttributes(jsonString);
@@ -160,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         }
 
         /// <summary>
-        /// Gets a glTF object from the provided path
+        /// Gets a glTF object from the provided byte array
         /// </summary>
         /// <param name="glbData">Raw glb byte data.</param>
         /// <returns><see cref="GltfObject"/></returns>
