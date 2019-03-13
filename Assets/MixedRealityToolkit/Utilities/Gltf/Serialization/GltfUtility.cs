@@ -118,10 +118,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             if (gltfObject.extensionsRequired != null)
             {
-                for (int i = 0; i < gltfObject.extensionsRequired.Length; i++)
+                if (gltfObject.extensionsRequired.Length > 0)
                 {
-                    var extensionsRequired = GetGltfExtensionObjects(jsonString, gltfObject.extensionsRequired[i]);
-                    Debug.LogError($"Required Extension Unsupported: {gltfObject.extensionsRequired[i]}");
+                    Debug.LogError($"Required Extension Unsupported: {gltfObject.extensionsRequired[0]}");
                     return null;
                 }
             }
