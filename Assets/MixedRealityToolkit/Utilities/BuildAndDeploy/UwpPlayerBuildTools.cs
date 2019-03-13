@@ -156,6 +156,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             }
 #endif
 
+            if (buildInfo.WSAUwpSdk != null)
+            {
+                EditorUserBuildSettings.wsaUWPSDK = buildInfo.WSAUwpSdk;
+            }
+
             var oldColorSpace = PlayerSettings.colorSpace;
 
             if (buildInfo.ColorSpace.HasValue)
@@ -183,11 +188,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             BuildReport buildReport = default(BuildReport);
             try
             {
-                buildReport = BuildPipeline.BuildPlayer(
-                    buildInfo.Scenes.ToArray(),
-                    buildInfo.OutputDirectory,
-                    buildInfo.BuildTarget,
-                    buildInfo.BuildOptions);
+                BuildPlayerOptions options = new BuildPlayerOptions()
+                {
+                    scenes = buildInfo.Scenes.ToArray(),
+                    locationPathName = buildInfo.OutputDirectory,
+                    targetGroup = GetGroup(buildInfo.BuildTarget),
+                    target = buildInfo.BuildTarget,
+                    options = buildInfo.BuildOptions
+
+                };
+                buildReport = BuildPipeline.BuildPlayer(options);
 
                 if (buildReport.summary.result != BuildResult.Succeeded)
                 {
@@ -233,6 +243,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                     {
                         EditorApplication.Exit(1);
                     }
+                    else
+                    {
+                        EditorApplication.Exit(0);
+                    }
                 }
             };
 
@@ -277,11 +291,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                 }
                 else if (string.Equals(arguments[i], "-x86", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    buildInfo.BuildPlatform = arguments[++i].Substring(1);
+                    buildInfo.BuildPlatform = arguments[i].Substring(1);
                 }
                 else if (string.Equals(arguments[i], "-x64", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    buildInfo.BuildPlatform = arguments[++i].Substring(1);
+                    buildInfo.BuildPlatform = arguments[i].Substring(1);
+                }
+                else if (string.Equals(arguments[i], "-ARM", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    buildInfo.BuildPlatform = arguments[i].Substring(1);
                 }
                 else if (string.Equals(arguments[i], "-buildDesc", StringComparison.InvariantCultureIgnoreCase))
                 {

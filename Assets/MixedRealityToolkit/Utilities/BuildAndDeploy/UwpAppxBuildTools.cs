@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             }
 
             // Get and validate the msBuild path...
-            var msBuildPath = await FindMsBuildPathAsync();
+            string msBuildPath = FindMsBuildPathAsync();
 
             if (!File.Exists(msBuildPath))
             {
@@ -158,10 +158,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 #if !UNITY_2019_1_OR_NEWER
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
             {
-                if (!await RestoreNugetPackagesAsync(nugetPath, storePath) ||
-                    !await RestoreNugetPackagesAsync(nugetPath, $"{storePath}\\{productName}") ||
-                    EditorUserBuildSettings.wsaGenerateReferenceProjects && !await RestoreNugetPackagesAsync(nugetPath, assemblyCSharp) ||
-                    EditorUserBuildSettings.wsaGenerateReferenceProjects && restoreFirstPass && !await RestoreNugetPackagesAsync(nugetPath, assemblyCSharpFirstPass))
+                if (!RestoreNugetPackagesAsync(nugetPath, storePath) ||
+                    !RestoreNugetPackagesAsync(nugetPath, $"{storePath}\\{productName}") ||
+                    EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackagesAsync(nugetPath, assemblyCSharp) ||
+                    EditorUserBuildSettings.wsaGenerateReferenceProjects && restoreFirstPass && !RestoreNugetPackagesAsync(nugetPath, assemblyCSharpFirstPass))
                 {
                     Debug.LogError("Failed to restore nuget packages!");
                     return IsBuilding = false;
@@ -170,41 +170,56 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 #endif
 
             // Ensure that the generated .appx version increments by modifying Package.appxmanifest
-            if (!SetPackageVersion(incrementVersion))
+            if (!SetPackageVersion(buildDirectory, incrementVersion))
             {
                 Debug.LogError("Failed to increment package version!");
                 return IsBuilding = false;
             }
 
+            int msBuildExitCode;
             // Now do the actual appx build
-            var processResult = await new Process().StartProcessAsync(
-                msBuildPath,
-                $"\"{solutionProjectPath}\" /t:{(forceRebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildConfig} /p:Platform={buildPlatform} /verbosity:m",
-                true);
+            using (var process = new Process())
+            {
+                process.StartInfo = new ProcessStartInfo
+                {
+                    FileName = msBuildPath,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = false,
+                    RedirectStandardError = false,
+                    Arguments = $"\"{solutionProjectPath}\" /t:{(forceRebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildConfig} /p:Platform={buildPlatform} /verbosity:m -fl -flp:logfile=appxbuild.log;verbosity=diagnostic",
+                    WorkingDirectory = VsInstallerPath
+                };
 
-            if (processResult.ExitCode == 0)
-            {
-                Debug.Log("Appx Build Successful!");
-            }
-            else if (processResult.ExitCode == -1073741510)
-            {
-                Debug.LogWarning("The build was terminated either by user's keyboard input CTRL+C or CTRL+Break or closing command prompt window.");
-            }
-            else if (processResult.ExitCode != 0)
-            {
-                Debug.LogError($"{PlayerSettings.productName} appx build Failed! (ErrorCode: {processResult.ExitCode})");
+                process.Start();
+                process.WaitForExit();
+
+                msBuildExitCode = process.ExitCode;
+                if (msBuildExitCode == 0)
+                {
+                    Debug.Log("Appx Build Successful!");
+                }
+                else if (msBuildExitCode == -1073741510)
+                {
+                    Debug.LogWarning("The build was terminated either by user's keyboard input CTRL+C or CTRL+Break or closing command prompt window.");
+                }
+                else
+                {
+                    Debug.LogError($"{PlayerSettings.productName} appx build Failed! (ErrorCode: {msBuildExitCode})");
+                }
             }
 
             AssetDatabase.SaveAssets();
 
             IsBuilding = false;
-            return processResult.ExitCode == 0;
+            return msBuildExitCode == 0;
         }
 
-        private static async Task<string> FindMsBuildPathAsync()
+        private static string FindMsBuildPathAsync()
         {
-            var result = await new Process().StartProcessAsync(
-                new ProcessStartInfo
+            using (var process = new Process())
+            {
+                process.StartInfo = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
                     CreateNoWindow = true,
@@ -213,13 +228,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                     RedirectStandardError = true,
                     Arguments = $@"/C vswhere -version 15.0 -products * -requires Microsoft.Component.MSBuild -property installationPath",
                     WorkingDirectory = VsInstallerPath
-                });
+                };
 
-            foreach (var path in result.Output)
-            {
-                if (!string.IsNullOrEmpty(path))
+                process.Start();
+                process.WaitForExit();
+                if (process.ExitCode == 1)
                 {
-                    string[] paths = path.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    return string.Empty;
+                }
+
+                string output = process.StandardOutput.ReadToEnd();
+                if (!string.IsNullOrEmpty(output))
+                {
+                    string[] paths = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
                     if (paths.Length > 0)
                     {
@@ -237,24 +258,38 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             return string.Empty;
         }
 
-        public static async Task<bool> RestoreNugetPackagesAsync(string nugetPath, string storePath)
+        public static bool RestoreNugetPackagesAsync(string nugetPath, string storePath)
         {
             Debug.Assert(File.Exists(nugetPath));
             Debug.Assert(Directory.Exists(storePath));
+            using (var process = new Process())
+            {
+                process.StartInfo = new ProcessStartInfo
+                {
+                    FileName = nugetPath,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    Arguments = $"restore \"{storePath}/project.json\"",
+                    WorkingDirectory = VsInstallerPath
+                };
 
-            await new Process().StartProcessAsync(nugetPath, $"restore \"{storePath}/project.json\"");
+                process.Start();
+                process.WaitForExit();
+            }
 
             return File.Exists($"{storePath}\\project.lock.json"); ;
         }
 
-        private static bool SetPackageVersion(bool increment)
+        private static bool SetPackageVersion(string buildDirectory, bool increment)
         {
             // Find the manifest, assume the one we want is the first one
-            string[] manifests = Directory.GetFiles(BuildDeployPreferences.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
+            string[] manifests = Directory.GetFiles(buildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
 
             if (manifests.Length == 0)
             {
-                Debug.LogError($"Unable to find Package.appxmanifest file for build (in path - {BuildDeployPreferences.AbsoluteBuildDirectory})");
+                Debug.LogError($"Unable to find Package.appxmanifest file for build (in path - {buildDirectory})");
                 return false;
             }
 
@@ -264,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
             if (identityNode == null)
             {
-                Debug.LogError($"Package.appxmanifest for build (in path - {BuildDeployPreferences.AbsoluteBuildDirectory}) is missing an <Identity /> node");
+                Debug.LogError($"Package.appxmanifest for build (in path - {buildDirectory}) is missing an <Identity /> node");
                 return false;
             }
 
@@ -275,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
             if (versionAttr == null)
             {
-                Debug.LogError($"Package.appxmanifest for build (in path - {BuildDeployPreferences.AbsoluteBuildDirectory}) is missing a version attribute in the <Identity /> node.");
+                Debug.LogError($"Package.appxmanifest for build (in path - {buildDirectory}) is missing a version attribute in the <Identity /> node.");
                 return false;
             }
 
