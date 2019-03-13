@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
         [SerializeField]
         private string uri = string.Empty;
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             if (string.IsNullOrEmpty(uri))
@@ -25,9 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
                 Debug.Assert(File.Exists(path));
             }
         }
+#endif
 
         private async void Start()
         {
+
+#if UNITY_EDITOR
             await new WaitForSeconds(5f);
             GltfObject gltfObject = null;
 
@@ -44,6 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
             {
                 Debug.Log("Import successful");
             }
+#else
+            Debug.Log("TestGltfLoading.cs is not currently supported outside of the editor.");
+#endif
         }
     }
 }
