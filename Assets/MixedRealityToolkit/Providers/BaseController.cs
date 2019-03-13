@@ -88,40 +88,43 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
         /// <param name="controllerType"></param>
         public bool SetupConfiguration(Type controllerType)
         {
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled)
+            if (IsControllerMappingEnabled())
             {
-                if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.RenderMotionControllers)
+                if (GetControllerVisualizationProfile() != null &&
+                    GetControllerVisualizationProfile().RenderMotionControllers)
                 {
                     TryRenderControllerModel(controllerType);
                 }
 
                 // We can only enable controller profiles if mappings exist.
-                var controllerMappings = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
+                var controllerMappings = GetControllerMappings();
 
                 // Have to test that a controller type has been registered in the profiles,
                 // else its Unity Input manager mappings will not have been set up by the inspector.
                 bool profileFound = false;
-
-                for (int i = 0; i < controllerMappings?.Length; i++)
+                if (controllerMappings != null)
                 {
-                    if (controllerMappings[i].ControllerType.Type == controllerType)
+                    for (int i = 0; i < controllerMappings.Length; i++)
                     {
-                        profileFound = true;
-
-                        // If it is an exact match, assign interaction mappings.
-                        if (controllerMappings[i].Handedness == ControllerHandedness &&
-                            controllerMappings[i].Interactions.Length > 0)
+                        if (controllerMappings[i].ControllerType.Type == controllerType)
                         {
-                            MixedRealityInteractionMapping[] profileInteractions = controllerMappings[i].Interactions;
-                            MixedRealityInteractionMapping[] newInteractions = new MixedRealityInteractionMapping[profileInteractions.Length];
+                            profileFound = true;
 
-                            for (int j = 0; j < profileInteractions.Length; j++)
+                            // If it is an exact match, assign interaction mappings.
+                            if (controllerMappings[i].Handedness == ControllerHandedness &&
+                                controllerMappings[i].Interactions.Length > 0)
                             {
-                                newInteractions[j] = new MixedRealityInteractionMapping(profileInteractions[j]);
-                            }
+                                MixedRealityInteractionMapping[] profileInteractions = controllerMappings[i].Interactions;
+                                MixedRealityInteractionMapping[] newInteractions = new MixedRealityInteractionMapping[profileInteractions.Length];
 
-                            AssignControllerMappings(newInteractions);
-                            break;
+                                for (int j = 0; j < profileInteractions.Length; j++)
+                                {
+                                    newInteractions[j] = new MixedRealityInteractionMapping(profileInteractions[j]);
+                                }
+
+                                AssignControllerMappings(newInteractions);
+                                break;
+                            }
                         }
                     }
                 }
@@ -168,25 +171,33 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
         {
             GameObject controllerModel = null;
 
-            if (!MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.RenderMotionControllers) { return true; }
+            if (GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().RenderMotionControllers)
+            {
+                return true;
+            }
 
             // If a specific controller template wants to override the global model, assign that instead.
-            if ((MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.IsControllerMappingEnabled ?? false) &&
-                !(MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GetUseDefaultModelsOverride(controllerType, ControllerHandedness)?? false))
+            if (IsControllerMappingEnabled() &&
+                GetControllerVisualizationProfile() != null &&
+                !(GetControllerVisualizationProfile().GetUseDefaultModelsOverride(controllerType, ControllerHandedness)))
             {
-                controllerModel = MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GetControllerModelOverride(controllerType, ControllerHandedness) ?? null;
+                controllerModel = GetControllerVisualizationProfile().GetControllerModelOverride(controllerType, ControllerHandedness);
             }
 
             // Get the global controller model for each hand.
-            if (controllerModel == null)
+            if (controllerModel == null &&
+                GetControllerVisualizationProfile() != null)
             {
-                if (ControllerHandedness == Handedness.Left && (MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GlobalLeftHandModel ?? null) != null)
+                if (ControllerHandedness == Handedness.Left &&
+                    GetControllerVisualizationProfile().GlobalLeftHandModel != null)
                 {
-                    controllerModel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalLeftHandModel;
+                    controllerModel = GetControllerVisualizationProfile().GlobalLeftHandModel;
                 }
-                else if (ControllerHandedness == Handedness.Right && (MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GlobalRightHandModel ?? null) != null)
+                else if (ControllerHandedness == Handedness.Right &&
+                    GetControllerVisualizationProfile().GlobalRightHandModel != null)
                 {
-                    controllerModel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalRightHandModel;
+                    controllerModel = GetControllerVisualizationProfile().GlobalRightHandModel;
                 }
             }
 
@@ -197,7 +208,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
             }
 
             // If we've got a controller model prefab, then create it and place it in the scene.
-            var controllerObject = UnityEngine.Object.Instantiate(controllerModel, MixedRealityToolkit.Instance.MixedRealityPlayspace);
+            var playspace = GetPlayspace();
+            var controllerObject = (playspace != null) ?
+                    UnityEngine.Object.Instantiate(controllerModel, playspace) :
+                    UnityEngine.Object.Instantiate(controllerModel);
+
             return AddControllerModelToSceneHierarchy(controllerObject);
         }
 
@@ -206,7 +221,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
             if (controllerObject != null)
             {
                 controllerObject.name = $"{ControllerHandedness}_{controllerObject.name}";
-                controllerObject.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace.transform;
+                var playspace = GetPlayspace();
+                if (playspace != null)
+                {
+                    controllerObject.transform.parent = playspace.transform;
+                }
+                else
+                {
+                    Debug.LogWarning("Playspace was not found. No parent transform was applied to the controller object");
+                }
+
                 Visualizer = controllerObject.GetComponent<IMixedRealityControllerVisualizer>();
 
                 if (Visualizer != null)
@@ -223,5 +247,53 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
 
             return false;
         }
+
+        #region MRTK instance helpers
+        protected Transform GetPlayspace()
+        {
+            if (MixedRealityToolkit.Instance != null)
+                return MixedRealityToolkit.Instance.MixedRealityPlayspace;
+
+            return null;
+        }
+
+        protected MixedRealityControllerVisualizationProfile GetControllerVisualizationProfile()
+        {
+            if (MixedRealityToolkit.Instance != null &&
+                MixedRealityToolkit.Instance.ActiveProfile != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null)
+            {
+                return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile;
+            }
+
+            return null;
+        }
+
+        protected bool IsControllerMappingEnabled()
+        {
+            if (MixedRealityToolkit.Instance != null &&
+                MixedRealityToolkit.Instance.ActiveProfile != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null)
+            {
+                return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled;
+            }
+
+            return false;
+        }
+
+        protected MixedRealityControllerMapping[] GetControllerMappings()
+        {
+            if (MixedRealityToolkit.Instance != null &&
+                MixedRealityToolkit.Instance.ActiveProfile != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile != null)
+            {
+                return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
+            }
+
+            return null;
+        }
+
+        #endregion MRTK instance helpers
     }
 }

@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         private bool controllerModelInitialized = false;
         private bool failedToObtainControllerModel = false;
 
-#region Update data functions
+        #region Update data functions
 
         /// <summary>
         /// Update the controller data from the provided platform state
@@ -262,10 +262,11 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                         interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
                         interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
 
-                        if ((MixedRealityToolkit.Instance?.MixedRealityPlayspace ?? null) != null)
+                        var playspace = GetPlayspace();
+                        if (playspace != null)
                         {
-                            currentGripPose.Position = MixedRealityToolkit.Instance.MixedRealityPlayspace.TransformPoint(currentGripPosition);
-                            currentGripPose.Rotation = Quaternion.Euler(MixedRealityToolkit.Instance.MixedRealityPlayspace.TransformDirection(currentGripRotation.eulerAngles));
+                            currentGripPose.Position = playspace.TransformPoint(currentGripPosition);
+                            currentGripPose.Rotation = Quaternion.Euler(playspace.TransformDirection(currentGripRotation.eulerAngles));
                         }
                         else
                         {
@@ -536,7 +537,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         private void UpdateControllerModel(InteractionSourceState interactionSourceState)
         {
             if (controllerModelInitialized ||
-                !(MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GetUseDefaultModelsOverride(GetType(), ControllerHandedness) ?? true))
+                GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
                 controllerModelInitialized = true;
                 return;
@@ -546,9 +548,9 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             CreateControllerModelFromPlatformSDK(interactionSourceState.source.id);
         }
 
-#endregion Update data functions
+        #endregion Update data functions
 
-#region Controller model functions
+        #region Controller model functions
 
         protected override bool TryRenderControllerModel(Type controllerType)
         {
@@ -557,7 +559,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             // It's unclear whether the interaction source will be available during setup, so we attempt to create
             // the controller model on an input update
             if (failedToObtainControllerModel ||
-                !(MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GetUseDefaultModelsOverride(GetType(), ControllerHandedness) ?? true))
+                GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
                 controllerModelInitialized = true;
                 return base.TryRenderControllerModel(controllerType);
@@ -596,17 +599,25 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                 gltfGameObject = await gltfObject.ConstructAsync();
                 if (gltfGameObject != null)
                 {
-                    var visualizationType = MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness) ?? null;
-                    if (visualizationType != null)
+                    var visualizationProfile = GetControllerVisualizationProfile();
+                    if (visualizationProfile != null)
                     {
-                        gltfGameObject.AddComponent(visualizationType.Type);
-                        AddControllerModelToSceneHierarchy(gltfGameObject);
+                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
+                        if (visualizationType != null)
+                        {
+                            gltfGameObject.AddComponent(visualizationType.Type);
+                            AddControllerModelToSceneHierarchy(gltfGameObject);
+                        }
+                        else
+                        {
+                            Debug.LogError("Controller visualization type not defined for controller visualization profile");
+                            GameObject.Destroy(gltfGameObject);
+                            gltfGameObject = null;
+                        }
                     }
                     else
                     {
-                        Debug.LogError("Controller visualization type not defined for controller visualization profile");
-                        GameObject.Destroy(gltfGameObject);
-                        gltfGameObject = null;
+                        Debug.LogError("Failed to obtain a controller visualization profile");
                     }
                 }
             }
