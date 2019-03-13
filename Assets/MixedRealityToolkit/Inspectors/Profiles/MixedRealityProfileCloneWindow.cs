@@ -9,26 +9,27 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     public class MixedRealityProfileCloneWindow : EditorWindow
     {
+        public enum ProfileCloneBehavior
+        {
+            UseExisting,
+            CloneExisting,
+            UseSubstitution,
+            LeaveEmpty,
+        }
+
         private struct SubProfileAction
         {
-            public enum TypeEnum
+            public SubProfileAction(ProfileCloneBehavior behavior, SerializedProperty property, Object substitutionReference, System.Type profileType)
             {
-                UseExisting,
-                CloneExisting,
-                UseSubstitution,
-            }
-
-            public SubProfileAction(TypeEnum action, SerializedProperty property, Object substitutionReference, System.Type profileType)
-            {
-                ActionType = action;
+                Behavior = behavior;
                 Property = property;
                 SubstitutionReference = substitutionReference;
                 ProfileType = profileType;
 
-                CloneName = (SubstitutionReference != null) ? SubstitutionReference.name : string.Empty;
+                CloneName = (SubstitutionReference != null) ? "New " + SubstitutionReference.name : "New " + profileType.Name;
             }
 
-            public TypeEnum ActionType;
+            public ProfileCloneBehavior Behavior;
             public SerializedProperty Property;
             public string CloneName;
             public Object SubstitutionReference;
@@ -94,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     continue;
 
                 subProfileActions.Add(new SubProfileAction(
-                    SubProfileAction.TypeEnum.UseExisting,
+                    ProfileCloneBehavior.UseExisting,
                     subProfileProperty,
                     subProfileProperty.objectReferenceValue,
                     subProfileType));
@@ -117,14 +118,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            EditorGUILayout.HelpBox("Cloning " + childProperty.displayName + " from " + parentProfile.name, MessageType.Info);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            EditorGUILayout.ObjectField("Cloning profile", childProfile, typeof(BaseMixedRealityProfile), false);
+            EditorGUILayout.ObjectField("from parent profile", parentProfile, typeof(BaseMixedRealityProfile), false);
+            EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
 
             if (subProfileActions.Count > 0)
             {
                 EditorGUILayout.HelpBox("This profile has sub-profiles. By defult your clone will reference the existing profiles. If you want to specify a different profile, or if you want to clone the sub-profile, use the options below.", MessageType.Info);
 
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                EditorGUILayout.BeginVertical();
 
                 for (int i = 0; i < subProfileActions.Count; i++)
                 {
@@ -133,20 +137,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                     SubProfileAction action = subProfileActions[i];
 
-                    action.ActionType = (SubProfileAction.TypeEnum)EditorGUILayout.EnumPopup(action.Property.displayName, action.ActionType);
+                    action.Behavior = (ProfileCloneBehavior)EditorGUILayout.EnumPopup(action.Property.displayName, action.Behavior);
 
-                    switch (action.ActionType)
+                    switch (action.Behavior)
                     {
-                        case SubProfileAction.TypeEnum.UseExisting:
+                        case ProfileCloneBehavior.UseExisting:
                             GUI.color = Color.Lerp(Color.white, Color.clear, 0.5f);
                             EditorGUILayout.ObjectField("Existing", action.Property.objectReferenceValue, action.ProfileType, false);
                             break;
 
-                        case SubProfileAction.TypeEnum.UseSubstitution:
+                        case ProfileCloneBehavior.UseSubstitution:
                             action.SubstitutionReference = EditorGUILayout.ObjectField("Substitution", action.SubstitutionReference, action.ProfileType, false);
                             break;
 
-                        case SubProfileAction.TypeEnum.CloneExisting:
+                        case ProfileCloneBehavior.CloneExisting:
                             if (action.Property.objectReferenceValue == null)
                             {
                                 EditorGUILayout.LabelField("Can't clone profile - none is set.");
@@ -155,6 +159,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                             {
                                 action.CloneName = EditorGUILayout.TextField("Clone name", action.CloneName);
                             }
+                            break;
+
+                        case ProfileCloneBehavior.LeaveEmpty:
+                            // Add one line for formatting reasons
+                            EditorGUILayout.LabelField(" ");
                             break;
                     }
                     subProfileActions[i] = action;
@@ -200,18 +209,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 SerializedProperty actionProperty = newChildSerializedObject.FindProperty(action.Property.name);
 
-                switch (action.ActionType)
+                switch (action.Behavior)
                 {
-                    case SubProfileAction.TypeEnum.UseExisting:
+                    case ProfileCloneBehavior.UseExisting:
                         // Do nothing
                         break;
 
-                    case SubProfileAction.TypeEnum.UseSubstitution:
+                    case ProfileCloneBehavior.UseSubstitution:
                         // Apply the chosen reference to the new property
                         actionProperty.objectReferenceValue = action.SubstitutionReference;
                         break;
 
-                    case SubProfileAction.TypeEnum.CloneExisting:
+                    case ProfileCloneBehavior.CloneExisting:
                         // Clone the profile, then apply the new reference
                         
                         // If the property reference is null, skip this step, the user was warned
@@ -229,6 +238,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                         // Paste values from existing profile
                         PasteProfileValues(newChildProfile, newSubProfile, newSubProfileSerializedObject);
                         newSubProfileSerializedObject.ApplyModifiedProperties();
+                        break;
+
+                    case ProfileCloneBehavior.LeaveEmpty:
+                        actionProperty.objectReferenceValue = null;
                         break;
                 }
             }
