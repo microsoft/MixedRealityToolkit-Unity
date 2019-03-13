@@ -727,7 +727,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                     else
                     {
                         if (casted.FocusProvider.IsFirstFocusEnter(casted.NewFocusedObject, casted.Pointer))
-                        handler.OnFocusEnter(casted);
+                        {
+                            handler.OnFocusEnter(casted);
+                        }
                     }
                 };
 
@@ -757,7 +759,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                     else
                     {
                         if (casted.FocusProvider.IsLastFocusExit(casted.OldFocusedObject, casted.Pointer))
+                        {
                             handler.OnFocusExit(casted);
+                        }
                     }
                 };
 
