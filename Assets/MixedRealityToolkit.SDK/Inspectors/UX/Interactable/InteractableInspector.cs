@@ -75,8 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         {
             if (actionOptions == null && !Interactable.TryGetInputActions(out actionOptions))
             {
-                EditorGUILayout.HelpBox("Mixed Reality Toolkit is uninitialized, configure it by going invoking the 'Mixed Reality Toolkit > Configure...' menu", MessageType.Error);
-                return;
+                EditorGUILayout.HelpBox("Mixed Reality Toolkit is missing, configure it by invoking the 'Mixed Reality Toolkit > Configure...' menu", MessageType.Error);
             }
 
             //RenderBaseInspector()
@@ -173,10 +172,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
             SerializedProperty actionId = serializedObject.FindProperty("InputActionId");
 
-            int newActionId = EditorGUILayout.Popup("Input Actions", actionId.intValue, actionOptions);
-            if (newActionId != actionId.intValue)
+            if (actionOptions == null)
             {
-                actionId.intValue = newActionId;
+                GUI.enabled = false;
+                EditorGUILayout.Popup("Input Actions", 0, new string[] { "Missing Mixed Reality Toolkit" });
+                GUI.enabled = true;
+            }
+            else
+            {
+                int newActionId = EditorGUILayout.Popup("Input Actions", actionId.intValue, actionOptions);
+                if (newActionId != actionId.intValue)
+                {
+                    actionId.intValue = newActionId;
+                }
             }
 
             //selected.enumValueIndex = (int)(MixedRealityInputAction)EditorGUILayout.EnumPopup(new GUIContent("Input Action", "Input source for this Interactable, Default: Select"), (MixedRealityInputAction)selected.enumValueIndex);
