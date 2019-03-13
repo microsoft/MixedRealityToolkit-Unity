@@ -11,10 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     {
         public enum ProfileCloneBehavior
         {
-            UseExisting,
-            CloneExisting,
-            UseSubstitution,
-            LeaveEmpty,
+            UseExisting,        // Use the existing reference
+            CloneExisting,      // Create a clone of the sub-profile
+            UseSubstitution,    // Manually select a profile
+            LeaveEmpty,         // Set the reference to null
         }
 
         private struct SubProfileAction
