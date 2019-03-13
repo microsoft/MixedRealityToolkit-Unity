@@ -833,59 +833,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             return true;
         }
 
-        ///// <summary>
-        ///// Remove all services from the Mixed Reality Toolkit active service registry for a given type
-        ///// </summary>
-        ///// <param name="interfaceType">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
-        //public bool UnregisterService(Type interfaceType)
-        //{
-        //    return UnregisterService(interfaceType, string.Empty);
-        //}
-
-        ///// <summary>
-        ///// Remove services from the Mixed Reality Toolkit active service registry for a given type and name
-        ///// Name is only supported for Mixed Reality runtime services
-        ///// </summary>
-        ///// <param name="interfaceType">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
-        ///// <param name="serviceName">The name of the service to be removed. (Only for runtime services) </param>
-        //public static bool UnregisterService(Type interfaceType, string serviceName)
-        //{
-        //    if (interfaceType == null)
-        //    {
-        //        Debug.LogError("Unable to remove null service type.");
-        //        return false;
-        //    }
-
-        //    IMixedRealityService serviceInstance;
-
-        //    if (GetServiceByName(interfaceType, serviceName, out serviceInstance))
-        //    {
-        //        if (IsInitialized)
-        //        {
-        //            serviceInstance.Disable();
-        //            serviceInstance.Destroy();
-        //        }
-
-        //        if (IsCoreSystem(interfaceType))
-        //        {
-        //            activeSystems.Remove(interfaceType);
-        //            return true;
-        //        }
-
-        //        var registryInstance = new Tuple<Type, IMixedRealityService>(interfaceType, serviceInstance);
-
-        //        if (registeredMixedRealityServices.Contains(registryInstance))
-        //        {
-        //            registeredMixedRealityServices.Remove(registryInstance);
-        //            return true;
-        //        }
-
-        //        Debug.LogError($"Failed to find registry instance of {interfaceType.Name}.{serviceInstance.Name}!");
-        //    }
-
-        //    return false;
-        //}
-
         #endregion Registration
 
         #region Multiple Service Management
