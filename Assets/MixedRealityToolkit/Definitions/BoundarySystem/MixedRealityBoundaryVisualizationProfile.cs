@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
@@ -11,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
     /// Configuration profile settings for setting up boundary visualizations.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Boundary Visualization Profile", fileName = "MixedRealityBoundaryVisualizationProfile", order = (int)CreateProfileMenuItemIndices.BoundaryVisualization)]
+    [MixedRealityServiceProfile(typeof(IMixedRealityBoundarySystem))]
     public class MixedRealityBoundaryVisualizationProfile : BaseMixedRealityProfile
     {
         [SerializeField]
