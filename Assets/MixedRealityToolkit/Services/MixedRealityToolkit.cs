@@ -113,6 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         #region Mixed Reality runtime service registry
 
+        // todo: investigate statics!
         private static readonly Dictionary<Type, IMixedRealityService> activeSystems = new Dictionary<Type, IMixedRealityService>();
 
         /// <summary>
@@ -793,7 +794,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="interfaceType">The interface type for the system to be registered.</param>
         /// <param name="serviceInstance">Instance of the service.</param>
         /// <returns>True if registration is successful, false otherwise.</returns>
-        private static bool RegisterServiceInternal(Type interfaceType, IMixedRealityService serviceInstance)
+        private bool RegisterServiceInternal(Type interfaceType, IMixedRealityService serviceInstance)
         {
             if (serviceInstance == null)
             {
@@ -801,7 +802,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 return false;
             }
 
-            if (!CanGetService(interfaceType, serviceInstance.Name)) { return false; }
+            if (!CanGetService(interfaceType)) { return false; }
 
             IMixedRealityService preExistingService;
 
@@ -1148,7 +1149,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             serviceInstance = null;
 
-            if (!CanGetService(interfaceType, serviceName)) { return false; }
+            if (!CanGetService(interfaceType)) { return false; }
 
             if (IsCoreSystem(interfaceType))
             {
@@ -1195,7 +1196,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="services">Memory reference value of the service list to update.</param>
         private static void GetAllServicesByNameInternal(Type interfaceType, string serviceName, ref List<IMixedRealityService> services)
         {
-            if (!CanGetService(interfaceType, serviceName)) { return; }
+            if (!CanGetService(interfaceType)) { return; }
 
             if (IsCoreSystem(interfaceType))
             {
@@ -1253,11 +1254,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// Checks if the system is ready to get a service.
         /// </summary>
         /// <param name="interfaceType"></param>
-        /// <param name="serviceName"></param>
         /// <returns></returns>
-        private static bool CanGetService(Type interfaceType, string serviceName)
+        private static bool CanGetService(Type interfaceType)
         {
-            // todo: clean up... ex: dont need serviceName arg
             if (isApplicationQuitting)
             {
                 return false;
@@ -1271,7 +1270,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             if (interfaceType == null)
             {
-                Debug.LogError($"{serviceName} interface type is null.");
+                Debug.LogError($"Interface type is null.");
                 return false;
             }
 
