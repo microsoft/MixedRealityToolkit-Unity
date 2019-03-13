@@ -35,23 +35,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// If it's null, then focused object will be used.
         /// </summary>
         GameObject OverrideFocusedObject { get; set; }
-
+       
         /// <summary>
-        /// Returns true if the pointer is the first to enter focus on the focusedObject, otherwise false
+        /// Returns true if the pointer is the only pointer for a focusedObject
         /// </summary>
         /// <param name="focusedObject"></param>
         /// <param name="pointer"></param>
         /// <returns></returns>
-        bool IsFirstFocusEnter(GameObject focusedObject, IMixedRealityPointer pointer);
-
-        /// <summary>
-        /// Returns true if the pointer is the last to exit focus on the focusedObject, otherwise false
-        /// </summary>
-        /// <param name="unfocusedObject"></param>
-        /// <param name="pointer"></param>
-        /// <returns></returns>
-        bool IsLastFocusExit(GameObject unfocusedObject, IMixedRealityPointer pointer);
-
+        bool IsOnlyFocusingPointer(GameObject focusedObject, IMixedRealityPointer pointer);
+        
         /// <summary>
         /// Gets the currently focused object for the pointing source.
         /// <para><remarks>If the pointing source is not registered, then the Gaze's Focused <see cref="UnityEngine.GameObject"/> is returned.</remarks></para>

@@ -13,11 +13,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
     /// Base Component for handling Focus on <see cref="UnityEngine.GameObject"/>s.
     /// </summary>
     [RequireComponent(typeof(Collider))]
-    public abstract class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler
+    public abstract class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityFocusChangedHandler
     {
         [SerializeField]
         [Tooltip("Is focus enabled for this component?")]
         private bool focusEnabled = true;
+
+        [SerializeField]
+        [Tooltip("Receive all FocusEnter and FocusExit events?")]
+        private bool receiveAllFocusEvents = false;
+       
+        /// <inheritdoc />
+        public bool ReceiveAllFocusChanges => receiveAllFocusEvents;
 
         /// <summary>
         /// Is focus enabled for this <see cref="UnityEngine.Component"/>?
@@ -38,11 +45,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// </summary>
         public List<IMixedRealityPointer> Focusers { get; } = new List<IMixedRealityPointer>(0);
 
+        #region IMixedRealityFocusHandler implementation
+
         /// <inheritdoc />
         public virtual void OnFocusEnter(FocusEventData eventData) { }
 
         /// <inheritdoc />
         public virtual void OnFocusExit(FocusEventData eventData) { }
+
+        #endregion IMixedRealityFocusHandler implementation
+
+        #region IMixedRealityFocusChangedHandler Implementation
 
         /// <inheritdoc />
         public virtual void OnBeforeFocusChange(FocusEventData eventData)
@@ -71,5 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         /// <inheritdoc />
         public virtual void OnFocusChanged(FocusEventData eventData) { }
+        
+        #endregion IMixedRealityFocusChangedHandler Implementation
     }
 }

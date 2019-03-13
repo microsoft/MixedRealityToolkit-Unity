@@ -22,9 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
     public class FocusProvider : BaseService, IMixedRealityFocusProvider
     {
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
-        private readonly Dictionary<GameObject, HashSet<IMixedRealityPointer>> pendingOverallFocusEnterSet = new Dictionary<GameObject, HashSet<IMixedRealityPointer>>();
-        private readonly Dictionary<GameObject, HashSet<IMixedRealityPointer>> pendingOverallFocusExitSet = new Dictionary<GameObject, HashSet<IMixedRealityPointer>>();
-        private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
+        private readonly Dictionary<GameObject, HashSet<IMixedRealityPointer>> overallFocusSet = new Dictionary<GameObject, HashSet<IMixedRealityPointer>>();
 
 
         #region IFocusProvider Properties
@@ -92,17 +90,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 
         /// <inheritdoc />
         public GameObject OverrideFocusedObject { get; set; }
-
+       
         /// <inheritdoc />
-        public bool IsFirstFocusEnter(GameObject focusedObject, IMixedRealityPointer pointer)
+        public bool IsOnlyFocusingPointer(GameObject focusedObject, IMixedRealityPointer pointer)
         {
-            return pendingOverallFocusEnterSet.ContainsKey(focusedObject) && pendingOverallFocusEnterSet[focusedObject].Count == 1 && pendingOverallFocusEnterSet[focusedObject].Contains(pointer);
-        }
-
-        /// <inheritdoc />
-        public bool IsLastFocusExit(GameObject unfocusedObject, IMixedRealityPointer pointer)
-        {
-            return pendingOverallFocusExitSet.ContainsKey(unfocusedObject) && pendingOverallFocusExitSet[unfocusedObject].Count == 1 && pendingOverallFocusExitSet[unfocusedObject].Contains(pointer);
+            return overallFocusSet.ContainsKey(focusedObject) && overallFocusSet[focusedObject].Count == 1 && overallFocusSet[focusedObject].Contains(pointer);
         }
 
         #endregion IFocusProvider Properties
@@ -528,23 +520,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             if (pointerData.CurrentPointerTarget != null)
             {
                 GameObject unfocusedObject = pointerData.CurrentPointerTarget;
-                bool objectIsStillFocusedByOtherPointer = false;
-
-                foreach (var otherPointer in pointers)
-                {
-                    if (otherPointer.Pointer != pointer && otherPointer.CurrentPointerTarget == unfocusedObject)
-                    {
-                        objectIsStillFocusedByOtherPointer = true;
-                        break;
-                    }
-                }
-
-                if (!objectIsStillFocusedByOtherPointer)
-                {
-                    MixedRealityToolkit.InputSystem.RaiseFocusExit(pointer, unfocusedObject);
-                }
-
+                
                 MixedRealityToolkit.InputSystem.RaisePreFocusChanged(pointer, unfocusedObject, null);
+
+                MixedRealityToolkit.InputSystem.RaiseFocusExit(pointer, unfocusedObject);
+                overallFocusSet.Remove(unfocusedObject, pointer);
+
+                MixedRealityToolkit.InputSystem.RaiseFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
@@ -868,49 +850,23 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 
                 if (pendingUnfocusObject != pendingFocusObject)
                 {
-                    pendingPointerSpecificFocusChange.Add(pointer);
+                    MixedRealityToolkit.InputSystem.RaisePreFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
 
                     if (pendingUnfocusObject != null)
                     {
-                        pendingOverallFocusExitSet.Add(pendingUnfocusObject, currentPointer);
+                        MixedRealityToolkit.InputSystem.RaiseFocusExit(currentPointer, pendingUnfocusObject);
+                        overallFocusSet.Remove(pendingUnfocusObject, currentPointer);
                     }
 
                     if (pendingFocusObject != null)
                     {
-                        pendingOverallFocusEnterSet.Add(pendingFocusObject, currentPointer);
+                        overallFocusSet.Add(pendingFocusObject, currentPointer);
+                        MixedRealityToolkit.InputSystem.RaiseFocusEnter(currentPointer, pendingFocusObject);
                     }
+
+                    MixedRealityToolkit.InputSystem.RaiseFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
                 }
             }
-
-            // Now we raise the events:
-            foreach (var change in pendingPointerSpecificFocusChange)
-            {
-                IMixedRealityPointer currentPointer = change.Pointer;
-                GameObject pendingUnfocusObject = change.PreviousPointerTarget;
-                GameObject pendingFocusObject = change.CurrentPointerTarget;
-
-                MixedRealityToolkit.InputSystem.RaisePreFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
-
-                if (pendingUnfocusObject != null)
-                {
-                    MixedRealityToolkit.InputSystem.RaiseFocusExit(currentPointer, pendingUnfocusObject);
-
-                    pendingOverallFocusExitSet.Remove(pendingUnfocusObject, currentPointer);
-                }
-
-                if (pendingFocusObject != null)
-                {
-                    MixedRealityToolkit.InputSystem.RaiseFocusEnter(currentPointer, pendingFocusObject);
-
-                    pendingOverallFocusEnterSet.Remove(pendingFocusObject, currentPointer);
-                }
-
-                MixedRealityToolkit.InputSystem.RaiseFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
-            }
-
-            Debug.Assert(pendingOverallFocusExitSet.Count == 0);
-            Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
-            pendingPointerSpecificFocusChange.Clear();
         }
 
         #endregion Accessors

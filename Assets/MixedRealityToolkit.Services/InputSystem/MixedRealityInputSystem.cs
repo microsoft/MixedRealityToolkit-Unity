@@ -719,17 +719,14 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
                 {
                     var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-                    IMixedRealityFocusAmountHandler amountHandler = handler as IMixedRealityFocusAmountHandler;
-                    if (amountHandler != null && amountHandler.ReceiveAllFocusChanges)
+                    if (handler.ReceiveAllFocusChanges)
                     {
                         handler.OnFocusEnter(casted);
                     }
                     else
                     {
-                        if (casted.FocusProvider.IsFirstFocusEnter(casted.NewFocusedObject, casted.Pointer))
-                        {
-                            handler.OnFocusEnter(casted);
-                        }
+                        if (casted.FocusProvider.IsOnlyFocusingPointer(casted.NewFocusedObject, casted.Pointer))
+                        handler.OnFocusEnter(casted);
                     }
                 };
 
@@ -751,17 +748,14 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
                 {
                     var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-                    IMixedRealityFocusAmountHandler amountHandler = handler as IMixedRealityFocusAmountHandler;
-                    if (amountHandler != null && amountHandler.ReceiveAllFocusChanges)
+                    if (handler.ReceiveAllFocusChanges)
                     {
                         handler.OnFocusExit(casted);
                     }
                     else
                     {
-                        if (casted.FocusProvider.IsLastFocusExit(casted.OldFocusedObject, casted.Pointer))
-                        {
+                        if (casted.FocusProvider.IsOnlyFocusingPointer(casted.OldFocusedObject, casted.Pointer))
                             handler.OnFocusExit(casted);
-                        }
                     }
                 };
 
