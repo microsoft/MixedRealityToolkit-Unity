@@ -40,33 +40,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         private float _markerSize = 0.03f; // meters
         private const int _arucoDictionaryId = 10; // equivalent to cv::aruco::DICT_6X6_250
 
-        public static void CheckForDependencies()
-        {
-#if UNITY_EDITOR
-            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\SpectatorViewPlugin.dll");
-            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\opencv_aruco343.dll");
-            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\opencv_calib3d343.dll");
-            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\opencv_core343.dll");
-            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\opencv_features2d343.dll");
-            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\opencv_flann343.dll");
-            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\opencv_imgproc343.dll");
-            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\zlib1.dll");
-#endif
-        }
-
         public bool Initialize(float markerSize)
         {
             _markerSize = markerSize;
-            if (InitializeNative())
+
+            try
             {
-                IsInitialized = true;
-                return true;
+                if (InitializeNative())
+                {
+                    IsInitialized = true;
+                    return true;
+                }
             }
-            else
-            {
-                Debug.Log("SpectatorViewPlugin.dll did not initialize correctly");
-                return false;
-            }
+            catch { }
+
+            Debug.LogWarning("SpectatorViewPlugin.dll did not initialize correctly");
+            return false;
         }
 
         public Dictionary<int, Marker> ProcessImage(
@@ -77,9 +66,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             CameraIntrinsics intrinsics,
             CameraExtrinsics extrinsics)
         {
-            Debug.Log("ProcessImage called in SpectatorViewPluginAPI");
-
             var dictionary = new Dictionary<int, Marker>();
+
+            if (!IsInitialized)
+            {
+                Debug.LogError("Process image called but SpectatorViewPlugin.dll did not initialize correctly");
+                return dictionary;
+            }
 
             if (!IsValidPixelFormat(pixelFormat))
             {

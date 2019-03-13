@@ -45,15 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         private Dictionary<int, List<Marker>> _markerObservations = new Dictionary<int, List<Marker>>();
         private Dictionary<int, Marker> _verifiedMarkers = new Dictionary<int, Marker>();
 
-        public static void CheckForDependencies()
-        {
-#if UNITY_EDITOR
-            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\HoloLensForCV.dll");
-            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\HoloLensForCV.winmd");
-            PluginHelper.ValidateExists("Assets\\MixedRealityToolkit.Extensions\\SpectatorView\\Plugins\\WSA\\x86\\UnityArUcoMarkerDetectorPlugin.dll");
-#endif
-        }
-
         public bool Initialize(float markerSize)
         {
             _markerSize = markerSize;
