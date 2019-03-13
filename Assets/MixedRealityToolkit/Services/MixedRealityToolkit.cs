@@ -332,6 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         #region MonoBehaviour Implementation
 
         private static MixedRealityToolkit instance;
+        private static bool newInstanceBeingInitialized = false;
 
         /// <summary>
         /// Returns the Singleton instance of the classes type.
@@ -355,10 +356,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 var objects = FindObjectsOfType<MixedRealityToolkit>();
                 searchForInstance = false;
                 MixedRealityToolkit newInstance;
+                newInstanceBeingInitialized = false;
 
                 switch (objects.Length)
                 {
                     case 0:
+                        newInstanceBeingInitialized = true;
                         newInstance = new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>();
                         break;
                     case 1:
@@ -380,6 +383,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 {
                     // Don't do any additional setup because the app is quitting.
                     instance = newInstance;
+                    newInstanceBeingInitialized = false;
                 }
 
                 Debug.Assert(instance != null);
@@ -397,7 +401,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             lock (initializedLock)
             {
-                if (IsInitialized) { return; }
+                if (IsInitialized)
+                {
+                    newInstanceBeingInitialized = false;
+                    return;
+                }
 
                 instance = this;
 
@@ -442,6 +450,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 {
                     InitializeServiceLocator();
                 }
+
+                newInstanceBeingInitialized = false;
             }
         }
 
@@ -528,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if (!IsInitialized && !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+            if (!newInstanceBeingInitialized && !IsInitialized && !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 ConfirmInitialized();
             }
