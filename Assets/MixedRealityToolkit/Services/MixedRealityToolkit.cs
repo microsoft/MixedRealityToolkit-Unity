@@ -232,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <inheritdoc />
         public bool IsServiceRegistered<T>(string name = null) where T : IMixedRealityService
         {
-            throw new NotImplementedException();
+            return GetService<T>(name) != null;
         }
 
         /// <inheritdoc />
@@ -1163,19 +1163,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         #region Service Utilities
 
         /// <summary>
-        /// Generic function used to interrogate the Mixed Reality Toolkit registered services registry for the existence of a service.
-        /// </summary>
-        /// <typeparam name="T">The interface type for the service to be retrieved.</typeparam>
-        /// <remarks>
-        /// Note: type should be the Interface of the system to be retrieved and not the concrete class itself.
-        /// </remarks>
-        /// <returns>True, there is a service registered with the selected interface, False, no service found for that interface</returns>
-        public bool IsServiceRegistered<T>() where T : class
-        {
-            return GetService(typeof(T)) != null;
-        }
-
-        /// <summary>
         /// Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.
         /// </summary>
         /// <typeparam name="T">The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem.</typeparam>
@@ -1405,7 +1392,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     return inputSystem;
                 }
 
-                inputSystem = Instance.GetService<IMixedRealityInputSystem>(logInputSystem);
+                inputSystem = Instance.GetService<IMixedRealityInputSystem>(showLogs: logInputSystem);
                 // If we found a valid system, then we turn logging back on for the next time we need to search.
                 // If we didn't find a valid system, then we stop logging so we don't spam the debug window.
                 logInputSystem = inputSystem != null;
@@ -1434,7 +1421,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     return boundarySystem;
                 }
 
-                boundarySystem = Instance.GetService<IMixedRealityBoundarySystem>(logBoundarySystem);
+                boundarySystem = Instance.GetService<IMixedRealityBoundarySystem>(showLogs: logBoundarySystem);
                 // If we found a valid system, then we turn logging back on for the next time we need to search.
                 // If we didn't find a valid system, then we stop logging so we don't spam the debug window.
                 logBoundarySystem = boundarySystem != null;
@@ -1463,7 +1450,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     return spatialAwarenessSystem;
                 }
 
-                spatialAwarenessSystem = Instance.GetService<IMixedRealitySpatialAwarenessSystem>(logSpatialAwarenessSystem);
+                spatialAwarenessSystem = Instance.GetService<IMixedRealitySpatialAwarenessSystem>(showLogs: logSpatialAwarenessSystem);
                 // If we found a valid system, then we turn logging back on for the next time we need to search.
                 // If we didn't find a valid system, then we stop logging so we don't spam the debug window.
                 logSpatialAwarenessSystem = spatialAwarenessSystem != null;
@@ -1492,7 +1479,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     return teleportSystem;
                 }
 
-                teleportSystem = Instance.GetService<IMixedRealityTeleportSystem>(logTeleportSystem);
+                teleportSystem = Instance.GetService<IMixedRealityTeleportSystem>(showLogs: logTeleportSystem);
                 // If we found a valid system, then we turn logging back on for the next time we need to search.
                 // If we didn't find a valid system, then we stop logging so we don't spam the debug window.
                 logTeleportSystem = teleportSystem != null;
@@ -1521,7 +1508,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     return diagnosticsSystem;
                 }
 
-                diagnosticsSystem = Instance.GetService<IMixedRealityDiagnosticsSystem>(logDiagnosticsSystem);
+                diagnosticsSystem = Instance.GetService<IMixedRealityDiagnosticsSystem>(showLogs: logDiagnosticsSystem);
                 // If we found a valid system, then we turn logging back on for the next time we need to search.
                 // If we didn't find a valid system, then we stop logging so we don't spam the debug window.
                 logDiagnosticsSystem = diagnosticsSystem != null;

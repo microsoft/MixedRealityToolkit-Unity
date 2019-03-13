@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(new TestDataProvider1("Test Data Provider 1", 10));
 
             // Retrieve
-            var extensionService1 = MixedRealityToolkit.Instance.GetService(typeof(ITestDataProvider1));
+            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestDataProvider1>();
 
             // Tests
             Assert.IsEmpty(MixedRealityToolkit.ActiveSystems);
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(new TestDataProvider1("Test Data Provider 1", 10));
 
             // Retrieve
-            var extensionService1 = MixedRealityToolkit.Instance.GetService(typeof(ITestDataProvider1));
+            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestDataProvider1>();
 
             // Tests
             Assert.IsNotNull(extensionService1);
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(new TestDataProvider1("Test Data Provider 1", 10));
 
             // Retrieve
-            var extensionService1 = MixedRealityToolkit.Instance.GetService(typeof(ITestDataProvider1));
+            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestDataProvider1>();
 
             // Tests
             Assert.IsNotNull(extensionService1);
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             Assert.AreEqual(1, MixedRealityToolkit.RegisteredMixedRealityServices.Count);
 
             // Retrieve service
-            var dataProvider = MixedRealityToolkit.Instance.GetService(typeof(ITestDataProvider1));
+            var dataProvider = MixedRealityToolkit.Instance.GetService<ITestDataProvider1>();
 
             // Validate
             Assert.IsNotNull(dataProvider);
@@ -174,8 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             Assert.AreEqual(extensionServices.Count, MixedRealityToolkit.RegisteredMixedRealityServices.Count);
 
             // Retrieve services
-            var extensionService1 = MixedRealityToolkit.Instance.GetService(typeof(ITestDataProvider1));
-            var extensionService2 = MixedRealityToolkit.Instance.GetService(typeof(ITestDataProvider2));
+            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestDataProvider1>();
+            var extensionService2 = MixedRealityToolkit.Instance.GetService<ITestDataProvider2>();
 
             // Validate
             Assert.IsNotNull(extensionService1);
@@ -226,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(new TestDataProvider1(serviceName, 10));
 
             // Validate non-existent ExtensionService
-            MixedRealityToolkit.Instance.GetService(typeof(ITestExtensionService2), serviceName);
+            MixedRealityToolkit.Instance.GetService<ITestExtensionService2>(serviceName);
 
             // Tests
             LogAssert.Expect(LogType.Error, $"Unable to find {serviceName} service.");
@@ -245,8 +245,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestDataProvider2>(new TestDataProvider2(testName2, 10));
 
             // Retrieve 
-            var dataProvider1 = (TestDataProvider1)MixedRealityToolkit.Instance.GetService(typeof(ITestDataProvider1), testName1);
-            var dataProvider2 = (TestDataProvider2)MixedRealityToolkit.Instance.GetService(typeof(ITestDataProvider2), testName2);
+            var dataProvider1 = (TestDataProvider1)MixedRealityToolkit.Instance.GetService<ITestDataProvider1>(testName1);
+            var dataProvider2 = (TestDataProvider2)MixedRealityToolkit.Instance.GetService<ITestDataProvider2>(testName2);
 
             // Tests
             Assert.AreEqual(testName1, dataProvider1.Name);
@@ -305,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test ExtensionService 1",10, null));
 
             // Retrieve ITestExtensionService1
-            var extensionService1 = MixedRealityToolkit.Instance.GetService(typeof(ITestExtensionService1));
+            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestExtensionService1>();
 
             // Tests
             Assert.IsNotNull(extensionService1);
@@ -322,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test ExtensionService 1",10, null));
 
             // Retrieve ITestExtensionService1
-            var extensionService1 = MixedRealityToolkit.Instance.GetService(typeof(ITestExtensionService1));
+            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestExtensionService1>();
 
             // Tests
             Assert.IsNotNull(extensionService1);
@@ -351,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test ExtensionService 1",10, null));
 
             // Retrieve ITestExtensionService1
-            var extensionService1 = MixedRealityToolkit.Instance.GetService(typeof(ITestExtensionService1));
+            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestExtensionService1>();
 
             // Tests
             Assert.IsNotNull(extensionService1);
@@ -409,8 +409,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             Assert.AreEqual(extensionServices.Count, MixedRealityToolkit.RegisteredMixedRealityServices.Count);
 
             // Retrieve services
-            var extensionService1 = MixedRealityToolkit.Instance.GetService(typeof(ITestExtensionService1));
-            var extensionService2 = MixedRealityToolkit.Instance.GetService(typeof(ITestExtensionService2));
+            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestExtensionService1>();
+            var extensionService2 = MixedRealityToolkit.Instance.GetService<ITestExtensionService2>();
 
             // Validate
             Assert.IsNotNull(extensionService1);
@@ -461,7 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(serviceName, 10, null));
 
             // Validate non-existent ExtensionService
-            MixedRealityToolkit.Instance.GetService(typeof(ITestExtensionService2), serviceName);
+            MixedRealityToolkit.Instance.GetService<ITestExtensionService2>(serviceName);
 
             // Tests
             LogAssert.Expect(LogType.Error, $"Unable to find {serviceName} service.");
@@ -479,13 +479,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test14-2",10, null));
 
             // Retrieve Test ExtensionService 2-2
-            var extensionService2 = (TestExtensionService2)MixedRealityToolkit.Instance.GetService(typeof(ITestExtensionService2), "Test14-2");
+            var extensionService2 = (TestExtensionService2)MixedRealityToolkit.Instance.GetService<ITestExtensionService2>("Test14-2");
 
             // ExtensionService 2-2 Tests
             Assert.AreEqual("Test14-2", extensionService2.Name);
 
             // Retrieve Test ExtensionService 2-1
-            var extensionService1 = (TestExtensionService1)MixedRealityToolkit.Instance.GetService(typeof(ITestExtensionService1), "Test14-1");
+            var extensionService1 = (TestExtensionService1)MixedRealityToolkit.Instance.GetService<ITestExtensionService1>("Test14-1");
 
             // ExtensionService 2-1 Tests
             Assert.AreEqual("Test14-1", extensionService1.Name);
@@ -538,12 +538,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitScene();
 
             // Add test 1 services
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestDataProvider1), new TestDataProvider1("Test07-01-1.1", 10));
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestExtensionService1), new TestExtensionService1("Test07-01-1.2",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(new TestDataProvider1("Test07-01-1.1", 10));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test07-01-1.2",10, null));
 
             // Add test 2 services
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestDataProvider2), new TestDataProvider2("Test07-01-2.1", 10));
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestExtensionService2), new TestExtensionService2("Test07-01-2.2",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider2>(new TestDataProvider2("Test07-01-2.1", 10));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test07-01-2.2",10, null));
 
             // Enable all test services
             MixedRealityToolkit.EnableAllServicesByType(typeof(ITestService));
@@ -564,12 +564,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitScene();
 
             // Add test 1 services
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestDataProvider1), new TestDataProvider1("Test07-01-1.1", 10));
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestExtensionService1), new TestExtensionService1("Test07-01-1.2",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(new TestDataProvider1("Test07-01-1.1", 10));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test07-01-1.2",10, null));
 
             // Add test 2 services
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestDataProvider2), new TestDataProvider2("Test07-01-2.1", 10));
-            MixedRealityToolkit.Instance.RegisterService(typeof(ITestExtensionService2), new TestExtensionService2("Test07-01-2.2",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider2>(new TestDataProvider2("Test07-01-2.1", 10));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test07-01-2.2",10, null));
 
             // Enable all test services
             MixedRealityToolkit.EnableAllServicesByType(typeof(ITestService));
