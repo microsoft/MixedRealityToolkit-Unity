@@ -194,37 +194,41 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <inheritdoc />
-        public bool UnregisterService(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public bool UnregisterService<T>(string name = null) where T : IMixedRealityService
         {
-            throw new NotImplementedException();
+            Type interfaceType = typeof(T);
+            IMixedRealityService serviceInstance;
+
+            if (GetServiceByName(interfaceType, name, out serviceInstance))
+            {
+                if (IsInitialized)
+                {
+                    serviceInstance.Disable();
+                    serviceInstance.Destroy();
+                }
+
+                if (IsCoreSystem(interfaceType))
+                {
+                    activeSystems.Remove(interfaceType);
+                    return true;
+                }
+
+                Tuple<Type, IMixedRealityService> registryInstance = new Tuple<Type, IMixedRealityService>(interfaceType, serviceInstance);
+
+                if (registeredMixedRealityServices.Contains(registryInstance))
+                {
+                    registeredMixedRealityServices.Remove(registryInstance);
+                    return true;
+                }
+
+                Debug.LogError($"Failed to find registry instance of {interfaceType.Name}.{serviceInstance.Name}!");
+            }
+
+            return false;
         }
 
         /// <inheritdoc />
         public bool UnregisterService(IMixedRealityService serviceInstance)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void UnregisterServices()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void UnregisterServices<T>() where T : IMixedRealityService
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public bool IsServiceRegistered(string name)
         {
             throw new NotImplementedException();
         }
@@ -278,12 +282,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <inheritdoc />
-        public bool UnregisterDataProvider(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public bool UnregisterDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
         {
             throw new NotImplementedException();
@@ -296,19 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <inheritdoc />
-        public bool UnregisterDataProviders()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public bool UnregisterDataProviders<T>() where T : IMixedRealityDataProvider
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public IMixedRealityDataProvider GetDataProvider(string name)
+        public bool IsDataProviderRegistered<T>(string name = null) where T : IMixedRealityDataProvider
         {
             throw new NotImplementedException();
         }
@@ -847,58 +833,58 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             return true;
         }
 
-        /// <summary>
-        /// Remove all services from the Mixed Reality Toolkit active service registry for a given type
-        /// </summary>
-        /// <param name="interfaceType">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
-        public bool UnregisterService(Type interfaceType)
-        {
-            return UnregisterService(interfaceType, string.Empty);
-        }
+        ///// <summary>
+        ///// Remove all services from the Mixed Reality Toolkit active service registry for a given type
+        ///// </summary>
+        ///// <param name="interfaceType">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
+        //public bool UnregisterService(Type interfaceType)
+        //{
+        //    return UnregisterService(interfaceType, string.Empty);
+        //}
 
-        /// <summary>
-        /// Remove services from the Mixed Reality Toolkit active service registry for a given type and name
-        /// Name is only supported for Mixed Reality runtime services
-        /// </summary>
-        /// <param name="interfaceType">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
-        /// <param name="serviceName">The name of the service to be removed. (Only for runtime services) </param>
-        public static bool UnregisterService(Type interfaceType, string serviceName)
-        {
-            if (interfaceType == null)
-            {
-                Debug.LogError("Unable to remove null service type.");
-                return false;
-            }
+        ///// <summary>
+        ///// Remove services from the Mixed Reality Toolkit active service registry for a given type and name
+        ///// Name is only supported for Mixed Reality runtime services
+        ///// </summary>
+        ///// <param name="interfaceType">The interface type for the system to be removed.  E.G. InputSystem, BoundarySystem</param>
+        ///// <param name="serviceName">The name of the service to be removed. (Only for runtime services) </param>
+        //public static bool UnregisterService(Type interfaceType, string serviceName)
+        //{
+        //    if (interfaceType == null)
+        //    {
+        //        Debug.LogError("Unable to remove null service type.");
+        //        return false;
+        //    }
 
-            IMixedRealityService serviceInstance;
+        //    IMixedRealityService serviceInstance;
 
-            if (GetServiceByName(interfaceType, serviceName, out serviceInstance))
-            {
-                if (IsInitialized)
-                {
-                    serviceInstance.Disable();
-                    serviceInstance.Destroy();
-                }
+        //    if (GetServiceByName(interfaceType, serviceName, out serviceInstance))
+        //    {
+        //        if (IsInitialized)
+        //        {
+        //            serviceInstance.Disable();
+        //            serviceInstance.Destroy();
+        //        }
 
-                if (IsCoreSystem(interfaceType))
-                {
-                    activeSystems.Remove(interfaceType);
-                    return true;
-                }
+        //        if (IsCoreSystem(interfaceType))
+        //        {
+        //            activeSystems.Remove(interfaceType);
+        //            return true;
+        //        }
 
-                var registryInstance = new Tuple<Type, IMixedRealityService>(interfaceType, serviceInstance);
+        //        var registryInstance = new Tuple<Type, IMixedRealityService>(interfaceType, serviceInstance);
 
-                if (registeredMixedRealityServices.Contains(registryInstance))
-                {
-                    registeredMixedRealityServices.Remove(registryInstance);
-                    return true;
-                }
+        //        if (registeredMixedRealityServices.Contains(registryInstance))
+        //        {
+        //            registeredMixedRealityServices.Remove(registryInstance);
+        //            return true;
+        //        }
 
-                Debug.LogError($"Failed to find registry instance of {interfaceType.Name}.{serviceInstance.Name}!");
-            }
+        //        Debug.LogError($"Failed to find registry instance of {interfaceType.Name}.{serviceInstance.Name}!");
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         #endregion Registration
 
@@ -1162,6 +1148,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         #region Service Utilities
 
+        // todo: rework....
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.
         /// </summary>
@@ -1201,25 +1188,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             spatialAwarenessSystem = null;
             diagnosticsSystem = null;
         }
-
-        ///// <summary>
-        ///// Retrieve a service from the Mixed Reality Toolkit active service registry
-        ///// </summary>
-        ///// <param name="interfaceType">The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem</param>
-        ///// <param name="serviceName">Name of the specific service</param>
-        ///// <param name="showLogs">Should the logs show when services cannot be found?</param>
-        ///// <returns>The Mixed Reality Toolkit of the specified type</returns>
-        //public IMixedRealityService GetService(Type interfaceType, string serviceName, bool showLogs = true)
-        //{
-        //    IMixedRealityService serviceInstance;
-
-        //    if (!GetServiceByName(interfaceType, serviceName, out serviceInstance) && showLogs)
-        //    {
-        //        Debug.LogError($"Unable to find {(string.IsNullOrWhiteSpace(serviceName) ? interfaceType.Name : serviceName)} service.");
-        //    }
-
-        //    return serviceInstance;
-        //}
 
         /// <summary>
         /// Retrieve the first service from the registry that meets the selected type and name

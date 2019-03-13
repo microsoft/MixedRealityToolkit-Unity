@@ -88,8 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             Assert.IsEmpty(MixedRealityToolkit.ActiveSystems);
             Assert.AreEqual(1, MixedRealityToolkit.RegisteredMixedRealityServices.Count);
 
-            var success = MixedRealityToolkit.Instance.UnregisterService(typeof(ITestDataProvider1));
-
+            var success = MixedRealityToolkit.Instance.UnregisterService<ITestDataProvider1>();
             // Validate non-existent service
             var isServiceRegistered = MixedRealityToolkit.Instance.IsServiceRegistered<ITestDataProvider1>();
 
@@ -123,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             // Validate
             Assert.IsNotNull(dataProvider);
 
-            var success = MixedRealityToolkit.UnregisterService(typeof(ITestDataProvider1), dataProvider.Name);
+            var success = MixedRealityToolkit.Instance.UnregisterService<ITestDataProvider1>(dataProvider.Name);
 
             // Validate non-existent service
             var isServiceRegistered = MixedRealityToolkit.Instance.IsServiceRegistered<ITestDataProvider1>();
@@ -181,8 +180,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             Assert.IsNotNull(extensionService1);
             Assert.IsNotNull(extensionService2);
 
-            var success1 = MixedRealityToolkit.Instance.UnregisterService(typeof(ITestDataProvider1));
-            var success2 = MixedRealityToolkit.Instance.UnregisterService(typeof(ITestDataProvider2));
+            var success1 = MixedRealityToolkit.Instance.UnregisterService<ITestDataProvider1>();
+            var success2 = MixedRealityToolkit.Instance.UnregisterService<ITestDataProvider2>();
 
             // Validate non-existent service
             var isService1Registered = MixedRealityToolkit.Instance.IsServiceRegistered<ITestDataProvider1>();
@@ -329,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             Assert.IsEmpty(MixedRealityToolkit.ActiveSystems);
             Assert.AreEqual(1, MixedRealityToolkit.RegisteredMixedRealityServices.Count);
 
-            var success = MixedRealityToolkit.Instance.UnregisterService(typeof(ITestExtensionService1));
+            var success = MixedRealityToolkit.Instance.UnregisterService<ITestExtensionService1>();
 
             // Validate non-existent service
             var isServiceRegistered = MixedRealityToolkit.Instance.IsServiceRegistered<ITestExtensionService1>();
@@ -358,7 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             Assert.IsEmpty(MixedRealityToolkit.ActiveSystems);
             Assert.AreEqual(1, MixedRealityToolkit.RegisteredMixedRealityServices.Count);
 
-            var success = MixedRealityToolkit.UnregisterService(typeof(ITestExtensionService1), extensionService1.Name);
+            var success = MixedRealityToolkit.Instance.UnregisterService<ITestExtensionService1>(extensionService1.Name);
 
             // Validate non-existent service
             var isServiceRegistered = MixedRealityToolkit.Instance.IsServiceRegistered<ITestExtensionService1>();
@@ -416,8 +415,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             Assert.IsNotNull(extensionService1);
             Assert.IsNotNull(extensionService2);
 
-            var success1 = MixedRealityToolkit.Instance.UnregisterService(typeof(ITestExtensionService1));
-            var success2 = MixedRealityToolkit.Instance.UnregisterService(typeof(ITestExtensionService2));
+            var success1 = MixedRealityToolkit.Instance.UnregisterService<ITestExtensionService1>();
+            var success2 = MixedRealityToolkit.Instance.UnregisterService<ITestExtensionService2>();
 
             // Validate non-existent service
             var isService1Registered = MixedRealityToolkit.Instance.IsServiceRegistered<ITestExtensionService1>();
