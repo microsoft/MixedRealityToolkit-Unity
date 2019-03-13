@@ -550,7 +550,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
 #region Controller model functions
 
-        protected override void TryRenderControllerModel(Type controllerType)
+        protected override bool TryRenderControllerModel(Type controllerType)
         {
             // Intercept this call if we are using the default driver provided models.
             // Note: Obtaining models from the driver will require access to the InteractionSource.
@@ -559,9 +559,11 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             if (failedToObtainControllerModel ||
                 !(MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.ControllerVisualizationProfile?.GetUseDefaultModelsOverride(GetType(), ControllerHandedness) ?? true))
             {
-                base.TryRenderControllerModel(controllerType);
                 controllerModelInitialized = true;
+                return base.TryRenderControllerModel(controllerType);
             }
+
+            return false;
         }
 
         private async void CreateControllerModelFromPlatformSDK(uint interactionSourceId)

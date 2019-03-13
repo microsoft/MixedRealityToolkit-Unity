@@ -164,11 +164,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
             Interactions = mappings;
         }
 
-        protected virtual void TryRenderControllerModel(Type controllerType)
+        protected virtual bool TryRenderControllerModel(Type controllerType)
         {
             GameObject controllerModel = null;
 
-            if (!MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.RenderMotionControllers) { return; }
+            if (!MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.RenderMotionControllers) { return true; }
 
             // If a specific controller template wants to override the global model, assign that instead.
             if ((MixedRealityToolkit.Instance?.ActiveProfile?.InputSystemProfile?.IsControllerMappingEnabled ?? false) &&
@@ -190,12 +190,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
                 }
             }
 
+            if (controllerModel == null)
+            {
+                Debug.LogError("No controller model available. Failed to add controller game object to scene");
+                return false;
+            }
+
             // If we've got a controller model prefab, then create it and place it in the scene.
             var controllerObject = UnityEngine.Object.Instantiate(controllerModel, MixedRealityToolkit.Instance.MixedRealityPlayspace);
-            AddControllerModelToSceneHierarchy(controllerObject);
+            return AddControllerModelToSceneHierarchy(controllerObject);
         }
 
-        protected void AddControllerModelToSceneHierarchy(GameObject controllerObject)
+        protected bool AddControllerModelToSceneHierarchy(GameObject controllerObject)
         {
             if (controllerObject != null)
             {
@@ -206,12 +212,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
                 if (Visualizer != null)
                 {
                     Visualizer.Controller = this;
+                    return true;
                 }
                 else
                 {
                     Debug.LogError($"{controllerObject.name} is missing a IMixedRealityControllerVisualizer component!");
+                    return false;
                 }
             }
+
+            return false;
         }
     }
 }
