@@ -41,14 +41,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// <param name="name">The name of the service to unregister.</param>
         /// <returns>True if the service was successfully unregistered, false otherwise.</returns>
         /// <remarks>If the name argument is not especified, the first instance will be unregistered</remarks>
-        bool UnregisterService<T>(string name = null) where T : IMixedRealityService; // todo: namespace?
+        bool UnregisterService<T>(string name = null) where T : IMixedRealityService;
 
         /// <summary>
         /// Unregisters a service.
         /// </summary>
+        /// <typeparam name="T">The interface type of the service to be unregistered (ex: IMixedRealityBoundarySystem).
         /// <param name="service">The specific service instance to unregister.</param>
         /// <returns>True if the service was successfully unregistered, false otherwise.</returns>
-        bool UnregisterService(IMixedRealityService serviceInstance);
+        bool UnregisterService<T>(IMixedRealityService serviceInstance) where T : IMixedRealityService;
 
         /// <summary>
         /// Checks to see if a service of the specified type has been registered.
@@ -56,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// <typeparam name="T">The interface type of the service (ex: IMixedRealityBoundarySystem).
         /// <param name="name">The name of the service.</param>
         /// <returns>True if the service is registered, false otherwise.</returns>
-        bool IsServiceRegistered<T>(string name = null) where T : IMixedRealityService;  // todo: namespace?
+        bool IsServiceRegistered<T>(string name = null) where T : IMixedRealityService;
 
         /// <summary>
         /// Gets the instance of the registered service.
@@ -65,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// <param name="name">The name of the service.</param>
         /// <param name="showLogs">Indicates whether or not diagnostic logging should be performed in case of an error</param>
         /// <returns>The registered service instance as the requested type.</returns>
-        T GetService<T>(string name = null, bool showLogs = true) where T : IMixedRealityService;  // todo: namespace?
+        T GetService<T>(string name = null, bool showLogs = true) where T : IMixedRealityService;
 
         /// <summary>
         /// Gets the collection of the registered service instances matching the requested type.
@@ -108,14 +109,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// <param name="name">The name of the data provider to unregister.</param>
         /// <returns>True if the data provider was successfully unregistered, false otherwise.</returns>
         /// <remarks>If the name argument is not specified, the first instance will be unregistered</remarks>
-        bool UnregisterDataProvider<T>(string name = null) where T : IMixedRealityDataProvider; // todo: namespace?
+        bool UnregisterDataProvider<T>(string name = null) where T : IMixedRealityDataProvider;
 
         /// <summary>
         /// Unregisters a data provider.
         /// </summary>
+        /// <typeparam name="T">The interface type of the data provider to be unregistered.
         /// <param name="service">The specific data provider instance to unregister.</param>
         /// <returns>True if the data provider was successfully unregistered, false otherwise.</returns>
-        bool UnregisterDataProviderService(IMixedRealityDataProvider dataProviderInstance);
+        bool UnregisterDataProvider<T>(IMixedRealityDataProvider dataProviderInstance) where T : IMixedRealityDataProvider;
 
         /// <summary>
         /// Checks to see if a data provider of the specified type has been registered.
@@ -131,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// <typeparam name="T">The interface type of the data provider.
         /// <param name="name">The name of the data provider.</param>
         /// <returns>The registered data provider instance as the requested type.</returns>
-        T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider; // todo: namespace?
+        T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider;
 
         /// <summary>
         /// Gets the collection of the registered data provider instances matching the requested type.

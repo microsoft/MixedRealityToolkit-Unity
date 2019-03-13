@@ -196,41 +196,44 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <inheritdoc />
         public bool UnregisterService<T>(string name = null) where T : IMixedRealityService
         {
-            Type interfaceType = typeof(T);
             IMixedRealityService serviceInstance;
 
-            if (GetServiceByName(interfaceType, name, out serviceInstance))
+            if (GetServiceByName(typeof(T), name, out serviceInstance))
             {
-                if (IsInitialized)
-                {
-                    serviceInstance.Disable();
-                    serviceInstance.Destroy();
-                }
-
-                if (IsCoreSystem(interfaceType))
-                {
-                    activeSystems.Remove(interfaceType);
-                    return true;
-                }
-
-                Tuple<Type, IMixedRealityService> registryInstance = new Tuple<Type, IMixedRealityService>(interfaceType, serviceInstance);
-
-                if (registeredMixedRealityServices.Contains(registryInstance))
-                {
-                    registeredMixedRealityServices.Remove(registryInstance);
-                    return true;
-                }
-
-                Debug.LogError($"Failed to find registry instance of {interfaceType.Name}.{serviceInstance.Name}!");
+                return UnregisterService<T>(serviceInstance);
             }
 
             return false;
         }
 
         /// <inheritdoc />
-        public bool UnregisterService(IMixedRealityService serviceInstance)
+        public bool UnregisterService<T>(IMixedRealityService serviceInstance) where T : IMixedRealityService
         {
-            throw new NotImplementedException();
+            Type interfaceType = typeof(T);
+
+            if (IsInitialized)
+            {
+                serviceInstance.Disable();
+                serviceInstance.Destroy();
+            }
+
+            if (IsCoreSystem(interfaceType))
+            {
+                activeSystems.Remove(interfaceType);
+                return true;
+            }
+
+            Tuple<Type, IMixedRealityService> registryInstance = new Tuple<Type, IMixedRealityService>(interfaceType, serviceInstance);
+
+            if (registeredMixedRealityServices.Contains(registryInstance))
+            {
+                registeredMixedRealityServices.Remove(registryInstance);
+                return true;
+            }
+
+            Debug.LogError($"Failed to find registry instance of {interfaceType.Name}.{serviceInstance.Name}!");
+
+            return false;
         }
 
         /// <inheritdoc />
@@ -288,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <inheritdoc />
-        public bool UnregisterDataProviderService(IMixedRealityDataProvider dataProviderInstance)
+        public bool UnregisterDataProvider<T>(IMixedRealityDataProvider dataProviderInstance) where T : IMixedRealityDataProvider
         {
             throw new NotImplementedException();
         }
@@ -774,7 +777,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         #region Registration
 
-        // todo: remove
         /// <summary>
         /// Add a new service to the Mixed Reality Toolkit active service registry.
         /// </summary>
