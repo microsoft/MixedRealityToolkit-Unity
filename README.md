@@ -17,9 +17,11 @@ The vNext branch is taking all the best lessons learned from the original Mixed 
 
 > Learn more about [Windows Mixed Reality](https://www.microsoft.com/en-gb/windows/windows-mixed-reality) here.
 
-> Learn more about the architecture behind [Windows Mixed Reality - vNext](/MRTK-vNext.md) here.
+> Learn more about the architecture behind [Windows Mixed Reality - vNext](MRTK-vNext.md) here.
 
-> Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](/MRTK-SDK.md) here.
+> Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](MRTK-SDK.md) here.
+
+> Find this readme, other documentation articles and the MRTK api reference on our [developer documentation on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/). 
 
 # Feature areas
 The Mixed Reality Toolkit vNext will includes many APIs to accelerate the development of MR / XR / VR / AR projects for a range of supported devices, including (but not limited to)
@@ -39,9 +41,9 @@ MRTK-vNext is currently under heavy development. To determine the best branch fo
 
 The Mixed Reality team have prepared a few guides for getting up to speed on using the new Mixed Reality Toolkit, which can be found here:
 
-* [Downloading the Mixed Reality Toolkit](/Documentation/DownloadingTheMRTK.md)
-* [Getting Started with the Mixed Reality Toolkit](/Documentation/GettingStartedWithTheMRTK.md)
-* [Mixed Reality Toolkit configuration guide](/Documentation/MixedRealityConfigurationGuide.md)
+* [Downloading the Mixed Reality Toolkit](Documentation/DownloadingTheMRTK.md)
+* [Getting Started with the Mixed Reality Toolkit](Documentation/GettingStartedWithTheMRTK.md)
+* [Mixed Reality Toolkit configuration guide](Documentation/MixedRealityConfigurationGuide.md)
 
 More guides to follow.
 
@@ -60,7 +62,7 @@ New examples will follow strict guidelines, such as:
 * Each example will use a standardized template, so all examples have the same look and feel.
 * Each sample will be fully documented, detailing both the use case it is demonstrating and how to implement the features demonstrated.
 
-> Check the "Work In Progress" section of the [Windows Mixed Reality - vNext SDK](/MRTK-SDK.md) for a peek at the first new example.
+> Check the "Work In Progress" section of the [Windows Mixed Reality - vNext SDK](MRTK-SDK.md) for a peek at the first new example.
 
 
 **External\How To** docs folder is meant to help everyone with migrating forward or any simple doubts they might have about the process.

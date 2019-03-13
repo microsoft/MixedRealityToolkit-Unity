@@ -243,6 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the pressed button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that pressed the pointer.</param>
+            /// <param name="inputSource"></param>
             public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
                 MixedRealityToolkit.InputSystem.RaisePointerDown(this, mixedRealityInputAction, handedness, inputSource);
@@ -253,6 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the released button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that released the pointer.</param>
+            /// <param name="inputSource"></param>
             public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
                 MixedRealityToolkit.InputSystem.RaisePointerClicked(this, mixedRealityInputAction, 0, handedness, inputSource);

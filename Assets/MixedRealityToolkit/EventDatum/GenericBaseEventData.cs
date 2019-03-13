@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="eventSystem">Usually <see cref="EventSystem.current"/></param>
+        /// <param name="eventSystem">Usually <see href="https://docs.unity3d.com/ScriptReference/EventSystems.EventSystem-current.html">EventSystems.EventSystem.current</see></param>
         public GenericBaseEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>

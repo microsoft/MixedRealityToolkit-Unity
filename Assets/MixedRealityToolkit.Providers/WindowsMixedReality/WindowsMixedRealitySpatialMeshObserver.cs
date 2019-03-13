@@ -124,15 +124,14 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         private GameObject observedObjectParent = null;
 
         /// <summary>
-        /// The <see cref="GameObject"/> to which observed objects are parented.
+        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which observed objects are parented.
         /// </summary>
-        private GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent("WindowsMixedRealitySpatialMeshObserver"));
-
+        private GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent("WindowsMixedRealitySpatialMeshObserver"));
 
         private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
         /// <summary>
-        /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
+        /// The currently active instance of <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
         private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 
@@ -248,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
         /// <inheritdoc />
         public Material VisibleMaterial { get; set; } = null;
-        
+
         /// <inheritdoc/>
         public override void Resume()
         {

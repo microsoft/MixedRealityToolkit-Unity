@@ -43,4 +43,4 @@ The SpatialAwarenessSurfaceTypes enumeration is defined as a set of flags that e
 
 ## See Also
 
-- [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
+- [Mixed Reality Spatial Awareness System Architecture](SpatialAwarenessSystemArchitecture.md)

@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// <summary>
         /// Gets or adds a controller using the joystick name provided.
         /// </summary>
-        /// <param name="joystickName">The name of they joystick from Unity's <see cref="Input.GetJoystickNames"/></param>
+        /// <param name="joystickName">The name of they joystick from Unity's <see href="https://docs.unity3d.com/ScriptReference/Input.GetJoystickNames.html">Input.GetJoystickNames</see></param>
         /// <returns>A new controller reference.</returns>
         protected virtual GenericJoystickController GetOrAddController(string joystickName)
         {
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// <summary>
         /// Gets the current controller type for the joystick name provided.
         /// </summary>
-        /// <param name="joystickName">The name of they joystick from Unity's <see cref="Input.GetJoystickNames"/></param>
+        /// <param name="joystickName">The name of they joystick from Unity's <see href="https://docs.unity3d.com/ScriptReference/Input.GetJoystickNames.html">Input.GetJoystickNames</see></param>
         /// <returns>The supported controller type</returns>
         protected virtual SupportedControllerType GetCurrentControllerType(string joystickName)
         {

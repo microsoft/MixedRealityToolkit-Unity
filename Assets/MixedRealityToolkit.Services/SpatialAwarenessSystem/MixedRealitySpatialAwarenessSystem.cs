@@ -14,7 +14,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
 {
     /// <summary>
-    /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
+    /// Class providing the default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
     public class MixedRealitySpatialAwarenessSystem : BaseEventSystem, IMixedRealitySpatialAwarenessSystem
     {
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
         /// </summary>
         /// <returns>
-        /// The <see cref="GameObject"/> to which spatial awareness created objects will be parented.
+        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which spatial awareness created objects will be parented.
         /// </returns>
         private GameObject CreateSpatialAwarenessParent => new GameObject("Spatial Awareness System");
 

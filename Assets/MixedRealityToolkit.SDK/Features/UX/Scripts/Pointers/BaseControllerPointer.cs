@@ -75,9 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public virtual Vector3 PointerDirection => raycastOrigin != null ? raycastOrigin.forward : transform.forward;
 
         /// <summary>
-        /// Set a new cursor for this <see cref="IMixedRealityPointer"/>
+        /// Set a new cursor for this <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>
         /// </summary>
-        /// <remarks>This <see cref="GameObject"/> must have a <see cref="IMixedRealityCursor"/> attached to it.</remarks>
+        /// <remarks>This <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> must have a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityCursor"/> attached to it.</remarks>
         /// <param name="newCursor">The new cursor</param>
         public virtual void SetCursor(GameObject newCursor = null)
         {
@@ -185,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #region IMixedRealityPointer Implementation
 
-        /// <inheritdoc cref="IMixedRealityController" />
+        /// <inheritdoc />
         public override IMixedRealityController Controller
         {
             get { return base.Controller; }

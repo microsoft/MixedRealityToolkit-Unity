@@ -961,11 +961,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     }
                 }
 
-                // check to see if an animatorControll exists
+                // check to see if an animatorController exists
                 if (animatorCount > 0 && gameObject != null)
                 {
                     GameObject host = gameObject.objectReferenceValue as GameObject;
-                    Animator animator = host?.GetComponent<Animator>();
+                    Animator animator = null;
+
+                    if (host != null)
+                    {
+                        animator = host.GetComponent<Animator>();
+                    }
 
                     if (animator == null && host != null)
                     {

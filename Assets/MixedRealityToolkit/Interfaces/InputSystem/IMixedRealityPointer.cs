@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// Returns the position of the input source, if available.
         /// Not all input sources support positional information, and those that do may not always have it available.
         /// </summary>
-        /// <param name="position">Out parameter filled with the position if available, otherwise <see cref="Vector3.zero"/>.</param>
+        /// <param name="position">Out parameter filled with the position if available, otherwise <see href="https://docs.unity3d.com/ScriptReference/Vector3-zero.html">Vector3.zero</see>.</param>
         /// <returns>True if a position was retrieved, false if not.</returns>
         bool TryGetPointerPosition(out Vector3 position);
 
@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// Returns the rotation of the input source, if available.
         /// Not all input sources support rotation information, and those that do may not always have it available.
         /// </summary>
-        /// <param name="rotation">Out parameter filled with the rotation if available, otherwise <see cref="Quaternion.identity"/>.</param>
+        /// <param name="rotation">Out parameter filled with the rotation if available, otherwise <see href="https://docs.unity3d.com/ScriptReference/Quaternion-identity.html">Quaternion.identity</see>.</param>
         /// <returns>True if an rotation was retrieved, false if not.</returns>
         bool TryGetPointerRotation(out Quaternion rotation);
     }

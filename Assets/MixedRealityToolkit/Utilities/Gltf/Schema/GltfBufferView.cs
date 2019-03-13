@@ -6,6 +6,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/bufferView.schema.json <para/>
     /// A view into a buffer generally representing a subset of the buffer.
     /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/bufferView.schema.json
     /// </summary>

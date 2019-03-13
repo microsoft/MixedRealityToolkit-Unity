@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <summary>
         /// Draw an axis move handle.
         /// </summary>
-        /// <param name="target"><see cref="UnityEngine.Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="origin">The initial position of the axis.</param>
         /// <param name="direction">The direction the axis is facing.</param>
         /// <param name="distance">Distance from the axis.</param>
@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <summary>
         /// Draw a Circle Move Handle.
         /// </summary>
-        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="position">The position to draw the handle.</param>
         /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
         /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <param name="handleSize">Optional handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
-        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
         public static Vector3 CircleMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorCircle;
@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <summary>
         /// Draw a square move handle.
         /// </summary>
-        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="position">The position to draw the handle.</param>
         /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
         /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
@@ -227,7 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <param name="handleSize">Optional handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
-        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
         public static Vector3 SquareMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorSquare;
@@ -255,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <summary>
         /// Draw a sphere move handle.
         /// </summary>
-        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="position">The position to draw the handle.</param>
         /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
         /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <param name="handleSize">Optional handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
-        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
         public static Vector3 SphereMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorSphere;
@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <summary>
         /// Draw a vector handle.
         /// </summary>
-        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="origin"></param>
         /// <param name="vector"></param>
         /// <param name="normalize">Optional, Normalize the new vector value.</param>
@@ -300,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <param name="handleSize">Optional, handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
-        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
         public static Vector3 VectorHandle(Object target, Vector3 origin, Vector3 vector, bool normalize = true, bool clamp = true, float handleLength = 1f, float handleSize = 0.1f, bool recordUndo = true, bool autoSize = true)
         {
             Handles.color = HandleColorTangent;
@@ -370,13 +370,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <summary>
         /// Draw a rotation handle.
         /// </summary>
-        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="position">The position to draw the handle.</param>
         /// <param name="rotation">The rotation to draw the handle.</param>
         /// <param name="handleSize">Optional, handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
-        /// <returns>The new <see cref="Quaternion"/> value.</returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Quaternion.html">Quaternion</see> value.</returns>
         public static Quaternion RotationHandle(Object target, Vector3 position, Quaternion rotation, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorRotation;

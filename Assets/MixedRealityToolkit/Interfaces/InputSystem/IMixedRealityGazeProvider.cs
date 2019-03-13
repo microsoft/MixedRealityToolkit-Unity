@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
     public interface IMixedRealityGazeProvider
     {
         /// <summary>
-        /// Enable or disable the <see cref="Component"/> attached to the <see cref="GameObjectReference"/>
+        /// Enable or disable the <see href="https://docs.unity3d.com/ScriptReference/Component.html">Component</see> attached to the <see cref="GameObjectReference"/>
         /// </summary>
         bool Enabled { get; set; }
 

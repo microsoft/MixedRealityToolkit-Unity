@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem
         float TargetOrientation { get; }
 
         /// <summary>
-        /// Returns the <see cref="GameObject"/> reference for this teleport target.
+        /// Returns the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> reference for this teleport target.
         /// </summary>
         GameObject GameObjectReference { get; }
     }

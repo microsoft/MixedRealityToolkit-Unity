@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         private PointerData gazeProviderPointingData;
 
         /// <summary>
-        /// Cached <see cref="Vector3"/> reference to the new raycast position.
+        /// Cached <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> reference to the new raycast position.
         /// <remarks>Only used to update UI raycast results.</remarks>
         /// </summary>
         private Vector3 newUiRaycastPosition = Vector3.zero;
@@ -770,7 +770,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         }
 
         /// <summary>
-        /// Raycasts each graphic <see cref="RayStep"/>
+        /// Raycasts each graphic <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Physics.RayStep"/>
         /// </summary>
         /// <param name="pointerData"></param>
         /// <param name="step"></param>

@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// <summary>
         /// Initialize the event data.
         /// </summary>
-        /// <param name="observer">The <see cref="IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
+        /// <param name="observer">The <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
         /// <param name="id">The identifier of the observed spatial object.</param>
         public void Initialize(IMixedRealitySpatialAwarenessObserver observer, int id)
         {
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// <summary>
         /// Initialize the event data.
         /// </summary>
-        /// <param name="observer">The <see cref="IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
+        /// <param name="observer">The <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
         /// <param name="id">The identifier of the observed spatial object.</param>
         /// <param name="spatialObject">The observed spatial object.</param>
         public void Initialize(IMixedRealitySpatialAwarenessObserver observer, int id, T spatialObject)

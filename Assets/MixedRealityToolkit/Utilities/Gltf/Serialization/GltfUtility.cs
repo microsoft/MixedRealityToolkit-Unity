@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 {
     public static class GltfUtility
     {
-        public const uint GltfMagicNumber = 0x46546C67;
+        internal const uint GltfMagicNumber = 0x46546C67;
 
         private static readonly WaitForUpdate Update = new WaitForUpdate();
         private static readonly WaitForBackgroundThread BackgroundThread = new WaitForBackgroundThread();
@@ -284,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// <param name="jsonString">The json string to search.</param>
         /// <param name="handle">The handle to look for.</param>
         /// <returns>A collection of snippets with the json string that defines the object.</returns>
-        public static Dictionary<string, string> GetGltfExtraObjects(string jsonString, string handle)
+        private static Dictionary<string, string> GetGltfExtraObjects(string jsonString, string handle)
         {
             // Assumption: This code assumes that a name is declared before extensions in the glTF schema.
             // This may not work for all exporters. Some exporters may fail to adhere to the standard glTF schema.

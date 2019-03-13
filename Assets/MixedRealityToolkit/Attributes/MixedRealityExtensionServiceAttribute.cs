@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
         /// Constructor
         /// </summary>
         /// <param name="runtimePlatforms">The platforms on which the extension service is supported.</param>
-        /// <param name="profilePath">The relative path to the default profile asset.</param>
+        /// <param name="defaultProfilePath">The relative path to the default profile asset.</param>
         /// <param name="packageFolder">The package folder to which the path is relative.</param>
         public MixedRealityExtensionServiceAttribute(
             SupportedPlatforms runtimePlatforms,

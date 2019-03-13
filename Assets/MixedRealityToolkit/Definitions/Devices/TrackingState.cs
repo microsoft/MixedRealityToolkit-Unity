@@ -25,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// </summary>
         /// <remarks>
         /// Some devices provide additional details regarding the accuracy of the tracking.
-        /// <See cref="Definitions.Devices.TrackingAccuracy"/> for more information.
         /// </remarks>
         Tracked
     }

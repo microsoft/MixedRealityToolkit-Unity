@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Linq;
 using UnityEngine.Assertions;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
@@ -24,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
     /// 
     public class ManipulationHandler : BaseFocusHandler,
         IMixedRealityInputHandler,
-        IMixedRealityInputHandler<MixedRealityPose>, 
+        IMixedRealityInputHandler<MixedRealityPose>,
         IMixedRealitySourceStateHandler
     {
         #region Private Enums
@@ -236,9 +235,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         #endregion Private Methods
 
         #region Event Handlers From Interfaces
-        /// <summary>
-        /// /// Event Handler receives input from inputSource
-        /// </summary>
+
+        /// <inheritdoc />
         public void OnInputDown(InputEventData eventData)
         {
             gazeHandHelper.AddSource(eventData);
@@ -246,9 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             eventData.Use();
         }
 
-        /// <summary>
-        /// Event Handler receives input from inputSource
-        /// </summary>
+        /// <inheritdoc />
         public void OnInputUp(InputEventData eventData)
         {
             gazeHandHelper.RemoveSource(eventData);
@@ -256,10 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             eventData.Use();
         }
 
-        /// <summary>
-        /// Event Handler receives input from IMixedRealityInputHandler<MixedRealityPose>
-        /// </summary>
-        /// <param name="eventData"></param>
+        /// <inheritdoc />
         public void OnInputChanged(InputEventData<MixedRealityPose> eventData)
         {
             gazeHandHelper.UpdateSource(eventData);
@@ -267,9 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             eventData.Use();
         }
 
-        /// <summary>
-        /// Event Handler when a InputSource is lost- part of IMixedRealitySourceStateHander interface
-        /// </summary>
+        /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
             gazeHandHelper.RemoveSource(eventData);

@@ -26,4 +26,4 @@ public enum SpatialMeshDisplayOptions
 
 ## See Also
 
-- [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
+- [Mixed Reality Spatial Awareness System Architecture](SpatialAwarenessSystemArchitecture.md)

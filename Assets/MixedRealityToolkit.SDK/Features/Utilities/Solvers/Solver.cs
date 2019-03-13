@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         private float currentLifetime;
 
         /// <summary>
-        /// The handler reference for this solver that's attached to this <see cref="GameObject"/>
+        /// The handler reference for this solver that's attached to this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
         /// </summary>
         [SerializeField]
         [HideInInspector]

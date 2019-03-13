@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
         /// Gesture Updated Event.
         /// </summary>
         /// <remarks>
-        /// The <see cref="InputEventData{T}.InputData"/> for the associated gesture data.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Core.EventDatum.Input.InputEventData{T}.InputData"/> for the associated gesture data.
         /// </remarks>
         /// <param name="eventData"></param>
         void OnGestureUpdated(InputEventData<T> eventData);
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
         /// Gesture Completed Event.
         /// </summary>
         /// <remarks>
-        /// The <see cref="InputEventData{T}.InputData"/> for the associated gesture data.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Core.EventDatum.Input.InputEventData{T}.InputData"/> for the associated gesture data.
         /// </remarks>
         /// <param name="eventData"></param>
         void OnGestureCompleted(InputEventData<T> eventData);

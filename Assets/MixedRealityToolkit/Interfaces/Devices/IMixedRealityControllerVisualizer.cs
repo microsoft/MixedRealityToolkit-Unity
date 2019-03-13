@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
     public interface IMixedRealityControllerVisualizer : IMixedRealityControllerPoseSynchronizer
     {
         /// <summary>
-        /// The <see cref="GameObject"/> reference for this controller.
+        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> reference for this controller.
         /// </summary>
         /// <remarks>
         /// This reference may not always be available when called.

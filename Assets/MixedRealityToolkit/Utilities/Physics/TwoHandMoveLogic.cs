@@ -26,10 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="rotationConstraint"></param>
-        public TwoHandMoveLogic(MovementConstraintType _movementConstraint)
+        /// <param name="movementConstraint"></param>
+        public TwoHandMoveLogic(MovementConstraintType movementConstraint)
         {
-            movementConstraint = _movementConstraint;
+            this.movementConstraint = movementConstraint;
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
 
             var targetDistance = objRefDistance;
 
-            if(movementConstraint != MovementConstraintType.FixDistanceFromHead)
+            if (movementConstraint != MovementConstraintType.FixDistanceFromHead)
             {
                 // Compute how far away the object should be based on the ratio of the current to original hand distance
                 var currentHandDistance = Vector3.Magnitude(newHandPosition - pivotPosition);

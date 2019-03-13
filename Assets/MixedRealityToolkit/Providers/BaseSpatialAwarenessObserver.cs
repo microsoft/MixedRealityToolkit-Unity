@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
         /// <summary>
-        /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
+        /// The currently active instance of <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
         protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 
@@ -85,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <inheritdoc />
         public int DefaultPhysicsLayer { get; set; } = 31;
 
-        /// <inheritdoc />
         public int DefaultPhysicsLayerMask => (1 << DefaultPhysicsLayer);
 
         /// <inheritdoc />
@@ -96,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
 
         private GameObject observedObjectParent = null;
 
-        public GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent(Name));
+        public GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent(Name));
 
         /// <inheritdoc />
         public VolumeType ObserverVolumeType { get; set; } = VolumeType.AxisAlignedCube;

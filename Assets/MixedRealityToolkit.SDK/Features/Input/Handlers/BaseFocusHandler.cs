@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 {
     /// <summary>
-    /// Base Component for handling Focus on <see cref="GameObject"/>s.
+    /// Base Component for handling Focus on <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s.
     /// </summary>
     [RequireComponent(typeof(Collider))]
     public abstract class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler
@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         private bool focusEnabled = true;
 
         /// <summary>
-        /// Is focus enabled for this <see cref="Component"/>?
+        /// Is focus enabled for this <see href="https://docs.unity3d.com/ScriptReference/Component.html">Component</see>?
         /// </summary>
         public virtual bool FocusEnabled
         {
@@ -29,12 +29,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         }
 
         /// <summary>
-        /// Does this object currently have focus by any <see cref="IMixedRealityPointer"/>?
+        /// Does this object currently have focus by any <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>?
         /// </summary>
         public virtual bool HasFocus => FocusEnabled && Focusers.Count > 0;
 
         /// <summary>
-        /// The list of <see cref="IMixedRealityPointer"/>s that are currently focused on this <see cref="GameObject"/>
+        /// The list of <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityPointer"/>s that are currently focused on this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
         /// </summary>
         public List<IMixedRealityPointer> Focusers { get; } = new List<IMixedRealityPointer>(0);
 

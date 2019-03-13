@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <param name="fileName">The process executable to run.</param>
         /// <param name="args">The Process arguments.</param>
         /// <param name="showDebug">Should output debug code to Editor Console?</param>
-        /// <returns><see cref="ProcessResult"/></returns>
+        /// <returns><see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.ProcessResult"/></returns>
         public static async Task<ProcessResult> StartProcessAsync(this Process process, string fileName, string args, bool showDebug = false)
         {
             return await StartProcessAsync(process, new ProcessStartInfo
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <param name="process">This Process.</param>
         /// <param name="startInfo">The Process start info.</param>
         /// <param name="showDebug">Should output debug code to Editor Console?</param>
-        /// <returns><see cref="ProcessResult"/></returns>
+        /// <returns><see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.ProcessResult"/></returns>
         public static async Task<ProcessResult> StartProcessAsync(this Process process, ProcessStartInfo startInfo, bool showDebug = false)
         {
             Debug.Assert(!startInfo.UseShellExecute, "Process Start Info must not use shell execution.");
