@@ -353,21 +353,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     return null;
                 }
 
+
                 var objects = FindObjectsOfType<MixedRealityToolkit>();
                 searchForInstance = false;
                 MixedRealityToolkit newInstance;
-                newInstanceBeingInitialized = false;
 
                 switch (objects.Length)
                 {
                     case 0:
+                        Debug.Assert(!newInstanceBeingInitialized, "We shouldn't be initializing another MixedRealityToolkit unless we errored on the previous.");
                         newInstanceBeingInitialized = true;
                         newInstance = new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>();
                         break;
                     case 1:
+                        newInstanceBeingInitialized = false;
                         newInstance = objects[0];
                         break;
                     default:
+                        newInstanceBeingInitialized = false;
                         Debug.LogError($"Expected exactly 1 {nameof(MixedRealityToolkit)} but found {objects.Length}.");
                         return null;
                 }
@@ -1361,6 +1364,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private static bool logSpatialAwarenessSystem = true;
 
         private static IMixedRealityTeleportSystem teleportSystem = null;
+
+        /// <summary>
+        /// Returns true if the MixedRealityToolkit exists and has an active profile that has Teleport system enabled.
+        /// </summary>
+        public static bool IsTeleportSystemEnabled => IsInitialized && HasActiveProfile && Instance.ActiveProfile.IsTeleportSystemEnabled;
 
         /// <summary>
         /// The current Teleport System registered with the Mixed Reality Toolkit.

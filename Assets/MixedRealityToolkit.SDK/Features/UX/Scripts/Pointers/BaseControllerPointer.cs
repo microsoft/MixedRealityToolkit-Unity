@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.OnEnable();
 
-            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.Instance.ActiveProfile.IsTeleportSystemEnabled && MixedRealityToolkit.TeleportSystem != null && !lateRegisterTeleport)
+            if (MixedRealityToolkit.IsTeleportSystemEnabled && MixedRealityToolkit.TeleportSystem != null && !lateRegisterTeleport)
             {
                 MixedRealityToolkit.TeleportSystem.Register(gameObject);
             }
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.Start();
 
-            if (lateRegisterTeleport && MixedRealityToolkit.Instance.ActiveProfile.IsTeleportSystemEnabled)
+            if (lateRegisterTeleport && MixedRealityToolkit.IsTeleportSystemEnabled)
             {
                 if (MixedRealityToolkit.TeleportSystem == null)
                 {
