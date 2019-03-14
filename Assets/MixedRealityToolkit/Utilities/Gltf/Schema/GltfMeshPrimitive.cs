@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
     /// Geometry to be rendered with the given material.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/mesh.primitive.schema.json
     /// </summary>
     [Serializable]
     public class GltfMeshPrimitive : GltfProperty
@@ -54,6 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// </summary>
         public GltfMeshPrimitiveAttributes Attributes { get; internal set; }
 
+        /// <summary>
+        /// Unity Mesh wrapper for the GltfMeshPrimitive SubMesh
+        /// </summary>
         public Mesh SubMesh { get; internal set; }
     }
 }

@@ -7,6 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
     /// A keyframe animation.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/animation.schema.json
     /// </summary>
     [Serializable]
     public class GltfAnimation : GltfChildOfRootProperty

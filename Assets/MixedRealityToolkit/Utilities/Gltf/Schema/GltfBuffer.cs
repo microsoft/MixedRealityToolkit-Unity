@@ -7,6 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
     /// A buffer points to binary geometry, animation, or skins.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/buffer.schema.json
     /// </summary>
     [Serializable]
     public class GltfBuffer : GltfChildOfRootProperty

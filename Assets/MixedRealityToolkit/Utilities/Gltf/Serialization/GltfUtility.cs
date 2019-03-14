@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             if (loadAsynchronously) { await BackgroundThread; }
 
-            if (uri.Contains(".gltf"))
+            if (uri.EndsWith(".gltf"))
             {
                 string gltfJson = File.ReadAllText(uri);
 
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                     return null;
                 }
             }
-            else if (uri.Contains(".glb"))
+            else if (uri.EndsWith(".glb"))
             {
                 isGlb = true;
                 byte[] glbData;
@@ -116,71 +116,48 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         {
             var gltfObject = JsonUtility.FromJson<GltfObject>(jsonString);
 
-            for (int i = 0; i < gltfObject.extensionsRequired?.Length; i++)
+            if (gltfObject.extensionsRequired != null)
             {
-                var extensionsRequired = GetGltfExtensionObjects(jsonString, gltfObject.extensionsRequired[i]);
-
-                foreach (var extensionRequired in extensionsRequired)
+                if (gltfObject.extensionsRequired.Length > 0)
                 {
-                    // TODO Update this after KHR_materials_pbrSpecularGlossiness extension is supported
-                    //if (gltfObject.extensionsUsed[i].Equals("KHR_materials_pbrSpecularGlossiness"))
-                    //{
-                    //    for (int j = 0; j < gltfObject.materials.Length; j++)
-                    //    {
-                    //        if (!string.IsNullOrEmpty(gltfObject.materials[i].name) &&
-                    //            gltfObject.materials[i].name == extensionRequired.Key)
-                    //        {
-                    //            gltfObject.materials[i].Extensions.Add(gltfObject.extensionsUsed[i], extensionRequired.Value);
-                    //            var extension = JsonUtility.FromJson<KHR_Materials_PbrSpecularGlossiness>(extensionRequired.Value);
-                    //            extension.ElementName = gltfObject.materials[i].name;
-                    //            gltfObject.RegisteredExtensions.Add(extension);
-                    //        }
-                    //    }
-                    //}
-                    //else
-                    {
-                        Debug.LogWarning($"Unsupported Extension: {gltfObject.extensionsRequired[i]}");
-                        return null;
-                    }
+                    Debug.LogError($"Required Extension Unsupported: {gltfObject.extensionsRequired[0]}");
+                    return null;
                 }
             }
 
-            for (int i = 0; i < gltfObject.extensionsUsed?.Length; i++)
+            if (gltfObject.extensionsUsed != null)
             {
-                var extensionsUsed = GetGltfExtensionObjects(jsonString, gltfObject.extensionsUsed[i]);
-
-                foreach (var extensionUsed in extensionsUsed)
+                for (int i = 0; i < gltfObject.extensionsUsed.Length; i++)
                 {
-                    // TODO Update this after KHR_materials_pbrSpecularGlossiness extension is supported
-                    //if (gltfObject.extensionsUsed[i].Equals("KHR_materials_pbrSpecularGlossiness"))
-                    //{
-                    //    for (int j = 0; j < gltfObject.materials.Length; j++)
-                    //    {
-                    //        if (!string.IsNullOrEmpty(gltfObject.materials[i].name) &&
-                    //            gltfObject.materials[i].name == extensionUsed.Key)
-                    //        {
-                    //            gltfObject.materials[i].Extensions.Add(gltfObject.extensionsUsed[i], extensionUsed.Value);
-                    //            var extension = JsonUtility.FromJson<KHR_Materials_PbrSpecularGlossiness>(extensionUsed.Value);
-                    //            extension.ElementName = gltfObject.materials[i].name;
-                    //            gltfObject.RegisteredExtensions.Add(extension);
-                    //        }
-                    //    }
-                    //}
-                    //else
-                    {
-                        Debug.LogWarning($"Unsupported Extension: {gltfObject.extensionsUsed[i]}");
-                    }
+                    var extensionsUsed = GetGltfExtensionObjects(jsonString, gltfObject.extensionsUsed[i]);
+                    Debug.LogWarning($"Unsupported Extension: {gltfObject.extensionsUsed[i]}");
                 }
             }
 
             var meshPrimitiveAttributes = GetGltfMeshPrimitiveAttributes(jsonString);
 
+            int numPrimitives = 0;
+            if (gltfObject.meshes != null)
+            {
+                foreach (var mesh in gltfObject.meshes)
+                {
+                    numPrimitives += (mesh == null) || (mesh.primitives == null) ? 0 : mesh.primitives.Length;
+                }
+            }
+
+            if (numPrimitives != meshPrimitiveAttributes.Count)
+            {
+                Debug.LogError("The number of mesh primitive attributes does not match the number of mesh primitives");
+                return null;
+            }
+
+            int currPrimitive = 0;
             for (int i = 0; i < gltfObject.meshes.Length; i++)
             {
                 for (int j = 0; j < gltfObject.meshes[i].primitives.Length; j++)
                 {
-                    gltfObject.meshes[i].primitives[j].Attributes = JsonUtility.FromJson<GltfMeshPrimitiveAttributes>(meshPrimitiveAttributes[0]);
-                    meshPrimitiveAttributes.Remove(meshPrimitiveAttributes[0]);
+                    gltfObject.meshes[i].primitives[j].Attributes = JsonUtility.FromJson<GltfMeshPrimitiveAttributes>(meshPrimitiveAttributes[currPrimitive]);
+                    currPrimitive++;
                 }
             }
 
@@ -188,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         }
 
         /// <summary>
-        /// Gets a glTF object from the provided path
+        /// Gets a glTF object from the provided byte array
         /// </summary>
         /// <param name="glbData">Raw glb byte data.</param>
         /// <returns><see cref="GltfObject"/></returns>
@@ -199,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             var magicNumber = BitConverter.ToUInt32(glbData, 0);
             var version = BitConverter.ToUInt32(glbData, stride);
-            //var length = BitConverter.ToUInt32(glbData, stride * 2);
+            var length = BitConverter.ToUInt32(glbData, stride * 2);
 
             if (magicNumber != GltfMagicNumber)
             {
@@ -210,6 +187,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             if (version != 2)
             {
                 Debug.LogError("Glb file version mismatch! Glb must use version 2");
+                return null;
+            }
+
+            if (length != glbData.Length)
+            {
+                Debug.LogError("Glb file size does not match the glb header defined size");
                 return null;
             }
 
@@ -289,7 +272,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// <returns>A collection of snippets with the json string that defines the object.</returns>
         private static Dictionary<string, string> GetGltfExtensionObjects(string jsonString, string handle)
         {
-            // Bug: sometimes name isn't always before extension declaration
+            // Assumption: This code assumes that a name is declared before extensions in the glTF schema.
+            // This may not work for all exporters. Some exporters may fail to adhere to the standard glTF schema.
             var regex = new Regex($"(\"name\":\\s*\"\\w*\",\\s*\"extensions\":\\s*{{\\s*?)(\"{handle}\"\\s*:\\s*{{)");
             return GetGltfExtensions(jsonString, regex);
         }
@@ -302,7 +286,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// <returns>A collection of snippets with the json string that defines the object.</returns>
         private static Dictionary<string, string> GetGltfExtraObjects(string jsonString, string handle)
         {
-            // Bug: sometimes name isn't always before extra declaration
+            // Assumption: This code assumes that a name is declared before extensions in the glTF schema.
+            // This may not work for all exporters. Some exporters may fail to adhere to the standard glTF schema.
             var regex = new Regex($"(\"name\":\\s*\"\\w*\",\\s*\"extras\":\\s*{{\\s*?)(\"{handle}\"\\s*:\\s*{{)");
             return GetGltfExtensions(jsonString, regex);
         }

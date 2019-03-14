@@ -15,6 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
         {
             var gltfAsset = (GltfAsset)ScriptableObject.CreateInstance(typeof(GltfAsset));
             var importedObject = await GltfUtility.ImportGltfObjectFromPathAsync(context.assetPath);
+            if (importedObject == null)
+            {
+                Debug.LogError("Failed to import gltf object");
+                return;
+            }
 
             gltfAsset.GltfObject = importedObject;
             gltfAsset.name = $"{gltfAsset.GltfObject.Name}{Path.GetExtension(context.assetPath)}";
@@ -62,30 +67,44 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
                 return;
             }
 
-            for (var i = 0; i < gltfAsset.GltfObject.meshes.Length; i++)
+            if (gltfAsset.GltfObject.meshes != null)
             {
-                GltfMesh gltfMesh = gltfAsset.GltfObject.meshes[i];
+                for (var i = 0; i < gltfAsset.GltfObject.meshes.Length; i++)
+                {
+                    GltfMesh gltfMesh = gltfAsset.GltfObject.meshes[i];
 
-                string meshName = string.IsNullOrWhiteSpace(gltfMesh.name) ? $"Mesh_{i}" : gltfMesh.name;
+                    string meshName = string.IsNullOrWhiteSpace(gltfMesh.name) ? $"Mesh_{i}" : gltfMesh.name;
 
-                gltfMesh.Mesh.name = meshName;
-                context.AddObjectToAsset($"{meshName}", gltfMesh.Mesh);
+                    gltfMesh.Mesh.name = meshName;
+                    context.AddObjectToAsset($"{meshName}", gltfMesh.Mesh);
+                }
+            }
+            else
+            {
+                Debug.LogError("GltfObject.meshes was null");
             }
 
-            foreach (GltfMaterial gltfMaterial in gltfAsset.GltfObject.materials)
+            if (gltfAsset.GltfObject.materials != null)
             {
-                if (context.assetPath.EndsWith(".glb"))
+                foreach (GltfMaterial gltfMaterial in gltfAsset.GltfObject.materials)
                 {
-                    context.AddObjectToAsset(gltfMaterial.name, gltfMaterial.Material);
+                    if (context.assetPath.EndsWith(".glb"))
+                    {
+                        context.AddObjectToAsset(gltfMaterial.name, gltfMaterial.Material);
+                    }
+                    else
+                    {
+                        var path = Path.GetFullPath(Path.GetDirectoryName(context.assetPath));
+                        path = path.Replace("\\", "/").Replace(Application.dataPath, "Assets");
+                        path = $"{path}/{gltfMaterial.name}.mat";
+                        AssetDatabase.CreateAsset(gltfMaterial.Material, path);
+                        gltfMaterial.Material = AssetDatabase.LoadAssetAtPath<Material>(path);
+                    }
                 }
-                else
-                {
-                    var path = Path.GetFullPath(Path.GetDirectoryName(context.assetPath));
-                    path = path.Replace("\\", "/").Replace(Application.dataPath, "Assets");
-                    path = $"{path}/{gltfMaterial.name}.mat";
-                    AssetDatabase.CreateAsset(gltfMaterial.Material, path);
-                    gltfMaterial.Material = AssetDatabase.LoadAssetAtPath<Material>(path);
-                }
+            }
+            else
+            {
+                Debug.LogError("GltfObject.materials was null");
             }
         }
     }

@@ -7,6 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
     /// Texture sampler properties for filtering and wrapping modes.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/sampler.schema.json
     /// </summary>
     [Serializable]
     public class GltfSampler : GltfChildOfRootProperty

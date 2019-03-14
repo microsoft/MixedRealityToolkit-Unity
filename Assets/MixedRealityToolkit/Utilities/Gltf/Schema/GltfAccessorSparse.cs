@@ -6,6 +6,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
+    /// Sparse storage of attributes that deviate from their initialization value.
     /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/accessor.sparse.schema.json
     /// </summary>
     [Serializable]

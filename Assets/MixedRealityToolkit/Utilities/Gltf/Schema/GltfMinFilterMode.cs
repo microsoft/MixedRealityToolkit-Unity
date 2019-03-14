@@ -5,6 +5,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
     /// Minification filter mode.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/sampler.schema.json
     /// </summary>
     public enum GltfMinFilterMode
     {

@@ -115,7 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
                 if (!string.IsNullOrEmpty(gltfObject.Uri) && !string.IsNullOrEmpty(gltfImage.uri))
                 {
-                    // TODO update to download and use http paths.
                     var parentDirectory = Directory.GetParent(gltfObject.Uri).FullName;
                     var path = $"{parentDirectory}\\{gltfImage.uri}";
 
@@ -177,14 +176,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         {
             if (gltfObject.LoadAsynchronously) await Update;
 
-            // TODO Update to MRTK Standard shader and fallback to Standard if needed.
-            Shader shader = Shader.Find("Standard");
-
-            if (shader == null)
+            Material material = await CreateMRTKShaderMaterial(gltfObject, gltfMaterial, materialId);
+            if (material == null)
             {
-                Debug.LogWarning("No Standard shader found. Falling back to Legacy Diffuse");
-                shader = Shader.Find("Legacy Shaders/Diffuse");
+                Debug.LogWarning("The Mixed Reality Toolkit/Standard Shader was not found. Falling back to Standard Shader");
+                material = await CreateStandardShaderMaterial(gltfObject, gltfMaterial, materialId);
             }
+
+            if (material == null)
+            {
+                Debug.LogWarning("The Standard Shader was not found. Failed to create material for glTF object");
+            }
+            else
+            {
+                gltfMaterial.Material = material;
+            }
+
+            if (gltfObject.LoadAsynchronously) await BackgroundThread;
+        }
+
+        private static async Task<Material> CreateMRTKShaderMaterial(GltfObject gltfObject, GltfMaterial gltfMaterial, int materialId)
+        {
+            var shader = Shader.Find("Mixed Reality Toolkit/Standard");
+            if (shader == null)
+                return null;
 
             var material = new Material(shader)
             {
@@ -198,43 +213,38 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             material.color = gltfMaterial.pbrMetallicRoughness.baseColorFactor.GetColorValue();
 
-            if (shader.name == "Standard")
+            if (gltfMaterial.alphaMode == "MASK")
             {
-                if (gltfMaterial.alphaMode == "MASK")
-                {
-                    material.SetInt(SrcBlend, (int)BlendMode.One);
-                    material.SetInt(DstBlend, (int)BlendMode.Zero);
-                    material.SetInt(ZWrite, 1);
-                    material.SetInt(Mode, 3);
-                    material.SetOverrideTag("RenderType", "Cutout");
-                    material.EnableKeyword("_ALPHATEST_ON");
-                    material.DisableKeyword("_ALPHABLEND_ON");
-                    material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                    material.renderQueue = 2450;
-                }
-                else if (gltfMaterial.alphaMode == "BLEND")
-                {
-                    material.SetInt(SrcBlend, (int)BlendMode.One);
-                    material.SetInt(DstBlend, (int)BlendMode.OneMinusSrcAlpha);
-                    material.SetInt(ZWrite, 0);
-                    material.SetInt(Mode, 3);
-                    material.SetOverrideTag("RenderType", "Transparency");
-                    material.DisableKeyword("_ALPHATEST_ON");
-                    material.DisableKeyword("_ALPHABLEND_ON");
-                    material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-                    material.renderQueue = 3000;
-                }
+                material.SetInt(SrcBlend, (int)BlendMode.One);
+                material.SetInt(DstBlend, (int)BlendMode.Zero);
+                material.SetInt(ZWrite, 1);
+                material.SetInt(Mode, 3);
+                material.SetOverrideTag("RenderType", "Cutout");
+                material.EnableKeyword("_ALPHATEST_ON");
+                material.DisableKeyword("_ALPHABLEND_ON");
+                material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                material.renderQueue = 2450;
+            }
+            else if (gltfMaterial.alphaMode == "BLEND")
+            {
+                material.SetInt(SrcBlend, (int)BlendMode.One);
+                material.SetInt(DstBlend, (int)BlendMode.OneMinusSrcAlpha);
+                material.SetInt(ZWrite, 0);
+                material.SetInt(Mode, 3);
+                material.SetOverrideTag("RenderType", "Transparency");
+                material.DisableKeyword("_ALPHATEST_ON");
+                material.DisableKeyword("_ALPHABLEND_ON");
+                material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+                material.renderQueue = 3000;
             }
 
             if (gltfMaterial.emissiveTexture.index >= 0 && material.HasProperty("_EmissionMap"))
             {
-                material.EnableKeyword("_EmissionMap");
                 material.EnableKeyword("_EMISSION");
-                material.SetTexture(EmissionMap, gltfObject.images[gltfMaterial.emissiveTexture.index].Texture);
-                material.SetColor(EmissionColor, gltfMaterial.emissiveFactor.GetColorValue());
+                material.SetColor("_EmissiveColor", gltfMaterial.emissiveFactor.GetColorValue());
             }
 
-            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index >= 0 && material.HasProperty("_MetallicGlossMap"))
+            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index >= 0)
             {
                 var texture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture;
 
@@ -258,7 +268,107 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                     texture.SetPixels(pixelCache);
                     texture.Apply();
 
-                    material.SetTexture(MetallicGlossMap, gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture);
+                    material.SetTexture("_ChannelMap", texture);
+                    material.EnableKeyword("_CHANNEL_MAP");
+                }
+
+                material.SetFloat("_Smoothness", Mathf.Abs((float)gltfMaterial.pbrMetallicRoughness.roughnessFactor - 1f));
+                material.SetFloat("_Metallic", (float)gltfMaterial.pbrMetallicRoughness.metallicFactor);
+            }
+
+
+            if (gltfMaterial.normalTexture.index >= 0)
+            {
+                material.SetTexture("_NormalMap", gltfObject.images[gltfMaterial.normalTexture.index].Texture);
+                material.SetFloat("_NormalMapScale", (float) gltfMaterial.normalTexture.scale);
+                material.EnableKeyword("_NORMAL_MAP");
+            }
+
+            if (gltfMaterial.doubleSided)
+            {
+                material.SetFloat("_CullMode", (float) CullMode.Off);
+            }
+
+            material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+            return material;
+        }
+
+        private static async Task<Material> CreateStandardShaderMaterial(GltfObject gltfObject, GltfMaterial gltfMaterial, int materialId)
+        {
+            var shader = Shader.Find("Standard");
+            if (shader == null)
+                return null;
+
+            var material = new Material(shader)
+            {
+                name = string.IsNullOrEmpty(gltfMaterial.name) ? $"Gltf Material {materialId}" : gltfMaterial.name
+            };
+
+            if (gltfMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0)
+            {
+                material.mainTexture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.baseColorTexture.index].Texture;
+            }
+
+            material.color = gltfMaterial.pbrMetallicRoughness.baseColorFactor.GetColorValue();
+
+            if (gltfMaterial.alphaMode == "MASK")
+            {
+                material.SetInt(SrcBlend, (int)BlendMode.One);
+                material.SetInt(DstBlend, (int)BlendMode.Zero);
+                material.SetInt(ZWrite, 1);
+                material.SetInt(Mode, 3);
+                material.SetOverrideTag("RenderType", "Cutout");
+                material.EnableKeyword("_ALPHATEST_ON");
+                material.DisableKeyword("_ALPHABLEND_ON");
+                material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                material.renderQueue = 2450;
+            }
+            else if (gltfMaterial.alphaMode == "BLEND")
+            {
+                material.SetInt(SrcBlend, (int)BlendMode.One);
+                material.SetInt(DstBlend, (int)BlendMode.OneMinusSrcAlpha);
+                material.SetInt(ZWrite, 0);
+                material.SetInt(Mode, 3);
+                material.SetOverrideTag("RenderType", "Transparency");
+                material.DisableKeyword("_ALPHATEST_ON");
+                material.DisableKeyword("_ALPHABLEND_ON");
+                material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+                material.renderQueue = 3000;
+            }
+
+            if (gltfMaterial.emissiveTexture.index >= 0)
+            {
+                material.EnableKeyword("_EmissionMap");
+                material.EnableKeyword("_EMISSION");
+                material.SetTexture(EmissionMap, gltfObject.images[gltfMaterial.emissiveTexture.index].Texture);
+                material.SetColor(EmissionColor, gltfMaterial.emissiveFactor.GetColorValue());
+            }
+
+            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index >= 0)
+            {
+                var texture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture;
+
+                if (texture.isReadable)
+                {
+                    var pixels = texture.GetPixels();
+                    if (gltfObject.LoadAsynchronously) await BackgroundThread;
+
+                    var pixelCache = new Color[pixels.Length];
+
+                    for (int c = 0; c < pixels.Length; c++)
+                    {
+                        // Unity only looks for metal in R channel, and smoothness in A.
+                        pixelCache[c].r = pixels[c].g;
+                        pixelCache[c].g = 0f;
+                        pixelCache[c].b = 0f;
+                        pixelCache[c].a = pixels[c].b;
+                    }
+
+                    if (gltfObject.LoadAsynchronously) await Update;
+                    texture.SetPixels(pixelCache);
+                    texture.Apply();
+
+                    material.SetTexture(MetallicGlossMap, texture);
                 }
 
                 material.SetFloat(Glossiness, Mathf.Abs((float)gltfMaterial.pbrMetallicRoughness.roughnessFactor - 1f));
@@ -267,32 +377,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.EnableKeyword("_METALLICGLOSSMAP");
             }
 
-            if (gltfMaterial.normalTexture.index >= 0 && material.HasProperty("_BumpMap"))
+            if (gltfMaterial.normalTexture.index >= 0)
             {
                 material.SetTexture(BumpMap, gltfObject.images[gltfMaterial.normalTexture.index].Texture);
                 material.EnableKeyword("_BumpMap");
             }
 
             material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
-            gltfMaterial.Material = material;
-
-            if (gltfObject.LoadAsynchronously) await BackgroundThread;
+            return material;
         }
 
         private static async Task ConstructSceneAsync(this GltfObject gltfObject, GltfScene gltfScene, GameObject root)
         {
             for (int i = 0; i < gltfScene.nodes.Length; i++)
             {
-                // TODO Uncomment this out after implementing root object transform normalization.
-                await ConstructNodeAsync(gltfObject, gltfObject.nodes[gltfScene.nodes[i]], gltfScene.nodes[i], root.transform/*, gltfObject.scenes.Length == 1*/);
+                // Note: glTF objects are currently imported with their original scale from the glTF scene, which may apply an unexpected transform
+                // to the root node. If this behavior needs to be changed, functionality should be added below to ConstructNodeAsync
+                await ConstructNodeAsync(gltfObject, gltfObject.nodes[gltfScene.nodes[i]], gltfScene.nodes[i], root.transform);
             }
         }
 
-        private static async Task ConstructNodeAsync(GltfObject gltfObject, GltfNode node, int nodeId, Transform parent, bool isRoot = false)
+        private static async Task ConstructNodeAsync(GltfObject gltfObject, GltfNode node, int nodeId, Transform parent)
         {
             if (gltfObject.LoadAsynchronously) await Update;
 
-            var nodeGameObject = !isRoot ? new GameObject(string.IsNullOrEmpty(node.name) ? $"glTF Node {nodeId}" : node.name) : parent.gameObject;
+            var nodeName = string.IsNullOrEmpty(node.name) ? $"glTF Node {nodeId}" : node.name;
+            var nodeGameObject = new GameObject(nodeName);
 
             // If we're creating a really large node, we need it to not be visible in partial stages. So we hide it while we create it
             nodeGameObject.SetActive(false);
@@ -321,7 +431,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             if (gltfObject.LoadAsynchronously) await Update;
 
-            // TODO if isRoot do transform normalization (i.e. position == 0,0,0 && rotation == identify && scale == 1,1,1)
             nodeGameObject.transform.localPosition = position;
             nodeGameObject.transform.localRotation = rotation;
             nodeGameObject.transform.localScale = scale;
@@ -480,7 +589,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             var mesh = new Mesh
             {
-                indexFormat = vertexCount > 65535 ? IndexFormat.UInt32 : IndexFormat.UInt16,
+                indexFormat = vertexCount > UInt16.MaxValue ? IndexFormat.UInt32 : IndexFormat.UInt16,
             };
 
             if (positionAccessor != null)

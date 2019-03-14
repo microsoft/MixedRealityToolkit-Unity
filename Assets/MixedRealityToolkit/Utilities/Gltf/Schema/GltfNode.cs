@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
     /// When a node is targeted for animation
     /// (referenced by an animation.channel.target), only TRS properties may be present;
     /// `matrix` will not be present.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/node.schema.json
     /// </summary>
     [Serializable]
     public class GltfNode : GltfChildOfRootProperty

@@ -96,6 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// </summary>
         public GltfAccessorSparse sparse;
 
+        /// <summary>
+        /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/bufferView.schema.json
+        /// </summary>
         public GltfBufferView BufferView { get; internal set; }
     }
 }

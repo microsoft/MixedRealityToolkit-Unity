@@ -8,6 +8,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
     [Serializable]
     public class GltfMaterialCommonConstant : GltfProperty
     {
+        // Note: GltfMaterialCommonConstants aren't currently used but exist for deserializing jsons.
+        // These values would influence properties in Unity -> Window -> Rendering -> Light Settings if used.
+
         /// <summary>
         /// Used to scale the ambient light contributions to this material
         /// </summary>

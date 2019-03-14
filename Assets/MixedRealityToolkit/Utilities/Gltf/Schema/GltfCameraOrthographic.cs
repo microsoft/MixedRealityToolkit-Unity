@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
     /// <summary>
     /// An orthographic camera containing properties to create an orthographic
     /// projection matrix.
+    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/camera.orthographic.schema.json
     /// </summary>
     [Serializable]
     public class GltfCameraOrthographic : GltfProperty
