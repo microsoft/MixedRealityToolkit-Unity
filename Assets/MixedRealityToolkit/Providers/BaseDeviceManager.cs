@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
                         var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-                        MixedRealityToolkit.Instance.MixedRealityPlayspace.SetChild(pointerObject.transform);
+                        MixedRealityToolkit.MixedRealityPlayspace.SetChild(pointerObject.transform);
 
                         if (pointer != null)
                         {

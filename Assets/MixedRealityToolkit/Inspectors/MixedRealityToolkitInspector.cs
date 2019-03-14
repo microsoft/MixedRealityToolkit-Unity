@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
         {
             Selection.activeObject = MixedRealityToolkit.Instance;
             Debug.Assert(MixedRealityToolkit.IsInitialized);
-            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+            var playspace = MixedRealityToolkit.MixedRealityPlayspace;
             Debug.Assert(playspace != null);
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
         }

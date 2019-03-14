@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.Teleportation
         {
             isProcessingTeleportRequest = true;
 
-            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+            var playspace = MixedRealityToolkit.MixedRealityPlayspace;
 
             targetRotation = Vector3.zero;
             targetRotation.y = eventData.Pointer.PointerOrientation;

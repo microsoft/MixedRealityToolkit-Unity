@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
             if (controllerModel != null)
             {
                 var controllerObject = UnityEngine.Object.Instantiate(controllerModel);
-                MixedRealityToolkit.Instance.MixedRealityPlayspace.SetChild(controllerObject.transform);
+                MixedRealityToolkit.MixedRealityPlayspace.SetChild(controllerObject.transform);
                 controllerObject.name = $"{ControllerHandedness}_{controllerObject.name}";
                 Visualizer = controllerObject.GetComponent<IMixedRealityControllerVisualizer>();
 

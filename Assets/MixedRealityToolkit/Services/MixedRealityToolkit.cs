@@ -475,12 +475,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             return IsInitialized;
         }
 
-        private readonly MixedRealityPlayspace mixedRealityPlayspace = new MixedRealityPlayspace();
+        private static readonly MixedRealityPlayspace mixedRealityPlayspace = new MixedRealityPlayspace();
 
         /// <summary>
         /// Returns the MixedRealityPlayspace for the local player
         /// </summary>
-        public MixedRealityPlayspace MixedRealityPlayspace
+        public static MixedRealityPlayspace MixedRealityPlayspace
         {
             get
             {

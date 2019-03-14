@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                         interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
                         interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
 
-                        var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+                        var playspace = MixedRealityToolkit.MixedRealityPlayspace;
 
                         if (playspace != null)
                         {
