@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
 
         private void Awake() => EnsureSetup();
 
-        private void Update()
+        private void LateUpdate()
         {
             if (source == null || follower == null) { return; }
 
