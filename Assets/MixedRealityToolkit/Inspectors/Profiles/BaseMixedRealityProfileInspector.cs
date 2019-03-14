@@ -63,6 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private static bool RenderProfileInternal(SerializedProperty property, GUIContent guiContent, bool showAddButton, Type serviceType = null)
         {
+            profile = property.serializedObject.targetObject as BaseMixedRealityProfile;
+
             bool changed = false;
 
             var oldObject = property.objectReferenceValue;
