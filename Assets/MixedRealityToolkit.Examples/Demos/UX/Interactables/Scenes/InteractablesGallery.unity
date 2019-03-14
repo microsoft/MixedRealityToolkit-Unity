@@ -504,6 +504,8 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events.CustomInteractablesReceiver,
+      MixedRealityToolkit-Examples.Demos.UX.Interactables
     Settings: []
     HideUnityEvents: 1
 --- !u!4 &519184499 stripped
@@ -1855,6 +1857,8 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events.CustomInteractablesReceiver,
+      MixedRealityToolkit-Examples.Demos.UX.Interactables
     Settings: []
     HideUnityEvents: 1
 --- !u!4 &1441615695 stripped
