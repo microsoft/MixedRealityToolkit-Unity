@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.TypeResolution
             // Due to other code structure, it's possible that this can still be invoked at runtime, but should
             // not return anything (because type information should be read from serialized assembly data, rather
             // than using reflection at runtime).
-            return new InteractableTypeList(new List<InteractableType>());
+            return new InteractableTypesContainer(new List<InteractableType>());
 #endif
         }
 

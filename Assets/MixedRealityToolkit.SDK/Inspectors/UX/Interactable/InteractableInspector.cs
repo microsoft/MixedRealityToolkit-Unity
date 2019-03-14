@@ -675,12 +675,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             SerializedProperty name = prop.FindPropertyRelative("Name");
             SerializedProperty settings = prop.FindPropertyRelative("Settings");
             SerializedProperty hideEvents = prop.FindPropertyRelative("HideUnityEvents");
+            SerializedProperty assemblyQualifiedName = prop.FindPropertyRelative("AssemblyQualifiedName");
 
             if (!String.IsNullOrEmpty(className.stringValue))
             {
-                InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventTypes[indexArray[1]]);
+                InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventOptions.Types[indexArray[1]]);
                 name.stringValue = data.Name;
                 hideEvents.boolValue = data.HideUnityEvents;
+                assemblyQualifiedName.stringValue = eventOptions.AssemblyQualifiedNames[indexArray[1]];
 
                 InspectorFieldsUtility.PropertySettingsList(settings, data.Fields);
             }

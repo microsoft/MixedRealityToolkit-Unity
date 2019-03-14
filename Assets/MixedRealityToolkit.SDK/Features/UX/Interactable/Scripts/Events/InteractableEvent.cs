@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         public string Name;
         public UnityEvent Event;
         public string ClassName;
-        public string AssemblyQualfiedName;
+        public string AssemblyQualifiedName;
         public ReceiverBase Receiver;
         public List<InspectorPropertySetting> Settings;
         public bool HideUnityEvents;
