@@ -18,13 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
         protected States instance;
         protected SerializedProperty stateList;
 
-        // list of InteractableStates
-        protected Type[] stateTypes;
-
-        // list of State names
-        protected string[] stateOptions;
-
-
+        // List of interactable states.
+        protected InteractableTypesContainer stateOptions;
+        
         // indent tracker
         protected static int indentOnSectionStart = 0;
 
@@ -47,15 +43,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
 
             // get the list of options and InteractableStates
             stateOptions = instance.StateOptions;
-            stateTypes = instance.StateTypes;
             
             SerializedProperty stateLogicName = serializedObject.FindProperty("StateLogicName");
-            int option = States.ReverseLookup(stateLogicName.stringValue, stateOptions);
+            SerializedProperty assemblyQualifiedName  = serializedObject.FindProperty("AssemblyQualifiedName");
+            int option = States.ReverseLookup(stateLogicName.stringValue, stateOptions.ClassNames);
 
-            int newLogic = EditorGUILayout.Popup("State Model", option, stateOptions);
+            int newLogic = EditorGUILayout.Popup("State Model", option, stateOptions.ClassNames);
             if (option != newLogic)
             {
-                stateLogicName.stringValue = stateOptions[newLogic];
+                stateLogicName.stringValue = stateOptions.ClassNames[newLogic];
+                assemblyQualifiedName.stringValue = stateOptions.AssemblyQualifiedNames[newLogic];
             }
 
             int bitCount = 0;

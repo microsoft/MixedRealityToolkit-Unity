@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile
         public bool HadDefaultTheme;
 
         /// <summary>
-        /// The list of base classes that will be included in interactable theme
+        /// The list of base classes whose derived classes will be included in interactable theme
         /// selection dropdowns.
         /// </summary>
         private static readonly List<Type> candidateThemeTypes = new List<Type>()
