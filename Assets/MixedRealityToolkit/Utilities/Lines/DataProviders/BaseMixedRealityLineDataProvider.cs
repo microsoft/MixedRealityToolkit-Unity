@@ -299,7 +299,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
 
         protected virtual void OnEnable()
         {
+            UpdateMatrix();
             distorters.Sort();
+        }
+
+        protected virtual void Update()
+        {
+            UpdateMatrix();
         }
 
         #endregion MonoBehaviour Implementation
