@@ -120,6 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             Vector3 pointerPosition;
             TryGetPointerPosition(out pointerPosition);
 
+            lineBase.UpdateMatrix();
+
             // Set our first and last points
             lineBase.FirstPoint = pointerPosition;
 
