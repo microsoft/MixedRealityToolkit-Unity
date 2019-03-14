@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
         public string[] StateOptions;
         public Type[] StateTypes;
         public string StateLogicName = "InteractableStates";
+        public string AssemblyQualifiedName = typeof(InteractableStates).AssemblyQualifiedName;
 
         //!!! finish making states work, they should initiate the type and run the logic during play mode.
         private void OnEnable()

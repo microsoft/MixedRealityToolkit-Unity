@@ -8,9 +8,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.TypeResolution
     /// A helper that uses reflection to find objects that implement base types of the
     /// Interactable types that populate the various state, theme, and event inspectors.
     /// </summary>
-    /// <remarks>
-    /// 
-    /// </remarks>
     public class InteractableTypeFinder
     {
         /// <summary>
