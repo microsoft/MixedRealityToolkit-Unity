@@ -213,10 +213,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
                     UnityEngine.Object.Instantiate(controllerModel, playspace) :
                     UnityEngine.Object.Instantiate(controllerModel);
 
-            return AddControllerModelToSceneHierarchy(controllerObject);
+            return TryAddControllerModelToSceneHierarchy(controllerObject);
         }
 
-        protected bool AddControllerModelToSceneHierarchy(GameObject controllerObject)
+        protected bool TryAddControllerModelToSceneHierarchy(GameObject controllerObject)
         {
             if (controllerObject != null)
             {

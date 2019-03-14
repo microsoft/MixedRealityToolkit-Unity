@@ -606,7 +606,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                         if (visualizationType != null)
                         {
                             gltfGameObject.AddComponent(visualizationType.Type);
-                            AddControllerModelToSceneHierarchy(gltfGameObject);
+                            TryAddControllerModelToSceneHierarchy(gltfGameObject);
                         }
                         else
                         {
