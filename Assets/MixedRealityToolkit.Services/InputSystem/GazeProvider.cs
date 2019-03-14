@@ -410,7 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab != null)
             {
                 var cursor = Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab);
-                MixedRealityToolkit.MixedRealityPlayspace.SetChild(cursor.transform);
+                MixedRealityPlayspace.SetChild(cursor.transform);
                 SetGazeCursor(cursor);
             }
 

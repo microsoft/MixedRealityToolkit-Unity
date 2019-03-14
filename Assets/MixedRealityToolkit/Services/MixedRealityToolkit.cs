@@ -475,20 +475,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             return IsInitialized;
         }
 
-        private static readonly MixedRealityPlayspace mixedRealityPlayspace = new MixedRealityPlayspace();
-
-        /// <summary>
-        /// Returns the MixedRealityPlayspace for the local player
-        /// </summary>
-        public static MixedRealityPlayspace MixedRealityPlayspace
-        {
-            get
-            {
-                AssertIsInitialized();
-                return mixedRealityPlayspace;
-            }
-        }
-
 #if UNITY_EDITOR
         private void OnValidate()
         {
@@ -919,7 +905,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (!IsInitialized) { return; }
 
             // Update the playspace
-            mixedRealityPlayspace.UpdateTransform();
+            MixedRealityPlayspace.UpdateTransform();
 
             // Update all systems
             foreach (var system in activeSystems)

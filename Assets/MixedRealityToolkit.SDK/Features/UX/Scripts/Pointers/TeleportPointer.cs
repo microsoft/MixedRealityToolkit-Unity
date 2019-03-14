@@ -298,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                         // if it's less than zero, then we don't have activation
                         if (offsetRotationAngle > 0)
                         {
-                            var playspace = MixedRealityToolkit.MixedRealityPlayspace;
+                            var playspace = MixedRealityPlayspace;
 
                             // check to make sure we're still under our activation threshold.
                             if (offsetRotationAngle < rotateActivationAngle)

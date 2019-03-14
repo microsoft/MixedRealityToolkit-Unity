@@ -3,16 +3,16 @@ using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 
-public class MixedRealityPlayspace
+public static class MixedRealityPlayspace
 {
 
     private const string MixedRealityPlayspaceName = "MixedRealityPlayspace";
 
-    private Transform mixedRealityPlayspace;
+    private static Transform mixedRealityPlayspace;
 
-    private Queue<Action<Transform>> performTransformation = new Queue<Action<Transform>>(1);
+    private static Queue<Action<Transform>> performTransformation = new Queue<Action<Transform>>(1);
 
-    private Transform Transform
+    private static Transform Transform
     {
         get
         {
@@ -53,24 +53,24 @@ public class MixedRealityPlayspace
         }
     }
 
-    public Vector3 Position => Transform.position;
+    public static Vector3 Position => Transform.position;
 
-    public Vector3 TransformPoint(Vector3 localPosition)
+    public static Vector3 TransformPoint(Vector3 localPosition)
     {
         return Transform.TransformPoint(localPosition);
     }
 
-    public Vector3 InverseTransformPoint(Vector3 worldPosition)
+    public static Vector3 InverseTransformPoint(Vector3 worldPosition)
     {
         return Transform.InverseTransformPoint(worldPosition);
     }
 
-    public Vector3 TransformDirection(Vector3 localDirection)
+    public static Vector3 TransformDirection(Vector3 localDirection)
     {
         return Transform.TransformDirection(localDirection);
     }
 
-    public void UpdateTransform()
+    public static void UpdateTransform()
     {
         while(performTransformation.Count > 0)
         {
@@ -78,12 +78,12 @@ public class MixedRealityPlayspace
         }
     }
 
-    public void SetChild(Transform transform)
+    public static void SetChild(Transform transform)
     {
         transform.SetParent(Transform);
     }
 
-    public void PerformTransformation(Action<Transform> transformation)
+    public static void PerformTransformation(Action<Transform> transformation)
     {
         performTransformation.Enqueue(transformation);
     }
