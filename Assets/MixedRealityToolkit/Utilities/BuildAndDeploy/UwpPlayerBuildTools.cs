@@ -34,6 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                     case "-rebuildAppx":
                         buildInfo.RebuildAppx = true;
                         break;
+                    case "-targetUwpSdk":
+                        // Note: the min sdk target cannot be changed.
+                        EditorUserBuildSettings.wsaUWPSDK = arguments[++i];
+                        break;
                 }
             }
         }

@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                 EditorUserBuildSettings.wsaUWPSDK = windowsSdkPaths[windowsSdkPaths.Length - 1];
             }
 
-            string maxVersionTested = UwpBuildDeployPreferences.MIN_SDK_VERSION;
+            string maxVersionTested = EditorUserBuildSettings.wsaUWPSDK;
 
             if (string.IsNullOrWhiteSpace(EditorUserBuildSettings.wsaMinUWPSDK))
             {
