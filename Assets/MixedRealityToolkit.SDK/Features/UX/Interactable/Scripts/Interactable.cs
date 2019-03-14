@@ -304,7 +304,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         /// </summary>
         protected virtual void SetupThemes()
         {
-            InteractableProfileItem.ThemeLists lists = InteractableProfileItem.GetThemeTypes();
             runningThemesList = new List<InteractableThemeBase>();
             runningProfileSettings = new List<ProfileSettings>();
             for (int i = 0; i < Profiles.Count; i++)
@@ -322,7 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                         {
                             InteractableThemePropertySettings settings = theme.Settings[n];
 
-                            settings.Theme = InteractableProfileItem.GetTheme(settings, Profiles[i].Target, lists);
+                            settings.Theme = InteractableProfileItem.GetTheme(settings, Profiles[i].Target);
                             
                             // add themes to theme list based on dimension
                             if (j == dimensionIndex)
