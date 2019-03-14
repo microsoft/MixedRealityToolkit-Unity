@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
 
         public void SetupStateOptions()
         {
-            StateOptions = InteractableTypeFinder.Find(candidateStateTypes, InteractableTypeFinder.TypeRestriction.AllowBase);
+            StateOptions = InteractableTypeFinder.Find(candidateStateTypes, TypeRestriction.AllowBase);
         }
 
         // redundant method, put in a utils with static methods!!!

@@ -11,29 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.TypeResolution
     public class InteractableTypeFinder
     {
         /// <summary>
-        /// Controls the behavior of the InteractableTypeFinder.FindTypes function. See individual
-        /// enum values for more details.
-        /// </summary>
-        public enum TypeRestriction
-        {
-            /// <summary>
-            /// When this is specified, only classes derived from the specified type will be
-            /// returned by the lookup. This means that if you pass InteractableStates, the
-            /// lookup will only return classes whose base class is InteractableStates but
-            /// will not return InteractableStates itself.
-            /// </summary>
-            DerivedOnly,
-
-            /// <summary>
-            /// When this is specified, classes derived from the specified type AND the class
-            /// itself will be returned by the lookup. This means that if you pass 
-            /// InteractableStates, the lookup will both classes whose base class is 
-            /// InteractableStates and InteractableStates itself.
-            /// </summary>
-            AllowBase,
-        };
-
-        /// <summary>
         /// A convenience wrapper provided for editor code to turn a list of types into a form that 
         /// matches their existing structure.
         /// </summary>
@@ -119,14 +96,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.TypeResolution
         private static List<InteractableType> GetTypesFromAssemblies(Type type, TypeRestriction typeRestriction, Assembly[] assemblies)
         {
             List<InteractableType> interactableTypes = new List<InteractableType>();
+
+            if (typeRestriction == TypeRestriction.AllowBase)
+            {
+                InteractableType interactableType = new InteractableType(type);
+                interactableTypes.Add(interactableType);
+            }
+
             foreach (Assembly assembly in assemblies)
             {
                 foreach (Type assemblyType in assembly.GetTypes())
                 {
-                    TypeInfo info = assemblyType.GetTypeInfo();
-                    bool exactBaseMatch = typeRestriction == TypeRestriction.AllowBase && assemblyType.Equals(type);
-                    bool derivedMatch = info.BaseType != null && info.BaseType.Equals(type);
-                    if (exactBaseMatch || derivedMatch)
+                    TypeInfo info = assemblyType.GetTypeInfo();   
+                    if (info.IsSubclassOf(type))
                     {
                         InteractableType interactableType = new InteractableType(assemblyType);
                         interactableTypes.Add(interactableType);

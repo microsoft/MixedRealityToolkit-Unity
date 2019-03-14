@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// <returns></returns>
         public static InteractableTypesContainer GetEventTypes()
         {
-            return InteractableTypeFinder.Find(candidateEventTypes, InteractableTypeFinder.TypeRestriction.DerivedOnly);
+            return InteractableTypeFinder.Find(candidateEventTypes, TypeRestriction.DerivedOnly);
         }
         
         /// <summary>

@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile
         /// <returns></returns>
         public static InteractableTypesContainer GetThemeTypes()
         {
-            return InteractableTypeFinder.Find(candidateThemeTypes, InteractableTypeFinder.TypeRestriction.DerivedOnly);
+            return InteractableTypeFinder.Find(candidateThemeTypes, TypeRestriction.DerivedOnly);
         }
 
         /// <summary>
