@@ -63,13 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
         /// </summary>
         public static MixedRealityControllerAttribute Find(Type type)
         {
-#if WINDOWS_UWP && !ENABLE_IL2CPP
-            // Type.GetCustomAttributes() doesn't exist on UWP .NET, so we have to indirectly use
-            // the TypeInfo instead.
-            return type.GetTypeInfo().GetCustomAttributes(typeof(MixedRealityControllerAttribute), true).FirstOrDefault() as MixedRealityControllerAttribute;
-#else
             return type.GetCustomAttributes(typeof(MixedRealityControllerAttribute), true).FirstOrDefault() as MixedRealityControllerAttribute;
-#endif
         }
     }
 }

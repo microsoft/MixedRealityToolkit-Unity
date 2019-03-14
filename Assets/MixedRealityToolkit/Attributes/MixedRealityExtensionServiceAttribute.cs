@@ -13,6 +13,10 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
 using UnityEditor;
 #endif
 
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
+
 namespace Microsoft.MixedReality.Toolkit.Core.Attributes
 {
     /// <summary>
@@ -77,13 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
         /// </summary>
         public static MixedRealityExtensionServiceAttribute Find(Type type)
         {
-#if WINDOWS_UWP && !ENABLE_IL2CPP
-            // Type.GetCustomAttributes() doesn't exist on UWP .NET, so we have to indirectly use
-            // the TypeInfo instead.
-            return type.GetTypeInfo().GetCustomAttributes(typeof(MixedRealityExtensionServiceAttribute), true).FirstOrDefault() as MixedRealityExtensionServiceAttribute;
-#else
             return type.GetCustomAttributes(typeof(MixedRealityExtensionServiceAttribute), true).FirstOrDefault() as MixedRealityExtensionServiceAttribute;
-#endif
         }
     }
 }
