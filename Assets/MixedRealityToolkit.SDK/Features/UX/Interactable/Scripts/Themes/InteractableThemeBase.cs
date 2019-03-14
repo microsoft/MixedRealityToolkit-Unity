@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         public Easing Ease;
         public bool NoEasing;
         public bool Loaded;
+        public string AssemblyQualifiedName;
 
         private bool hasFirstState = false;
 
