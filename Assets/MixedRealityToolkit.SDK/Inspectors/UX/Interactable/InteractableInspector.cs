@@ -1,22 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events;
 using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
 using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEditor;
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 {
@@ -71,6 +63,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             base.OnInspectorGUI();
         }
 
+        /// <remarks>
+        /// There is a check in here that verifies whether or not we can get InputActions, if we can't we show an error help box; otherwise we get them.
+        /// This method is sealed, if you wish to override <see cref="OnInspectorGUI"/>, then override <see cref="RenderCustomInspector"/> method instead.
+        /// </remarks>
         public sealed override void OnInspectorGUI()
         {
             if (actionOptions == null && !Interactable.TryGetInputActions(out actionOptions))
