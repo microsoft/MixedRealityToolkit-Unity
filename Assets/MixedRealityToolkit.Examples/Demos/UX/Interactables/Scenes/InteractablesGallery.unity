@@ -319,6 +319,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c,
         type: 2}
+      propertyPath: Events.Array.data[0].AssemblyQualifiedName
+      value: Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events.InteractableAudioReceiver,
+        Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c,
+        type: 2}
       propertyPath: Events.Array.data[0].HideUnityEvents
       value: 1
       objectReference: {fileID: 0}
@@ -1155,6 +1161,12 @@ Prefab:
         type: 2}
       propertyPath: Events.Array.data[0].ClassName
       value: InteractableOnFocusReceiver
+      objectReference: {fileID: 0}
+    - target: {fileID: 114818926546564510, guid: 02c524b22137b5449904f5395141cc73,
+        type: 2}
+      propertyPath: Events.Array.data[0].AssemblyQualifiedName
+      value: Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events.InteractableOnFocusReceiver,
+        Microsoft.MixedReality.Toolkit.SDK
       objectReference: {fileID: 0}
     - target: {fileID: 114818926546564510, guid: 02c524b22137b5449904f5395141cc73,
         type: 2}
