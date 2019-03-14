@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.OnEnable();
 
-            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.TeleportSystem != null && !lateRegisterTeleport)
+            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.Instance.ActiveProfile.IsTeleportSystemEnabled && MixedRealityToolkit.TeleportSystem != null && !lateRegisterTeleport)
             {
                 MixedRealityToolkit.TeleportSystem.Register(gameObject);
             }
