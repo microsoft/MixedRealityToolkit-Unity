@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.Teleportation
         {
             isProcessingTeleportRequest = true;
 
-            var cameraParent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
 
             targetRotation = Vector3.zero;
             targetRotation.y = eventData.Pointer.PointerOrientation;
@@ -254,11 +254,15 @@ namespace Microsoft.MixedReality.Toolkit.Services.Teleportation
             }
 
             float height = targetPosition.y;
-            targetPosition -= CameraCache.Main.transform.position - cameraParent.position;
+            targetPosition -= CameraCache.Main.transform.position - playspace.Position;
             targetPosition.y = height;
-            cameraParent.position = targetPosition;
 
-            cameraParent.RotateAround(CameraCache.Main.transform.position, Vector3.up, targetRotation.y - CameraCache.Main.transform.eulerAngles.y);
+            playspace.PerformTransformation(p =>
+                {
+                    p.position = targetPosition;
+                    p.RotateAround(CameraCache.Main.transform.position, Vector3.up, targetRotation.y - CameraCache.Main.transform.eulerAngles.y);
+                }
+            );
 
             isProcessingTeleportRequest = false;
 

@@ -298,12 +298,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                         // if it's less than zero, then we don't have activation
                         if (offsetRotationAngle > 0)
                         {
+                            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+
                             // check to make sure we're still under our activation threshold.
                             if (offsetRotationAngle < rotateActivationAngle)
                             {
                                 canMove = false;
                                 // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
-                                MixedRealityToolkit.Instance.MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
+                                playspace.PerformTransformation(p => p.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount));
                             }
                             else // We may be trying to strafe backwards.
                             {
@@ -317,10 +319,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                                 if (offsetStrafeAngle > 0 && offsetStrafeAngle < backStrafeActivationAngle)
                                 {
                                     canMove = false;
-                                    var height = MixedRealityToolkit.Instance.MixedRealityPlayspace.position.y;
-                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityToolkit.Instance.MixedRealityPlayspace.position;
+                                    var height = playspace.Position.y;
+                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + playspace.Position;
                                     newPosition.y = height;
-                                    MixedRealityToolkit.Instance.MixedRealityPlayspace.position = newPosition;
+                                    playspace.PerformTransformation(p => p.position = newPosition);
                                 }
                             }
                         }

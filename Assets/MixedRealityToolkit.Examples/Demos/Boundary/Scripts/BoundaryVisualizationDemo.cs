@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             markerParent = new GameObject();
             markerParent.name = "Boundary Demo Markers";
-            markerParent.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+            MixedRealityToolkit.Instance.MixedRealityPlayspace.SetChild(markerParent.transform);
         }
 
         private void Start()

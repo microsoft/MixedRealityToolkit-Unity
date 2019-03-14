@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         private GameObject CreateDiagnosticVisualizationParent()
         {
             diagnosticVisualizationParent = new GameObject("Diagnostics");
-            diagnosticVisualizationParent.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace.transform;
+            MixedRealityToolkit.Instance.MixedRealityPlayspace.SetChild(diagnosticVisualizationParent.transform.parent);
             diagnosticVisualizationParent.SetActive(MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowDiagnostics);
 
             // visual profiler settings

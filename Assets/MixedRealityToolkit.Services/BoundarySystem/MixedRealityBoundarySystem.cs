@@ -273,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
                 }
 
                 var visualizationParent = new GameObject("Boundary System Visualizations");
-                visualizationParent.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+                MixedRealityToolkit.Instance.MixedRealityPlayspace.SetChild(visualizationParent.transform);
                 return boundaryVisualizationParent = visualizationParent;
             }
         }
@@ -646,9 +646,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
             currentFloorObject.name = "Boundary System Floor";
             currentFloorObject.transform.localScale = new Vector3(floorScale.x, boundaryObjectThickness, floorScale.y);
             currentFloorObject.transform.Translate(new Vector3(
-                MixedRealityToolkit.Instance.MixedRealityPlayspace.position.x,
+                MixedRealityToolkit.Instance.MixedRealityPlayspace.Position.x,
                 FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f),
-                MixedRealityToolkit.Instance.MixedRealityPlayspace.position.z));
+                MixedRealityToolkit.Instance.MixedRealityPlayspace.Position.z));
             currentFloorObject.layer = FloorPhysicsLayer;
             currentFloorObject.GetComponent<Renderer>().sharedMaterial = MixedRealityToolkit.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorMaterial;
 
@@ -727,9 +727,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
             currentTrackedAreaObject.layer = ignoreRaycastLayerValue;
             currentTrackedAreaObject.AddComponent<LineRenderer>();
             currentTrackedAreaObject.transform.Translate(new Vector3(
-                MixedRealityToolkit.Instance.MixedRealityPlayspace.position.x,
+                MixedRealityToolkit.Instance.MixedRealityPlayspace.Position.x,
                 boundaryObjectRenderOffset,
-                MixedRealityToolkit.Instance.MixedRealityPlayspace.position.z));
+                MixedRealityToolkit.Instance.MixedRealityPlayspace.Position.z));
             currentPlayAreaObject.layer = TrackedAreaPhysicsLayer;
 
             // Configure the renderer properties.
