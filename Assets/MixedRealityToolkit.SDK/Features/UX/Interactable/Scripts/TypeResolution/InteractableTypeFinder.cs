@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.TypeResolution
         /// </remarks>
         private static void EnsureCacheForTypes(List<Type> types, TypeRestriction typeRestriction)
         {
-            List<Type> cacheMisses = new List<Type>();
+            HashSet<Type> cacheMisses = new HashSet<Type>();
             foreach (Type type in types)
             {
                 if (!cache.ContainsKey(type))
