@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <inheritdoc />
         public bool UnregisterService<T>(string name = null) where T : IMixedRealityService
         {
-            IMixedRealityService serviceInstance = GetServiceByName<T>(name);
+            T serviceInstance = GetServiceByName<T>(name);
             
             if (serviceInstance == null) { return false; }
 
@@ -199,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <inheritdoc />
-        public bool UnregisterService<T>(IMixedRealityService serviceInstance) where T : IMixedRealityService
+        public bool UnregisterService<T>(T serviceInstance) where T : IMixedRealityService
         {
             Type interfaceType = typeof(T);
 
@@ -255,15 +255,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         }
 
         /// <inheritdoc />
-        public IReadOnlyList<IMixedRealityService> GetServices()
+        public bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
         {
-            return GetServices<IMixedRealityService>();
-        }
-
-        /// <inheritdoc />
-        public bool RegisterDataProvider<T>(IMixedRealityDataProvider dataProviderInstance) where T : IMixedRealityDataProvider
-        {
-            throw new NotImplementedException();
+            return RegisterService<T>(dataProviderInstance);
         }
 
         /// <inheritdoc />
@@ -272,37 +266,37 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityDataProvider
         {
-            throw new NotImplementedException();
+            return RegisterService<T>(concreteType, supportedPlatforms, args);
         }
 
         /// <inheritdoc />
         public bool UnregisterDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
         {
-            throw new NotImplementedException();
+            return UnregisterService<T>(name);
         }
 
         /// <inheritdoc />
-        public bool UnregisterDataProvider<T>(IMixedRealityDataProvider dataProviderInstance) where T : IMixedRealityDataProvider
+        public bool UnregisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
         {
-            throw new NotImplementedException();
+            return UnregisterService<T>(dataProviderInstance);
         }
 
         /// <inheritdoc />
         public bool IsDataProviderRegistered<T>(string name = null) where T : IMixedRealityDataProvider
         {
-            throw new NotImplementedException();
+            return IsServiceRegistered<T>(name);
         }
 
         /// <inheritdoc />
         public T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
         {
-            throw new NotImplementedException();
+            return GetService<T>(name);
         }
 
         /// <inheritdoc />
-        public IReadOnlyList<IMixedRealityDataProvider> GetDataProviders()
+        public IReadOnlyList<T> GetDataProviders<T>(string name = null) where T : IMixedRealityDataProvider
         {
-            throw new NotImplementedException();
+            return GetServices<T>(name);
         }
 
         /// <inheritdoc />
@@ -779,7 +773,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             IMixedRealityService preExistingService = GetServiceByNameInternal(interfaceType, serviceInstance.Name);
 
-            if (preExistingService == null)
+            if (preExistingService != null)
             {
                 Debug.LogError($"There's already a {interfaceType.Name}.{preExistingService.Name} registered!");
                 return false;

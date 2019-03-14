@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// <typeparam name="T">The interface type of the service to be unregistered (ex: IMixedRealityBoundarySystem).
         /// <param name="service">The specific service instance to unregister.</param>
         /// <returns>True if the service was successfully unregistered, false otherwise.</returns>
-        bool UnregisterService<T>(IMixedRealityService serviceInstance) where T : IMixedRealityService;
+        bool UnregisterService<T>(T serviceInstance) where T : IMixedRealityService;
 
         /// <summary>
         /// Checks to see if a service of the specified type has been registered.
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// </summary>
         /// <typeparam name="T">The interface type of the service (ex: IMixedRealityBoundarySystem).
         /// <param name="name">Friendly name of the service.</param>
-        /// <returns>Read-only collection of the service instances, as tye requested type.</returns>
+        /// <returns>Read-only collection of the service instances, as the requested type.</returns>
         IReadOnlyList<T> GetServices<T>(string name = null) where T : IMixedRealityService;
 
         #endregion IMixedRealityServce registration
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// </summary>
         /// <typeparam name="T">The interface type of the data provider to be registered.</typeparam>
         /// <param name="dataProviderInstance">An instance of the data provider to be registered.</param>
-        bool RegisterDataProvider<T>(IMixedRealityDataProvider dataProviderInstance) where T : IMixedRealityDataProvider;
+        bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider;
 
         /// <summary>
         /// Registers a data provider of the specified type.
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// <typeparam name="T">The interface type of the data provider to be unregistered.
         /// <param name="service">The specific data provider instance to unregister.</param>
         /// <returns>True if the data provider was successfully unregistered, false otherwise.</returns>
-        bool UnregisterDataProvider<T>(IMixedRealityDataProvider dataProviderInstance) where T : IMixedRealityDataProvider;
+        bool UnregisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider;
 
         /// <summary>
         /// Checks to see if a data provider of the specified type has been registered.
@@ -133,15 +133,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// <summary>
         /// Gets the collection of the registered data provider instances matching the requested type.
         /// </summary>
-        /// <returns>Read-only collection of the data provider instances, as IMixedRealitydata provider.</returns>
-        IReadOnlyList<IMixedRealityDataProvider> GetDataProviders();
-
-        /// <summary>
-        /// Gets the collection of the registered data provider instances matching the requested type.
-        /// </summary>
         /// <typeparam name="T">The interface type of the data provider.
-        /// <returns>Read-only collection of the data provider instances, as tye requested type.</returns>
-        IReadOnlyList<T> GetDataProviders<T>() where T : IMixedRealityDataProvider;
+        /// <param name="name">The name of the data provider.</param>
+        /// <returns>Read-only collection of the data provider instances, as the requested type.</returns>
+        IReadOnlyList<T> GetDataProviders<T>(string name = null) where T : IMixedRealityDataProvider;
 
         #endregion IMixedRealityDataProvider registration
     }
