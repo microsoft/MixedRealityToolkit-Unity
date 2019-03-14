@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             get
             {
-                if (MixedRealityToolkit.HasActiveProfile &&
+                if (MixedRealityToolkit.Instance.HasActiveProfile &&
                     MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
                     MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
                 {
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             {
                 if (focusLayerMasks == null)
                 {
-                    if (MixedRealityToolkit.HasActiveProfile &&
+                    if (MixedRealityToolkit.Instance.HasActiveProfile &&
                         MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
                         MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
                     {

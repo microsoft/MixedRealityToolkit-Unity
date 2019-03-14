@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
 
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent content)
         {
-            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.HasActiveProfile)
+            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.Instance.HasActiveProfile)
             {
                 profile = null;
                 actionLabels = new[] { new GUIContent("Missing Mixed Reality Toolkit") };

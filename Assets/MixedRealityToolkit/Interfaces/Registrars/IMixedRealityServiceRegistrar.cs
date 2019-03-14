@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// </summary>
         /// <typeparam name="T">The interface type of the service to be registered (ex: IMixedRealityBoundarySystem).</typeparam>
         /// <param name="serviceInstance">An instance of the service to be registered.</param>
-        bool RegisterService<T>(IMixedRealityService serviceInstance) where T : IMixedRealityService;
+        bool RegisterService<T>(T serviceInstance) where T : IMixedRealityService;
 
         /// <summary>
         /// Registers a service of the specified type.
@@ -71,15 +71,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// <summary>
         /// Gets the collection of the registered service instances matching the requested type.
         /// </summary>
-        /// <returns>Read-only collection of the service instances, as IMixedRealityService.</returns>
-        IReadOnlyList<IMixedRealityService> GetServices();
-
-        /// <summary>
-        /// Gets the collection of the registered service instances matching the requested type.
-        /// </summary>
         /// <typeparam name="T">The interface type of the service (ex: IMixedRealityBoundarySystem).
+        /// <param name="name">Friendly name of the service.</param>
         /// <returns>Read-only collection of the service instances, as tye requested type.</returns>
-        IReadOnlyList<T> GetServices<T>() where T : IMixedRealityService;
+        IReadOnlyList<T> GetServices<T>(string name = null) where T : IMixedRealityService;
 
         #endregion IMixedRealityServce registration
 

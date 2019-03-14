@@ -37,9 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(new MixedRealityInputSystem());
 
             // Tests
-            Assert.IsNotEmpty(MixedRealityToolkit.ActiveSystems);
-            Assert.AreEqual(1, MixedRealityToolkit.ActiveSystems.Count);
-            Assert.AreEqual(0, MixedRealityToolkit.RegisteredMixedRealityServices.Count);
+            Assert.IsNotEmpty(MixedRealityToolkit.Instance.ActiveSystems);
+            Assert.AreEqual(1, MixedRealityToolkit.Instance.ActiveSystems.Count);
+            Assert.AreEqual(0, MixedRealityToolkit.Instance.RegisteredMixedRealityServices.Count);
         }
 
         [Test]

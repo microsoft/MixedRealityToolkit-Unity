@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
                 MixedRealityToolkit.ConfirmInitialized();
             }
 
-            if (!MixedRealityToolkit.HasActiveProfile)
+            if (!MixedRealityToolkit.Instance.HasActiveProfile)
             {
                 if (showHelpBox)
                 {
