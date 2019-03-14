@@ -223,6 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                         break;
                     case "-x86":
                     case "-x64":
+                    case "-arm":
                         buildInfo.BuildPlatform = arguments[i].Substring(1);
                         break;
                     case "-debug":

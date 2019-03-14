@@ -181,12 +181,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
         private static bool UpdateAppxManifest(IBuildInfo buildInfo)
         {
+            var fullPathOutputDirectory = Path.GetFullPath(buildInfo.OutputDirectory);
+            Debug.Log($"Searching for appx manifest in {fullPathOutputDirectory}...");
+
             // Find the manifest, assume the one we want is the first one
-            string[] manifests = Directory.GetFiles(BuildDeployPreferences.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
+            string[] manifests = Directory.GetFiles(fullPathOutputDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
 
             if (manifests.Length == 0)
             {
-                Debug.LogError($"Unable to find Package.appxmanifest file for build (in path - {BuildDeployPreferences.AbsoluteBuildDirectory})");
+                Debug.LogError($"Unable to find Package.appxmanifest file for build (in path - {fullPathOutputDirectory})");
                 return false;
             }
 
@@ -200,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
             if (identityNode == null)
             {
-                Debug.LogError($"Package.appxmanifest for build (in path - {BuildDeployPreferences.AbsoluteBuildDirectory}) is missing an <Identity /> node");
+                Debug.LogError($"Package.appxmanifest for build (in path - {fullPathOutputDirectory}) is missing an <Identity /> node");
                 return false;
             }
 
@@ -208,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
             if (dependencies == null)
             {
-                Debug.LogError($"Package.appxmanifest for build (in path - {BuildDeployPreferences.AbsoluteBuildDirectory}) is missing <Dependencies /> node.");
+                Debug.LogError($"Package.appxmanifest for build (in path - {fullPathOutputDirectory}) is missing <Dependencies /> node.");
                 return false;
             }
 
@@ -221,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
             if (versionAttr == null)
             {
-                Debug.LogError($"Package.appxmanifest for build (in path - {BuildDeployPreferences.AbsoluteBuildDirectory}) is missing a Version attribute in the <Identity /> node.");
+                Debug.LogError($"Package.appxmanifest for build (in path - {fullPathOutputDirectory}) is missing a Version attribute in the <Identity /> node.");
                 return false;
             }
 
