@@ -54,8 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile
         public static InteractableThemeBase GetTheme(InteractableThemePropertySettings settings, GameObject host)
         {
             Type themeType = Type.GetType(settings.AssemblyQualifiedName);
-            InteractableThemeBase theme = (InteractableThemeBase)Activator.CreateInstance(themeType, host);
-            theme.Init(host ,settings);
+            InteractableThemeBase theme = (InteractableThemeBase)Activator.CreateInstance(themeType);
+            theme.Init(host, settings);
             return theme;
         }
     }
