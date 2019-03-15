@@ -16,6 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
             IsEnabled = true;
         }
 
+        public void PreServiceUpdate() { }
+
         public override void Disable()
         {
             IsEnabled = false;

@@ -123,12 +123,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// </remarks>
         public static IReadOnlyDictionary<Type, IMixedRealityService> ActiveSystems => activeSystems;
 
-        private static readonly List<Tuple<Type, IMixedRealityService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityService>>();
+        private static readonly List<Tuple<Type, IMixedRealityExtensionService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityExtensionService>>();
 
         /// <summary>
         /// Local service registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService"/>.
         /// </summary>
-        public static IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => registeredMixedRealityServices;
+        public static IReadOnlyList<Tuple<Type, IMixedRealityExtensionService>> RegisteredMixedRealityServices => registeredMixedRealityServices;
 
         /// <summary>
         /// Local service registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService"/>.
@@ -698,7 +698,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             else if (typeof(IMixedRealityDataProvider).IsAssignableFrom(interfaceType) ||
                      typeof(IMixedRealityExtensionService).IsAssignableFrom(interfaceType))
             {
-                registeredMixedRealityServices.Add(new Tuple<Type, IMixedRealityService>(interfaceType, serviceInstance));
+                registeredMixedRealityServices.Add(new Tuple<Type, IMixedRealityExtensionService>(interfaceType, serviceInstance as IMixedRealityExtensionService));
             }
             else
             {
@@ -754,7 +754,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     return true;
                 }
 
-                var registryInstance = new Tuple<Type, IMixedRealityService>(interfaceType, serviceInstance);
+                var registryInstance = new Tuple<Type, IMixedRealityExtensionService>(interfaceType, serviceInstance as IMixedRealityExtensionService);
 
                 if (registeredMixedRealityServices.Contains(registryInstance))
                 {
@@ -966,6 +966,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             // If the Mixed Reality Toolkit is not initialized, stop.
             if (!IsInitialized) { return; }
+
+            // Update all registered runtime services before the core services
+            foreach (var service in registeredMixedRealityServices)
+            {
+                service.Item2.PreServiceUpdate();
+            }
 
             // Update all systems
             foreach (var system in activeSystems)

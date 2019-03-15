@@ -8,6 +8,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
     /// </summary>
     public interface IMixedRealityExtensionService : IMixedRealityService
     {
-        // Empty for now, but it is used to filter out the valid class types in the inspector dropdown.
+        // Used to filter out the valid class types in the inspector dropdown.
+
+        void PreServiceUpdate();
     }
 }

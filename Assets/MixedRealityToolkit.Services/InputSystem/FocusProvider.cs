@@ -322,6 +322,8 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             }
         }
 
+        public void PreServiceUpdate() { }
+
         /// <inheritdoc />
         public override void Update()
         {

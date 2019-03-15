@@ -91,6 +91,13 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
         #region Update data functions
 
+        public void UpdateControllerTransform(InteractionSourceState interactionSourceState)
+        {
+            if (!Enabled) { return; }
+
+            UpdateControllerData(interactionSourceState);
+        }
+
         /// <summary>
         /// Update the controller data from the provided platform state
         /// </summary>
@@ -98,8 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         public void UpdateController(InteractionSourceState interactionSourceState)
         {
             if (!Enabled) { return; }
-
-            UpdateControllerData(interactionSourceState);
 
             if (Interactions == null)
             {

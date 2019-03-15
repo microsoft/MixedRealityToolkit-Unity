@@ -276,6 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
                 if (controller != null)
                 {
+                    controller.UpdateControllerTransform(interactionmanagerStates[i]);
                     controller.UpdateController(interactionmanagerStates[i]);
                     MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                 }
@@ -289,12 +290,29 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             }
         }
 
+        public override void PreServiceUpdate()
+        {
+            base.PreServiceUpdate();
+
+            interactionmanagerStates = InteractionManager.GetCurrentReading();
+
+            for (var i = 0; i < interactionmanagerStates?.Length; i++)
+            {
+                // SourceDetected gets raised when a new controller is detected and, if previously present, 
+                // when OnEnable is called. Do not create a new controller here.
+                var controller = GetController(interactionmanagerStates[i].source, false);
+
+                if (controller != null)
+                {
+                    controller.UpdateControllerTransform(interactionmanagerStates[i]);
+                }
+            }
+        }
+
         /// <inheritdoc/>
         public override void Update()
         {
             base.Update();
-
-            interactionmanagerStates = InteractionManager.GetCurrentReading();
 
             for (var i = 0; i < interactionmanagerStates?.Length; i++)
             {

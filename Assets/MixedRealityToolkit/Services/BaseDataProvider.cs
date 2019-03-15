@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
     /// <remarks>
     /// Empty, but reserved for future use, in case additional <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityDataProvider"/> properties or methods are assigned.
     /// </remarks>
-    public abstract class BaseDataProvider : BaseExtensionService, Interfaces.IMixedRealityDataProvider
+    public abstract class BaseDataProvider : BaseExtensionService, IMixedRealityDataProvider
     {
         /// <summary>
         /// Constructor.
