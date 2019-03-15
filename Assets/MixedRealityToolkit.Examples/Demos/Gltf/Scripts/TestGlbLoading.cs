@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
 {
+    /// <summary>
+    /// glb loading test script that attempts to download the asset from a local or external resource via web request.
+    /// </summary>
     public class TestGlbLoading : MonoBehaviour
     {
         [SerializeField]
