@@ -266,18 +266,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit/Interfaces/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit/Interfaces/README.html",
-          "hash": "8xRpZZSHcjWXXq1W9G/AKQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Assets/MixedRealityToolkit/StandardAssets/README.md",
       "output": {
         ".html": {
@@ -1407,7 +1395,7 @@
       "output": {
         ".html": {
           "relative_path": "api_doc/toc.html",
-          "hash": "+rvhdklZKHeZunRaiTinCg=="
+          "hash": "GF6PO9GllYD0ix1cAwGP7Q=="
         }
       },
       "is_incremental": false,
@@ -4450,6 +4438,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityServiceRegistrar.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityServiceRegistrar.html",
+          "hash": "8GXf6YesZV5biucAi/TNqw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealityDictationHandler.yml",
       "output": {
         ".html": {
@@ -4922,7 +4922,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Core.Interfaces.html",
-          "hash": "rLRp+fnKVMSYpUEzeYI9Ng=="
+          "hash": "tqhK5pz5TTY/YMH9nLW2Kg=="
         }
       },
       "is_incremental": false,
@@ -5162,7 +5162,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Core.Services.MixedRealityToolkit.html",
-          "hash": "6HWCjBeOuCqJI+zzwMUr5Q=="
+          "hash": "53fazpZf21uZmc5umX4Blg=="
         }
       },
       "is_incremental": false,
@@ -9299,13 +9299,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 57,
+          "total_file_count": 56,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 654,
+          "total_file_count": 655,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
