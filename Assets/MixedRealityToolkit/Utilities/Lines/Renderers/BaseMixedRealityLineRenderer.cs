@@ -177,6 +177,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             return lineWidth.Evaluate(Mathf.Repeat(normalizedLength + widthOffset, 1f)) * widthMultiplier;
         }
 
+        public virtual void Update()
+        {
+            UpdateLine();
+        }
+
+        protected abstract void UpdateLine();
+
 #if UNITY_EDITOR
         protected virtual void OnDrawGizmos()
         {
