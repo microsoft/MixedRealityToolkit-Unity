@@ -332,6 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         #region MonoBehaviour Implementation
 
         private static MixedRealityToolkit instance;
+        private static bool newInstanceBeingInitialized = false;
 
         /// <summary>
         /// Returns the Singleton instance of the classes type.
@@ -352,6 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     return null;
                 }
 
+
                 var objects = FindObjectsOfType<MixedRealityToolkit>();
                 searchForInstance = false;
                 MixedRealityToolkit newInstance;
@@ -359,12 +361,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 switch (objects.Length)
                 {
                     case 0:
+                        Debug.Assert(!newInstanceBeingInitialized, "We shouldn't be initializing another MixedRealityToolkit unless we errored on the previous.");
+                        newInstanceBeingInitialized = true;
                         newInstance = new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>();
                         break;
                     case 1:
+                        newInstanceBeingInitialized = false;
                         newInstance = objects[0];
                         break;
                     default:
+                        newInstanceBeingInitialized = false;
                         Debug.LogError($"Expected exactly 1 {nameof(MixedRealityToolkit)} but found {objects.Length}.");
                         return null;
                 }
@@ -380,6 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 {
                     // Don't do any additional setup because the app is quitting.
                     instance = newInstance;
+                    newInstanceBeingInitialized = false;
                 }
 
                 Debug.Assert(instance != null);
@@ -397,7 +404,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             lock (initializedLock)
             {
-                if (IsInitialized) { return; }
+                if (IsInitialized)
+                {
+                    newInstanceBeingInitialized = false;
+                    return;
+                }
 
                 instance = this;
 
@@ -442,6 +453,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 {
                     InitializeServiceLocator();
                 }
+
+                newInstanceBeingInitialized = false;
             }
         }
 
@@ -528,7 +541,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if (!IsInitialized && !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+            if (!newInstanceBeingInitialized && !IsInitialized && !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 ConfirmInitialized();
             }
@@ -1351,6 +1364,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private static bool logSpatialAwarenessSystem = true;
 
         private static IMixedRealityTeleportSystem teleportSystem = null;
+
+        /// <summary>
+        /// Returns true if the MixedRealityToolkit exists and has an active profile that has Teleport system enabled.
+        /// </summary>
+        public static bool IsTeleportSystemEnabled => IsInitialized && HasActiveProfile && Instance.ActiveProfile.IsTeleportSystemEnabled;
 
         /// <summary>
         /// The current Teleport System registered with the Mixed Reality Toolkit.

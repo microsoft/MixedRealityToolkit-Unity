@@ -28,6 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         protected virtual void OnEnable()
         {
+            if (target == null)
+            {
+                // Either when we are recompiling, or the inspector window is hidden behind another one, the target can get destroyed (null) and thereby will raise an ArgumentException when accessing serializedObject. For now, just return.
+                return;
+            }
+
             targetProfile = serializedObject;
             profile = target as BaseMixedRealityProfile;
         }
@@ -63,6 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private static bool RenderProfileInternal(SerializedProperty property, GUIContent guiContent, bool showAddButton, Type serviceType = null)
         {
+            profile = property.serializedObject.targetObject as BaseMixedRealityProfile;
+
             bool changed = false;
 
             var oldObject = property.objectReferenceValue;
