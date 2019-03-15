@@ -57,7 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
-
             foreach (var controller in ActiveControllers)
             {
                 controller.Value?.UpdateController();
