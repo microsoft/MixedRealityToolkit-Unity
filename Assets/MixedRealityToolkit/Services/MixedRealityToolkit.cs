@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         #region Mixed Reality Toolkit Profile configuration
 
         private const string MixedRealityPlayspaceName = "MixedRealityPlayspace";
-        
+
         private static bool isInitializing = false;
 
         private static bool isApplicationQuitting = false;
