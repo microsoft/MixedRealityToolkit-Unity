@@ -248,9 +248,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             {
                 var texture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture;
 
+                Texture2D occlusionTexture = null;
+                if (gltfMaterial.occlusionTexture.index >= 0)
+                {
+                    occlusionTexture = gltfObject.images[gltfMaterial.occlusionTexture.index].Texture;
+                }
+
                 if (texture.isReadable)
                 {
                     var pixels = texture.GetPixels();
+                    Color[] occlusionPixels = null;
+                    if (occlusionTexture != null &&
+                        occlusionTexture.isReadable)
+                    {
+                        occlusionPixels = occlusionTexture.GetPixels();
+                    }
+
                     if (gltfObject.LoadAsynchronously) await BackgroundThread;
 
                     var pixelCache = new Color[pixels.Length];
@@ -258,10 +271,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                     for (int c = 0; c < pixels.Length; c++)
                     {
                         // Unity only looks for metal in R channel, and smoothness in A.
-                        pixelCache[c].r = pixels[c].g;
-                        pixelCache[c].g = 0f;
+                        pixelCache[c].r = pixels[c].b;
+                        pixelCache[c].g = (occlusionPixels != null) ? occlusionPixels[c].r : 1.0f;
                         pixelCache[c].b = 0f;
-                        pixelCache[c].a = pixels[c].b;
+                        pixelCache[c].a = (1.0f - pixels[c].g);
                     }
 
                     if (gltfObject.LoadAsynchronously) await Update;
@@ -270,6 +283,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
                     material.SetTexture("_ChannelMap", texture);
                     material.EnableKeyword("_CHANNEL_MAP");
+                }
+                else
+                {
+                    material.DisableKeyword("_CHANNEL_MAP");
                 }
 
                 material.SetFloat("_Smoothness", Mathf.Abs((float)gltfMaterial.pbrMetallicRoughness.roughnessFactor - 1f));
