@@ -13,13 +13,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
     {
         public static async void OnImportGltfAsset(AssetImportContext context)
         {
-            var gltfAsset = (GltfAsset)ScriptableObject.CreateInstance(typeof(GltfAsset));
             var importedObject = await GltfUtility.ImportGltfObjectFromPathAsync(context.assetPath);
-            if (importedObject == null)
+
+            if (importedObject == null ||
+                importedObject.GameObjectReference == null)
             {
-                Debug.LogError("Failed to import gltf object");
+                Debug.LogError("Failed to import glTF object");
                 return;
             }
+
+            var gltfAsset = (GltfAsset)ScriptableObject.CreateInstance(typeof(GltfAsset));
 
             gltfAsset.GltfObject = importedObject;
             gltfAsset.name = $"{gltfAsset.GltfObject.Name}{Path.GetExtension(context.assetPath)}";
@@ -30,9 +33,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
 
             bool reImport = false;
 
-            for (var i = 0; i < gltfAsset.GltfObject.textures.Length; i++)
+            for (var i = 0; i < gltfAsset.GltfObject.textures?.Length; i++)
             {
                 GltfTexture gltfTexture = gltfAsset.GltfObject.textures[i];
+
+                if (gltfTexture == null) { continue; }
+
                 var path = AssetDatabase.GetAssetPath(gltfTexture.Texture);
 
                 if (string.IsNullOrWhiteSpace(path))
@@ -67,21 +73,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
                 return;
             }
 
-            if (gltfAsset.GltfObject.meshes != null)
+            for (var i = 0; i < gltfAsset.GltfObject.meshes?.Length; i++)
             {
-                for (var i = 0; i < gltfAsset.GltfObject.meshes.Length; i++)
-                {
-                    GltfMesh gltfMesh = gltfAsset.GltfObject.meshes[i];
+                GltfMesh gltfMesh = gltfAsset.GltfObject.meshes[i];
 
-                    string meshName = string.IsNullOrWhiteSpace(gltfMesh.name) ? $"Mesh_{i}" : gltfMesh.name;
+                string meshName = string.IsNullOrWhiteSpace(gltfMesh.name) ? $"Mesh_{i}" : gltfMesh.name;
 
-                    gltfMesh.Mesh.name = meshName;
-                    context.AddObjectToAsset($"{meshName}", gltfMesh.Mesh);
-                }
-            }
-            else
-            {
-                Debug.LogError("GltfObject.meshes was null");
+                gltfMesh.Mesh.name = meshName;
+                context.AddObjectToAsset($"{meshName}", gltfMesh.Mesh);
             }
 
             if (gltfAsset.GltfObject.materials != null)
@@ -101,10 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
                         gltfMaterial.Material = AssetDatabase.LoadAssetAtPath<Material>(path);
                     }
                 }
-            }
-            else
-            {
-                Debug.LogError("GltfObject.materials was null");
             }
         }
     }

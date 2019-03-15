@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 {
-    public static class GltfConversions
+    internal static class GltfConversions
     {
         // glTF matrix: column vectors, column-major storage, +Y up, +Z forward, -X right, right-handed
         // unity matrix: column vectors, column-major storage, +Y up, +Z forward, +X right, left-handed
@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             var array = new int[accessor.count];
 
-            GetTypeDetails(accessor.componentType, out int componentSize, out float maxValue);
+            GetTypeDetails(accessor.componentType, out int componentSize, out float _);
             var stride = accessor.BufferView.byteStride > 0 ? accessor.BufferView.byteStride : componentSize;
             var byteOffset = accessor.BufferView.byteOffset;
             var bufferData = accessor.BufferView.Buffer.BufferData;
