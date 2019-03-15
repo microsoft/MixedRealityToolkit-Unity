@@ -62,13 +62,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         {
             if (diagnosticVisualizationParent != null)
             {
-                diagnosticVisualizationParent.transform.DetachChildren();
                 if (Application.isEditor)
                 {
                     Object.DestroyImmediate(diagnosticVisualizationParent);
                 }
                 else
                 {
+                    diagnosticVisualizationParent.transform.DetachChildren();
                     Object.Destroy(diagnosticVisualizationParent);
                 }
 
