@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.TypeResolution;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,9 +16,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
         public List<State> StateList;
         public int DefaultIndex = 0;
         public Type StateType;
-        public string[] StateOptions;
-        public Type[] StateTypes;
+        public InteractableTypesContainer StateOptions;
         public string StateLogicName = "InteractableStates";
+        public string AssemblyQualifiedName = typeof(InteractableStates).AssemblyQualifiedName;
+
+        /// <summary>
+        /// The list of base classes whose derived classes will be included in interactable state
+        /// selection dropdowns.
+        /// </summary>
+        private static readonly List<Type> candidateStateTypes = new List<Type>() { typeof(InteractableStates) };
 
         //!!! finish making states work, they should initiate the type and run the logic during play mode.
         private void OnEnable()
@@ -32,8 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
 
         public InteractableStates SetupLogic()
         {
-            int index = ReverseLookup(StateLogicName, StateOptions);
-            StateType = StateTypes[index];
+            StateType = Type.GetType(AssemblyQualifiedName);
             InteractableStates stateLogic = (InteractableStates)Activator.CreateInstance(StateType, StateList[DefaultIndex]);
             List<State> stateListCopy = new List<State>();
             for (int i = 0; i < StateList.Count; i++)
@@ -53,26 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
 
         public void SetupStateOptions()
         {
-            List<Type> stateTypes = new List<Type>();
-            List<string> names = new List<string>();
-
-
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var assembly in assemblies)
-            {
-                foreach (Type type in assembly.GetTypes())
-                {
-                    TypeInfo info = type.GetTypeInfo();
-                    if (info.BaseType != null && (info.BaseType.Equals(typeof(InteractableStates)) || type.Equals(typeof(InteractableStates))))
-                    {
-                        stateTypes.Add(type);
-                        names.Add(type.Name);
-                    }
-                }
-            }
-
-            StateOptions = names.ToArray();
-            StateTypes = stateTypes.ToArray();
+            StateOptions = InteractableTypeFinder.Find(candidateStateTypes, TypeRestriction.AllowBase);
         }
 
         // redundant method, put in a utils with static methods!!!

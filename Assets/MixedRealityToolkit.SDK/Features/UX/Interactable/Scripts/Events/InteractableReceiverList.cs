@@ -29,11 +29,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// </summary>
         protected virtual void SetupEvents()
         {
-            InteractableEvent.EventLists lists = InteractableEvent.GetEventTypes();
+            InteractableTypesContainer interactableTypes = InteractableEvent.GetEventTypes();
 
             for (int i = 0; i < Events.Count; i++)
             {
-                Events[i].Receiver = InteractableEvent.GetReceiver(Events[i], lists);
+                Events[i].Receiver = InteractableEvent.GetReceiver(Events[i], interactableTypes);
                 Events[i].Receiver.Host = this;
             }
         }

@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 
 #if WINDOWS_UWP && !ENABLE_IL2CPP
+using System.Reflection;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
 
