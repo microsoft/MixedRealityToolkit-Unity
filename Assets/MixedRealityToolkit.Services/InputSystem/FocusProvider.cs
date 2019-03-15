@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         private PointerData gazeProviderPointingData;
 
         /// <summary>
-        /// Cached <see cref="UnityEngine.Vector3"/> reference to the new raycast position.
+        /// Cached <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> reference to the new raycast position.
         /// <remarks>Only used to update UI raycast results.</remarks>
         /// </summary>
         private Vector3 newUiRaycastPosition = Vector3.zero;

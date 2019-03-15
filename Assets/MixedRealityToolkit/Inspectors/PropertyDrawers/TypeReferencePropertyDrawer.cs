@@ -34,12 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
         /// </summary>
         /// <remarks>
         /// <para>This property must be set immediately before presenting a class
-        /// type reference property field using <see cref="UnityEditor.EditorGUI.PropertyField(Rect,SerializedProperty)"/>
-        /// or <see cref="UnityEditor.EditorGUILayout.PropertyField(SerializedProperty,UnityEngine.GUILayoutOption[])"/> since the value of this
-        /// property is reset to <c>null</c> each time the control is drawn.</para>
+        /// type reference property field using <see href="https://docs.unity3d.com/ScriptReference/EditorGUI.PropertyField.html">EditorGUI.PropertyField</see>
+        /// since the value of this property is reset to <c>null</c> each time the control is drawn.</para>
         /// <para>Since filtering makes extensive use of <see cref="System.Collections.Generic.ICollection{Type}.Contains"/>
         /// it is recommended to use a collection that is optimized for fast
-        /// look ups such as <see cref="System.Collections.Generic.HashSet{Type}"/> for better performance.</para>
+        /// look ups such as HashSet for better performance.</para>
         /// </remarks>
         /// <example>
         /// <para>Exclude a specific type from being selected:</para>

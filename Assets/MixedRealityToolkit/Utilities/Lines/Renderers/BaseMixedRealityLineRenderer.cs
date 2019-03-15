@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
         }
 
         /// <summary>
-        /// Get the <see cref="UnityEngine.Color"/> along the normalized length of the line.
+        /// Get the <see href="https://docs.unity3d.com/ScriptReference/Color.html">Color</see> along the normalized length of the line.
         /// </summary>
         /// <param name="normalizedLength"></param>
         /// <returns></returns>

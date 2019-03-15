@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.Teleportation
         }
 
         /// <summary>
-        /// Unregister a <see cref="UnityEngine.GameObject"/> from listening to Teleport events.
+        /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to Teleport events.
         /// </summary>
         /// <param name="listener"></param>
         public override void Register(GameObject listener)
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.Teleportation
         }
 
         /// <summary>
-        /// Unregister a <see cref="UnityEngine.GameObject"/> from listening to Teleport events.
+        /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to Teleport events.
         /// </summary>
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)

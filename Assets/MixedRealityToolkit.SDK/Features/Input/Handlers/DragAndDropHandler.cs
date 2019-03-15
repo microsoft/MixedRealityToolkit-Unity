@@ -14,7 +14,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 {
     /// <summary>
-    /// Component that allows dragging a <see cref="UnityEngine.GameObject"/>.
+    /// Component that allows dragging a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.
     /// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
     /// and then repositioning the object based on that.
     /// </summary>
