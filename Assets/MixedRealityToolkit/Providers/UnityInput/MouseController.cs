@@ -52,19 +52,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
 
         private MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
         private Vector2 mouseDelta;
+        private bool IsMousePresentAndVisible;
 
-        /// <summary>
-        /// Update controller.
-        /// </summary>
-        public void Update()
+        public void UpdateTransform()
         {
-            if (!Input.mousePresent) { return; }
+            IsMousePresentAndVisible = 
+                Input.mousePresent &&
+                Input.mousePosition.x >= 0 ||
+                Input.mousePosition.y >= 0 ||
+                Input.mousePosition.x <= Screen.width ||
+                Input.mousePosition.y <= Screen.height;
 
-            // Bail early if our mouse isn't in our game window.
-            if (Input.mousePosition.x < 0 ||
-                Input.mousePosition.y < 0 ||
-                Input.mousePosition.x > Screen.width ||
-                Input.mousePosition.y > Screen.height)
+            if (!IsMousePresentAndVisible)
             {
                 return;
             }
@@ -74,12 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
                 controllerPose.Position = InputSource.Pointers[0].BaseCursor.Position;
                 controllerPose.Rotation = InputSource.Pointers[0].BaseCursor.Rotation;
             }
-
-            mouseDelta.x = -Input.GetAxis("Mouse Y");
-            mouseDelta.y = Input.GetAxis("Mouse X");
-            MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, mouseDelta);
-            MixedRealityToolkit.InputSystem?.RaiseSourcePoseChanged(InputSource, this, controllerPose);
-            MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, Input.mouseScrollDelta);
 
             for (int i = 0; i < Interactions.Length; i++)
             {
@@ -92,6 +85,27 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
                         MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Update controller.
+        /// </summary>
+        public void Update()
+        {
+            if (!IsMousePresentAndVisible)
+            {
+                return;
+            }
+
+            mouseDelta.x = -Input.GetAxis("Mouse Y");
+            mouseDelta.y = Input.GetAxis("Mouse X");
+            MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, mouseDelta);
+            MixedRealityToolkit.InputSystem?.RaiseSourcePoseChanged(InputSource, this, controllerPose);
+            MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, Input.mouseScrollDelta);
+
+            for (int i = 0; i < Interactions.Length; i++)
+            {
 
                 if (Interactions[i].InputType == DeviceInputType.PointerPosition)
                 {

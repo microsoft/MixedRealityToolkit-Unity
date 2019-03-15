@@ -38,8 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         private float deviceRefreshTimer;
         private string[] lastDeviceList;
 
-        /// <inheritdoc />
-        public override void Update()
+        public override void PreServiceUpdate()
         {
             deviceRefreshTimer += Time.unscaledDeltaTime;
 
@@ -48,6 +47,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
                 deviceRefreshTimer = 0.0f;
                 RefreshDevices();
             }
+
+            foreach (var controller in ActiveControllers)
+            {
+                controller.Value?.UpdateControllerTransform();
+            }
+        }
+
+        /// <inheritdoc />
+        public override void Update()
+        {
 
             foreach (var controller in ActiveControllers)
             {

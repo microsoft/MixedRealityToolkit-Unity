@@ -39,10 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
             // Generic unity controller's will not have default interactions
         }
 
-        /// <summary>
-        /// Update the controller data from Unity's Input Manager
-        /// </summary>
-        public virtual void UpdateController()
+        public virtual void UpdateControllerTransform()
         {
             if (!Enabled) { return; }
 
@@ -50,13 +47,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
             {
                 Debug.LogError($"No interaction configuration for {GetType().Name}");
                 Enabled = false;
+                return;
             }
+
+            for (int i = 0; i < Interactions?.Length; i++)
+            {
+                if (Interactions[i].AxisType == AxisType.SixDof)
+                {
+                    UpdatePoseData(Interactions[i]);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update the controller data from Unity's Input Manager
+        /// </summary>
+        public virtual void UpdateController()
+        {
+            if (!Enabled) { return; }
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
                 switch (Interactions[i].AxisType)
                 {
                     case AxisType.None:
+                    case AxisType.SixDof:
                         break;
                     case AxisType.Digital:
                         UpdateButtonData(Interactions[i]);
@@ -66,9 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
                         break;
                     case AxisType.DualAxis:
                         UpdateDualAxisData(Interactions[i]);
-                        break;
-                    case AxisType.SixDof:
-                        UpdatePoseData(Interactions[i]);
                         break;
                     default:
                         Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [{GetType().Name}]");

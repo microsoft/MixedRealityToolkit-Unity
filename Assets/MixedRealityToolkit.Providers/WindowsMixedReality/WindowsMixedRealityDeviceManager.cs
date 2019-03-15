@@ -292,8 +292,6 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
         public override void PreServiceUpdate()
         {
-            base.PreServiceUpdate();
-
             interactionmanagerStates = InteractionManager.GetCurrentReading();
 
             for (var i = 0; i < interactionmanagerStates?.Length; i++)

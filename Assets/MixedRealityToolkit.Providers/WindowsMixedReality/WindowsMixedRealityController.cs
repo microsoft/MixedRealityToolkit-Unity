@@ -91,11 +91,27 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
         #region Update data functions
 
-        public void UpdateControllerTransform(InteractionSourceState interactionSourceState)
+        public virtual void UpdateControllerTransform(InteractionSourceState interactionSourceState)
         {
             if (!Enabled) { return; }
 
             UpdateControllerData(interactionSourceState);
+
+            if (Interactions == null)
+            {
+                Debug.LogError($"No interaction configuration for Windows Mixed Reality Motion Controller {ControllerHandedness}");
+                Enabled = false;
+            }
+
+            for (int i = 0; i < Interactions?.Length; i++)
+            {
+                switch (Interactions[i].InputType)
+                {
+                    case DeviceInputType.SpatialPointer:
+                        UpdatePointerData(interactionSourceState, Interactions[i]);
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -117,9 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                 switch (Interactions[i].InputType)
                 {
                     case DeviceInputType.None:
-                        break;
                     case DeviceInputType.SpatialPointer:
-                        UpdatePointerData(interactionSourceState, Interactions[i]);
                         break;
                     case DeviceInputType.Select:
                     case DeviceInputType.Trigger:

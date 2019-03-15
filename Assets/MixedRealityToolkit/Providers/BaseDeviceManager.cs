@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
     /// <summary>
     /// Base Device manager to inherit from.
     /// </summary>
-    public class BaseDeviceManager : BaseExtensionService, IMixedRealityDeviceManager
+    public abstract class BaseDeviceManager : BaseExtensionService, IMixedRealityDeviceManager
     {
         /// <summary>
         /// Constructor.

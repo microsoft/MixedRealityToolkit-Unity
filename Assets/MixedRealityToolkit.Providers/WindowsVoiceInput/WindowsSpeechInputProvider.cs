@@ -75,6 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
             }
         }
 
+        public override void PreServiceUpdate() { }
+
         /// <inheritdoc />
         public override void Update()
         {

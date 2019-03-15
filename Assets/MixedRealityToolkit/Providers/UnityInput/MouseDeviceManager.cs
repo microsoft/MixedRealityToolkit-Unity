@@ -87,6 +87,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
             MixedRealityToolkit.InputSystem?.RaiseSourceDetected(Controller.InputSource, Controller);
         }
 
+        public override void PreServiceUpdate()
+        {
+            if (Input.mousePresent && Controller == null) { Enable(); }
+
+            Controller?.UpdateTransform();
+        }
+
         /// <inheritdoc />
         public override void Update()
         {
