@@ -33,7 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         
         private static bool isInitializing = false;
 
-        // todo: these should likely not be static....
         private static bool isApplicationQuitting = false;
 
         /// <summary>
@@ -1008,7 +1007,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         #region Service Utilities
 
-        // todo: rework....
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.
         /// </summary>
@@ -1094,7 +1092,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// Gets all services by type and name.
         /// </summary>
         /// <param name="serviceName">The name of the service to search for. If the string is empty than any matching <see cref="interfaceType"/> will be added to the <see cref="services"/> list.</param>
-        // TODO: remove Type interfaceType
         private IReadOnlyList<T> GetAllServicesByNameInternal<T>(Type interfaceType, string serviceName) where T : IMixedRealityService
         {
             List<T> services = new List<T>();
@@ -1194,7 +1191,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         #region Core System Accessors
 
-        // todo: should not be static...
         private static IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
