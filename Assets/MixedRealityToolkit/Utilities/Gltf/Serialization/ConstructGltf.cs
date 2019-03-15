@@ -270,11 +270,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
                     for (int c = 0; c < pixels.Length; c++)
                     {
-                        // Unity only looks for metal in R channel, and smoothness in A.
-                        pixelCache[c].r = pixels[c].b;
-                        pixelCache[c].g = (occlusionPixels != null) ? occlusionPixels[c].r : 1.0f;
-                        pixelCache[c].b = 0f;
-                        pixelCache[c].a = (1.0f - pixels[c].g);
+                        pixelCache[c].r = pixels[c].b; // MRTK standard shader metallic value, glTF metallic value
+                        pixelCache[c].g = (occlusionPixels != null) ? occlusionPixels[c].r : 1.0f; // MRTK standard shader occlusion value, glTF occlusion value if available
+                        pixelCache[c].b = 0f; // MRTK standard shader emission value
+                        pixelCache[c].a = (1.0f - pixels[c].g); // MRTK standard shader smoothness value, invert of glTF roughness value
                     }
 
                     if (gltfObject.LoadAsynchronously) await Update;
