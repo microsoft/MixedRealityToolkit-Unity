@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Tests
             Assert.IsTrue(MixedRealityToolkit.IsInitialized);
             Assert.IsNotNull(MixedRealityToolkit.Instance);
-            Assert.IsFalse(MixedRealityToolkit.HasActiveProfile);
+            Assert.IsFalse(MixedRealityToolkit.Instance.HasActiveProfile);
 
             var configuration = useDefaultProfile
                 ? GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>()
