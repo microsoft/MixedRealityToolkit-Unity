@@ -1,5 +1,5 @@
 {
-    "name": "MixedRealityToolkit-Examples.Demos.UX.Interactables",
+    "name": "MixedRealityToolkit.Examples.Demos.UX.Interactables",
     "references": [
         "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit",
@@ -8,5 +8,9 @@
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }
