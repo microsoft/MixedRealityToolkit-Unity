@@ -30,6 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             ConfigurationProfile = profile;
         }
 
-        public abstract void PreServiceUpdate();
+        public virtual void PreServiceUpdate() { }
     }
 }

@@ -99,8 +99,6 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
             dictationRecognizer.DictationError += DictationRecognizer_DictationError;
         }
 
-        public override void PreServiceUpdate() { }
-
         /// <inheritdoc />
         public override void Update()
         {

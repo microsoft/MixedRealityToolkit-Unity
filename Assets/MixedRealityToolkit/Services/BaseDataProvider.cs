@@ -21,7 +21,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <param name="priority"></param>
         /// <param name="profile"></param>
         public BaseDataProvider(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
-
-        public override void PreServiceUpdate() { }
     }
 }

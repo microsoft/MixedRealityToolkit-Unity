@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
     /// <summary>
     /// Base Device manager to inherit from.
     /// </summary>
-    public abstract class BaseDeviceManager : BaseExtensionService, IMixedRealityDeviceManager
+    public class BaseDeviceManager : BaseExtensionService, IMixedRealityDeviceManager
     {
         /// <summary>
         /// Constructor.
@@ -67,5 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
 
             return pointers.Count == 0 ? null : pointers.ToArray();
         }
+
+        public override void PreServiceUpdate() { }
     }
 }
