@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
             }
             catch (Exception e)
             {
-                Debug.LogError(e);
+                Debug.LogError($"{e.Message}\n{e.StackTrace}");
             }
 
             if (gltfObject != null)

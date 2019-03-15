@@ -36,6 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
             for (var i = 0; i < gltfAsset.GltfObject.textures?.Length; i++)
             {
                 GltfTexture gltfTexture = gltfAsset.GltfObject.textures[i];
+
+                if (gltfTexture == null) { continue; }
+
                 var path = AssetDatabase.GetAssetPath(gltfTexture.Texture);
 
                 if (string.IsNullOrWhiteSpace(path))

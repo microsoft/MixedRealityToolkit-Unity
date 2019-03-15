@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal;
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
 using System;
 using System.Collections.Generic;
@@ -16,21 +17,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 {
     public static class GltfUtility
     {
-        internal const uint GltfMagicNumber = 0x46546C67;
+        private const uint GltfMagicNumber = 0x46546C67;
 
         private static readonly WaitForUpdate Update = new WaitForUpdate();
         private static readonly WaitForBackgroundThread BackgroundThread = new WaitForBackgroundThread();
 
         /// <summary>
-        /// Imports a glTF object from the provided uri
+        /// Imports a glTF object from the provided uri.
         /// </summary>
         /// <param name="uri">the path to the file to load</param>
         /// <returns>New <see cref="GltfObject"/> imported from uri.</returns>
         /// <remarks>
+        /// Must be called from the main thread.
         /// If the <see cref="Application.isPlaying"/> is false, then this method will run synchronously.
         /// </remarks>
         public static async Task<GltfObject> ImportGltfObjectFromPathAsync(string uri)
         {
+            if (!SyncContextUtility.IsMainThread)
+            {
+                Debug.LogError("ImportGltfObjectFromPathAsync must be called from the main thread!");
+                return null;
+            }
+
             if (string.IsNullOrWhiteSpace(uri))
             {
                 Debug.LogError("Uri is not valid.");
@@ -187,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 return null;
             }
 
-            int chunk0Length = (int)BitConverter.ToUInt32(glbData, stride * 3);
+            var chunk0Length = (int)BitConverter.ToUInt32(glbData, stride * 3);
             var chunk0Type = BitConverter.ToUInt32(glbData, stride * 4);
 
             if (chunk0Type != (ulong)GltfChunkType.Json)

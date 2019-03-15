@@ -483,9 +483,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 }
             }
 
-            filter.sharedMesh = new Mesh();
-            filter.sharedMesh.CombineMeshes(meshCombines);
-            gltfMesh.Mesh = filter.sharedMesh;
+            var newMesh = new Mesh();
+            newMesh.CombineMeshes(meshCombines);
+            gltfMesh.Mesh = filter.sharedMesh = newMesh;
             gltfMesh.Mesh.name = gltfMesh.name;
             renderer.sharedMaterials = materials.ToArray();
         }
