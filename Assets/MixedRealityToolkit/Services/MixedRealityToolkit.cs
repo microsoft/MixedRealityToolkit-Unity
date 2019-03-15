@@ -1296,7 +1296,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <summary>
         /// Returns true if the MixedRealityToolkit exists and has an active profile that has Teleport system enabled.
         /// </summary>
-        public static bool IsTeleportSystemEnabled => IsInitialized && HasActiveProfile && Instance.ActiveProfile.IsTeleportSystemEnabled;
+        public static bool IsTeleportSystemEnabled => IsInitialized && Instance.HasActiveProfile && Instance.ActiveProfile.IsTeleportSystemEnabled;
 
         /// <summary>
         /// The current Teleport System registered with the Mixed Reality Toolkit.

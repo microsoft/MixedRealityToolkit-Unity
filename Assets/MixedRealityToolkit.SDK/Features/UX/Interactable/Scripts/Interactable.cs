@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         #region InspectorHelpers
         public static bool TryGetInputActions(out string[] descriptionsArray)
         {
-            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.HasActiveProfile)
+            if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.Instance.HasActiveProfile)
             {
                 descriptionsArray = null;
                 return false;
