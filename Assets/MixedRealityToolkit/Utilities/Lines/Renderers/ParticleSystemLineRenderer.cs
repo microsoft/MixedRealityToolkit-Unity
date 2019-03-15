@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             }
         }
 
-        private void Update()
+        protected override void UpdateLine()
         {
             if (!LineDataSource.enabled)
             {

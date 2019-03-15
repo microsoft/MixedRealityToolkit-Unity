@@ -83,13 +83,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
                 // Detach the child objects and clean up the parent.
                 if (spatialAwarenessObjectParent != null)
                 {
-                    spatialAwarenessObjectParent.transform.DetachChildren();
                     if (Application.isEditor)
                     {
                         Object.DestroyImmediate(spatialAwarenessObjectParent);
                     }
                     else
                     {
+                        spatialAwarenessObjectParent.transform.DetachChildren();
                         Object.Destroy(spatialAwarenessObjectParent);
                     }
                     spatialAwarenessObjectParent = null;
