@@ -2,58 +2,24 @@
   "accessors": [
     {
       "bufferView": 0,
-      "byteOffset": 0,
       "componentType": 5126,
       "count": 3575,
-      "type": "VEC2",
-      "max": [
-        0.9999003,
-        -0.0221377648
-      ],
-      "min": [
-        0.0006585993,
-        -0.996773958
-      ]
+      "type": "VEC2"
     },
     {
       "bufferView": 1,
-      "byteOffset": 0,
       "componentType": 5126,
       "count": 3575,
-      "type": "VEC3",
-      "max": [
-        1.0,
-        1.0,
-        0.9999782
-      ],
-      "min": [
-        -1.0,
-        -1.0,
-        -0.9980823
-      ]
+      "type": "VEC3"
     },
     {
       "bufferView": 2,
-      "byteOffset": 0,
       "componentType": 5126,
       "count": 3575,
-      "type": "VEC4",
-      "max": [
-        1.0,
-        0.9999976,
-        1.0,
-        1.0
-      ],
-      "min": [
-        -0.9991289,
-        -0.999907851,
-        -1.0,
-        1.0
-      ]
+      "type": "VEC4"
     },
     {
       "bufferView": 3,
-      "byteOffset": 0,
       "componentType": 5126,
       "count": 3575,
       "type": "VEC3",
@@ -70,16 +36,9 @@
     },
     {
       "bufferView": 4,
-      "byteOffset": 0,
       "componentType": 5123,
       "count": 18108,
-      "type": "SCALAR",
-      "max": [
-        3574
-      ],
-      "min": [
-        0
-      ]
+      "type": "SCALAR"
     }
   ],
   "asset": {
@@ -89,7 +48,6 @@
   "bufferViews": [
     {
       "buffer": 0,
-      "byteOffset": 0,
       "byteLength": 28600
     },
     {
@@ -144,8 +102,7 @@
             "POSITION": 3
           },
           "indices": 4,
-          "material": 0,
-          "mode": 4
+          "material": 0
         }
       ],
       "name": "BoomBox"
@@ -180,17 +137,12 @@
   ],
   "nodes": [
     {
-      "children": [],
       "mesh": 0,
-      "scale": [
-        80.0,
-        80.0,
-        80.0
-      ],
-      "translation": [
+      "rotation": [
         0.0,
-        0.163,
-        0.053
+        1.0,
+        0.0,
+        0.0
       ],
       "name": "BoomBox"
     }

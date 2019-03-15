@@ -116,33 +116,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         {
             var gltfObject = JsonUtility.FromJson<GltfObject>(jsonString);
 
-            if (gltfObject.extensionsRequired != null)
+            if (gltfObject.extensionsRequired?.Length > 0)
             {
-                if (gltfObject.extensionsRequired.Length > 0)
-                {
-                    Debug.LogError($"Required Extension Unsupported: {gltfObject.extensionsRequired[0]}");
-                    return null;
-                }
+                Debug.LogError($"Required Extension Unsupported: {gltfObject.extensionsRequired[0]}");
+                return null;
             }
 
-            if (gltfObject.extensionsUsed != null)
+            for (int i = 0; i < gltfObject.extensionsUsed?.Length; i++)
             {
-                for (int i = 0; i < gltfObject.extensionsUsed.Length; i++)
-                {
-                    var extensionsUsed = GetGltfExtensionObjects(jsonString, gltfObject.extensionsUsed[i]);
-                    Debug.LogWarning($"Unsupported Extension: {gltfObject.extensionsUsed[i]}");
-                }
+                Debug.LogWarning($"Unsupported Extension: {gltfObject.extensionsUsed[i]}");
             }
 
             var meshPrimitiveAttributes = GetGltfMeshPrimitiveAttributes(jsonString);
-
             int numPrimitives = 0;
-            if (gltfObject.meshes != null)
+
+            for (var i = 0; i < gltfObject.meshes?.Length; i++)
             {
-                foreach (var mesh in gltfObject.meshes)
-                {
-                    numPrimitives += (mesh == null) || (mesh.primitives == null) ? 0 : mesh.primitives.Length;
-                }
+                numPrimitives += gltfObject.meshes[i]?.primitives?.Length ?? 0;
             }
 
             if (numPrimitives != meshPrimitiveAttributes.Count)
@@ -151,13 +141,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 return null;
             }
 
-            int currPrimitive = 0;
-            for (int i = 0; i < gltfObject.meshes.Length; i++)
+            int primitiveIndex = 0;
+
+            for (int i = 0; i < gltfObject.meshes?.Length; i++)
             {
                 for (int j = 0; j < gltfObject.meshes[i].primitives.Length; j++)
                 {
-                    gltfObject.meshes[i].primitives[j].Attributes = JsonUtility.FromJson<GltfMeshPrimitiveAttributes>(meshPrimitiveAttributes[currPrimitive]);
-                    currPrimitive++;
+                    gltfObject.meshes[i].primitives[j].Attributes = JsonUtility.FromJson<GltfMeshPrimitiveAttributes>(meshPrimitiveAttributes[primitiveIndex]);
+                    primitiveIndex++;
                 }
             }
 
@@ -196,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 return null;
             }
 
-            var chunk0Length = BitConverter.ToUInt32(glbData, stride * 3);
+            int chunk0Length = (int)BitConverter.ToUInt32(glbData, stride * 3);
             var chunk0Type = BitConverter.ToUInt32(glbData, stride * 4);
 
             if (chunk0Type != (ulong)GltfChunkType.Json)
@@ -205,12 +196,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 return null;
             }
 
-            string jsonChunk = Encoding.ASCII.GetString(glbData, stride * 5, (int)chunk0Length);
-
+            var jsonChunk = Encoding.ASCII.GetString(glbData, stride * 5, chunk0Length);
             var gltfObject = GetGltfObjectFromJson(jsonChunk);
-
-            var chunk1Length = BitConverter.ToUInt32(glbData, stride * 5 + (int)chunk0Length);
-            var chunk1Type = BitConverter.ToUInt32(glbData, stride * 6 + (int)chunk0Length);
+            var chunk1Length = (int)BitConverter.ToUInt32(glbData, stride * 5 + chunk0Length);
+            var chunk1Type = BitConverter.ToUInt32(glbData, stride * 6 + chunk0Length);
 
             if (chunk1Type != (ulong)GltfChunkType.BIN)
             {
@@ -220,8 +209,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             Debug.Assert(gltfObject.buffers[0].byteLength == chunk1Length, "chunk 1 & buffer 0 length mismatch");
 
-            gltfObject.buffers[0].BufferData = new byte[(int)chunk1Length];
-            Array.Copy(glbData, stride * 7 + (int)chunk0Length, gltfObject.buffers[0].BufferData, 0, (int)chunk1Length);
+            gltfObject.buffers[0].BufferData = new byte[chunk1Length];
+            Array.Copy(glbData, stride * 7 + chunk0Length, gltfObject.buffers[0].BufferData, 0, chunk1Length);
 
             return gltfObject;
         }

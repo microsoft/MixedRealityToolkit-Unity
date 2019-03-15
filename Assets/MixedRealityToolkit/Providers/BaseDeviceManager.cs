@@ -49,9 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
                     if (((useSpecificType && pointerProfile.ControllerType.Type == controllerType.Type) || (!useSpecificType && pointerProfile.ControllerType.Type == null)) &&
                         (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))
                     {
-                        var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
+                        var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab, MixedRealityToolkit.Instance.MixedRealityPlayspace);
                         var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-                        pointerObject.transform.SetParent(MixedRealityToolkit.Instance.MixedRealityPlayspace);
 
                         if (pointer != null)
                         {

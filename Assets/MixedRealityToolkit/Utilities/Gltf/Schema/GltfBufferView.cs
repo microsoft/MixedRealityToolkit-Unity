@@ -6,7 +6,6 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
     /// <summary>
-    /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/bufferView.schema.json <para/>
     /// A view into a buffer generally representing a subset of the buffer.
     /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/bufferView.schema.json
     /// </summary>
@@ -22,13 +21,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// The offset into the buffer in bytes.
         /// <minimum>0</minimum>
         /// </summary>
-        public int byteOffset = -1;
+        public int byteOffset = 0;
 
         /// <summary>
         /// The length of the bufferView in bytes.
         /// <minimum>0</minimum>
         /// </summary>
-        public int byteLength = -1;
+        public int byteLength = 0;
 
         /// <summary>
         /// The stride, in bytes, between vertex attributes or other interleavable data.
@@ -36,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// <minimum>0</minimum>
         /// <maximum>255</maximum>
         /// </summary>
-        public int byteStride = -1;
+        public int byteStride = 0;
 
         /// <summary>
         /// The target that the WebGL buffer should be bound to.
