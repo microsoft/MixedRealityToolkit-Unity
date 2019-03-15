@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class UwpPlayerBuildTools
    | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -121,91 +121,18 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class UwpPlayerBuildTools</code></pre>
   </div>
-  <h3 id="fields">Fields
-  </h3>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildSymbolDebug" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildSymbolDebug">BuildSymbolDebug</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string BuildSymbolDebug = &quot;DEBUG&quot;</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildSymbolMaster" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildSymbolMaster">BuildSymbolMaster</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string BuildSymbolMaster = &quot;MASTER&quot;</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildSymbolRelease" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildSymbolRelease">BuildSymbolRelease</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string BuildSymbolRelease = &quot;RELEASE&quot;</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildUwpPlayer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildUwpPlayer*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildUwpPlayer_Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildUwpPlayer(Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo)">BuildUwpPlayer(BuildInfo)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildPlayer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildPlayer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildPlayer_Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpBuildInfo_CancellationToken_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildPlayer(Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpBuildInfo,CancellationToken)">BuildPlayer(UwpBuildInfo, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Build the Uwp Player.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void BuildUwpPlayer(BuildInfo buildInfo)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BuildPlayer(UwpBuildInfo buildInfo, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -218,34 +145,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.html">BuildInfo</a></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpBuildInfo.html">UwpBuildInfo</a></td>
         <td><span class="parametername">buildInfo</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildUwpPlayer_CommandLine_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildUwpPlayer_CommandLine*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildUwpPlayer_CommandLine" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildUwpPlayer_CommandLine">BuildUwpPlayer_CommandLine()</h4>
-  <div class="markdown level1 summary"><p>Used to trigger a build from the command line for continuous integration.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void BuildUwpPlayer_CommandLine()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_GetProjectPath_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.GetProjectPath*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_GetProjectPath" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.GetProjectPath">GetProjectPath()</h4>
-  <div class="markdown level1 summary"><p>Get the Unity Project Root Path.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string GetProjectPath()</code></pre>
-  </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -256,21 +166,21 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_RaiseOverrideBuildDefaults_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.RaiseOverrideBuildDefaults*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_RaiseOverrideBuildDefaults_Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo__" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.RaiseOverrideBuildDefaults(Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo@)">RaiseOverrideBuildDefaults(ref BuildInfo)</h4>
-  <div class="markdown level1 summary"><p>Call this method to give other code an opportunity to override <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.html">BuildInfo</a> defaults.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildPlayer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildPlayer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildPlayer_System_String_System_Boolean_CancellationToken_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildPlayer(System.String,System.Boolean,CancellationToken)">BuildPlayer(String, Boolean, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Do a build configured for UWP Applications to the specified path, returns the error from <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.html#Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildPlayer_Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpBuildInfo_CancellationToken_">BuildPlayer(UwpBuildInfo, CancellationToken)</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void RaiseOverrideBuildDefaults(ref BuildInfo toConfigure)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BuildPlayer(string buildDirectory, bool showDialog = true, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -283,98 +193,39 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.html">BuildInfo</a></td>
-        <td><span class="parametername">toConfigure</span></td>
-        <td><p>The settings to configure.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">buildDirectory</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">showDialog</span></td>
+        <td><p>Should the user be prompted to build the appx as well?</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>True, if build was successful.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_RaiseOverrideBuildDefaults_Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.html#Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_OverrideBuildDefaults">OverrideBuildDefaults</a></div>
-  </div>
-  <h3 id="events">Events
-  </h3>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildCompleted" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildCompleted">BuildCompleted</h4>
-  <div class="markdown level1 summary"><p>Event triggered when a build completes.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static event Action&lt;BuildInfo, BuildReport&gt; BuildCompleted</code></pre>
-  </div>
-  <h5 class="eventType">Event Type</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.html">BuildInfo</a>, <span class="xref">BuildReport</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildStarted" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildStarted">BuildStarted</h4>
-  <div class="markdown level1 summary"><p>Event triggered when a build starts.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static event Action&lt;BuildInfo&gt; BuildStarted</code></pre>
-  </div>
-  <h5 class="eventType">Event Type</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.html">BuildInfo</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_OverrideBuildDefaults" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.OverrideBuildDefaults">OverrideBuildDefaults</h4>
-  <div class="markdown level1 summary"><p>Add a handler to this event to override <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.html">BuildInfo</a> defaults before a build.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static event UwpPlayerBuildTools.BuildInfoConfigurationMethod OverrideBuildDefaults</code></pre>
-  </div>
-  <h5 class="eventType">Event Type</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.BuildInfoConfigurationMethod.html">UwpPlayerBuildTools.BuildInfoConfigurationMethod</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_OverrideBuildDefaults_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.html#Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_RaiseOverrideBuildDefaults_Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo__">RaiseOverrideBuildDefaults(ref BuildInfo)</a></div>
-  </div>
 </article>
           </div>
           

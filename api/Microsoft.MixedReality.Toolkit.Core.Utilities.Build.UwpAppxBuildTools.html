@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class UwpAppxBuildTools
    | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -118,7 +118,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpAppxBuildTools_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class UwpAppxBuildTools</code></pre>
+    <pre><code class="lang-csharp hljs">public static class UwpAppxBuildTools</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -153,14 +153,14 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpAppxBuildTools_BuildAppxAsync_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpAppxBuildTools.BuildAppxAsync*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpAppxBuildTools_BuildAppxAsync_System_String_System_Boolean_System_String_System_String_System_String_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpAppxBuildTools.BuildAppxAsync(System.String,System.Boolean,System.String,System.String,System.String,System.Boolean)">BuildAppxAsync(String, Boolean, String, String, String, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Build the UWP appx bundle for this project.  Requires that <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpAppxBuildTools.html#Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpAppxBuildTools_BuildUnityPlayer_System_String_System_Boolean_">BuildUnityPlayer(String, Boolean)</a> has already be run or a user has
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpAppxBuildTools_BuildAppxAsync_Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpBuildInfo_CancellationToken_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpAppxBuildTools.BuildAppxAsync(Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpBuildInfo,CancellationToken)">BuildAppxAsync(UwpBuildInfo, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Build the UWP appx bundle for this project.  Requires that <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.html#Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildPlayer_System_String_System_Boolean_CancellationToken_">BuildPlayer(String, Boolean, CancellationToken)</a> has already be run or a user has
 previously built the Unity Player with the WSA Player as the Build Target.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BuildAppxAsync(string productName, bool forceRebuildAppx, string buildConfig, string buildPlatform, string buildDirectory, bool incrementVersion)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BuildAppxAsync(UwpBuildInfo buildInfo, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -173,135 +173,13 @@ previously built the Unity Player with the WSA Player as the Build Target.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">productName</span></td>
-        <td><p>The applications product name. Typically <a href="https://docs.unity3d.com/ScriptReference/PlayerSettings-productName.html">UnityEditor.PlayerSettings.productName</a></p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">forceRebuildAppx</span></td>
-        <td><p>Should we force rebuild the appx bundle?</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">buildConfig</span></td>
-        <td><p>Debug, Release, or Master configurations are valid.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">buildPlatform</span></td>
-        <td><p>x86 or x64 build platforms are valid.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">buildDirectory</span></td>
-        <td><p>The directory where the built Unity Player Solution is located.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">incrementVersion</span></td>
-        <td><p>Should we increment the appx version number?</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpAppxBuildTools_BuildUnityPlayer_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpAppxBuildTools.BuildUnityPlayer*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpAppxBuildTools_BuildUnityPlayer_System_String_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpAppxBuildTools.BuildUnityPlayer(System.String,System.Boolean)">BuildUnityPlayer(String, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Do a build configured for UWP Applications to the specified path, returns the error from <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpPlayerBuildTools.html#Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpPlayerBuildTools_BuildUwpPlayer_Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_">BuildUwpPlayer(BuildInfo)</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool BuildUnityPlayer(string buildDirectory, bool showDialog = true)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">buildDirectory</span></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpBuildInfo.html">UwpBuildInfo</a></td>
+        <td><span class="parametername">buildInfo</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">showDialog</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>True, if build was successful.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpAppxBuildTools_RestoreNugetPackagesAsync_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpAppxBuildTools.RestoreNugetPackagesAsync*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_UwpAppxBuildTools_RestoreNugetPackagesAsync_System_String_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpAppxBuildTools.RestoreNugetPackagesAsync(System.String,System.String)">RestoreNugetPackagesAsync(String, String)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; RestoreNugetPackagesAsync(string nugetPath, string storePath)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">nugetPath</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">storePath</span></td>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -317,7 +195,8 @@ previously built the Unity Player with the WSA Player as the Build Target.</p>
     <tbody>
       <tr>
         <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
-        <td></td>
+        <td><p>True, if the appx build was successful.</p>
+</td>
       </tr>
     </tbody>
   </table>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class BaseMixedRealityProfileInspector
    | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -166,13 +166,13 @@ public static bool CheckMixedRealityConfigured(bool flag = true)</code></pre>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Inspectors_Profiles_BaseMixedRealityProfileInspector_RenderProfile_" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.BaseMixedRealityProfileInspector.RenderProfile*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Inspectors_Profiles_BaseMixedRealityProfileInspector_RenderProfile_SerializedProperty_GUIContent_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.BaseMixedRealityProfileInspector.RenderProfile(SerializedProperty,GUIContent,System.Boolean)">RenderProfile(SerializedProperty, GUIContent, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Inspectors_Profiles_BaseMixedRealityProfileInspector_RenderProfile_SerializedProperty_GUIContent_System_Boolean_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.BaseMixedRealityProfileInspector.RenderProfile(SerializedProperty,GUIContent,System.Boolean,System.Type)">RenderProfile(SerializedProperty, GUIContent, Boolean, Type)</h4>
   <div class="markdown level1 summary"><p>Renders a <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true)</code></pre>
+    <pre><code class="lang-csharp hljs">protected static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true, Type serviceType = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -202,6 +202,11 @@ public static bool CheckMixedRealityConfigured(bool flag = true)</code></pre>
         <td><p>Optional flag to hide the create button.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">serviceType</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -223,13 +228,13 @@ public static bool CheckMixedRealityConfigured(bool flag = true)</code></pre>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Inspectors_Profiles_BaseMixedRealityProfileInspector_RenderProfile_" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.BaseMixedRealityProfileInspector.RenderProfile*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Inspectors_Profiles_BaseMixedRealityProfileInspector_RenderProfile_SerializedProperty_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.BaseMixedRealityProfileInspector.RenderProfile(SerializedProperty,System.Boolean)">RenderProfile(SerializedProperty, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Inspectors_Profiles_BaseMixedRealityProfileInspector_RenderProfile_SerializedProperty_System_Boolean_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles.BaseMixedRealityProfileInspector.RenderProfile(SerializedProperty,System.Boolean,System.Type)">RenderProfile(SerializedProperty, Boolean, Type)</h4>
   <div class="markdown level1 summary"><p>Renders a <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true)</code></pre>
+    <pre><code class="lang-csharp hljs">protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, Type serviceType = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -252,6 +257,11 @@ public static bool CheckMixedRealityConfigured(bool flag = true)</code></pre>
         <td><span class="parametername">showAddButton</span></td>
         <td><p>Optional flag to hide the create button.</p>
 </td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">serviceType</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

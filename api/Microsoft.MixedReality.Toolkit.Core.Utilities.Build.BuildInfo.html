@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class BuildInfo
    | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -89,6 +89,11 @@
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">BuildInfo</span></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.UwpBuildInfo.html">UwpBuildInfo</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.IBuildInfo.html">IBuildInfo</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -118,31 +123,49 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BuildInfo</code></pre>
+    <pre><code class="lang-csharp hljs">public class BuildInfo : IBuildInfo</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo__ctor" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.#ctor">BuildInfo()</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo__ctor_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.#ctor(System.Boolean)">BuildInfo(Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BuildInfo()</code></pre>
+    <pre><code class="lang-csharp hljs">public BuildInfo(bool isCommandLine = false)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isCommandLine</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_BuildAppx_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.BuildAppx*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_BuildAppx" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.BuildAppx">BuildAppx</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_AutoIncrement_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.AutoIncrement*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_AutoIncrement" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.AutoIncrement">AutoIncrement</h4>
+  <div class="markdown level1 summary"><p>Should the build auto increment the build version number?</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool BuildAppx { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool AutoIncrement { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -163,7 +186,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_BuildOptions_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.BuildOptions*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_BuildOptions" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.BuildOptions">BuildOptions</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Build options to include in the Unity player build pipeline.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -188,7 +212,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_BuildPlatform_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.BuildPlatform*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_BuildPlatform" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.BuildPlatform">BuildPlatform</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The build platform (i.e. x86, x64)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -213,11 +238,12 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_BuildSymbols_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.BuildSymbols*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_BuildSymbols" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.BuildSymbols">BuildSymbols</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The symbols associated with this build.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string BuildSymbols { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string BuildSymbols { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -238,11 +264,12 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_BuildTarget_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.BuildTarget*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_BuildTarget" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.BuildTarget">BuildTarget</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The build target.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BuildTarget BuildTarget { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual BuildTarget BuildTarget { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -263,7 +290,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_ColorSpace_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.ColorSpace*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_ColorSpace" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.ColorSpace">ColorSpace</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Optional parameter to set the player's <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.IBuildInfo.html#Microsoft_MixedReality_Toolkit_Core_Utilities_Build_IBuildInfo_ColorSpace">ColorSpace</a></p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -288,11 +316,12 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_Configuration_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.Configuration*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_Configuration" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.Configuration">Configuration</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The build configuration (i.e. debug, release, or master)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Configuration { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Configuration { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -311,38 +340,14 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_CopyDirectories_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.CopyDirectories*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_CopyDirectories" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.CopyDirectories">CopyDirectories</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;CopyDirectoryInfo&gt; CopyDirectories { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.CopyDirectoryInfo.html">CopyDirectoryInfo</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_IsCommandLine_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.IsCommandLine*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_IsCommandLine" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.IsCommandLine">IsCommandLine</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Is this build being issued from the command line?</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsCommandLine { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsCommandLine { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -363,7 +368,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_OutputDirectory_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.OutputDirectory*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_OutputDirectory" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.OutputDirectory">OutputDirectory</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The directory to put the final build output.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -384,15 +390,19 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_OutputDirectory_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Defaults to &quot;<see cref="!:Application.dataPath"></see>/Builds/Platform Target/&quot;</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_PostBuildAction_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.PostBuildAction*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_PostBuildAction" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.PostBuildAction">PostBuildAction</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>A post-build action to raise after building the Unity player.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Action&lt;BuildInfo, BuildReport&gt; PostBuildAction { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Action&lt;IBuildInfo, BuildReport&gt; PostBuildAction { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -404,7 +414,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.html">BuildInfo</a>, <span class="xref">BuildReport</span>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.IBuildInfo.html">IBuildInfo</a>, <span class="xref">BuildReport</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -413,11 +423,12 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_PreBuildAction_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.PreBuildAction*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_PreBuildAction" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.PreBuildAction">PreBuildAction</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>A pre-build action to raise before building the Unity player.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Action&lt;BuildInfo&gt; PreBuildAction { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Action&lt;IBuildInfo&gt; PreBuildAction { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -429,7 +440,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.html">BuildInfo</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.IBuildInfo.html">IBuildInfo</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -438,7 +449,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_Scenes_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.Scenes*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_Scenes" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.Scenes">Scenes</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The list of scenes to include in the build.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -459,313 +471,10 @@
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_WSAGenerateReferenceProjects_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.WSAGenerateReferenceProjects*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_WSAGenerateReferenceProjects" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.WSAGenerateReferenceProjects">WSAGenerateReferenceProjects</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool? WSAGenerateReferenceProjects { get; set; }</code></pre>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.IBuildInfo.html">IBuildInfo</a>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_WSASdk_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.WSASdk*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_WSASdk" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.WSASdk">WSASdk</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WSASDK? WSASdk { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">WSASDK</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_WSAUWPBuildType_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.WSAUWPBuildType*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_WSAUWPBuildType" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.WSAUWPBuildType">WSAUWPBuildType</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WSAUWPBuildType? WSAUWPBuildType { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">WSAUWPBuildType</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_WSAUwpSdk_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.WSAUwpSdk*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_WSAUwpSdk" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.WSAUwpSdk">WSAUwpSdk</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string WSAUwpSdk { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_AppendSymbols_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.AppendSymbols*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_AppendSymbols_IEnumerable_System_String__" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.AppendSymbols(IEnumerable{System.String})">AppendSymbols(IEnumerable&lt;String&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AppendSymbols(IEnumerable&lt;string&gt; symbols)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">symbols</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_AppendSymbols_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.AppendSymbols*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_AppendSymbols_System_String___" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.AppendSymbols(System.String[])">AppendSymbols(String[])</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AppendSymbols(params string[] symbol)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
-        <td><span class="parametername">symbol</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_HasAnySymbols_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.HasAnySymbols*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_HasAnySymbols_IEnumerable_System_String__" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.HasAnySymbols(IEnumerable{System.String})">HasAnySymbols(IEnumerable&lt;String&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool HasAnySymbols(IEnumerable&lt;string&gt; symbols)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">symbols</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_HasAnySymbols_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.HasAnySymbols*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_HasAnySymbols_System_String___" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.HasAnySymbols(System.String[])">HasAnySymbols(String[])</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool HasAnySymbols(params string[] symbols)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
-        <td><span class="parametername">symbols</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_HasConfigurationSymbol_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.HasConfigurationSymbol*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_HasConfigurationSymbol" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.HasConfigurationSymbol">HasConfigurationSymbol()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool HasConfigurationSymbol()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_RemoveConfigurationSymbols_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.RemoveConfigurationSymbols*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Utilities_Build_BuildInfo_RemoveConfigurationSymbols_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Core.Utilities.Build.BuildInfo.RemoveConfigurationSymbols(System.String)">RemoveConfigurationSymbols(String)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;string&gt; RemoveConfigurationSymbols(string symbols)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">symbols</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
 </article>
           </div>
           

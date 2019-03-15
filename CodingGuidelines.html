@@ -8,7 +8,7 @@
     <title>Coding Guidelines | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Coding Guidelines | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -105,24 +105,26 @@
 <p>Any script files submitted without proper summary tags will be rejected.</p>
 </blockquote>
 <h2 id="mrtk-namespace-rules">MRTK namespace rules</h2>
-<p>The vNext structure adheres to a strict namespace culture of mapping the namespace 1-1 with the folder structure of the project.  This ensures that classes are easy to discover and maintain.  It also ensures the dependencies of any class are laid out in the beginning using definitions of the file.</p>
-<p><img src="External/ReadMeImages/MRTK-NameSpaceExample.png" alt=""></p>
+<p>The Mixed Reality Toolkit uses a feature based namespace model, where all foundational namespaces begin with &quot;Microsoft.MixedReality.Toolkit&quot;. In general, you need not specify the toolkit layer (ex: Core, Providers, Services) in your namespaces.</p>
+<p>The currently defined namespaces are:</p>
+<ul>
+<li>Microsoft.MixedReality.Toolkit</li>
+<li>Microsoft.MixedReality.Toolkit.Boundary</li>
+<li>Microsoft.MixedReality.Toolkit.Diagnostics</li>
+<li>Microsoft.MixedReality.Toolkit.Editor</li>
+<li>Microsoft.MixedReality.Toolkit.Input</li>
+<li>Microsoft.MixedReality.Toolkit.SpatialAwareness</li>
+<li>Microsoft.MixedReality.Toolkit.Teleport</li>
+<li>Microsoft.MixedReality.Toolkit.Utilities</li>
+</ul>
+<p>For namespaces with a large amount of types, it is acceptable to create a limited number of sub-namespaces to aid in scoping usage.</p>
 <h3 id="do">Do:</h3>
-<pre><code class="lang-c#">// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions
+<pre><code class="lang-c#">namespace Microsoft.MixedReality.Toolkit.Boundary
 {
-    /// &lt;summary&gt;
-    /// The ButtonAction defines the set of actions exposed by a controller.
-    /// Denoting the available buttons / interactions that a controller supports.
-    /// &lt;/summary&gt;
-    public enum ButtonAction
-    {
-    }
+    // Interface, class or data type definition.
 }
 </code></pre>
-<p>Absolutely no class / struct / enum or other definition should be entered in to the project without the appropriate namespace definition.</p>
+<p>Omitting the namespace for an interface, class or data type will cause your change to be blocked.</p>
 <h2 id="spaces-vs-tabs">Spaces vs Tabs</h2>
 <p>Please be sure to use 4 spaces instead of tabs when contributing to this project.</p>
 <p>Additionally, ensure that spaces are added for conditional / loop functions like if / while / for</p>
