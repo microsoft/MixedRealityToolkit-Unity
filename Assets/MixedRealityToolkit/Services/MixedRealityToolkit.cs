@@ -56,6 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
         }
 
+        private bool HasProfileAndIsInitialized => activeProfile != null && IsInitialized;
+
         /// <summary>
         /// The active profile of the Mixed Reality Toolkit which controls which services are active and their initial configuration.
         /// *Note configuration is used on project initialization or replacement, changes to properties while it is running has no effect.
@@ -137,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <inheritdoc />
         public bool RegisterService<T>(T serviceInstance) where T : IMixedRealityService
         {
-            return RegisterServiceInternal<T>(serviceInstance);
+            return RegisterServiceInternal(serviceInstance);
         }
 
         /// <inheritdoc />
@@ -891,129 +893,60 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         private void InitializeAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
             // Initialize all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.Initialize();
-            }
-
-            // Initialize all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
-            {
-                service.Item2.Initialize();
-            }
+            ExecuteOnAllServices(service => service.Initialize());
         }
 
         private void ResetAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
-
             // Reset all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.Reset();
-            }
-
-            // Reset all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
-            {
-                service.Item2.Reset();
-            }
+            ExecuteOnAllServices(service => service.Reset());
         }
 
         private void EnableAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
-
             // Enable all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.Enable();
-            }
-
-            // Reset all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
-            {
-                service.Item2.Enable();
-            }
+            ExecuteOnAllServices(service => service.Enable());
         }
 
         private void UpdateAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
-
             // Update all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.Update();
-            }
-
-            // Update all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
-            {
-                service.Item2.Update();
-            }
+            ExecuteOnAllServices(service => service.Update());
         }
 
         private void DisableAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
-
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
-
             // Disable all systems
-            foreach (var system in activeSystems)
-            {
-                system.Value.Disable();
-            }
-
-            // Disable all registered runtime services
-            foreach (var service in registeredMixedRealityServices)
-            {
-                service.Item2.Disable();
-            }
+            ExecuteOnAllServices(service => service.Disable());
         }
 
         private void DestroyAllServices()
         {
+            if (!ExecuteOnAllServices(service => service.Destroy())) { return; }
+
+            activeSystems.Clear();
+            registeredMixedRealityServices.Clear();
+        }
+
+        private bool ExecuteOnAllServices(Action<IMixedRealityService> execute)
+        {
             // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
+            if (!HasProfileAndIsInitialized) { return false; }
 
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
-
-            // Destroy all systems
             foreach (var system in activeSystems)
             {
-                system.Value.Destroy();
+                execute(system.Value);
             }
 
             activeSystems.Clear();
 
-            // Destroy all registered runtime services
             foreach (var service in registeredMixedRealityServices)
             {
-                service.Item2.Destroy();
+                execute(service.Item2);
             }
 
-            registeredMixedRealityServices.Clear();
+            return true;
         }
 
         #endregion Multiple Service Management
@@ -1064,10 +997,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         {
             if (!CanGetService(interfaceType)) { return null; }
 
-            IMixedRealityService serviceInstance = null;
-
             if (IsCoreSystem(interfaceType))
             {
+                IMixedRealityService serviceInstance;
                 if (activeSystems.TryGetValue(interfaceType, out serviceInstance))
                 {
                     if (CheckServiceMatch(interfaceType, serviceName, interfaceType, serviceInstance))
