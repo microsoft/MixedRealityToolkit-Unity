@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             }
         }
 
-        public void LateUpdate()
+        protected override void UpdateLine()
         {
             if (stripMeshRenderer == null)
             {

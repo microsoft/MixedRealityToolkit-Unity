@@ -23,10 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         protected string prefKey = "InteractableInspectorProfiles";
         protected bool enabled = false;
 
-        protected string[] eventOptions;
-        protected Type[] eventTypes;
-        protected string[] themeOptions;
-        protected Type[] themeTypes;
+        protected InteractableTypesContainer eventOptions;
+        protected InteractableTypesContainer themeOptions;
         protected string[] shaderOptions;
 
         protected string[] actionOptions = null;
@@ -505,7 +503,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                 InteractableReceiverListInspector.RenderEventSettings(eventItem, i, eventOptions, ChangeEvent, RemoveEvent);
             }
 
-            if (eventOptions.Length > 1)
+            if (eventOptions.ClassNames.Length > 1)
             {
                 if (GUILayout.Button(new GUIContent("Add Event")))
                 {
@@ -554,9 +552,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         protected void SetupThemeOptions()
         {
-            InteractableProfileItem.ThemeLists lists = InteractableProfileItem.GetThemeTypes();
-            themeOptions = lists.Names.ToArray();
-            themeTypes = lists.Types.ToArray();
+            themeOptions = InteractableProfileItem.GetThemeTypes();
         }
 
         protected virtual void AddThemeProperty(int[] arr, SerializedProperty prop = null)
@@ -577,14 +573,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
             SerializedProperty settingsItem = themeObjSettings.GetArrayElementAtIndex(themeObjSettings.arraySize - 1);
             SerializedProperty className = settingsItem.FindPropertyRelative("Name");
+            SerializedProperty assemblyQualifiedName = settingsItem.FindPropertyRelative("AssemblyQualifiedName");
             if (themeObjSettings.arraySize == 1)
             {
-
                 className.stringValue = "ScaleOffsetColorTheme";
+                assemblyQualifiedName.stringValue = typeof(ScaleOffsetColorTheme).AssemblyQualifiedName;
             }
             else
             {
-                className.stringValue = themeOptions[0];
+                className.stringValue = themeOptions.ClassNames[0];
+                assemblyQualifiedName.stringValue = themeOptions.AssemblyQualifiedNames[0];
             }
 
             SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
@@ -685,12 +683,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             SerializedProperty name = prop.FindPropertyRelative("Name");
             SerializedProperty settings = prop.FindPropertyRelative("Settings");
             SerializedProperty hideEvents = prop.FindPropertyRelative("HideUnityEvents");
+            SerializedProperty assemblyQualifiedName = prop.FindPropertyRelative("AssemblyQualifiedName");
 
             if (!String.IsNullOrEmpty(className.stringValue))
             {
-                InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventTypes[indexArray[1]]);
+                InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventOptions.Types[indexArray[1]]);
                 name.stringValue = data.Name;
                 hideEvents.boolValue = data.HideUnityEvents;
+                assemblyQualifiedName.stringValue = eventOptions.AssemblyQualifiedNames[indexArray[1]];
 
                 InspectorFieldsUtility.PropertySettingsList(settings, data.Fields);
             }
@@ -698,11 +698,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         protected void SetupEventOptions()
         {
-            InteractableEvent.EventLists lists = InteractableEvent.GetEventTypes();
-            eventTypes = lists.EventTypes.ToArray();
-            eventOptions = lists.EventNames.ToArray();
+            eventOptions = InteractableEvent.GetEventTypes();
         }
-
     }
 #endif
 }
