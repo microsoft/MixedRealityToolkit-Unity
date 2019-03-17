@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 return true;
             }
 
-            Tuple<Type, IMixedRealityService> registryInstance = new Tuple<Type, IMixedRealityService>(interfaceType, serviceInstance as IMixedRealityService);
+            Tuple<Type, IMixedRealityService> registryInstance = new Tuple<Type, IMixedRealityService>(interfaceType, serviceInstance);
 
             if (registeredMixedRealityServices.Contains(registryInstance))
             {
