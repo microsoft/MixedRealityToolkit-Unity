@@ -74,6 +74,8 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 
 # Useful resources on Microsoft Windows Dev Center
 | ![Academy](External/ReadMeImages/icon_academy.png) [Academy](https://developer.microsoft.com/en-us/windows/mixed-reality/academy)| ![Design](External/ReadMeImages/icon_design.png) [Design](https://developer.microsoft.com/en-us/windows/mixed-reality/design)| ![Development](External/ReadMeImages/icon_development.png) [Development](https://developer.microsoft.com/en-us/windows/mixed-reality/development)| ![Community)](External/ReadMeImages/icon_community.png) [Community](https://developer.microsoft.com/en-us/windows/mixed-reality/community)|
+| :--------------------- | :----------------- | :------------------ | :------------------------ |
+| See code examples. Do a coding tutorial. Watch guest lectures.          | Get design guides. Build user interface. Learn interactions and input.     | Get development guides. Learn the technology. Understand the science.       | Join open source projects. Ask questions on forums. Attend events and meetups. |
 
 ### For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/Branch-Guide).
 
@@ -82,9 +84,6 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 > Learn more about the architecture behind [Windows Mixed Reality - vNext](/MRTK-vNext.md) here.
 
 > Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](/MRTK-SDK.md) here.
-
-| :--------------------- | :----------------- | :------------------ | :------------------------ |
-| See code examples. Do a coding tutorial. Watch guest lectures.          | Get design guides. Build user interface. Learn interactions and input.     | Get development guides. Learn the technology. Understand the science.       | Join open source projects. Ask questions on forums. Attend events and meetups. |
 
 # How to Contribute
 View the [**How To Contribute**](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/How-to-Contribute) wiki page for the most up to date instructions on contributing to the Mixed Reality Toolkit!
