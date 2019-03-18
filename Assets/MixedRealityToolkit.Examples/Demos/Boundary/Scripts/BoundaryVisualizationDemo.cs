@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
