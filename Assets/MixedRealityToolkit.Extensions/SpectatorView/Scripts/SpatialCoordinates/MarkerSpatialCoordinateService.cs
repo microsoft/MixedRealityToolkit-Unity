@@ -391,7 +391,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 Spectator spectator;
                 if (Spectator.TryDeserializeSpectator(payload, out spectator))
                 {
-                    Debug.Log("Received spectator data: " + spectator.ToString());
                     _spectatorIds[playerId] = spectator.Id;
 
                     if (!_cachedSelfUser.Spectators.ContainsKey(spectator.Id))
@@ -405,12 +404,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                     {
                         _cachedSelfUser.Spectators[spectator.Id].MarkerId = _cachedSelfUser.AvailableMarkerId;
                         _cachedSelfUser.AvailableMarkerId += 1;
+                        Debug.Log("Assigned marker to spectator: " + _cachedSelfUser.Spectators[spectator.Id].ToString());
                     }
 
                     if (spectator.RequestingReset)
                     {
                         // If the spectator is requesting a reset, we clear its cached transform data
                         _cachedSelfUser.Spectators[spectator.Id].ResetTransformData();
+                        Debug.Log("Resetting spectator transforms: " + _cachedSelfUser.Spectators[spectator.Id].ToString());
                     }
                     else
                     {
@@ -425,7 +426,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                 User user;
                 if (User.TryDeserializeUser(payload, out user))
                 {
-                    Debug.Log("Received user data: " + user.ToString());
                     _cachedUser = user;
 
                     if (!String.IsNullOrEmpty(_userPlayerId) &&
@@ -679,7 +679,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
         {
             if (_actAsUser)
             {
-                Debug.Log("Generating state payload for cached self user: " + _cachedSelfUser.ToString());
                 var output = SerializationHelper.Serialize(_cachedSelfUser);
                 return output;
             }

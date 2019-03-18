@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 
         void OnValidate()
         {
+#if UNITY_EDITOR
             FieldHelper.ValidateType<IMatchMakingService>(MatchMakingService);
             FieldHelper.ValidateType<IPlayerService>(PlayerService);
             FieldHelper.ValidateType<INetworkingService>(NetworkingService);
@@ -47,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             {
                 FieldHelper.ValidateType<IPlayerStateObserver>(observer);
             }
+#endif
         }
 
         void Awake()
@@ -115,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
         {
             if (_matchMakingService.IsConnected())
             {
-                if(!_networkingService.SendData(payload))
+                if(!_networkingService.SendData(payload, Priority.Default))
                 {
                     Debug.LogError("Networking service failed to send data");
                 }

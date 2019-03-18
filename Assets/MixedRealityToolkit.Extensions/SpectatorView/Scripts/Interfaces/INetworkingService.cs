@@ -3,11 +3,17 @@
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
 {
+    public enum Priority
+    {
+        Default,
+        Critical
+    }
+
     public delegate void DataHandler(string playerId, byte[] payload);
 
     public interface INetworkingService
     {
-        bool SendData(byte[] data);
+        bool SendData(byte[] data, Priority priority);
         event DataHandler DataReceived;
     }
 }
