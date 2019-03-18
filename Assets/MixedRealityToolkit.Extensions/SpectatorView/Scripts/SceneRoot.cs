@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 {
     public class SceneRoot : MonoBehaviour
     {
-        void Start()
+        private void Start()
         {
             var spectatorView = FindObjectOfType<SpectatorView>();
             if (spectatorView == null)
