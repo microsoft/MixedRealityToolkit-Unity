@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -595,7 +595,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &219590316
 Transform:
   m_ObjectHideFlags: 0
@@ -1110,7 +1110,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &394486090
 Transform:
   m_ObjectHideFlags: 0
@@ -1437,7 +1437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &505499291
 Transform:
   m_ObjectHideFlags: 0
@@ -1639,7 +1639,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &557799835
 Transform:
   m_ObjectHideFlags: 0
@@ -3338,7 +3338,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1024150522
 Transform:
   m_ObjectHideFlags: 0
@@ -3694,8 +3694,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1269350125}
+  - component: {fileID: 1269350126}
   m_Layer: 0
-  m_Name: Content Root
+  m_Name: Scene Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3719,6 +3720,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1269350126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269350124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2cf4a7aee37eee4aba4325fadbca4be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1325545068
 GameObject:
   m_ObjectHideFlags: 0
@@ -4835,7 +4848,7 @@ GameObject:
   - component: {fileID: 1862805970}
   - component: {fileID: 1862805969}
   m_Layer: 0
-  m_Name: SpectatorView
+  m_Name: Spectator View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4873,6 +4886,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abc500b6b39d464880ebe2221b093f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MatchMakingService: {fileID: 708617535}
+  PlayerService: {fileID: 708617535}
+  NetworkingService: {fileID: 708617535}
+  SpatialCoordinateService: {fileID: 656083067}
+  AndroidRecordingService: {fileID: 1934384034}
+  IosRecordingService: {fileID: 394486092}
+  RecordingServiceVisual: {fileID: 849012367}
+  PlayerStateObservers:
+  - {fileID: 656083067}
   LocalOriginToSharedOrigin:
     e00: 1
     e01: 0
@@ -4890,16 +4912,7 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 1
-  _sceneRoot: {fileID: 1269350124}
-  MatchMakingService: {fileID: 708617535}
-  PlayerService: {fileID: 708617535}
-  NetworkingService: {fileID: 708617535}
-  SpatialCoordinateService: {fileID: 656083067}
-  AndroidRecordingService: {fileID: 1934384034}
-  IosRecordingService: {fileID: 394486092}
-  RecordingServiceVisual: {fileID: 849012367}
-  PlayerStateObservers:
-  - {fileID: 656083067}
+  SceneRoot: {fileID: 0}
 --- !u!114 &1862805970
 MonoBehaviour:
   m_ObjectHideFlags: 0
