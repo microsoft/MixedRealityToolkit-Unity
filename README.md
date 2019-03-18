@@ -17,11 +17,26 @@ The vNext branch is taking all the best lessons learned from the original Mixed 
 
 > Learn more about [Windows Mixed Reality](https://www.microsoft.com/en-gb/windows/windows-mixed-reality) here.
 
-> Learn more about the architecture behind [Windows Mixed Reality - vNext](MRTK-vNext.md) here.
+> Learn more about the architecture behind [Windows Mixed Reality - V2](MRTK-vNext.md) here.
 
-> Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](MRTK-SDK.md) here.
+> Learn more about the approach behind the [Windows Mixed Reality - V2 SDK](MRTK-SDK.md) here.
 
-> Find this readme, other documentation articles and the MRTK api reference on our [developer documentation on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/). 
+# Getting Started with MRTK 
+
+You can find out how to use MRTK to develop for Windows Mixed Reality on the MS Developer Site.
+
+Find this readme, other documentation articles and the MRTK api reference on our [MRTK Dev Portal on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/). 
+
+
+# Engage with the Community
+
+Join us on [Slack](https://holodevelopers.slack.com/) where our developers are actively are actively answering questions and sharing out the latest thinking from the dev team. 
+
+[Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) is a great place to ask for how-to using MRTK or troubleshooting an issue. Use the tag "mrtk" for it show up in the developer team's sights.
+
+For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
+
+Deep dive into project plan and learn how you can contribute to MRTK in our [wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki).  
 
 # Build Status
 
