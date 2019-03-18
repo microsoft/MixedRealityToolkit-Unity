@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
+using MRTKPrefix.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
+namespace MRTKPrefix.UI
 {
     /// <summary>
     /// An example of building an Interactable receiver that uses built-in receivers that extend ReceiverBase

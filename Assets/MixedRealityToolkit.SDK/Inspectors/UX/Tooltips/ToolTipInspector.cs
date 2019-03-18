@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips;
+using MRTKPrefix.UI;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.ToolTips
+namespace MRTKPrefix.Editor.Utilities
 {
     [CustomEditor(typeof(ToolTip))]
-    public class ToolTipInspector : Editor
+    public class ToolTipInspector : UnityEditor.Editor
     {
         private const string EditorSettingsFoldoutKey = "MRTK_ToolTip_Inspector_EditorSettings";
         private const string DrawAttachPointsKey = "MRTK_ToopTip_Inspector_DrawAttachPoints";

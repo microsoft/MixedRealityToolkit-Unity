@@ -1,11 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
-using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
+namespace MRTKPrefix.Diagnostics
 {
     /// <summary>
     /// The interface contract that defines the Diagnostics system in the Mixed Reality Toolkit

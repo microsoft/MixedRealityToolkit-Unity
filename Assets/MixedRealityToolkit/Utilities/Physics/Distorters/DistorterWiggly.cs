@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
+namespace MRTKPrefix.Physics
 {
     public class DistorterWiggly : Distorter
     {

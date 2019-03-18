@@ -1,16 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using MRTKPrefix.Utilities;
+using MRTKPrefix.Physics;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
+namespace MRTKPrefix.Input
 {
     /// <summary>
     /// Internal Touch Pointer Implementation.

@@ -1,16 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+using MRTKPrefix.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions
+namespace MRTKPrefix
 {
     /// <summary>
-    /// Defines a system, feature, or manager to be registered with as a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityExtensionService"/> on startup.
+    /// Defines a system, feature, or manager to be registered with as a <see cref="IMixedRealityExtensionService"/> on startup.
     /// </summary>
     [Serializable]
     public struct MixedRealityServiceConfiguration
@@ -24,10 +22,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// <param name="runtimePlatform">The runtime platform(s) to run this system, feature, or manager on.</param>
         /// <param name="configurationProfile">The configuration profile for the service.</param>
         public MixedRealityServiceConfiguration(
-            SystemType componentType, 
-            string componentName, 
-            uint priority, 
-            SupportedPlatforms runtimePlatform, 
+            SystemType componentType,
+            string componentName,
+            uint priority,
+            SupportedPlatforms runtimePlatform,
             BaseMixedRealityProfile configurationProfile)
         {
             this.componentType = componentType;

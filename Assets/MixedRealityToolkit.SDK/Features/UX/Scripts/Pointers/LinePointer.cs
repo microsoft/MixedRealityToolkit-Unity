@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
+using MRTKPrefix.Physics;
+using MRTKPrefix.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
+namespace MRTKPrefix.Input
 {
     /// <summary>
     /// A simple line pointer for drawing lines from the input source origin to the current pointer position.
@@ -63,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         private DistorterGravity gravityDistorter = null;
 
         /// <summary>
-        /// The Gravity Distorter that is affecting the <see cref="Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders.BaseMixedRealityLineDataProvider"/> attached to this pointer.
+        /// The Gravity Distorter that is affecting the <see cref="MRTKPrefix.Utilities.BaseMixedRealityLineDataProvider"/> attached to this pointer.
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
 

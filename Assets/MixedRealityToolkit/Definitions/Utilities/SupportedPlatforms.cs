@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
+namespace MRTKPrefix.Utilities
 {
     /// <summary>
     /// The supported platforms for Mixed Reality Toolkit Components and Features.

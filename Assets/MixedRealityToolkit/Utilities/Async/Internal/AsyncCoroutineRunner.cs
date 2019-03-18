@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal
+namespace MRTKPrefix.Utilities
 {
     /// <summary>
     /// This Async Coroutine Runner is just a helper object to

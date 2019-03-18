@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Pointers;
+using MRTKPrefix.Input;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
+namespace MRTKPrefix.Editor.Input
 {
     [CustomEditor(typeof(BaseControllerPointer))]
     public class BaseControllerPointerInspector : ControllerPoseSynchronizerInspector

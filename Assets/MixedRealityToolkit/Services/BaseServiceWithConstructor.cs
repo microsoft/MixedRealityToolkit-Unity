@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services
+namespace MRTKPrefix
 {
     /// <summary>
-    /// Base <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService"/> with a constructor override.
+    /// Base <see cref="IMixedRealityService"/> with a constructor override.
     /// </summary>
     public abstract class BaseServiceWithConstructor : BaseService
     {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities
+namespace MRTKPrefix.Utilities
 {
     /// <summary>
     /// Math Utilities class.

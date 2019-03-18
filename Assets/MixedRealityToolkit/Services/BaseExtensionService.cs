@@ -1,11 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services
+namespace MRTKPrefix
 {
     /// <summary>
     /// The base extension service implements <see cref="Interfaces.IMixedRealityExtensionService"/> and provides default properties for all extension services.
@@ -13,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
     /// <remarks>
     /// Empty, but reserved for future use, in case additional <see cref="Interfaces.IMixedRealityExtensionService"/> properties or methods are assigned.
     /// </remarks>
-    public abstract class BaseExtensionService : BaseServiceWithConstructor, Interfaces.IMixedRealityExtensionService
+    public abstract class BaseExtensionService : BaseServiceWithConstructor, IMixedRealityExtensionService
     {
         /// <summary>
         /// Configuration Profile

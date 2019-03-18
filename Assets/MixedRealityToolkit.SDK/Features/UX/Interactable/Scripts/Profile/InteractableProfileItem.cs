@@ -1,22 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.TypeResolution;
+using MRTKPrefix.UI.TypeResolution;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile
+namespace MRTKPrefix.UI
 {
     /// <summary>
     /// The foundation of profiles that exist on an Interactable
     /// Profiles pair themes with the objects they manipulate, based on state changes
     /// </summary>
-    
+
     [System.Serializable]
     public class InteractableProfileItem
     {

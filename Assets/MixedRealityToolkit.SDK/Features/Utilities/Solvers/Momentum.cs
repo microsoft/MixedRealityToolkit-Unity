@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
+namespace MRTKPrefix.Utilities.Solvers
 {
     /// <summary>
     /// Applies acceleration/velocity/friction to simulate momentum for an object being moved by other solvers/components

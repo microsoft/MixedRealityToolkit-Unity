@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal.DataStructures
+namespace MRTKPrefix.WindowsDevicePortal
 {
     [Serializable]
     public class ProcessInfo

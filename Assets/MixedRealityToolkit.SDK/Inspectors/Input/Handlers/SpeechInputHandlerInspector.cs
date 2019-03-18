@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
+using MRTKPrefix.Editor.Utilities;
+using MRTKPrefix.Input;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
+namespace MRTKPrefix.Editor.Input
 {
     [CustomEditor(typeof(SpeechInputHandler))]
     public class SpeechInputHandlerInspector : BaseInputHandlerInspector

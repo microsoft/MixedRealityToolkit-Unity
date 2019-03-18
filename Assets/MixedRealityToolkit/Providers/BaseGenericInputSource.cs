@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using System.Collections;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Providers
+namespace MRTKPrefix.Input
 {
     /// <summary>
     /// Base class for input sources that don't inherit from MonoBehaviour.

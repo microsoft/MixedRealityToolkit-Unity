@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
+using MRTKPrefix.Editor.Input;
+using MRTKPrefix.Input;
 using NUnit.Framework;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
+namespace MRTKPrefix.Tests.InputSystem
 {
     public class TestFixture_01_UnityInputManagerHelperTests
     {

@@ -1,17 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
+using MRTKPrefix.Editor.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
+namespace MRTKPrefix.UI
 {
     [CustomEditor(typeof(InteractableReceiverList))]
-    public class InteractableReceiverListInspector : Editor
+    public class InteractableReceiverListInspector : UnityEditor.Editor
     {
         protected List<InteractableEvent> eventList;
         protected InteractableTypesContainer eventOptions;
@@ -158,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
             for (int j = 0; j < eventSettings.arraySize; j++)
             {
                 SerializedProperty propertyField = eventSettings.GetArrayElementAtIndex(j);
-                bool isEvent = InspectorFieldsUtility.IsPropertyType(propertyField, Core.Utilities.InspectorFields.InspectorField.FieldTypes.Event);
+                bool isEvent = InspectorFieldsUtility.IsPropertyType(propertyField, InspectorField.FieldTypes.Event);
 
                 if (!hideEvents.boolValue || !isEvent)
                 {

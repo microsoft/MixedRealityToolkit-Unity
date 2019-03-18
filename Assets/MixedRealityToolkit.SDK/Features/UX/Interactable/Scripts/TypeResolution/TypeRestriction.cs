@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.TypeResolution
+﻿namespace MRTKPrefix.UI.TypeResolution
 {
     /// <summary>
     /// Controls the behavior of the InteractableTypeFinder.FindTypes function. See individual

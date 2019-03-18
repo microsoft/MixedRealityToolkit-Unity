@@ -1,21 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Providers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using MRTKPrefix.Physics;
+using MRTKPrefix.Utilities;
 using System;
 using UnityEngine;
+using UPhysics = UnityEngine.Physics;
 
-namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
+namespace MRTKPrefix.Input
 {
     /// <summary>
     /// This class provides Gaze as an Input Source so users can interact with objects using their head.
@@ -48,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         /// </summary>
         [SerializeField]
         [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.")]
-        private LayerMask[] raycastLayerMasks = { Physics.DefaultRaycastLayers };
+        private LayerMask[] raycastLayerMasks = { UPhysics.DefaultRaycastLayers };
 
         /// <summary>
         /// Current stabilization method, used to smooth out the gaze ray data.

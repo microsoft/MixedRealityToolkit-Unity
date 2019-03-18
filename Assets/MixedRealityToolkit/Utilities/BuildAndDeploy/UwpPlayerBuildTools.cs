@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
+using MRTKPrefix.Editor.Utilities;
 using System;
 using System.Linq;
 using System.Threading;
@@ -10,7 +10,7 @@ using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
+namespace MRTKPrefix.Editor.Build
 {
     /// <summary>
     /// Class containing various utility methods to build a WSA solution from a Unity project.

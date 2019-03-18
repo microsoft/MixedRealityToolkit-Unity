@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities
+namespace MRTKPrefix.Utilities
 {
     /// <summary>
     /// Component to animate and visualize a plane that can be used with 

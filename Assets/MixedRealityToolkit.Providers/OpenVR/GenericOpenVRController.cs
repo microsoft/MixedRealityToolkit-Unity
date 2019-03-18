@@ -1,18 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using MRTKPrefix.Devices;
+using MRTKPrefix.Input;
+using MRTKPrefix.UnityInput.Input;
+using MRTKPrefix.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
+namespace MRTKPrefix.OpenVR.Input
 {
     [MixedRealityController(
         SupportedControllerType.GenericOpenVR,

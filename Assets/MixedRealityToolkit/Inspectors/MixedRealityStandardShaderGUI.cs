@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using MRTKPrefix.Utilities;
 using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
+namespace MRTKPrefix.Editor
 {
     /// <summary>
     /// A custom shader inspector for the "Mixed Reality Toolkit/Standard" shader.

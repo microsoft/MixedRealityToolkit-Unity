@@ -51,12 +51,12 @@ Linking to the API documentation can be done by using [cross references](https:/
 
 Example:
 
-This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem)
-as well as this short version: @Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
+This links to the [BoundarySystem API](xref:MRTKPrefix.Boundary)
+as well as this short version: @MRTKPrefix.Boundary
 
 ```
-This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem)
-as well as this short version: @Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
+This links to the [BoundarySystem API](xref:MRTKPrefix.Boundary)
+as well as this short version: @MRTKPrefix.Boundary
 ```
 
 ## Adding new .md files to developer docs

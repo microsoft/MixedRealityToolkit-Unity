@@ -1,16 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
+namespace MRTKPrefix.Diagnostics
 {
     /// <summary>
-    /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics.IMixedRealityDiagnosticsSystem"/>
+    /// The default implementation of the <see cref="MRTKPrefix.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
     public class MixedRealityDiagnosticsSystem : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {

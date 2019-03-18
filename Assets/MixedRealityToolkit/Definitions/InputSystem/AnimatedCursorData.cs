@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using MRTKPrefix.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
+namespace MRTKPrefix.Input
 {
     /// <summary>
     /// Data struct for cursor state information for the Animated Cursor, which leverages the Unity animation system.

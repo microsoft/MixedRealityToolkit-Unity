@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
+namespace MRTKPrefix.Editor.Utilities
 {
     [CustomEditor(typeof(DefaultAsset))]
     public class IconEditor : UnityEditor.Editor

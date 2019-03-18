@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities
+namespace MRTKPrefix.Utilities
 {
     public static class DebugUtilities
     {

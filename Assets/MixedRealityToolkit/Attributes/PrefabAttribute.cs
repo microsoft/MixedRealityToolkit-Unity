@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Attributes
+namespace MRTKPrefix
 {
     /// <summary>
     /// Attribute used to ensure that a GameObject inspector slot only accepts prefabs.

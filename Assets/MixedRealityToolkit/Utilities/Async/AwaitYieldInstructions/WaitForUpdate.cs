@@ -22,7 +22,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions
+namespace MRTKPrefix.Utilities
 {
     /// <summary>
     /// This can be used as a way to return to the main unity thread 

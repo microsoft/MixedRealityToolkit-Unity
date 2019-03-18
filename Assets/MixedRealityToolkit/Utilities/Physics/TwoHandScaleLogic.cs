@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
+namespace MRTKPrefix.Physics
 {
     /// <summary>
     /// Implements a scale logic that will scale an object based on the 

@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
+using MRTKPrefix.Utilities;
+using MRTKPrefix.Input;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
+namespace MRTKPrefix.Editor.Input
 {
     [CustomEditor(typeof(ControllerPoseSynchronizer))]
-    public class ControllerPoseSynchronizerInspector : Editor
+    public class ControllerPoseSynchronizerInspector : UnityEditor.Editor
     {
         private const string SynchronizationSettingsKey = "MRTK_Inspector_SynchronizationSettingsFoldout";
         private static readonly string[] HandednessLabels = { "Left", "Right" };

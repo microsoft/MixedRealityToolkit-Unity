@@ -1,7 +1,6 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
-using UnityEngine.EventSystems;
+﻿using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem
+namespace MRTKPrefix.Teleport
 {
     /// <summary>
     /// Interface to implement for teleport events.

@@ -4,7 +4,7 @@
 //
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace MRTKPrefix.UI
 {
     /// <summary>
     /// A background with 'fake' inertia

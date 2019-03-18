@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace MRTKPrefix
 {
     /// <summary>
     /// Extension methods for Unity's LayerMask struct

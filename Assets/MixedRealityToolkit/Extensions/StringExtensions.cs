@@ -4,7 +4,7 @@
 using System;
 using System.Text;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace MRTKPrefix
 {
     /// <summary>
     /// <see cref="String"/> Extensions.

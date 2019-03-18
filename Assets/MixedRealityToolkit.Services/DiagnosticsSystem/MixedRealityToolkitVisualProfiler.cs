@@ -6,7 +6,11 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
+#if WINDOWS_UWP
+using Windows.System;
+#endif
+
+namespace MRTKPrefix.Diagnostics
 {
     /// <summary>
     /// ABOUT: The VisualProfiler provides a drop in, single file, solution for viewing 
@@ -445,7 +449,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             get
             {
 #if WINDOWS_UWP
-                return Windows.System.MemoryManager.AppMemoryUsage;
+                return MemoryManager.AppMemoryUsage;
 #else
                 return (ulong)Profiler.GetTotalAllocatedMemoryLong();
 #endif
@@ -457,7 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             get
             {
 #if WINDOWS_UWP
-                return Windows.System.MemoryManager.AppMemoryUsageLimit;
+                return MemoryManager.AppMemoryUsageLimit;
 #else
                 return ConvertMegabytesToBytes(SystemInfo.systemMemorySize);
 #endif

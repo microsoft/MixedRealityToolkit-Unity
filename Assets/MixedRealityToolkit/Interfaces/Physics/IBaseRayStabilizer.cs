@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Physics
+namespace MRTKPrefix.Physics
 {
     public interface IBaseRayStabilizer
     {

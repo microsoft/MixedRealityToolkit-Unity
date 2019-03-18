@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal.DataStructures
+namespace MRTKPrefix.WindowsDevicePortal
 {
     [Serializable]
     public class DevicePortalConnections

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace MRTKPrefix
 {
     /// <summary>
     /// Extension methods for Unity's AnimationCurve class

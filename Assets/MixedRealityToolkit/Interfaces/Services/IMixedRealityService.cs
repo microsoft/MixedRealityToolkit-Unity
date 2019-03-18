@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
+namespace MRTKPrefix
 {
     /// <summary>
     /// Generic interface for all Mixed Reality Services

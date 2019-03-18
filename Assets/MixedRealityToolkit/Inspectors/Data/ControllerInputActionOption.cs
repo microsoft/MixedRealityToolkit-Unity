@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using MRTKPrefix.Input;
+using MRTKPrefix.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Data
+namespace MRTKPrefix.Editor.Input
 {
     /// <summary>
     /// Used to aid in layout of Controller Input Actions.

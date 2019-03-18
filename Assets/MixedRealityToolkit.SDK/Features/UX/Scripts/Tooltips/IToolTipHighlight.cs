@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace MRTKPrefix.UI
 {
     public interface IToolTipHighlight
     {

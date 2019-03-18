@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
+namespace MRTKPrefix.Editor.Utilities
 {
     [InitializeOnLoad]
     public class EditorProjectUtilities

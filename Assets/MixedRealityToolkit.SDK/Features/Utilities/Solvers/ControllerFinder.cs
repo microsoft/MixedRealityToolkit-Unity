@@ -1,14 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using MRTKPrefix.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
+namespace MRTKPrefix.Utilities.Solvers
 {
     /// <summary>
     /// ControllerFinder is a base class providing simple event handling for getting/releasing MotionController Transforms.

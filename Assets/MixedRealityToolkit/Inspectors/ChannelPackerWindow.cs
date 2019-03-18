@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using System.IO;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
+namespace MRTKPrefix.Editor
 {
     public class ChannelPackerWindow : EditorWindow
     {

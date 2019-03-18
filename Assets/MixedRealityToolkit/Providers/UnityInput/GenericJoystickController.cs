@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using MRTKPrefix.Input;
+using MRTKPrefix.Utilities;
 using UnityEngine;
+using MRTKPrefix.Devices;
+using UInput = UnityEngine.Input;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
+namespace MRTKPrefix.UnityInput.Input
 {
     [MixedRealityController(
         SupportedControllerType.GenericUnity,
@@ -88,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
-            var keyButton = Input.GetKey(interactionMapping.KeyCode);
+            var keyButton = UInput.GetKey(interactionMapping.KeyCode);
 
             // Update the interaction data source
             interactionMapping.BoolData = keyButton;
@@ -126,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
 
-            var singleAxisValue = Input.GetAxis(interactionMapping.AxisCodeX);
+            var singleAxisValue = UInput.GetAxis(interactionMapping.AxisCodeX);
 
             switch (interactionMapping.InputType)
             {
@@ -191,8 +190,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
 
-            dualAxisPosition.x = Input.GetAxis(interactionMapping.AxisCodeX);
-            dualAxisPosition.y = Input.GetAxis(interactionMapping.AxisCodeY);
+            dualAxisPosition.x = UInput.GetAxis(interactionMapping.AxisCodeX);
+            dualAxisPosition.y = UInput.GetAxis(interactionMapping.AxisCodeY);
 
             // Update the interaction data source
             interactionMapping.Vector2Data = dualAxisPosition;

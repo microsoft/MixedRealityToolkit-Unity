@@ -3,12 +3,12 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services
+namespace MRTKPrefix
 {
     /// <summary>
     /// The base service implements <see cref="Interfaces.IMixedRealityService"/> and provides default properties for all services.
     /// </summary>
-    public abstract class BaseService : Interfaces.IMixedRealityService
+    public abstract class BaseService : IMixedRealityService
     {
         #region IMixedRealityService Implementation
 

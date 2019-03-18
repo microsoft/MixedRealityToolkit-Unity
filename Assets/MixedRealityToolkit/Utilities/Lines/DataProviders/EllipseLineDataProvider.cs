@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace MRTKPrefix.Utilities
 {
     /// <summary>
     /// Creates an elliptical line shape.

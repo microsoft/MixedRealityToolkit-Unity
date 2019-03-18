@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
+namespace MRTKPrefix.Editor.Build
 {
     /// <summary>
     /// The Build Info defines common properties for a build.

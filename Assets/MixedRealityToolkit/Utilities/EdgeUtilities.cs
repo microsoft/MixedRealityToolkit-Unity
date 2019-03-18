@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
+using MRTKPrefix.Boundary;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities
+namespace MRTKPrefix.Utilities
 {
     /// <summary>
-    /// The EdgeUtilities class provides functionality for working with <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem.Edge"/> objects.
+    /// The EdgeUtilities class provides functionality for working with <see cref="MRTKPrefix.Boundary.Edge"/> objects.
     /// </summary>
     public static class EdgeUtilities
     {
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         private static Vector2 intersectionPoint = Vector2.zero;
 
         /// <summary>
-        /// Returns the point at which two <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem.Edge"/> values intersect.
+        /// Returns the point at which two <see cref="MRTKPrefix.Boundary.Edge"/> values intersect.
         /// </summary>
         /// <param name="edgeA">The first edge</param>
         /// <param name="edgeB">The second edge</param>

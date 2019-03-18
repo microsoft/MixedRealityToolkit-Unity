@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
+namespace MRTKPrefix.Physics
 {
     [Serializable]
     public struct RayStep

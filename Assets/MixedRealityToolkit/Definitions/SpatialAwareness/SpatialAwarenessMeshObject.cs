@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
+namespace MRTKPrefix.SpatialAwareness
 {
     /// <summary>
     /// Object encapsulating the components of a spatial awareness mesh object.

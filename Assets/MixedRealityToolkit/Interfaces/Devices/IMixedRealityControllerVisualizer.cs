@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
+namespace MRTKPrefix.Input
 {
     public interface IMixedRealityControllerVisualizer : IMixedRealityControllerPoseSynchronizer
     {

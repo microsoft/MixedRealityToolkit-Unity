@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions
+namespace MRTKPrefix
 {
     public abstract class BaseMixedRealityProfile : ScriptableObject
     {

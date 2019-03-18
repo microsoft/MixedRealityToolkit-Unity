@@ -1,16 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using MRTKPrefix.Boundary;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
+using MRTKPrefix.Utilities;
 using UnityEngine;
-using UnityEngine.Experimental.XR;
+using UBoundary = UnityEngine.Experimental.XR.Boundary;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace MRTKPrefix.Examples.Demos
 {
     /// <summary>
     /// Demo class to show different ways of using the boundary system and visualizing the data.
@@ -134,12 +131,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                     Material material = null;
                     // Check inscribed rectangle first
-                    if (MixedRealityToolkit.BoundarySystem.Contains(position, Boundary.Type.PlayArea))
+                    if (MixedRealityToolkit.BoundarySystem.Contains(position, UBoundary.Type.PlayArea))
                     {
                         material = visualizationProfile.PlayAreaMaterial;
                     }
                     // Then check geometry
-                    else if (MixedRealityToolkit.BoundarySystem.Contains(position, Boundary.Type.TrackedArea))
+                    else if (MixedRealityToolkit.BoundarySystem.Contains(position, UBoundary.Type.TrackedArea))
                     {
                         material = visualizationProfile.TrackedAreaMaterial;
                     }

@@ -1,20 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using MRTKPrefix.WindowsMixedReality.SpatialAwareness;
+using MRTKPrefix.WindowsMixedReality.SpatialAwareness.Handlers;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
+namespace MRTKPrefix.SpatialAwareness
 {
     /// <summary>
-    /// Class providing the default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/> interface.
+    /// Class providing the default implementation of the <see cref="MRTKPrefix.WindowsMixedReality.SpatialAwareness.IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
     public class MixedRealitySpatialAwarenessSystem : BaseEventSystem, IMixedRealitySpatialAwarenessSystem
     {

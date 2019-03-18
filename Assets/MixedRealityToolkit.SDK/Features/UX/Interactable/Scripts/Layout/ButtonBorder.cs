@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
+namespace MRTKPrefix.UI
 {
     /// <summary>
     /// Use a Unity primitive Cube or cylinder as a border segment relative to the scale of the AnchorTransform

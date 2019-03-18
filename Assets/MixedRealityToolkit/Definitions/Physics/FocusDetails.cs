@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
+namespace MRTKPrefix.Physics
 {
     /// <summary>
     /// Contains information about which game object has the focus currently.

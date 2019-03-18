@@ -1,17 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Providers;
+using MRTKPrefix.Utilities;
 using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using MRTKPrefix.Devices;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Core.Inspectors")]
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+namespace MRTKPrefix.Input
 {
     /// <summary>
     /// Used to define a controller or other input device's physical buttons, and other attributes.
