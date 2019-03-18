@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
 using Microsoft.MixedReality.Toolkit.Core.Services;
@@ -27,6 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         protected virtual void OnEnable()
         {
+            if (target == null)
+            {
+                // Either when we are recompiling, or the inspector window is hidden behind another one, the target can get destroyed (null) and thereby will raise an ArgumentException when accessing serializedObject. For now, just return.
+                return;
+            }
+
             targetProfile = serializedObject;
             profile = target as BaseMixedRealityProfile;
         }
@@ -44,9 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         /// <param name="guiContent">The GUIContent for the field.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
         /// <returns>True, if the profile changed.</returns>
-        protected static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true)
+        protected static bool RenderProfile(SerializedProperty property, GUIContent guiContent, bool showAddButton = true, Type serviceType = null)
         {
-            return RenderProfileInternal(property, guiContent, showAddButton);
+            return RenderProfileInternal(property, guiContent, showAddButton, serviceType);
         }
 
         /// <summary>
@@ -55,18 +62,42 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/> property.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
         /// <returns>True, if the profile changed.</returns>
-        protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true)
+        protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, Type serviceType = null)
         {
-            return RenderProfileInternal(property, null, showAddButton);
+            return RenderProfileInternal(property, null, showAddButton, serviceType);
         }
 
-        private static bool RenderProfileInternal(SerializedProperty property, GUIContent guiContent, bool showAddButton)
+        private static bool RenderProfileInternal(SerializedProperty property, GUIContent guiContent, bool showAddButton, Type serviceType = null)
         {
+            profile = property.serializedObject.targetObject as BaseMixedRealityProfile;
+
             bool changed = false;
-            EditorGUILayout.BeginHorizontal();
 
             var oldObject = property.objectReferenceValue;
 
+            // If we're constraining this to a service type, check whether the profile is valid
+            // If it isn't, issue a warning.
+            if (serviceType != null && oldObject != null)
+            {
+                bool profileTypeIsValid = false;
+
+                foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in oldObject.GetType().GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true))
+                {
+                    if (serviceProfileAttribute.ServiceType.IsAssignableFrom(serviceType))
+                    {
+                        profileTypeIsValid = true;
+                        break;
+                    }
+                }
+
+                if (!profileTypeIsValid)
+                {
+                    EditorGUILayout.HelpBox("This profile is not supported for " + serviceType.Name + ". Using an unsupported service may result in unexpected behavior.", MessageType.Warning);
+                }
+            }
+
+            EditorGUILayout.BeginHorizontal();
+           
             if (guiContent == null)
             {
                 EditorGUILayout.PropertyField(property);
@@ -104,12 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     MixedRealityProfileCloneWindow.OpenWindow(profile, renderedProfile, property);
                 }
             }
-
-            if (oldObject != property.objectReferenceValue)
-            {
-                changed = true;
-            }
-
+            
             EditorGUILayout.EndHorizontal();
 
             // Check fields within profile for other nested profiles
@@ -121,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     string showFoldoutKey = GetSubProfileDropdownKey(property);
                     bool showFoldout = SessionState.GetBool(showFoldoutKey, false);
-                    showFoldout = EditorGUILayout.Foldout(showFoldout, showFoldout ? "Hide " + property.displayName + " contents" : "Show " + property.displayName + " contents");
+                    showFoldout = EditorGUILayout.Foldout(showFoldout, showFoldout ? "Hide " + property.displayName + " contents" : "Show " + property.displayName + " contents", true);
 
                     if (showFoldout)
                     {
@@ -134,11 +160,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                             configProfile.RenderAsSubProfile = true;
                         }
 
-                        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                         EditorGUI.indentLevel++;
+                        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                         subProfileEditor.OnInspectorGUI();
-                        EditorGUI.indentLevel--;
+
+                        EditorGUILayout.Space();
+                        EditorGUILayout.Space();
+
                         EditorGUILayout.EndVertical();
+                        EditorGUI.indentLevel--;
                     }
 
                     SessionState.SetBool(showFoldoutKey, showFoldout);

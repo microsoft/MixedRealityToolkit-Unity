@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
     public struct InteractableThemePropertySettings
     {
         public string Name;
+        public string AssemblyQualifiedName;
         public Type Type;
         public InteractableThemeBase Theme;
         public List<InteractableThemeProperty> Properties;

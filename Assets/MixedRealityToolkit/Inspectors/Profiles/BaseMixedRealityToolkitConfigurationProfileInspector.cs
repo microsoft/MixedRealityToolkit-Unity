@@ -19,19 +19,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
     /// </summary>
     public abstract class BaseMixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityProfileInspector
     {
-        public bool RenderAsSubProfile
-        {
-            set { renderAsSubProfile = value; }
-        }
+        public bool RenderAsSubProfile { get; set; }
 
         [SerializeField]
         private Texture2D logoLightTheme = null;
 
         [SerializeField]
         private Texture2D logoDarkTheme = null;
-
-        private bool renderAsSubProfile = false;
-
+        
         protected virtual void Awake()
         {
             string assetPath = $"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/StandardAssets/Textures";
@@ -53,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         protected void RenderMixedRealityToolkitLogo()
         {
             // If we're being rendered as a sub profile, don't show the logo
-            if (renderAsSubProfile)
+            if (RenderAsSubProfile)
                 return;
 
             GUILayout.BeginHorizontal();
@@ -73,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         protected bool DrawBacktrackProfileButton(string message, UnityEngine.Object activeObject)
         {
             // If we're being rendered as a sub profile, don't show the button
-            if (renderAsSubProfile)
+            if (RenderAsSubProfile)
                 return false;
 
             if (GUILayout.Button(message))

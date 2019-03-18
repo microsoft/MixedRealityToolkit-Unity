@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             }
         }
 
-        private void Update()
+        protected override void UpdateLine()
         {
             executeCommandBuffer = false;
 
@@ -187,6 +187,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 
                 executeCommandBuffer = true;
             }
+
+            UpdateHelperMesh();
         }
 
         private void OnDisable()
@@ -222,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             }
         }
 
-        private void LateUpdate()
+        private void UpdateHelperMesh()
         {
             // Update our helper mesh so OnWillRenderObject will be called
             meshVertices[0] = transform.InverseTransformPoint(LineDataSource.GetPoint(0.0f)); // - transform.position;

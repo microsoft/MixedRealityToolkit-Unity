@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
-        public override bool IsInteractionEnabled => !IsTeleportRequestActive && teleportEnabled;
+        public override bool IsInteractionEnabled => !IsTeleportRequestActive && teleportEnabled && MixedRealityToolkit.IsTeleportSystemEnabled;
 
         /// <inheritdoc />
         public override float PointerOrientation
@@ -251,7 +251,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             // Don't process input if we've got an active teleport request in progress.
-            if (IsTeleportRequestActive) { return; }
+            if (IsTeleportRequestActive || !MixedRealityToolkit.IsTeleportSystemEnabled)
+            {
+                return;
+            }
 
             if (eventData.SourceId == InputSourceParent.SourceId &&
                 eventData.Handedness == Handedness &&
