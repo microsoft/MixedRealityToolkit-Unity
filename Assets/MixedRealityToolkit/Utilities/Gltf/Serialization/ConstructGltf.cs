@@ -131,6 +131,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                     {
                         Debug.LogWarning($"Attempting to load asset at {path}");
 
+#if WINDOWS_UWP
+                        try
+                        {
+                            var storageFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(path);
+
+                            if (storageFile != null)
+                            {
+
+                                var buffer = await Windows.Storage.FileIO.ReadBufferAsync(storageFile);
+
+                                using (Windows.Storage.Streams.DataReader dataReader = Windows.Storage.Streams.DataReader.FromBuffer(buffer))
+                                {
+                                    imageData = new byte[buffer.Length];
+                                    dataReader.ReadBytes(imageData);
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError(e.Message);
+                        }
+#else
                         using (FileStream stream = File.Open(path, FileMode.Open))
                         {
                             imageData = new byte[stream.Length];
@@ -144,6 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                                 stream.Read(imageData, 0, (int)stream.Length);
                             }
                         }
+#endif
                     }
                 }
                 else

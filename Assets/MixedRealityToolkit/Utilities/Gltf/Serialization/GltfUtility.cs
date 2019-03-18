@@ -68,6 +68,39 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 isGlb = true;
                 byte[] glbData;
 
+#if WINDOWS_UWP
+
+                if (loadAsynchronously)
+                {
+                    try
+                    {
+                        var storageFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(uri);
+
+                        if (storageFile == null)
+                        {
+                            Debug.LogError($"Failed to locate .glb file at {uri}");
+                            return null;
+                        }
+
+                        var buffer = await Windows.Storage.FileIO.ReadBufferAsync(storageFile);
+
+                        using (Windows.Storage.Streams.DataReader dataReader = Windows.Storage.Streams.DataReader.FromBuffer(buffer))
+                        {
+                            glbData = new byte[buffer.Length];
+                            dataReader.ReadBytes(glbData);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError(e.Message);
+                        return null;
+                    }
+                }
+                else
+                {
+                    glbData = UnityEngine.Windows.File.ReadAllBytes(uri);
+                }
+#else
                 using (FileStream stream = File.Open(uri, FileMode.Open))
                 {
                     glbData = new byte[stream.Length];
@@ -81,6 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                         stream.Read(glbData, 0, (int)stream.Length);
                     }
                 }
+#endif
 
                 gltfObject = GetGltfObjectFromGlb(glbData);
 
