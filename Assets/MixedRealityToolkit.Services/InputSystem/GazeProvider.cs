@@ -194,9 +194,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 // Update gaze info from stabilizer
                 if (stabilizer != null)
                 {
-                    stabilizer.UpdateStability(newGazeOrigin, gazeTransform.rotation);
-                    newGazeOrigin = stabilizer.StablePosition;
-                    newGazeNormal = stabilizer.StableRay.direction;
+                    stabilizer.UpdateStability(gazeTransform.localPosition, gazeTransform.localRotation * Vector3.forward);
+                    newGazeOrigin = gazeTransform.parent.TransformPoint(stabilizer.StablePosition);
+                    newGazeNormal = gazeTransform.parent.TransformDirection(stabilizer.StableRay.direction);
                 }
 
                 Vector3 endPoint = newGazeOrigin + (newGazeNormal * pointerExtent);

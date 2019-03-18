@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
         {
             var pointers = new List<IMixedRealityPointer>();
 
-            if (MixedRealityToolkit.HasActiveProfile &&
+            if (MixedRealityToolkit.Instance.HasActiveProfile &&
                 MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
             {

@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            if (!MixedRealityToolkit.HasActiveProfile)
+            if (!MixedRealityToolkit.Instance.HasActiveProfile)
             {
                 return;
             }

@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             }
         }
 
-        private void LateUpdate()
+        protected override void UpdateLine()
         {
             executeCommandBuffer = false;
 
