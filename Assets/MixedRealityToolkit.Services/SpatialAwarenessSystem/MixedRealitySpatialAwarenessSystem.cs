@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
             }
 
             // Get the collection of registered observers.
-            List<Core.Interfaces.IMixedRealityService> services = MixedRealityToolkit.Instance.GetActiveServices(typeof(IMixedRealitySpatialAwarenessObserver));
+            IReadOnlyList<IMixedRealitySpatialAwarenessObserver> services = MixedRealityToolkit.Instance.GetServices<IMixedRealitySpatialAwarenessObserver>();
             for (int i = 0; i < services.Count; i++)
             {
                 observers.Add(services[i] as IMixedRealitySpatialAwarenessObserver);

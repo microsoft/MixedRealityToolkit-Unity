@@ -5,12 +5,17 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using System;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
 using UnityEditor;
 #endif
+
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
 
 namespace Microsoft.MixedReality.Toolkit.Core.Attributes
 {

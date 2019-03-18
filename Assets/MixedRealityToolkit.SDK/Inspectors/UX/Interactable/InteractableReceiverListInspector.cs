@@ -14,8 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
     public class InteractableReceiverListInspector : Editor
     {
         protected List<InteractableEvent> eventList;
-        protected string[] eventOptions;
-        protected Type[] eventTypes;
+        protected InteractableTypesContainer eventOptions;
 
         // indent tracker
         protected static int indentOnSectionStart = 0;
@@ -53,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
                     RenderEventSettings(eventItem, i, eventOptions, ChangeEvent, removeEventRef);
                 }
 
-                if (eventOptions.Length > 1)
+                if (eventOptions.ClassNames.Length > 1)
                 {
                     if (GUILayout.Button(new GUIContent("Add Event")))
                     {
@@ -96,38 +95,54 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
             events.InsertArrayElementAtIndex(events.arraySize);
         }
 
+        /// <summary>
+        /// Invoked whent the event is changed.
+        /// </summary>
+        /// <param name="indexArray">
+        /// A two-element sized index array where the first element is the index of the
+        /// event in the event list, and the second is the new event handler class that
+        /// was selected.
+        /// </param>
         protected virtual void ChangeEvent(int[] indexArray, SerializedProperty prop = null)
         {
             SerializedProperty className = prop.FindPropertyRelative("ClassName");
             SerializedProperty name = prop.FindPropertyRelative("Name");
+            SerializedProperty assemblyQualifiedName = prop.FindPropertyRelative("AssemblyQualifiedName");
             SerializedProperty settings = prop.FindPropertyRelative("Settings");
             SerializedProperty hideEvents = prop.FindPropertyRelative("HideUnityEvents");
 
             if (!String.IsNullOrEmpty(className.stringValue))
             {
-                InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventTypes[indexArray[1]]);
+                InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventOptions.Types[indexArray[1]]);
                 name.stringValue = data.Name;
+                // Technically not necessary due to how this is set in RenderEventSettings, nevertheless included to
+                // make sure that wherever we set Name/ClassName, we always set AssemblyQualifiedName as well.
+                // Performance wise this is not a huge deal due to how this is only triggered on changes in the inspector
+                // in the editor (i.e. dropdown selection has changed, which requires explicit user input).
+                assemblyQualifiedName.stringValue = eventOptions.AssemblyQualifiedNames[indexArray[1]];
                 hideEvents.boolValue = data.HideUnityEvents;
 
                 InspectorFieldsUtility.PropertySettingsList(settings, data.Fields);
             }
         }
 
-        public static void RenderEventSettings(SerializedProperty eventItem, int index, string[] options, InspectorUIUtility.MultiListButtonEvent changeEvent, InspectorUIUtility.ListButtonEvent removeEvent)
+        public static void RenderEventSettings(SerializedProperty eventItem, int index, InteractableTypesContainer options, InspectorUIUtility.MultiListButtonEvent changeEvent, InspectorUIUtility.ListButtonEvent removeEvent)
         {
             EditorGUILayout.BeginVertical("Box");
             SerializedProperty uEvent = eventItem.FindPropertyRelative("Event");
             SerializedProperty eventName = eventItem.FindPropertyRelative("Name");
             SerializedProperty className = eventItem.FindPropertyRelative("ClassName");
+            SerializedProperty assemblyQualifiedName = eventItem.FindPropertyRelative("AssemblyQualifiedName");
             SerializedProperty hideEvents = eventItem.FindPropertyRelative("HideUnityEvents");
 
             // show event dropdown
-            int id = InspectorUIUtility.ReverseLookup(className.stringValue, options);
-            int newId = EditorGUILayout.Popup("Select Event Type", id, options);
+            int id = InspectorUIUtility.ReverseLookup(className.stringValue, options.ClassNames);
+            int newId = EditorGUILayout.Popup("Select Event Type", id, options.ClassNames);
 
             if (id != newId || String.IsNullOrEmpty(className.stringValue))
             {
-                className.stringValue = options[newId];
+                className.stringValue = options.ClassNames[newId];
+                assemblyQualifiedName.stringValue = options.AssemblyQualifiedNames[newId];
 
                 changeEvent(new int[] { index, newId }, eventItem);
             }
@@ -164,9 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         
         protected virtual void SetupEventOptions()
         {
-            InteractableEvent.EventLists lists = InteractableEvent.GetEventTypes();
-            eventTypes = lists.EventTypes.ToArray();
-            eventOptions = lists.EventNames.ToArray();
+            eventOptions = InteractableEvent.GetEventTypes();
         }
     }
 }

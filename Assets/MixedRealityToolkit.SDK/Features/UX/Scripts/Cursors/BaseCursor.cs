@@ -233,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
 
         #region MonoBehaviour Implementation
 
-        private void LateUpdate()
+        private void Update()
         {
             UpdateCursorState();
             UpdateCursorTransform();
