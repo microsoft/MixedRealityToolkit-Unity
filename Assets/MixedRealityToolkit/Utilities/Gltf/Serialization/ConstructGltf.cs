@@ -132,25 +132,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                         Debug.LogWarning($"Attempting to load asset at {path}");
 
 #if WINDOWS_UWP
-                        try
+                        if (gltfObject.LoadAsynchronously)
                         {
-                            var storageFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(path);
-
-                            if (storageFile != null)
+                            try
                             {
+                                var storageFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(path);
 
-                                var buffer = await Windows.Storage.FileIO.ReadBufferAsync(storageFile);
-
-                                using (Windows.Storage.Streams.DataReader dataReader = Windows.Storage.Streams.DataReader.FromBuffer(buffer))
+                                if (storageFile != null)
                                 {
-                                    imageData = new byte[buffer.Length];
-                                    dataReader.ReadBytes(imageData);
+
+                                    var buffer = await Windows.Storage.FileIO.ReadBufferAsync(storageFile);
+
+                                    using (Windows.Storage.Streams.DataReader dataReader = Windows.Storage.Streams.DataReader.FromBuffer(buffer))
+                                    {
+                                        imageData = new byte[buffer.Length];
+                                        dataReader.ReadBytes(imageData);
+                                    }
                                 }
                             }
+                            catch (Exception e)
+                            {
+                                Debug.LogError(e.Message);
+                            }
                         }
-                        catch (Exception e)
+                        else
                         {
-                            Debug.LogError(e.Message);
+                            imageData = UnityEngine.Windows.File.ReadAllBytes(path);
                         }
 #else
                         using (FileStream stream = File.Open(path, FileMode.Open))
@@ -319,13 +326,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             if (gltfMaterial.normalTexture.index >= 0)
             {
                 material.SetTexture("_NormalMap", gltfObject.images[gltfMaterial.normalTexture.index].Texture);
-                material.SetFloat("_NormalMapScale", (float) gltfMaterial.normalTexture.scale);
+                material.SetFloat("_NormalMapScale", (float)gltfMaterial.normalTexture.scale);
                 material.EnableKeyword("_NORMAL_MAP");
             }
 
             if (gltfMaterial.doubleSided)
             {
-                material.SetFloat("_CullMode", (float) CullMode.Off);
+                material.SetFloat("_CullMode", (float)CullMode.Off);
             }
 
             material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
