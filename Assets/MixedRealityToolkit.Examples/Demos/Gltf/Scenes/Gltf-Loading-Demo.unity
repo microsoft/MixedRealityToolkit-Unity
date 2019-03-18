@@ -328,7 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e9fb424002a7044e91c26596ce40278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uri: \MixedRealityToolkit.Examples\Demos\Gltf\Models\Lantern\glTF\Lantern.gltf
+  uri: \GltfModels\Lantern\glTF\Lantern.gltf
 --- !u!1 &1486012704
 GameObject:
   m_ObjectHideFlags: 0
