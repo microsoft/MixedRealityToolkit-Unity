@@ -80,6 +80,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 
         void Start()
         {
+            // Allow spectator view logic to exist across multiple scenes
+            DontDestroyOnLoad(gameObject);
+
             if (_validState)
             {
                 _networkingService.DataReceived += OnDataReceivedEvent;
