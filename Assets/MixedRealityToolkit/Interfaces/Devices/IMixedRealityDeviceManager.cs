@@ -4,7 +4,7 @@
 
 using MRTKPrefix.Input;
 
-namespace MRTKPrefix
+namespace MRTKPrefix.Input
 {
     /// <summary>
     /// Mixed Reality Toolkit device definition, used to instantiate and manage a specific device / SDK

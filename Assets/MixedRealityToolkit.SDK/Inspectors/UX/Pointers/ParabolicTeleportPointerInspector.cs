@@ -1,4 +1,4 @@
-﻿using MRTKPrefix.Input;
+﻿using MRTKPrefix.Teleport;
 using UnityEditor;
 
 namespace MRTKPrefix.Editor.Teleport

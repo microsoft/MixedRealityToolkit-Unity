@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
-namespace MRTKPrefix.WindowsMixedReality.Input
+namespace MRTKPrefix.WindowsMixedReality.SpatialAwareness
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),

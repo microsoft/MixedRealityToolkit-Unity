@@ -36,14 +36,14 @@ MonoBehaviour:
     runtimePlatform: 8
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: MRTKPrefix.WindowsMixedReality.Input.WindowsSpeechInputProvider,
+      reference: MRTKPrefix.Windows.Input.WindowsSpeechInputProvider,
         Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
     componentName: Windows Speech Input Provider
     priority: 10
     runtimePlatform: 9
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: MRTKPrefix.WindowsMixedReality.Input.WindowsDictationInputProvider,
+      reference: MRTKPrefix.Windows.Input.WindowsDictationInputProvider,
         Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
     componentName: Windows Dictation Input Provider
     priority: 10
@@ -57,7 +57,7 @@ MonoBehaviour:
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: MRTKPrefix.WindowsMixedReality.Input.WindowsMixedRealitySpatialMeshObserver,
+      reference: MRTKPrefix.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver,
         Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
     componentName: Windows Mixed Reality Spatial Mesh Observer
     priority: 10

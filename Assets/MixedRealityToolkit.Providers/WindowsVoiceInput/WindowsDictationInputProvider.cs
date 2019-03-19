@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-namespace MRTKPrefix.WindowsMixedReality.Input
+namespace MRTKPrefix.Windows.Input
 {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 

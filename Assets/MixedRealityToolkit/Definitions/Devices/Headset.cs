@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix
+namespace MRTKPrefix.Input
 {
     // TODO - currently not used, consider removing maybe?
     /// <summary>

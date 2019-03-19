@@ -6,7 +6,7 @@ using MRTKPrefix.Input;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTKPrefix
+namespace MRTKPrefix.Input
 {
     /// <summary>
     /// Base Device manager to inherit from.

@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MRTKPrefix.Input;
 using MRTKPrefix.Physics;
-using MRTKPrefix.Teleport;
 using MRTKPrefix.Utilities;
 using System;
 using UnityEngine;
 using UPhysics = UnityEngine.Physics;
 
-namespace MRTKPrefix.Input
+namespace MRTKPrefix.Teleport
 {
     public class TeleportPointer : LinePointer
     {

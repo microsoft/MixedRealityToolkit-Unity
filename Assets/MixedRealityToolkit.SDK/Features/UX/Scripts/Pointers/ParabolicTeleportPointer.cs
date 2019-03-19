@@ -4,7 +4,7 @@
 using MRTKPrefix.Utilities;
 using UnityEngine;
 
-namespace MRTKPrefix.Input
+namespace MRTKPrefix.Teleport
 {
     [RequireComponent(typeof(ParabolaPhysicalLineDataProvider))]
     public class ParabolicTeleportPointer : TeleportPointer
