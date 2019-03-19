@@ -88,7 +88,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
                 if (file.Extension.EndsWith(".meta")) { continue; }
 
                 string tempPath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(tempPath, false);
+
+                if (!File.Exists(tempPath))
+                {
+                    file.CopyTo(tempPath, false);
+                }
             }
 
             foreach (var subDirectory in subDirectories)
