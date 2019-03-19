@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Change string on a text object based on state

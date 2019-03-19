@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace MRTKPrefix.Examples.Demos.StandardShader
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
 {
     /// <summary>
     /// Builds a matrix of spheres demonstrating a spectrum of two material properties.

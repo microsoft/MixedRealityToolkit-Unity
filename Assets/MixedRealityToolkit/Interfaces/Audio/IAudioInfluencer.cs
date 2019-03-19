@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix.Audio
+namespace Microsoft.MixedReality.Toolkit.Audio
 {
     /// <summary>
     /// Interface that should be implemented by any class that wishes to influence how an audio source sounds.

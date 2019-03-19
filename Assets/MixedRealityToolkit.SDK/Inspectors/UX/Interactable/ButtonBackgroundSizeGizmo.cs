@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     [CustomEditor(typeof(ButtonBackgroundSize))]
     public class ButtonBackgroundSizeGizmo : UnityEditor.Editor

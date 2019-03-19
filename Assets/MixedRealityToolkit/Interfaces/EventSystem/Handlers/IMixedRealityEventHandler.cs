@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Interface to implement generic events.

@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Input;
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 using UInput = UnityEngine.Input;
@@ -11,7 +11,7 @@ using UInput = UnityEngine.Input;
 using UnityEngine.Windows.Speech;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-namespace MRTKPrefix.Windows.Input
+namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class ScaleOffsetColorTheme : InteractableColorTheme
     {

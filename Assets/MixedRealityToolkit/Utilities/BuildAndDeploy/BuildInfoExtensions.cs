@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 
-namespace MRTKPrefix.Editor.Build
+namespace Microsoft.MixedReality.Toolkit.Editor.Build
 {
     public static class BuildInfoExtensions
     {

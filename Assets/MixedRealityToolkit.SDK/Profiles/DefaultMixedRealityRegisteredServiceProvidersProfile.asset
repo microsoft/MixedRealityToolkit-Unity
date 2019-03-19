@@ -15,49 +15,49 @@ MonoBehaviour:
   isCustomProfile: 0
   configurations:
   - componentType:
-      reference: MRTKPrefix.UnityInput.Input.UnityJoystickManager,
+      reference: Microsoft.MixedReality.Toolkit.UnityInput.Input.UnityJoystickManager,
         Microsoft.MixedReality.Toolkit
     componentName: Unity Joystick Manager
     priority: 10
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: MRTKPrefix.OpenVR.Input.OpenVRDeviceManager,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRDeviceManager,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     componentName: Unity Open VR Device Manager
     priority: 10
     runtimePlatform: 7
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: MRTKPrefix.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager,
+      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager,
         Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
     componentName: Windows Mixed Reality Provider
     priority: 10
     runtimePlatform: 8
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: MRTKPrefix.Windows.Input.WindowsSpeechInputProvider,
+      reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider,
         Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
     componentName: Windows Speech Input Provider
     priority: 10
     runtimePlatform: 9
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: MRTKPrefix.Windows.Input.WindowsDictationInputProvider,
+      reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider,
         Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
     componentName: Windows Dictation Input Provider
     priority: 10
     runtimePlatform: 9
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: MRTKPrefix.UnityInput.Input.UnityTouchDeviceManager,
+      reference: Microsoft.MixedReality.Toolkit.UnityInput.Input.UnityTouchDeviceManager,
         Microsoft.MixedReality.Toolkit
     componentName: Unity Touch Input Manger
     priority: 10
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: MRTKPrefix.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver,
+      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver,
         Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
     componentName: Windows Mixed Reality Spatial Mesh Observer
     priority: 10

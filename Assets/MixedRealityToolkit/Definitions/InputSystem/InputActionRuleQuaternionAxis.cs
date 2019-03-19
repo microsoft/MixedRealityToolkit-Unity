@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Generic Input Action Rule for raising actions based on specific criteria.

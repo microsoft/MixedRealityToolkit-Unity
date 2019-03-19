@@ -32,7 +32,7 @@ using System.Threading;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MRTKPrefix.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// We could just add a generic GetAwaiter to YieldInstruction and CustomYieldInstruction

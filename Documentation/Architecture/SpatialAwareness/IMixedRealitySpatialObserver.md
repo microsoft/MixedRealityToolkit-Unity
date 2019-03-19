@@ -2,7 +2,7 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| Core | MRTKPrefix.SpatialAwareness |
+| Core | Microsoft.MixedReality.Toolkit.SpatialAwareness |
 
 The IMixedRealitySpatialObserver is the interface that defines the requirements for platform specific spatial observers which provide data to the spatial awareness system.
 

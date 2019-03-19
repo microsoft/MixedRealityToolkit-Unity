@@ -6,7 +6,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     public class MixedRealityProfileCloneWindow : EditorWindow
     {

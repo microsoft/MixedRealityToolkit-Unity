@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using MRTKPrefix.Editor;
-using MRTKPrefix.Editor.Utilities;
-using MRTKPrefix.Utilities;
-using MRTKPrefix.WindowsMixedReality.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Editor.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.WindowsMixedReality.Editor.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor.SpatialAwareness
 {
     [CustomEditor(typeof(MixedRealitySpatialAwarenessMeshObserverProfile))]
     public class MixedRealitySpatialAwarenessMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector

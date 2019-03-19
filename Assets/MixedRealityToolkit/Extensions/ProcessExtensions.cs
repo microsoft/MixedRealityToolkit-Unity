@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Process Extension class.

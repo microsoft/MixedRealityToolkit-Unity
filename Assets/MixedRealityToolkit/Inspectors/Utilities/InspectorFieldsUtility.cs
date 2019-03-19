@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Utilities
+namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
 {
     /// <summary>
     /// A collection of helper functions for adding InspectorFields to a custom Inspector

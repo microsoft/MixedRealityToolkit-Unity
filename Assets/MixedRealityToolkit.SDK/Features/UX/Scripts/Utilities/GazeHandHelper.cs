@@ -1,17 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
-using MRTKPrefix.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// This class must be instantiated by a script that implements the <see cref="MRTKPrefix.Input.IMixedRealitySourceStateHandler"/>,
-    /// <see cref="MRTKPrefix.Input.IMixedRealityInputHandler"/> and <see cref="MRTKPrefix.Input.IMixedRealityInputHandler{T}"/>.
+    /// This class must be instantiated by a script that implements the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler"/>,
+    /// <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler"/> and <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
     /// 
     /// ***It must receive EventData arguments from OnInputDown(), OnInputUp(), OnInputChanged() and OnSourceLost().***
     /// 
@@ -34,7 +34,7 @@ namespace MRTKPrefix.UI
         #region Public Methods
 
         /// <summary>
-        /// This function must be called from the OnInputDown handler in a script implementing the <see cref="MRTKPrefix.Input.IMixedRealityInputHandler{T}"/>.
+        /// This function must be called from the OnInputDown handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData">The InputEventData argument 'eventData' is passed through to GazeHandHelper</param>
         public void AddSource(InputEventData eventData)
@@ -54,7 +54,7 @@ namespace MRTKPrefix.UI
         }
 
         /// <summary>
-        /// This function must be called from the OnInputUp handler in a script implementing the <see cref="MRTKPrefix.Input.IMixedRealityInputHandler{T}"/>.
+        /// This function must be called from the OnInputUp handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData">he InputEventData argument 'eventData' is passed through to GazeHandHelper</param>
         public void RemoveSource(InputEventData eventData)
@@ -82,7 +82,7 @@ namespace MRTKPrefix.UI
         }
 
         /// <summary>
-        /// This function must be called from the OnInputChanged handler in a script implementing the <see cref="MRTKPrefix.Input.IMixedRealityInputHandler{T}"/>.
+        /// This function must be called from the OnInputChanged handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData"></param>
         public void UpdateSource(InputEventData<MixedRealityPose> eventData)

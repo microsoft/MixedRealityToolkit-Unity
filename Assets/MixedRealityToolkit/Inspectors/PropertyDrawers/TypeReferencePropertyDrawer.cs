@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -9,10 +9,10 @@ using UnityEditor.Compilation;
 using UnityEngine;
 using Assembly = System.Reflection.Assembly;
 
-namespace MRTKPrefix.Editor
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Custom property drawer for <see cref="MRTKPrefix.Utilities.SystemType"/> properties.
+    /// Custom property drawer for <see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/> properties.
     /// </summary>
     [CustomPropertyDrawer(typeof(SystemType))]
     [CustomPropertyDrawer(typeof(SystemTypeAttribute), true)]

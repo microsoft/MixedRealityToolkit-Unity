@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Utilities
+namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
 {
     /// <summary>
     /// Example of using InspectorFields attributes in a class to create custom inspectors

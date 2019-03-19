@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Editor;
+using Microsoft.MixedReality.Toolkit.Editor;
 using NUnit.Framework;
 using System.Linq;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace MRTKPrefix.Tests
+namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {

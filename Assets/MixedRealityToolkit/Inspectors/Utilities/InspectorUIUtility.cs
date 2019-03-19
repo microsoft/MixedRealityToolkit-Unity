@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Utilities
+namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
 {
     /// <summary>
     /// This class has handy inspector UI utilities and functions.

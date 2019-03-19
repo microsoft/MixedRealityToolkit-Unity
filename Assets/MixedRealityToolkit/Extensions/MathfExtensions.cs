@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods and helper functions for various math data

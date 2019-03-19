@@ -3,7 +3,7 @@
 
 using Object = UnityEngine.Object;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for Unity's Object class

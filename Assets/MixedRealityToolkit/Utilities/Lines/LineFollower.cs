@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Synchronizes the follower's transform position with the point along the line.

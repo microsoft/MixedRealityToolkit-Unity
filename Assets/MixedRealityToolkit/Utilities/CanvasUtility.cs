@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Helper class for setting up canvases for use in the MRTK.

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     // Basic value types within a shader
     public enum ShaderPropertyType { Color, Float, Range, TexEnv, Vector, None }

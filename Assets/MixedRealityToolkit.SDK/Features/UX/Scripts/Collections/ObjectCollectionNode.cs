@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MRTKPrefix.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Collection node is a data storage class for individual data about an object in a collection.

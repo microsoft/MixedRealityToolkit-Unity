@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Tests.Services;
+using Microsoft.MixedReality.Toolkit.Tests.Services;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace MRTKPrefix.Tests.Core
+namespace Microsoft.MixedReality.Toolkit.Tests.Core
 {
     public class TestFixture_01_MixedRealityToolkitTests
     {

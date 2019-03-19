@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix.WindowsMixedReality.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 {
     /// <summary>
     /// Data for spatial awareness events.
@@ -24,7 +24,7 @@ namespace MRTKPrefix.WindowsMixedReality.SpatialAwareness
         /// <summary>
         /// Initialize the event data.
         /// </summary>
-        /// <param name="observer">The <see cref="MRTKPrefix.WindowsMixedReality.SpatialAwareness.IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
+        /// <param name="observer">The <see cref="Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
         /// <param name="id">The identifier of the observed spatial object.</param>
         public void Initialize(IMixedRealitySpatialAwarenessObserver observer, int id)
         {
@@ -50,7 +50,7 @@ namespace MRTKPrefix.WindowsMixedReality.SpatialAwareness
         /// <summary>
         /// Initialize the event data.
         /// </summary>
-        /// <param name="observer">The <see cref="MRTKPrefix.WindowsMixedReality.SpatialAwareness.IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
+        /// <param name="observer">The <see cref="Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
         /// <param name="id">The identifier of the observed spatial object.</param>
         /// <param name="spatialObject">The observed spatial object.</param>
         public void Initialize(IMixedRealitySpatialAwarenessObserver observer, int id, T spatialObject)

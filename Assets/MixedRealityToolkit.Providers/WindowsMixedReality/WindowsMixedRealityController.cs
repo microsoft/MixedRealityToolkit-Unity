@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Input;
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if UNITY_WSA
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace MRTKPrefix.WindowsMixedReality.Input
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     /// <summary>
     /// A Windows Mixed Reality Controller Instance.

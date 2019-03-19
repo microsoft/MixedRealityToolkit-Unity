@@ -2,7 +2,7 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| SDK - Surface Awareness Package | MRTKPrefix.SpatialAwareness |
+| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SpatialAwareness |
 
 The MixedRealitySpatialAwarenessSystem class provides the default implementation of the spatial awareness system. Implements the [IMixedRealitySpatialAwarenessSystem](IMixedRealitySpatialAwarenessSystem.md) interface.
 

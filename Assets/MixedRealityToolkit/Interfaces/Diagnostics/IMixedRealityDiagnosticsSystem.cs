@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 
-namespace MRTKPrefix.Diagnostics
+namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
     /// <summary>
     /// The interface contract that defines the Diagnostics system in the Mixed Reality Toolkit

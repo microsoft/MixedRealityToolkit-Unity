@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// The Billboard class implements the behaviors needed to keep a GameObject oriented towards the user.

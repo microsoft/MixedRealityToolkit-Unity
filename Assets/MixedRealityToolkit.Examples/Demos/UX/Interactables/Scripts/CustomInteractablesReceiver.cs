@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Input;
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Example of building a custom receiver that can be loaded as part of the events on the Interactable or

@@ -3,7 +3,7 @@
 
 using System.Collections;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Interface to implement an event source.

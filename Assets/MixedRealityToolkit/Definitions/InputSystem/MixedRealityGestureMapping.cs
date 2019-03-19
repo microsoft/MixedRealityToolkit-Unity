@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Data structure for mapping gestures to <see cref="MixedRealityInputAction"/>s that can be raised by the Input System.

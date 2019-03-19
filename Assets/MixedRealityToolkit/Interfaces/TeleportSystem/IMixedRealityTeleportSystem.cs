@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Input;
+using Microsoft.MixedReality.Toolkit.Input;
 
-namespace MRTKPrefix.Teleport
+namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     /// <summary>
     /// Manager interface for a Teleport system in the Mixed Reality Toolkit

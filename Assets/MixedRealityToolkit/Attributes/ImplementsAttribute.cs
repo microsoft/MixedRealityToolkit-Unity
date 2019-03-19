@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 #if WINDOWS_UWP && !ENABLE_IL2CPP
-using MRTKPrefix;
+using Microsoft.MixedReality.Toolkit;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
 using System;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Constraint that allows selection of classes that implement a specific interface

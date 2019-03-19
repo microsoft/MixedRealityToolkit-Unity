@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Describes an Input Event associated with a specific pointer's focus state change.

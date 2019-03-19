@@ -23,7 +23,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace MRTKPrefix.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public class WaitForBackgroundThread
     {

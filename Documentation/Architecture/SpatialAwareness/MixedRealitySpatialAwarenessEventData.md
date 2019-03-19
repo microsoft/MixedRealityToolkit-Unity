@@ -2,7 +2,7 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| Core | MRTKPrefix.SpatialAwareness |
+| Core | Microsoft.MixedReality.Toolkit.SpatialAwareness |
 
 The MixedRealitySpatialAwarenessEventData provides the data shared by all of the spatial awareness event types.
 

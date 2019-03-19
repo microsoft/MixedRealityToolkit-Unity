@@ -4,13 +4,13 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
-using MRTKPrefix.Utilities;
-using MRTKPrefix.Editor.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 #endif
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Helper utility to manage all the required Axis configuration for platforms, where required

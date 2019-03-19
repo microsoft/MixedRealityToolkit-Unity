@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 
-namespace MRTKPrefix.Editor.Utilities
+namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
 {
     [CustomEditor(typeof(ParabolaPhysicalLineDataProvider))]
     public class ParabolaPhysicalLineDataProviderInspector : BaseLineDataProviderInspector

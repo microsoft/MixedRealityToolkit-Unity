@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Interface to implement for generic gesture input.
@@ -45,7 +45,7 @@ namespace MRTKPrefix.Input
         /// Gesture Updated Event.
         /// </summary>
         /// <remarks>
-        /// The <see cref="MRTKPrefix.Input.InputEventData{T}.InputData"/> for the associated gesture data.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> for the associated gesture data.
         /// </remarks>
         /// <param name="eventData"></param>
         void OnGestureUpdated(InputEventData<T> eventData);
@@ -54,7 +54,7 @@ namespace MRTKPrefix.Input
         /// Gesture Completed Event.
         /// </summary>
         /// <remarks>
-        /// The <see cref="MRTKPrefix.Input.InputEventData{T}.InputData"/> for the associated gesture data.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> for the associated gesture data.
         /// </remarks>
         /// <param name="eventData"></param>
         void OnGestureCompleted(InputEventData<T> eventData);

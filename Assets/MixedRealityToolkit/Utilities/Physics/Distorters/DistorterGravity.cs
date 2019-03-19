@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     public class DistorterGravity : Distorter
     {

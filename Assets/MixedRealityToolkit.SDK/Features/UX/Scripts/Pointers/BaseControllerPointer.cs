@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Physics;
-using MRTKPrefix.Teleport;
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Teleport;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using UnityEngine;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
@@ -66,9 +66,9 @@ namespace MRTKPrefix.Input
         public virtual Vector3 PointerDirection => raycastOrigin != null ? raycastOrigin.forward : transform.forward;
 
         /// <summary>
-        /// Set a new cursor for this <see cref="MRTKPrefix.Input.IMixedRealityPointer"/>
+        /// Set a new cursor for this <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>
         /// </summary>
-        /// <remarks>This <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> must have a <see cref="MRTKPrefix.Input.IMixedRealityCursor"/> attached to it.</remarks>
+        /// <remarks>This <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> must have a <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityCursor"/> attached to it.</remarks>
         /// <param name="newCursor">The new cursor</param>
         public virtual void SetCursor(GameObject newCursor = null)
         {

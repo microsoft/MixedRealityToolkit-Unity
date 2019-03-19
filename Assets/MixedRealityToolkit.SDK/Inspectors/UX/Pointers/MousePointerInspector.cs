@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using MRTKPrefix.Editor.Input;
-using MRTKPrefix.Input;
+using Microsoft.MixedReality.Toolkit.Editor.Input;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEditor;
 
-namespace MRTKPrefix.Editor.Utilities
+namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
 {
     [CustomEditor(typeof(MousePointer))]
     public class MousePointerInspector : BaseControllerPointerInspector

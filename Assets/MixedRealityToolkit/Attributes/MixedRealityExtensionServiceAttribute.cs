@@ -1,21 +1,21 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Linq;
 using UnityEngine;
 
 #if UNITY_EDITOR
-using MRTKPrefix.Editor.Utilities;
+using Microsoft.MixedReality.Toolkit.Editor.Utilities;
 using UnityEditor;
 #endif
 
 #if WINDOWS_UWP && !ENABLE_IL2CPP
-using MRTKPrefix;
+using Microsoft.MixedReality.Toolkit;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Attribute that defines the properties of a Mixed Reality Toolkit extension service.

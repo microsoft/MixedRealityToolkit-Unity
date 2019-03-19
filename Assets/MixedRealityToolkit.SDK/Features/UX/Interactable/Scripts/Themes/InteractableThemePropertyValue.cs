@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Base values of a theme property, used for serialization

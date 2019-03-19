@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Describes an source state event that has a source id.

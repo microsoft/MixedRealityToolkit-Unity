@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using MRTKPrefix.Editor.Utilities;
+using Microsoft.MixedReality.Toolkit.Editor.Utilities;
 using System;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MRTKPrefix.Editor
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [Obsolete("Use BaseMixedRealityToolkitConfigurationProfileInspector instead")]
     public abstract class MixedRealityBaseConfigurationProfileInspector { }
 
     /// <summary>
-    /// Base class for all Mixed Reality Toolkit specific <see cref="MRTKPrefix.BaseMixedRealityProfile"/> inspectors to inherit from.
+    /// Base class for all Mixed Reality Toolkit specific <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> inspectors to inherit from.
     /// </summary>
     public abstract class BaseMixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityProfileInspector
     {

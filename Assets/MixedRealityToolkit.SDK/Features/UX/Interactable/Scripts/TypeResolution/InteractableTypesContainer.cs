@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A convenience class that holds arrays of class names, fully qualified assembly names
@@ -25,7 +25,7 @@ namespace MRTKPrefix.UI
 
         /// <summary>
         /// A array of assembly qualified names (for example, 
-        /// "MRTKPrefix.UI.InteractableActivateTheme, 
+        /// "Microsoft.MixedReality.Toolkit.UI.InteractableActivateTheme, 
         /// Microsoft.MixedReality.Toolkit.SDK")
         /// </summary>
         public string[] AssemblyQualifiedNames { get; private set; }

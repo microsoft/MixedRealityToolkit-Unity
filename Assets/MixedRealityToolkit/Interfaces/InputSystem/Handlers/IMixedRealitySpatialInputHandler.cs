@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Interface to implement for spatial input position and rotation.
@@ -16,7 +16,7 @@ namespace MRTKPrefix.Input
         /// <summary>
         /// Raised when the input source's position has changed.
         /// <remarks>
-        /// The <see cref="MRTKPrefix.Input.InputEventData{T}.InputData"/> is the current input position.</remarks>
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> is the current input position.</remarks>
         /// </summary>
         /// <param name="eventData"></param>
         [Obsolete("Use IMixedRealityInputHandler<Vector3>.OnInputChanged(InputEventData<Vector3> eventData)")]
@@ -25,7 +25,7 @@ namespace MRTKPrefix.Input
         /// <summary>
         /// Raised when the input source's rotation has changed.
         /// <remarks>
-        /// The <see cref="MRTKPrefix.Input.InputEventData{T}.InputData"/> is the current input rotation.</remarks>
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> is the current input rotation.</remarks>
         /// </summary>
         /// <param name="eventData"></param>
         [Obsolete("Use IMixedRealityInputHandler<Quaternion>.OnInputChanged(InputEventData<Quaternion> eventData)")]
@@ -34,7 +34,7 @@ namespace MRTKPrefix.Input
         /// <summary>
         /// Raised when the input source's position and rotation has changed.
         /// <remarks>
-        /// The <see cref="MRTKPrefix.Input.InputEventData{T}.InputData"/> is the current input position.</remarks>
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> is the current input position.</remarks>
         /// </summary>
         /// <param name="eventData"></param>
         [Obsolete("Use IMixedRealityInputHandler<MixedRealityPose>.OnInputChanged(InputEventData<MixedRealityPose> eventData)")]

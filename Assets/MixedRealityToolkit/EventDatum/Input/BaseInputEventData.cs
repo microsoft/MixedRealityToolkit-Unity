@@ -4,7 +4,7 @@
 using System;
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Base class of all Input Events.

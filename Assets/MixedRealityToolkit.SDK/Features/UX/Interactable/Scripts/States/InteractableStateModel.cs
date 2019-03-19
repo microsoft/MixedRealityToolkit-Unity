@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// State data model, state management and comparison instructions

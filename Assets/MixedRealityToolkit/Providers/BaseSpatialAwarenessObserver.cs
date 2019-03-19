@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
-using MRTKPrefix.WindowsMixedReality.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness;
 using System.Collections;
 using UnityEngine;
 
-namespace MRTKPrefix.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     public class BaseSpatialAwarenessObserver : BaseDataProvider, IMixedRealitySpatialAwarenessObserver
     {
@@ -72,7 +72,7 @@ namespace MRTKPrefix.SpatialAwareness
         private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
         /// <summary>
-        /// The currently active instance of <see cref="MRTKPrefix.WindowsMixedReality.SpatialAwareness.IMixedRealitySpatialAwarenessSystem"/>.
+        /// The currently active instance of <see cref="Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.IMixedRealitySpatialAwarenessSystem"/>.
         /// </summary>
         protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
 

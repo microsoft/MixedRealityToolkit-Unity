@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A way to test button state feedback while in the editor

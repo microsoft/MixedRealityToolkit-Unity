@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix.WindowsMixedReality.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 {
     public interface IMixedRealitySpatialAwarenessObject
     {

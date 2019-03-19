@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Attribute that defines which service a profile is meant to be consumed by.

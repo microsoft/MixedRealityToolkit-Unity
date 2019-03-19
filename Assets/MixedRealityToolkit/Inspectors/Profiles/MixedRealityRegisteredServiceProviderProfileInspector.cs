@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using MRTKPrefix.Editor.Utilities;
+using Microsoft.MixedReality.Toolkit.Editor.Utilities;
 using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(MixedRealityRegisteredServiceProvidersProfile))]
     public class MixedRealityRegisteredServiceProviderProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector

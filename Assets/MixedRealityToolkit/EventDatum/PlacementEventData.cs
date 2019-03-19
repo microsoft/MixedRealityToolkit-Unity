@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Describes placement of objects events.

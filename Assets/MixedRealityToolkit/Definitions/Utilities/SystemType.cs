@@ -2,12 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if WINDOWS_UWP && !ENABLE_IL2CPP
-using MRTKPrefix;
+using Microsoft.MixedReality.Toolkit;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
 using System;
 using UnityEngine;
 
-namespace MRTKPrefix.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Reference to a class <see cref="System.Type"/> with support for Unity serialization.

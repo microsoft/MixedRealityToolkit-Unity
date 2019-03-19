@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Input;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-namespace MRTKPrefix.Teleport
+namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     /// <summary>
     /// SDK component handling teleportation to a specific position &amp; orientation when a user focuses

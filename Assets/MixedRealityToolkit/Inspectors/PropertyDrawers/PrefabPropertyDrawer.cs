@@ -1,10 +1,10 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Custom property drawer for <see cref="MRTKPrefix.PrefabAttribute"/> decorated <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> values rendered in the inspector.
+    /// Custom property drawer for <see cref="Microsoft.MixedReality.Toolkit.PrefabAttribute"/> decorated <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> values rendered in the inspector.
     /// </summary>
     [CustomPropertyDrawer(typeof(PrefabAttribute))]
     public class PrefabPropertyDrawer : PropertyDrawer

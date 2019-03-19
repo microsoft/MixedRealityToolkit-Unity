@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Boundary;
+using Microsoft.MixedReality.Toolkit.Boundary;
 using System.Collections.Generic;
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UBoundary = UnityEngine.Experimental.XR.Boundary;
 
-namespace MRTKPrefix.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
     /// Demo class to show different ways of using the boundary system and visualizing the data.

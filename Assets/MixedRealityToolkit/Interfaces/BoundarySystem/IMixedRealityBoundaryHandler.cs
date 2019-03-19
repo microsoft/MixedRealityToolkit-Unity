@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix.Boundary
+namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     public interface IMixedRealityBoundaryHandler : IEventSystemHandler
     {

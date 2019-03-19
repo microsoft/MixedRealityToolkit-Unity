@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Base Component for handling Focus on <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s.
@@ -26,12 +26,12 @@ namespace MRTKPrefix.Input
         }
 
         /// <summary>
-        /// Does this object currently have focus by any <see cref="MRTKPrefix.Input.IMixedRealityPointer"/>?
+        /// Does this object currently have focus by any <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>?
         /// </summary>
         public virtual bool HasFocus => FocusEnabled && Focusers.Count > 0;
 
         /// <summary>
-        /// The list of <see cref="MRTKPrefix.Input.IMixedRealityPointer"/>s that are currently focused on this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
+        /// The list of <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>s that are currently focused on this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
         /// </summary>
         public List<IMixedRealityPointer> Focusers { get; } = new List<IMixedRealityPointer>(0);
 

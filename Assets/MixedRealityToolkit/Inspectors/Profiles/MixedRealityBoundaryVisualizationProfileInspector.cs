@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using MRTKPrefix.Boundary;
-using MRTKPrefix.Utilities;
-using MRTKPrefix.Editor.Utilities;
+using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Boundary
+namespace Microsoft.MixedReality.Toolkit.Editor.Boundary
 {
     [CustomEditor(typeof(MixedRealityBoundaryVisualizationProfile))]
     public class MixedRealityBoundaryVisualizationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector

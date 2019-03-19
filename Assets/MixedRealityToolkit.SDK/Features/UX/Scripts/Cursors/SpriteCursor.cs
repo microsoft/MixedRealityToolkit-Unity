@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Object that represents a cursor comprised of sprites and colors for each state

@@ -7,7 +7,7 @@ using UnityEngine;
     using Windows.Foundation.Metadata;
 #endif
 
-namespace MRTKPrefix.Windows.Utilities
+namespace Microsoft.MixedReality.Toolkit.Windows.Utilities
 {
     /// <summary>
     /// Helper class for determining if a Windows API contract is available.

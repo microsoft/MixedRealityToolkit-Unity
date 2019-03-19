@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// The object cursor can switch between different game objects based on its state.

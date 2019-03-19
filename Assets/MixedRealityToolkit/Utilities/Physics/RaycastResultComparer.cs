@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MRTKPrefix.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     /// <summary>
     /// Compares the Raycast Results from Unity's Graphic &amp; Physics Raycasters.

@@ -4,7 +4,7 @@
 #if UNITY_WSA
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
-using MRTKPrefix.Windows.Utilities;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 
 #if !UNITY_EDITOR
 using System;
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 
 #endif // UNITY_WSA
 
-namespace MRTKPrefix.Windows.Input
+namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
     /// <summary>
     /// Extensions for the InteractionSource class to add haptics and expose the renderable model.

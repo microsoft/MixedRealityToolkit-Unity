@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace MRTKPrefix.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     [Serializable]
     public struct MixedRealityPose : IEqualityComparer

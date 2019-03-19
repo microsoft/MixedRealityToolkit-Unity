@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using MRTKPrefix.Physics;
+using Microsoft.MixedReality.Toolkit.Physics;
 
-namespace MRTKPrefix.Boundary
+namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     /// <summary>
     /// Configuration profile settings for setting up boundary visualizations.

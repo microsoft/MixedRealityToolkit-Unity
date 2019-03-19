@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Boundary;
-using MRTKPrefix.Diagnostics;
-using MRTKPrefix.Input;
-using MRTKPrefix.Utilities;
-using MRTKPrefix.WindowsMixedReality.SpatialAwareness;
-using MRTKPrefix.Teleport;
+using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.Diagnostics;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.Teleport;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests")]
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Configuration profile settings for the Mixed Reality Toolkit.

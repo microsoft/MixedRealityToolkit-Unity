@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MRTKPrefix.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// The Handedness defines which hand a controller is currently operating in.

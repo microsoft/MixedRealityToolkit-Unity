@@ -2,7 +2,7 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| Core | MRTKPrefix.Editor |
+| Core | Microsoft.MixedReality.Toolkit.Editor |
 
 The MixedRealitySpatialAwarenessProfileInspector derives from MixedRealityBaseConfigurationProfileInspector to provide a visual means of modifying the spatial awareness profile using the Unity Inspector.
 

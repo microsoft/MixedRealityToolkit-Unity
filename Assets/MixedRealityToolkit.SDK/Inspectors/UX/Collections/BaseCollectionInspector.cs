@@ -3,9 +3,9 @@
 
 using UnityEngine;
 using UnityEditor;
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace MRTKPrefix.Editor.Utilities
+namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
 {
     [CustomEditor( typeof(BaseObjectCollection), true )]
     public class BaseCollectionInspector : UnityEditor.Editor

@@ -3,12 +3,12 @@
 
 using UnityEngine;
 using UnityEngine.Assertions;
-using MRTKPrefix.Input;
-using MRTKPrefix.Utilities;
-using MRTKPrefix.Physics;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Physics;
 using System;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// This script allows for an object to be movable, scalable, and rotatable with one or two hands. 

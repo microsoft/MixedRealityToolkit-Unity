@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Interface to implement for simple generic input.
@@ -29,7 +29,7 @@ namespace MRTKPrefix.Input
         /// </summary>
         /// <param name="eventData"></param>
         /// <remarks>
-        /// The <see cref="MRTKPrefix.Input.InputEventData{T}.InputData"/> is the pressed amount, if available.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> is the pressed amount, if available.
         /// </remarks>
         [Obsolete("Use IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)")]
         void OnInputPressed(InputEventData<float> eventData);
@@ -38,7 +38,7 @@ namespace MRTKPrefix.Input
         /// Input Position updates from Thumbsticks, Touchpads, or any other dual axis input with a position.
         /// </summary>
         /// <remarks>
-        /// The <see cref="MRTKPrefix.Input.InputEventData{T}.InputData"/> is the current input position.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> is the current input position.
         /// </remarks>
         /// <param name="eventData"></param>
         [Obsolete("Use IMixedRealityInputHandler<Vector2>.OnInputChanged(InputEventData<Vector2> eventData)")]
@@ -58,7 +58,7 @@ namespace MRTKPrefix.Input
         /// Raised input event updates from the type of input specified in the interface handler implementation.
         /// </summary>
         /// <remarks>
-        /// The <see cref="MRTKPrefix.Input.InputEventData{T}.InputData"/> is the current input data.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> is the current input data.
         /// </remarks>
         void OnInputChanged(InputEventData<T> eventData);
     }

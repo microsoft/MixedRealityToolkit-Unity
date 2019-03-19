@@ -4,7 +4,7 @@
 //
 using UnityEngine;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Renders meshes at the corners of a tool tip

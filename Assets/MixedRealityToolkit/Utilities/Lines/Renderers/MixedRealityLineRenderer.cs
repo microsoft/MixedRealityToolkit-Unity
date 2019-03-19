@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace MRTKPrefix.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Implements Unity's built in line renderer component, and applies the line data to it.

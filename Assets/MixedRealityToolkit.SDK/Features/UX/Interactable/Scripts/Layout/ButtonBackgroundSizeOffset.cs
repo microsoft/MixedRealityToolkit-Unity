@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Scales an object relative the scale of the Anchor Transform

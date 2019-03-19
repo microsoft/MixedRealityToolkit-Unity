@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Input;
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix.Teleport
+namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     /// <summary>
-    /// The Mixed Reality Toolkit's specific implementation of the <see cref="MRTKPrefix.Teleport.IMixedRealityTeleportSystem"/>
+    /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Teleport.IMixedRealityTeleportSystem"/>
     /// </summary>
     public class MixedRealityTeleportSystem : BaseEventSystem, IMixedRealityTeleportSystem
     {

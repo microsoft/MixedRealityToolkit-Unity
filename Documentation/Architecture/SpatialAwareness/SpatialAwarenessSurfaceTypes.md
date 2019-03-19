@@ -2,7 +2,7 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| Core | MRTKPrefix.SpatialAwareness |
+| Core | Microsoft.MixedReality.Toolkit.SpatialAwareness |
 
 The SpatialAwarenessSurfaceTypes enumeration is defined as a set of flags that enable applications to request only specific types of surfaces (ex: Floors and Walls) as well as providing the ability to create generalized requests (ex: all horizontal surfaces)
 

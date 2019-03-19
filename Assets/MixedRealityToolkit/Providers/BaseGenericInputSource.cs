@@ -4,7 +4,7 @@
 using System;
 using System.Collections;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Base class for input sources that don't inherit from MonoBehaviour.

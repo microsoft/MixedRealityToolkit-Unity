@@ -1,7 +1,7 @@
-﻿using MRTKPrefix.Utilities;
+﻿using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A wrapper for a Type which gives a "friendly name" for the type (i.e.
@@ -23,7 +23,7 @@ namespace MRTKPrefix.UI
 
         /// <summary>
         /// The assembly qualified name of the class (for example, 
-        /// "MRTKPrefix.UI.InteractableActivateTheme, 
+        /// "Microsoft.MixedReality.Toolkit.UI.InteractableActivateTheme, 
         /// Microsoft.MixedReality.Toolkit.SDK")
         /// </summary>
         public string AssemblyQualifiedName { get; private set; }

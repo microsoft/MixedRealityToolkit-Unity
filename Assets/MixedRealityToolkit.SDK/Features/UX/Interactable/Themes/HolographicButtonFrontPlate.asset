@@ -14,7 +14,7 @@ MonoBehaviour:
   Name: 
   Settings:
   - Name: InteractableShaderTheme
-    AssemblyQualifiedName: MRTKPrefix.UI.InteractableShaderTheme,
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme,
       Microsoft.MixedReality.Toolkit.SDK
     Properties:
     - Name: Shader
@@ -656,7 +656,7 @@ MonoBehaviour:
       Target: {fileID: 0}
       States: []
   - Name: InteractableColorTheme
-    AssemblyQualifiedName: MRTKPrefix.UI.InteractableColorTheme,
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme,
       Microsoft.MixedReality.Toolkit.SDK
     Properties:
     - Name: Color

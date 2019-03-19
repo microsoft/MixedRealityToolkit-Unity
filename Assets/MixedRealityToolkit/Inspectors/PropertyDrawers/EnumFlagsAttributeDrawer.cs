@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
     /// Renders enum flags on fields with the attribute.

@@ -1,6 +1,6 @@
 ﻿using UnityEngine.EventSystems;
 
-namespace MRTKPrefix.Teleport
+namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     /// <summary>
     /// Interface to implement for teleport events.

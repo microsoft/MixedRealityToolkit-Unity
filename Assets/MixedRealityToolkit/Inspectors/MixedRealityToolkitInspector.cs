@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(MixedRealityToolkit))]
     public class MixedRealityToolkitInspector : UnityEditor.Editor

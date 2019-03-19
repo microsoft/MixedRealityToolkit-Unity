@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.IO;
 using System.Linq;
@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 using Debug = UnityEngine.Debug;
 using IOFileInfo = System.IO.FileInfo;
 
-namespace MRTKPrefix.WindowsDevicePortal
+namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 {
     /// <summary>
     /// Function used to communicate with Windows 10 devices through the device portal REST APIs.
@@ -57,10 +57,10 @@ namespace MRTKPrefix.WindowsDevicePortal
 #endif
 
         /// <summary>
-        /// Gets the <see cref="MRTKPrefix.WindowsDevicePortal.DeviceOsInfo"/> of the target device.
+        /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.DeviceOsInfo"/> of the target device.
         /// </summary>
         /// <param name="targetDevice"></param>
-        /// <returns><see cref="MRTKPrefix.WindowsDevicePortal.DeviceOsInfo"/></returns>
+        /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.DeviceOsInfo"/></returns>
         public static async Task<DeviceOsInfo> GetDeviceOsInfoAsync(DeviceInfo targetDevice)
         {
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
@@ -84,10 +84,10 @@ namespace MRTKPrefix.WindowsDevicePortal
         }
 
         /// <summary>
-        /// Gets the <see cref="MRTKPrefix.WindowsDevicePortal.MachineName"/> of the target device.
+        /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.MachineName"/> of the target device.
         /// </summary>
         /// <param name="targetDevice"></param>
-        /// <returns><see cref="MRTKPrefix.WindowsDevicePortal.MachineName"/></returns>
+        /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.MachineName"/></returns>
         public static async Task<MachineName> GetMachineNameAsync(DeviceInfo targetDevice)
         {
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
@@ -111,10 +111,10 @@ namespace MRTKPrefix.WindowsDevicePortal
         }
 
         /// <summary>
-        /// Gets the <see cref="MRTKPrefix.WindowsDevicePortal.BatteryInfo"/> of the target device.
+        /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.BatteryInfo"/> of the target device.
         /// </summary>
         /// <param name="targetDevice"></param>
-        /// <returns><see cref="MRTKPrefix.WindowsDevicePortal.BatteryInfo"/></returns>
+        /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.BatteryInfo"/></returns>
         public static async Task<BatteryInfo> GetBatteryStateAsync(DeviceInfo targetDevice)
         {
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
@@ -138,10 +138,10 @@ namespace MRTKPrefix.WindowsDevicePortal
         }
 
         /// <summary>
-        /// Gets the <see cref="MRTKPrefix.WindowsDevicePortal.PowerStateInfo"/> of the target device.
+        /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.PowerStateInfo"/> of the target device.
         /// </summary>
         /// <param name="targetDevice"></param>
-        /// <returns><see cref="MRTKPrefix.WindowsDevicePortal.PowerStateInfo"/></returns>
+        /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.PowerStateInfo"/></returns>
         public static async Task<PowerStateInfo> GetPowerStateAsync(DeviceInfo targetDevice)
         {
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
@@ -254,7 +254,7 @@ namespace MRTKPrefix.WindowsDevicePortal
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
-        /// <param name="appInfo">Optional cached <see cref="MRTKPrefix.WindowsDevicePortal.ApplicationInfo"/>.</param>
+        /// <param name="appInfo">Optional cached <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/>.</param>
         /// <returns>True, if the application is running.</returns>
         public static async Task<bool> IsAppRunningAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
         {
@@ -297,11 +297,11 @@ namespace MRTKPrefix.WindowsDevicePortal
         }
 
         /// <summary>
-        /// Gets the <see cref="MRTKPrefix.WindowsDevicePortal.ApplicationInfo"/> of the target application on the target device.
+        /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/> of the target application on the target device.
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
-        /// <returns>Returns the <see cref="MRTKPrefix.WindowsDevicePortal.ApplicationInfo"/> of the target application from the target device.</returns>
+        /// <returns>Returns the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/> of the target application from the target device.</returns>
         private static async Task<ApplicationInfo> GetApplicationInfoAsync(string packageName, DeviceInfo targetDevice)
         {
             Debug.Assert(!string.IsNullOrEmpty(packageName));
@@ -479,7 +479,7 @@ namespace MRTKPrefix.WindowsDevicePortal
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
-        /// <param name="appInfo">Optional cached <see cref="MRTKPrefix.WindowsDevicePortal.ApplicationInfo"/>.</param>
+        /// <param name="appInfo">Optional cached <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/>.</param>
         /// <returns>True, if uninstall was a success.</returns>
         public static async Task<bool> UninstallAppAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
         {
@@ -526,7 +526,7 @@ namespace MRTKPrefix.WindowsDevicePortal
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
-        /// <param name="appInfo">Optional cached <see cref="MRTKPrefix.WindowsDevicePortal.ApplicationInfo"/>.</param>
+        /// <param name="appInfo">Optional cached <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/>.</param>
         /// <returns>True, if application was successfully launched and is currently running on the target device.</returns>
         public static async Task<bool> LaunchAppAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
         {
@@ -570,7 +570,7 @@ namespace MRTKPrefix.WindowsDevicePortal
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
-        /// <param name="appInfo">Optional cached <see cref="MRTKPrefix.WindowsDevicePortal.ApplicationInfo"/>.</param>
+        /// <param name="appInfo">Optional cached <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/>.</param>
         /// <returns>true, if application was successfully stopped.</returns>
         public static async Task<bool> StopAppAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
         {
@@ -614,7 +614,7 @@ namespace MRTKPrefix.WindowsDevicePortal
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
-        /// <param name="appInfo">Optional cached <see cref="MRTKPrefix.WindowsDevicePortal.ApplicationInfo"/>.</param>
+        /// <param name="appInfo">Optional cached <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/>.</param>
         /// <returns>The path of the downloaded log file.</returns>
         public static async Task<string> DownloadLogFileAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
         {
@@ -651,10 +651,10 @@ namespace MRTKPrefix.WindowsDevicePortal
         }
 
         /// <summary>
-        /// Gets the <see cref="MRTKPrefix.WindowsDevicePortal.IpConfigInfo"/> of the target device.
+        /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.IpConfigInfo"/> of the target device.
         /// </summary>
         /// <param name="targetDevice"></param>
-        /// <returns><see cref="MRTKPrefix.WindowsDevicePortal.IpConfigInfo"/></returns>
+        /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.IpConfigInfo"/></returns>
         public static async Task<IpConfigInfo> GetIpConfigInfoAsync(DeviceInfo targetDevice)
         {
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
@@ -678,11 +678,11 @@ namespace MRTKPrefix.WindowsDevicePortal
         }
 
         /// <summary>
-        /// Gets the <see cref="MRTKPrefix.WindowsDevicePortal.AvailableWiFiNetworks"/> of the target device.
+        /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.AvailableWiFiNetworks"/> of the target device.
         /// </summary>
         /// <param name="targetDevice"></param>
         /// <param name="interfaceInfo">The GUID for the network interface to use to search for wireless networks, without brackets.</param>
-        /// <returns><see cref="MRTKPrefix.WindowsDevicePortal.AvailableWiFiNetworks"/></returns>
+        /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.AvailableWiFiNetworks"/></returns>
         public static async Task<AvailableWiFiNetworks> GetAvailableWiFiNetworksAsync(DeviceInfo targetDevice, InterfaceInfo interfaceInfo)
         {
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
@@ -726,10 +726,10 @@ namespace MRTKPrefix.WindowsDevicePortal
         }
 
         /// <summary>
-        /// Gets the <see cref="MRTKPrefix.WindowsDevicePortal.NetworkInterfaces"/> of the target device.
+        /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.NetworkInterfaces"/> of the target device.
         /// </summary>
         /// <param name="targetDevice"></param>
-        /// <returns><see cref="MRTKPrefix.WindowsDevicePortal.NetworkInterfaces"/></returns>
+        /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.NetworkInterfaces"/></returns>
         public static async Task<NetworkInterfaces> GetWiFiNetworkInterfacesAsync(DeviceInfo targetDevice)
         {
             var isAuth = await EnsureAuthenticationAsync(targetDevice);

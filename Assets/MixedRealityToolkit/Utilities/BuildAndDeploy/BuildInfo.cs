@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Build
+namespace Microsoft.MixedReality.Toolkit.Editor.Build
 {
     public class BuildInfo : IBuildInfo
     {

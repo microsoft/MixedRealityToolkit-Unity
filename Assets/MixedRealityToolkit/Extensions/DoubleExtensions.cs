@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for the .Net Double struct

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MRTKPrefix.WindowsDevicePortal
+namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 {
     [Serializable]
     public class ProcessList

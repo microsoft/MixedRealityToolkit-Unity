@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using MRTKPrefix.Editor.Utilities;
-using MRTKPrefix.Teleport;
+using Microsoft.MixedReality.Toolkit.Editor.Utilities;
+using Microsoft.MixedReality.Toolkit.Teleport;
 using UnityEditor;
 
-namespace MRTKPrefix.Editor.Teleport
+namespace Microsoft.MixedReality.Toolkit.Editor.Teleport
 {
     [CustomEditor(typeof(TeleportPointer))]
     public class TeleportPointerInspector : LinePointerInspector

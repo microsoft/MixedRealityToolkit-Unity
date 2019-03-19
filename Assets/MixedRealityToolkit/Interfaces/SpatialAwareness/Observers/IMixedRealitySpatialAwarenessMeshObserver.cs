@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTKPrefix.WindowsMixedReality.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 {
     /// <summary>
     /// The interface for defining an <see cref="IMixedRealitySpatialAwarenessObserver"/> which provides mesh data.
@@ -30,7 +30,7 @@ namespace MRTKPrefix.WindowsMixedReality.SpatialAwareness
         SpatialAwarenessMeshLevelOfDetail LevelOfDetail { get; set; }
 
         /// <summary>
-        /// Gets the collection of <see cref="MRTKPrefix.SpatialAwareness.SpatialAwarenessMeshObject"/>s being managed by the observer.
+        /// Gets the collection of <see cref="Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshObject"/>s being managed by the observer.
         /// </summary>
         IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes { get; }
 

@@ -35,7 +35,7 @@ Examples:
 
 ```
 /// Links to MRTK internal class SystemType
-///<see cref="MRTKPrefix.Utilities.SystemType"/>
+///<see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
 
 /// Links to external API - link provided by xref service
 /// <see cref="System.Collections.Generic.ICollection{Type}.Contains"/>
@@ -51,12 +51,12 @@ Linking to the API documentation can be done by using [cross references](https:/
 
 Example:
 
-This links to the [BoundarySystem API](xref:MRTKPrefix.Boundary)
-as well as this short version: @MRTKPrefix.Boundary
+This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
+as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 
 ```
-This links to the [BoundarySystem API](xref:MRTKPrefix.Boundary)
-as well as this short version: @MRTKPrefix.Boundary
+This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
+as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 ```
 
 ## Adding new .md files to developer docs

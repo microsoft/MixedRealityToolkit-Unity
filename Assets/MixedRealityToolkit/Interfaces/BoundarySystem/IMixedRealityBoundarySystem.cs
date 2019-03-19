@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UBoundary = UnityEngine.Experimental.XR.Boundary;
 
-namespace MRTKPrefix.Boundary
+namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     /// <summary>
     /// Manager interface for a Boundary system in the Mixed Reality Toolkit

@@ -2,11 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using MRTKPrefix.Editor.Utilities;
+using Microsoft.MixedReality.Toolkit.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     internal static class MixedRealityPreferences
     {

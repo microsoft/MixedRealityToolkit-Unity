@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Physics;
+using Microsoft.MixedReality.Toolkit.Physics;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Physics
+namespace Microsoft.MixedReality.Toolkit.Editor.Physics
 {
     /// <summary>
     /// Renders the physics layer dropdown based on the current layers set in the Tag Manager.

@@ -10,7 +10,7 @@ using UnityEngine.Profiling;
 using Windows.System;
 #endif
 
-namespace MRTKPrefix.Diagnostics
+namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
     /// <summary>
     /// ABOUT: The VisualProfiler provides a drop in, single file, solution for viewing 

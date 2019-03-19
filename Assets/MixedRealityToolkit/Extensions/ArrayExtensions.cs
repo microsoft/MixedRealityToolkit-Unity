@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// <see cref="Array"/> type method extensions.

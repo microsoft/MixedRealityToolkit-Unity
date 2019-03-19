@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Base class for all <see cref="MRTKPrefix.BaseMixedRealityProfile"/> Inspectors to inherit from.
+    /// Base class for all <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> Inspectors to inherit from.
     /// </summary>
     public abstract class BaseMixedRealityProfileInspector : UnityEditor.Editor
     {
@@ -41,9 +41,9 @@ namespace MRTKPrefix.Editor
         }
 
         /// <summary>
-        /// Renders a <see cref="MRTKPrefix.BaseMixedRealityProfile"/>.
+        /// Renders a <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/>.
         /// </summary>
-        /// <param name="property">the <see cref="MRTKPrefix.BaseMixedRealityProfile"/> property.</param>
+        /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> property.</param>
         /// <param name="guiContent">The GUIContent for the field.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
         /// <returns>True, if the profile changed.</returns>
@@ -53,9 +53,9 @@ namespace MRTKPrefix.Editor
         }
 
         /// <summary>
-        /// Renders a <see cref="MRTKPrefix.BaseMixedRealityProfile"/>.
+        /// Renders a <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/>.
         /// </summary>
-        /// <param name="property">the <see cref="MRTKPrefix.BaseMixedRealityProfile"/> property.</param>
+        /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> property.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
         /// <returns>True, if the profile changed.</returns>
         protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, Type serviceType = null)

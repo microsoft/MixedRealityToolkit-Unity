@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Input;
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections.Generic;
 using UnityEngine;
 using UPhysics = UnityEngine.Physics;
 
-namespace MRTKPrefix.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public class BoundingBox : BaseFocusHandler,
         IMixedRealityInputHandler,

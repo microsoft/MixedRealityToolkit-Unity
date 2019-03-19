@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace MRTKPrefix.Examples.Demos.StandardShader
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
 {
     /// <summary>
     /// Editor to build a matrix of spheres demonstrating a spectrum of material properties.

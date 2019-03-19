@@ -1,4 +1,4 @@
-﻿namespace MRTKPrefix.UI.TypeResolution
+﻿namespace Microsoft.MixedReality.Toolkit.UI.TypeResolution
 {
     /// <summary>
     /// Controls the behavior of the InteractableTypeFinder.FindTypes function. See individual

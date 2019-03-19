@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Physics;
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UPhysics = UnityEngine.Physics;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// The focus provider handles the focused objects per input source.
@@ -779,7 +779,7 @@ namespace MRTKPrefix.Input
         }
 
         /// <summary>
-        /// Raycasts each graphic <see cref="MRTKPrefix.Physics.RayStep"/>
+        /// Raycasts each graphic <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>
         /// </summary>
         /// <param name="pointerData"></param>
         /// <param name="step"></param>

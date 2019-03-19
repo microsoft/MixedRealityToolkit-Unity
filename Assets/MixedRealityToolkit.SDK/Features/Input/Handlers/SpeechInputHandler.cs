@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// This component handles the speech input events raised form the <see cref="Core.Interfaces.InputSystem.IMixedRealityInputSystem"/>.

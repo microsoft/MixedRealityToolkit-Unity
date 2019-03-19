@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTKPrefix.WindowsMixedReality.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 {
     public interface IMixedRealitySpatialAwarenessSystem : IMixedRealityEventSystem
     {

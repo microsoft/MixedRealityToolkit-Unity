@@ -4,10 +4,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix.Diagnostics
+namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
     /// <summary>
-    /// The default implementation of the <see cref="MRTKPrefix.Diagnostics.IMixedRealityDiagnosticsSystem"/>
+    /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
     public class MixedRealityDiagnosticsSystem : BaseEventSystem, IMixedRealityDiagnosticsSystem
     {

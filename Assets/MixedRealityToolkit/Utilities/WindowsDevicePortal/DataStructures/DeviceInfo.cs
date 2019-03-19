@@ -3,9 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace MRTKPrefix.WindowsDevicePortal
+namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 {
     [Serializable]
     public class DeviceInfo

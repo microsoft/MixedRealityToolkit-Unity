@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MRTKPrefix.Input {
+namespace Microsoft.MixedReality.Toolkit.Input {
     /// <summary>
     /// Data class that maps <see cref="MixedRealityInputAction"/>s to <see cref="UnityEvent"/>s wired up in the inspector.
     /// </summary>

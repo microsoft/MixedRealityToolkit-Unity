@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using MRTKPrefix.Input;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for .Net Collection objects, e.g. Lists, Dictionaries, Arrays

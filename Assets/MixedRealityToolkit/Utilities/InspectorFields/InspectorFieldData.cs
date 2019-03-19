@@ -3,7 +3,7 @@
 
 
 
-namespace MRTKPrefix.Editor.Utilities
+namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
 {
     /// <summary>
     /// A reference to the InspectorField and cached info

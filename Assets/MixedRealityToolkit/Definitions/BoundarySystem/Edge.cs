@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix.Boundary
+namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     /// <summary>
     /// The BoundaryEdge structure defines the points of a line segment that are used to

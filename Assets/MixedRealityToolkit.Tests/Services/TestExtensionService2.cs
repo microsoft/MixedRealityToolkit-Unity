@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 
-namespace MRTKPrefix.Tests.Services
+namespace Microsoft.MixedReality.Toolkit.Tests.Services
 {
     internal class TestExtensionService2 : BaseExtensionService, ITestExtensionService2
     {

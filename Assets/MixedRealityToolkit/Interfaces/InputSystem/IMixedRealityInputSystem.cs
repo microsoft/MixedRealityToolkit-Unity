@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Manager interface for a Input system in the Mixed Reality Toolkit
@@ -30,7 +30,7 @@ namespace MRTKPrefix.Input
         HashSet<IMixedRealityInputSource> DetectedInputSources { get; }
 
         /// <summary>
-        /// List of <see cref="MRTKPrefix.Input.IMixedRealityController"/>s currently detected by the input manager.
+        /// List of <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController"/>s currently detected by the input manager.
         /// </summary>
         /// <remarks>
         /// This property is similar to <see cref="DetectedInputSources"/>, as this is a subset of those <see cref="IMixedRealityInputSource"/>s in that list.

@@ -4,7 +4,7 @@
 using System;
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Generic Base Event Data for Sending Events through the Event System.

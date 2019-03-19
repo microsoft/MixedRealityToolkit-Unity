@@ -1,22 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
-using MRTKPrefix.Boundary;
-using MRTKPrefix.Diagnostics;
-using MRTKPrefix.Input;
-using MRTKPrefix.WindowsMixedReality.SpatialAwareness;
-using MRTKPrefix.Teleport;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.Diagnostics;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.Teleport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 #if UNITY_EDITOR
-using MRTKPrefix.Editor.Input;
+using Microsoft.MixedReality.Toolkit.Editor.Input;
 #endif
 
-namespace MRTKPrefix
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// This class is responsible for coordinating the operation of the Mixed Reality Toolkit. It is the only Singleton in the entire project.
@@ -125,7 +125,7 @@ namespace MRTKPrefix
         private static readonly List<Tuple<Type, IMixedRealityService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityService>>();
 
         /// <summary>
-        /// Local service registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="MRTKPrefix.IMixedRealityService"/>.
+        /// Local service registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityService"/>.
         /// </summary>
         public IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices) as IReadOnlyList<Tuple<Type, IMixedRealityService>>;
 

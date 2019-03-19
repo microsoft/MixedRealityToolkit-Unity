@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Input;
-using MRTKPrefix.Utilities;
-using MRTKPrefix.UnityInput.Input;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.UnityInput.Input;
 using System;
 using UnityEngine;
 
-namespace MRTKPrefix.OpenVR.Input
+namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
     /// <summary>
     /// Manages Open VR Devices using unity's input system.

@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MRTKPrefix.Editor.Input
+namespace Microsoft.MixedReality.Toolkit.Editor.Input
 {
     /// <summary>
     /// Used to aid in layout of Controller Input Actions.

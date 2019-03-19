@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Editor.Utilities;
-using MRTKPrefix.UI.TypeResolution;
+using Microsoft.MixedReality.Toolkit.Editor.Utilities;
+using Microsoft.MixedReality.Toolkit.UI.TypeResolution;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine.Events;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Event base class for events attached to Interactables.

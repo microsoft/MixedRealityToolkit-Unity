@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     [CustomEditor(typeof(InteractableReceiver))]
     public class InteractableReceiverInspector : InteractableReceiverListInspector

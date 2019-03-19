@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities.Solvers;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Editor.Utilities.Solvers
 {
     [CustomEditor(typeof(ControllerFinder))]
     public abstract class ControllerFinderInspector : UnityEditor.Editor

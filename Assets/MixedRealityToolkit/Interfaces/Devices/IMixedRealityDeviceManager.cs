@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 
-using MRTKPrefix.Input;
+using Microsoft.MixedReality.Toolkit.Input;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Mixed Reality Toolkit device definition, used to instantiate and manage a specific device / SDK

@@ -3,10 +3,10 @@
 
 using UnityEngine;
 
-namespace MRTKPrefix.Audio
+namespace Microsoft.MixedReality.Toolkit.Audio
 {
     /// <summary>
-    /// Class that implements <see cref="MRTKPrefix.Audio.IAudioInfluencer"/> to provide an audio occlusion effect, similar
+    /// Class that implements <see cref="Microsoft.MixedReality.Toolkit.Audio.IAudioInfluencer"/> to provide an audio occlusion effect, similar
     /// to listening to sound from outside of an enclosed space.
     /// </summary>
     /// <remarks>

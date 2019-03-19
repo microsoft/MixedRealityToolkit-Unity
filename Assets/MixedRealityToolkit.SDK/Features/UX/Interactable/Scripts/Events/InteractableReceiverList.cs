@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using MRTKPrefix.Input;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-namespace MRTKPrefix.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// An example of building an Interactable receiver that uses built-in receivers that extend ReceiverBase

@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities;
-using MRTKPrefix.Input;
-using MRTKPrefix.Windows.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Windows.Input;
 
 #if UNITY_WSA
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using UnityEngine.XR.WSA.Input;
 using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 #endif // UNITY_WSA
 
-namespace MRTKPrefix.WindowsMixedReality.Input
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),

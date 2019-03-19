@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using MRTKPrefix.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace MRTKPrefix.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Waits for a controller to be initialized, then synchronizes its transform position to a specified handedness.
@@ -42,7 +42,7 @@ namespace MRTKPrefix.Input
         public bool IsTracked { get; protected set; } = false;
 
         /// <summary>
-        /// The current tracking state of the assigned <see cref="MRTKPrefix.Input.IMixedRealityController"/>
+        /// The current tracking state of the assigned <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController"/>
         /// </summary>
         protected TrackingState TrackingState = TrackingState.NotTracked;
 

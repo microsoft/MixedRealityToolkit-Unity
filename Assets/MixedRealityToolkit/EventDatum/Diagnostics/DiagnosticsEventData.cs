@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace MRTKPrefix.Diagnostics
+namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
     public class DiagnosticsEventData : GenericBaseEventData
     {
