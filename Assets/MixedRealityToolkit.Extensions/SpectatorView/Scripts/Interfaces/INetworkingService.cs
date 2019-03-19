@@ -3,7 +3,7 @@
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
 {
-    public enum Priority
+    public enum NetworkPriority
     {
         Default,
         Critical
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
 
     public interface INetworkingService
     {
-        bool SendData(byte[] data, Priority priority);
+        bool SendData(byte[] data, NetworkPriority priority);
         event DataHandler DataReceived;
     }
 }

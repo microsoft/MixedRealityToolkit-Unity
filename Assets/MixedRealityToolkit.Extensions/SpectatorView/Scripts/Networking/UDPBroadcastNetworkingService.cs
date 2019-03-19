@@ -49,9 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
         class Message
         {
             public byte[] Data { get; internal set; }
-            public Priority Priority { get; internal set; }
+            public NetworkPriority Priority { get; internal set; }
             public bool Sent { get; set; }
-            public Message(byte[] data, Priority priority)
+            public Message(byte[] data, NetworkPriority priority)
             {
                 Data = data;
                 Priority = priority;
@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
             return _connected;
         }
 
-        public bool SendData(byte[] data, Priority priority)
+        public bool SendData(byte[] data, NetworkPriority priority)
         {
             if (!_connected)
             {
@@ -252,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
             }
 
             if (_currentMessage != null &&
-                _currentMessage.Priority == Priority.Critical &&
+                _currentMessage.Priority == NetworkPriority.Critical &&
                 !_currentMessage.Sent)
             {
                 Debug.Log("Critical priority message not yet sent, unable to send new payload");
