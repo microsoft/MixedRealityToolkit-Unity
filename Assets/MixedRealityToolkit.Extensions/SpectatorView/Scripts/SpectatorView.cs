@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
         {
             if (_matchMakingService.IsConnected())
             {
-                if(!_networkingService.SendData(payload, NetworkPriority.Default))
+                if(!_networkingService.SendData(payload))
                 {
                     Debug.LogError("Networking service failed to send data");
                 }

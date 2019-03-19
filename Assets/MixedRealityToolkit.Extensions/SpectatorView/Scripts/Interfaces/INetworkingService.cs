@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
 
     public interface INetworkingService
     {
-        bool SendData(byte[] data, NetworkPriority priority);
+        bool SendData(byte[] data, NetworkPriority priority = NetworkPriority.Default);
         event DataHandler DataReceived;
     }
 }
