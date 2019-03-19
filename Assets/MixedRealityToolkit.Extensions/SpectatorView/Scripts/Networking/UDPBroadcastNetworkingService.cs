@@ -45,6 +45,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
                 LastMessageTimestamp = LastMessageTimestamp;
             }
         }
+
+        class Message
+        {
+            public byte[] Data { get; internal set; }
+            public NetworkPriority Priority { get; internal set; }
+            public bool Sent { get; set; }
+            public Message(byte[] data, NetworkPriority priority)
+            {
+                Data = data;
+                Priority = priority;
+                Sent = false;
+            }
+        }
         #endregion
 
         [SerializeField] bool _useUdpBroadcastVisual;
@@ -66,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
         int _receiverPort;
         Dictionary<IPEndPoint, PlayerData> _receiverIpEndPoints;
 
-        byte[] _currentMessage = null;
+        Message _currentMessage = null;
         float _prevBroadcastTime = 0;
 
         void OnValidate()
@@ -115,7 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
                 if (_receiverUdp != null &&
                     _receiverUdp.Available > 0)
                 {
-                    Debug.Log("Received data: " + _receiverUdp.Available + " bytes");
                     IPEndPoint endPoint = null;
                     var rawData = _receiverUdp.Receive(ref endPoint);
 
@@ -124,6 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
                     {
                         playerData = new PlayerData();
                         _receiverIpEndPoints.Add(endPoint, playerData);
+                        Debug.Log("Received data from new player: " + playerData.ToString());
                         PlayerConnected?.Invoke(playerData.Id);
                     }
 
@@ -231,14 +244,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
             return _connected;
         }
 
-        public bool SendData(byte[] data)
+        public bool SendData(byte[] data, NetworkPriority priority)
         {
             if (!_connected)
             {
                 return false;
             }
 
-            _currentMessage = data;
+            if (_currentMessage != null &&
+                _currentMessage.Priority == NetworkPriority.Critical &&
+                !_currentMessage.Sent)
+            {
+                Debug.Log("Critical priority message not yet sent, unable to send new payload");
+                return false;
+            }
+
+            _currentMessage = new Message(data, priority);
             return true;
         }
 
@@ -246,20 +267,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
         {
             if (_broadcastIpEndPoints != null &&
                 _connected &&
-                _currentMessage != null)
+                _currentMessage != null &&
+                _currentMessage.Data != null)
             {
                 foreach (var endpoint in _broadcastIpEndPoints)
                 {
                     try
                     {
-                        if (_currentMessage.Length != _senderUdp.Send(_currentMessage, _currentMessage.Length, endpoint))
+                        if (_currentMessage.Data.Length != _senderUdp.Send(_currentMessage.Data, _currentMessage.Data.Length, endpoint))
                         {
-                            Debug.LogError("Failed to send payload (" + endpoint.Address.ToString() + ", " + endpoint.Port + "): " + _currentMessage.Length + " Bytes");
+                            Debug.LogError("Failed to send payload (" + endpoint.Address.ToString() + ", " + endpoint.Port + "): " + _currentMessage.Data.Length + " Bytes");
+                        }
+                        else
+                        {
+                            _currentMessage.Sent = true;
                         }
                     }
                     catch
                     {
-                        Debug.LogError("Exception thrown sending payload (" + endpoint.Address.ToString() + ", " + endpoint.Port + "): " + _currentMessage.Length + " Bytes");
+                        Debug.LogError("Exception thrown sending payload (" + endpoint.Address.ToString() + ", " + endpoint.Port + "): " + _currentMessage.Data.Length + " Bytes");
                     }
                 }
             }

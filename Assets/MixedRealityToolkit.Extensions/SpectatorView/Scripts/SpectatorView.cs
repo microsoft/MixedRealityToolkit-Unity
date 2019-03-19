@@ -11,9 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 {
     public class SpectatorView : MonoBehaviour
     {
-        public Matrix4x4 LocalOriginToSharedOrigin = Matrix4x4.identity;
-
-        [SerializeField] GameObject _sceneRoot;
         [SerializeField] MonoBehaviour MatchMakingService;
         [SerializeField] MonoBehaviour PlayerService;
         [SerializeField] MonoBehaviour NetworkingService;
@@ -23,6 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
         [SerializeField] MonoBehaviour RecordingServiceVisual;
         [SerializeField] List<MonoBehaviour> PlayerStateObservers;
 
+        public Matrix4x4 LocalOriginToSharedOrigin { get; set; }
+        public GameObject SceneRoot { get; set; }
         IMatchMakingService _matchMakingService;
         IPlayerService _playerService;
         INetworkingService _networkingService;
@@ -35,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 
         void OnValidate()
         {
+#if UNITY_EDITOR
             FieldHelper.ValidateType<IMatchMakingService>(MatchMakingService);
             FieldHelper.ValidateType<IPlayerService>(PlayerService);
             FieldHelper.ValidateType<INetworkingService>(NetworkingService);
@@ -47,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             {
                 FieldHelper.ValidateType<IPlayerStateObserver>(observer);
             }
+#endif
         }
 
         void Awake()
@@ -78,6 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 
         void Start()
         {
+            // Allow spectator view logic to exist across multiple scenes
+            DontDestroyOnLoad(gameObject);
+
             if (_validState)
             {
                 _networkingService.DataReceived += OnDataReceivedEvent;
@@ -126,10 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
         {
             if (_validState)
             {
-                // Make sure that root transform works by setting a 90 degree rotation along the y axis
-                _sceneRoot.transform.position = Vector3.zero;
-                _sceneRoot.transform.rotation = Quaternion.Euler(0, 90, 0);
-
                 if (!_matchMakingService.IsConnected())
                 {
                     // Setup the connection
@@ -148,8 +148,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
                 {
                     LocalOriginToSharedOrigin = localOriginToSharedOrigin;
 
-                    _sceneRoot.transform.position = LocalOriginToSharedOrigin.GetColumn(3);
-                    _sceneRoot.transform.rotation = Quaternion.LookRotation(LocalOriginToSharedOrigin.GetColumn(2), LocalOriginToSharedOrigin.GetColumn(1));
+                    if (SceneRoot != null)
+                    {
+                        SceneRoot.transform.position = LocalOriginToSharedOrigin.GetColumn(3);
+                        SceneRoot.transform.rotation = Quaternion.LookRotation(LocalOriginToSharedOrigin.GetColumn(2), LocalOriginToSharedOrigin.GetColumn(1));
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No Scene Root set, spectator view's shared origin transform wasn't applied to any content");
+                    }
                 }
             }
         }
