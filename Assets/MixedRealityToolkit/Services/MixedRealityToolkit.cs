@@ -939,8 +939,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 execute(system.Value);
             }
 
-            activeSystems.Clear();
-
             foreach (var service in registeredMixedRealityServices)
             {
                 execute(service.Item2);
