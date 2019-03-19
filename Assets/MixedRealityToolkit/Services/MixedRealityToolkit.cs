@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
@@ -960,7 +961,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // Update all registered runtime services before the core services
             foreach (var service in registeredMixedRealityServices)
             {
-                var extensionService = service.Item2 as IMixedRealityExtensionService;
+                var extensionService = service.Item2 as IMixedRealityDeviceManager;
                 if (extensionService != null)
                 {
                     extensionService.PreServiceUpdate();

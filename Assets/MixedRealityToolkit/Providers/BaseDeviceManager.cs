@@ -68,6 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
             return pointers.Count == 0 ? null : pointers.ToArray();
         }
 
-        public override void PreServiceUpdate() { }
+        public virtual void PreServiceUpdate() { }
     }
 }

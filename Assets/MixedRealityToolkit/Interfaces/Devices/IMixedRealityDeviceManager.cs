@@ -14,5 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
         /// </summary>
         /// <returns></returns>
         IMixedRealityController[] GetActiveControllers();
+
+        /// <summary>
+        /// Executes before any of the core services
+        /// </summary>
+        void PreServiceUpdate();
     }
 }
