@@ -20,8 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
         [SerializeField] MonoBehaviour RecordingServiceVisual;
         [SerializeField] List<MonoBehaviour> PlayerStateObservers;
 
-        [HideInInspector] public Matrix4x4 LocalOriginToSharedOrigin = Matrix4x4.identity;
-        [HideInInspector] public GameObject SceneRoot;
+        public Matrix4x4 LocalOriginToSharedOrigin { get; set; }
+        public GameObject SceneRoot { get; set; }
         IMatchMakingService _matchMakingService;
         IPlayerService _playerService;
         INetworkingService _networkingService;
