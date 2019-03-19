@@ -424,7 +424,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile.Configurations?.Length; i++)
                 {
                     var configuration = ActiveProfile.RegisteredServiceProvidersProfile.Configurations[i];
-                    RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile);
+
+                    if (typeof(IMixedRealityDataProvider).IsAssignableFrom(configuration.ComponentType.Type))
+                    {
+                        // todo: pass the service instance to the data provider
+                        RegisterService<IMixedRealityDataProvider>(configuration.ComponentType, configuration.RuntimePlatform, this, null, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile);
+
+                    }
+                    else if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
+                    {
+                        RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, this, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile);
+                    }
+                    else
+                    {
+                        // todo: unsupported type
+                    }
                 }
             }
 
@@ -709,10 +723,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if (!newInstanceBeingInitialized && !IsInitialized && !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
-            {
-                ConfirmInitialized();
-            }
+            // todo: trying something
+            //if (!newInstanceBeingInitialized && !IsInitialized && !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+            //{
+            //    ConfirmInitialized();
+            //}
         }
 #endif // UNITY_EDITOR
 
