@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         {
             foreach (var controller in ActiveControllers)
             {
-                controller.Value?.UpdateController();
+                controller.Value?.UpdateControllerInteractions();
             }
         }
 

@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                 if (controller != null)
                 {
                     controller.UpdateControllerTransform(interactionmanagerStates[i]);
-                    controller.UpdateController(interactionmanagerStates[i]);
+                    controller.UpdateControllerInteractions(interactionmanagerStates[i]);
                     MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                 }
             }
@@ -320,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
                 if (controller != null)
                 {
-                    controller.UpdateController(interactionmanagerStates[i]);
+                    controller.UpdateControllerInteractions(interactionmanagerStates[i]);
                 }
             }
 
@@ -491,7 +491,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                 MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
             }
 
-            controller?.UpdateController(args.state);
+            controller?.UpdateControllerInteractions(args.state);
         }
 
         /// <summary>

@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// <summary>
         /// Update the controller data from Unity's Input Manager
         /// </summary>
-        public virtual void UpdateController()
+        public virtual void UpdateControllerInteractions()
         {
             if (!Enabled) { return; }
 

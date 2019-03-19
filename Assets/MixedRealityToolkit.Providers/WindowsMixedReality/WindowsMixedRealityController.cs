@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// Update the controller data from the provided platform state
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        public void UpdateController(InteractionSourceState interactionSourceState)
+        public void UpdateControllerInteractions(InteractionSourceState interactionSourceState)
         {
             if (!Enabled) { return; }
 

@@ -32,8 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
 
         private static readonly Dictionary<int, UnityTouchController> ActiveTouches = new Dictionary<int, UnityTouchController>();
 
-        public override void PreServiceUpdate() { }
-
         /// <inheritdoc />
         public override void Update()
         {

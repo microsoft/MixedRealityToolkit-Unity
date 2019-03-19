@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         private Vector2 mouseDelta;
         private bool IsMousePresentAndVisible;
 
-        public void UpdateTransform()
+        public void UpdateControllerTransform()
         {
             IsMousePresentAndVisible = 
                 Input.mousePresent &&
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// <summary>
         /// Update controller.
         /// </summary>
-        public void Update()
+        public void UpdateControllerInteractions()
         {
             if (!IsMousePresentAndVisible)
             {

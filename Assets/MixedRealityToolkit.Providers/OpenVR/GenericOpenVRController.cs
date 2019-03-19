@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
         }
 
         /// <inheritdoc />
-        public override void UpdateController()
+        public override void UpdateControllerInteractions()
         {
             if (!Enabled) { return; }
 
@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
                 }
             }
 
-            base.UpdateController();
+            base.UpdateControllerInteractions();
         }
 
         /// <summary>
