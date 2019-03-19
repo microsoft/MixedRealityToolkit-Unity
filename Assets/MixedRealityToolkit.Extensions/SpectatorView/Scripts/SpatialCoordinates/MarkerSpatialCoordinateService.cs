@@ -450,13 +450,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordin
                     {
                         _cachedSelfSpectator.MarkerId = self.MarkerId;
 
-                        if (_cachedSelfSpectator.RequestingReset)
+                        if (_cachedSelfSpectator.RequestingReset &&
+                            !self.UserOriginToSpectatorMarker.Valid)
                         {
                             // The main user registered that we requested a reset
                             _cachedSelfSpectator.ResetTransformData();
                             _cachedSelfSpectator.RequestingReset = false;
                         }
-                        else if (self.UserOriginToSpectatorMarker.Valid)
+                        else if (!_cachedSelfSpectator.RequestingReset &&
+                            self.UserOriginToSpectatorMarker.Valid)
                         {
                             // Cache that the marker was located
                             _cachedSelfSpectator.UserOriginToSpectatorMarker = self.UserOriginToSpectatorMarker;
