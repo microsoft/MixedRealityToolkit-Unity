@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
@@ -16,8 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
     /// <summary>
     /// Class providing the default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
-    public class MixedRealitySpatialAwarenessSystem : BaseEventSystem, IMixedRealitySpatialAwarenessSystem
+    public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem
     {
+        public MixedRealitySpatialAwarenessSystem(IMixedRealityServiceRegistrar registrar) : base(registrar, null) // spatial awareness does not yet use a profile
+        { }
+
         #region IMixedRealityToolkit Implementation
 
         private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
@@ -59,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
             }
 
             // Get the collection of registered observers.
-            IReadOnlyList<IMixedRealitySpatialAwarenessObserver> services = MixedRealityToolkit.Instance.GetServices<IMixedRealitySpatialAwarenessObserver>();
+            IReadOnlyList<IMixedRealitySpatialAwarenessObserver> services = Registrar.GetServices<IMixedRealitySpatialAwarenessObserver>();
             for (int i = 0; i < services.Count; i++)
             {
                 observers.Add(services[i] as IMixedRealitySpatialAwarenessObserver);

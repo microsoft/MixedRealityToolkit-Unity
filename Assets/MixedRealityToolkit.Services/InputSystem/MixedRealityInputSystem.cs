@@ -16,14 +16,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 
 namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 {
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityInputSystem"/>
     /// </summary>
-    public class MixedRealityInputSystem : BaseEventSystem, IMixedRealityInputSystem
+    public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem
     {
+        public MixedRealityInputSystem(
+            IMixedRealityServiceRegistrar registrar,
+            MixedRealityInputSystemProfile profile) : base(registrar, profile) { }
+
         /// <inheritdoc />
         public event Action InputEnabled;
 
@@ -39,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         private IMixedRealityFocusProvider focusProvider = null;
 
         /// <inheritdoc />
-        public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = MixedRealityToolkit.Instance.GetService<IMixedRealityFocusProvider>());
+        public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = Registrar.GetService<IMixedRealityFocusProvider>());
 
         /// <inheritdoc />
         public IMixedRealityGazeProvider GazeProvider { get; private set; }
@@ -88,6 +93,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             bool addedComponents = false;
 
+            MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+            if (profile == null) { return; }
+
             if (!Application.isPlaying)
             {
                 var standaloneInputModules = UnityEngine.Object.FindObjectsOfType<StandaloneInputModule>();
@@ -125,15 +133,15 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 CameraCache.Main.gameObject.EnsureComponent<StandaloneInputModule>();
             }
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
+            if (profile == null)
             {
                 Debug.LogError("The Input system is missing the required Input System Profile!");
                 return;
             }
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile != null)
+            if (profile.InputActionRulesProfile != null)
             {
-                CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
+                CurrentInputActionRulesProfile = profile.InputActionRulesProfile;
             }
             else
             {
@@ -141,11 +149,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 return;
             }
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+            if (profile.PointerProfile != null)
             {
-                if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType?.Type != null)
+                if (profile.PointerProfile.GazeProviderType?.Type != null)
                 {
-                    GazeProvider = CameraCache.Main.gameObject.EnsureComponent(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+                    GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
                 }
                 else
                 {

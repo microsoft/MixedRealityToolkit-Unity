@@ -363,7 +363,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType) || InputSystem == null)
+                object[] args = { this, ActiveProfile.InputSystemProfile };
+
+                if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType, args: args) || InputSystem == null)
                 {
                     Debug.LogError("Failed to start the Input System!");
                 }
@@ -398,7 +400,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 #if UNITY_EDITOR                
                 LayerExtensions.SetupLayer(31, "Spatial Awareness");
 #endif
-                if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) && SpatialAwarenessSystem != null)
+                object[] args = { this }; // todo: add profile
+
+                if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType, args: args) && SpatialAwarenessSystem != null)
                 {
                     Debug.LogError("Failed to start the Spatial Awareness System!");
                 }
