@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
@@ -12,31 +14,34 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
     /// <summary>
     /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
-    public class MixedRealityDiagnosticsSystem : BaseEventSystem, IMixedRealityDiagnosticsSystem
+    public class MixedRealityDiagnosticsSystem : BaseCoreSystem, IMixedRealityDiagnosticsSystem
     {
+        public MixedRealityDiagnosticsSystem(
+            IMixedRealityServiceRegistrar registrar,
+            MixedRealityDiagnosticsProfile profile,
+            Transform playspace) : base(registrar, profile)
+        {
+            Playspace = playspace;
+        }
+
         /// <summary>
         /// The parent object under which all visualization game objects will be placed.
         /// </summary>
         private GameObject diagnosticVisualizationParent = null;
 
         /// <summary>
-        /// Creates the parent for diagnostic visualizations so that the scene hierarchy does not get overly cluttered.
+        /// Creates the diagnostic visualizations and parents them so that the scene hierarchy does not get overly cluttered.
         /// </summary>
-        /// <returns>
-        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which diagnostic visualizations will be parented.
-        /// </returns>
-        private GameObject CreateDiagnosticVisualizationParent()
+        private void CreateVisualizations()
         {
             diagnosticVisualizationParent = new GameObject("Diagnostics");
-            diagnosticVisualizationParent.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace.transform;
-            diagnosticVisualizationParent.SetActive(MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowDiagnostics);
+            diagnosticVisualizationParent.transform.parent = Playspace.transform;
+            diagnosticVisualizationParent.SetActive(ShowDiagnostics);
 
             // visual profiler settings
             visualProfiler = diagnosticVisualizationParent.AddComponent<MixedRealityToolkitVisualProfiler>();
             visualProfiler.WindowParent = diagnosticVisualizationParent.transform;
-            visualProfiler.IsVisible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowProfiler;
-
-            return diagnosticVisualizationParent;
+            visualProfiler.IsVisible = ShowProfiler;
         }
 
         private MixedRealityToolkitVisualProfiler visualProfiler = null;
@@ -48,13 +53,16 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         {
             if (!Application.isPlaying) { return; }
 
+            MixedRealityDiagnosticsProfile profile = ConfigurationProfile as MixedRealityDiagnosticsProfile;
+            if (profile == null) { return; }
+
             eventData = new DiagnosticsEventData(EventSystem.current);
 
             // Apply profile settings
-            ShowDiagnostics = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowDiagnostics;
-            ShowProfiler = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowProfiler;
+            ShowDiagnostics = profile.ShowDiagnostics;
+            ShowProfiler = profile.ShowProfiler;
 
-            diagnosticVisualizationParent = CreateDiagnosticVisualizationParent();
+            CreateVisualizations();
         }
 
         /// <inheritdoc />
@@ -79,6 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         #endregion IMixedRealityService
 
         #region IMixedRealityDiagnosticsSystem
+        /// <summary>
+        /// The transform of the playspace scene object. We use this transform to parent
+        /// diagnostic visualizations that teleport with the user and to perform calculations
+        /// to ensure proper alignment with the world.
+        /// </summary>
+        private Transform Playspace = null;
 
         private bool showDiagnostics;
 
