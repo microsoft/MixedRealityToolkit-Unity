@@ -24,12 +24,20 @@
     ],
     "resource": [
       {
-        "files": [ "External/ReadMeImages/**", "index.html"]
-      }
+        "files": ["index.html", "web/**"],
+      },
+      {
+        "files": [ "External/ReadMeImages/**"],
+      },
+    ],
+    "template": [
+        "default",
+        "templates/mrtk"
     ],
     "globalMetadata": {
       "_appTitle": "Mixed Reality Toolkit Documentation",
       "_enableSearch": true,
+	  "_disableNavbar": false,
 	  "_appLogoPath": "External/ReadMeImages/mrt_logo_icon.png",
 	  "_appFaviconPath": "External/ReadMeImages/favicon.ico"
     },
