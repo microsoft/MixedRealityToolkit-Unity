@@ -35,7 +35,7 @@ Examples:
 
 ```
 /// Links to MRTK internal class SystemType
-///<see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.SystemType"/>
+///<see cref="MRTKPrefix.Utilities.SystemType"/>
 
 /// Links to external API - link provided by xref service
 /// <see cref="System.Collections.Generic.ICollection{Type}.Contains"/>

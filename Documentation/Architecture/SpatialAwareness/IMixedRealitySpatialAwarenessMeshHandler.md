@@ -2,7 +2,7 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| Core | Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers |
+| Core | MRTKPrefix.SpatialAwareness |
 
 <img src="../../../External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialAwarenessMeshHandler.png">
 

@@ -14,7 +14,7 @@ MonoBehaviour:
   isCustomProfile: 0
   renderMotionControllers: 1
   controllerVisualizationType:
-    reference: Microsoft.MixedReality.Toolkit.SDK.UX.Controllers.MixedRealityControllerVisualizer,
+    reference: MRTKPrefix.Input.MixedRealityControllerVisualizer,
       Microsoft.MixedReality.Toolkit.SDK
   useDefaultModels: 0
   globalLeftHandModel: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,
