@@ -4,7 +4,7 @@ function createSharedTags()
 {
 	// get web root path
 	var scripts = document.getElementsByTagName("script");
-    var scriptPath = scripts[scripts.length-1].src;
+	var scriptPath = scripts[scripts.length-1].src;
 	var versionIndex = scriptPath.lastIndexOf('version/');
 	var rootDir = scriptPath;
 	if (versionIndex > 0)

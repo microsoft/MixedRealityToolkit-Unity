@@ -3,7 +3,7 @@ function createDropdown()
 {
 	// configurable values:
 	var defaultTitle = "mrtk_development"; 	// title in the dropdown for the root version of the docs
-	var versionArray = [""];	// list of all versions in the version folder
+	var versionArray = [];	// list of all versions in the version folder
 	
 	//--------------------------------------
 
@@ -19,7 +19,7 @@ function createDropdown()
 	
 	// get web root path
 	var script = document.getElementById('dropdownScript');
-    var scriptPath = script.src;
+	var scriptPath = script.src;
 	var versionIndex = scriptPath.lastIndexOf('version/');
 	var rootDir = scriptPath;
 	if (versionIndex > 0)
