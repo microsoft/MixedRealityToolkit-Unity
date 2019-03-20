@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
-using UPhysics = UnityEngine.Physics;
+using UnityPhysics = UnityEngine.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Teleport
 {
@@ -59,11 +59,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         [SerializeField]
         [Tooltip("Layers that are considered 'valid' for navigation")]
-        protected LayerMask ValidLayers = UPhysics.DefaultRaycastLayers;
+        protected LayerMask ValidLayers = UnityPhysics.DefaultRaycastLayers;
 
         [SerializeField]
         [Tooltip("Layers that are considered 'invalid' for navigation")]
-        protected LayerMask InvalidLayers = UPhysics.IgnoreRaycastLayer;
+        protected LayerMask InvalidLayers = UnityPhysics.IgnoreRaycastLayer;
 
         private Vector2 currentInputPosition = Vector2.zero;
 

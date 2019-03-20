@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
+namespace MRTKPrefix.Utilities.Editor
 {
     [CustomEditor(typeof(BezierDataProvider))]
     public class BezierDataProviderInspector : BaseLineDataProviderInspector

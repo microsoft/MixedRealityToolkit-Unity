@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
-namespace Microsoft.MixedReality.Toolkit.UnityInput.Input
+namespace MRTKPrefix.Input.UnityInput
 {
     /// <summary>
     /// Manages Touch devices using unity input system.

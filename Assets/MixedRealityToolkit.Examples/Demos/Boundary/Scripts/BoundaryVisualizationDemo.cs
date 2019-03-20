@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Boundary;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using UBoundary = UnityEngine.Experimental.XR.Boundary;
+using UnityBoundary = UnityEngine.Experimental.XR.Boundary;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
@@ -131,12 +131,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                     Material material = null;
                     // Check inscribed rectangle first
-                    if (MixedRealityToolkit.BoundarySystem.Contains(position, UBoundary.Type.PlayArea))
+                    if (MixedRealityToolkit.BoundarySystem.Contains(position, UnityBoundary.Type.PlayArea))
                     {
                         material = visualizationProfile.PlayAreaMaterial;
                     }
                     // Then check geometry
-                    else if (MixedRealityToolkit.BoundarySystem.Contains(position, UBoundary.Type.TrackedArea))
+                    else if (MixedRealityToolkit.BoundarySystem.Contains(position, UnityBoundary.Type.TrackedArea))
                     {
                         material = visualizationProfile.TrackedAreaMaterial;
                     }

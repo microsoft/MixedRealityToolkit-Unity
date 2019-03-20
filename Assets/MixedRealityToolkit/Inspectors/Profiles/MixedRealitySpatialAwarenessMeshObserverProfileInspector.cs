@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Editor.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness;
+using MRTKPrefix.Editor;
+using MRTKPrefix.Utilities.Editor;
+using MRTKPrefix.Utilities;
+using MRTKPrefix.WindowsMixedReality.SpatialAwareness;
 using UnityEditor;
 using UnityEngine;
 

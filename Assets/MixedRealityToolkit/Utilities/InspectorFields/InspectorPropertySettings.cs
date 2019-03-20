@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
+namespace MRTKPrefix.Utilities.Editor
 {
     /// <summary>
     /// A InspectorField property definition and value.

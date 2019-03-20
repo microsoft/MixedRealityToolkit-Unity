@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
+namespace MRTKPrefix.Utilities.Editor
 {
     /// <summary>
     /// Used to define an entire InputManagerAxis, with each variable defined by the same term the Inspector shows.

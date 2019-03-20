@@ -1,16 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Editor.Utilities;
-using Microsoft.MixedReality.Toolkit.UnityInput.Input;
+using MRTKPrefix.Input;
+using MRTKPrefix.Utilities;
+using MRTKPrefix.Utilities.Editor;
+using MRTKPrefix.Input.UnityInput;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using MRTKPrefix.Editor;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Input
+namespace MRTKPrefix.Input.Editor
 {
     [CustomEditor(typeof(MixedRealityControllerMappingProfile))]
     public class MixedRealityControllerMappingProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector

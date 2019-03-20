@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
+namespace MRTKPrefix.Utilities.Editor
 {
     [CustomEditor(typeof(ToolTipConnector))]
     public class ToolTipConnectorInspector : UnityEditor.Editor

@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Build
+namespace MRTKPrefix.Build.Editor
 {
     public class UwpBuildInfo : BuildInfo
     {

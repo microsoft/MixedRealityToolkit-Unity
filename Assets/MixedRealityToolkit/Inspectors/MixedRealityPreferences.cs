@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Editor.Utilities;
+using MRTKPrefix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 

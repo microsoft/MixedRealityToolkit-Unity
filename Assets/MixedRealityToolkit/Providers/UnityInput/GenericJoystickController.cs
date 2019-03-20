@@ -7,7 +7,7 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Devices;
 using UInput = UnityEngine.Input;
 
-namespace Microsoft.MixedReality.Toolkit.UnityInput.Input
+namespace MRTKPrefix.Input.UnityInput
 {
     [MixedRealityController(
         SupportedControllerType.GenericUnity,

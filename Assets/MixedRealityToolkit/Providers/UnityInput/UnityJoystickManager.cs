@@ -9,7 +9,7 @@ using System.Linq;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
-namespace Microsoft.MixedReality.Toolkit.UnityInput.Input
+namespace MRTKPrefix.Input.UnityInput
 {
     /// <summary>
     /// Manages joysticks using unity input system.

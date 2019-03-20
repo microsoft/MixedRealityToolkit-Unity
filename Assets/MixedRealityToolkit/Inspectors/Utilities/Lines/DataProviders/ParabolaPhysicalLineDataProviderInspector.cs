@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
+namespace MRTKPrefix.Utilities.Editor
 {
     [CustomEditor(typeof(ParabolaPhysicalLineDataProvider))]
     public class ParabolaPhysicalLineDataProviderInspector : BaseLineDataProviderInspector

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Editor.Utilities;
+using MRTKPrefix.Utilities.Editor;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -13,7 +13,7 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Build
+namespace MRTKPrefix.Build.Editor
 {
     /// <summary>
     /// Cross platform player build tools

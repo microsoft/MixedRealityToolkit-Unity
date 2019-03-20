@@ -498,7 +498,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.UnityInput.Input.MouseController,
+      reference: MRTKPrefix.Input.UnityInput.MouseController,
         Microsoft.MixedReality.Toolkit
     handedness: 7
     interactions:
@@ -633,7 +633,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.UnityInput.Input.UnityTouchController,
+      reference: MRTKPrefix.Input.UnityInput.UnityTouchController,
         Microsoft.MixedReality.Toolkit
     handedness: 7
     interactions:
@@ -677,7 +677,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.UnityInput.Input.XboxController,
+      reference: MRTKPrefix.Input.UnityInput.XboxController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
     interactions:

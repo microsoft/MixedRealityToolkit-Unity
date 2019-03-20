@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Editor.Utilities;
-using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
+using MRTKPrefix.Utilities.Editor;
+using MRTKPrefix.WindowsDevicePortal;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Build
+namespace MRTKPrefix.Build.Editor
 {
     public static class UwpBuildDeployPreferences
     {

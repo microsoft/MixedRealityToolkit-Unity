@@ -1,7 +1,7 @@
 ﻿using Microsoft.MixedReality.Toolkit.Teleport;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Teleport
+namespace MRTKPrefix.Teleport.Editor
 {
     [CustomEditor(typeof(ParabolicTeleportPointer))]
     public class ParabolicTeleportPointerInspector : TeleportPointerInspector

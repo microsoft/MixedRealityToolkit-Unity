@@ -1,15 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Editor.Utilities;
+using MRTKPrefix.Editor;
+using MRTKPrefix.Input;
+using MRTKPrefix.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Input
+namespace MRTKPrefix.Input.Editor
 {
     [CustomEditor(typeof(MixedRealityGesturesProfile))]
     public class MixedRealityGesturesProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector

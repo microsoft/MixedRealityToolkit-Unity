@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Utilities
+namespace MRTKPrefix.Utilities.Editor
 {
     [CustomEditor(typeof(ParabolaConstrainedLineDataProvider))]
     public class ParabolicConstrainedLineDataProviderInspector : BaseLineDataProviderInspector

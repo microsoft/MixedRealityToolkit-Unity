@@ -1,5 +1,5 @@
-﻿using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Editor.Utilities;
+﻿using MRTKPrefix.Input;
+using MRTKPrefix.Utilities.Editor;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 

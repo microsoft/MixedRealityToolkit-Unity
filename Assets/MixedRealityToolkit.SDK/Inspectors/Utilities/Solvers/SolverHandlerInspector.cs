@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.Utilities.Solvers
+namespace MRTKPrefix.Utilities.Editor.Solvers
 {
     [CustomEditor(typeof(SolverHandler))]
     [CanEditMultipleObjects]
