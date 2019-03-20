@@ -143,6 +143,27 @@ toc.yml files can be used for structuring and there can be any amount of those f
 <td>Images</td> <td>External/ReadMeImages/</td>
 </tr>
 </table>
+<h2 id="releasing-a-new-version">Releasing a new version</h2>
+<p>Multiple versions of developer docs are supported and can be switched by the version drop down in the top menu bar. If you're releasing a new version perform the following steps to have your version on the developer docs page.</p>
+<ol>
+<li>Optional: Adjusting your docfx.json
+Depending on whether you want to have the &quot;Improve this doc&quot; to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:</li>
+</ol>
+<pre><code> &quot;_gitContribute&quot;: {
+        &quot;repo&quot;: &quot;https://github.com/Microsoft/MixedRealityToolkit-Unity.git&quot;,
+        &quot;branch&quot;: &quot;mrtk_development&quot;
+      }
+</code></pre>
+<p>If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.</p>
+<ol start="2">
+<li>create your docfx docs by calling docfx docfx.json in the root of the repo</li>
+<li>create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder</li>
+<li>add your version number into the versionArray in web/version.js</li>
+<li>push the modified version.js to mrtk_development branch and the changes in gh-pages branch</li>
+</ol>
+<p>CI will pick up the changes done to the version.js file and update the version dropdown automatically.</p>
+<h3 id="supporting-development-branches-on-ci">Supporting development branches on CI</h3>
+<p>The versioning system can also be used for showing doc versions from other dev branches that are built by CI. When setting up CI for one of those branches make sure your powershell script on CI copies the contents of the generated docfx output into a version folder named after your branch and add the corresponding version entry into the web/version.js file.</p>
 <h2 id="good-practices-for-developers">Good practices for developers</h2>
 <ul>
 <li>Use <strong>relative paths</strong> whenever referring to MRTK internal pages</li>
