@@ -130,21 +130,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 Debug.Assert(renderedProfile != null);
                 Debug.Assert(profile != null, "No profile was set in OnEnable. Did you forget to call base.OnEnable in a derived profile class?");
 
-                if (!renderedProfile.IsCustomProfile && profile.IsCustomProfile)
+                if (GUILayout.Button(new GUIContent("Clone", "Replace with a copy of the default profile."), EditorStyles.miniButton, GUILayout.Width(42f)))
                 {
-                    if (GUILayout.Button(new GUIContent("Clone", "Replace with a copy of the default profile."), EditorStyles.miniButton, GUILayout.Width(42f)))
-                    {
-                        profileToCopy = renderedProfile;
-                        var profileTypeName = property.objectReferenceValue.GetType().Name;
-                        Debug.Assert(profileTypeName != null, "No Type Found");
-
-                        ScriptableObject instance = CreateInstance(profileTypeName);
-                        var newProfile = instance.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject)) as BaseMixedRealityProfile;
-                        property.objectReferenceValue = newProfile;
-                        property.serializedObject.ApplyModifiedProperties();
-                        PasteProfileValuesDelay(newProfile);
-                        changed = true;
-                    }
+                    MixedRealityProfileCloneWindow.OpenWindow(profile, renderedProfile, property);
                 }
             }
             
