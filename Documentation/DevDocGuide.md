@@ -86,7 +86,7 @@ Currently there's a definition for the following resource types:
 Multiple versions of developer docs are supported and can be switched by the version drop down in the top menu bar. If you're releasing a new version perform the following steps to have your version on the developer docs page.
 
 1. Optional: Adjusting your docfx.json 
-Depending on whether you want to have the "Improve this doc" to point to a specific version of the github repo you will have to add the following entry to the docfx.json file before calling the docfx command.
+Depending on whether you want to have the "Improve this doc" to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:
 
 ```
  "_gitContribute": {
