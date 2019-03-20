@@ -13,22 +13,6 @@
     </div>
   
   <div class="version-dropdown" id="versionDropdown">
-	<script>
-		// include dropdown script
-		var imported = document.createElement('script');
-		imported.src = '{{_rel}}web/version.js';
-		document.head.appendChild(imported);
-		
-		// include dropdown css
-		var head  = document.getElementsByTagName('head')[0];
-		var link  = document.createElement('link');
-		//link.id   = cssId;
-		link.rel  = 'stylesheet';
-		link.type = 'text/css';
-		link.href = '{{_rel}}web/version.css';
-		link.media = 'all';
-		head.appendChild(link);
-	</script>
    </div>
  
   <div class="collapse navbar-collapse" id="navbar">
