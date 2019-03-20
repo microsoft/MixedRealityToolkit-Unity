@@ -18,12 +18,12 @@ function createDropdown()
 	versionDropDiv.appendChild(innerDiv);
 
 	// create default
-	createEntry(innerDiv, defaultTitle, "/README.html");
+	createEntry(innerDiv, defaultTitle, "../README.html");
 	
 	// create version entries
 	for (i = 0; i<versionArray.length; i++) 
 	{ 
-		createEntry(innerDiv, versionArray[i], "/version/"+versionArray[i]+"/README.html");
+		createEntry(innerDiv, versionArray[i], "../version/"+versionArray[i]+"/README.html");
 	}
 }
 
