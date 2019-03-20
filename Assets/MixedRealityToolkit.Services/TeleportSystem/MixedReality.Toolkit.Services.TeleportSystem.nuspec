@@ -4,7 +4,6 @@
     <id>Microsoft.MixedReality.Toolkit.Unity.Services.TeleportSystem</id>
     <version>$version$</version>
     <authors>Microsoft</authors>
-    <owners>Microsoft</owners>
     <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
     <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
