@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
     /// <summary>
     /// Base class for Mixed Reality Line Renderers.
     /// </summary>
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public abstract class BaseMixedRealityLineRenderer : MonoBehaviour
     {
         [SerializeField]
@@ -138,6 +138,27 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
         [Tooltip("Number of steps to interpolate along line in Interpolated step mode")]
         private int lineStepCount = 16;
 
+        [SerializeField]
+        [Tooltip("Method for distributing rendered points along line. Auto lets the implementation decide. None means normalized distribution. DistanceSingleValue ensures uniform distribution. DistanceCurveValue enables custom distribution.")]
+        private PointDistributionMode pointDistributionMode = PointDistributionMode.Auto;
+
+        /// <summary>
+        /// Method for distributing rendered points along line.
+        /// </summary>
+        public PointDistributionMode PointDistributionMode
+        {
+            get { return pointDistributionMode; }
+            set { pointDistributionMode = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Minimum distance between points distributed along curve. Used when PointDistributionMode is set to DistanceSingleValue. Total points capped by LineStepCount.")]
+        private float customPointDistributionLength = 0.1f;
+
+        [SerializeField]
+        [Tooltip("Custom function for distribing points along curve.Used when DistanceCurveValue is set to Distance. Total points set by LineStepCount.")]
+        private AnimationCurve customPointDistributionCurve = AnimationCurve.Linear(0,0,1,1);
+
         /// <summary>
         /// Number of steps to interpolate along line in Interpolated step mode
         /// </summary>
@@ -177,7 +198,35 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             return lineWidth.Evaluate(Mathf.Repeat(normalizedLength + widthOffset, 1f)) * widthMultiplier;
         }
 
-        public virtual void Update()
+        protected virtual float GetNormalizedPointAlongLine(int stepNum)
+        {
+            float normalizedDistance = 0;
+
+            switch (pointDistributionMode)
+            {
+                case PointDistributionMode.None:
+                case PointDistributionMode.Auto:
+                    // Normalized length along line
+                    normalizedDistance = (1f / (LineStepCount - 1)) * stepNum;
+                    break;
+
+                case PointDistributionMode.DistanceCurveValue:
+                    // Use curve to interpret value
+                    normalizedDistance = (1f / (LineStepCount - 1)) * stepNum;
+                    normalizedDistance = customPointDistributionCurve.Evaluate(normalizedDistance);
+                    break;
+
+                case PointDistributionMode.DistanceSingleValue:
+                    // Get the normalized distance along curve
+                    float totalWorldLength = customPointDistributionLength * stepNum;
+                    normalizedDistance = lineDataSource.GetNormalizedLengthFromWorldLength(totalWorldLength);
+                    break;
+            }
+
+            return normalizedDistance;
+        }
+
+        private void LateUpdate()
         {
             UpdateLine();
         }

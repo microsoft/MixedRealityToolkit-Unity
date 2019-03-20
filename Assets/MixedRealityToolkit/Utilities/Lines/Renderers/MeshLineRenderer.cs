@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             lineMaterial.enableInstancing = true;
         }
 
-        private void LateUpdate()
+        protected override void UpdateLine()
         {
             if (LineDataSource.enabled)
             {                
