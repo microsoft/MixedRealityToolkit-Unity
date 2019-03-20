@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
         [SerializeField] InputField _serverPortInputField;
         [SerializeField] InputField _clientPortInputField;
         [SerializeField] Text _errorText;
-        [SerializeField] int _defaultServerPort = 49998;
-        [SerializeField] int _defaultClientPort = 49999;
+        [SerializeField] int _defaultServerPort = 48888;
+        [SerializeField] int _defaultClientPort = 48889;
         
         public event UDPBroadcastConnectHandler OnConnect;
 
