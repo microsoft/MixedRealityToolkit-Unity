@@ -942,7 +942,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
                     // If the source lost is the gaze input source, then reset it.
-                    if (eventData.InputSource.SourceId == MixedRealityToolkit.InputSystem.GazeProvider.GazeInputSource.SourceId)
+                    if (eventData.InputSource.SourceId == ((IMixedRealityInputSystem)Service).GazeProvider.GazeInputSource.SourceId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;
