@@ -9,7 +9,7 @@ This new version of the MixedRealityToolkit aims to further extend the capabilit
 
 The vNext branch is taking all the best lessons learned from the original Mixed Reality Toolkit and refactoring / restructuring it to both:
 
-* Support a wider audience, allowing solutions to be built that will run on multiple VR / AR / XR platforms such as Mixed Reality,  Steam/Open VR and OpenXR (initially)
+* Support a wider audience, allowing solutions to be built that will run on multiple VR / AR / XR platforms, starting with Windows Mixed Reality and OpenVR.
 
 * Provide an easier to use SDK, to enable rapid prototyping and ease adoption for new users (or users of previous frameworks)
 
@@ -45,13 +45,12 @@ Deep dive into project plan and learn how you can contribute to MRTK in our [wik
 | `mrtk_development` |[![Build status](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_apis/build/status/public/mrtk_development-CI)](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/latest?definitionId=1)|
 
 # Feature areas
-The Mixed Reality Toolkit vNext will includes many APIs to accelerate the development of MR / XR / VR / AR projects for a range of supported devices, including (but not limited to)
+The Mixed Reality Toolkit vNext will includes many APIs to accelerate the development of MR / XR / VR / AR projects for a range of supported devices, starting with
 
  - Microsoft HoloLens
  - Microsoft Immersive headsets (IHMD)
- - Steam VR (HTC Vive / Oculus Rift)
- - OpenXR platforms
-
+ - OpenVR (HTC Vive / Oculus Rift)
+ 
  # Required Software
 | [![Windows 10 Creators Update](External/ReadMeImages/MRTK170802_Short_17.png)](https://www.microsoft.com/software-download/windows10) [Windows 10 FCU](https://www.microsoft.com/software-download/windows10)| [![Unity](External/ReadMeImages/MRTK170802_Short_18.png)](https://unity3d.com/get-unity/download/archive) [Unity 3D](https://unity3d.com/get-unity/download/archive)| [![Visual Studio 2017](External/ReadMeImages/MRTK170802_Short_19.png)](http://dev.windows.com/downloads) [Visual Studio 2017](http://dev.windows.com/downloads)| [![Simulator (optional)](External/ReadMeImages/MRTK170802_Short_20.png)](https://go.microsoft.com/fwlink/?linkid=852626) [Simulator (optional)](https://go.microsoft.com/fwlink/?linkid=852626)|
 | :--- | :--- | :--- | :--- |
