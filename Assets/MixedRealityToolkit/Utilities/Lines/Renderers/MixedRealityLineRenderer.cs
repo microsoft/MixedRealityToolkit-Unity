@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
                 }
                 else
                 {
-                    float normalizedDistance = (1f / (LineStepCount - 1)) * i;
+                    float normalizedDistance = GetNormalizedPointAlongLine(i);
                     positions[i] = lineDataSource.GetPoint(normalizedDistance);
                 }
             }
