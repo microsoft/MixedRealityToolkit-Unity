@@ -22,7 +22,6 @@
 		// include dropdown css
 		var head  = document.getElementsByTagName('head')[0];
 		var link  = document.createElement('link');
-		//link.id   = cssId;
 		link.rel  = 'stylesheet';
 		link.type = 'text/css';
 		link.href = '{{_rel}}web/version.css';
