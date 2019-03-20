@@ -12,7 +12,7 @@
     <releaseNotes>$releaseNotes$</releaseNotes>
     <tags>Unity MixedReality</tags>
     <dependencies>
-      <dependency id="Microsoft.MixedReality.Toolkit.SDK" version="$version$" />
+      <dependency id="Microsoft.MixedReality.Toolkit.Unity.SDK" version="$version$" />
     </dependencies>
   </metadata>
 </package>
