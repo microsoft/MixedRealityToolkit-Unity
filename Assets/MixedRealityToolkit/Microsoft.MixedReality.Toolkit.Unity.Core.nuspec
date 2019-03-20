@@ -5,7 +5,7 @@
     <version>$version$</version>
     <authors>Microsoft</authors>
     <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
-    <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
+    <projectUrl>https://aka.ms/mrtk</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>The Mixed Reality Toolkit Core provides type defintions and core components used by all MRTK based applications.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>

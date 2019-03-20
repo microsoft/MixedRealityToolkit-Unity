@@ -5,7 +5,7 @@
     <version>$version$</version>
     <authors>Microsoft</authors>
     <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
-    <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
+    <projectUrl>https://aka.ms/mrtk</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>The Mixed Reality Toolkit Diagnostics System provides support for in-app diagnostics for your mixed reality applications.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>

@@ -5,7 +5,7 @@
     <version>$version$</version>
     <authors>Microsoft</authors>
     <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/License.txt</licenseUrl>
-    <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
+    <projectUrl>https://aka.ms/mrtk</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Assets layering on the Mixed Reality Toolkit to ease application development.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
