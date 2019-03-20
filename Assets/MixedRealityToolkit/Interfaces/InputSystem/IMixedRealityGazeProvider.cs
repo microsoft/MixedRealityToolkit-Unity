@@ -26,6 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         IMixedRealityPointer GazePointer { get; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        GameObject GazeCursorPrefab { get; set; }
+
+        /// <summary>
         /// The Gaze Cursor for the provider.
         /// </summary>
         IMixedRealityCursor GazeCursor { get; }
