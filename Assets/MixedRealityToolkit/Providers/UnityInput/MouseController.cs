@@ -6,7 +6,7 @@ using MRTKPrefix.Utilities;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
-namespace MRTKPrefix.UnityInput.Input
+namespace MRTKPrefix.Input.UnityInput
 {
     /// <summary>
     /// Manages the mouse using unity input system.

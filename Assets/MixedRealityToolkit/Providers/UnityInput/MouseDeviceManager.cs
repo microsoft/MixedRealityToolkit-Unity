@@ -7,7 +7,7 @@ using MRTKPrefix.Utilities;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
-namespace MRTKPrefix.UnityInput.Input
+namespace MRTKPrefix.Input.UnityInput
 {
     [MixedRealityDataProvider(typeof(IMixedRealityInputSystem), (SupportedPlatforms)(-1))]  // All platforms supported by Unity
     public class MouseDeviceManager : BaseDeviceManager, IMixedRealityExtensionService

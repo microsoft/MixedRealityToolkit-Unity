@@ -3,7 +3,7 @@
 
 using MRTKPrefix.Devices;
 using MRTKPrefix.Input;
-using MRTKPrefix.UnityInput.Input;
+using MRTKPrefix.Input.UnityInput;
 using MRTKPrefix.Utilities;
 using System.Collections.Generic;
 using UnityEngine;

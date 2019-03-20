@@ -7,7 +7,7 @@ using UnityEngine;
 using MRTKPrefix.Devices;
 using UInput = UnityEngine.Input;
 
-namespace MRTKPrefix.UnityInput.Input
+namespace MRTKPrefix.Input.UnityInput
 {
     [MixedRealityController(
         SupportedControllerType.GenericUnity,

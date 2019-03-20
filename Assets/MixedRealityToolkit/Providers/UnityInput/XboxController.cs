@@ -5,7 +5,7 @@ using MRTKPrefix.Input;
 using MRTKPrefix.Utilities;
 using UnityEngine;
 
-namespace MRTKPrefix.UnityInput.Input
+namespace MRTKPrefix.Input.UnityInput
 {
     /// <summary>
     /// Xbox Controller using Unity Input System

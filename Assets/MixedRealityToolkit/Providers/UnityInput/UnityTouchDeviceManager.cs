@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
-namespace MRTKPrefix.UnityInput.Input
+namespace MRTKPrefix.Input.UnityInput
 {
     /// <summary>
     /// Manages Touch devices using unity input system.

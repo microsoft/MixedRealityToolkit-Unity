@@ -15,7 +15,7 @@ MonoBehaviour:
   isCustomProfile: 0
   configurations:
   - componentType:
-      reference: MRTKPrefix.UnityInput.Input.UnityJoystickManager,
+      reference: MRTKPrefix.Input.UnityInput.UnityJoystickManager,
         Microsoft.MixedReality.Toolkit
     componentName: Unity Joystick Manager
     priority: 10
@@ -50,7 +50,7 @@ MonoBehaviour:
     runtimePlatform: 9
     configurationProfile: {fileID: 0}
   - componentType:
-      reference: MRTKPrefix.UnityInput.Input.UnityTouchDeviceManager,
+      reference: MRTKPrefix.Input.UnityInput.UnityTouchDeviceManager,
         Microsoft.MixedReality.Toolkit
     componentName: Unity Touch Input Manger
     priority: 10

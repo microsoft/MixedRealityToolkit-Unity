@@ -4,7 +4,7 @@
 using MRTKPrefix.Input;
 using MRTKPrefix.Utilities;
 using MRTKPrefix.Utilities.Editor;
-using MRTKPrefix.UnityInput.Input;
+using MRTKPrefix.Input.UnityInput;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
