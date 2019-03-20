@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Microsoft.MixedReality.Toolkit.Unity.Services.InputSystem</id>
+    <id>Microsoft.MixedReality.Toolkit.Unity.Services.DiagnosticsSystem</id>
     <version>$version$</version>
     <authors>Microsoft</authors>
     <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
-    <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
+    <projectUrl>https://aka.ms/mrtk</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>The Mixed Reality Toolkit Input System provides support for controller and hand input in your mixed reality applications.</description>
+    <description>The Mixed Reality Toolkit Diagnostics System provides support for in-app diagnostics for your mixed reality applications.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
-    <tags>MRTK MixedRealityToolkit Unity MixedReality Input Controller Hand</tags>
+    <tags>MRTK MixedRealityToolkit Unity MixedReality Diagnostics Profiler</tags>
   </metadata>
 </package>

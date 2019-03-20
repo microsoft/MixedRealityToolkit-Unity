@@ -5,7 +5,7 @@
     <version>$version$</version>
     <authors>Microsoft</authors>
     <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
-    <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
+    <projectUrl>https://aka.ms/mrtk</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>The Mixed Reality Toolkit Windows Mixed Reality package enables mixed reality applications to target the Windows Mixed Reality platform and devices, including Microsoft HoloLens and immersive devices.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
