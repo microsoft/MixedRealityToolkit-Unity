@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using MRTKPrefix.Utilities;
-using MRTKPrefix.Editor.Utilities;
+using MRTKPrefix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 #endif

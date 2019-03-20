@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using MRTKPrefix.Editor;
-using MRTKPrefix.Editor.Utilities;
+using MRTKPrefix.Utilities.Editor;
 using MRTKPrefix.Utilities;
 using MRTKPrefix.WindowsMixedReality.SpatialAwareness;
 using UnityEditor;

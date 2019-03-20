@@ -13,7 +13,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 #if UNITY_EDITOR
-using MRTKPrefix.Editor.Input;
+using MRTKPrefix.Input.Editor;
 #endif
 
 namespace MRTKPrefix

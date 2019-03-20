@@ -2,12 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using MRTKPrefix.Boundary;
+using MRTKPrefix.Editor;
 using MRTKPrefix.Utilities;
-using MRTKPrefix.Editor.Utilities;
+using MRTKPrefix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Boundary
+namespace MRTKPrefix.Boundary.Editor
 {
     [CustomEditor(typeof(MixedRealityBoundaryVisualizationProfile))]
     public class MixedRealityBoundaryVisualizationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector

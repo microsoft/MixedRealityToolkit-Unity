@@ -3,14 +3,15 @@
 
 using MRTKPrefix.Input;
 using MRTKPrefix.Utilities;
-using MRTKPrefix.Editor.Utilities;
+using MRTKPrefix.Utilities.Editor;
 using MRTKPrefix.UnityInput.Input;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using MRTKPrefix.Editor;
 
-namespace MRTKPrefix.Editor.Input
+namespace MRTKPrefix.Input.Editor
 {
     [CustomEditor(typeof(MixedRealityControllerMappingProfile))]
     public class MixedRealityControllerMappingProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector

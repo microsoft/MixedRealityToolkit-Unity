@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using MRTKPrefix.Utilities;
 
-namespace MRTKPrefix.Editor.Utilities
+namespace MRTKPrefix.Utilities.Editor
 {
     [CustomEditor( typeof(BaseObjectCollection), true )]
     public class BaseCollectionInspector : UnityEditor.Editor

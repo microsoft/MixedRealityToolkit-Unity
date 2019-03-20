@@ -6,7 +6,7 @@ using MRTKPrefix.Utilities;
 using System;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Input
+namespace MRTKPrefix.Input.Editor
 {
     /// <summary>
     /// Used to aid in layout of Controller Input Actions.

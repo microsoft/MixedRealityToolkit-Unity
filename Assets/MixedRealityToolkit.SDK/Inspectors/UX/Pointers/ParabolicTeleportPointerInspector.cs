@@ -1,7 +1,7 @@
 ﻿using MRTKPrefix.Teleport;
 using UnityEditor;
 
-namespace MRTKPrefix.Editor.Teleport
+namespace MRTKPrefix.Teleport.Editor
 {
     [CustomEditor(typeof(ParabolicTeleportPointer))]
     public class ParabolicTeleportPointerInspector : TeleportPointerInspector

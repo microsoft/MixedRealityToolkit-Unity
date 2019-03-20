@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Editor.Input;
+using MRTKPrefix.Input.Editor;
 using MRTKPrefix.Input;
 using NUnit.Framework;
 

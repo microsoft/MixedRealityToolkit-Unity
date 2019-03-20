@@ -3,8 +3,8 @@
 
 using MRTKPrefix.Input;
 using MRTKPrefix.Utilities;
-using MRTKPrefix.Editor.Input;
-using MRTKPrefix.Editor.Utilities;
+using MRTKPrefix.Input.Editor;
+using MRTKPrefix.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.IO;

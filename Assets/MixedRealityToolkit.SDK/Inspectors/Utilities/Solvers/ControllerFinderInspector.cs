@@ -5,7 +5,7 @@ using MRTKPrefix.Utilities.Solvers;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Utilities.Solvers
+namespace MRTKPrefix.Utilities.Editor.Solvers
 {
     [CustomEditor(typeof(ControllerFinder))]
     public abstract class ControllerFinderInspector : UnityEditor.Editor

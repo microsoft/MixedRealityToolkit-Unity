@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 
-namespace MRTKPrefix.Editor.Build
+namespace MRTKPrefix.Build.Editor
 {
     public static class BuildInfoExtensions
     {

@@ -5,7 +5,7 @@ using MRTKPrefix.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Utilities
+namespace MRTKPrefix.Utilities.Editor
 {
     [CustomEditor(typeof(RectangleLineDataProvider))]
     public class RectangleLineDataProviderInspector : BaseLineDataProviderInspector

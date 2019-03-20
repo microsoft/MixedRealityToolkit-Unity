@@ -4,7 +4,7 @@
 using MRTKPrefix.Utilities;
 using UnityEditor;
 
-namespace MRTKPrefix.Editor.Utilities
+namespace MRTKPrefix.Utilities.Editor
 {
     [CustomEditor(typeof(ParabolaPhysicalLineDataProvider))]
     public class ParabolaPhysicalLineDataProviderInspector : BaseLineDataProviderInspector

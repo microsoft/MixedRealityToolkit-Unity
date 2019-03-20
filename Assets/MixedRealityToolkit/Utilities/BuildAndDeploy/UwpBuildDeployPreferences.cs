@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Editor.Utilities;
+using MRTKPrefix.Utilities.Editor;
 using MRTKPrefix.WindowsDevicePortal;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Build
+namespace MRTKPrefix.Build.Editor
 {
     public static class UwpBuildDeployPreferences
     {

@@ -5,7 +5,7 @@ using MRTKPrefix.Input;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Input
+namespace MRTKPrefix.Input.Editor
 {
     [CustomPropertyDrawer(typeof(SpeechCommands))]
     public class SpeechCommandPropertyDrawer : PropertyDrawer

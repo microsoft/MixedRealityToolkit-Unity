@@ -2,10 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using MRTKPrefix.Diagnostics;
-using MRTKPrefix.Editor.Utilities;
+using MRTKPrefix.Editor;
+using MRTKPrefix.Utilities.Editor;
 using UnityEditor;
 
-namespace MRTKPrefix.Editor.Diagnostics
+namespace MRTKPrefix.Diagnostics.Editor
 {
     [CustomEditor(typeof(MixedRealityDiagnosticsProfile))]
     public class MixedRealityDiagnosticsSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector

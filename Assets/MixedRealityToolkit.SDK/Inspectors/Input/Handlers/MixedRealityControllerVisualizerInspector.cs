@@ -4,7 +4,7 @@
 using MRTKPrefix.Input;
 using UnityEditor;
 
-namespace MRTKPrefix.Editor.Input
+namespace MRTKPrefix.Input.Editor
 {
     [CustomEditor(typeof(MixedRealityControllerVisualizer))]
     public class MixedRealityControllerVisualizerInspector : ControllerPoseSynchronizerInspector { }

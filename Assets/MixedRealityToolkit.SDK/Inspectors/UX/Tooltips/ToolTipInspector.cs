@@ -5,7 +5,7 @@ using MRTKPrefix.UI;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Editor.Utilities
+namespace MRTKPrefix.Utilities.Editor
 {
     [CustomEditor(typeof(ToolTip))]
     public class ToolTipInspector : UnityEditor.Editor

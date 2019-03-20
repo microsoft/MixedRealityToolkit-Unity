@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEngine;
 
 #if UNITY_EDITOR
-using MRTKPrefix.Editor.Utilities;
+using MRTKPrefix.Utilities.Editor;
 using UnityEditor;
 #endif
 

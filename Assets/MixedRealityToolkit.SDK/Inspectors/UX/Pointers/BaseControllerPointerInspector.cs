@@ -4,7 +4,7 @@
 using MRTKPrefix.Input;
 using UnityEditor;
 
-namespace MRTKPrefix.Editor.Input
+namespace MRTKPrefix.Input.Editor
 {
     [CustomEditor(typeof(BaseControllerPointer))]
     public class BaseControllerPointerInspector : ControllerPoseSynchronizerInspector

@@ -2,13 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using MRTKPrefix.Input;
-using MRTKPrefix.Editor.Utilities;
+using MRTKPrefix.Utilities.Editor;
 using MRTKPrefix.Utilities;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using MRTKPrefix.Editor;
 
-namespace MRTKPrefix.Editor.Input
+namespace MRTKPrefix.Input.Editor
 {
     [CustomEditor(typeof(MixedRealityPointerProfile))]
     public class MixedRealityPointerProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
