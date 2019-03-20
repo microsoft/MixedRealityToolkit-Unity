@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Input.Editor
+namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     [CustomPropertyDrawer(typeof(SpeechCommands))]
     public class SpeechCommandPropertyDrawer : PropertyDrawer

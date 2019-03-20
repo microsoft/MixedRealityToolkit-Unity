@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Input.Editor
+namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     [CustomPropertyDrawer(typeof(MixedRealityInputAction))]
     public class InputActionPropertyDrawer : PropertyDrawer

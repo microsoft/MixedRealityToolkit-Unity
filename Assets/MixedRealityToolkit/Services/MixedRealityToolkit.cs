@@ -13,7 +13,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 #if UNITY_EDITOR
-using MRTKPrefix.Input.Editor;
+using Microsoft.MixedReality.Toolkit.Input.Editor;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit

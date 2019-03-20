@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities.Editor;
-using MRTKPrefix.UI.TypeResolution;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.UI.TypeResolution;
 using System;
 using System.Collections.Generic;
 using System.Reflection;

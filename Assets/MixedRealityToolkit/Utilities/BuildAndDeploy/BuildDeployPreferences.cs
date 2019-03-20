@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MRTKPrefix.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Build.Editor
+namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
     /// <summary>
     /// Build and Deploy Specific Editor Preferences for the Build and Deploy Window.

@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 
-namespace MRTKPrefix.Input.Editor
+namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     /// <summary>
     /// Used to aid in layout of Controller Input Actions.

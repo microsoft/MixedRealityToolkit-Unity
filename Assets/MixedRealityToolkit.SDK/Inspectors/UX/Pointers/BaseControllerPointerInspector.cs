@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEditor;
 
-namespace MRTKPrefix.Input.Editor
+namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     [CustomEditor(typeof(BaseControllerPointer))]
     public class BaseControllerPointerInspector : ControllerPoseSynchronizerInspector

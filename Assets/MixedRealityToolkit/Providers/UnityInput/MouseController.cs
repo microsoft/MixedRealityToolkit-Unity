@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
-namespace MRTKPrefix.Input.UnityInput
+namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
     /// <summary>
     /// Manages the mouse using unity input system.

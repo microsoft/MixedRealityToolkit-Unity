@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using MRTKPrefix.Diagnostics;
-using MRTKPrefix.Editor;
-using MRTKPrefix.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Diagnostics;
+using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 
-namespace MRTKPrefix.Diagnostics.Editor
+namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 {
     [CustomEditor(typeof(MixedRealityDiagnosticsProfile))]
     public class MixedRealityDiagnosticsSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector

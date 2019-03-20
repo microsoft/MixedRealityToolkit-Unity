@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace MRTKPrefix.Utilities.Editor
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [InitializeOnLoad]
     public class EditorProjectUtilities

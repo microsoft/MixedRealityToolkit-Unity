@@ -4,8 +4,8 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
-using MRTKPrefix.Utilities;
-using MRTKPrefix.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 #endif

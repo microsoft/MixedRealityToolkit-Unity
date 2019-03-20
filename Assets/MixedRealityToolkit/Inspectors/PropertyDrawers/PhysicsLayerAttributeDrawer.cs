@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Physics.Editor
+namespace Microsoft.MixedReality.Toolkit.Physics.Editor
 {
     /// <summary>
     /// Renders the physics layer dropdown based on the current layers set in the Tag Manager.

@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEngine;
 
 #if UNITY_EDITOR
-using MRTKPrefix.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 #endif
 

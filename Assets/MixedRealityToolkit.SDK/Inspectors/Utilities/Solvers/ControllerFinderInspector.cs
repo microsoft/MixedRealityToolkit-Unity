@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTKPrefix.Utilities.Editor.Solvers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {
     [CustomEditor(typeof(ControllerFinder))]
     public abstract class ControllerFinderInspector : UnityEditor.Editor
