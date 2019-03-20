@@ -364,13 +364,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 #endif
 
                 object[] args = { this, ActiveProfile.InputSystemProfile };
-
                 if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType, args: args) || InputSystem == null)
                 {
                     Debug.LogError("Failed to start the Input System!");
                 }
-
-                if (!RegisterService<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType))
+                
+                args = new object[] { this, InputSystem, ActiveProfile.InputSystemProfile };
+                if (!RegisterDataProvider<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType, args: args))
                 {
                     Debug.LogError("Failed to register the focus provider! The input system will not function without it.");
                     return;
@@ -387,7 +387,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
                 object[] args = { this, ActiveProfile.BoundaryVisualizationProfile, Instance.MixedRealityPlayspace, ActiveProfile.TargetExperienceScale };
-
                 if (!RegisterService<IMixedRealityBoundarySystem>(ActiveProfile.BoundarySystemSystemType, args: args) || BoundarySystem == null)
                 {
                     Debug.LogError("Failed to start the Boundary System!");
@@ -401,7 +400,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 LayerExtensions.SetupLayer(31, "Spatial Awareness");
 #endif
                 object[] args = { this }; // todo: add profile
-
                 if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType, args: args) && SpatialAwarenessSystem != null)
                 {
                     Debug.LogError("Failed to start the Spatial Awareness System!");
@@ -412,7 +410,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
                 object[] args = { this, Instance.MixedRealityPlayspace };
-
                 if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType, args: args) || TeleportSystem == null)
                 {
                     Debug.LogError("Failed to start the Teleport System!");
@@ -422,7 +419,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             if (ActiveProfile.IsDiagnosticsSystemEnabled)
             {
                 object[] args = { this, ActiveProfile.DiagnosticsSystemProfile, Instance.MixedRealityPlayspace };
-
                 if (!RegisterService<IMixedRealityDiagnosticsSystem>(ActiveProfile.DiagnosticsSystemSystemType, args: args) || DiagnosticsSystem == null)
                 {
                     Debug.LogError("Failed to start the Diagnostics System!");
