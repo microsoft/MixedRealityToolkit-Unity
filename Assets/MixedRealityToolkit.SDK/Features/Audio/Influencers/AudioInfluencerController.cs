@@ -5,7 +5,7 @@ using MRTKPrefix.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UPhysics = UnityEngine.Physics;
+using UnityPhysics = UnityEngine.Physics;
 
 namespace MRTKPrefix.Audio
 {
@@ -235,11 +235,11 @@ namespace MRTKPrefix.Audio
             Vector3 direction = (gameObject.transform.position - cameraTransform.position).normalized;
             float distance = Vector3.Distance(cameraTransform.position, gameObject.transform.position);
 
-            int count = UPhysics.RaycastNonAlloc(cameraTransform.position,
+            int count = UnityPhysics.RaycastNonAlloc(cameraTransform.position,
                                                 direction,
                                                 hits,
                                                 distance,
-                                                UPhysics.DefaultRaycastLayers,
+                                                UnityPhysics.DefaultRaycastLayers,
                                                 QueryTriggerInteraction.Ignore);
             
             for (int i = 0; i < count; i++)

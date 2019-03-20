@@ -5,7 +5,7 @@ using MRTKPrefix.Boundary;
 using System.Collections.Generic;
 using MRTKPrefix.Utilities;
 using UnityEngine;
-using UBoundary = UnityEngine.Experimental.XR.Boundary;
+using UnityBoundary = UnityEngine.Experimental.XR.Boundary;
 
 namespace MRTKPrefix.Examples.Demos
 {
@@ -131,12 +131,12 @@ namespace MRTKPrefix.Examples.Demos
 
                     Material material = null;
                     // Check inscribed rectangle first
-                    if (MixedRealityToolkit.BoundarySystem.Contains(position, UBoundary.Type.PlayArea))
+                    if (MixedRealityToolkit.BoundarySystem.Contains(position, UnityBoundary.Type.PlayArea))
                     {
                         material = visualizationProfile.PlayAreaMaterial;
                     }
                     // Then check geometry
-                    else if (MixedRealityToolkit.BoundarySystem.Contains(position, UBoundary.Type.TrackedArea))
+                    else if (MixedRealityToolkit.BoundarySystem.Contains(position, UnityBoundary.Type.TrackedArea))
                     {
                         material = visualizationProfile.TrackedAreaMaterial;
                     }

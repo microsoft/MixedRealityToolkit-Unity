@@ -4,7 +4,7 @@
 using MRTKPrefix.Input;
 using System.Collections.Generic;
 using UnityEngine;
-using UPhysics = UnityEngine.Physics;
+using UnityPhysics = UnityEngine.Physics;
 
 namespace MRTKPrefix.Utilities
 {
@@ -945,13 +945,13 @@ namespace MRTKPrefix.Utilities
                 // are computed when the object is in its 'axis aligned orientation'.
                 Quaternion currentRotation = targetObject.transform.rotation;
                 targetObject.transform.rotation = Quaternion.identity;
-                UPhysics.SyncTransforms(); // Update collider bounds
+                UnityPhysics.SyncTransforms(); // Update collider bounds
 
                 Vector3 boundsExtents = cachedTargetCollider.bounds.extents;
 
                 // After bounds are computed, restore rotation...
                 targetObject.transform.rotation = currentRotation;
-                UPhysics.SyncTransforms();
+                UnityPhysics.SyncTransforms();
 
                 if (boundsExtents != Vector3.zero)
                 {

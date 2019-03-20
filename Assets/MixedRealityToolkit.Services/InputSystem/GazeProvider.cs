@@ -5,7 +5,7 @@ using MRTKPrefix.Physics;
 using MRTKPrefix.Utilities;
 using System;
 using UnityEngine;
-using UPhysics = UnityEngine.Physics;
+using UnityPhysics = UnityEngine.Physics;
 
 namespace MRTKPrefix.Input
 {
@@ -40,7 +40,7 @@ namespace MRTKPrefix.Input
         /// </summary>
         [SerializeField]
         [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.")]
-        private LayerMask[] raycastLayerMasks = { UPhysics.DefaultRaycastLayers };
+        private LayerMask[] raycastLayerMasks = { UnityPhysics.DefaultRaycastLayers };
 
         /// <summary>
         /// Current stabilization method, used to smooth out the gaze ray data.

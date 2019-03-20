@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.XR;
-using UBoundary = UnityEngine.Experimental.XR.Boundary;
+using UnityBoundary = UnityEngine.Experimental.XR.Boundary;
 
 namespace MRTKPrefix.Boundary
 {
@@ -32,7 +32,7 @@ namespace MRTKPrefix.Boundary
 
             SetTrackingSpace();
             CalculateBoundaryBounds();
-            UBoundary.visible = true;
+            UnityBoundary.visible = true;
 
             ShowFloor = MixedRealityToolkit.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowFloor;
             FloorPhysicsLayer = MixedRealityToolkit.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorPhysicsLayer;
@@ -550,7 +550,7 @@ namespace MRTKPrefix.Boundary
         public float? FloorHeight { get; private set; } = null;
 
         /// <inheritdoc/>
-        public bool Contains(Vector3 location, UBoundary.Type boundaryType = UBoundary.Type.TrackedArea)
+        public bool Contains(Vector3 location, UnityBoundary.Type boundaryType = UnityBoundary.Type.TrackedArea)
         {
             if (!EdgeUtilities.IsValidPoint(location))
             {
@@ -577,7 +577,7 @@ namespace MRTKPrefix.Boundary
             // Boundary coordinates are always "on the floor"
             Vector2 point = new Vector2(location.x, location.z);
 
-            if (boundaryType == UBoundary.Type.PlayArea)
+            if (boundaryType == UnityBoundary.Type.PlayArea)
             {
                 // Check the inscribed rectangle.
                 if (rectangularBounds != null)
@@ -585,7 +585,7 @@ namespace MRTKPrefix.Boundary
                     return rectangularBounds.IsInsideBoundary(point);
                 }
             }
-            else if (boundaryType == UBoundary.Type.TrackedArea)
+            else if (boundaryType == UnityBoundary.Type.TrackedArea)
             {
                 // Check the geometry
                 return EdgeUtilities.IsInsideBoundary(Bounds, point);
@@ -865,7 +865,7 @@ namespace MRTKPrefix.Boundary
             var boundaryGeometry = new List<Vector3>(0);
             var boundaryEdges = new List<Edge>(0);
 
-            if (UBoundary.TryGetGeometry(boundaryGeometry, UBoundary.Type.TrackedArea))
+            if (UnityBoundary.TryGetGeometry(boundaryGeometry, UnityBoundary.Type.TrackedArea))
             {
                 // FloorHeight starts out as null. Use a suitably high value for the floor to ensure
                 // that we do not accidentally set it too low.

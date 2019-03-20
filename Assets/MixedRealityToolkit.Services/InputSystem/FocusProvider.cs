@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UPhysics = UnityEngine.Physics;
+using UnityPhysics = UnityEngine.Physics;
 
 namespace MRTKPrefix.Input
 {
@@ -62,7 +62,7 @@ namespace MRTKPrefix.Input
                         return focusLayerMasks = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointingRaycastLayerMasks;
                     }
 
-                    return focusLayerMasks = new LayerMask[] { UPhysics.DefaultRaycastLayers };
+                    return focusLayerMasks = new LayerMask[] { UnityPhysics.DefaultRaycastLayers };
                 }
 
                 return focusLayerMasks;
