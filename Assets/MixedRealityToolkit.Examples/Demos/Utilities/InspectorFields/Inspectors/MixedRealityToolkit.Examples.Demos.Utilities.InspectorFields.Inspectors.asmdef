@@ -1,5 +1,5 @@
 {
-    "name": "MixedRealityToolkit-Examples.Demos.Utilities.InspectorFields.Inspectors",
+    "name": "MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields.Inspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit.Core.Inspectors",
         "Microsoft.MixedReality.Toolkit",
@@ -10,5 +10,9 @@
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }

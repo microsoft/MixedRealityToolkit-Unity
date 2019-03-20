@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
             }
 
             // Get the collection of registered observers.
-            List<Core.Interfaces.IMixedRealityService> services = MixedRealityToolkit.Instance.GetActiveServices(typeof(IMixedRealitySpatialAwarenessObserver));
+            IReadOnlyList<IMixedRealitySpatialAwarenessObserver> services = MixedRealityToolkit.Instance.GetServices<IMixedRealitySpatialAwarenessObserver>();
             for (int i = 0; i < services.Count; i++)
             {
                 observers.Add(services[i] as IMixedRealitySpatialAwarenessObserver);
@@ -83,13 +83,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
                 // Detach the child objects and clean up the parent.
                 if (spatialAwarenessObjectParent != null)
                 {
-                    spatialAwarenessObjectParent.transform.DetachChildren();
                     if (Application.isEditor)
                     {
                         Object.DestroyImmediate(spatialAwarenessObjectParent);
                     }
                     else
                     {
+                        spatialAwarenessObjectParent.transform.DetachChildren();
                         Object.Destroy(spatialAwarenessObjectParent);
                     }
                     spatialAwarenessObjectParent = null;
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
         /// Creates the parent for spatial awareness objects so that the scene hierarchy does not get overly cluttered.
         /// </summary>
         /// <returns>
-        /// The <see cref="UnityEngine.GameObject"/> to which spatial awareness created objects will be parented.
+        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which spatial awareness created objects will be parented.
         /// </returns>
         private GameObject CreateSpatialAwarenessParent => new GameObject("Spatial Awareness System");
 

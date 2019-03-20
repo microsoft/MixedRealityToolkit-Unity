@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 {
     /// <summary>
-    /// This component ensures that all input events are forwarded to this <see cref="UnityEngine.GameObject"/> when focus or gaze is not required.
+    /// This component ensures that all input events are forwarded to this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> when focus or gaze is not required.
     /// </summary>
     public class InputSystemGlobalListener : MonoBehaviour
     {

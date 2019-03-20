@@ -269,6 +269,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
             interactionmanagerStates = InteractionManager.GetCurrentReading();
 
+            // Avoids a Unity Editor bug detecting a controller from the previous run during the first frame
+#if !UNITY_EDITOR
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             for (var i = 0; i < interactionmanagerStates?.Length; i++)
             {
@@ -280,6 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                     MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                 }
             }
+#endif
 
             if (MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.GesturesProfile != null &&
@@ -466,6 +469,15 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// <param name="args">SDK source detected event arguments</param>
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
         {
+
+            // Avoids a Unity Editor bug detecting a controller from the previous run during the first frame
+#if UNITY_EDITOR
+            if (Time.frameCount <= 1)
+            {
+                return;
+            }
+#endif
+
             bool raiseSourceDetected = !activeControllers.ContainsKey(args.state.source.id);
 
             var controller = GetController(args.state.source);

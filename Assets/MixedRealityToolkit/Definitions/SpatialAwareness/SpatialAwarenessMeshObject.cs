@@ -74,17 +74,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <param name="destroyMeshes"></param>
         public static void Cleanup(SpatialAwarenessMeshObject meshObject, bool destroyGameObject = true, bool destroyMeshes = true)
         {
-            if (destroyGameObject && (meshObject.GameObject != null))
+            if (meshObject.GameObject == null)
+            {
+                return;
+            }
+
+            if (destroyGameObject)
             {
                 UnityEngine.Object.Destroy(meshObject.GameObject);
                 meshObject.GameObject = null;
+                return;
             }
-
-            Mesh filterMesh = meshObject.Filter.sharedMesh;
-            Mesh colliderMesh = meshObject.Collider.sharedMesh;
 
             if (destroyMeshes)
             {
+                Mesh filterMesh = meshObject.Filter.sharedMesh;
+                Mesh colliderMesh = meshObject.Collider.sharedMesh;
 
                 if (filterMesh != null)
                 {

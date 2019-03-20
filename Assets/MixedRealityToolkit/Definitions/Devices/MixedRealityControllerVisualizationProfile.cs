@@ -10,6 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Visualization Profile", fileName = "MixedRealityControllerVisualizationProfile", order = (int)CreateProfileMenuItemIndices.ControllerVisualization)]
+    [MixedRealityServiceProfile(typeof(IMixedRealityControllerVisualizer))]
     public class MixedRealityControllerVisualizationProfile : BaseMixedRealityProfile
     {
         [SerializeField]

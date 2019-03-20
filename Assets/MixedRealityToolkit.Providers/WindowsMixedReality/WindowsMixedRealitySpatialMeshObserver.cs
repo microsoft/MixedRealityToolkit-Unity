@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         private GameObject observedObjectParent = null;
 
         /// <summary>
-        /// The <see cref="UnityEngine.GameObject"/> to which observed objects are parented.
+        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which observed objects are parented.
         /// </summary>
         private GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent("WindowsMixedRealitySpatialMeshObserver"));
 

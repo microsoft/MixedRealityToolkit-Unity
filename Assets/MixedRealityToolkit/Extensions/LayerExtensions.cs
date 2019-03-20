@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         }
 
         /// <summary>
-        /// Transform layer id to <see cref="UnityEngine.LayerMask"/>
+        /// Transform layer id to <see href="https://docs.unity3d.com/ScriptReference/LayerMask.html">LayerMask</see>
         /// </summary>
         /// <param name="layerId"></param>
         /// <returns></returns>

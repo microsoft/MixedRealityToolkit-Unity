@@ -537,7 +537,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
             }
         }
 
-        private void UpdateMatrix()
+        public void UpdateMatrix()
         {
             switch (transformMode)
             {

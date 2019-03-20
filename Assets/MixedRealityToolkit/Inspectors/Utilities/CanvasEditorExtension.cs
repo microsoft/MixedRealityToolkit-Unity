@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 
         private bool hasUtility = false;
 
-        private static bool IsUtilityValid => MixedRealityToolkit.HasActiveProfile && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && MixedRealityToolkit.InputSystem?.FocusProvider != null;
+        private static bool IsUtilityValid => MixedRealityToolkit.Instance.HasActiveProfile && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && MixedRealityToolkit.InputSystem?.FocusProvider != null;
 
         private void OnEnable()
         {

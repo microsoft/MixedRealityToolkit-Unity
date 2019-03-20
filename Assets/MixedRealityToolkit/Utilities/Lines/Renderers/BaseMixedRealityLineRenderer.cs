@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
         }
 
         /// <summary>
-        /// Get the <see cref="UnityEngine.Color"/> along the normalized length of the line.
+        /// Get the <see href="https://docs.unity3d.com/ScriptReference/Color.html">Color</see> along the normalized length of the line.
         /// </summary>
         /// <param name="normalizedLength"></param>
         /// <returns></returns>
@@ -176,6 +176,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 
             return lineWidth.Evaluate(Mathf.Repeat(normalizedLength + widthOffset, 1f)) * widthMultiplier;
         }
+
+        public virtual void Update()
+        {
+            UpdateLine();
+        }
+
+        protected abstract void UpdateLine();
 
 #if UNITY_EDITOR
         protected virtual void OnDrawGizmos()

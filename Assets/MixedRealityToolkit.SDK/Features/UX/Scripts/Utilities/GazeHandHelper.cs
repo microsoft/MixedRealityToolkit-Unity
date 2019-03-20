@@ -12,8 +12,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 {
     /// <summary>
-    /// This class must be instantiated by a script that implements the <see cref="IMixedRealitySourceStateHandler"/>,
-    /// <see cref="IMixedRealityInputHandler"/> and <see cref="IMixedRealityInputHandler{T}"/>.
+    /// This class must be instantiated by a script that implements the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealitySourceStateHandler"/>,
+    /// <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealityInputHandler"/> and <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealityInputHandler{T}"/>.
     /// 
     /// ***It must receive EventData arguments from OnInputDown(), OnInputUp(), OnInputChanged() and OnSourceLost().***
     /// 
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         #region Public Methods
 
         /// <summary>
-        /// This function must be called from the OnInputDown handler in a script implementing the <see cref="IMixedRealityInputHandler{T}"/>.
+        /// This function must be called from the OnInputDown handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData">The InputEventData argument 'eventData' is passed through to GazeHandHelper</param>
         public void AddSource(InputEventData eventData)
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         }
 
         /// <summary>
-        /// This function must be called from the OnInputUp handler in a script implementing the <see cref="IMixedRealityInputHandler{T}"/>.
+        /// This function must be called from the OnInputUp handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData">he InputEventData argument 'eventData' is passed through to GazeHandHelper</param>
         public void RemoveSource(InputEventData eventData)
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         }
 
         /// <summary>
-        /// This function must be called from the OnInputChanged handler in a script implementing the <see cref="IMixedRealityInputHandler{T}"/>.
+        /// This function must be called from the OnInputChanged handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData"></param>
         public void UpdateSource(InputEventData<MixedRealityPose> eventData)

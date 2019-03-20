@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             get
             {
-                if (MixedRealityToolkit.HasActiveProfile &&
+                if (MixedRealityToolkit.Instance.HasActiveProfile &&
                     MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
                     MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
                 {
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             {
                 if (focusLayerMasks == null)
                 {
-                    if (MixedRealityToolkit.HasActiveProfile &&
+                    if (MixedRealityToolkit.Instance.HasActiveProfile &&
                         MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
                         MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
                     {
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         private PointerData gazeProviderPointingData;
 
         /// <summary>
-        /// Cached <see cref="UnityEngine.Vector3"/> reference to the new raycast position.
+        /// Cached <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> reference to the new raycast position.
         /// <remarks>Only used to update UI raycast results.</remarks>
         /// </summary>
         private Vector3 newUiRaycastPosition = Vector3.zero;
@@ -647,65 +647,58 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         /// <param name="prioritizedLayerMasks"></param>
         private static void RaycastPhysics(PointerData pointerData, LayerMask[] prioritizedLayerMasks)
         {
-            bool isHit = false;
-            int rayStepIndex = 0;
-            RayStep rayStep = default(RayStep);
-            RaycastHit physicsHit = default(RaycastHit);
+            RaycastHit physicsHit;
+            RayStep[] pointerRays = pointerData.Pointer.Rays;
 
-            if (pointerData.Pointer.Rays == null)
+            if (pointerRays == null)
             {
                 Debug.LogError($"No valid rays for {pointerData.Pointer.PointerName} pointer.");
                 return;
             }
 
-            if (pointerData.Pointer.Rays.Length <= 0)
+            if (pointerRays.Length <= 0)
             {
                 Debug.LogError($"No valid rays for {pointerData.Pointer.PointerName} pointer");
                 return;
             }
 
             // Check raycast for each step in the pointing source
-            for (int i = 0; i < pointerData.Pointer.Rays.Length; i++)
+            for (int i = 0; i < pointerRays.Length; i++)
             {
                 switch (pointerData.Pointer.RaycastMode)
                 {
                     case RaycastMode.Simple:
-                        if (MixedRealityRaycaster.RaycastSimplePhysicsStep(pointerData.Pointer.Rays[i], prioritizedLayerMasks, out physicsHit))
+                        if (MixedRealityRaycaster.RaycastSimplePhysicsStep(pointerRays[i], prioritizedLayerMasks, out physicsHit))
                         {
-                            // Set the pointer source's origin ray to this step
-                            isHit = true;
-                            rayStep = pointerData.Pointer.Rays[i];
-                            rayStepIndex = i;
+                            UpdatePointerRayOnHit(pointerData, pointerRays, in physicsHit, i);  
+                            return;
+                        }
+                        break;
+                    case RaycastMode.Sphere:
+                        if (MixedRealityRaycaster.RaycastSpherePhysicsStep(pointerRays[i], pointerData.Pointer.SphereCastRadius, prioritizedLayerMasks, out physicsHit))
+                        {
+                            UpdatePointerRayOnHit(pointerData, pointerRays, in physicsHit, i);
+                            return;
                         }
                         break;
                     case RaycastMode.Box:
                         Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
                         break;
-                    case RaycastMode.Sphere:
-                        if (MixedRealityRaycaster.RaycastSpherePhysicsStep(pointerData.Pointer.Rays[i], pointerData.Pointer.SphereCastRadius, prioritizedLayerMasks, out physicsHit))
-                        {
-                            // Set the pointer source's origin ray to this step
-                            isHit = true;
-                            rayStep = pointerData.Pointer.Rays[i];
-                            rayStepIndex = i;
-                        }
-                        break;
                     default:
                         Debug.LogError($"Invalid raycast mode {pointerData.Pointer.RaycastMode} for {pointerData.Pointer.PointerName} pointer.");
                         break;
                 }
-
-                if (isHit) { break; }
             }
 
-            if (isHit)
-            {
-                pointerData.UpdateHit(physicsHit, rayStep, rayStepIndex);
-            }
-            else
-            {
-                pointerData.UpdateHit();
-            }
+            pointerData.UpdateHit();
+        }
+
+        private static void UpdatePointerRayOnHit(PointerData pointerData, RayStep[] raySteps, in RaycastHit physicsHit, int hitRayIndex)
+        {
+            Vector3 origin = raySteps[hitRayIndex].Origin;
+            Vector3 terminus = physicsHit.point;
+            raySteps[hitRayIndex].UpdateRayStep(ref origin, ref terminus);
+            pointerData.UpdateHit(physicsHit, raySteps[hitRayIndex], hitRayIndex);
         }
 
         #endregion Physics Raycasting

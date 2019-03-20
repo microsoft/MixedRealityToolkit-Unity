@@ -56,6 +56,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             base.OnEnable();
 
+            if (target == null)
+            {
+                // Either when we are recompiling, or the inspector window is hidden behind another one, the target can get destroyed (null) and thereby will raise an ArgumentException when accessing serializedObject. For now, just return.
+                return;
+            }
+
             configurationProfile = target as MixedRealityToolkitConfigurationProfile;
 
             // Create The MR Manager if none exists.
@@ -89,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            if (!MixedRealityToolkit.HasActiveProfile)
+            if (!MixedRealityToolkit.Instance.HasActiveProfile)
             {
                 return;
             }

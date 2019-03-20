@@ -322,9 +322,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         }
 
         /// <summary>
-        /// Register a <see cref="UnityEngine.GameObject"/> to listen to events that will receive all input events, regardless
-        /// of which other <see cref="UnityEngine.GameObject"/>s might have handled the event beforehand.
-        /// <remarks>Useful for listening to events when the <see cref="UnityEngine.GameObject"/> is currently not being raycasted against by the <see cref="FocusProvider"/>.</remarks>
+        /// Register a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen to events that will receive all input events, regardless
+        /// of which other <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s might have handled the event beforehand.
+        /// <remarks>Useful for listening to events when the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is currently not being raycasted against by the <see cref="FocusProvider"/>.</remarks>
         /// </summary>
         /// <param name="listener">Listener to add.</param>
         public override void Register(GameObject listener)
@@ -333,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         }
 
         /// <summary>
-        /// Unregister a <see cref="UnityEngine.GameObject"/> from listening to input events.
+        /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to input events.
         /// </summary>
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)

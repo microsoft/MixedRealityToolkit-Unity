@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         /// Creates the parent for diagnostic visualizations so that the scene hierarchy does not get overly cluttered.
         /// </summary>
         /// <returns>
-        /// The <see cref="UnityEngine.GameObject"/> to which diagnostic visualizations will be parented.
+        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which diagnostic visualizations will be parented.
         /// </returns>
         private GameObject CreateDiagnosticVisualizationParent()
         {
@@ -62,13 +62,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         {
             if (diagnosticVisualizationParent != null)
             {
-                diagnosticVisualizationParent.transform.DetachChildren();
                 if (Application.isEditor)
                 {
                     Object.DestroyImmediate(diagnosticVisualizationParent);
                 }
                 else
                 {
+                    diagnosticVisualizationParent.transform.DetachChildren();
                     Object.Destroy(diagnosticVisualizationParent);
                 }
 

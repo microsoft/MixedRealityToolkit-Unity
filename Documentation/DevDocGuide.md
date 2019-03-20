@@ -82,6 +82,33 @@ Currently there's a definition for the following resource types:
 </table>
 
 
+## Releasing a new version
+Multiple versions of developer docs are supported and can be switched by the version drop down in the top menu bar. If you're releasing a new version perform the following steps to have your version on the developer docs page.
+
+1. Optional: Adjusting your docfx.json 
+Depending on whether you want to have the "Improve this doc" to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:
+
+```
+ "_gitContribute": {
+        "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity.git",
+        "branch": "mrtk_development"
+      }
+```
+
+If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.
+
+2. create your docfx docs by calling docfx docfx.json in the root of the repo
+3. create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder
+4. add your version number into the versionArray in web/version.js
+5. push the modified version.js to mrtk_development branch and the changes in gh-pages branch
+
+CI will pick up the changes done to the version.js file and update the version dropdown automatically.
+
+### Supporting development branches on CI
+
+The versioning system can also be used for showing doc versions from other dev branches that are built by CI. When setting up CI for one of those branches make sure your powershell script on CI copies the contents of the generated docfx output into a version folder named after your branch and add the corresponding version entry into the web/version.js file.
+
+
 
 
 ## Good practices for developers
