@@ -1,14 +1,14 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Microsoft.MixedReality.Toolkit.Unity.Providers.WindowsMixedReality</id>
+    <id>Microsoft.MixedReality.Toolkit.Unity.WindowsMixedReality</id>
     <version>$version$</version>
     <authors>Microsoft</authors>
     <owners>Microsoft</owners>
     <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
     <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>The Mixed Reality Toolkit Windows Mixed Reality provider enables mixed reality applications to target the Windows Mixed Reality platform and devices, including Microsoft HoloLens and immersive devices.</description>
+    <description>The Mixed Reality Toolkit Windows Mixed Reality package enables mixed reality applications to target the Windows Mixed Reality platform and devices, including Microsoft HoloLens and immersive devices.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
     <tags>MRTK MixedRealityToolkit WindowsMixedReality HoloLens Immersive VR Unity MixedReality</tags>

@@ -1,14 +1,14 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Microsoft.MixedReality.Toolkit.Unity.Providers.WindowsVocieInput</id>
+    <id>Microsoft.MixedReality.Toolkit.Unity.WindowsVoiceInput</id>
     <version>$version$</version>
     <authors>Microsoft</authors>
     <owners>Microsoft</owners>
     <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
     <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>The Mixed Reality Toolkit Windows Voice Input provider enables mixed reality applications to use the Windows Speech API.</description>
+    <description>The Mixed Reality Toolkit Windows Voice Input package enables mixed reality applications to use the Windows Speech API.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
     <tags>MRTK MixedRealityToolkit Windows Speech Voice Unity MixedReality</tags>
