@@ -27,7 +27,16 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
     {
         public MixedRealityInputSystem(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealityInputSystemProfile profile) : base(registrar, profile) { }
+            MixedRealityInputSystemProfile profile,
+            Transform playspace) : base(registrar, profile)
+        {
+            Playspace = playspace;
+        }
+
+        /// <summary>
+        /// The transform of the playspace scene object.
+        /// </summary>
+        private Transform Playspace = null;
 
         /// <inheritdoc />
         public event Action InputEnabled;
@@ -155,6 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 {
                     GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
                     GazeProvider.InputSystem = this;
+                    GazeProvider.Playspace = Playspace;
                     GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
                 }
                 else

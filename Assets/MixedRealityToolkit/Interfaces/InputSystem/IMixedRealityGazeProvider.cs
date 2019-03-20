@@ -21,6 +21,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         IMixedRealityInputSystem InputSystem { set; }
 
         /// <summary>
+        /// The transform of the Mixed Reality Playspace
+        /// </summary>
+        Transform Playspace { set; }
+
+        /// <summary>
         /// The Gaze Input Source for the provider.
         /// </summary>
         IMixedRealityInputSource GazeInputSource { get; }
@@ -33,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// <summary>
         /// The prefab to be instantiated as the gaze cursor.
         /// </summary>
-        GameObject GazeCursorPrefab { get; set; }
+        GameObject GazeCursorPrefab { set; }
 
         /// <summary>
         /// The Gaze Cursor for the provider.

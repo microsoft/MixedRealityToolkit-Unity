@@ -363,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                object[] args = { this, ActiveProfile.InputSystemProfile };
+                object[] args = { this, ActiveProfile.InputSystemProfile, Instance.MixedRealityPlayspace };
                 if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType, args: args) || InputSystem == null)
                 {
                     Debug.LogError("Failed to start the Input System!");

@@ -87,6 +87,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         public IMixedRealityInputSystem InputSystem { private get; set; }
 
         /// <inheritdoc />
+        public Transform Playspace { private get; set; }
+
+        /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
         {
             get
@@ -108,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         private InternalGazePointer gazePointer = null;
 
         /// <inheritdoc />
-        public GameObject GazeCursorPrefab { get; set; }
+        public GameObject GazeCursorPrefab { private get; set; }
 
         /// <inheritdoc />
         public IMixedRealityCursor GazeCursor => GazePointer.BaseCursor;
@@ -413,8 +416,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             if ((GazeCursor == null) &&
                 (GazeCursorPrefab != null))
             {
-                // todo: update....
-                GameObject cursor = Instantiate(GazeCursorPrefab, MixedRealityToolkit.Instance.MixedRealityPlayspace);
+                GameObject cursor = Instantiate(GazeCursorPrefab, Playspace);
                 SetGazeCursor(cursor);
             }
 
