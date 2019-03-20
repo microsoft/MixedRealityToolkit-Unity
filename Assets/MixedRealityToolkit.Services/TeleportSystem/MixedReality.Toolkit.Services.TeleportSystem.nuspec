@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package >
   <metadata>
     <id>Microsoft.MixedReality.Toolkit.Unity.Services.TeleportSystem</id>
@@ -7,7 +7,7 @@
     <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
     <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>The Mixed Reality Toolkit Teleport System provides support comfortable locomotion in your mixed reality applications.</description>
+    <description>The Mixed Reality Toolkit Teleport System provides support for comfortable locomotion in your mixed reality applications.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
     <tags>MRTK MixedRealityToolkit Unity MixedReality Teleport Locomotion VR</tags>
