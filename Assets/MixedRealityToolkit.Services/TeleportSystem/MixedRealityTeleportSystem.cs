@@ -21,8 +21,18 @@ namespace Microsoft.MixedReality.Toolkit.Services.Teleportation
             IMixedRealityServiceRegistrar registrar,
             Transform playspace) : base(registrar, null) // Teleport system does not use a profile
         {
-            Playspace = playspace;
+            if (registrar == null)
+            {
+                Debug.LogError("The MixedRealityTeleportSystem object requires a valid IMixedRealityServiceRegistrar instance.");
+            }
             IsInputSystemEnabled = (registrar.GetService<IMixedRealityInputSystem>(showLogs: false) != null);
+
+            if (playspace == null)
+            {
+                Debug.LogError("The MixedRealityTeleportSystem object requires a valid playspace Transform.");
+            }
+
+            Playspace = playspace;
         } 
 
         private TeleportEventData teleportEventData;

@@ -29,6 +29,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
             ExperienceScale scale) : base(registrar, profile)
         {
             Scale = scale;
+
+            if (playspace == null)
+            {
+                Debug.LogError("The MixedRealityBoundarySystem object requires a valid playspace Transform.");
+            }
             Playspace = playspace;
         }
 

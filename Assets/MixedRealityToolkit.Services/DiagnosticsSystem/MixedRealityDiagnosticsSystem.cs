@@ -21,6 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             MixedRealityDiagnosticsProfile profile,
             Transform playspace) : base(registrar, profile)
         {
+            if (playspace == null)
+            {
+                Debug.LogError("The MixedRealityDiagnosticSystem object requires a valid playspace Transform.");
+            }
             Playspace = playspace;
         }
 

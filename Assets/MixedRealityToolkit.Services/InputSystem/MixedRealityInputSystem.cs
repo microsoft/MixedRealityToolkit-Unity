@@ -30,6 +30,15 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             MixedRealityInputSystemProfile profile,
             Transform playspace) : base(registrar, profile)
         {
+            if (registrar == null)
+            {
+                Debug.LogError("The MixedRealityInputSystem object requires a valid IMixedRealityServiceRegistrar instance.");
+            }
+
+            if (playspace == null)
+            {
+                Debug.LogError("The MixedRealityInputSystem object requires a valid playspace Transform.");
+            }
             Playspace = playspace;
         }
 

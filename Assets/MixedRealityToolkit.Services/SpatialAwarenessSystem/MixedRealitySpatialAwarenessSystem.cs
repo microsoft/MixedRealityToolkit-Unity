@@ -20,7 +20,12 @@ namespace Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem
     public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem
     {
         public MixedRealitySpatialAwarenessSystem(IMixedRealityServiceRegistrar registrar) : base(registrar, null) // spatial awareness does not yet use a profile
-        { }
+        {
+            if (registrar == null)
+            {
+                Debug.LogError("The MixedRealitySpatialAwarenessSystem object requires a valid IMixedRealityServiceRegistrar instance.");
+            }
+        }
 
         #region IMixedRealityToolkit Implementation
 
