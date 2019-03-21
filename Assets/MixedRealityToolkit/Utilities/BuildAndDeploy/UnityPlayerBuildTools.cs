@@ -83,6 +83,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 PlayerSettings.colorSpace = buildInfo.ColorSpace.Value;
             }
 
+            if (buildInfo.ScriptingBackend.HasValue)
+            {
+                PlayerSettings.SetScriptingBackend(buildTargetGroup, buildInfo.ScriptingBackend.Value);
+            }
+
             BuildTarget oldBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             BuildTargetGroup oldBuildTargetGroup = oldBuildTarget.GetGroup();
 
@@ -219,6 +224,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         break;
                     case "-colorSpace":
                         buildInfo.ColorSpace = (ColorSpace)Enum.Parse(typeof(ColorSpace), arguments[++i]);
+                        break;
+                    case "-scriptingBackend":
+                        buildInfo.ScriptingBackend = (ScriptingImplementation)Enum.Parse(typeof(ScriptingImplementation), arguments[++i]);
                         break;
                     case "-x86":
                     case "-x64":

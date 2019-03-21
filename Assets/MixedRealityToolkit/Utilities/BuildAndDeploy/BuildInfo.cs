@@ -51,6 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         public ColorSpace? ColorSpace { get; set; }
 
         /// <inheritdoc />
+        public ScriptingImplementation? ScriptingBackend { get; set; }
+
+        /// <inheritdoc />
         public bool AutoIncrement { get; set; } = false;
 
         /// <inheritdoc />

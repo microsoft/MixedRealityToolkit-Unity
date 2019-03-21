@@ -58,6 +58,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         ColorSpace? ColorSpace { get; set; }
 
         /// <summary>
+        /// Optional parameter to set the scripting backend
+        /// </summary>
+        ScriptingImplementation? ScriptingBackend { get; set; }
+
+        /// <summary>
         /// Should the build auto increment the build version number?
         /// </summary>
         bool AutoIncrement { get; set; }

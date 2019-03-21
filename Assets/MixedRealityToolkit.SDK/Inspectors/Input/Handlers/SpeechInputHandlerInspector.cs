@@ -111,12 +111,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 // the remove element button
                 bool elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
 
+                EditorGUILayout.EndHorizontal();
+
                 if (elementRemoved)
                 {
                     list.DeleteArrayElementAtIndex(index);
-                }
 
-                EditorGUILayout.EndHorizontal();
+                    if (index == list.arraySize)
+                    {
+                        EditorGUI.indentLevel--;
+                        return;
+                    }
+                }
 
                 SerializedProperty keywordProperty = speechCommandProperty.FindPropertyRelative("keyword");
 
