@@ -213,7 +213,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                         buildInfo.AutoIncrement = true;
                         break;
                     case "-scenes":
-                        // TODO parse json scene list and set them.
+                        buildInfo.Scenes = from scene in arguments[++i].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                           select scene.TrimStart().TrimEnd();
                         break;
                     case "-buildOutput":
                         buildInfo.OutputDirectory = arguments[++i];
