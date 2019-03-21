@@ -1,37 +1,56 @@
 <img src="External/ReadMeImages/MRTK_Logo_Rev.png">
 
-# What is MixedRealityToolkit
+# What is MixedRealityToolkit v2
+The V1 Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.
 
-MRTK is a Microsoft Driven opensource project. 
+### For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/Branch-Guide).
 
-MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity. Latest Release of MRTK (V2) supports HoloLens/HoloLens 2, WMR, and OpenVR platform. Start your project with MRTK, and 
+This new version of the MixedRealityToolkit aims to further extend the capabilities of the toolkit and also introduce new features, including the capability to support more VR/AR/XR platforms beyond Microsoft's own Mixed Reality setup.
 
-# What's MRTK-Unity good for 
- 
-* Provide basic features as an easy to use SDK to reduce the barrier-to-entry to get started.
+The v2 branch is taking all the best lessons learned from the original HoloToolkit and refactoring / restructuring it to:
 
-* Enable rapid prototyping by providing the basic building blocks for MR app development. 
+* Support a wider audience, allowing solutions to be built that will run on multiple VR / AR / XR platforms, starting with Windows Mixed Reality and OpenVR.
 
-* Showcase best practices in MR with UI controls and interactions that matches the WMR and HoloLens Shell. 
-
-* Support a wide audience, allowing solutions to be built that will run on multiple VR / AR / XR platforms such as Mixed Reality,  Steam/Open VR.
+* Provide an easier to use SDK, to enable rapid prototyping and ease adoption for new users (or users of previous frameworks)
 
 * Ensure an extensive framework for advanced integrators, with the ability to swap out core components with their own should they wish to, or simply extend the framework to add new capabilities.
 
+> Learn more about [Windows Mixed Reality](https://www.microsoft.com/en-gb/windows/windows-mixed-reality) here.
+
+> Learn more about the architecture behind [Windows Mixed Reality - V2](MRTK-vNext.md) here.
+
+> Learn more about the approach behind the [Windows Mixed Reality - V2 SDK](MRTK-SDK.md) here.
+
+# Getting Started with MRTK 
+
+You can find out how to use MRTK to develop for Windows Mixed Reality on the MS Developer Site.
+
+Find this readme, other documentation articles and the MRTK api reference on our [MRTK Dev Portal on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/). 
+
+
+# Engage with the Community
+
+Join us on [Slack](https://holodevelopers.slack.com/) where our developers are actively are actively answering questions and sharing out the latest thinking from the dev team. 
+
+[Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) is a great place to ask for how-to using MRTK or troubleshooting an issue. Use the tag "mrtk" for it show up in the developer team's sights.
+
+For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
+
+Deep dive into project plan and learn how you can contribute to MRTK in our [wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki).  
+
+# Build Status
+
+| Branch | Status |
+|---|---|
+| `mrtk_development` |[![Build status](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_apis/build/status/public/mrtk_development-CI)](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/latest?definitionId=1)|
+
 # Feature areas
-* Input System
-* Articulated Hands + Gestures (HoloLens 2)
-* Eye Tracking (HoloLens2) 
-* Voice Commanding 
-* Gaze + Select (HoloLens)
-* Controller Visualization 
-* Teleportation 
-* UI Controls 
-* Solver and Interactions 
-* Spatial Understanding 
-* Diagnostic Tool 
+The Mixed Reality Toolkit vNext will includes many APIs to accelerate the development of MR / XR / VR / AR projects for a range of supported devices, starting with
 
-
+ - Microsoft HoloLens
+ - Microsoft Immersive headsets (IHMD)
+ - OpenVR (HTC Vive / Oculus Rift)
+ 
  # Required Software
 | [![Windows 10 Creators Update](External/ReadMeImages/MRTK170802_Short_17.png)](https://www.microsoft.com/software-download/windows10) [Windows 10 FCU](https://www.microsoft.com/software-download/windows10)| [![Unity](External/ReadMeImages/MRTK170802_Short_18.png)](https://unity3d.com/get-unity/download/archive) [Unity 3D](https://unity3d.com/get-unity/download/archive)| [![Visual Studio 2017](External/ReadMeImages/MRTK170802_Short_19.png)](http://dev.windows.com/downloads) [Visual Studio 2017](http://dev.windows.com/downloads)| [![Simulator (optional)](External/ReadMeImages/MRTK170802_Short_20.png)](https://go.microsoft.com/fwlink/?linkid=852626) [Simulator (optional)](https://go.microsoft.com/fwlink/?linkid=852626)|
 | :--- | :--- | :--- | :--- |
@@ -42,9 +61,9 @@ MRTK-vNext is currently under heavy development. To determine the best branch fo
 
 The Mixed Reality team have prepared a few guides for getting up to speed on using the new Mixed Reality Toolkit, which can be found here:
 
-* [Downloading the Mixed Reality Toolkit](/Documentation/DownloadingTheMRTK.md)
-* [Getting Started with the Mixed Reality Toolkit](/Documentation/GettingStartedWithTheMRTK.md)
-* [Mixed Reality Toolkit configuration guide](/Documentation/MixedRealityConfigurationGuide.md)
+* [Downloading the Mixed Reality Toolkit](Documentation/DownloadingTheMRTK.md)
+* [Getting Started with the Mixed Reality Toolkit](Documentation/GettingStartedWithTheMRTK.md)
+* [Mixed Reality Toolkit configuration guide](Documentation/MixedRealityConfigurationGuide.md)
 
 More guides to follow.
 
@@ -63,7 +82,7 @@ New examples will follow strict guidelines, such as:
 * Each example will use a standardized template, so all examples have the same look and feel.
 * Each sample will be fully documented, detailing both the use case it is demonstrating and how to implement the features demonstrated.
 
-> Check the "Work In Progress" section of the [Windows Mixed Reality - vNext SDK](/MRTK-SDK.md) for a peek at the first new example.
+> Check the "Work In Progress" section of the [Windows Mixed Reality - vNext SDK](MRTK-SDK.md) for a peek at the first new example.
 
 
 **External\How To** docs folder is meant to help everyone with migrating forward or any simple doubts they might have about the process.
@@ -76,14 +95,6 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 | ![Academy](External/ReadMeImages/icon_academy.png) [Academy](https://developer.microsoft.com/en-us/windows/mixed-reality/academy)| ![Design](External/ReadMeImages/icon_design.png) [Design](https://developer.microsoft.com/en-us/windows/mixed-reality/design)| ![Development](External/ReadMeImages/icon_development.png) [Development](https://developer.microsoft.com/en-us/windows/mixed-reality/development)| ![Community)](External/ReadMeImages/icon_community.png) [Community](https://developer.microsoft.com/en-us/windows/mixed-reality/community)|
 | :--------------------- | :----------------- | :------------------ | :------------------------ |
 | See code examples. Do a coding tutorial. Watch guest lectures.          | Get design guides. Build user interface. Learn interactions and input.     | Get development guides. Learn the technology. Understand the science.       | Join open source projects. Ask questions on forums. Attend events and meetups. |
-
-### For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/Branch-Guide).
-
-> Learn more about [Windows Mixed Reality](https://www.microsoft.com/en-gb/windows/windows-mixed-reality) here.
-
-> Learn more about the architecture behind [Windows Mixed Reality - vNext](/MRTK-vNext.md) here.
-
-> Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](/MRTK-SDK.md) here.
 
 # How to Contribute
 View the [**How To Contribute**](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/How-to-Contribute) wiki page for the most up to date instructions on contributing to the Mixed Reality Toolkit!
