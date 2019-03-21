@@ -98,6 +98,7 @@ Passes state information and input data on to receivers that detect patterns and
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><span class="xref">IMixedRealityFocusChangedHandler</span></div>
     <div><span class="xref">IMixedRealityFocusHandler</span></div>
     <div><span class="xref">IMixedRealityInputHandler</span></div>
     <div><span class="xref">IMixedRealityPointerHandler</span></div>
@@ -108,7 +109,7 @@ Passes state information and input data on to receivers that detect patterns and
   <h5 id="Microsoft_MixedReality_Toolkit_SDK_UX_Interactable_Interactable_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public class Interactable : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler</code></pre>
+public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -1595,6 +1596,60 @@ public class Interactable : MonoBehaviour, IMixedRealityFocusHandler, IMixedReal
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_SDK_UX_Interactable_Interactable_OnBeforeFocusChange_" data-uid="Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Interactable.OnBeforeFocusChange*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SDK_UX_Interactable_Interactable_OnBeforeFocusChange_FocusEventData_" data-uid="Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Interactable.OnBeforeFocusChange(FocusEventData)">OnBeforeFocusChange(FocusEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnBeforeFocusChange(FocusEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">FocusEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SDK_UX_Interactable_Interactable_OnFocusChanged_" data-uid="Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Interactable.OnFocusChanged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SDK_UX_Interactable_Interactable_OnFocusChanged_FocusEventData_" data-uid="Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Interactable.OnFocusChanged(FocusEventData)">OnFocusChanged(FocusEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnFocusChanged(FocusEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">FocusEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_SDK_UX_Interactable_Interactable_OnFocusEnter_" data-uid="Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Interactable.OnFocusEnter*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SDK_UX_Interactable_Interactable_OnFocusEnter_FocusEventData_" data-uid="Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Interactable.OnFocusEnter(FocusEventData)">OnFocusEnter(FocusEventData)</h4>
   <div class="markdown level1 summary"></div>
@@ -2668,6 +2723,9 @@ Supports toggles using a comma to separate keywords, no spaces please</p>
     <pre><code class="lang-csharp hljs">protected virtual void UpdateState()</code></pre>
   </div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealityFocusChangedHandler</span>
+  </div>
   <div>
       <span class="xref">IMixedRealityFocusHandler</span>
   </div>
