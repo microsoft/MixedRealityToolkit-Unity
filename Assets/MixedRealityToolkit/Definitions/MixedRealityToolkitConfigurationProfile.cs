@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests")]
 namespace Microsoft.MixedReality.Toolkit

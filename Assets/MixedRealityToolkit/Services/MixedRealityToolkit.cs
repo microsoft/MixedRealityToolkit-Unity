@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
 #endif

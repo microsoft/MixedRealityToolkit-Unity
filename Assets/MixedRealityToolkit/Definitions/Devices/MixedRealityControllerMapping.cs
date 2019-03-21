@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Devices;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Core.Inspectors")]
 namespace Microsoft.MixedReality.Toolkit.Input

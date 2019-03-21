@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 
 namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 {

@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Devices;
 using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
