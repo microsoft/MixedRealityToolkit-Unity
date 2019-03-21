@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     public interface IMixedRealitySpatialAwarenessObserver : IMixedRealityDataProvider, IMixedRealityEventSource
     {

@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.Handlers
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     public interface IMixedRealitySpatialAwarenessObservationHandler<T> : IEventSystemHandler
     {

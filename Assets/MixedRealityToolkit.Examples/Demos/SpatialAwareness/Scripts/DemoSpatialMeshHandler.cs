@@ -2,16 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
-using Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness;
-using Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.Handlers;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// This class is an example of the <see cref="Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.Handlers.IMixedRealitySpatialAwarenessObservationHandler{T}"/> interface. It keeps track
+    /// This class is an example of the <see cref="IMixedRealitySpatialAwarenessObservationHandler{T}"/> interface. It keeps track
     /// of the IDs of each mesh and tracks the number of updates they have received.
     /// </summary>
     public class DemoSpatialMeshHandler : MonoBehaviour, IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>

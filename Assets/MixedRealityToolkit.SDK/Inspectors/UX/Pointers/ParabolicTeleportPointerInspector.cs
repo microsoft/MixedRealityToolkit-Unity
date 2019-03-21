@@ -1,5 +1,4 @@
-﻿using Microsoft.MixedReality.Toolkit.Teleport;
-using UnityEditor;
+﻿using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
 {

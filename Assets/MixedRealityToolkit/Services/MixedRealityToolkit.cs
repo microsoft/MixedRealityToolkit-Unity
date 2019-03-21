@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Teleport;
 using System;
 using System.Collections.Generic;

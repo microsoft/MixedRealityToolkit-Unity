@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using Microsoft.MixedReality.Toolkit.Input;
 using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor

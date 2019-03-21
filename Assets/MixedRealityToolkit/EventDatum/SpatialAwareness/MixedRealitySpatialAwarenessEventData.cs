@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     /// <summary>
     /// Data for spatial awareness events.

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.MixedReality.Toolkit.UI.TypeResolution
+﻿namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Controls the behavior of the InteractableTypeFinder.FindTypes function. See individual
