@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
     [System.Serializable]
 
-    public class Interactable : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
+    public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
     {
         /// <summary>
         /// Setup the input system
@@ -518,17 +518,37 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         #endregion PointerManagement
 
-        #region MixedRealityFocusHandlers
+        #region MixedRealityFocusChangedHandlers
 
-        public void OnFocusEnter(FocusEventData eventData)
+        public void OnBeforeFocusChange(FocusEventData eventData)
         {
             if (!CanInteract())
             {
                 return;
             }
 
-            AddPointer(eventData.Pointer);
-            SetFocus(pointers.Count > 0);
+            if (eventData.NewFocusedObject == gameObject)
+            {
+                AddPointer(eventData.Pointer);
+            }
+            else if (eventData.OldFocusedObject == gameObject)
+            {
+                RemovePointer(eventData.Pointer);
+            }
+        }
+
+        public void OnFocusChanged(FocusEventData eventData) {}
+
+        #endregion MixedRealityFocusChangedHandlers
+
+        #region MixedRealityFocusHandlers
+
+        public void OnFocusEnter(FocusEventData eventData)
+        {
+            if (CanInteract())
+            {
+                SetFocus(pointers.Count > 0);
+            }
         }
 
         public void OnFocusExit(FocusEventData eventData)
@@ -538,7 +558,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                 return;
             }
 
-            RemovePointer(eventData.Pointer);
             SetFocus(pointers.Count > 0);
         }
 
