@@ -26,9 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public MouseDeviceManager(
-            IMixedRealityServiceRegistrar registrar, 
-            string name = null, 
-            uint priority = DefaultPriority, 
+            IMixedRealityServiceRegistrar registrar,
+            string name = null,
+            uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
 
         /// <summary>

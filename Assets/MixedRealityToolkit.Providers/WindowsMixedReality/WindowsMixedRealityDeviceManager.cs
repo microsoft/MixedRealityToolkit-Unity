@@ -36,9 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsMixedRealityDeviceManager(
-            IMixedRealityServiceRegistrar registrar, 
-            string name = null, 
-            uint priority = DefaultPriority, 
+            IMixedRealityServiceRegistrar registrar,
+            string name = null,
+            uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
 
 #if UNITY_WSA

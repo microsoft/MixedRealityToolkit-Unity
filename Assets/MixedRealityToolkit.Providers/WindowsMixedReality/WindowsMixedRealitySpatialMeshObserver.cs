@@ -34,10 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsMixedRealitySpatialMeshObserver(
-            IMixedRealityServiceRegistrar registrar, 
+            IMixedRealityServiceRegistrar registrar,
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
-            uint priority = DefaultPriority, 
+            uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, spatialAwarenessSystem, name, priority, profile)
         {
             ReadProfile();
