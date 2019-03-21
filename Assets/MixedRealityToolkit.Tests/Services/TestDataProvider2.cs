@@ -4,11 +4,15 @@
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Services
 {
-    internal class TestDataProvider2 : BaseServiceWithConstructor, ITestDataProvider2
+    internal class TestDataProvider2 : BaseDataProvider, ITestDataProvider2
     {
-        public TestDataProvider2(string name, uint priority) : base(name, priority) { }
+        public TestDataProvider2(
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealityService service, 
+            string name,
+            uint priority) : base(registrar, service, name, priority) { }
 
-        public bool IsEnabled { get; private set; }
+    public bool IsEnabled { get; private set; }
 
         public override void Enable()
         {

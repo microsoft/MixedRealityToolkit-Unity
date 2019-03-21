@@ -362,12 +362,14 @@ namespace Microsoft.MixedReality.Toolkit
                 InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType) || InputSystem == null)
+                object[] args = { this, ActiveProfile.InputSystemProfile, Instance.MixedRealityPlayspace };
+                if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType, args: args) || InputSystem == null)
                 {
                     Debug.LogError("Failed to start the Input System!");
                 }
-
-                if (!RegisterService<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType))
+                
+                args = new object[] { this, InputSystem, ActiveProfile.InputSystemProfile };
+                if (!RegisterDataProvider<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType, args: args))
                 {
                     Debug.LogError("Failed to register the focus provider! The input system will not function without it.");
                     return;
@@ -383,7 +385,8 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
-                if (!RegisterService<IMixedRealityBoundarySystem>(ActiveProfile.BoundarySystemSystemType) || BoundarySystem == null)
+                object[] args = { this, ActiveProfile.BoundaryVisualizationProfile, Instance.MixedRealityPlayspace, ActiveProfile.TargetExperienceScale };
+                if (!RegisterService<IMixedRealityBoundarySystem>(ActiveProfile.BoundarySystemSystemType, args: args) || BoundarySystem == null)
                 {
                     Debug.LogError("Failed to start the Boundary System!");
                 }
@@ -395,7 +398,8 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_EDITOR
                 LayerExtensions.SetupLayer(31, "Spatial Awareness");
 #endif
-                if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType) && SpatialAwarenessSystem != null)
+                object[] args = { this };
+                if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType, args: args) && SpatialAwarenessSystem != null)
                 {
                     Debug.LogError("Failed to start the Spatial Awareness System!");
                 }
@@ -404,7 +408,8 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
-                if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType) || TeleportSystem == null)
+                object[] args = { this, Instance.MixedRealityPlayspace };
+                if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType, args: args) || TeleportSystem == null)
                 {
                     Debug.LogError("Failed to start the Teleport System!");
                 }
@@ -412,7 +417,8 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (ActiveProfile.IsDiagnosticsSystemEnabled)
             {
-                if (!RegisterService<IMixedRealityDiagnosticsSystem>(ActiveProfile.DiagnosticsSystemSystemType) || DiagnosticsSystem == null)
+                object[] args = { this, ActiveProfile.DiagnosticsSystemProfile, Instance.MixedRealityPlayspace };
+                if (!RegisterService<IMixedRealityDiagnosticsSystem>(ActiveProfile.DiagnosticsSystemSystemType, args: args) || DiagnosticsSystem == null)
                 {
                     Debug.LogError("Failed to start the Diagnostics System!");
                 }
@@ -423,7 +429,20 @@ namespace Microsoft.MixedReality.Toolkit
                 for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile.Configurations?.Length; i++)
                 {
                     var configuration = ActiveProfile.RegisteredServiceProvidersProfile.Configurations[i];
-                    RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile);
+
+                    if (typeof(IMixedRealityDataProvider).IsAssignableFrom(configuration.ComponentType.Type))
+                    {
+                        RegisterService<IMixedRealityDataProvider>(configuration.ComponentType, configuration.RuntimePlatform, this, null, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile);
+
+                    }
+                    else if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
+                    {
+                        RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, this, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{configuration.ComponentName} does not implement IMixedRealityDataProvider or IMixedRealityExtensionService and could not be registered");
+                    }
                 }
             }
 

@@ -12,10 +12,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="name">Friendly name of the service.</param>
-        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
-        /// <param name="profile">The service's configuration profile.</param>
-        public BaseSpatialObserver(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile)
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the observer.</param>
+        /// <param name="spatialAwarenessSystem">The <see cref="IMixedRealitySpatialAwarenessSystem"/> to which the observer is providing data.</param>
+        /// <param name="name">The friendly name of the data provider.</param>
+        /// <param name="priority">The registration priority of the data provider.</param>
+        /// <param name="profile">The configuration profile for the data provider.</param>
+        public BaseSpatialObserver(
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
+            string name = null,
+            uint priority = DefaultPriority, 
+            BaseMixedRealityProfile profile = null) : base(registrar, spatialAwarenessSystem, name, priority, profile)
         {
             if (MixedRealityToolkit.SpatialAwarenessSystem != null)
             {

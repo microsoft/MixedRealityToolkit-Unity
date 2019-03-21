@@ -15,8 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// The focus provider handles the focused objects per input source.
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
-    public class FocusProvider : BaseService, IMixedRealityFocusProvider
+    public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider
     {
+        public FocusProvider(
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
+            MixedRealityInputSystemProfile profile) : base(registrar, inputSystem, null, DefaultPriority, profile)
+        { }
+
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
@@ -35,11 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if (MixedRealityToolkit.Instance.HasActiveProfile &&
-                    MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
-                    MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+                MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+                
+                if ((Service != null) &&
+                    (profile != null) &&
+                    profile.PointerProfile != null)
                 {
-                    return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointingExtent;
+                    return profile.PointerProfile.PointingExtent;
                 }
 
                 return 10f;
@@ -55,11 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (focusLayerMasks == null)
                 {
-                    if (MixedRealityToolkit.Instance.HasActiveProfile &&
-                        MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
-                        MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+                    MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+
+                    if ((Service != null) &&
+                        (profile != null) &&
+                        profile.PointerProfile != null)
                     {
-                        return focusLayerMasks = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointingRaycastLayerMasks;
+                        return focusLayerMasks = profile.PointerProfile.PointingRaycastLayerMasks;
                     }
 
                     return focusLayerMasks = new LayerMask[] { UnityPhysics.DefaultRaycastLayers };
@@ -98,21 +108,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled) { return false; }
-
-                if (MixedRealityToolkit.InputSystem == null)
+                if (Service == null)
                 {
                     Debug.LogError($"Unable to start {Name}. An Input System is required for this feature.");
                     return false;
                 }
 
-                if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
+                MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+
+                if (profile == null)
                 {
                     Debug.LogError($"Unable to start {Name}. An Input System Profile is required for this feature.");
                     return false;
                 }
 
-                if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile == null)
+                if (profile.PointerProfile == null)
                 {
                     Debug.LogError($"Unable to start {Name}. An Pointer Profile is required for this feature.");
                     return false;
@@ -579,15 +589,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             int pointerCount = 0;
 
+            MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+            if (profile == null) { return; }
+
             foreach (var pointer in pointers)
             {
                 UpdatePointer(pointer);
 
-                var pointerProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile;
+                var pointerProfile = profile.PointerProfile;
 
                 if (pointerProfile != null && pointerProfile.DebugDrawPointingRays)
                 {
-                    MixedRealityRaycaster.DebugEnabled = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.DebugDrawPointingRays;
+                    MixedRealityRaycaster.DebugEnabled = pointerProfile.DebugDrawPointingRays;
 
                     Color rayColor;
 
@@ -944,7 +957,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
                     // If the source lost is the gaze input source, then reset it.
-                    if (eventData.InputSource.SourceId == MixedRealityToolkit.InputSystem.GazeProvider.GazeInputSource.SourceId)
+                    if (eventData.InputSource.SourceId == ((IMixedRealityInputSystem)Service).GazeProvider?.GazeInputSource.SourceId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;

@@ -19,10 +19,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public UnityJoystickManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        public UnityJoystickManager(
+            IMixedRealityServiceRegistrar registrar,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
 
         private const float DeviceRefreshInterval = 3.0f;
 

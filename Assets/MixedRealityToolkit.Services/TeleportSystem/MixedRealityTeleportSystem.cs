@@ -11,8 +11,26 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Teleport.IMixedRealityTeleportSystem"/>
     /// </summary>
-    public class MixedRealityTeleportSystem : BaseEventSystem, IMixedRealityTeleportSystem
+    public class MixedRealityTeleportSystem : BaseCoreSystem, IMixedRealityTeleportSystem
     {
+        public MixedRealityTeleportSystem(
+            IMixedRealityServiceRegistrar registrar,
+            Transform playspace) : base(registrar, null) // Teleport system does not use a profile
+        {
+            if (registrar == null)
+            {
+                Debug.LogError("The MixedRealityTeleportSystem object requires a valid IMixedRealityServiceRegistrar instance.");
+            }
+            IsInputSystemEnabled = (registrar.GetService<IMixedRealityInputSystem>(showLogs: false) != null);
+
+            if (playspace == null)
+            {
+                Debug.LogError("The MixedRealityTeleportSystem object requires a valid playspace Transform.");
+            }
+
+            Playspace = playspace;
+        } 
+
         private TeleportEventData teleportEventData;
 
         private bool isTeleporting = false;
@@ -44,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                 if (eventSystems.Length == 0)
                 {
-                    if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+                    if (!IsInputSystemEnabled)
                     {
                         eventSystemReference = new GameObject("Event System");
                         eventSystemReference.AddComponent<EventSystem>();
@@ -119,6 +137,16 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         #endregion IEventSystemManager Implementation
 
         #region IMixedRealityTeleportSystem Implementation
+
+        /// <summary>
+        /// The transform of the playspace scene object.
+        /// </summary>
+        private Transform Playspace = null;
+
+        /// <summary>
+        /// Is there an input system registered.
+        /// </summary>
+        private bool IsInputSystemEnabled = false;
 
         private float teleportDuration = 0.25f;
 
@@ -234,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             isProcessingTeleportRequest = true;
 
-            var cameraParent = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+            var cameraParent = Playspace;
 
             targetRotation = Vector3.zero;
             targetRotation.y = eventData.Pointer.PointerOrientation;

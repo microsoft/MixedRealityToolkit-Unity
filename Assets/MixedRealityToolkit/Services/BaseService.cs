@@ -10,13 +10,15 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public abstract class BaseService : IMixedRealityService
     {
+        public const uint DefaultPriority = 10;
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc />
         public virtual string Name { get; protected set; }
 
         /// <inheritdoc />
-        public virtual uint Priority { get; protected set; } = 5;
+        public virtual uint Priority { get; protected set; } = DefaultPriority;
 
         /// <inheritdoc />
         public virtual void Initialize() { }
