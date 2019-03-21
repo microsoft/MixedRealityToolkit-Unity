@@ -93,9 +93,8 @@
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseService.html">BaseService</a></div>
-    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseServiceWithConstructor.html">BaseServiceWithConstructor</a></div>
-    <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseExtensionService.html">BaseExtensionService</a></div>
-    <div class="level4"><span class="xref">BaseDataProvider</span></div>
+    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseExtensionService.html">BaseExtensionService</a></div>
+    <div class="level3"><span class="xref">BaseDataProvider</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -107,13 +106,19 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseExtensionService.html#Microsoft_MixedReality_Toolkit_Core_Services_BaseExtensionService_Registrar">BaseExtensionService.Registrar</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseExtensionService.html#Microsoft_MixedReality_Toolkit_Core_Services_BaseExtensionService_ConfigurationProfile">BaseExtensionService.ConfigurationProfile</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseServiceWithConstructor.html#Microsoft_MixedReality_Toolkit_Core_Services_BaseServiceWithConstructor_Name">BaseServiceWithConstructor.Name</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseService.html#Microsoft_MixedReality_Toolkit_Core_Services_BaseService_DefaultPriority">BaseService.DefaultPriority</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseServiceWithConstructor.html#Microsoft_MixedReality_Toolkit_Core_Services_BaseServiceWithConstructor_Priority">BaseServiceWithConstructor.Priority</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseService.html#Microsoft_MixedReality_Toolkit_Core_Services_BaseService_Name">BaseService.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseService.html#Microsoft_MixedReality_Toolkit_Core_Services_BaseService_Priority">BaseService.Priority</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Core.Services.BaseService.html#Microsoft_MixedReality_Toolkit_Core_Services_BaseService_Initialize">BaseService.Initialize()</a>
@@ -178,13 +183,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Core_Services_BaseDataProvider__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.BaseDataProvider.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_BaseDataProvider__ctor_System_String_System_UInt32_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.BaseDataProvider.#ctor(System.String,System.UInt32,BaseMixedRealityProfile)">BaseDataProvider(String, UInt32, BaseMixedRealityProfile)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_BaseDataProvider__ctor_IMixedRealityServiceRegistrar_IMixedRealityService_System_String_System_UInt32_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.BaseDataProvider.#ctor(IMixedRealityServiceRegistrar,IMixedRealityService,System.String,System.UInt32,BaseMixedRealityProfile)">BaseDataProvider(IMixedRealityServiceRegistrar, IMixedRealityService, String, UInt32, BaseMixedRealityProfile)</h4>
   <div class="markdown level1 summary"><p>Constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BaseDataProvider(string name, uint priority, BaseMixedRealityProfile profile)</code></pre>
+    <pre><code class="lang-csharp hljs">public BaseDataProvider(IMixedRealityServiceRegistrar registrar, IMixedRealityService service, string name = null, uint priority = 10U, BaseMixedRealityProfile profile = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -197,18 +202,61 @@
     </thead>
     <tbody>
       <tr>
+        <td><span class="xref">IMixedRealityServiceRegistrar</span></td>
+        <td><span class="parametername">registrar</span></td>
+        <td><p>The <see cref="!:IMixedRealityServiceRegistrar"></see> instance that loaded the data provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IMixedRealityService</span></td>
+        <td><span class="parametername">service</span></td>
+        <td><p>The <see cref="!:IMixedRealityService"></see> to which the provider is providing data.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>The friendly name of the data provider.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
         <td><span class="parametername">priority</span></td>
-        <td></td>
+        <td><p>The registration priority of the data provider.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">BaseMixedRealityProfile</span></td>
         <td><span class="parametername">profile</span></td>
+        <td><p>The configuration profile for the data provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Core_Services_BaseDataProvider_Service_" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.BaseDataProvider.Service*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Core_Services_BaseDataProvider_Service" data-uid="Microsoft.MixedReality.Toolkit.Core.Services.BaseDataProvider.Service">Service</h4>
+  <div class="markdown level1 summary"><p>The service instance to which this provider is providing data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IMixedRealityService Service { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityService</span></td>
         <td></td>
       </tr>
     </tbody>
