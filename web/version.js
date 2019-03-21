@@ -16,14 +16,28 @@ function createDropdown()
 	innerDiv.className = "version-dropdown-content";
 	versionDropDiv.appendChild(btn);
 	versionDropDiv.appendChild(innerDiv);
-
+	
+	// get web root path
+	var script = document.getElementById('dropdownScript');
+	var scriptPath = script.src;
+	var versionIndex = scriptPath.lastIndexOf('version/');
+	var rootDir = scriptPath;
+	if (versionIndex > 0)
+	{
+		rootDir = scriptPath.substring(0, versionIndex);
+	}
+	else
+	{	
+		rootDir = scriptPath.substring(0, scriptPath.lastIndexOf('web/'));
+	}
+	
 	// create default
-	createEntry(innerDiv, defaultTitle, "/README.html");
+	createEntry(innerDiv, defaultTitle, rootDir+"README.html");
 	
 	// create version entries
 	for (i = 0; i<versionArray.length; i++) 
 	{ 
-		createEntry(innerDiv, versionArray[i], "/version/"+versionArray[i]+"/README.html");
+		createEntry(innerDiv, versionArray[i], rootDir+"version/"+versionArray[i]+"/README.html");
 	}
 }
 
