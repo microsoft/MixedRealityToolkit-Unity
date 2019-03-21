@@ -399,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 #if UNITY_EDITOR                
                 LayerExtensions.SetupLayer(31, "Spatial Awareness");
 #endif
-                object[] args = { this }; // todo: add profile
+                object[] args = { this };
                 if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType, args: args) && SpatialAwarenessSystem != null)
                 {
                     Debug.LogError("Failed to start the Spatial Awareness System!");
@@ -433,7 +433,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
                     if (typeof(IMixedRealityDataProvider).IsAssignableFrom(configuration.ComponentType.Type))
                     {
-                        // todo: pass the service instance to the data provider
                         RegisterService<IMixedRealityDataProvider>(configuration.ComponentType, configuration.RuntimePlatform, this, null, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile);
 
                     }
@@ -443,7 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                     }
                     else
                     {
-                        // todo: unsupported type
+                        Debug.LogWarning($"{configuration.ComponentName} does not implement IMixedRealityDataProvider or IMixedRealityExtensionService and could not be registered");
                     }
                 }
             }
@@ -729,11 +728,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            // todo: trying something
-            //if (!newInstanceBeingInitialized && !IsInitialized && !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
-            //{
-            //    ConfirmInitialized();
-            //}
+            if (!newInstanceBeingInitialized && !IsInitialized && !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                ConfirmInitialized();
+            }
         }
 #endif // UNITY_EDITOR
 

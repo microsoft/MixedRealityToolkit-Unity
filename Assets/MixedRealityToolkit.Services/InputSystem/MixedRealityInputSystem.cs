@@ -103,7 +103,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             bool addedComponents = false;
 
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
-            if (profile == null) { return; }
+            if (profile == null)
+            {
+                Debug.LogError("The Input system is missing the required Input System Profile!");
+                return;
+            }
 
             if (!Application.isPlaying)
             {
@@ -140,12 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             if (!addedComponents)
             {
                 CameraCache.Main.gameObject.EnsureComponent<StandaloneInputModule>();
-            }
-
-            if (profile == null)
-            {
-                Debug.LogError("The Input system is missing the required Input System Profile!");
-                return;
             }
 
             if (profile.InputActionRulesProfile != null)

@@ -590,7 +590,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
             }
 
             // Handle the user teleporting (boundary moves with them).
-            // todo: update...
             location = Playspace.InverseTransformPoint(location);
 
             if (FloorHeight.Value > location.y ||
@@ -634,7 +633,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
             }
 
             // Handle the user teleporting (boundary moves with them).
-            // todo: update...
             Vector3 transformedCenter = Playspace.TransformPoint(
                 new Vector3(rectangularBounds.Center.x, 0f, rectangularBounds.Center.y));
 
@@ -670,7 +668,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
             currentFloorObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentFloorObject.name = "Boundary System Floor";
             currentFloorObject.transform.localScale = new Vector3(floorScale.x, boundaryObjectThickness, floorScale.y);
-            // todo: update...
             currentFloorObject.transform.Translate(new Vector3(
                 Playspace.position.x,
                 FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f),
@@ -758,7 +755,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
             currentTrackedAreaObject = new GameObject("Tracked Area");
             currentTrackedAreaObject.layer = ignoreRaycastLayerValue;
             currentTrackedAreaObject.AddComponent<LineRenderer>();
-            // todo: update...
             currentTrackedAreaObject.transform.Translate(new Vector3(
                 Playspace.position.x,
                 boundaryObjectRenderOffset,
