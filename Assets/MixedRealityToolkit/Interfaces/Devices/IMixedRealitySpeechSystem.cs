@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
     /// <summary>
     /// Mixed Reality Toolkit controller definition, used to manage a specific controller type
     /// </summary>
-    public interface IMixedRealitySpeechSystem : IMixedRealityDeviceManager, IMixedRealityExtensionService
+    public interface IMixedRealitySpeechSystem : IMixedRealityInputDeviceManager, IMixedRealityExtensionService
     {
         /// <summary>
         /// Query whether or not the speech system is active

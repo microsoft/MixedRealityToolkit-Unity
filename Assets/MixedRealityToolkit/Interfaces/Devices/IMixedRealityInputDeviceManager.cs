@@ -5,9 +5,9 @@
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
 {
     /// <summary>
-    /// Mixed Reality Toolkit device definition, used to instantiate and manage a specific device / SDK
+    /// Mixed Reality Toolkit input device definition, used to instantiate and manage one or more input devices
     /// </summary>
-    public interface IMixedRealityDeviceManager : IMixedRealityService
+    public interface IMixedRealityInputDeviceManager : IMixedRealityService
     {
         /// <summary>
         /// Retrieve all controllers currently registered with this device at runtime (if direct access is required)

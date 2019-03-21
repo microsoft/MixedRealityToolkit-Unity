@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
@@ -437,8 +438,45 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
                     if (typeof(IMixedRealityDataProvider).IsAssignableFrom(configuration.ComponentType.Type))
                     {
-                        // todo: get data provider attribute and the service type
-                        object[] args = { this, null, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
+                        IMixedRealityService serviceInstance = null;
+
+                        // todo: this is temporary while we move away from registering data providers as extension services.
+                        object[] attributes = configuration.ComponentType.Type.GetCustomAttributes(true);
+                        foreach(object o in attributes)
+                        {
+                            MixedRealityDataProviderAttribute dataProviderAttribute = o as MixedRealityDataProviderAttribute;
+                            if (dataProviderAttribute == null) { continue; }
+
+                            Type serviceInterfaceType = dataProviderAttribute.ServiceInterfaceType;
+
+                            if (serviceInterfaceType == typeof(IMixedRealityBoundarySystem))
+                            {
+                                serviceInstance = GetService<IMixedRealityBoundarySystem>();
+                                break;
+                            }
+                            else if (serviceInterfaceType == typeof(IMixedRealityDiagnosticsSystem))
+                            {
+                                serviceInstance = GetService<IMixedRealityDiagnosticsSystem>();
+                                break;
+                            }
+                            else if (serviceInterfaceType == typeof(IMixedRealityInputSystem))
+                            {
+                                serviceInstance = GetService<IMixedRealityInputSystem>();
+                                break;
+                            }
+                            else if (serviceInterfaceType == typeof(IMixedRealitySpatialAwarenessSystem))
+                            {
+                                serviceInstance = GetService<IMixedRealitySpatialAwarenessSystem>();
+                                break;
+                            }
+                            else if (serviceInterfaceType == typeof(IMixedRealityTeleportSystem))
+                            {
+                                serviceInstance = GetService<IMixedRealityTeleportSystem>();
+                                break;
+                            }
+                        }
+
+                        object[] args = { this, serviceInstance, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
                         RegisterService<IMixedRealityDataProvider>(configuration.ComponentType, configuration.RuntimePlatform, args);
                     }
                     else if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))

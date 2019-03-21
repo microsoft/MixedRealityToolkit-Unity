@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
@@ -31,10 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public OpenVRDeviceManager(
-            IMixedRealityServiceRegistrar registrar, 
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
             string name = null, 
             uint priority = DefaultPriority, 
-            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
+            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
 
         #region Controller Utilities
 
@@ -91,8 +93,10 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
                     return null;
             }
 
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
             var pointers = RequestPointers(controllerType, controllingHand);
-            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
+            var inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
 
             if (detectedController == null)

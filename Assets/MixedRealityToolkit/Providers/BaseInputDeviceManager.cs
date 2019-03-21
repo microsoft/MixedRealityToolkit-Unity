@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
@@ -13,22 +14,47 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Providers 
 {
     /// <summary>
-    /// Base Device manager to inherit from.
+    /// Base input device manager to inherit from.
     /// </summary>
-    public class BaseDeviceManager : BaseExtensionService, IMixedRealityDeviceManager
+    public class BaseInputDeviceManager : BaseDataProvider, IMixedRealityInputDeviceManager
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
+        /// <param name="inputSystem">The <see cref="IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public BaseDeviceManager(
-            IMixedRealityServiceRegistrar registrar, 
+        public BaseInputDeviceManager(
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
             string name, 
             uint priority, 
-            BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) { }
+            MixedRealityInputSystemProfile profile /*,
+            Transform playspace*/): base(registrar, inputSystem, name, priority, profile)
+        {
+            if (inputSystem == null)
+            {
+                Debug.LogError($"The {name} data provider requires a valid input system instance.");
+            }
+
+            if (profile == null)
+            {
+                Debug.LogError($"The {name} data provider requires a valid input system profile.");
+            }
+
+            //if (playspace == null)
+            //{
+            //    Debug.LogError($"The {name} data provider requires a playspace Transform.");
+            //}
+            //Playspace = playspace;
+        }
+
+        /// <summary>
+        /// Transform used to parent controllers and pointers so that they move correctly with the user during teleportation.
+        /// </summary>
+        private Transform Playspace = null;
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
@@ -44,19 +70,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
         {
             var pointers = new List<IMixedRealityPointer>();
 
-            if (MixedRealityToolkit.Instance.HasActiveProfile &&
-                MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+            MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+
+            if ((Service != null) &&
+                (profile != null) &&
+                profile.PointerProfile != null)
             {
-                for (int i = 0; i < MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
+                for (int i = 0; i < profile.PointerProfile.PointerOptions.Length; i++)
                 {
-                    var pointerProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions[i];
+                    var pointerProfile = profile.PointerProfile.PointerOptions[i];
 
                     if (((useSpecificType && pointerProfile.ControllerType.Type == controllerType.Type) || (!useSpecificType && pointerProfile.ControllerType.Type == null)) &&
                         (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
                         var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
+                        // todo: do this right.... before PR
                         pointerObject.transform.SetParent(MixedRealityToolkit.Instance.MixedRealityPlayspace);
 
                         if (pointer != null)

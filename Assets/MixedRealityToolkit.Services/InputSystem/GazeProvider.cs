@@ -360,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         protected override void OnDisable()
         {
             base.OnDisable();
-            GazePointer.BaseCursor?.SetVisibility(false);
+            GazePointer?.BaseCursor?.SetVisibility(false);
             InputSystem?.RaiseSourceLost(GazeInputSource);
         }
 

@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
     [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor)]
-    public class WindowsSpeechInputProvider : BaseDeviceManager, IMixedRealitySpeechSystem
+    public class WindowsSpeechInputProvider : BaseInputDeviceManager, IMixedRealitySpeechSystem
     {
         /// <summary>
         /// Constructor.
@@ -32,14 +32,16 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsSpeechInputProvider(
-            IMixedRealityServiceRegistrar registrar, 
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
             string name = null, 
             uint priority = DefaultPriority, 
-            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
+            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
         /// </summary>
+        // todo: fix...
         private static SpeechCommands[] Commands => MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands;
 
         /// <summary>
@@ -62,7 +64,12 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
 
-            InputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource("Windows Speech Input Source");
+            MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+            if (profile == null) { return; }
+
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
+            InputSource = inputSystem?.RequestNewGenericInputSource("Windows Speech Input Source");
 
             var newKeywords = new string[Commands.Length];
 
@@ -71,11 +78,11 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
                 newKeywords[i] = Commands[i].Keyword;
             }
 
-            RecognitionConfidenceLevel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
+            RecognitionConfidenceLevel = profile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
             keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel) RecognitionConfidenceLevel);
             keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
+            if (profile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
             {
                 StartRecognition();
             }
@@ -132,11 +139,13 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
 
         private void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, string text)
         {
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
             for (int i = 0; i < Commands?.Length; i++)
             {
                 if (Commands[i].Keyword == text)
                 {
-                    MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(InputSource, Commands[i].Action, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, text);
+                    inputSystem?.RaiseSpeechCommandRecognized(InputSource, Commands[i].Action, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, text);
                     break;
                 }
             }
