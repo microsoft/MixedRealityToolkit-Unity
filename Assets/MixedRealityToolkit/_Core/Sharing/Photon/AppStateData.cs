@@ -13,9 +13,8 @@ using System.Text;
 using UnityEngine;
 using System.IO;
 using Photon.Realtime;
-using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using MRTK.Networking;
+using Microsoft.MixedReality.Toolkit;
 
 namespace MRTK.StateControl.Photon
 {
