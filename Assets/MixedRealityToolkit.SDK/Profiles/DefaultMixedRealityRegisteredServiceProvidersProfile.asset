@@ -64,3 +64,10 @@ MonoBehaviour:
     runtimePlatform: 8
     configurationProfile: {fileID: 11400000, guid: 8be0bcd2117dd214da41ed98f0def2e3,
       type: 2}
+  - componentType:
+      reference: MRTK.StateControl.AppState, MRTK.Core
+    componentName: AppStateData
+    priority: 10
+    runtimePlatform: 11
+    configurationProfile: {fileID: 11400000, guid: 2956361ad88915046bf965464c046b0f,
+      type: 2}

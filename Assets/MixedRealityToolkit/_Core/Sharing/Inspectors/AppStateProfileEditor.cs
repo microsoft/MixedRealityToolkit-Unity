@@ -85,7 +85,7 @@ namespace MRTK.StateControl
                     SerializedProperty itemStateReference = itemStateType.FindPropertyRelative("reference");
                     itemStateReference.stringValue = type.AssemblyQualifiedName;
 
-                    SerializedProperty useType = itemStateTypeStruct.FindPropertyRelative("useType");
+                    SerializedProperty useType = itemStateTypeStruct.FindPropertyRelative("synchronizeType");
                     useType.boolValue = true;
                 }
             }

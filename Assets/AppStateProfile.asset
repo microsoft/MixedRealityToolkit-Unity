@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b47e2b3d017ef7478950ed79e8a702d, type: 3}
+  m_Name: AppStateProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 1
+  appRole: 1
+  stateTypeDefinitions:
+  - itemStateType:
+      reference: AnotherItemState, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    stateArrayType:
+      reference: MRTK.Core.StateArray`1[[AnotherItemState, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null]], MRTK.Core, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    synchronizeType: 1
+    subscribeToType: 0
+  - itemStateType:
+      reference: BaseItemState, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    stateArrayType:
+      reference: MRTK.Core.StateArray`1[[BaseItemState, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null]], MRTK.Core, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    synchronizeType: 1
+    subscribeToType: 0
+  dataSourceType:
+    reference: MRTK.StateControl.Photon.AppStateData, MRTK.StateControl.Photon
+  subscriptionMode: 0
+  experienceName: SharingExperience
