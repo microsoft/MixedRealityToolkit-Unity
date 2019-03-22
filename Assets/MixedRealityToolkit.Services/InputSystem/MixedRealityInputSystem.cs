@@ -746,17 +746,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
                 {
                     var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-                    if (handler.ReceiveAllFocusChanges)
-                    {
-                        handler.OnFocusEnter(casted);
-                    }
-                    else
-                    {
-                        if (casted.FocusProvider.IsOnlyFocusingPointer(casted.NewFocusedObject, casted.Pointer))
-                        {
-                            handler.OnFocusEnter(casted);
-                        }
-                    }
+                    handler.OnFocusEnter(casted);
                 };
 
         /// <inheritdoc />
@@ -777,17 +767,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
                 {
                     var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-                    if (handler.ReceiveAllFocusChanges)
-                    {
-                        handler.OnFocusExit(casted);
-                    }
-                    else
-                    {
-                        if (casted.FocusProvider.IsOnlyFocusingPointer(casted.OldFocusedObject, casted.Pointer))
-                        {
-                            handler.OnFocusExit(casted);
-                        }
-                    }
+                    handler.OnFocusExit(casted);
                 };
 
         #endregion Focus Events

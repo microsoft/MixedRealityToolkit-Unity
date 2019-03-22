@@ -30,8 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         { }
 
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
-        private readonly Dictionary<GameObject, HashSet<IMixedRealityPointer>> overallFocusSet = new Dictionary<GameObject, HashSet<IMixedRealityPointer>>();
-
 
         #region IFocusProvider Properties
 
@@ -102,12 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 
         /// <inheritdoc />
         public GameObject OverrideFocusedObject { get; set; }
-       
-        /// <inheritdoc />
-        public bool IsOnlyFocusingPointer(GameObject focusedObject, IMixedRealityPointer pointer)
-        {
-            return overallFocusSet.ContainsKey(focusedObject) && overallFocusSet[focusedObject].Count == 1 && overallFocusSet[focusedObject].Contains(pointer);
-        }
 
         #endregion IFocusProvider Properties
 
@@ -536,7 +528,6 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 MixedRealityToolkit.InputSystem.RaisePreFocusChanged(pointer, unfocusedObject, null);
 
                 MixedRealityToolkit.InputSystem.RaiseFocusExit(pointer, unfocusedObject);
-                overallFocusSet.Remove(unfocusedObject, pointer);
 
                 MixedRealityToolkit.InputSystem.RaiseFocusChanged(pointer, unfocusedObject, null);
             }
@@ -863,12 +854,10 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                     if (pendingUnfocusObject != null)
                     {
                         MixedRealityToolkit.InputSystem.RaiseFocusExit(currentPointer, pendingUnfocusObject);
-                        overallFocusSet.Remove(pendingUnfocusObject, currentPointer);
                     }
 
                     if (pendingFocusObject != null)
                     {
-                        overallFocusSet.Add(pendingFocusObject, currentPointer);
                         MixedRealityToolkit.InputSystem.RaiseFocusEnter(currentPointer, pendingFocusObject);
                     }
 

@@ -30,10 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         [Tooltip("Target interactable Object to receive events for")]
         private List<GameObject> interactables = new List<GameObject>();
 
-        [SerializeField]
-        [Tooltip("Do you want to receive all focus enter and exit events")]
-        private bool receiveAllFocusEvents = false;
-
         /// <summary>
         /// List of linked interactable objects to receive events for
         /// </summary>
@@ -179,8 +175,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
                 FocusEnter(eventData.NewFocusedObject, eventData);
             }
         }
-
-        public bool ReceiveAllFocusChanges => receiveAllFocusEvents;
 
         #endregion IMixedRealityFocusHandler Implementation
 

@@ -35,14 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// If it's null, then focused object will be used.
         /// </summary>
         GameObject OverrideFocusedObject { get; set; }
-       
-        /// <summary>
-        /// Returns true if the pointer is the only pointer for a focusedObject
-        /// </summary>
-        /// <param name="focusedObject"></param>
-        /// <param name="pointer"></param>
-        /// <returns></returns>
-        bool IsOnlyFocusingPointer(GameObject focusedObject, IMixedRealityPointer pointer);
         
         /// <summary>
         /// Gets the currently focused object for the pointing source.
