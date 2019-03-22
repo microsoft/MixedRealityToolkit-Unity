@@ -84,6 +84,12 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         }
 
         /// <inheritdoc />
+        public IMixedRealityInputSystem InputSystem { private get; set; }
+
+        /// <inheritdoc />
+        public Transform Playspace { private get; set; }
+
+        /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
         {
             get
@@ -103,6 +109,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         /// <inheritdoc />
         public IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
         private InternalGazePointer gazePointer = null;
+
+        /// <inheritdoc />
+        public GameObject GazeCursorPrefab { private get; set; }
 
         /// <inheritdoc />
         public IMixedRealityCursor GazeCursor => GazePointer.BaseCursor;
@@ -246,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             /// <param name="inputSource"></param>
             public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
-                MixedRealityToolkit.InputSystem.RaisePointerDown(this, mixedRealityInputAction, handedness, inputSource);
+                gazeProvider.InputSystem?.RaisePointerDown(this, mixedRealityInputAction, handedness, inputSource);
             }
 
             /// <summary>
@@ -257,8 +266,8 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             /// <param name="inputSource"></param>
             public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
-                MixedRealityToolkit.InputSystem.RaisePointerClicked(this, mixedRealityInputAction, 0, handedness, inputSource);
-                MixedRealityToolkit.InputSystem.RaisePointerUp(this, mixedRealityInputAction, handedness, inputSource);
+                gazeProvider.InputSystem?.RaisePointerClicked(this, mixedRealityInputAction, 0, handedness, inputSource);
+                gazeProvider.InputSystem?.RaisePointerUp(this, mixedRealityInputAction, handedness, inputSource);
             }
         }
 
@@ -352,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             base.OnDisable();
             GazePointer.BaseCursor?.SetVisibility(false);
-            MixedRealityToolkit.InputSystem?.RaiseSourceLost(GazeInputSource);
+            InputSystem?.RaiseSourceLost(GazeInputSource);
         }
 
         #endregion MonoBehaviour Implementation
@@ -404,12 +413,10 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 
             gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
 
-            if (GazeCursor == null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab != null)
+            if ((GazeCursor == null) &&
+                (GazeCursorPrefab != null))
             {
-                var cursor = Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab, MixedRealityToolkit.Instance.MixedRealityPlayspace);
+                GameObject cursor = Instantiate(GazeCursorPrefab, Playspace);
                 SetGazeCursor(cursor);
             }
 
@@ -419,7 +426,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         private async void RaiseSourceDetected()
         {
             await WaitUntilInputSystemValid;
-            MixedRealityToolkit.InputSystem.RaiseSourceDetected(GazeInputSource);
+            InputSystem?.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
         }
 

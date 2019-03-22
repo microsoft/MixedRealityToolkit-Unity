@@ -17,9 +17,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="priority"></param>
-        /// <param name="profile"></param>
-        public BaseDataProvider(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
+        /// <param name="service">The <see cref="IMixedRealityService"/> to which the provider is providing data.</param>
+        /// <param name="name">The friendly name of the data provider.</param>
+        /// <param name="priority">The registration priority of the data provider.</param>
+        /// <param name="profile">The configuration profile for the data provider.</param>
+        public BaseDataProvider(
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealityService service,
+            string name = null, 
+            uint priority = DefaultPriority, 
+            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile)
+        {
+            Service = service;
+        }
+
+        /// <summary>
+        /// The service instance to which this provider is providing data.
+        /// </summary>
+        protected IMixedRealityService Service { get; set; } = null;
     }
 }
