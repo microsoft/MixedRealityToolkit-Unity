@@ -58,10 +58,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
                     if (!gltfTexture.Texture.isReadable)
                     {
                         var textureImporter = AssetImporter.GetAtPath(path) as TextureImporter;
-                        textureImporter.isReadable = true;
-                        textureImporter.SetPlatformTextureSettings(new TextureImporterPlatformSettings { format = TextureImporterFormat.RGBA32 });
-                        textureImporter.SaveAndReimport();
-                        reImport = true;
+                        if (textureImporter != null)
+                        {
+                            textureImporter.isReadable = true;
+                            textureImporter.SetPlatformTextureSettings(new TextureImporterPlatformSettings { format = TextureImporterFormat.RGBA32 });
+                            textureImporter.SaveAndReimport();
+                            reImport = true;
+                        }
                     }
                 }
             }
