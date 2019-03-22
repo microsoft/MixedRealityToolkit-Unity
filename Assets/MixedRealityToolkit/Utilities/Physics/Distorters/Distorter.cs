@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     public abstract class Distorter : MonoBehaviour, IComparable<Distorter>
     {

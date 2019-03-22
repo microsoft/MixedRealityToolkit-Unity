@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using UnityEngine.Experimental.XR;
+using UnityBoundary = UnityEngine.Experimental.XR.Boundary;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     /// <summary>
     /// Manager interface for a Boundary system in the Mixed Reality Toolkit
@@ -110,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// Boundary.Type.PlayArea for the inscribed volume
         /// Boundary.Type.TrackedArea for the area defined by the boundary edges.
         /// </remarks>
-        bool Contains(Vector3 location, Boundary.Type boundaryType = Boundary.Type.TrackedArea);
+        bool Contains(Vector3 location, UnityBoundary.Type boundaryType = UnityBoundary.Type.TrackedArea);
 
         /// <summary>
         /// Returns the description of the inscribed rectangular bounds.

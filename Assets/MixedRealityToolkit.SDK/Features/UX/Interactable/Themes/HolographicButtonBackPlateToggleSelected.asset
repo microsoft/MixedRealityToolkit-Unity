@@ -14,6 +14,8 @@ MonoBehaviour:
   Name: 
   Settings:
   - Name: InteractableColorTheme
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme,
+      Microsoft.MixedReality.Toolkit.SDK
     Properties:
     - Name: Color
       Type: 2

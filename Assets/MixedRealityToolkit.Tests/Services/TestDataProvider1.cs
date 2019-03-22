@@ -1,13 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Services;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Services
 {
-    internal class TestDataProvider1 : BaseServiceWithConstructor, ITestDataProvider1
+    internal class TestDataProvider1 : BaseDataProvider, ITestDataProvider1
     {
-        public TestDataProvider1(string name, uint priority) : base(name, priority) { }
+        public TestDataProvider1(
+            IMixedRealityServiceRegistrar registrar, 
+            IMixedRealityService service, 
+            string name, 
+            uint priority) : base(registrar, service, name, priority) { }
 
         public bool IsEnabled { get; private set; }
 

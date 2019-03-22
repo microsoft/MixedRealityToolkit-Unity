@@ -6,7 +6,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
     /// Extensions for <see href="https://docs.unity3d.com/ScriptReference/ScriptableObject.html">ScriptableObject</see>s

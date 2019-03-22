@@ -1,15 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(MixedRealityRegisteredServiceProvidersProfile))]
     public class MixedRealityRegisteredServiceProviderProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
@@ -125,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                 EditorGUILayout.EndHorizontal();
 
-                if (configFoldouts[i])
+                if (configFoldouts[i] || RenderAsSubProfile)
                 {
                     EditorGUI.indentLevel++;
 
@@ -152,7 +149,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                     changed |= EditorGUI.EndChangeCheck();
 
-                    changed |= RenderProfile(configurationProfile);
+                    Type serviceType = null;
+                    if (configurationProfile.objectReferenceValue != null)
+                    {
+                        serviceType = (target as MixedRealityRegisteredServiceProvidersProfile).Configurations[i].ComponentType;
+                    }
+
+                    changed |= RenderProfile(configurationProfile, true, serviceType);
 
                     EditorGUI.indentLevel--;
 

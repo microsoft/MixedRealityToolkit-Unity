@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
+namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
-    public class BaseInputHandlerInspector : Editor
+    public class BaseInputHandlerInspector : UnityEditor.Editor
     {
         private SerializedProperty isFocusRequiredProperty;
 

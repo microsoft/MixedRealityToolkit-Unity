@@ -35,7 +35,7 @@ Examples:
 
 ```
 /// Links to MRTK internal class SystemType
-///<see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.SystemType"/>
+///<see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
 
 /// Links to external API - link provided by xref service
 /// <see cref="System.Collections.Generic.ICollection{Type}.Contains"/>
@@ -51,12 +51,12 @@ Linking to the API documentation can be done by using [cross references](https:/
 
 Example:
 
-This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem)
-as well as this short version: @Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
+This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
+as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 
 ```
-This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem)
-as well as this short version: @Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
+This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
+as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 ```
 
 ## Adding new .md files to developer docs
@@ -80,6 +80,33 @@ Currently there's a definition for the following resource types:
 <td>Images</td> <td>External/ReadMeImages/</td>
 </tr>
 </table>
+
+
+## Releasing a new version
+Multiple versions of developer docs are supported and can be switched by the version drop down in the top menu bar. If you're releasing a new version perform the following steps to have your version on the developer docs page.
+
+1. Optional: Adjusting your docfx.json 
+Depending on whether you want to have the "Improve this doc" to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:
+
+```
+ "_gitContribute": {
+        "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity.git",
+        "branch": "mrtk_development"
+      }
+```
+
+If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.
+
+2. create your docfx docs by calling docfx docfx.json in the root of the repo
+3. create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder
+4. add your version number into the versionArray in web/version.js
+5. push the modified version.js to mrtk_development branch and the changes in gh-pages branch
+
+CI will pick up the changes done to the version.js file and update the version dropdown automatically.
+
+### Supporting development branches on CI
+
+The versioning system can also be used for showing doc versions from other dev branches that are built by CI. When setting up CI for one of those branches make sure your powershell script on CI copies the contents of the generated docfx output into a version folder named after your branch and add the corresponding version entry into the web/version.js file.
 
 
 
