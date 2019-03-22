@@ -702,7 +702,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             }
             if (newFocusedObject != null)
             {
-                HandleEvent(focusEventData, oldFocusedObject, OnPreFocusChangedHandler);
+                HandleEvent(focusEventData, newFocusedObject, OnPreFocusChangedHandler);
             }
 
             // Raise Focus Events on the pointers cursor if it has one.
@@ -730,7 +730,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             }
             if (newFocusedObject != null)
             {
-                HandleEvent(focusEventData, oldFocusedObject, OnPreFocusChangedHandler);
+                HandleEvent(focusEventData, newFocusedObject, OnPreFocusChangedHandler);
             }
 
             // Raise Focus Events on the pointers cursor if it has one.
