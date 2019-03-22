@@ -16,6 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         private static readonly Vector4 TangentSpaceConversionScale = new Vector4(-1, 1, 1, -1);
 
+        private static readonly string scalar = GltfAccessorAttributeType.SCALAR.ToString();
+        private static readonly string vec2 = GltfAccessorAttributeType.VEC2.ToString();
+        private static readonly string vec3 = GltfAccessorAttributeType.VEC3.ToString();
+        private static readonly string vec4 = GltfAccessorAttributeType.VEC4.ToString();
+
         internal static Matrix4x4 GetTrsProperties(this GltfNode node, out Vector3 position, out Quaternion rotation, out Vector3 scale)
         {
             Matrix4x4 matrix = node.matrix.GetMatrix4X4Value();
@@ -139,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         internal static int[] GetIntArray(this GltfAccessor accessor, bool flipFaces = true)
         {
-            if (accessor.type != "SCALAR")
+            if (accessor.type != scalar)
             {
                 return null;
             }
@@ -183,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         internal static Vector2[] GetVector2Array(this GltfAccessor accessor, bool flip = true)
         {
-            if (accessor.type != "VEC2" || accessor.componentType == GltfComponentType.UnsignedInt)
+            if (accessor.type != vec2 || accessor.componentType == GltfComponentType.UnsignedInt)
             {
                 return null;
             }
@@ -226,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         internal static Vector3[] GetVector3Array(this GltfAccessor accessor, bool convert = true)
         {
-            if (accessor.type != "VEC3" || accessor.componentType == GltfComponentType.UnsignedInt)
+            if (accessor.type != vec3 || accessor.componentType == GltfComponentType.UnsignedInt)
             {
                 return null;
             }
@@ -273,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         internal static Vector4[] GetVector4Array(this GltfAccessor accessor, bool convert = true)
         {
-            if (accessor.type != "VEC4" || accessor.componentType == GltfComponentType.UnsignedInt)
+            if (accessor.type != vec4 || accessor.componentType == GltfComponentType.UnsignedInt)
             {
                 return null;
             }
@@ -323,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         internal static Color[] GetColorArray(this GltfAccessor accessor)
         {
-            if (accessor.type != "VEC3" && accessor.type != "VEC4" || accessor.componentType == GltfComponentType.UnsignedInt)
+            if (accessor.type != vec3 && accessor.type != vec4 || accessor.componentType == GltfComponentType.UnsignedInt)
             {
                 return null;
             }
@@ -331,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             var array = new Color[accessor.count];
 
             GetTypeDetails(accessor.componentType, out int componentSize, out float maxValue);
-            bool hasAlpha = accessor.type == "VEC4";
+            bool hasAlpha = accessor.type == vec4;
 
             var stride = accessor.BufferView.byteStride > 0 ? accessor.BufferView.byteStride : componentSize * (hasAlpha ? 4 : 3);
             var byteOffset = accessor.BufferView.byteOffset;

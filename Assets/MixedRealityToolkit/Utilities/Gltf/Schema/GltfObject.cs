@@ -123,8 +123,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 
         /// <summary>
         /// Flag for setting object load behavior.
-        /// Importers require synchronous behavior; all other loading scenarios should likely use asynchronous behavior.
+        /// Importers should run on the main thread; all other loading scenarios should likely use the background thread
         /// </summary>
-        internal bool LoadAsynchronously { get; set; } = true;
+        internal bool UseBackgroundThread { get; set; } = true;
     }
 }

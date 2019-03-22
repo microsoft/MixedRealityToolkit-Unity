@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (!Enabled) { return; }
 
             UpdateControllerData(interactionSourceState);
-            UpdateControllerModel(interactionSourceState);
+            EnsureControllerModel(interactionSourceState);
 
             if (Interactions == null)
             {
@@ -526,10 +526,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 
         /// <summary>
-        /// Update the Controller Model
+        /// Ensure that if a controller model was desired that we have attempted initialization
         /// </summary>
         /// <param name="interactionSourceState"></param>
-        private void UpdateControllerModel(InteractionSourceState interactionSourceState)
+        private void EnsureControllerModel(InteractionSourceState interactionSourceState)
         {
             if (controllerModelInitialized ||
                 GetControllerVisualizationProfile() == null ||

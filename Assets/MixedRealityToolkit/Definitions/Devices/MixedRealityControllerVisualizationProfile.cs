@@ -100,9 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             for (int i = 0; i < controllerVisualizationSettings.Length; i++)
             {
-                if (controllerVisualizationSettings[i].ControllerType != null &&
-                    controllerVisualizationSettings[i].ControllerType.Type == controllerType &&
-                   (controllerVisualizationSettings[i].Handedness == hand || controllerVisualizationSettings[i].Handedness == Handedness.Both))
+                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
                 {
                     return controllerVisualizationSettings[i].OverrideControllerModel;
                 }
@@ -121,9 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             for (int i = 0; i < controllerVisualizationSettings.Length; i++)
             {
-                if (controllerVisualizationSettings[i].ControllerType != null &&
-                    controllerVisualizationSettings[i].ControllerType.Type == controllerType &&
-                    (controllerVisualizationSettings[i].Handedness == hand || controllerVisualizationSettings[i].Handedness == Handedness.Both))
+                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
                 {
                     return controllerVisualizationSettings[i].ControllerVisualizationType;
                 }
@@ -142,15 +138,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             for (int i = 0; i < controllerVisualizationSettings.Length; i++)
             {
-                if (controllerVisualizationSettings[i].ControllerType != null &&
-                    controllerVisualizationSettings[i].ControllerType.Type == controllerType &&
-                    (controllerVisualizationSettings[i].Handedness == hand || controllerVisualizationSettings[i].Handedness == Handedness.Both))
+                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
                 {
                     return controllerVisualizationSettings[i].UseDefaultModel;
                 }
             }
 
             return useDefaultModels;
+        }
+
+        private bool SettingContainsParameters(MixedRealityControllerVisualizationSetting setting, Type controllerType, Handedness hand)
+        {
+            return setting.ControllerType != null &&
+                setting.ControllerType.Type == controllerType &&
+                (setting.Handedness == hand || setting.Handedness == Handedness.Both);
         }
     }
 }

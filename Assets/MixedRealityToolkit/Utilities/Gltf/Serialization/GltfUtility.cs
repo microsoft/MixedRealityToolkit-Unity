@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         private static readonly WaitForUpdate Update = new WaitForUpdate();
         private static readonly WaitForBackgroundThread BackgroundThread = new WaitForBackgroundThread();
+        private static readonly string DefaultObjectName = "GLTF Object";
 
         /// <summary>
         /// Imports a glTF object from the provided uri.
@@ -44,10 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             }
 
             GltfObject gltfObject;
-            bool isGlb = false;
-            bool loadAsynchronously = Application.isPlaying;
+            bool useBackgroundThread = Application.isPlaying;
 
-            if (loadAsynchronously) { await BackgroundThread; }
+            if (useBackgroundThread) { await BackgroundThread; }
 
             if (uri.EndsWith(".gltf"))
             {
@@ -63,12 +63,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             }
             else if (uri.EndsWith(".glb"))
             {
-                isGlb = true;
                 byte[] glbData;
 
 #if WINDOWS_UWP
 
-                if (loadAsynchronously)
+                if (useBackgroundThread)
                 {
                     try
                     {
@@ -103,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 {
                     glbData = new byte[stream.Length];
 
-                    if (loadAsynchronously)
+                    if (useBackgroundThread)
                     {
                         await stream.ReadAsync(glbData, 0, (int)stream.Length);
                     }
@@ -131,9 +130,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             gltfObject.Uri = uri;
             int nameStart = uri.Replace("\\", "/").LastIndexOf("/", StringComparison.Ordinal) + 1;
             int nameLength = uri.Length - nameStart;
-            gltfObject.Name = uri.Substring(nameStart, nameLength).Replace(isGlb ? ".glb" : ".gltf", string.Empty);
 
-            gltfObject.LoadAsynchronously = loadAsynchronously;
+            try
+            {
+                gltfObject.Name = Path.GetFileNameWithoutExtension(uri.Substring(nameStart, nameLength));
+            }
+            catch (ArgumentException)
+            {
+                Debug.LogWarning("Uri contained invalid character");
+                gltfObject.Name = DefaultObjectName;
+            }
+
+            gltfObject.UseBackgroundThread = useBackgroundThread;
             await gltfObject.ConstructAsync();
 
             if (gltfObject.GameObjectReference == null)
@@ -141,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 Debug.LogError("Failed to construct Gltf Object.");
             }
 
-            if (loadAsynchronously) { await Update; }
+            if (useBackgroundThread) { await Update; }
 
             return gltfObject;
         }

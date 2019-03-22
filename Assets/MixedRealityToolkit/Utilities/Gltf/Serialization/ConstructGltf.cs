@@ -56,12 +56,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 return null;
             }
 
-            if (gltfObject.LoadAsynchronously) { await Update; }
+            if (gltfObject.UseBackgroundThread) { await Update; }
 
             var rootObject = new GameObject($"glTF Scene {gltfObject.Name}");
             rootObject.SetActive(false);
 
-            if (gltfObject.LoadAsynchronously) await BackgroundThread;
+            if (gltfObject.UseBackgroundThread) await BackgroundThread;
 
             for (int i = 0; i < gltfObject.bufferViews?.Length; i++)
             {
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 Debug.LogError($"No scenes found for {gltfObject.Name}");
             }
 
-            if (gltfObject.LoadAsynchronously) await Update;
+            if (gltfObject.UseBackgroundThread) await Update;
 
             for (int i = 0; i < gltfObject.scenes?.Length; i++)
             {
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         private static async Task ConstructTextureAsync(this GltfObject gltfObject, GltfTexture gltfTexture)
         {
-            if (gltfObject.LoadAsynchronously) await BackgroundThread;
+            if (gltfObject.UseBackgroundThread) await BackgroundThread;
 
             if (gltfTexture.source >= 0)
             {
@@ -124,18 +124,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                     var path = $"{parentDirectory}\\{gltfImage.uri}";
 
 #if UNITY_EDITOR
-                    if (gltfObject.LoadAsynchronously) await Update;
+                    if (gltfObject.UseBackgroundThread) await Update;
                     var projectPath = path.Replace("\\", "/");
                     projectPath = projectPath.Replace(Application.dataPath, "Assets");
                     texture = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(projectPath);
 
-                    if (gltfObject.LoadAsynchronously) await BackgroundThread;
+                    if (gltfObject.UseBackgroundThread) await BackgroundThread;
 #endif
 
                     if (texture == null)
                     {
 #if WINDOWS_UWP
-                        if (gltfObject.LoadAsynchronously)
+                        if (gltfObject.UseBackgroundThread)
                         {
                             try
                             {
@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                         {
                             imageData = new byte[stream.Length];
 
-                            if (gltfObject.LoadAsynchronously)
+                            if (gltfObject.UseBackgroundThread)
                             {
                                 await stream.ReadAsync(imageData, 0, (int)stream.Length);
                             }
@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
                 if (texture == null)
                 {
-                    if (gltfObject.LoadAsynchronously) await Update;
+                    if (gltfObject.UseBackgroundThread) await Update;
                     // TODO Load texture async
                     texture = new Texture2D(2, 2);
                     gltfImage.Texture = texture;
@@ -201,13 +201,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
                 gltfTexture.Texture = texture;
 
-                if (gltfObject.LoadAsynchronously) await BackgroundThread;
+                if (gltfObject.UseBackgroundThread) await BackgroundThread;
             }
         }
 
         private static async Task ConstructMaterialAsync(this GltfObject gltfObject, GltfMaterial gltfMaterial, int materialId)
         {
-            if (gltfObject.LoadAsynchronously) await Update;
+            if (gltfObject.UseBackgroundThread) await Update;
 
             Material material = await CreateMRTKShaderMaterial(gltfObject, gltfMaterial, materialId);
             if (material == null)
@@ -225,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 gltfMaterial.Material = material;
             }
 
-            if (gltfObject.LoadAsynchronously) await BackgroundThread;
+            if (gltfObject.UseBackgroundThread) await BackgroundThread;
         }
 
         private static async Task<Material> CreateMRTKShaderMaterial(GltfObject gltfObject, GltfMaterial gltfMaterial, int materialId)
@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                         occlusionPixels = occlusionTexture.GetPixels();
                     }
 
-                    if (gltfObject.LoadAsynchronously) await BackgroundThread;
+                    if (gltfObject.UseBackgroundThread) await BackgroundThread;
 
                     var pixelCache = new Color[pixels.Length];
 
@@ -309,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                         pixelCache[c].a = (1.0f - pixels[c].g); // MRTK standard shader smoothness value, invert of glTF roughness value
                     }
 
-                    if (gltfObject.LoadAsynchronously) await Update;
+                    if (gltfObject.UseBackgroundThread) await Update;
                     texture.SetPixels(pixelCache);
                     texture.Apply();
 
@@ -400,7 +400,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 if (texture.isReadable)
                 {
                     var pixels = texture.GetPixels();
-                    if (gltfObject.LoadAsynchronously) await BackgroundThread;
+                    if (gltfObject.UseBackgroundThread) await BackgroundThread;
 
                     var pixelCache = new Color[pixels.Length];
 
@@ -413,7 +413,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                         pixelCache[c].a = pixels[c].b;
                     }
 
-                    if (gltfObject.LoadAsynchronously) await Update;
+                    if (gltfObject.UseBackgroundThread) await Update;
                     texture.SetPixels(pixelCache);
                     texture.Apply();
 
@@ -448,7 +448,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         private static async Task ConstructNodeAsync(GltfObject gltfObject, GltfNode node, int nodeId, Transform parent)
         {
-            if (gltfObject.LoadAsynchronously) await Update;
+            if (gltfObject.UseBackgroundThread) await Update;
 
             var nodeName = string.IsNullOrEmpty(node.name) ? $"glTF Node {nodeId}" : node.name;
             var nodeGameObject = new GameObject(nodeName);
@@ -456,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             // If we're creating a really large node, we need it to not be visible in partial stages. So we hide it while we create it
             nodeGameObject.SetActive(false);
 
-            if (gltfObject.LoadAsynchronously) await BackgroundThread;
+            if (gltfObject.UseBackgroundThread) await BackgroundThread;
 
             node.Matrix = node.GetTrsProperties(out Vector3 position, out Quaternion rotation, out Vector3 scale);
 
@@ -478,7 +478,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 }
             }
 
-            if (gltfObject.LoadAsynchronously) await Update;
+            if (gltfObject.UseBackgroundThread) await Update;
 
             nodeGameObject.transform.localPosition = position;
             nodeGameObject.transform.localRotation = rotation;
@@ -541,7 +541,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         private static async Task<Mesh> ConstructMeshPrimitiveAsync(GltfObject gltfObject, GltfMeshPrimitive meshPrimitive)
         {
-            if (gltfObject.LoadAsynchronously) await BackgroundThread;
+            if (gltfObject.UseBackgroundThread) await BackgroundThread;
 
             GltfAccessor positionAccessor = null;
             GltfAccessor normalsAccessor = null;
@@ -634,7 +634,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 joint0Accessor.BufferView.Buffer = gltfObject.buffers[joint0Accessor.BufferView.buffer];
             }
 
-            if (gltfObject.LoadAsynchronously) await Update;
+            if (gltfObject.UseBackgroundThread) await Update;
 
             var mesh = new Mesh
             {
