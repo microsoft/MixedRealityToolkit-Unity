@@ -109,7 +109,7 @@ External xref services for resolving links to external libraries/apis can be add
 <p>For external apis that don't provide an xref service hrefs to the documentation website can be added to the comments.</p>
 <p>Examples:</p>
 <pre><code>/// Links to MRTK internal class SystemType
-///&lt;see cref=&quot;Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.SystemType&quot;/&gt;
+///&lt;see cref=&quot;Microsoft.MixedReality.Toolkit.Utilities.SystemType&quot;/&gt;
 
 /// Links to external API - link provided by xref service
 /// &lt;see cref=&quot;System.Collections.Generic.ICollection{Type}.Contains&quot;/&gt;
@@ -121,10 +121,10 @@ External xref services for resolving links to external libraries/apis can be add
 <p>Docfx is translating and validating all relative local links on generation, there's no special syntax required. Referring to another documentation article should always be done by referring to the corresponding .md file, never the auto generated .html file. Please note that all links to local files need to be relative to the file you're modifying.</p>
 <p>Linking to the API documentation can be done by using <a href="https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html">cross references</a>. Docfx automatically generated UIDs for all API docs by mangling the signature.</p>
 <p>Example:</p>
-<p>This links to the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem.html">BoundarySystem API</a>
-as well as this short version: <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem.html">Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem</a></p>
-<pre><code>This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem)
-as well as this short version: @Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
+<p>This links to the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Boundary.html">BoundarySystem API</a>
+as well as this short version: <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Boundary.html">Microsoft.MixedReality.Toolkit.Boundary</a></p>
+<pre><code>This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
+as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 </code></pre>
 <h2 id="adding-new-md-files-to-developer-docs">Adding new .md files to developer docs</h2>
 <p>Docfx will pick up any .md files in folders that are added as content files in the build section of the docfx.json and generate html files out of them. For new folders a corresponding entry in the build file needs to be added.</p>

@@ -1,0 +1,1144 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MixedRealityBoundarySystem
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MixedRealityBoundarySystem
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem" class="text-break">Class MixedRealityBoundarySystem
+  </h1>
+  <div class="markdown level0 summary"><p>The Boundary system controls the presentation and display of the users boundary in a scene.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html">BaseService</a></div>
+    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html">BaseEventSystem</a></div>
+    <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseCoreSystem.html">BaseCoreSystem</a></div>
+    <div class="level4"><span class="xref">MixedRealityBoundarySystem</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem.html">IMixedRealityBoundarySystem</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html">IMixedRealityEventSystem</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html">IMixedRealityEventSource</a></div>
+    <div><span class="xref">IEqualityComparer</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseCoreSystem_Registrar">BaseCoreSystem.Registrar</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseCoreSystem_ConfigurationProfile">BaseCoreSystem.ConfigurationProfile</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_EventListeners">BaseEventSystem.EventListeners</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_DefaultPriority">BaseService.DefaultPriority</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Name">BaseService.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Priority">BaseService.Priority</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Reset">BaseService.Reset()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Enable">BaseService.Enable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Update">BaseService.Update()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Disable">BaseService.Disable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_disposed">BaseService.disposed</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Dispose">BaseService.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Dispose_System_Boolean_">BaseService.Dispose(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Boundary.html">Microsoft.MixedReality.Toolkit.Boundary</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class MixedRealityBoundarySystem : BaseCoreSystem, IMixedRealityBoundarySystem, IMixedRealityEventSystem, IMixedRealityService, IDisposable, IMixedRealityEventSource, IEqualityComparer</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar_Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundaryVisualizationProfile_Transform_ExperienceScale_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundaryVisualizationProfile,Transform,ExperienceScale)">MixedRealityBoundarySystem(IMixedRealityServiceRegistrar, MixedRealityBoundaryVisualizationProfile, Transform, ExperienceScale)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MixedRealityBoundarySystem(IMixedRealityServiceRegistrar registrar, MixedRealityBoundaryVisualizationProfile profile, Transform playspace, ExperienceScale scale)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a></td>
+        <td><span class="parametername">registrar</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundaryVisualizationProfile.html">MixedRealityBoundaryVisualizationProfile</a></td>
+        <td><span class="parametername">profile</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">playspace</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ExperienceScale</span></td>
+        <td><span class="parametername">scale</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_BoundaryHeight_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.BoundaryHeight*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_BoundaryHeight" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.BoundaryHeight">BoundaryHeight</h4>
+  <div class="markdown level1 summary"><p>The height of the play space, in meters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float BoundaryHeight { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_BoundaryHeight_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is used to create a three dimensional boundary volume.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_BoundaryWallsPhysicsLayer_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.BoundaryWallsPhysicsLayer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_BoundaryWallsPhysicsLayer" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.BoundaryWallsPhysicsLayer">BoundaryWallsPhysicsLayer</h4>
+  <div class="markdown level1 summary"><p>The physics layer that the generated boundary walls are assigned to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int BoundaryWallsPhysicsLayer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Bounds_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Bounds*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Bounds" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Bounds">Bounds</h4>
+  <div class="markdown level1 summary"><p>Two dimensional representation of the geometry of the boundary, as provided
+by the platform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Edge[] Bounds { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Boundary.Edge.html">Edge</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Bounds_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>BoundaryGeometry should be treated as the outline of the player's space, placed
+on the floor.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_CeilingPhysicsLayer_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.CeilingPhysicsLayer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_CeilingPhysicsLayer" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.CeilingPhysicsLayer">CeilingPhysicsLayer</h4>
+  <div class="markdown level1 summary"><p>The physics layer that the generated boundary ceiling is assigned to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CeilingPhysicsLayer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_FloorHeight_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.FloorHeight*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_FloorHeight" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.FloorHeight">FloorHeight</h4>
+  <div class="markdown level1 summary"><p>Indicates the height of the floor, in relation to the coordinate system origin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float? FloorHeight { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_FloorHeight_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If a floor has been located, FloorHeight.HasValue will be true, otherwise it will be false.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_FloorPhysicsLayer_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.FloorPhysicsLayer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_FloorPhysicsLayer" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.FloorPhysicsLayer">FloorPhysicsLayer</h4>
+  <div class="markdown level1 summary"><p>The physics layer that the generated floor is assigned to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int FloorPhysicsLayer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_PlayAreaPhysicsLayer_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.PlayAreaPhysicsLayer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_PlayAreaPhysicsLayer" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.PlayAreaPhysicsLayer">PlayAreaPhysicsLayer</h4>
+  <div class="markdown level1 summary"><p>The physics layer that the generated play area is assigned to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int PlayAreaPhysicsLayer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Scale_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Scale*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Scale" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Scale">Scale</h4>
+  <div class="markdown level1 summary"><p>The scale (ex: World Scale) of the experience.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ExperienceScale Scale { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ExperienceScale</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_ShowBoundaryCeiling_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.ShowBoundaryCeiling*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_ShowBoundaryCeiling" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.ShowBoundaryCeiling">ShowBoundaryCeiling</h4>
+  <div class="markdown level1 summary"><p>Enable / disable ceiling rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowBoundaryCeiling { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_ShowBoundaryCeiling_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The ceiling is defined as a <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> positioned <a class="xref" href="Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem.html#Microsoft_MixedReality_Toolkit_Boundary_IMixedRealityBoundarySystem_BoundaryHeight">BoundaryHeight</a> above the floor.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_ShowBoundaryWalls_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.ShowBoundaryWalls*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_ShowBoundaryWalls" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.ShowBoundaryWalls">ShowBoundaryWalls</h4>
+  <div class="markdown level1 summary"><p>Enable / disable boundary wall rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowBoundaryWalls { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_ShowFloor_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.ShowFloor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_ShowFloor" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.ShowFloor">ShowFloor</h4>
+  <div class="markdown level1 summary"><p>Enable / disable floor rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowFloor { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_ShowPlayArea_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.ShowPlayArea*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_ShowPlayArea" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.ShowPlayArea">ShowPlayArea</h4>
+  <div class="markdown level1 summary"><p>Enable / disable play area rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowPlayArea { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_ShowTrackedArea_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.ShowTrackedArea*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_ShowTrackedArea" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.ShowTrackedArea">ShowTrackedArea</h4>
+  <div class="markdown level1 summary"><p>Enable / disable tracked area rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowTrackedArea { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_SourceId_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.SourceId*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_SourceId" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.SourceId">SourceId</h4>
+  <div class="markdown level1 summary"><p>The Unique Source Id of this Event Source.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint SourceId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_SourceName_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.SourceName*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_SourceName" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.SourceName">SourceName</h4>
+  <div class="markdown level1 summary"><p>The Name of this Event Source.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string SourceName { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_TrackedAreaPhysicsLayer_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.TrackedAreaPhysicsLayer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_TrackedAreaPhysicsLayer" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.TrackedAreaPhysicsLayer">TrackedAreaPhysicsLayer</h4>
+  <div class="markdown level1 summary"><p>The physics layer that the generated tracked area is assigned to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TrackedAreaPhysicsLayer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Contains_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Contains*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Contains_Vector3_UnityBoundary_Type_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Contains(Vector3,UnityBoundary.Type)">Contains(Vector3, UnityBoundary.Type)</h4>
+  <div class="markdown level1 summary"><p>Determines if a location is within the specified area of the boundary space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(Vector3 location, UnityBoundary.Type boundaryType = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">location</span></td>
+        <td><p>The location to be checked.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityBoundary.Type</span></td>
+        <td><span class="parametername">boundaryType</span></td>
+        <td><p>The type of boundary space being checked.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the location is within the specified area of the boundary space.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Contains_Vector3_UnityBoundary_Type__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Use:
+Boundary.Type.PlayArea for the inscribed volume
+Boundary.Type.TrackedArea for the area defined by the boundary edges.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Destroy_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Destroy*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Destroy" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Destroy">Destroy()</h4>
+  <div class="markdown level1 summary"><p>Optional Destroy function to perform cleanup of the service before the Mixed Reality Toolkit is destroyed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Destroy()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Destroy">BaseService.Destroy()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetBoundaryCeilingVisualization_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetBoundaryCeilingVisualization*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetBoundaryCeilingVisualization" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetBoundaryCeilingVisualization">GetBoundaryCeilingVisualization()</h4>
+  <div class="markdown level1 summary"><p>Gets the <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> that represents the upper surface of the user's boundary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject GetBoundaryCeilingVisualization()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><p>The boundary ceiling visualization object or null if one does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetBoundaryWallVisualization_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetBoundaryWallVisualization*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetBoundaryWallVisualization" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetBoundaryWallVisualization">GetBoundaryWallVisualization()</h4>
+  <div class="markdown level1 summary"><p>Gets the <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> that represents the user's boundary walls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject GetBoundaryWallVisualization()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><p>The boundary wall visualization object or null if one does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetFloorVisualization_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetFloorVisualization*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetFloorVisualization" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetFloorVisualization">GetFloorVisualization()</h4>
+  <div class="markdown level1 summary"><p>Gets the <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> that represents the user's floor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject GetFloorVisualization()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><p>The floor visualization object or null if one does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetHashCode_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetHashCode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetHashCode_System_Object_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetHashCode(System.Object)">GetHashCode(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetHashCode(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetPlayAreaVisualization_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetPlayAreaVisualization*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetPlayAreaVisualization" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetPlayAreaVisualization">GetPlayAreaVisualization()</h4>
+  <div class="markdown level1 summary"><p>Gets the <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> that represents the user's play area.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject GetPlayAreaVisualization()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><p>The play area visualization object or null if one does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetTrackedAreaVisualization_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetTrackedAreaVisualization*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_GetTrackedAreaVisualization" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.GetTrackedAreaVisualization">GetTrackedAreaVisualization()</h4>
+  <div class="markdown level1 summary"><p>Gets the <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> that represents the user's tracked area.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject GetTrackedAreaVisualization()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><p>The tracked area visualization object or null if one does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_HandleEvent_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.HandleEvent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_HandleEvent__1_BaseEventData_ExecuteEvents_EventFunction___0__" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})">HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void HandleEvent&lt;T&gt;(BaseEventData eventData, ExecuteEvents.EventFunction&lt;T&gt; eventHandler)
+    where T : IEventSystemHandler</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BaseEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ExecuteEvents.EventFunction</span>&lt;T&gt;</td>
+        <td><span class="parametername">eventHandler</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)</span></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Initialize*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Initialize" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Initialize">Initialize()</h4>
+  <div class="markdown level1 summary"><p>The initialize function is used to setup the service once created.
+This method is called once all services have been registered in the Mixed Reality Toolkit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Initialize()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Initialize">BaseService.Initialize()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Register_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Register*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Register_GameObject_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Register(GameObject)">Register(GameObject)</h4>
+  <div class="markdown level1 summary"><p>Registers the <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> to listen for boundary events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Register(GameObject listener)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><span class="parametername">listener</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_Register_GameObject_">BaseEventSystem.Register(GameObject)</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_TryGetRectangularBoundsParams_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.TryGetRectangularBoundsParams*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_TryGetRectangularBoundsParams_Vector2__System_Single__System_Single__System_Single__" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.TryGetRectangularBoundsParams(Vector2@,System.Single@,System.Single@,System.Single@)">TryGetRectangularBoundsParams(out Vector2, out Single, out Single, out Single)</h4>
+  <div class="markdown level1 summary"><p>Returns the description of the inscribed rectangular bounds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetRectangularBoundsParams(out Vector2 center, out float angle, out float width, out float height)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector2</span></td>
+        <td><span class="parametername">center</span></td>
+        <td><p>The center of the rectangle.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">angle</span></td>
+        <td><p>The orientation of the rectangle.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">width</span></td>
+        <td><p>The width of the rectangle.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">height</span></td>
+        <td><p>The height of the rectangle.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if an inscribed rectangle was found in the boundary geometry, false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Unregister_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Unregister*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Boundary_MixedRealityBoundarySystem_Unregister_GameObject_" data-uid="Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.Unregister(GameObject)">Unregister(GameObject)</h4>
+  <div class="markdown level1 summary"><p>UnRegisters the <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> to listen for boundary events.
+///</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Unregister(GameObject listener)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><span class="parametername">listener</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_Unregister_GameObject_">BaseEventSystem.Unregister(GameObject)</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem.html">IMixedRealityBoundarySystem</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html">IMixedRealityEventSystem</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html">IMixedRealityEventSource</a>
+  </div>
+  <div>
+      <span class="xref">IEqualityComparer</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

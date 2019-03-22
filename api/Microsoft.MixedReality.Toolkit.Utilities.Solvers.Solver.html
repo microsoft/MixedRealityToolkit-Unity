@@ -1,0 +1,657 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Solver
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Solver
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../api_doc/toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver" class="text-break">Class Solver
+  </h1>
+  <div class="markdown level0 summary"><p>The base abstract class for all Solvers to derive from. It provides state tracking, smoothing parameters
+and implementation, automatic solver system integration, and update order. Solvers may be used without a link,
+as long as updateLinkedTransform is false.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">Solver</span></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.html">ConstantViewSize</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween.html">InBetween</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.html">Momentum</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital.html">Orbital</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Overlap.html">Overlap</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView.html">RadialView</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html">SurfaceMagnetism</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.html">Microsoft.MixedReality.Toolkit.Utilities.Solvers</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class Solver : MonoBehaviour</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_GoalPosition" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.GoalPosition">GoalPosition</h4>
+  <div class="markdown level1 summary"><p>The final position to be attained</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Vector3 GoalPosition</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_GoalRotation" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.GoalRotation">GoalRotation</h4>
+  <div class="markdown level1 summary"><p>The final rotation to be attained</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Quaternion GoalRotation</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_GoalScale" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.GoalScale">GoalScale</h4>
+  <div class="markdown level1 summary"><p>The final scale to be attained</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Vector3 GoalScale</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SolverHandler" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SolverHandler">SolverHandler</h4>
+  <div class="markdown level1 summary"><p>The handler reference for this solver that's attached to this <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SolverHandler SolverHandler</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html">SolverHandler</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_WorkingPosition_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.WorkingPosition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_WorkingPosition" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.WorkingPosition">WorkingPosition</h4>
+  <div class="markdown level1 summary"><p>Automatically uses the shared position if the solver is set to use the 'linked transform'.
+UpdateLinkedTransform may be set to false, and a solver will automatically update the object directly,
+and not inherit work done by other solvers to the shared position</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 WorkingPosition { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_WorkingRotation_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.WorkingRotation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_WorkingRotation" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.WorkingRotation">WorkingRotation</h4>
+  <div class="markdown level1 summary"><p>Rotation version of WorkingPosition</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Quaternion WorkingRotation { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_WorkingScale_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.WorkingScale*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_WorkingScale" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.WorkingScale">WorkingScale</h4>
+  <div class="markdown level1 summary"><p>Scale version of WorkingPosition</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 WorkingScale { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_AddOffset_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.AddOffset*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_AddOffset_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.AddOffset(Vector3)">AddOffset(Vector3)</h4>
+  <div class="markdown level1 summary"><p>Add an offset position to the target goal position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void AddOffset(Vector3 offset)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_Awake_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.Awake*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_Awake" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.Awake">Awake()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Awake()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.OnEnable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.OnEnable">OnEnable()</h4>
+  <div class="markdown level1 summary"><p>Typically when a solver becomes enabled, it should update its internal state to the system, in case it was disabled far away</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnEnable()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_OnValidate_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.OnValidate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_OnValidate" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.OnValidate">OnValidate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnValidate()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SmoothTo_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SmoothTo*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SmoothTo_Quaternion_Quaternion_System_Single_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SmoothTo(Quaternion,Quaternion,System.Single,System.Single)">SmoothTo(Quaternion, Quaternion, Single, Single)</h4>
+  <div class="markdown level1 summary"><p>Slerps Quaternion source to goal, handles lerpTime of 0</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion SmoothTo(Quaternion source, Quaternion goal, float deltaTime, float lerpTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">source</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">goal</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">deltaTime</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">lerpTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SmoothTo_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SmoothTo*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SmoothTo_Vector3_Vector3_System_Single_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SmoothTo(Vector3,Vector3,System.Single,System.Single)">SmoothTo(Vector3, Vector3, Single, Single)</h4>
+  <div class="markdown level1 summary"><p>Lerps Vector3 source to goal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 SmoothTo(Vector3 source, Vector3 goal, float deltaTime, float lerpTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">source</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">goal</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">deltaTime</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">lerpTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SmoothTo_Vector3_Vector3_System_Single_System_Single__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Handles lerpTime of 0.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapGoalTo_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SnapGoalTo*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapGoalTo_Vector3_Quaternion_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SnapGoalTo(Vector3,Quaternion)">SnapGoalTo(Vector3, Quaternion)</h4>
+  <div class="markdown level1 summary"><p>SnapGoalTo only sets the goal orientation.  Not really useful.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SnapGoalTo(Vector3 position, Quaternion rotation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapTo_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SnapTo*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapTo_Vector3_Quaternion_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SnapTo(Vector3,Quaternion)">SnapTo(Vector3, Quaternion)</h4>
+  <div class="markdown level1 summary"><p>Snaps the solver to the desired pose.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SnapTo(Vector3 position, Quaternion rotation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapTo_Vector3_Quaternion__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>SnapTo may be used to bypass smoothing to a certain position if the object is teleported or spawned.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SolverUpdate_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SolverUpdate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SolverUpdate" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SolverUpdate">SolverUpdate()</h4>
+  <div class="markdown level1 summary"><p>Should be implemented in derived classes, but Solver can be used to flush shared transform to real transform</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void SolverUpdate()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SolverUpdateEntry_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SolverUpdateEntry*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SolverUpdateEntry" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.SolverUpdateEntry">SolverUpdateEntry()</h4>
+  <div class="markdown level1 summary"><p>Tracks lifetime of the solver, disabling it when expired, and finally runs the orientation update logic</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SolverUpdateEntry()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateTransformToGoal_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.UpdateTransformToGoal*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateTransformToGoal" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.UpdateTransformToGoal">UpdateTransformToGoal()</h4>
+  <div class="markdown level1 summary"><p>Updates all object orientations to the goal orientation for this solver, with smoothing accounted for (smoothing may be off)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void UpdateTransformToGoal()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateWorkingPositionToGoal_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.UpdateWorkingPositionToGoal*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateWorkingPositionToGoal" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.UpdateWorkingPositionToGoal">UpdateWorkingPositionToGoal()</h4>
+  <div class="markdown level1 summary"><p>Updates only the working position to goal with smoothing, if enabled</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateWorkingPositionToGoal()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateWorkingRotationToGoal_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.UpdateWorkingRotationToGoal*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateWorkingRotationToGoal" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.UpdateWorkingRotationToGoal">UpdateWorkingRotationToGoal()</h4>
+  <div class="markdown level1 summary"><p>Updates only the working rotation to goal with smoothing, if enabled</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateWorkingRotationToGoal()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateWorkingScaleToGoal_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.UpdateWorkingScaleToGoal*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateWorkingScaleToGoal" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.UpdateWorkingScaleToGoal">UpdateWorkingScaleToGoal()</h4>
+  <div class="markdown level1 summary"><p>Updates only the working scale to goal with smoothing, if enabled</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateWorkingScaleToGoal()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateWorkingToGoal_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.UpdateWorkingToGoal*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateWorkingToGoal" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.UpdateWorkingToGoal">UpdateWorkingToGoal()</h4>
+  <div class="markdown level1 summary"><p>Updates the Working orientation (which may be the object, or the shared orientation) to the goal with smoothing, if enabled</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateWorkingToGoal()</code></pre>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
