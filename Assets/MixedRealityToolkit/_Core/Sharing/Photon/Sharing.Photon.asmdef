@@ -1,0 +1,17 @@
+{
+    "name": "MRTK.StateControl.Photon",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "MRTK.Core",
+        "PhotonRealtime",
+        "PhotonUnityNetworking"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
