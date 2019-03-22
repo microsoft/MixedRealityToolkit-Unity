@@ -1,25 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.Diagnostics;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Teleport;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests")]
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Configuration profile settings for the Mixed Reality Toolkit.

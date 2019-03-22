@@ -1,15 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     [CustomEditor(typeof(ButtonBackgroundSize))]
-    public class ButtonBackgroundSizeGizmo : Editor
+    public class ButtonBackgroundSizeGizmo : UnityEditor.Editor
     {
         public void OnSceneGUI()
         {

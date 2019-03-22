@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     public partial class SpatialAwarenessPlanarObject : BaseSpatialAwarenessObject
     {

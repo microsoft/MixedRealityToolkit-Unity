@@ -15,7 +15,7 @@ MonoBehaviour:
   isCustomProfile: 0
   mixedRealityControllerMappingProfiles:
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.WindowsMixedRealityController,
+      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
     handedness: 0
     interactions:
@@ -176,7 +176,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.WindowsMixedRealityController,
+      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
     handedness: 1
     interactions:
@@ -337,7 +337,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.WindowsMixedRealityController,
+      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
     handedness: 2
     interactions:
@@ -498,7 +498,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.MouseController,
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseController,
         Microsoft.MixedReality.Toolkit
     handedness: 7
     interactions:
@@ -633,7 +633,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.UnityTouchController,
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchController,
         Microsoft.MixedReality.Toolkit
     handedness: 7
     interactions:
@@ -677,7 +677,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.XboxController,
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.XboxController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
     interactions:
@@ -890,7 +890,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.OculusRemoteController,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.OculusRemoteController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 0
     interactions:
@@ -934,7 +934,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.OculusTouchController,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.OculusTouchController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 1
     interactions:
@@ -1160,7 +1160,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.OculusTouchController,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.OculusTouchController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 2
     interactions:
@@ -1373,7 +1373,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.ViveKnucklesController,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveKnucklesController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 1
     interactions:
@@ -1560,7 +1560,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.ViveKnucklesController,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveKnucklesController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 2
     interactions:
@@ -1747,7 +1747,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.ViveWandController,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveWandController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 1
     interactions:
@@ -1869,7 +1869,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.ViveWandController,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveWandController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 2
     interactions:
@@ -1991,7 +1991,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.WindowsMixedRealityOpenVRMotionController,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.WindowsMixedRealityOpenVRMotionController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 1
     interactions:
@@ -2152,7 +2152,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.WindowsMixedRealityOpenVRMotionController,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.WindowsMixedRealityOpenVRMotionController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 2
     interactions:
@@ -2313,7 +2313,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.GenericOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 1
     interactions:
@@ -2474,7 +2474,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Providers.OpenVR.GenericOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 2
     interactions:

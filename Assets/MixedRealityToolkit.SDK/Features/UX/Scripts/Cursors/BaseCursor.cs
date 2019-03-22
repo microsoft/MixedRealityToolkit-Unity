@@ -1,16 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Pointers;
-using Microsoft.MixedReality.Toolkit.Services.InputSystem;
+using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.

@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Custom property drawer for <see cref="Microsoft.MixedReality.Toolkit.Core.Attributes.Vector3RangeAttribute"/> decorated <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> values rendered in the inspector.
+    /// Custom property drawer for <see cref="Microsoft.MixedReality.Toolkit.Vector3RangeAttribute"/> decorated <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> values rendered in the inspector.
     /// </summary>
     [CustomPropertyDrawer(typeof(Vector3RangeAttribute))]
     public class Vector3RangePropertyDrawer : PropertyDrawer

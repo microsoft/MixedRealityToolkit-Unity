@@ -3,12 +3,11 @@
 
 using UnityEngine;
 using UnityEditor;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Collections;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Collections
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [CustomEditor( typeof(BaseObjectCollection), true )]
-    public class BaseCollectionInspector : Editor
+    public class BaseCollectionInspector : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

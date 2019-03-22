@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// How does the Tooltip track with its parent object

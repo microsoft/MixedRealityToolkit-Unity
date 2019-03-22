@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.TypeResolution
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A helper that uses reflection to find objects that implement base types of the

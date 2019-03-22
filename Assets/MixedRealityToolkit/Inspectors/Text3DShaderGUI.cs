@@ -1,13 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
-using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
     /// A custom shader inspector for the "Mixed Reality Toolkit/TextShader3D".

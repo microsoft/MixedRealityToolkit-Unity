@@ -2,7 +2,7 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| Core | Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem |
+| Core | Microsoft.MixedReality.Toolkit.SpatialAwareness |
 
 The MixedRealitySpatialAwarenessProfile derives from Unity’s ScriptableObject and enables the developer to configure the spatial awareness system.
 

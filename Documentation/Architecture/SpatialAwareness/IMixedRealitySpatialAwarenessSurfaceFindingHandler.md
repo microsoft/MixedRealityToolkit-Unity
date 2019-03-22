@@ -2,7 +2,7 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| Core | Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers |
+| Core | Microsoft.MixedReality.Toolkit.SpatialAwareness |
 
 <img src="../../../External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialAwarenessSurfaceFindingHandler.png">
 

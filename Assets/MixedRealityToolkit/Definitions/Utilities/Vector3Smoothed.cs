@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     [Serializable]
     public struct Vector3Smoothed
