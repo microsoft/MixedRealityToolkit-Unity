@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <param name="pointer"></param>
         public void Initialize(IMixedRealityPointer pointer)
         {
-            BaseInitialize(pointer.InputSourceParent, Definitions.InputSystem.MixedRealityInputAction.None);
+            Reset();
             Pointer = pointer;
         }
 
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <param name="newFocusedObject"></param>
         public void Initialize(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
-            BaseInitialize(pointer.InputSourceParent, Definitions.InputSystem.MixedRealityInputAction.None);
+            Reset();
             Pointer = pointer;
             OldFocusedObject = oldFocusedObject;
             NewFocusedObject = newFocusedObject;
