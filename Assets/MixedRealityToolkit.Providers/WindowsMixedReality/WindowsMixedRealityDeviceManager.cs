@@ -31,10 +31,15 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public WindowsMixedRealityDeviceManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        public WindowsMixedRealityDeviceManager(
+            IMixedRealityServiceRegistrar registrar,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
 
 #if UNITY_WSA
 
@@ -269,6 +274,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
             interactionmanagerStates = InteractionManager.GetCurrentReading();
 
+            // Avoids a Unity Editor bug detecting a controller from the previous run during the first frame
+#if !UNITY_EDITOR
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             for (var i = 0; i < interactionmanagerStates?.Length; i++)
             {
@@ -280,6 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                     MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                 }
             }
+#endif
 
             if (MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.GesturesProfile != null &&
@@ -466,6 +474,15 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// <param name="args">SDK source detected event arguments</param>
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
         {
+
+            // Avoids a Unity Editor bug detecting a controller from the previous run during the first frame
+#if UNITY_EDITOR
+            if (Time.frameCount <= 1)
+            {
+                return;
+            }
+#endif
+
             bool raiseSourceDetected = !activeControllers.ContainsKey(args.state.source.id);
 
             var controller = GetController(args.state.source);

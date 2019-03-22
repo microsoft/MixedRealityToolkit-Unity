@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Services;
@@ -19,10 +20,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public BaseDeviceManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        public BaseDeviceManager(
+            IMixedRealityServiceRegistrar registrar, 
+            string name, 
+            uint priority, 
+            BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) { }
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];

@@ -2,15 +2,20 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Services;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Services
 {
     internal class TestExtensionService1 : BaseExtensionService, ITestExtensionService1
     {
-        public TestExtensionService1(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        public TestExtensionService1(
+            IMixedRealityServiceRegistrar registrar,
+            string name,
+            uint priority,
+            BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) { }
 
-        public bool IsEnabled { get; private set; }
+    public bool IsEnabled { get; private set; }
 
         public override void Enable()
         {
