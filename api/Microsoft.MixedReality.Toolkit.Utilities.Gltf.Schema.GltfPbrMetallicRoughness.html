@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class SyncContextUtility
+    <title>Class GltfPbrMetallicRoughness
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class SyncContextUtility
+    <meta name="title" content="Class GltfPbrMetallicRoughness
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.40.12.0">
     
@@ -81,21 +81,29 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfPbrMetallicRoughness">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility" class="text-break">Class SyncContextUtility
+  <h1 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfPbrMetallicRoughness" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfPbrMetallicRoughness" class="text-break">Class GltfPbrMetallicRoughness
   </h1>
-  <div class="markdown level0 summary"><p>Utility class to assist in thread and context synchronization.</p>
+  <div class="markdown level0 summary"><p>A set of parameter values that are used to define the metallic-roughness material model from Physically-Based Rendering (PBR) methodology.
+<a href="https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/material.pbrMetallicRoughness.schema.json">https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/material.pbrMetallicRoughness.schema.json</a></p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">SyncContextUtility</span></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfProperty.html">GltfProperty</a></div>
+    <div class="level2"><span class="xref">GltfPbrMetallicRoughness</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfProperty.html#Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfProperty_Extensions">GltfProperty.Extensions</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfProperty.html#Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfProperty_Extras">GltfProperty.Extras</a>
+    </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
@@ -118,26 +126,28 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.html">Microsoft.MixedReality.Toolkit.Utilities</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.html">Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfPbrMetallicRoughness_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class SyncContextUtility</code></pre>
+    <pre><code class="lang-csharp hljs">[Serializable]
+public class GltfPbrMetallicRoughness : GltfProperty</code></pre>
   </div>
-  <h3 id="properties">Properties
+  <h3 id="fields">Fields
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_IsMainThread_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.IsMainThread*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_IsMainThread" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.IsMainThread">IsMainThread</h4>
-  <div class="markdown level1 summary"><p>Is this being called from the main thread?</p>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfPbrMetallicRoughness_baseColorFactor" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfPbrMetallicRoughness.baseColorFactor">baseColorFactor</h4>
+  <div class="markdown level1 summary"><p>The RGBA components of the base color of the material.
+The fourth component (A) is the opacity of the material.
+These values are linear.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsMainThread { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float[] baseColorFactor</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -147,23 +157,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a>[]</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_UnitySynchronizationContext_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.UnitySynchronizationContext*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_UnitySynchronizationContext" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.UnitySynchronizationContext">UnitySynchronizationContext</h4>
-  <div class="markdown level1 summary"><p>This Unity Player's Synchronization Context.</p>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfPbrMetallicRoughness_baseColorTexture" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfPbrMetallicRoughness.baseColorTexture">baseColorTexture</h4>
+  <div class="markdown level1 summary"><p>The base color texture.
+This texture contains RGB(A) components in sRGB color space.
+The first three components (RGB) specify the base color of the material.
+If the fourth component (A) is present, it represents the opacity of the
+material. Otherwise, an opacity of 1.0 is assumed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SynchronizationContext UnitySynchronizationContext { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public GltfTextureInfo baseColorTexture</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -173,23 +186,27 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">SynchronizationContext</span></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfTextureInfo.html">GltfTextureInfo</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_UnityThreadId_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.UnityThreadId*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_UnityThreadId" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.UnityThreadId">UnityThreadId</h4>
-  <div class="markdown level1 summary"><p>This Unity Player's Thread Id.</p>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfPbrMetallicRoughness_metallicFactor" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfPbrMetallicRoughness.metallicFactor">metallicFactor</h4>
+  <div class="markdown level1 summary"><p>The metalness of the material.
+A value of 1.0 means the material is a metal.
+A value of 0.0 means the material is a dielectric.
+Values in between are for blending between metals and dielectrics such as
+dirty metallic surfaces.
+This value is linear.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int UnityThreadId { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double metallicFactor</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -199,7 +216,65 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfPbrMetallicRoughness_metallicRoughnessTexture" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfPbrMetallicRoughness.metallicRoughnessTexture">metallicRoughnessTexture</h4>
+  <div class="markdown level1 summary"><p>The metallic-roughness texture has two components.
+The first component (R) contains the metallic-ness of the material.
+The second component (G) contains the roughness of the material.
+These values are linear.
+If the third component (B) and/or the fourth component (A) are present,
+they are ignored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GltfTextureInfo metallicRoughnessTexture</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfTextureInfo.html">GltfTextureInfo</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfPbrMetallicRoughness_roughnessFactor" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfPbrMetallicRoughness.roughnessFactor">roughnessFactor</h4>
+  <div class="markdown level1 summary"><p>The roughness of the material.
+A value of 1.0 means the material is completely rough.
+A value of 0.0 means the material is completely smooth.
+This value is linear.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double roughnessFactor</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td></td>
       </tr>
     </tbody>

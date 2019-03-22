@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class SyncContextUtility
+    <title>Class GltfNormalTextureInfo
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class SyncContextUtility
+    <meta name="title" content="Class GltfNormalTextureInfo
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.40.12.0">
     
@@ -81,21 +81,35 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfNormalTextureInfo">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility" class="text-break">Class SyncContextUtility
+  <h1 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfNormalTextureInfo" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfNormalTextureInfo" class="text-break">Class GltfNormalTextureInfo
   </h1>
-  <div class="markdown level0 summary"><p>Utility class to assist in thread and context synchronization.</p>
+  <div class="markdown level0 summary"><p><a href="https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/material.normalTextureInfo.schema.json">https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/material.normalTextureInfo.schema.json</a></p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">SyncContextUtility</span></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfProperty.html">GltfProperty</a></div>
+    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfTextureInfo.html">GltfTextureInfo</a></div>
+    <div class="level3"><span class="xref">GltfNormalTextureInfo</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfTextureInfo.html#Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfTextureInfo_index">GltfTextureInfo.index</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfTextureInfo.html#Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfTextureInfo_textCoord">GltfTextureInfo.textCoord</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfProperty.html#Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfProperty_Extensions">GltfProperty.Extensions</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfProperty.html#Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfProperty_Extras">GltfProperty.Extras</a>
+    </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
@@ -118,26 +132,28 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.html">Microsoft.MixedReality.Toolkit.Utilities</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.html">Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfNormalTextureInfo_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class SyncContextUtility</code></pre>
+    <pre><code class="lang-csharp hljs">[Serializable]
+public class GltfNormalTextureInfo : GltfTextureInfo</code></pre>
   </div>
-  <h3 id="properties">Properties
+  <h3 id="fields">Fields
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_IsMainThread_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.IsMainThread*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_IsMainThread" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.IsMainThread">IsMainThread</h4>
-  <div class="markdown level1 summary"><p>Is this being called from the main thread?</p>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfNormalTextureInfo_scale" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfNormalTextureInfo.scale">scale</h4>
+  <div class="markdown level1 summary"><p>The scalar multiplier applied to each normal vector of the texture.
+This value is ignored if normalTexture is not specified.
+This value is linear.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsMainThread { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double scale</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -147,59 +163,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_UnitySynchronizationContext_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.UnitySynchronizationContext*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_UnitySynchronizationContext" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.UnitySynchronizationContext">UnitySynchronizationContext</h4>
-  <div class="markdown level1 summary"><p>This Unity Player's Synchronization Context.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SynchronizationContext UnitySynchronizationContext { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">SynchronizationContext</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_UnityThreadId_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.UnityThreadId*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_SyncContextUtility_UnityThreadId" data-uid="Microsoft.MixedReality.Toolkit.Utilities.SyncContextUtility.UnityThreadId">UnityThreadId</h4>
-  <div class="markdown level1 summary"><p>This Unity Player's Thread Id.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int UnityThreadId { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td></td>
       </tr>
     </tbody>
