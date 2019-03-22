@@ -1,0 +1,402 @@
+fileFormatVersion: 2
+guid: 1ec55baed88ac07429a52bee4c519015
+timeCreated: 1446814704
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Box1392
+    100002: Box1393
+    100004: Box1394
+    100006: Box1395
+    100008: Box1396
+    100010: car1_a
+    100012: //RootNode
+    100014: disc1
+    100016: disk2
+    100018: disk3
+    100020: disk4
+    100022: glass
+    100024: gun
+    100026: Object259
+    100028: Object263
+    100030: soldier
+    100032: w1
+    100034: w2
+    100036: w3
+    100038: w4
+    100040: wheel1
+    100042: wheel2
+    100044: wheel3
+    100046: wheel4
+    100048: windows_inside
+    400000: Box1392
+    400002: Box1393
+    400004: Box1394
+    400006: Box1395
+    400008: Box1396
+    400010: car1_a
+    400012: //RootNode
+    400014: disc1
+    400016: disk2
+    400018: disk3
+    400020: disk4
+    400022: glass
+    400024: gun
+    400026: Object259
+    400028: Object263
+    400030: soldier
+    400032: w1
+    400034: w2
+    400036: w3
+    400038: w4
+    400040: wheel1
+    400042: wheel2
+    400044: wheel3
+    400046: wheel4
+    400048: windows_inside
+    2300000: Box1392
+    2300002: Box1393
+    2300004: Box1394
+    2300006: Box1395
+    2300008: Box1396
+    2300010: disc1
+    2300012: disk2
+    2300014: disk3
+    2300016: disk4
+    2300018: glass
+    2300020: Object259
+    2300022: Object263
+    2300024: wheel1
+    2300026: wheel2
+    2300028: wheel3
+    2300030: wheel4
+    2300032: windows_inside
+    3300000: Box1392
+    3300002: Box1393
+    3300004: Box1394
+    3300006: Box1395
+    3300008: Box1396
+    3300010: disc1
+    3300012: disk2
+    3300014: disk3
+    3300016: disk4
+    3300018: glass
+    3300020: Object259
+    3300022: Object263
+    3300024: wheel1
+    3300026: wheel2
+    3300028: wheel3
+    3300030: wheel4
+    3300032: windows_inside
+    4300000: Box1392
+    4300002: Box1394
+    4300004: Object259
+    4300006: glass
+    4300008: Object263
+    4300010: windows_inside
+    4300012: Box1396
+    4300014: Box1393
+    4300016: Box1395
+    4300018: disk4
+    4300020: wheel4
+    4300022: wheel3
+    4300024: disk3
+    4300026: disk2
+    4300028: wheel2
+    4300030: disc1
+    4300032: wheel1
+    7400000: Rotate_wheels
+    7400002: Turn_left
+    7400004: Turn_right
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Rotate_wheels
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 19
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: car1_a
+        weight: 1
+      - path: car1_a/Box1392
+        weight: 1
+      - path: car1_a/Box1393
+        weight: 1
+      - path: car1_a/Box1394
+        weight: 1
+      - path: car1_a/Box1395
+        weight: 1
+      - path: car1_a/Box1396
+        weight: 1
+      - path: car1_a/glass
+        weight: 1
+      - path: car1_a/gun
+        weight: 1
+      - path: car1_a/Object259
+        weight: 1
+      - path: car1_a/Object263
+        weight: 1
+      - path: car1_a/soldier
+        weight: 1
+      - path: car1_a/windows_inside
+        weight: 1
+      - path: w1
+        weight: 1
+      - path: w1/disk4
+        weight: 1
+      - path: w1/wheel4
+        weight: 1
+      - path: w2
+        weight: 1
+      - path: w2/disc1
+        weight: 1
+      - path: w2/wheel1
+        weight: 1
+      - path: w3
+        weight: 1
+      - path: w3/wheel3
+        weight: 1
+      - path: w3/wheel3/disk3
+        weight: 1
+      - path: w4
+        weight: 1
+      - path: w4/disk2
+        weight: 1
+      - path: w4/disk2/wheel2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Turn_left
+      takeName: Take 001
+      firstFrame: 21
+      lastFrame: 40
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: car1_a
+        weight: 1
+      - path: car1_a/Box1392
+        weight: 1
+      - path: car1_a/Box1393
+        weight: 1
+      - path: car1_a/Box1394
+        weight: 1
+      - path: car1_a/Box1395
+        weight: 1
+      - path: car1_a/Box1396
+        weight: 1
+      - path: car1_a/glass
+        weight: 1
+      - path: car1_a/gun
+        weight: 1
+      - path: car1_a/Object259
+        weight: 1
+      - path: car1_a/Object263
+        weight: 1
+      - path: car1_a/soldier
+        weight: 1
+      - path: car1_a/windows_inside
+        weight: 1
+      - path: w1
+        weight: 1
+      - path: w1/disk4
+        weight: 1
+      - path: w1/wheel4
+        weight: 1
+      - path: w2
+        weight: 1
+      - path: w2/disc1
+        weight: 1
+      - path: w2/wheel1
+        weight: 1
+      - path: w3
+        weight: 1
+      - path: w3/wheel3
+        weight: 1
+      - path: w3/wheel3/disk3
+        weight: 1
+      - path: w4
+        weight: 1
+      - path: w4/disk2
+        weight: 1
+      - path: w4/disk2/wheel2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Turn_right
+      takeName: Take 001
+      firstFrame: 42
+      lastFrame: 61
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: car1_a
+        weight: 1
+      - path: car1_a/Box1392
+        weight: 1
+      - path: car1_a/Box1393
+        weight: 1
+      - path: car1_a/Box1394
+        weight: 1
+      - path: car1_a/Box1395
+        weight: 1
+      - path: car1_a/Box1396
+        weight: 1
+      - path: car1_a/glass
+        weight: 1
+      - path: car1_a/gun
+        weight: 1
+      - path: car1_a/Object259
+        weight: 1
+      - path: car1_a/Object263
+        weight: 1
+      - path: car1_a/soldier
+        weight: 1
+      - path: car1_a/windows_inside
+        weight: 1
+      - path: w1
+        weight: 1
+      - path: w1/disk4
+        weight: 1
+      - path: w1/wheel4
+        weight: 1
+      - path: w2
+        weight: 1
+      - path: w2/disc1
+        weight: 1
+      - path: w2/wheel1
+        weight: 1
+      - path: w3
+        weight: 1
+      - path: w3/wheel3
+        weight: 1
+      - path: w3/wheel3/disk3
+        weight: 1
+      - path: w4
+        weight: 1
+      - path: w4/disk2
+        weight: 1
+      - path: w4/disk2/wheel2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

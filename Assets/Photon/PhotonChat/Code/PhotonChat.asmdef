@@ -1,0 +1,10 @@
+﻿{
+    "name": "PhotonChat",
+    "references": [
+        "PhotonWebSocket"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
