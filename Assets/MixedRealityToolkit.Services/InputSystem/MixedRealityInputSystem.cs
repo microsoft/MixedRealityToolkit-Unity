@@ -257,6 +257,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             HandleEventInternal(eventData, eventHandler, pointer => focusedObject);
         }
 
+        public void HandleEvent(FocusEventData eventData, GameObject focusedObject, ExecuteEvents.EventFunction<IMixedRealityFocusChangedHandler> eventHandler)
+        {
+            HandleEventInternal(eventData, eventHandler, pointer => focusedObject);
+        }
+
         /// <inheritdoc />
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
         {
@@ -691,7 +696,14 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
-            HandleEvent(focusEventData, OnPreFocusChangedHandler);
+            if (oldFocusedObject != null)
+            {
+                HandleEvent(focusEventData, oldFocusedObject, OnPreFocusChangedHandler);
+            }
+            if (newFocusedObject != null)
+            {
+                HandleEvent(focusEventData, oldFocusedObject, OnPreFocusChangedHandler);
+            }
 
             // Raise Focus Events on the pointers cursor if it has one.
             if (pointer?.BaseCursor?.GameObjectReference != null)
@@ -712,7 +724,14 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
-            HandleEvent(focusEventData, OnFocusChangedHandler);
+            if (oldFocusedObject != null)
+            {
+                HandleEvent(focusEventData, oldFocusedObject, OnPreFocusChangedHandler);
+            }
+            if (newFocusedObject != null)
+            {
+                HandleEvent(focusEventData, oldFocusedObject, OnPreFocusChangedHandler);
+            }
 
             // Raise Focus Events on the pointers cursor if it has one.
             if (pointer?.BaseCursor?.GameObjectReference != null)
