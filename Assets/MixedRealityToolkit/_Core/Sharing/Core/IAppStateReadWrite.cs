@@ -1,28 +1,24 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using MRTK.Core;
+﻿using MRTK.Core;
 using System;
 using System.Collections.Generic;
 
 namespace MRTK.StateControl
 {
-    /// <summary>
-    /// A game state interface control over locking, flushing and adding of scene state objects.
-    /// </summary>
     public interface IAppStateReadWrite : IAppStateReadOnly
     {
         /// <summary>
-        /// True when server considers states synchronized enough to proceed with app.
+        /// True when we consider states synchronized enough to proceed with app.
         /// </summary>
         new bool Synchronized { get; }
 
         /// <summary>
-        /// Adds a state of type to gamestate.
+        /// Adds a state of type to app state.
         /// If app state doesn't have an ObjectStateArray of type T an exception will be thrown.
         /// </summary>
         void AddState<T>(T state) where T : struct, IItemState, IItemStateComparer<T>;
 
         /// <summary>
-        /// Adds state of type. Session num must be specified.
+        /// Adds state of type.
         /// If no valid item key is specified, next available item key will be generated.
         /// Returns item key.
         /// </summary>

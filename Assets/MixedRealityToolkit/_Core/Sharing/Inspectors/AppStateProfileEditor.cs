@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using MRTK.Core;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace MRTK.StateControl

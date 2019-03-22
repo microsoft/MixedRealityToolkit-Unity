@@ -1,4 +1,4 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+﻿using Microsoft.MixedReality.Toolkit;
 using MRTK.Core;
 
 namespace MRTK.StateControl

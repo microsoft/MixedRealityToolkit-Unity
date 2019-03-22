@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using MRTK.Core;
 using UnityEngine;
 
@@ -13,7 +11,7 @@ namespace MRTK.StateControl
     [MixedRealityExtensionService(SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsStandalone | SupportedPlatforms.MacStandalone)]
     public class AppState : BaseExtensionService, IAppState, IAppStateReadOnly, IAppStateReadWrite
     {
-        public AppState(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile)
+        public AppState(IMixedRealityServiceRegistrar registrar, string name, uint priority, BaseMixedRealityProfile profile) : base(registrar, name, priority, profile)
         {
             appStateProfile = profile as AppStateProfile;
             this.Name = name;

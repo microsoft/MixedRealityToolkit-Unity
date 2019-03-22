@@ -1,4 +1,4 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.Extensions;
+﻿using Microsoft.MixedReality.Toolkit;
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
