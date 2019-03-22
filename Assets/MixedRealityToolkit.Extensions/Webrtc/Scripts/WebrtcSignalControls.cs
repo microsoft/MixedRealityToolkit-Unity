@@ -1,11 +1,13 @@
-﻿using Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Signaling;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Signaling;
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc
+namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC
 {
     /// <summary>
     /// This is a sample implementation of signalling behaviours.
@@ -46,10 +48,43 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc
         [Tooltip("The button that generates an offer to a given target")]
         public Button CreateOfferButton;
 
+
+        /// <summary>
+        /// The text field in which we display the signaler status
+        /// </summary>
+        [Tooltip("The text field in which we display the signaler status")]
+        public Text SignalerStatusLabel;
+
         /// <summary>
         /// The sibling signaler component that is found at runtime
         /// </summary>
         private ISignaler signaler;
+
+        /// <summary>
+        /// Unity Engine Awake() hook
+        /// </summary>
+        /// <remarks>
+        /// https://docs.unity3d.com/ScriptReference/MonoBehaviour.Awake.html
+        /// </remarks>
+        private void Awake()
+        {
+            signaler = GetComponent<ISignaler>();
+
+            if (signaler == null)
+            {
+                throw new InvalidOperationException("sibling ISignaler not found");
+            }
+
+            signaler.OnConnect += () =>
+            {
+                SignalerStatusLabel.text = "Signaler Status: Connected";
+            };
+
+            signaler.OnDisconnect += () =>
+            {
+                SignalerStatusLabel.text = "Signaler Status: Disconnected";
+            };
+        }
 
         /// <summary>
         /// Unity Engine Start() hook
@@ -62,13 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc
             if (PeerEventsInstance == null)
             {
                 throw new ArgumentNullException("PeerEventsInstance");
-            }
-
-            var signaler = GetComponent<ISignaler>();
-
-            if (signaler == null)
-            {
-                throw new InvalidOperationException("sibling ISignaler not found");
             }
 
             // show device label

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Marshalling
+namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Marshalling
 {
     // FramePacket のキュー。
     // 指定サイズ以上Pushすると、指定サイズ以下になるよう末尾のデータから削除される。

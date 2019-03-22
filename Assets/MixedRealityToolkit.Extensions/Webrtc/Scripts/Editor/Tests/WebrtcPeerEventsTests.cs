@@ -1,9 +1,11 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using System;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit.Extensions.Webrtc;
-using Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Delegates;
+using Microsoft.MixedReality.Toolkit.Extensions.WebRTC;
+using Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Delegates;
 
 namespace Tests
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Marshalling
+namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Marshalling
 {
     /// <summary>
     /// A statistics wrapper that can be used to track frame times

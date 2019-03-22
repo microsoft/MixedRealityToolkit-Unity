@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Marshalling
+namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Marshalling
 {
     // 返却されたバッファをできるだけ再利用するバッファプール。
     // スレッドセーフ。

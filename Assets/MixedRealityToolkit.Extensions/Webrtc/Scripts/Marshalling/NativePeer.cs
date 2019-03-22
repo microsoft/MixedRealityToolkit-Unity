@@ -1,10 +1,12 @@
-﻿using AOT;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using AOT;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Delegates;
+using Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Delegates;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Marshalling
+namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Marshalling
 {
     /// <summary>
     /// A peer, backed by a native-library implementation
@@ -17,6 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Marshalling
         private static class NativeMethods
         {
 #if UNITY_ANDROID
+            // note: android uses a different lib name
+            // see https://webrtc.googlesource.com/src/+/refs/heads/master/examples/unityplugin/ANDROID_INSTRUCTION
             private const string dllPath = "libjingle_peerconnection_so";
 #elif UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
             private const string dllPath = "webrtc_unity_plugin";

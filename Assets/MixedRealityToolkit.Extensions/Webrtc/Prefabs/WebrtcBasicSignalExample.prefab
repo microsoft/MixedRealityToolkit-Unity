@@ -802,8 +802,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 300, y: -50}
-  m_SizeDelta: {x: 600, y: 100}
+  m_AnchoredPosition: {x: 250, y: -50}
+  m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222758466217736586
 CanvasRenderer:
@@ -1219,7 +1219,7 @@ MonoBehaviour:
   OnError:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Webrtc+WebrtcErrorEvent,
+    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Webrtc+WebrtcErrorEvent,
       Microsoft.MixedReality.Toolkit.Extensions.Webrtc, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
 --- !u!114 &114711765838475790
@@ -1243,19 +1243,19 @@ MonoBehaviour:
   OnDataFromDataChannelReady:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.Webrtc.WebrtcPeerEvents+WebrtcPeerStringEvent,
+    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.WebRTC.WebrtcPeerEvents+WebrtcPeerStringEvent,
       Microsoft.MixedReality.Toolkit.Extensions.Webrtc, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   OnFailure:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.Webrtc.WebrtcPeerEvents+WebrtcPeerStringEvent,
+    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.WebRTC.WebrtcPeerEvents+WebrtcPeerStringEvent,
       Microsoft.MixedReality.Toolkit.Extensions.Webrtc, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   OnIceCandiateReadyToSend:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.Webrtc.WebrtcPeerEvents+WebrtcPeerStringIntStringEvent,
+    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.WebRTC.WebrtcPeerEvents+WebrtcPeerStringIntStringEvent,
       Microsoft.MixedReality.Toolkit.Extensions.Webrtc, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   OnLocalDataChannelReady:
@@ -1266,19 +1266,19 @@ MonoBehaviour:
   OnLocalSdpReadyToSend:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.Webrtc.WebrtcPeerEvents+WebrtcPeerString2Event,
+    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.WebRTC.WebrtcPeerEvents+WebrtcPeerString2Event,
       Microsoft.MixedReality.Toolkit.Extensions.Webrtc, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   OnSdpOfferReadyToSend:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.Webrtc.WebrtcPeerEvents+WebrtcPeerStringEvent,
+    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.WebRTC.WebrtcPeerEvents+WebrtcPeerStringEvent,
       Microsoft.MixedReality.Toolkit.Extensions.Webrtc, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   OnSdpAnswerReadyToSend:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.Webrtc.WebrtcPeerEvents+WebrtcPeerStringEvent,
+    m_TypeName: Microsoft.MixedReality.Toolkit.Extensions.WebRTC.WebrtcPeerEvents+WebrtcPeerStringEvent,
       Microsoft.MixedReality.Toolkit.Extensions.Webrtc, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
 --- !u!114 &114041515294989332
@@ -1331,6 +1331,7 @@ RectTransform:
   - {fileID: 224904452224917714}
   - {fileID: 224130425995034712}
   - {fileID: 224456867766213744}
+  - {fileID: 2165671041458075580}
   m_Father: {fileID: 4037275511003170}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1439,6 +1440,7 @@ MonoBehaviour:
   DeviceNameLabel: {fileID: 114070876977189030}
   TargetIdField: {fileID: 114259858479715936}
   CreateOfferButton: {fileID: 114751637186518168}
+  SignalerStatusLabel: {fileID: 718603034872882099}
 --- !u!114 &6109451940807961247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1712,3 +1714,103 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+--- !u!1 &157292479420661760
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2165671041458075580}
+  - component: {fileID: 8262544453832171442}
+  - component: {fileID: 718603034872882099}
+  - component: {fileID: 3013377748898238381}
+  m_Layer: 5
+  m_Name: signalerStatus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2165671041458075580
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157292479420661760}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224978097846601102}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -47.5, y: -50}
+  m_SizeDelta: {x: 95, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8262544453832171442
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157292479420661760}
+  m_CullTransparentMesh: 0
+--- !u!114 &718603034872882099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157292479420661760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: signalerStatus
+--- !u!114 &3013377748898238381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157292479420661760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 1
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1

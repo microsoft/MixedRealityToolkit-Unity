@@ -1,9 +1,11 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-using Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Marshalling;
+using Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Marshalling;
 
 #if UNITY_WSA && !UNITY_EDITOR
 using Windows.UI.Core;
@@ -14,7 +16,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc
+namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC
 {
     /// <summary>
     /// High-level wrapper for Unity Webrtc functionality
@@ -224,13 +226,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc
             Debug.Log("loadLibrary loaded : " + libname);
 
             /*
-                * Below is equivalent of this java code:
-                * PeerConnectionFactory.InitializationOptions.Builder builder = 
-                *   PeerConnectionFactory.InitializationOptions.builder(UnityPlayer.currentActivity);
-                * PeerConnectionFactory.InitializationOptions options = 
-                *   builder.createInitializationOptions();
-                * PeerConnectionFactory.initialize(options);
-                */
+            * Below is equivalent of this java code:
+            * PeerConnectionFactory.InitializationOptions.Builder builder = 
+            *   PeerConnectionFactory.InitializationOptions.builder(UnityPlayer.currentActivity);
+            * PeerConnectionFactory.InitializationOptions options = 
+            *   builder.createInitializationOptions();
+            * PeerConnectionFactory.initialize(options);
+            */
 
             AndroidJavaClass playerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             AndroidJavaObject activity = playerClass.GetStatic<AndroidJavaObject>("currentActivity");

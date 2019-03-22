@@ -1,7 +1,9 @@
-﻿using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Marshalling;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Marshalling;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc
+namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC
 {
     /// <summary>
     /// Play FrameQueue content into a texture over time, like a "video"

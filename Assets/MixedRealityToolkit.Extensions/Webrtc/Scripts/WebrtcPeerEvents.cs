@@ -1,17 +1,18 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events;
-using Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Marshalling;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc
+namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC
 {
     /// <summary>
     /// Peer event frontend
     /// </summary>
     [RequireComponent(typeof(Webrtc))]
-    public class WebrtcPeerEvents : MonoBehaviour, IPeerImpl
+    public class WebrtcPeerEvents : MonoBehaviour, IPeerInteraction
     {
         /// <summary>
         /// Represents a peer event composed of a single string-literal

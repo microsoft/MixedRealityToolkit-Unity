@@ -1,11 +1,13 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Signaling
+namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Signaling
 {
     /// <summary>
     /// A signaler implementation for reference
@@ -43,6 +45,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Signaling
         private bool lastGetComplete = true;
 
         /// <summary>
+        /// Event that occurs when signaling is connected
+        /// </summary>
+        public event Action OnConnect;
+
+        /// <summary>
+        /// Event that occurs when signaling is disconnected
+        /// </summary>
+#pragma warning disable 67
+        public event Action OnDisconnect;
+#pragma warning restore 67
+
+        /// <summary>
         /// Event that occurs when the signaler receives a new message
         /// </summary>
         public event Action<SignalerMessage> OnMessage;
@@ -59,6 +73,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Signaling
         public void SendMessageAsync(SignalerMessage message)
         {
             StartCoroutine(PostToServer(message));
+        }
+
+        /// <summary>
+        /// Unity Engine Start() hook
+        /// </summary>
+        /// <remarks>
+        /// https://docs.unity3d.com/ScriptReference/MonoBehaviour.Start.html
+        /// </remarks>
+        private void Start()
+        {
+            // node-dss does not have a "real" concept of connectivity,
+            // as there is no long-poll or server push, only polling
+            // as such, we fire OnConnect once, and then never fire
+            // OnDisconnect - just to conform to the common interface
+            OnConnect?.Invoke();
         }
 
         /// <summary>

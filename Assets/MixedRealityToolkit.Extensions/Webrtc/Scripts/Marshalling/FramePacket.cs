@@ -1,4 +1,4 @@
-﻿namespace Microsoft.MixedReality.Toolkit.Extensions.Webrtc.Marshalling
+﻿namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Marshalling
 {
     ///
     /// Based on https://unitylist.com/p/cxl/Web-Rtc-Unity-Plugin-Sample
