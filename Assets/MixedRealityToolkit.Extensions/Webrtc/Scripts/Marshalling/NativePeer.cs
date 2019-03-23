@@ -445,9 +445,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC.Marshalling
         /// <summary>
         /// Get the peer id 
         /// </summary>
-        /// <remarks>
-        /// TODO(bengreenier): would be nice to refactor to property, to be more c-sharpy
-        /// </remarks>
         /// <returns>the peer id</returns>
         public int GetUniqueId()
         {

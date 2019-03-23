@@ -107,8 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC
 
         /// <summary>
         /// Initialization handler
-        /// 
-        /// TODO(bengreenier): This could be auto-bound with editor script
         /// </summary>
         /// <remarks>
         /// This is expected to be bound to <see cref="Webrtc.OnInitialized"/> via the UnityEditor
@@ -299,7 +297,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC
             if (peer != null)
             {
                 // this method needs to also mutate state in the parent controller.
-                // TODO(bengreenier): should we remove cleanup from the IPeer interface?
                 this.GetComponent<Webrtc>().Uninitialize();
                 peer = null;
             }

@@ -40,8 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC
 
         /// <summary>
         /// Initialization handler
-        /// 
-        /// TODO(bengreenier): This could be auto-bound with editor script
         /// </summary>
         /// <remarks>
         /// This is expected to be bound to <see cref="Webrtc.OnInitialized"/> via the UnityEditor

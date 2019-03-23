@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC
         /// The frame queue from which frames will be "played"
         /// </summary>
         /// <remarks>
-        /// TODO(bengreenier): Currently this is allocated and managed by <see cref="WebrtcPeerVideo"/>
+        /// This is allocated and managed by <see cref="WebrtcPeerVideo"/>
         /// </remarks>
         public FrameQueue FrameQueue;
 

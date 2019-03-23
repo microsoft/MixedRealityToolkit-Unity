@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.WebRTC
         private const string kLastTargetId = "lastTargetId";
 
         /// <summary>
-        /// TODO(bengreenier): this can be verified with editorscript
+        /// HACK(bengreenier): This is to make it clear to callers that a sibling ISignaler must be attached
         /// </summary>
         [Header("Runtime dependency on: sibling ISignaler")]
 
