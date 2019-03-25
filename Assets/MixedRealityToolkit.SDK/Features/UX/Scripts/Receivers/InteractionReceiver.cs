@@ -159,8 +159,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         #region IMixedRealityFocusChangedHandler Implementation
 
         /// <inheritdoc />
-        void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { /*Unused*/ } 
+        void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { /*Unused*/ }
 
+        /// <inheritdoc />
         void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
         {
             if (eventData.OldFocusedObject != null && IsInteractable(eventData.OldFocusedObject))
