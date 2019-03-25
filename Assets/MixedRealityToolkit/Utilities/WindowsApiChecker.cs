@@ -3,7 +3,11 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities
+#if !UNITY_EDITOR && UNITY_WSA
+    using Windows.Foundation.Metadata;
+#endif
+
+namespace Microsoft.MixedReality.Toolkit.Windows.Utilities
 {
     /// <summary>
     /// Helper class for determining if a Windows API contract is available.
@@ -16,10 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         public static void CheckApiContracts()
         {
 #if !UNITY_EDITOR && UNITY_WSA
-            UniversalApiContractV6_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 6);
-            UniversalApiContractV5_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5);
-            UniversalApiContractV4_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 4);
-            UniversalApiContractV3_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 3);
+            UniversalApiContractV6_IsAvailable = ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 6);
+            UniversalApiContractV5_IsAvailable = ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5);
+            UniversalApiContractV4_IsAvailable = ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 4);
+            UniversalApiContractV3_IsAvailable = ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 3);
 #else
             UniversalApiContractV6_IsAvailable = false;
             UniversalApiContractV5_IsAvailable = false;

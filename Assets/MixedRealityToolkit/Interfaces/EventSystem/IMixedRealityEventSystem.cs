@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Events
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Interface used to implement an Event System that is compatible with the Mixed Reality Toolkit.

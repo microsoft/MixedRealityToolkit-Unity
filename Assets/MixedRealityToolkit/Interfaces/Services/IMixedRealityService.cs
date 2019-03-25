@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Generic interface for all Mixed Reality Services

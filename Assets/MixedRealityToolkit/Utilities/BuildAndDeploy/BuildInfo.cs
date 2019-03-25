@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
+namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
     public class BuildInfo : IBuildInfo
     {
@@ -49,6 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 
         /// <inheritdoc />
         public ColorSpace? ColorSpace { get; set; }
+
+        /// <inheritdoc />
+        public ScriptingImplementation? ScriptingBackend { get; set; }
 
         /// <inheritdoc />
         public bool AutoIncrement { get; set; } = false;

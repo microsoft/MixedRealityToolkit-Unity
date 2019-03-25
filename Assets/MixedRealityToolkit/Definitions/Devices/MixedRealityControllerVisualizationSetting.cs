@@ -1,13 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Used to define a controller's visualization settings.
@@ -59,11 +57,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         public Handedness Handedness => handedness;
 
         [SerializeField]
-        [Tooltip("Use the platform SDK to load the default controller model for this controller.")]
+        [Tooltip("Check to obtain controller models from the platform sdk. If left unchecked, the global models will be used.")]
         private bool useDefaultModel;
 
         /// <summary>
-        /// User the controller model loader provided by the SDK, or provide override models.
+        /// Check to obtain controller models from the platform sdk. If left unchecked, the global models will be used.
         /// </summary>
         public bool UseDefaultModel => useDefaultModel;
 
@@ -75,5 +73,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// The controller model prefab to be rendered.
         /// </summary>
         public GameObject OverrideControllerModel => overrideModel;
+
+        [SerializeField]
+        [Tooltip("The concrete Controller Visualizer component to use on the rendered controller model.")]
+        [Implements(typeof(IMixedRealityControllerVisualizer), TypeGrouping.ByNamespaceFlat)]
+        private SystemType controllerVisualizationType;
+
+        /// <summary>
+        /// The concrete Controller Visualizer component to use on the rendered controller model
+        /// </summary>
+        public SystemType ControllerVisualizationType
+        {
+            get => controllerVisualizationType;
+            private set => controllerVisualizationType = value;
+        }
     }
 }

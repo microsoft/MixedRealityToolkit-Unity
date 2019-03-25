@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
+namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
     /// <summary>
     /// The Build Info defines common properties for a build.
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
         /// The directory to put the final build output.
         /// </summary>
         /// <remarks>
-        /// Defaults to "<see cref="Application.dataPath"/>/Builds/Platform Target/"
+        /// Defaults to "<see href="https://docs.unity3d.com/ScriptReference/Application-dataPath.html">Application.dataPath</see>/Builds/Platform Target/"
         /// </remarks>
         string OutputDirectory { get; set; }
 
@@ -56,6 +56,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
         /// Optional parameter to set the player's <see cref="ColorSpace"/>
         /// </summary>
         ColorSpace? ColorSpace { get; set; }
+
+        /// <summary>
+        /// Optional parameter to set the scripting backend
+        /// </summary>
+        ScriptingImplementation? ScriptingBackend { get; set; }
 
         /// <summary>
         /// Should the build auto increment the build version number?

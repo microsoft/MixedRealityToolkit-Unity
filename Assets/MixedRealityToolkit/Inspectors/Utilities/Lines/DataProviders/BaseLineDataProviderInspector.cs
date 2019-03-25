@@ -1,18 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
+using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [CustomEditor(typeof(BaseMixedRealityLineDataProvider))]
-    public class BaseLineDataProviderInspector : Editor
+    public class BaseLineDataProviderInspector : UnityEditor.Editor
     {
         private const string DrawLinePointsKey = "MRTK_Line_Inspector_DrawLinePoints";
         private const string BasicSettingsFoldoutKey = "MRTK_Line_Inspector_BasicSettings";

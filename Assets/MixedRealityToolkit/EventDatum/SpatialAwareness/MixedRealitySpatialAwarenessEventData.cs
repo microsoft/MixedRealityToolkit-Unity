@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     /// <summary>
     /// Data for spatial awareness events.
@@ -27,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// <summary>
         /// Initialize the event data.
         /// </summary>
-        /// <param name="observer">The <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
+        /// <param name="observer">The <see cref="IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
         /// <param name="id">The identifier of the observed spatial object.</param>
         public void Initialize(IMixedRealitySpatialAwarenessObserver observer, int id)
         {
@@ -53,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// <summary>
         /// Initialize the event data.
         /// </summary>
-        /// <param name="observer">The <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers.IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
+        /// <param name="observer">The <see cref="IMixedRealitySpatialAwarenessObserver"/> that raised the event.</param>
         /// <param name="id">The identifier of the observed spatial object.</param>
         /// <param name="spatialObject">The observed spatial object.</param>
         public void Initialize(IMixedRealitySpatialAwarenessObserver observer, int id, T spatialObject)

@@ -1,25 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UInput = UnityEngine.Input;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
+namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
     /// <summary>
     /// Manages joysticks using unity input system.
     /// </summary>
     [MixedRealityDataProvider(
-        typeof(Interfaces.InputSystem.IMixedRealityInputSystem),
+        typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1))]  // All platforms supported by Unity
     public class UnityJoystickManager : BaseInputDeviceManager, IMixedRealityExtensionService
     {
@@ -87,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         {
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
-            var joystickNames = Input.GetJoystickNames();
+            var joystickNames = UInput.GetJoystickNames();
 
             if (joystickNames.Length <= 0) { return; }
 

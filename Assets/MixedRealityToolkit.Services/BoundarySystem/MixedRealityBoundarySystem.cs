@@ -1,21 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Experimental.XR;
 using UnityEngine.XR;
+using UnityBoundary = UnityEngine.Experimental.XR.Boundary;
 
-namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
@@ -55,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
 
             SetTrackingSpace();
             CalculateBoundaryBounds();
-            Boundary.visible = true;
+            UnityBoundary.visible = true;
 
             ShowFloor = profile.ShowFloor;
             FloorPhysicsLayer = profile.FloorPhysicsLayer;
@@ -580,7 +574,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
         public float? FloorHeight { get; private set; } = null;
 
         /// <inheritdoc/>
-        public bool Contains(Vector3 location, Boundary.Type boundaryType = Boundary.Type.TrackedArea)
+        public bool Contains(Vector3 location, UnityBoundary.Type boundaryType = UnityBoundary.Type.TrackedArea)
         {
             if (!EdgeUtilities.IsValidPoint(location))
             {
@@ -607,7 +601,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
             // Boundary coordinates are always "on the floor"
             Vector2 point = new Vector2(location.x, location.z);
 
-            if (boundaryType == Boundary.Type.PlayArea)
+            if (boundaryType == UnityBoundary.Type.PlayArea)
             {
                 // Check the inscribed rectangle.
                 if (rectangularBounds != null)
@@ -615,7 +609,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
                     return rectangularBounds.IsInsideBoundary(point);
                 }
             }
-            else if (boundaryType == Boundary.Type.TrackedArea)
+            else if (boundaryType == UnityBoundary.Type.TrackedArea)
             {
                 // Check the geometry
                 return EdgeUtilities.IsInsideBoundary(Bounds, point);
@@ -910,7 +904,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.BoundarySystem
             var boundaryGeometry = new List<Vector3>(0);
             var boundaryEdges = new List<Edge>(0);
 
-            if (Boundary.TryGetGeometry(boundaryGeometry, Boundary.Type.TrackedArea))
+            if (UnityBoundary.TryGetGeometry(boundaryGeometry, UnityBoundary.Type.TrackedArea))
             {
                 // FloorHeight starts out as null. Use a suitably high value for the floor to ensure
                 // that we do not accidentally set it too low.

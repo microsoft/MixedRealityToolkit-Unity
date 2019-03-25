@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Process Extension class.
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <param name="args">The Process arguments.</param>
         /// <param name="showDebug">Should output debug code to Editor Console?</param>
         /// <param name="cancellationToken"></param>
-        /// <returns><see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.ProcessResult"/></returns>
+        /// <returns><see cref="Utilities.ProcessResult"/></returns>
         public static async Task<ProcessResult> StartProcessAsync(this Process process, string fileName, string args, bool showDebug = false, CancellationToken cancellationToken = default)
         {
             return await StartProcessAsync(process, new ProcessStartInfo
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <param name="startInfo">The Process start info.</param>
         /// <param name="showDebug">Should output debug code to Editor Console?</param>
         /// <param name="cancellationToken"></param>
-        /// <returns><see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.ProcessResult"/></returns>
+        /// <returns><see cref="Utilities.ProcessResult"/></returns>
         public static async Task<ProcessResult> StartProcessAsync(this Process process, ProcessStartInfo startInfo, bool showDebug = false, CancellationToken cancellationToken = default)
         {
             Debug.Assert(!startInfo.UseShellExecute, "Process Start Info must not use shell execution.");

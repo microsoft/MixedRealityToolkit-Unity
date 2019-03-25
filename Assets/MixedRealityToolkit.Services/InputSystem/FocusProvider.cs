@@ -1,21 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityPhysics = UnityEngine.Physics;
 
-namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// The focus provider handles the focused objects per input source.
@@ -78,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                         return focusLayerMasks = profile.PointerProfile.PointingRaycastLayerMasks;
                     }
 
-                    return focusLayerMasks = new LayerMask[] { Physics.DefaultRaycastLayers };
+                    return focusLayerMasks = new LayerMask[] { UnityPhysics.DefaultRaycastLayers };
                 }
 
                 return focusLayerMasks;
@@ -295,17 +289,37 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             /// <inheritdoc />
             public bool Equals(PointerData other)
             {
-                if (ReferenceEquals(null, other)) return false;
-                if (ReferenceEquals(this, other)) return true;
+                if (ReferenceEquals(null, other))
+                {
+                    return false;
+                }
+
+                if (ReferenceEquals(this, other))
+                {
+                    return true;
+                }
+
                 return Pointer.PointerId == other.Pointer.PointerId;
             }
 
             /// <inheritdoc />
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != GetType()) return false;
+                if (ReferenceEquals(null, obj))
+                {
+                    return false;
+                }
+
+                if (ReferenceEquals(this, obj))
+                {
+                    return true;
+                }
+
+                if (obj.GetType() != GetType())
+                {
+                    return false;
+                }
+
                 return Equals((PointerData)obj);
             }
 
@@ -778,7 +792,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         }
 
         /// <summary>
-        /// Raycasts each graphic <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Physics.RayStep"/>
+        /// Raycasts each graphic <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>
         /// </summary>
         /// <param name="pointerData"></param>
         /// <param name="step"></param>
@@ -809,10 +823,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 if (pointerData.CurrentPointerTarget != null)
                 {
                     float distance = 0f;
-                    for (int i = 0; i <= pointerData.RayStepIndex; i++) {
+                    for (int i = 0; i <= pointerData.RayStepIndex; i++)
+                    {
                         distance += pointerData.Pointer.Rays[i].Length;
                     }
-                    
+
                     // Check layer prioritization
                     if (prioritizedLayerMasks.Length > 1)
                     {

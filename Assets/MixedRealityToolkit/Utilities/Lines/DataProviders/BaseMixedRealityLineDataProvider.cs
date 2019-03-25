@@ -1,17 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Lines;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
+using Microsoft.MixedReality.Toolkit.Physics;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Base class that provides data about a line.
     /// </summary>
-    /// <remarks>Data to be consumed by other classes like the <see cref="Renderers.BaseMixedRealityLineRenderer"/></remarks>
+    /// <remarks>Data to be consumed by other classes like the <see cref="BaseMixedRealityLineRenderer"/></remarks>
     [ExecuteAlways] 
     public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {

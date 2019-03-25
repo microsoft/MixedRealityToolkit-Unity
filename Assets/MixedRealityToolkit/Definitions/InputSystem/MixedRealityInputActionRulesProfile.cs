@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input Action Rules Profile", fileName = "MixedRealityInputActionRulesProfile", order = (int)CreateProfileMenuItemIndices.InputActionRules)]
     public class MixedRealityInputActionRulesProfile : BaseMixedRealityProfile
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         private InputActionRulePoseAxis[] inputActionRulesPoseAxis = null;
 
         /// <summary>
-        /// All the Input Action Rules for <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.MixedRealityPose"/> based <see cref="MixedRealityInputAction"/>s
+        /// All the Input Action Rules for <see cref="Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose"/> based <see cref="MixedRealityInputAction"/>s
         /// </summary>
         public InputActionRulePoseAxis[] InputActionRulesPoseAxis => inputActionRulesPoseAxis;
     }

@@ -4,7 +4,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Mixed Reality Toolkit controller definition, used to manage a specific controller type

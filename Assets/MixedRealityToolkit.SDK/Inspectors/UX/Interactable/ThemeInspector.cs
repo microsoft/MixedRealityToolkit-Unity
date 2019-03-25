@@ -1,18 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Inspector for themes, and used by Interactable
@@ -24,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(Theme))]
-    public class ThemeInspector : Editor
+    public class ThemeInspector : UnityEditor.Editor
     {
         protected SerializedProperty settings;
 
@@ -137,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     for (int k = 0; k < stateLocations.Length; k++)
                     {
                         string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
-                        States.States defaultStates = (States.States)AssetDatabase.LoadAssetAtPath(path, typeof(States.States));
+                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
                         if (defaultStates != null)
                         {
                             states.objectReferenceValue = defaultStates;

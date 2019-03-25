@@ -14,7 +14,7 @@ MonoBehaviour:
   Name: 
   Settings:
   - Name: InteractableShaderTheme
-    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes.InteractableShaderTheme,
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme,
       Microsoft.MixedReality.Toolkit.SDK
     Properties:
     - Name: Shader
@@ -874,7 +874,7 @@ MonoBehaviour:
         Value: 0
         ActiveIndex: 3
   - Name: InteractableShaderTheme
-    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes.InteractableShaderTheme,
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme,
       Microsoft.MixedReality.Toolkit.SDK
     Properties:
     - Name: Shader

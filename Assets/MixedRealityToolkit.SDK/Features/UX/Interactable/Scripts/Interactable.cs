@@ -1,17 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes;
-using System;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +11,7 @@ using UnityEngine.Events;
 using UnityEngine.Windows.Speech;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Uses input and action data to declare a set of states
@@ -35,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
     [System.Serializable]
 
-    public class Interactable : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
+    public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
     {
         /// <summary>
         /// Setup the input system
@@ -50,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         // is the interactable enabled?
         public bool Enabled = true;
         // a collection of states and basic state logic
-        public States.States States;
+        public States States;
         // the state logic for comparing state
         public InteractableStates StateManager;
         // which action is this interactable listening for
@@ -518,17 +509,37 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         #endregion PointerManagement
 
-        #region MixedRealityFocusHandlers
+        #region MixedRealityFocusChangedHandlers
 
-        public void OnFocusEnter(FocusEventData eventData)
+        public void OnBeforeFocusChange(FocusEventData eventData)
         {
             if (!CanInteract())
             {
                 return;
             }
 
-            AddPointer(eventData.Pointer);
-            SetFocus(pointers.Count > 0);
+            if (eventData.NewFocusedObject == gameObject)
+            {
+                AddPointer(eventData.Pointer);
+            }
+            else if (eventData.OldFocusedObject == gameObject)
+            {
+                RemovePointer(eventData.Pointer);
+            }
+        }
+
+        public void OnFocusChanged(FocusEventData eventData) {}
+
+        #endregion MixedRealityFocusChangedHandlers
+
+        #region MixedRealityFocusHandlers
+
+        public void OnFocusEnter(FocusEventData eventData)
+        {
+            if (CanInteract())
+            {
+                SetFocus(pointers.Count > 0);
+            }
         }
 
         public void OnFocusExit(FocusEventData eventData)
@@ -538,7 +549,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                 return;
             }
 
-            RemovePointer(eventData.Pointer);
             SetFocus(pointers.Count > 0);
         }
 

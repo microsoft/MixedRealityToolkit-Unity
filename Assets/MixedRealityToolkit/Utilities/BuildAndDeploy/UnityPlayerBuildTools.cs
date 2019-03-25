@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -14,7 +13,7 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
+namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
     /// <summary>
     /// Cross platform player build tools
@@ -30,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
         /// Starts the build process
         /// </summary>
         /// <param name="buildInfo"></param>
-        /// <returns>The <see cref="BuildReport"/> from Unity's <see cref="BuildPipeline"/></returns>
+        /// <returns>The <see href="https://docs.unity3d.com/ScriptReference/Build.Reporting.BuildReport.html">BuildReport</see> from Unity's <see href="https://docs.unity3d.com/ScriptReference/BuildPipeline.html">BuildPipeline</see></returns>
         public static BuildReport BuildUnityPlayer(IBuildInfo buildInfo)
         {
             EditorUtility.DisplayProgressBar("Build Pipeline", "Gathering Build Data...", 0.25f);
@@ -82,6 +81,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
             if (buildInfo.ColorSpace.HasValue)
             {
                 PlayerSettings.colorSpace = buildInfo.ColorSpace.Value;
+            }
+
+            if (buildInfo.ScriptingBackend.HasValue)
+            {
+                PlayerSettings.SetScriptingBackend(buildTargetGroup, buildInfo.ScriptingBackend.Value);
             }
 
             BuildTarget oldBuildTarget = EditorUserBuildSettings.activeBuildTarget;
@@ -220,6 +224,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                         break;
                     case "-colorSpace":
                         buildInfo.ColorSpace = (ColorSpace)Enum.Parse(typeof(ColorSpace), arguments[++i]);
+                        break;
+                    case "-scriptingBackend":
+                        buildInfo.ScriptingBackend = (ScriptingImplementation)Enum.Parse(typeof(ScriptingImplementation), arguments[++i]);
                         break;
                     case "-x86":
                     case "-x64":
