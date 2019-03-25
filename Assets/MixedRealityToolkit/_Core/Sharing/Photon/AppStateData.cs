@@ -6,12 +6,9 @@ using System.Collections.Generic;
 #if BINARY_SERIALIZATION
 using System.Runtime.Serialization.Formatters.Binary;
 #else
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Text;
 #endif
 using UnityEngine;
-using System.IO;
 using Photon.Realtime;
 using MRTK.Networking;
 using Microsoft.MixedReality.Toolkit;
@@ -313,7 +310,12 @@ namespace MRTK.StateControl.Photon
                 return stream.GetBuffer();
             }
 #else
-            string statesAsString = JsonConvert.SerializeObject(states);
+            JsonData jsonData = new JsonData();
+            for (int i = 0; i < states.Count; i++)
+            {
+                jsonData.Data.Add(JsonUtility.ToJson(states[i]));
+            }
+            string statesAsString = JsonUtility.ToJson(jsonData);
             return Encoding.ASCII.GetBytes(statesAsString);
 #endif
         }
@@ -328,16 +330,28 @@ namespace MRTK.StateControl.Photon
             }
 #else
             string statesAsString = Encoding.ASCII.GetString(bytes);
-            // This will convert the string to a lits of JObjects
-            List<object> stateObjects = JsonConvert.DeserializeObject<List<object>>(statesAsString);
+            // This will convert the string to a list of JSON strings
+            JsonData jsonData = JsonUtility.FromJson<JsonData>(statesAsString);
+            List<object> stateObjects = new List<object>();
             // Before returning them, convert them to system object
-            for (int i = 0; i < stateObjects.Count; i++)
+            for (int i = 0; i < jsonData.Data.Count; i++)
             {
-                JObject jObject = stateObjects[i] as JObject;
-                stateObjects[i] = jObject.ToObject(stateType);
+                stateObjects.Add(JsonUtility.FromJson(jsonData.Data[i], stateType));
             }
             return stateObjects;
 #endif
         }
     }
+
+#if !BINARY_SERIALIZATION
+    /// <summary>
+    /// Helper class for Unity's JsonUtility.
+    /// Utility can't serialize a list of strings unless nested in another class.
+    /// </summary>
+    [Serializable]
+    public class JsonData
+    {
+        public List<string> Data = new List<string>();
+    }
+#endif
 }
