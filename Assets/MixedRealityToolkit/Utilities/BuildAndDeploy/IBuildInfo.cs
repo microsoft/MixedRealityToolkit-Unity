@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
         /// The directory to put the final build output.
         /// </summary>
         /// <remarks>
-        /// Defaults to "<see cref="Application.dataPath"/>/Builds/Platform Target/"
+        /// Defaults to "<see href="https://docs.unity3d.com/ScriptReference/Application-dataPath.html">Application.dataPath</see>/Builds/Platform Target/"
         /// </remarks>
         string OutputDirectory { get; set; }
 

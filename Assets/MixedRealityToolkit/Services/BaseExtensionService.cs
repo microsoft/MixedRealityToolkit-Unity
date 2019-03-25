@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="registrar">The <see cref="Interfaces.IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">The friendly name of the service.</param>
         /// <param name="priority">The registration priority of the service.</param>
         /// <param name="profile">The configuration profile for the service.</param>

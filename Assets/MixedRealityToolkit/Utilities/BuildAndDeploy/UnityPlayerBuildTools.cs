@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
         /// Starts the build process
         /// </summary>
         /// <param name="buildInfo"></param>
-        /// <returns>The <see cref="BuildReport"/> from Unity's <see cref="BuildPipeline"/></returns>
+        /// <returns>The <see href="https://docs.unity3d.com/ScriptReference/Build.Reporting.BuildReport.html">BuildReport</see> from Unity's <see href="https://docs.unity3d.com/ScriptReference/BuildPipeline.html">BuildPipeline</see></returns>
         public static BuildReport BuildUnityPlayer(IBuildInfo buildInfo)
         {
             EditorUtility.DisplayProgressBar("Build Pipeline", "Gathering Build Data...", 0.25f);

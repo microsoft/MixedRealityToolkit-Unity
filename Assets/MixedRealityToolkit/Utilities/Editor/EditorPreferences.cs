@@ -7,12 +7,12 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
 {
     /// <summary>
-    /// Convenience class for setting Editor Preferences with <see cref="Application.productName"/> as key prefix.
+    /// Convenience class for setting Editor Preferences with <see href="https://docs.unity3d.com/ScriptReference/Application-productName.html">Application.productName</see> as key prefix.
     /// </summary>
     public static class EditorPreferences
     {
         /// <summary>
-        /// Set the saved <see cref="string"/> from to <see cref="EditorPrefs"/>.
+        /// Set the saved <see cref="string"/> from to <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
         }
 
         /// <summary>
-        /// Set the saved <see cref="bool"/> from to <see cref="EditorPrefs"/>.
+        /// Set the saved <see cref="bool"/> from to <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
         }
 
         /// <summary>
-        /// Set the saved <see cref="float"/> from the <see cref="EditorPrefs"/>.
+        /// Set the saved <see cref="float"/> from the <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
         }
 
         /// <summary>
-        /// Set the saved <see cref="int"/> from the <see cref="EditorPrefs"/>.
+        /// Set the saved <see cref="int"/> from the<see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
         }
 
         /// <summary>
-        /// Get the saved <see cref="string"/> from the <see cref="EditorPrefs"/>.
+        /// Get the saved <see cref="string"/> from the<see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
         }
 
         /// <summary>
-        /// Get the saved <see cref="bool"/> from the <see cref="EditorPrefs"/>.
+        /// Get the saved <see cref="bool"/> from the <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
         }
 
         /// <summary>
-        /// Get the saved <see cref="float"/> from the <see cref="EditorPrefs"/>.
+        /// Get the saved <see cref="float"/> from the <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
         }
 
         /// <summary>
-        /// Get the saved <see cref="int"/> from the <see cref="EditorPrefs"/>.
+        /// Get the saved <see cref="int"/> from the <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
