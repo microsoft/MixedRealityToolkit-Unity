@@ -35,4 +35,4 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         protected IMixedRealityService Service { get; set; } = null;
     }
-}\\\\\
+}
