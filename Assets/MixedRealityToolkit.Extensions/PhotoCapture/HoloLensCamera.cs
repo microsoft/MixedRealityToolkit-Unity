@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Threading;
 
 #if CAN_USE_UWP_TYPES
 using Windows.Storage;
@@ -46,17 +45,6 @@ using Debug = UnityEngine.Debug;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
 {
-    /// <summary>
-    /// The type of camera
-    /// </summary>
-    public enum CameraType
-    {
-        Invalid,
-        Color,
-        Depth,
-        Infrared,
-    }
-
     /// <summary>
     /// The mode to run the camera in
     /// </summary>
@@ -109,266 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
         /// Will select streams with the property less than the passed in argument(s)
         /// </summary>
         LessThan,
-    }
-
-    public class StreamSelector
-    {
-        public List<StreamDescription> StreamDescriptions { get; private set; } = new List<StreamDescription>();
-
-        public void AddStream(StreamDescription streamDescription)
-        {
-            if (!StreamDescriptions.Contains(streamDescription))
-            {
-                StreamDescriptions.Add(streamDescription);
-            }
-        }
-
-        /// <summary>
-        /// Select streams by resolution
-        /// </summary>
-        /// <param name="compare">The comparison to use</param>
-        /// <param name="width">The width to compare with</param>
-        /// <param name="height">The height to compare with</param>
-        /// <returns></returns>
-        public StreamSelector Select(StreamCompare compare, int width, int height)
-        {
-            StreamSelector selector = new StreamSelector();
-
-            foreach (StreamDescription desc in StreamDescriptions)
-            {
-                if (compare == StreamCompare.GreaterThan)
-                {
-                    if (desc.Resolution.Width > width && desc.Resolution.Height > height)
-                    {
-                        selector.AddStream(desc);
-                    }
-                }
-                else if (compare == StreamCompare.LessThan)
-                {
-                    if (desc.Resolution.Width < width && desc.Resolution.Height < height)
-                    {
-                        selector.AddStream(desc);
-                    }
-                }
-                else if (compare == StreamCompare.EqualTo)
-                {
-                    if (desc.Resolution.Width == width && desc.Resolution.Height == height)
-                    {
-                        selector.AddStream(desc);
-                    }
-                }
-            }
-
-            return selector;
-        }
-
-        /// <summary>
-        /// Select streams by framerate
-        /// </summary>
-        /// <param name="compare">The comparison to use</param>
-        /// <param name="framerate">The framerate to compare with</param>
-        /// <returns></returns>
-        public StreamSelector Select(StreamCompare compare, double framerate)
-        {
-            StreamSelector selector = new StreamSelector();
-
-            foreach (StreamDescription desc in StreamDescriptions)
-            {
-                if (compare == StreamCompare.GreaterThan)
-                {
-                    if (desc.Resolution.Framerate > framerate)
-                    {
-                        selector.AddStream(desc);
-                    }
-                }
-                else if (compare == StreamCompare.LessThan)
-                {
-                    if (desc.Resolution.Framerate < framerate)
-                    {
-                        selector.AddStream(desc);
-                    }
-                }
-                else if (compare == StreamCompare.EqualTo)
-                {
-                    if (desc.Resolution.Framerate == framerate)
-                    {
-                        selector.AddStream(desc);
-                    }
-                }
-            }
-
-            return selector;
-        }
-    }
-
-    public class StreamDescription : IEquatable<StreamDescription>
-    {
-        public string SourceName;
-        public string SourceId;
-        public CameraResolution Resolution;
-        public CameraType CameraType;
-
-        public override bool Equals(object obj)
-        {
-            StreamDescription other = obj as StreamDescription;
-            if (other == null)
-            {
-                return false;
-            }
-
-            return this == other;
-        }
-
-        public override int GetHashCode()
-        {
-            return SourceName.GetHashCode();
-        }
-
-        public bool Equals(StreamDescription other)
-        {
-            return this == other;
-        }
-
-        public static bool operator ==(StreamDescription lhs, StreamDescription rhs)
-        {
-            return lhs.SourceId == rhs.SourceId && lhs.SourceName == rhs.SourceName && lhs.Resolution == rhs.Resolution;
-        }
-
-        public static bool operator !=(StreamDescription lhs, StreamDescription rhs)
-        {
-            return !(lhs == rhs);
-        }
-    }
-
-    public struct CameraResolution : IEquatable<CameraResolution>
-    {
-        /// <summary>
-        /// Width in pixels of this resolution
-        /// </summary>
-        public uint Width;
-
-        /// <summary>
-        /// Height in pixels of this resolution
-        /// </summary>
-        public uint Height;
-
-        /// <summary>
-        /// Framerate of this quality setting in frames per second. This will only be non-zero for 
-        /// Video and PhotoLowLatency modes
-        /// </summary>
-        public double Framerate;
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is CameraResolution))
-            {
-                return false;
-            }
-
-            return this == (CameraResolution)obj;
-        }
-
-        public override int GetHashCode()
-        {
-            return (Width * Height * Framerate).GetHashCode();
-        }
-
-        public bool Equals(CameraResolution other)
-        {
-            return this == other;
-        }
-
-        public static bool operator ==(CameraResolution lhs, CameraResolution rhs)
-        {
-            return lhs.Width == rhs.Width && lhs.Height == rhs.Height && lhs.Framerate == rhs.Framerate;
-        }
-
-        public static bool operator !=(CameraResolution lhs, CameraResolution rhs)
-        {
-            return !(lhs == rhs);
-        }
-    }
-
-    public class CameraIntrinsics
-    {
-        //
-        // Summary:
-        //     Gets the focal length of the camera.
-        //
-        // Returns:
-        //     The focal length of the camera.
-        public Vector2 FocalLength { get; private set; }
-        //
-        // Summary:
-        //     Gets the image height of the camera, in pixels.
-        //
-        // Returns:
-        //     The image height of the camera, in pixels.
-        public uint ImageHeight { get; private set; }
-        //
-        // Summary:
-        //     Gets the image width of the camera, in pixels.
-        //
-        // Returns:
-        //     The image width of the camera, in pixels.
-        public uint ImageWidth { get; private set; }
-        //
-        // Summary:
-        //     Gets the principal point of the camera.
-        //
-        // Returns:
-        //     The principal point of the camera.
-        public Vector2 PrincipalPoint { get; private set; }
-        //
-        // Summary:
-        //     Gets the radial distortion coefficient of the camera.
-        //
-        // Returns:
-        //     The radial distortion coefficient of the camera.
-        public Vector3 RadialDistortion { get; private set; }
-        //
-        // Summary:
-        //     Gets the tangential distortion coefficient of the camera.
-        //
-        // Returns:
-        //     The tangential distortion coefficient of the camera.
-        public Vector2 TangentialDistortion { get; private set; }
-        //
-        // Summary:
-        //     Gets a matrix that transforms a 3D point to video frame pixel coordinates without
-        //     compensating for the distortion model of the camera. The 2D point resulting from
-        //     this transformation will not accurately map to the pixel coordinate in a video
-        //     frame unless the app applies its own distortion compensation. This is useful
-        //     for apps that choose to implement GPU-based distortion compensation instead of
-        //     using UndistortPoint, which uses the CPU to compute the distortion compensation.
-        //
-        // Returns:
-        //     Gets a matrix that transforms a 3D point to the video frame pixel coordinates
-        //     without compensating for the distortion model of the camera.
-        public Matrix4x4 UndistortedProjectionTransform { get; private set; }
-
-        public CameraIntrinsics(
-            Vector2 focalLength,
-            uint imageWidth,
-            uint imageHeight,
-            Vector2 principalPoint,
-            Vector3 radialDistortion,
-            Vector2 tangentialDistortion,
-            Matrix4x4 undistortedProjectionTransform)
-        {
-            FocalLength = focalLength;
-            ImageWidth = imageWidth;
-            ImageHeight = imageHeight;
-            PrincipalPoint = principalPoint;
-            RadialDistortion = radialDistortion;
-            TangentialDistortion = tangentialDistortion;
-            UndistortedProjectionTransform = undistortedProjectionTransform;
-        }
-    }
-
-    public class CameraExtrinsics
-    {
-        public Matrix4x4 ViewFromWorld;
     }
 
 #if !CAN_USE_UNITY_TYPES
@@ -431,161 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
     }
 #endif
 
-
-    /// <summary>
-    /// Represents a camera frame, with all format, resolution, properties and pixel data.
-    /// When finished using a frame, call Release to return to pool.
-    /// </summary>
-    public class CameraFrame
-    {
-        /// <summary>
-        /// Pixel format of this frame
-        /// </summary>
-        public PixelFormat PixelFormat { get; set; }
-
-        /// <summary>
-        /// Resolution settings of this frame
-        /// </summary>
-        public CameraResolution Resolution { get; set; }
-
-        /// <summary>
-        /// Exposure start time for this frame. This is a system relative value, and all 
-        /// frames from a single session can be compared to this value.
-        /// </summary>
-        public double FrameTime { get; set; }
-
-        /// <summary>
-        /// Exposure duration in seconds for this frame
-        /// </summary>
-        public double Exposure { get; set; }
-
-        /// <summary>
-        /// Camera intrinsics for this frame
-        /// </summary>
-        public CameraIntrinsics Intrinsics { get; set; }
-
-        /// <summary>
-        /// Camera extrinsics (pose) for this frame
-        /// </summary>
-        public CameraExtrinsics Extrinsics { get; set; }
-
-        /// <summary>
-        /// Sensor gain for this frame
-        /// </summary>
-        public float Gain { get; set; }
-
-        /// <summary>
-        /// Pixel data for this frame in PixelFormat
-        /// </summary>
-        public byte[] PixelData { get; set; }
-
-
-        /// <summary>
-        /// The actual SoftwareBitmap that was returned from the camera frame.
-        /// </summary>
-#if CAN_USE_UWP_TYPES
-        public SoftwareBitmap SoftwareBitmap { get; set; }
-#endif
-
-        protected int refCount;
-        public int RefCount
-        {
-            get
-            {
-                return refCount;
-            }
-        }
-
-        /// <summary>
-        /// Ensures only pools can create frames
-        /// </summary>
-        protected CameraFrame()
-        {
-
-        }
-
-        public virtual void AddRef()
-        {
-            Interlocked.Increment(ref refCount);
-        }
-
-
-        /// <summary>
-        /// This must be called when finished with the frame
-        /// </summary>
-        public virtual void Release()
-        {
-            if (Interlocked.Decrement(ref refCount) <= 0)
-            {
-#if CAN_USE_UWP_TYPES
-                SoftwareBitmap?.Dispose();
-                SoftwareBitmap = null;
-#endif
-                refCount = 0;
-            }
-        }
-
-        public async void Save(string filePath)
-        {
-#if CAN_USE_UWP_TYPES
-            if (SoftwareBitmap == null)
-            {
-                throw new NotSupportedException("Save currently only available if frame was captured with KeepSoftwareBitmap set to true on the camera.");
-            }
-
-            int extensionStartPos = filePath.LastIndexOf('.') + 1;
-            int filenameStartPos = filePath.LastIndexOfAny(new char[] { '\\', '/' }) + 1;
-
-            if (extensionStartPos >= filePath.Length)
-            {
-                return;
-            }
-
-            string extension = filePath.Substring(extensionStartPos, filePath.Length - extensionStartPos);
-            string folderPath = filePath.Substring(0, filenameStartPos);
-            string filename = filePath.Substring(filenameStartPos);
-
-            StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderPath);
-            StorageFile outputFile = await folder.CreateFileAsync(filename);
-
-            using (IRandomAccessStream stream = await outputFile.OpenAsync(FileAccessMode.ReadWrite))
-            {
-                // Create an encoder with the desired format
-                BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
-
-                // Set the software bitmap
-                SoftwareBitmap rgbBmp = SoftwareBitmap.Convert(SoftwareBitmap, BitmapPixelFormat.Bgra8);
-                encoder.SetSoftwareBitmap(rgbBmp);
-
-                try
-                {
-                    await encoder.FlushAsync();
-                }
-                catch (Exception err)
-                {
-                    const int WINCODEC_ERR_UNSUPPORTEDOPERATION = unchecked((int)0x88982F81);
-                    switch (err.HResult)
-                    {
-                        case WINCODEC_ERR_UNSUPPORTEDOPERATION:
-                            // If the encoder does not support writing a thumbnail, then try again
-                            // but disable thumbnail generation.
-                            encoder.IsThumbnailGenerated = false;
-                            break;
-                        default:
-                            throw;
-                    }
-                }
-                finally
-                {
-                    rgbBmp?.Dispose();
-                }
-            }
-#else
-            await Task.CompletedTask;
-#endif
-        }
-    }
-
+    // Devices states for cameras
     public enum CameraState
     {
         Stopping,
@@ -596,7 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
         CapturingContinuous,
         CapturingSingle,
     }
-
 
     /// <summary>
     /// Handler delegate for capturing frames
@@ -1107,6 +680,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
             }
         }
 
+        /// <summary>
+        /// True if manual exposure is supported
+        /// </summary>
         public bool ManualExposureSupported
         {
             get
@@ -1241,9 +817,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
 
         /// <summary>
         /// Type of the camera
-        /// TODO: broken
         /// </summary>
-        public CameraType CameraType { get; private set; }
+        internal CameraType CameraType { get; private set; }
 
 #if !(CAN_USE_UWP_TYPES)
 // These events are unused when running in the editor
@@ -1446,6 +1021,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
             return success;
         }
 
+        /// <summary>
+        /// Starts continuous capture
+        /// </summary>
+        /// <returns>Returns true if starting continuous capture succeeded</returns>
         public bool StartContinuousCapture()
         {
             bool success = false;
@@ -1471,6 +1050,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
             return success;
         }
 
+        /// <summary>
+        /// Stops continuous capture
+        /// </summary>
         public void StopContinuousCapture()
         {
 #if CAN_USE_UWP_TYPES
@@ -1484,6 +1066,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
 #endif
         }
 
+        /// <summary>
+        /// Initializes the camera
+        /// </summary>
+        /// <returns></returns>
         public async Task Initialize()
         {
             lock (stateLock)
@@ -1689,7 +1275,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
             return extrinsics;
         }
 
-
         private void OnMediaFrameArrived(MediaFrameReader sender, MediaFrameArrivedEventArgs args)
         {
             bool getFrame = false;
@@ -1788,6 +1373,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
                 return val;
         }
 
+        /// <summary>
+        /// Disposes the camera
+        /// </summary>
         public void Dispose()
         {
 #if CAN_USE_UWP_TYPES
