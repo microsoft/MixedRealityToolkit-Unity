@@ -23,6 +23,10 @@ A controller in MRTK is an input device. Some of the controller types supported 
 - Generic Open VR Controller
 - Mouse and touch screen
 
+The *Registered Service Providers Profile* contains a service provider for each controller type in use. There you can add new providers or remove existing ones.
+
+<img src="../../External/ReadMeImages/Input/RegisteredServiceProviders.png" width="256" align="center">
+
 Each controller type has a number of *physical inputs*. Each of these is defined by an *Axis Type*, telling us the data type of the input value (Digital, Single Axis, Dual Axis, Six Dof, ...), and an *Input Type* (Button Press, Trigger, Thumb Stick, Spatial Pointer, ...) describing the origin of the input. Physical inputs are mapped to *input actions* via *interaction mappings* in *Controller Input Mapping Profile*.
 
 <img src="../../External/ReadMeImages/Input/ControllerInputMapping.png" width="512" align="center">
@@ -63,7 +67,9 @@ Both of these input sources use the _Gesture Settings_ profile to translate Unit
 
 ## Speech
 
-**TODO**
+MRTK allows you to define your own speech commands via the *Speech Commands Profile*, found under the _Input System Settings_ profile. A command is defined by the text of the keyword that will cause its event to be raised and, optionally, an input action associated with it. To listen to speech events, implement [`IMixedRealitySpeechHandler`](Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) in your script.
+
+<img src="../../External/ReadMeImages/Input/SpeechCommands.png" width="256" align="center">
 
 ## Input Events
 
@@ -111,5 +117,7 @@ The *OnGestureCompleted* and *OnGestureUpdated* events can receive typed data by
   Combined 3D position/rotation gesture. No currently supported sources.
 
 ### Speech and Dictation Events
+
+
 
 **TODO**
