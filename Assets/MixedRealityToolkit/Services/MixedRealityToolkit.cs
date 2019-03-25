@@ -441,6 +441,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                         IMixedRealityService serviceInstance = null;
 
                         // todo: this is temporary while we move away from registering data providers as extension services.
+                        BaseMixedRealityProfile profile = configuration.ConfigurationProfile;
                         object[] attributes = configuration.ComponentType.Type.GetCustomAttributes(true);
                         foreach(object o in attributes)
                         {
@@ -462,6 +463,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                             else if (serviceInterfaceType == typeof(IMixedRealityInputSystem))
                             {
                                 serviceInstance = GetService<IMixedRealityInputSystem>();
+                                // Input system data providers receive the input system profile
+                                profile = ActiveProfile.InputSystemProfile;
                                 break;
                             }
                             else if (serviceInterfaceType == typeof(IMixedRealitySpatialAwarenessSystem))
@@ -476,7 +479,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                             }
                         }
 
-                        object[] args = { this, serviceInstance, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
+                        object[] args = { this, serviceInstance, configuration.ComponentName, configuration.Priority, profile };
                         RegisterService<IMixedRealityDataProvider>(configuration.ComponentType, configuration.RuntimePlatform, args);
                     }
                     else if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
