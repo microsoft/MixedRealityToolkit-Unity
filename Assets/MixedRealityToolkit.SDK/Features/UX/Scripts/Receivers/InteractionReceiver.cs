@@ -164,6 +164,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// <inheritdoc />
         void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
         {
+            if (eventData.NewFocusedObject != null && IsInteractable(eventData.NewFocusedObject))
+            {
+                FocusEnter(eventData.NewFocusedObject, eventData);
+            }
+
             if (eventData.OldFocusedObject != null && IsInteractable(eventData.OldFocusedObject))
             {
                 FocusExit(eventData.OldFocusedObject, eventData);
