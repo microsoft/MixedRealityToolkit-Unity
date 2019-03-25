@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordinates;
+using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 {
