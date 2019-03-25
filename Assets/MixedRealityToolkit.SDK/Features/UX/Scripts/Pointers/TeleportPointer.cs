@@ -1,17 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
+using UnityPhysics = UnityEngine.Physics;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
+namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     public class TeleportPointer : LinePointer
     {
@@ -62,11 +59,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [SerializeField]
         [Tooltip("Layers that are considered 'valid' for navigation")]
-        protected LayerMask ValidLayers = Physics.DefaultRaycastLayers;
+        protected LayerMask ValidLayers = UnityPhysics.DefaultRaycastLayers;
 
         [SerializeField]
         [Tooltip("Layers that are considered 'invalid' for navigation")]
-        protected LayerMask InvalidLayers = Physics.IgnoreRaycastLayer;
+        protected LayerMask InvalidLayers = UnityPhysics.IgnoreRaycastLayer;
 
         private Vector2 currentInputPosition = Vector2.zero;
 

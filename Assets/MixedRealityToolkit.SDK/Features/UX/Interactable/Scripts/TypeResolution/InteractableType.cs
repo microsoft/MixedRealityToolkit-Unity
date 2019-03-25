@@ -1,8 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+﻿using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A wrapper for a Type which gives a "friendly name" for the type (i.e.
@@ -24,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         /// <summary>
         /// The assembly qualified name of the class (for example, 
-        /// "Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes.InteractableActivateTheme, 
+        /// "Microsoft.MixedReality.Toolkit.UI.InteractableActivateTheme, 
         /// Microsoft.MixedReality.Toolkit.SDK")
         /// </summary>
         public string AssemblyQualifiedName { get; private set; }

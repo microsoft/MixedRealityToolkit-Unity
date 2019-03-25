@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
     /// <summary>
     /// Copy of Unity's <see href="https://docs.unity3d.com/ScriptReference/XR.WSA.Input.GestureSettings.html">GestureSettings</see>

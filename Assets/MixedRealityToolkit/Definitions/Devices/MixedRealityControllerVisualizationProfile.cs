@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Visualization Profile", fileName = "MixedRealityControllerVisualizationProfile", order = (int)CreateProfileMenuItemIndices.ControllerVisualization)]
     [MixedRealityServiceProfile(typeof(IMixedRealityControllerVisualizer))]
@@ -28,24 +26,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
         [SerializeField]
         [Implements(typeof(IMixedRealityControllerVisualizer), TypeGrouping.ByNamespaceFlat)]
-        [Tooltip("The concrete Controller Visualizer component to use on the rendered controller model.")]
-        private SystemType controllerVisualizationType;
+        [Tooltip("The default controller visualization type. This value is used as a fallback if no controller definition exists with a custom visualization type.")]
+        private SystemType defaultControllerVisualizationType;
 
         /// <summary>
-        /// The concrete Controller Visualizer component to use on the rendered controller model
+        /// The default controller visualization type. This value is used as a fallback if no controller definition exists with a custom visualization type.
         /// </summary>
-        public SystemType ControllerVisualizationType
+        public SystemType DefaultControllerVisualizationType
         {
-            get { return controllerVisualizationType; }
-            private set { controllerVisualizationType = value; }
+            get { return defaultControllerVisualizationType; }
+            private set { defaultControllerVisualizationType = value; }
         }
 
         [SerializeField]
-        [Tooltip("Use the platform SDK to load the default controller models.")]
+        [Tooltip("Check to obtain controller models from the platform sdk. If left unchecked, the global models will be used. Note: this value is overridden by controller definitions.")]
         private bool useDefaultModels = false;
 
         /// <summary>
-        /// User the controller model loader provided by the SDK, or provide override models.
+        /// Check to obtain controller models from the platform sdk. If left unchecked, the global models will be used. Note: this value is overridden by controller definitions.
         /// </summary>
         public bool UseDefaultModels
         {
@@ -102,15 +100,58 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         {
             for (int i = 0; i < controllerVisualizationSettings.Length; i++)
             {
-                if (controllerVisualizationSettings[i].ControllerType != null &&
-                    controllerVisualizationSettings[i].ControllerType.Type == controllerType &&
-                   (controllerVisualizationSettings[i].Handedness == hand || controllerVisualizationSettings[i].Handedness == Handedness.Both))
+                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
                 {
                     return controllerVisualizationSettings[i].OverrideControllerModel;
                 }
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the override <see cref="IMixedRealityControllerVisualizer"/> type for a specific controller type and hand.
+        /// If the requested controller type is not defined, DefaultControllerVisualizationType is returned.
+        /// </summary>
+        /// <param name="controllerType">The type of controller to query for</param>
+        /// <param name="hand">The specific hand assigned to the controller</param>
+        public SystemType GetControllerVisualizationTypeOverride(Type controllerType, Handedness hand)
+        {
+            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
+            {
+                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
+                {
+                    return controllerVisualizationSettings[i].ControllerVisualizationType;
+                }
+            }
+
+            return defaultControllerVisualizationType;
+        }
+
+        /// <summary>
+        /// Gets the UseDefaultModels value defined for the specified controller definition.
+        /// If the requested controller type is not defined, the default UseDefaultModels is returned.
+        /// </summary>
+        /// <param name="controllerType">The type of controller to query for</param>
+        /// <param name="hand">The specific hand assigned to the controller</param>
+        public bool GetUseDefaultModelsOverride(Type controllerType, Handedness hand)
+        {
+            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
+            {
+                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
+                {
+                    return controllerVisualizationSettings[i].UseDefaultModel;
+                }
+            }
+
+            return useDefaultModels;
+        }
+
+        private bool SettingContainsParameters(MixedRealityControllerVisualizationSetting setting, Type controllerType, Handedness hand)
+        {
+            return setting.ControllerType != null &&
+                setting.ControllerType.Type == controllerType &&
+                (setting.Handedness == hand || setting.Handedness == Handedness.Both);
         }
     }
 }

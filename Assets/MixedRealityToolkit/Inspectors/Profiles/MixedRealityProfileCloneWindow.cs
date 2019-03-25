@@ -1,11 +1,12 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     public class MixedRealityProfileCloneWindow : EditorWindow
     {
@@ -81,18 +82,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 SerializedProperty subProfileProperty = childSerializedObject.FindProperty(iterator.name);
 
                 if (subProfileProperty == null)
+                {
                     continue;
+                }
 
                 if (!subProfileProperty.type.Contains("PPtr<$")) // Not an object reference type
+                {
                     continue;
+                }
 
-                string subProfileTypeName = subProfileProperty.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty).Trim();                
+                string subProfileTypeName = subProfileProperty.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty).Trim();
                 System.Type subProfileType = FindProfileType(subProfileTypeName);
                 if (subProfileType == null)
+                {
                     continue;
+                }
 
                 if (!basePropertyType.IsAssignableFrom(subProfileType))
+                {
                     continue;
+                }
 
                 subProfileActions.Add(new SubProfileAction(
                     ProfileCloneBehavior.UseExisting,
@@ -102,12 +111,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             Vector2 minWindowSize = MinWindowSizeBasic;
-            minWindowSize.y = Mathf.Max(minWindowSize.y, subProfileActions.Count * SubProfileSizeMultiplier);            
+            minWindowSize.y = Mathf.Max(minWindowSize.y, subProfileActions.Count * SubProfileSizeMultiplier);
             cloneWindow.minSize = minWindowSize;
 
             // If there are no sub profiles, limit the max so the window isn't spawned too large
             if (subProfileActions.Count <= 0)
+            {
                 cloneWindow.maxSize = minWindowSize;
+            }
         }
 
         private void OnGUI()
@@ -222,15 +233,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                     case ProfileCloneBehavior.CloneExisting:
                         // Clone the profile, then apply the new reference
-                        
+
                         // If the property reference is null, skip this step, the user was warned
                         if (action.Property.objectReferenceValue == null)
+                        {
                             break;
+                        }
 
                         // If for some reason it's the wrong type, bail now
                         BaseMixedRealityProfile subProfileToClone = (BaseMixedRealityProfile)action.Property.objectReferenceValue;
                         if (subProfileToClone == null)
+                        {
                             break;
+                        }
 
                         // Clone the sub profile
                         var newSubProfile = CloneProfile(newChildProfile, subProfileToClone, action.ProfileType.Name, actionProperty, targetFolder, action.CloneName);
@@ -264,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             var newChildProfile = instance.CreateAsset(path, fileName) as BaseMixedRealityProfile;
             childProperty.objectReferenceValue = newChildProfile;
             childProperty.serializedObject.ApplyModifiedProperties();
-            
+
             return newChildProfile;
         }
 
@@ -296,7 +311,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             if (folderObject == null)
+            {
                 folderObject = AssetDatabase.LoadAssetAtPath("Assets", typeof(Object));
+            }
         }
 
         private static System.Type FindProfileType(string profileTypeName)

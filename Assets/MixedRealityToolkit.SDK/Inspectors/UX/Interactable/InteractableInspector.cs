@@ -1,20 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
+namespace Microsoft.MixedReality.Toolkit.UI
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(Interactable))]
-    public class InteractableInspector : Editor
+    public class InteractableInspector : UnityEditor.Editor
     {
         protected Interactable instance;
         protected List<InteractableEvent> eventList;
@@ -129,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                     for (int i = 0; i < stateLocations.Length; i++)
                     {
                         string path = AssetDatabase.GUIDToAssetPath(stateLocations[i]);
-                        States.States defaultStates = (States.States)AssetDatabase.LoadAssetAtPath(path, typeof(States.States));
+                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
                         if (defaultStates != null)
                         {
                             states.objectReferenceValue = defaultStates;
@@ -370,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
                                 int[] location = new int[] { i, t, 0 };
 
-                                States.State[] iStates = GetStates();
+                                State[] iStates = GetStates();
 
                                 ThemeInspector.RenderThemeSettings(themeObjSettings, themeObj, themeOptions, gameObject, location, iStates);
 
@@ -514,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             serializedObject.ApplyModifiedProperties();
         }
 
-        protected virtual States.State[] GetStates()
+        protected virtual State[] GetStates()
         {
             return instance.GetStates();
         }

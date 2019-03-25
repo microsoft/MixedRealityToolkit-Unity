@@ -1,20 +1,24 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Providers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
+using System;
 
 #if UNITY_WSA
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
+#if WINDOWS_UWP
+using Windows.Foundation;
+using Windows.Perception;
+using Windows.UI.Input.Spatial;
+using Windows.Storage.Streams;
+#endif
+
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     /// <summary>
     /// A Windows Mixed Reality Controller Instance.
@@ -89,6 +93,9 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         private Quaternion currentGripRotation = Quaternion.identity;
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
+        private bool controllerModelInitialized = false;
+        private bool failedToObtainControllerModel = false;
+
         #region Update data functions
 
         /// <summary>
@@ -100,6 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             if (!Enabled) { return; }
 
             UpdateControllerData(interactionSourceState);
+            EnsureControllerModel(interactionSourceState);
 
             if (Interactions == null)
             {
@@ -249,10 +257,11 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                         interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
                         interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
 
-                        if (MixedRealityToolkit.Instance.MixedRealityPlayspace != null)
+                        var playspace = GetPlayspace();
+                        if (playspace != null)
                         {
-                            currentGripPose.Position = MixedRealityToolkit.Instance.MixedRealityPlayspace.TransformPoint(currentGripPosition);
-                            currentGripPose.Rotation = Quaternion.Euler(MixedRealityToolkit.Instance.MixedRealityPlayspace.TransformDirection(currentGripRotation.eulerAngles));
+                            currentGripPose.Position = playspace.TransformPoint(currentGripPosition);
+                            currentGripPose.Rotation = Quaternion.Euler(playspace.TransformDirection(currentGripRotation.eulerAngles));
                         }
                         else
                         {
@@ -516,7 +525,130 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             }
         }
 
+        /// <summary>
+        /// Ensure that if a controller model was desired that we have attempted initialization
+        /// </summary>
+        /// <param name="interactionSourceState"></param>
+        private void EnsureControllerModel(InteractionSourceState interactionSourceState)
+        {
+            if (controllerModelInitialized ||
+                GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+            {
+                controllerModelInitialized = true;
+                return;
+            }
+
+            controllerModelInitialized = true;
+            CreateControllerModelFromPlatformSDK(interactionSourceState.source.id);
+        }
+
         #endregion Update data functions
+
+        #region Controller model functions
+
+        protected override bool TryRenderControllerModel(Type controllerType)
+        {
+            // Intercept this call if we are using the default driver provided models.
+            // Note: Obtaining models from the driver will require access to the InteractionSource.
+            // It's unclear whether the interaction source will be available during setup, so we attempt to create
+            // the controller model on an input update
+            if (failedToObtainControllerModel ||
+                GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+            {
+                controllerModelInitialized = true;
+                return base.TryRenderControllerModel(controllerType);
+            }
+
+            return false;
+        }
+
+        private async void CreateControllerModelFromPlatformSDK(uint interactionSourceId)
+        {
+            Debug.Log("Creating controller model from platform sdk");
+            byte[] fileBytes = null;
+
+#if WINDOWS_UWP
+            var controllerModelStream = await TryGetRenderableModelAsync(interactionSourceId);
+            if (controllerModelStream == null ||
+                controllerModelStream.Size == 0)
+            {
+                Debug.LogError("Failed to obtain controller model from driver");
+            }
+            else
+            {
+                fileBytes = new byte[controllerModelStream.Size];
+                using (DataReader reader = new DataReader(controllerModelStream))
+                {
+                    await reader.LoadAsync((uint)controllerModelStream.Size);
+                    reader.ReadBytes(fileBytes);
+                }
+            }
+#endif
+
+            GameObject gltfGameObject = null;
+            if (fileBytes != null)
+            {
+                var gltfObject = GltfUtility.GetGltfObjectFromGlb(fileBytes);
+                gltfGameObject = await gltfObject.ConstructAsync();
+                if (gltfGameObject != null)
+                {
+                    var visualizationProfile = GetControllerVisualizationProfile();
+                    if (visualizationProfile != null)
+                    {
+                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
+                        if (visualizationType != null)
+                        {
+                            gltfGameObject.AddComponent(visualizationType.Type);
+                            TryAddControllerModelToSceneHierarchy(gltfGameObject);
+                        }
+                        else
+                        {
+                            Debug.LogError("Controller visualization type not defined for controller visualization profile");
+                            GameObject.Destroy(gltfGameObject);
+                            gltfGameObject = null;
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to obtain a controller visualization profile");
+                    }
+                }
+            }
+
+            if (gltfGameObject == null)
+            {
+                Debug.LogWarning("Failed to create controller model from driver, defaulting to BaseController behavior");
+                failedToObtainControllerModel = true;
+                TryRenderControllerModel(GetType());
+            }
+        }
+
+#if WINDOWS_UWP
+        private IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(uint interactionSourceId)
+        {
+            IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
+            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+            {
+                var sources = SpatialInteractionManager.GetForCurrentView()?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+                if (sources != null)
+                {
+                    foreach (SpatialInteractionSourceState sourceState in sources)
+                    {
+                        if (sourceState.Source.Id.Equals(interactionSourceId))
+                        {
+                            returnValue = sourceState.Source.Controller.TryGetRenderableModelAsync();
+                        }
+                    }
+                }
+            }, true);
+
+            return returnValue;
+        }
+#endif
+
+        #endregion Controller model functions
 
 #endif // UNITY_WSA
     }

@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
     /// Convenience class for setting Editor Preferences with <see href="https://docs.unity3d.com/ScriptReference/Application-productName.html">Application.productName</see> as key prefix.

@@ -1,18 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.TypeResolution;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using UnityEditor;
-using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Event base class for events attached to Interactables.

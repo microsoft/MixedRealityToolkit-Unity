@@ -1,23 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.Diagnostics;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Teleport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
+#if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Input.Editor;
+#endif
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// This class is responsible for coordinating the operation of the Mixed Reality Toolkit. It is the only Singleton in the entire project.
@@ -27,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
     [DisallowMultipleComponent]
     public class MixedRealityToolkit : MonoBehaviour, IMixedRealityServiceRegistrar
     {
-        #region Mixed Reality Toolkit Profile configuration
+#region Mixed Reality Toolkit Profile configuration
 
         private const string MixedRealityPlayspaceName = "MixedRealityPlayspace";
 
@@ -109,9 +108,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             InitializeServiceLocator();
         }
 
-        #endregion Mixed Reality Toolkit Profile configuration
+#endregion Mixed Reality Toolkit Profile configuration
 
-        #region Mixed Reality runtime service registry
+#region Mixed Reality runtime service registry
 
         private static readonly Dictionary<Type, IMixedRealityService> activeSystems = new Dictionary<Type, IMixedRealityService>();
 
@@ -126,13 +125,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
         private static readonly List<Tuple<Type, IMixedRealityService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityService>>();
 
         /// <summary>
-        /// Local service registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityService"/>.
+        /// Local service registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityService"/>.
         /// </summary>
         public IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices) as IReadOnlyList<Tuple<Type, IMixedRealityService>>;
 
-        #endregion Mixed Reality runtime service registry
+#endregion Mixed Reality runtime service registry
 
-        #region IMixedRealityServiceRegistrar implementation
+#region IMixedRealityServiceRegistrar implementation
 
         /// <inheritdoc />
         public bool RegisterService<T>(T serviceInstance) where T : IMixedRealityService
@@ -304,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             throw new NotImplementedException();
         }
 
-        #endregion IMixedRealityServiceRegistrar implementation
+#endregion IMixedRealityServiceRegistrar implementation
 
         /// <summary>
         /// Once all services are registered and properties updated, the Mixed Reality Toolkit will initialize all active services.
@@ -353,14 +352,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 }
             }
 
-            #region Services Registration
+#region Services Registration
 
             // If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsInputSystemEnabled)
             {
 #if UNITY_EDITOR
                 // Make sure unity axis mappings are set.
-                Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
+                InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
                 object[] args = { this, ActiveProfile.InputSystemProfile, Instance.MixedRealityPlayspace };
@@ -379,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             else
             {
 #if UNITY_EDITOR
-                Utilities.Editor.InputMappingAxisUtility.RemoveMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
+                InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
             }
 
@@ -396,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             // If the Spatial Awareness system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsSpatialAwarenessSystemEnabled)
             {
-#if UNITY_EDITOR                
+#if UNITY_EDITOR
                 LayerExtensions.SetupLayer(31, "Spatial Awareness");
 #endif
                 object[] args = { this };
@@ -447,9 +446,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
                 }
             }
 
-            #endregion Service Registration
+#endregion Service Registration
 
-            #region Services Initialization
+#region Services Initialization
 
             var orderedCoreSystems = activeSystems.OrderBy(m => m.Value.Priority).ToArray();
             activeSystems.Clear();
@@ -469,7 +468,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
             InitializeAllServices();
 
-            #endregion Services Initialization
+#endregion Services Initialization
 
             isInitializing = false;
         }
@@ -516,7 +515,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
         }
 
-        #region MonoBehaviour Implementation
+#region MonoBehaviour Implementation
 
         private static MixedRealityToolkit instance;
         private static bool newInstanceBeingInitialized = false;
@@ -787,11 +786,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             }
         }
 
-        #endregion MonoBehaviour Implementation
+#endregion MonoBehaviour Implementation
 
-        #region Service Container Management
+#region Service Container Management
 
-        #region Registration
+#region Registration
         private bool RegisterServiceInternal(Type interfaceType, IMixedRealityService serviceInstance)
         {
             if (serviceInstance == null)
@@ -846,9 +845,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             return RegisterServiceInternal(interfaceType, serviceInstance);
         }
 
-        #endregion Registration
+#endregion Registration
 
-        #region Multiple Service Management
+#region Multiple Service Management
 
         /// <summary>
         /// Enable all services in the Mixed Reality Toolkit active service registry for a given type
@@ -1035,9 +1034,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             registeredMixedRealityServices.Clear();
         }
 
-        #endregion Multiple Service Management
+#endregion Multiple Service Management
 
-        #region Service Utilities
+#region Service Utilities
 
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.
@@ -1217,11 +1216,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
             return true;
         }
 
-        #endregion Service Utilities
+#endregion Service Utilities
 
-        #endregion Service Container Management
+#endregion Service Container Management
 
-        #region Core System Accessors
+#region Core System Accessors
 
         private static IMixedRealityInputSystem inputSystem = null;
 
@@ -1373,6 +1372,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         private static bool logDiagnosticsSystem = true;
 
-        #endregion Core System Accessors
+#endregion Core System Accessors
     }
 }

@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Renders a background mesh for a tool tip using a mesh renderer

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem
+namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     public interface IMixedRealityTeleportHotSpot
     {
