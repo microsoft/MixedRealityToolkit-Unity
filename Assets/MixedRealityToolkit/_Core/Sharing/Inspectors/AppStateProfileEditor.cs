@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using MRTK.Core;
 using UnityEditor;
@@ -30,6 +32,7 @@ namespace MRTK.StateControl
         private Color enabledColor = Color.white;
         private Color disabledColor = Color.Lerp(Color.white, Color.clear, 0.5f);
         private GUIStyle centeredButtonStyle;
+        private GUIStyle errorLabelStyle;
 
         private void OnEnable()
         {
@@ -37,16 +40,17 @@ namespace MRTK.StateControl
             stateTypeDefinitions = serializedObject.FindProperty("stateTypeDefinitions");
             subscriptionMode = serializedObject.FindProperty("subscriptionMode");
             profile = (AppStateProfile)target;
+
+            centeredButtonStyle = new GUIStyle(EditorStyles.miniButton);
+            centeredButtonStyle.alignment = TextAnchor.MiddleCenter;
+
+            errorLabelStyle = new GUIStyle(EditorStyles.miniLabel);
+            errorLabelStyle.richText = true;
+            errorLabelStyle.wordWrap = true;
         }
 
         public override void OnInspectorGUI()
         {
-            if (centeredButtonStyle == null)
-            {
-                centeredButtonStyle = new GUIStyle(EditorStyles.miniButton);
-                centeredButtonStyle.alignment = TextAnchor.MiddleCenter;
-            }
-
             GUI.color = enabledColor;
             EditorGUI.BeginChangeCheck();
 
@@ -67,7 +71,7 @@ namespace MRTK.StateControl
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("State Types", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Below is a list of the structs the AppState can synchronize. Eligable structs must iplement the IItemState and IItemStateComparer interfaces and have the [AppStateType] attribute. If you don't see your type here, click the search button.", MessageType.Info);
+            EditorGUILayout.HelpBox("Below is a list of the structs the AppState can synchronize. Eligable structs must have the [AppStateType] attribute. If you don't see your type here, click the search button.", MessageType.Info);
 
             GUI.color = enabledColor;
             if (DrawSearchButton("Search"))
@@ -263,7 +267,13 @@ namespace MRTK.StateControl
             List<string> errors = new List<string>();
             if (!ValidateStateType(stateType, errors))
             {
-                EditorGUILayout.HelpBox(String.Join(",", errors.ToArray()), MessageType.Error);
+                EditorGUILayout.HelpBox(stateType.Name + " had the following errors:", MessageType.Error);
+                foreach (string error in errors)
+                {
+                    EditorGUILayout.LabelField(" • " + error, errorLabelStyle);
+                }
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
             }
 
             if (!arrayTypeIsValid)
@@ -283,19 +293,39 @@ namespace MRTK.StateControl
 
         private static bool ValidateStateType(Type stateType, List<string> errors)
         {
-            bool valid = true;
+            if (stateType.IsClass)
+            {
+                errors.Add(stateType.Name + " must be a struct.");
+            }
+
+            if (!stateType.IsSerializable)
+            { 
+                errors.Add(stateType.Name + " is not Serializable.");
+            }
 
             object[] attributes = stateType.GetCustomAttributes(typeof(AppStateTypeAttribute), true);
             if (attributes.Length == 0)
             {
                 errors.Add (stateType.Name + " doesn't have the AppStateType attribute.");
-                valid = false;
             }
 
             if (!typeof(IItemState).IsAssignableFrom(stateType))
             {
                 errors.Add(stateType.Name + " doesn't implement IItemState interface.");
-                valid = false;
+            }
+            else
+            {
+                PropertyInfo keyProperty = stateType.GetProperty("Key");
+                if (CheckIfAutoProperty(keyProperty))
+                {
+                    errors.Add(stateType.Name + " may use an auto-property for its Key property - this is not recommended as its value may not be serialized. Key should be a read-only property that returns a public field.");
+                }
+            }
+
+            var initConstructor = stateType.GetConstructor(new Type[] { typeof(short) });
+            if (initConstructor == null)
+            {
+                errors.Add(stateType.Name + " does not have a constructor that takes a key: <i>public " + stateType.Name + "(short key)</i>");
             }
 
             bool isComparer = stateType.GetInterfaces().Any(stateComparer =>
@@ -305,10 +335,9 @@ namespace MRTK.StateControl
             if (!isComparer)
             {
                 errors.Add(stateType.Name + " doesn't implement IItemStateComparer<" + stateType.Name + "> interface");
-                valid = false;
             }
 
-            return valid;
+            return errors.Count == 0;
         }
 
         private static bool ValidateStateArrayType(Type stateArrayType, List<string> errors)
@@ -350,6 +379,27 @@ namespace MRTK.StateControl
             }
 
             return friendlyName;
+        }
+
+        public static bool CheckIfAutoProperty(PropertyInfo info)
+        {
+            bool compilerGenerated = info.GetGetMethod().GetCustomAttributes(typeof(CompilerGeneratedAttribute), true).Any();
+
+            if (!compilerGenerated)
+                return false;
+
+            bool hasBackingField = info.DeclaringType
+                             .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+                             .Where(f => f.Name.Contains(info.Name))
+                             .Where(f => f.Name.Contains("BackingField"))
+                             .Where(
+                                 f => f.GetCustomAttributes(
+                                     typeof(CompilerGeneratedAttribute),
+                                     true
+                                 ).Any()
+                             ).Any();
+
+            return hasBackingField;
         }
 
         private bool DrawSearchButton(string text)
