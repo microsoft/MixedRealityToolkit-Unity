@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     /// <summary>
     /// Enumeration defining the types of planar surfaces that are supported by the spatial awareness surface finding subsystem.

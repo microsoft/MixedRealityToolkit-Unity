@@ -2,18 +2,20 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Change string on a text object based on state
     /// </summary>
     public class InteractableStringTheme : InteractableThemeBase
     {
+        private TextMesh mesh;
+        private Text text;
+
         public InteractableStringTheme()
         {
             Types = new Type[] { typeof(TextMesh), typeof(Text) };
@@ -30,18 +32,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 });
         }
 
+        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        {
+            base.Init(host, settings);
+
+            mesh = Host.GetComponent<TextMesh>();
+            text = Host.GetComponent<Text>();
+        }
+
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             InteractableThemePropertyValue start = new InteractableThemePropertyValue();
             start.String = "";
-            TextMesh mesh = Host.GetComponentInChildren<TextMesh>();
+
             if (mesh != null)
             {
                 start.String = mesh.text;
                 return start;
             }
 
-            Text text = Host.GetComponentInChildren<Text>();
             if (mesh != null)
             {
                 start.String = text.text;
@@ -51,14 +60,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
-            TextMesh mesh = Host.GetComponentInChildren<TextMesh>();
             if(mesh != null)
             {
                 mesh.text = property.Values[index].String;
                 return;
             }
-
-            Text text = Host.GetComponentInChildren<Text>();
             if (mesh != null)
             {
                 text.text = property.Values[index].String;

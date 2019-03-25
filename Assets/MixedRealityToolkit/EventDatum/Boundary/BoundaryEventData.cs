@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary
+namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     /// <summary>
     /// The data describing the boundary system event.
@@ -35,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary
         /// Is the ceiling being visualized by the boundary system.
         /// </summary>
         /// <remarks>
-        /// The boundary system defines the ceiling as a plane set at <see cref="IMixedRealityBoundarySystem.BoundaryHeight"/> above the floor.
+        /// The boundary system defines the ceiling as a plane set at <see cref="Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem.BoundaryHeight"/> above the floor.
         /// </remarks>
         public bool IsCeilingVisualized { get; private set; }
 

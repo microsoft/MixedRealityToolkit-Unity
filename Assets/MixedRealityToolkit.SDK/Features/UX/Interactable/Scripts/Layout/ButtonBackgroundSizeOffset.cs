@@ -1,15 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Scales an object relative the scale of the Anchor Transform
-    /// Works best when using with Layout3DPixelSize, but not requied - See LayoutPixelSize for more info
+    /// Works best when using with Layout3DPixelSize, but not required - See LayoutPixelSize for more info
     /// Use Case:
     /// Create a button, then add another element who's size should maintain a consistent size relative to the Anchor.
     /// Like creating a button background using a Cube and ButtonSize. The add another Cube that is 40 pixels smaller than the background.
@@ -20,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
     {
         /// <summary>
         /// A scale factor for layout3D, default is based on 2048 pixels to 1 meter.
-        /// Similar to values used in designer and 2D art programs and helps create consistancy across teams.
+        /// Similar to values used in designer and 2D art programs and helps create consistency across teams.
         /// </summary>
         [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]
         [SerializeField]
@@ -31,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         /// </summary>
         [Tooltip("The transform this object should be linked and aligned to")]
         [SerializeField]
-        private Transform AnchorTransform;
+        private Transform AnchorTransform = null;
 
         /// <summary>
         /// Make this object's size scaled relative to the Anchor's size
@@ -90,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         }
 
         /// <summary>
-        /// Set the size based on the Achor's size and the buffers
+        /// Set the size based on the Anchor's size and the buffers
         /// </summary>
         private void UpdateSize()
         {

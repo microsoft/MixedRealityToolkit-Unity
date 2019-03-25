@@ -1,17 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Ease settings and functionality for animation with curves
     /// </summary>
-    
+
     [System.Serializable]
     public class Easing
     {
@@ -30,12 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         public AnimationCurve Curve = AnimationCurve.Linear(0, 1, 1, 1);
 
+
         /// <summary>
-        /// The amounnt of time the ease should run
+        /// The amount of time the ease should run
         /// </summary>
         public float LerpTime = 0.5f;
 
         private float timer = 0.5f;
+        private Keyframe[] cachedKeys;
 
         public Easing()
         {
@@ -102,9 +101,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         protected bool IsLinear()
         {
-            if (Curve.keys.Length > 1)
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
             {
-                return (Curve.keys[0].value == 1 && Curve.keys[1].value == 1);
+                // If we're in the editor and we're not playing
+                // always update the cached keys to reflect recent changes
+                cachedKeys = Curve.keys;
+            }
+#endif
+            if (cachedKeys == null)
+            {
+                cachedKeys = Curve.keys;
+            }
+
+            if (cachedKeys.Length > 1)
+            {
+                return (cachedKeys[0].value == 1 && cachedKeys[1].value == 1);
             }
 
             return false;
@@ -133,6 +145,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
 
             Curve = animation;
+
+            // Update the cached keys
+            cachedKeys = Curve.keys;
         }
     }
 }

@@ -1,17 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
-using System.Collections;
-using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Utilities.InspectorFields.Inspectors
 {
     [CustomEditor(typeof(InspectorFieldsExample))]
-    public class InspectorFieldsExampleInspector : Editor
+    public class InspectorFieldsExampleInspector : UnityEditor.Editor 
     {
         private SerializedProperty settings;
         private InspectorFieldsExample example;
@@ -41,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Utilities.InspectorField
 
             serializedObject.ApplyModifiedProperties();
 
-            // to apply during runtime - only needed for monobehaviors
+            // to apply during runtime - only needed for MonoBehaviours
             InspectorGenericFields<InspectorFieldsExample>.LoadSettings(example, example.Settings);
         }
     }

@@ -2,7 +2,7 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| Core | Microsoft.MixedReality.Toolkit.Core.Defintitions.SpatialAwareness |
+| Core | Microsoft.MixedReality.Toolkit.SpatialAwareness |
 
 ``` C#
 public enum SpatialAwarenessMeshLevelOfDetail
@@ -29,4 +29,4 @@ public enum SpatialAwarenessMeshLevelOfDetail
 
 ## See Also
 
-- [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
+- [Mixed Reality Spatial Awareness System Architecture](SpatialAwarenessSystemArchitecture.md)

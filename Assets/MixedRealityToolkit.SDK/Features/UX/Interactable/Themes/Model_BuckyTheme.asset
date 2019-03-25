@@ -14,6 +14,8 @@ MonoBehaviour:
   Name: 
   Settings:
   - Name: ScaleOffsetColorTheme
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.ScaleOffsetColorTheme,
+      Microsoft.MixedReality.Toolkit.SDK
     Properties:
     - Name: Scale
       Type: 6

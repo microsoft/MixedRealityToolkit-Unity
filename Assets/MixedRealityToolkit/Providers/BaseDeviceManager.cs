@@ -1,15 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Providers 
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Base Device manager to inherit from.
@@ -19,10 +15,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="registrar">The <see cref="Interfaces.IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public BaseDeviceManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        public BaseDeviceManager(
+            IMixedRealityServiceRegistrar registrar, 
+            string name, 
+            uint priority, 
+            BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) { }
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
@@ -38,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
         {
             var pointers = new List<IMixedRealityPointer>();
 
-            if (MixedRealityToolkit.HasActiveProfile &&
+            if (MixedRealityToolkit.Instance.HasActiveProfile &&
                 MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
             {
@@ -49,9 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
                     if (((useSpecificType && pointerProfile.ControllerType.Type == controllerType.Type) || (!useSpecificType && pointerProfile.ControllerType.Type == null)) &&
                         (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))
                     {
-                        var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
+                        var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab, MixedRealityToolkit.Instance.MixedRealityPlayspace);
                         var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-                        pointerObject.transform.SetParent(MixedRealityToolkit.Instance.MixedRealityPlayspace);
 
                         if (pointer != null)
                         {

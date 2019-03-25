@@ -319,6 +319,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c,
         type: 2}
+      propertyPath: Events.Array.data[0].AssemblyQualifiedName
+      value: Microsoft.MixedReality.Toolkit.UI.InteractableAudioReceiver,
+        Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c,
+        type: 2}
       propertyPath: Events.Array.data[0].HideUnityEvents
       value: 1
       objectReference: {fileID: 0}
@@ -504,6 +510,8 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
+      MixedRealityToolkit-Examples.Demos.UX.Interactables
     Settings: []
     HideUnityEvents: 1
 --- !u!4 &519184499 stripped
@@ -1153,6 +1161,12 @@ Prefab:
         type: 2}
       propertyPath: Events.Array.data[0].ClassName
       value: InteractableOnFocusReceiver
+      objectReference: {fileID: 0}
+    - target: {fileID: 114818926546564510, guid: 02c524b22137b5449904f5395141cc73,
+        type: 2}
+      propertyPath: Events.Array.data[0].AssemblyQualifiedName
+      value: Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver,
+        Microsoft.MixedReality.Toolkit.SDK
       objectReference: {fileID: 0}
     - target: {fileID: 114818926546564510, guid: 02c524b22137b5449904f5395141cc73,
         type: 2}
@@ -1855,6 +1869,8 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
+      MixedRealityToolkit-Examples.Demos.UX.Interactables
     Settings: []
     HideUnityEvents: 1
 --- !u!4 &1441615695 stripped

@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
     /// Sets Force Text Serialization and visible meta files in all projects that use the Mixed Reality Toolkit.
@@ -153,6 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         /// <param name="directoryName">
         /// The name of the directory to search for.
         /// </param>
+        /// <param name="path"></param>
         internal static bool FindRelativeDirectory(string directoryPathToSearch, string directoryName, out string path)
         {
             string absolutePath;
@@ -175,6 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
         /// <param name="directoryName">
         /// The name of the directory to search for.
         /// </param>
+        /// <param name="path"></param>
         internal static bool FindDirectory(string directoryPathToSearch, string directoryName, out string path)
         {
             path = string.Empty;
@@ -202,7 +204,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         private static string MakePathRelativeToProject(string absolutePath)
         {
-            return absolutePath.Replace(Application.dataPath + "\\", "Assets/");
+            return absolutePath.Replace(
+                Application.dataPath + Path.DirectorySeparatorChar,
+                "Assets" + Path.DirectorySeparatorChar);
         }
 
         private static void SetIconTheme()
@@ -213,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                 return;
             }
 
-            var icons = Directory.GetFiles(MixedRealityToolkit_AbsoluteFolderPath + "/Resources/Icons");
+            var icons = Directory.GetFiles(MixedRealityToolkit_AbsoluteFolderPath + "/StandardAssets/Icons");
             var icon = new Texture2D(2, 2);
             var iconColor = new Color32(4, 165, 240, 255);
 

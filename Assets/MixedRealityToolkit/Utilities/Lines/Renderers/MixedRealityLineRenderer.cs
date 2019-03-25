@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Lines;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Implements Unity's built in line renderer component, and applies the line data to it.
@@ -71,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             lineRenderer.enabled = false;
         }
 
-        private void Update()
+        protected override void UpdateLine()
         {
             if (LineDataSource == null)
             {
@@ -80,8 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
                 return;
             }
 
-            lineRenderer.enabled = LineDataSource.enabled;
-            lineRenderer.positionCount = StepMode == StepMode.FromSource ? LineDataSource.PointCount : LineStepCount;
+            lineRenderer.enabled = lineDataSource.enabled;
+            lineRenderer.positionCount = StepMode == StepMode.FromSource ? lineDataSource.PointCount : LineStepCount;
 
             if (positions == null || positions.Length != lineRenderer.positionCount)
             {
@@ -92,17 +90,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             {
                 if (StepMode == StepMode.FromSource)
                 {
-                    positions[i] = LineDataSource.GetPoint(i);
+                    positions[i] = lineDataSource.GetPoint(i);
                 }
                 else
                 {
                     float normalizedDistance = (1f / (LineStepCount - 1)) * i;
-                    positions[i] = LineDataSource.GetPoint(normalizedDistance);
+                    positions[i] = lineDataSource.GetPoint(normalizedDistance);
                 }
             }
 
             // Set line renderer properties
-            lineRenderer.loop = LineDataSource.Loops;
+            lineRenderer.loop = lineDataSource.Loops;
             lineRenderer.numCapVertices = roundedCaps ? 8 : 0;
             lineRenderer.numCornerVertices = roundedEdges ? 8 : 0;
             lineRenderer.useWorldSpace = true;

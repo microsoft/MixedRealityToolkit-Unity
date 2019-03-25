@@ -285,7 +285,6 @@ GameObject:
   - component: {fileID: 624307634}
   - component: {fileID: 624307633}
   - component: {fileID: 624307632}
-  - component: {fileID: 624307637}
   - component: {fileID: 624307636}
   - component: {fileID: 624307639}
   - component: {fileID: 624307638}
@@ -391,25 +390,6 @@ MonoBehaviour:
   gazeTransform: {fileID: 0}
   minHeadVelocityThreshold: 0.5
   maxHeadVelocityThreshold: 2
---- !u!114 &624307637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 624307631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d8ddcf767354d5f90704bb40ddec60a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pointingExtent: 10
-  uiRaycastCamera: {fileID: 2087691058}
-  pointingRaycastLayerMasks:
-  - serializedVersion: 2
-    m_Bits: 4294967291
-  debugDrawPointingRays: 0
-  debugDrawPointingRayColors: []
 --- !u!114 &624307638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,6 +611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f9be7a3cb53794ead8b55e784b65aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   boxColliderToUse: {fileID: 694962454}
   activateOnStart: 1
   scaleMaximum: 2
@@ -1308,6 +1289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f9be7a3cb53794ead8b55e784b65aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   boxColliderToUse: {fileID: 1561062655}
   activateOnStart: 1
   scaleMaximum: 2
@@ -1620,6 +1602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f9be7a3cb53794ead8b55e784b65aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   boxColliderToUse: {fileID: 1669979020}
   activateOnStart: 1
   scaleMaximum: 2
@@ -1794,6 +1777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f9be7a3cb53794ead8b55e784b65aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   boxColliderToUse: {fileID: 2036781104}
   activateOnStart: 1
   scaleMaximum: 2
@@ -1827,8 +1811,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2087691055}
   - component: {fileID: 2087691058}
-  - component: {fileID: 2087691057}
-  - component: {fileID: 2087691056}
   m_Layer: 0
   m_Name: UIRaycastCamera
   m_TagString: Untagged
@@ -1850,40 +1832,6 @@ Transform:
   m_Father: {fileID: 624307635}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2087691056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2087691054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &2087691057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2087691054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
 --- !u!20 &2087691058
 Camera:
   m_ObjectHideFlags: 0

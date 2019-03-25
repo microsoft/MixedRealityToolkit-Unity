@@ -2,12 +2,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
-using System;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Class for Tooltip object
@@ -192,11 +191,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [SerializeField]
         [Tooltip("The padding around the content (height / width)")]
-        private Vector2 backgroundPadding;
+        private Vector2 backgroundPadding = Vector2.zero;
 
         [SerializeField]
         [Tooltip("The offset of the background (x / y / z)")]
-        private Vector3 backgroundOffset;
+        private Vector3 backgroundOffset = Vector3.zero;
 
         /// <summary>
         /// The offset of the background (x / y / z)
@@ -257,14 +256,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         public Vector2 LocalContentSize => localContentSize;
 
         private Vector3 localAttachPoint;
-
         private Vector3 attachPointOffset;
-
         private Vector3[] localAttachPointPositions;
-
         private List<IToolTipBackground> backgrounds = new List<IToolTipBackground>();
-
         private List<IToolTipHighlight> highlights = new List<IToolTipHighlight>();
+        private TextMesh cachedLabelText;
+        private int prevTextLength = -1;
+        private int prevTextHash = -1;
 
         /// <summary>
         /// point about which ToolTip pivots to face camera
@@ -443,27 +441,45 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             // Set the content using a text mesh by default
             // This function can be overridden for tooltips that use Unity UI
 
-            TextMesh text = label.GetComponent<TextMesh>();
-            if (text != null && !string.IsNullOrEmpty(toolTipText))
+            // Has content changed?
+            int currentTextLength = toolTipText.Length;
+            int currentTextHash = toolTipText.GetHashCode();
+
+            // If it has, update the content
+            if (currentTextLength != prevTextLength || currentTextHash != prevTextHash)
             {
-                text.fontSize = fontSize;
-                text.text = toolTipText.Trim();
-                text.lineSpacing = 1;
-                text.anchor = TextAnchor.MiddleCenter;
-                // Get the world scale of the text
-                // Convert that to local scale using the content parent
-                Vector3 localScale = GetTextMeshLocalScale(text);
-                localContentSize.x = localScale.x + backgroundPadding.x;
-                localContentSize.y = localScale.y + backgroundPadding.y;
+                prevTextHash = currentTextHash;
+                prevTextLength = currentTextLength;
+
+                if (cachedLabelText == null)
+                    cachedLabelText = label.GetComponent<TextMesh>();
+
+                if (cachedLabelText != null && !string.IsNullOrEmpty(toolTipText))
+                {
+                    cachedLabelText.fontSize = fontSize;
+                    cachedLabelText.text = toolTipText.Trim();
+                    cachedLabelText.lineSpacing = 1;
+                    cachedLabelText.anchor = TextAnchor.MiddleCenter;
+                    // Get the world scale of the text
+                    // Convert that to local scale using the content parent
+                    Vector3 localScale = GetTextMeshLocalScale(cachedLabelText);
+                    localContentSize.x = localScale.x + backgroundPadding.x;
+                    localContentSize.y = localScale.y + backgroundPadding.y;
+                }
+
+                // Now that we have the size of our content, get our pivots
+                ToolTipUtility.GetAttachPointPositions(ref localAttachPointPositions, localContentSize);
+                localAttachPoint = ToolTipUtility.FindClosestAttachPointToAnchor(anchor.transform, contentParent.transform, localAttachPointPositions, PivotType);
+
+                foreach (IToolTipBackground background in backgrounds)
+                {
+                    background.OnContentChange(localContentSize, LocalContentOffset, contentParent.transform);
+                }
             }
-            // Now that we have the size of our content, get our pivots
-            ToolTipUtility.GetAttachPointPositions(ref localAttachPointPositions, localContentSize);
-            localAttachPoint = ToolTipUtility.FindClosestAttachPointToAnchor(anchor.transform, contentParent.transform, localAttachPointPositions, PivotType);
 
             foreach (IToolTipBackground background in backgrounds)
             {
                 background.IsVisible = showBackground;
-                background.OnContentChange(localContentSize, LocalContentOffset, contentParent.transform);
             }
 
             foreach (IToolTipHighlight highlight in highlights)
@@ -532,7 +548,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         {
             Vector3 localScale = Vector3.zero;
 
-            if (textMesh.text == null)
+            if (string.IsNullOrEmpty(textMesh.text))
                 return localScale;
 
             string[] splitStrings = textMesh.text.Split(new string[] { System.Environment.NewLine, "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
@@ -560,8 +576,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             localScale.x = (localScale.x * textMesh.characterSize * 0.1f) * transformScale.x;
             localScale.z = transformScale.z;
 
-            // We could calcualte the height based on line height and character size
-            // But I've found that method can be flakey and has a lot of magic numbers
+            // We could calculate the height based on line height and character size
+            // But I've found that method can be flaky and has a lot of magic numbers
             // that may break in future Unity versions
             Vector3 eulerAngles = textMesh.transform.eulerAngles;
             Vector3 rendererScale = Vector3.zero;

@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     /// <summary>
     /// Object encapsulating the components of a spatial awareness mesh object.
@@ -36,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// Creates a <see cref="SpatialAwarenessMeshObject"/>.
         /// </summary>
         /// <param name="mesh"></param> todo: add comments
+        /// <param name="layer"></param>
         /// <param name="name"></param>
         /// <param name="meshId"></param>
         /// <returns>
@@ -73,17 +74,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <param name="destroyMeshes"></param>
         public static void Cleanup(SpatialAwarenessMeshObject meshObject, bool destroyGameObject = true, bool destroyMeshes = true)
         {
-            if (destroyGameObject && (meshObject.GameObject != null))
+            if (meshObject.GameObject == null)
+            {
+                return;
+            }
+
+            if (destroyGameObject)
             {
                 UnityEngine.Object.Destroy(meshObject.GameObject);
                 meshObject.GameObject = null;
+                return;
             }
-
-            Mesh filterMesh = meshObject.Filter.sharedMesh;
-            Mesh colliderMesh = meshObject.Collider.sharedMesh;
 
             if (destroyMeshes)
             {
+                Mesh filterMesh = meshObject.Filter.sharedMesh;
+                Mesh colliderMesh = meshObject.Collider.sharedMesh;
 
                 if (filterMesh != null)
                 {

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Microsoft.MixedReality.Toolkit.Services</id>
+    <version>$version$</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft,MixedReality</owners>
+    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/License.txt</licenseUrl>
+    <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>The Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <releaseNotes>$releaseNotes$</releaseNotes>
+    <tags>Unity MixedReality</tags>
+  </metadata>
+</package>

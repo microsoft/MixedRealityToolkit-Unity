@@ -1,18 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Inspector for themes, and used by Interactable
@@ -24,12 +21,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(Theme))]
-    public class ThemeInspector : Editor
+    public class ThemeInspector : UnityEditor.Editor
     {
         protected SerializedProperty settings;
 
-        protected static string[] themeOptions;
-        protected static Type[] themeTypes;
+        protected static InteractableTypesContainer themeOptions;
         protected static string[] shaderOptions;
         protected static State[] themeStates;
 
@@ -138,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     for (int k = 0; k < stateLocations.Length; k++)
                     {
                         string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
-                        States.States defaultStates = (States.States)AssetDatabase.LoadAssetAtPath(path, typeof(States.States));
+                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
                         if (defaultStates != null)
                         {
                             states.objectReferenceValue = defaultStates;
@@ -185,9 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
         protected void SetupThemeOptions()
         {
-            InteractableProfileItem.ThemeLists lists = InteractableProfileItem.GetThemeTypes();
-            themeOptions = lists.Names.ToArray();
-            themeTypes = lists.Types.ToArray();
+            themeOptions = InteractableProfileItem.GetThemeTypes();
         }
 
         protected virtual void AddThemeProperty(int[] arr, SerializedProperty prop = null)
@@ -209,13 +203,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         {
             SerializedProperty settingsItem = themeSettings.GetArrayElementAtIndex(themeSettings.arraySize - 1);
             SerializedProperty className = settingsItem.FindPropertyRelative("Name");
+            SerializedProperty assemblyQualifiedName = settingsItem.FindPropertyRelative("AssemblyQualifiedName");
             if (themeSettings.arraySize == 1)
             {
                 className.stringValue = "ScaleOffsetColorTheme";
+                assemblyQualifiedName.stringValue = typeof(ScaleOffsetColorTheme).AssemblyQualifiedName;
             }
             else
             {
-                className.stringValue = themeOptions[0];
+                className.stringValue = themeOptions.ClassNames[0];
+                assemblyQualifiedName.stringValue = themeOptions.AssemblyQualifiedNames[0];
             }
 
             SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
@@ -244,21 +241,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
             SerializedProperty className = settingsItem.FindPropertyRelative("Name");
 
-            InteractableProfileItem.ThemeLists lists = InteractableProfileItem.GetThemeTypes();
-            string[] options = lists.Names.ToArray();
-            Type[] types = lists.Types.ToArray();
+            InteractableTypesContainer themeTypes = InteractableProfileItem.GetThemeTypes();
 
             // get class value types
             if (!String.IsNullOrEmpty(className.stringValue))
             {
-                int propIndex = InspectorUIUtility.ReverseLookup(className.stringValue, options);
+                int propIndex = InspectorUIUtility.ReverseLookup(className.stringValue, themeTypes.ClassNames);
                 GameObject renderHost = null;
                 if (target != null)
                 {
                     renderHost = (GameObject)target.objectReferenceValue;
                 }
 
-                InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(types[propIndex], renderHost);
+                InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(themeTypes.Types[propIndex], renderHost);
 
                 // does this object have the right component types
                 SerializedProperty isValid = settingsItem.FindPropertyRelative("IsValid");
@@ -766,7 +761,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
             return copyTo;
         }
 
-        public static void RenderThemeSettings(SerializedProperty themeSettings, SerializedObject themeObj, string[] themeOptions, SerializedProperty gameObject, int[] listIndex, State[] states)
+        public static void RenderThemeSettings(SerializedProperty themeSettings, SerializedObject themeObj, InteractableTypesContainer themeOptions, SerializedProperty gameObject, int[] listIndex, State[] states)
         {
             GUIStyle box = InspectorUIUtility.Box(0);
             if (themeObj != null)
@@ -784,10 +779,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 EditorGUILayout.BeginVertical(box);
                 // a dropdown for the type of theme, they should make sense
                 // show theme dropdown
-                int id = InspectorUIUtility.ReverseLookup(className.stringValue, themeOptions);
+                int id = InspectorUIUtility.ReverseLookup(className.stringValue, themeOptions.ClassNames);
 
                 EditorGUILayout.BeginHorizontal();
-                int newId = EditorGUILayout.Popup("Theme Property", id, themeOptions);
+                int newId = EditorGUILayout.Popup("Theme Property", id, themeOptions.ClassNames);
 
                 if (n > 0)
                 {
@@ -809,7 +804,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
                 if (id != newId)
                 {
-                    className.stringValue = themeOptions[newId];
+                    SerializedProperty assemblyQualifiedName = settingsItem.FindPropertyRelative("AssemblyQualifiedName");
+                    className.stringValue = themeOptions.ClassNames[newId];
+                    assemblyQualifiedName.stringValue = themeOptions.AssemblyQualifiedNames[newId];
 
                     // add the themeOjects if in a profile?
                     //themeObj = ChangeThemeProperty(n, themeObj, gameObject);
@@ -921,7 +918,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                             EditorGUILayout.LabelField(new GUIContent("Text Property: " + (InteractableThemePropertyValueTypes)propId.intValue));
                         }
 
-                        // Handle isse where the material color id renders on objects it shouldn't!!!!!!!!!!!!!!
+                        // Handle issue where the material color id renders on objects it shouldn't!!!!!!!!!!!!!!
                         // theme is save for a game object with a renderer, but when put on a textmesh, rendering prop values show up.
                         // when changing the theme type on a TextMesh, everything works, but the rendering prop is removed from the theme on the renderer object.
                         // make this passive, only show up when needed.
@@ -961,11 +958,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     }
                 }
 
-                // check to see if an animatorControll exists
+                // check to see if an animatorController exists
                 if (animatorCount > 0 && gameObject != null)
                 {
                     GameObject host = gameObject.objectReferenceValue as GameObject;
-                    Animator animator = host?.GetComponent<Animator>();
+                    Animator animator = null;
+
+                    if (host != null)
+                    {
+                        animator = host.GetComponent<Animator>();
+                    }
 
                     if (animator == null && host != null)
                     {

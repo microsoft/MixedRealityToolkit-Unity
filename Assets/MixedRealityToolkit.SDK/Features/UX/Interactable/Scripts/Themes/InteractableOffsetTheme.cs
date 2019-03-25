@@ -2,15 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableOffsetTheme : InteractableThemeBase
     {
         private Vector3 startPosition;
+        private Transform hostTransform;
 
         public InteractableOffsetTheme()
         {
@@ -29,19 +29,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         public override void Init(GameObject host, InteractableThemePropertySettings settings)
         {
             base.Init(host, settings);
-            startPosition = Host.transform.localPosition;
+            hostTransform = Host.transform;
+            startPosition = hostTransform.localPosition;
         }
 
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             InteractableThemePropertyValue start = new InteractableThemePropertyValue();
-            start.Vector3 = Host.transform.localPosition;
+            start.Vector3 = hostTransform.localPosition;
             return start;
         }
 
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
-            Host.transform.localPosition = Vector3.Lerp(property.StartValue.Vector3, startPosition + property.Values[index].Vector3, percentage);
+            hostTransform.localPosition = Vector3.Lerp(property.StartValue.Vector3, startPosition + property.Values[index].Vector3, percentage);
         }
     }
 }

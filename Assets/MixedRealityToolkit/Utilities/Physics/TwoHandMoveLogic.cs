@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     /// <summary>
     /// Implements a movement logic that uses the model of angular rotations along a sphere whose 
@@ -17,8 +18,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
     public class TwoHandMoveLogic
     {
         private static readonly Vector3 offsetPosition = new Vector3(0, -0.2f, 0);
+        private readonly MovementConstraintType movementConstraint;
+
         private float handRefDistance;
         private float objRefDistance;
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="movementConstraint"></param>
+        public TwoHandMoveLogic(MovementConstraintType movementConstraint)
+        {
+            this.movementConstraint = movementConstraint;
+        }
 
         /// <summary>
         /// The initial angle between the hand and the object
@@ -61,11 +73,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
             var targetDirection = Vector3.Normalize(gazeAngularOffset * newHandDirection);
             targetDirection = CameraCache.Main.transform.TransformDirection(targetDirection);
 
-            // Compute how far away the object should be based on the ratio of the current to original hand distance
-            var currentHandDistance = Vector3.Magnitude(newHandPosition - pivotPosition);
-            var distanceRatio = currentHandDistance / handRefDistance;
-            var distanceOffset = distanceRatio > 0 ? (distanceRatio - 1f) * DistanceScale : 0;
-            var targetDistance = objRefDistance + distanceOffset;
+            var targetDistance = objRefDistance;
+
+            if (movementConstraint != MovementConstraintType.FixDistanceFromHead)
+            {
+                // Compute how far away the object should be based on the ratio of the current to original hand distance
+                var currentHandDistance = Vector3.Magnitude(newHandPosition - pivotPosition);
+                var distanceRatio = currentHandDistance / handRefDistance;
+                var distanceOffset = distanceRatio > 0 ? (distanceRatio - 1f) * DistanceScale : 0;
+                targetDistance += distanceOffset;
+            }
+
             var newPosition = pivotPosition + (targetDirection * targetDistance);
             var newDistance = Vector3.Distance(newPosition, pivotPosition);
 

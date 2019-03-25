@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Synchronizes the follower's transform position with the point along the line.

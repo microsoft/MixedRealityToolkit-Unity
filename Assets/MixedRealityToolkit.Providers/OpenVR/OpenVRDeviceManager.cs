@@ -1,17 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
+namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
@@ -24,10 +20,16 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="registrar">The <see cref="Core.Interfaces.IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="spatialAwarenessSystem">The <see cref="Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/> to which the observer is providing data.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public OpenVRDeviceManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        public OpenVRDeviceManager(
+            IMixedRealityServiceRegistrar registrar, 
+            string name = null, 
+            uint priority = DefaultPriority, 
+            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
 
         #region Controller Utilities
 
@@ -96,8 +98,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.OpenVR
 
             if (!detectedController.SetupConfiguration(controllerType))
             {
-                // Controller failed to be setup correctly.
-                Debug.LogError($"Failed to Setup {controllerType.Name} controller");
+                // Controller failed to be set up correctly.
+                Debug.LogError($"Failed to set up {controllerType.Name} controller");
                 // Return null so we don't raise the source detected.
                 return null;
             }

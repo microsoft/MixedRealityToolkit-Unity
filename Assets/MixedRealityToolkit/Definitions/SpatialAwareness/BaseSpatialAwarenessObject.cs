@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
 
     public partial class BaseSpatialAwarenessObject : IMixedRealitySpatialAwarenessObject
@@ -18,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <inheritdoc />
         public MeshRenderer Renderer { get; set; }
 
-        /// <inheritdoc />
         public MeshFilter Filter { get; set; }
 
         /// <summary>
@@ -36,6 +34,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         {
             //empty for now
         }
-
     }
 }

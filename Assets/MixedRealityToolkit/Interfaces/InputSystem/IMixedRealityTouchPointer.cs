@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Interface for handling touch pointers.

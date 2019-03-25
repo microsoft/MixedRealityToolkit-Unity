@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Component to animate and visualize a box that can be used with 

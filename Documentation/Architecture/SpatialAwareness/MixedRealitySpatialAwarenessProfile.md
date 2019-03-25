@@ -2,11 +2,11 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| Core | Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem |
+| Core | Microsoft.MixedReality.Toolkit.SpatialAwareness |
 
 The MixedRealitySpatialAwarenessProfile derives from Unity’s ScriptableObject and enables the developer to configure the spatial awareness system.
 
-The following settings map one-to-one to properties of the same name defined in the [IMixedRealitySpatialAwarenessSystem](../IMixedRealitySpatialAwarenessSystem.md) interface.
+The following settings map one-to-one to properties of the same name defined in the [IMixedRealitySpatialAwarenessSystem](IMixedRealitySpatialAwarenessSystem.md) interface.
 
 The data types, default values and the supported range of values, if appropriate, are detailed.
 
@@ -50,7 +50,7 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 
 | Type | Default Value | Range |
 | --- | --- | --- |
-| [SpatialAwarenessLevelOfDetail](./SpatialAwarenessLevelOfDetail.md) | Coarse | Custom, Coarse, Fine |
+| [SpatialAwarenessMeshLevelOfDetail](SpatialAwarenessMeshLevelOfDetail.md) | Coarse | Custom, Coarse, Fine |
 
 ### MeshTrianglesPerCubicMeter
 
@@ -68,7 +68,7 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 
 | Type | Default Value | Range |
 | --- | --- | --- |
-| [SpatialMeshDisplayOptions](./SpatialMeshDisplayOptions.md) | None | None, Visible, Occlusion |
+| [SpatialAwarenessMeshDisplayOptions](SpatialAwarenessMeshDisplayOptions.md) | None | None, Visible, Occlusion |
 
 ### MeshVisibleMaterial
 
@@ -152,8 +152,8 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 
 ## See Also
 
-- [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
-- [IMixedRealitySpatialAwarenessSystem Interface](./IMixedRealitySpatialAwarenessSystem.md)
-- [MixedRealitySpatialAwarenessProfileInspector Class](./MixedRealitySpatialAwarenessProfileInspector.md)
-- [SpatialAwarenessMeshDisplayOptions Enumeration](./SpatialAwarenessMeshDisplayOptions.md)
-- [SpatialAwarenessMeshLevelOfDetail Enumeration](./SpatialAwarenessMeshLevelOfDetail.md)
+- [Mixed Reality Spatial Awareness System Architecture](SpatialAwarenessSystemArchitecture.md)
+- [IMixedRealitySpatialAwarenessSystem Interface](IMixedRealitySpatialAwarenessSystem.md)
+- [MixedRealitySpatialAwarenessProfileInspector Class](MixedRealitySpatialAwarenessProfileInspector.md)
+- [SpatialAwarenessMeshDisplayOptions Enumeration](SpatialAwarenessMeshDisplayOptions.md)
+- [SpatialAwarenessMeshLevelOfDetail Enumeration](SpatialAwarenessMeshLevelOfDetail.md)

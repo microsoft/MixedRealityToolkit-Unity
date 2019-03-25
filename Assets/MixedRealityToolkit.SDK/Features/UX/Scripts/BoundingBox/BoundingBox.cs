@@ -1,19 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityPhysics = UnityEngine.Physics;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
-    public class BoundingBox : BaseFocusHandler, 
+    public class BoundingBox : BaseFocusHandler,
         IMixedRealityInputHandler,
         IMixedRealityInputHandler<MixedRealityPose>,
         IMixedRealityPointerHandler,
@@ -80,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
 
         /// <summary>
-        /// This enum is used interally to define how an object's bounds are calculated in order to fit the boundingbox
+        /// This enum is used internally to define how an object's bounds are calculated in order to fit the boundingbox
         /// to it.
         /// </summary>
         private enum BoundsCalculationMethod
@@ -220,18 +215,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private float cornerRadius = 0.03f;
         #endregion Serialized Fields
 
-        #region Constants
-        private const int LeftTopBack = 0;
-        private const int LeftTopFront = 1;
-        private const int LeftBottomFront = 2;
-        private const int LeftBottomBack = 3;
-        private const int RightTopBack = 4;
-        private const int RightTopFront = 5;
-        private const int RightBottonFront = 6;
-        private const int RightBottomBack = 7;
-        private const int CORNER_COUNT = 8;
-        #endregion Constants
-
         #region Private Properties
         private bool isActive = false;
         /// <summary>
@@ -250,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     if (value)
                     {
                         CreateRig();
-                        rigRoot.SetActive(true);
+                        rigRoot.gameObject.SetActive(true);
                     }
                     else
                     {
@@ -265,15 +248,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private IMixedRealityInputSource currentInputSource;
         private Vector3 initialGazePoint = Vector3.zero;
         private GameObject targetObject;
-        private GameObject rigRoot;
+        private Transform rigRoot;
         private BoxCollider cachedTargetCollider;
         private Vector3[] boundsCorners;
-        private Vector3 currentBoundsSize;
+        private Vector3 currentBoundsExtents;
         private BoundsCalculationMethod boundsMethod;
         private HandleMoveType handleMoveType = HandleMoveType.Point;
-        private List<GameObject> links;
-        private List<GameObject> corners;
-        private List<GameObject> balls;
+        private List<Transform> links;
+        private List<Transform> corners;
+        private List<Transform> balls;
         private List<Renderer> cornerRenderers;
         private List<Renderer> ballRenderers;
         private List<Renderer> linkRenderers;
@@ -297,14 +280,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private HandleType currentHandleType;
         #endregion Private Properties
 
-        #region Monobehaviour Methods
+        #region MonoBehaviour Methods
         private void Start()
         {
             targetObject = this.gameObject;
 
             if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.InputSystem != null)
             {
-               MixedRealityToolkit.InputSystem.Register(targetObject);
+                MixedRealityToolkit.InputSystem.Register(targetObject);
             }
 
             if (activateOnStart == true)
@@ -327,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             UpdateRigHandles();
         }
-        #endregion Monobehaviour Methods
+        #endregion MonoBehaviour Methods
 
         #region Private Methods
         private void CreateRig()
@@ -344,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             UpdateRigHandles();
             Flatten();
             ResetHandleVisibility();
-            rigRoot.SetActive(false);
+            rigRoot.gameObject.SetActive(false);
         }
 
         private void DestroyRig()
@@ -362,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 for (var i = 0; i < balls.Count; i++)
                 {
-                    Destroy(balls[i]);
+                    Destroy(balls[i].gameObject);
                 }
 
                 balls.Clear();
@@ -372,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 for (int i = 0; i < links.Count; i++)
                 {
-                    Destroy(links[i]);
+                    Destroy(links[i].gameObject);
                 }
 
                 links.Clear();
@@ -382,7 +365,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 for (var i = 0; i < corners.Count; i++)
                 {
-                    Destroy(corners[i]);
+                    Destroy(corners[i].gameObject);
                 }
 
                 corners.Clear();
@@ -390,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (rigRoot != null)
             {
-                Destroy(rigRoot);
+                Destroy(rigRoot.gameObject);
             }
         }
 
@@ -496,7 +479,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             targetObject.transform.localScale = newScale;
         }
 
-        private Vector3 GetRotationAxis(GameObject handle)
+        private Vector3 GetRotationAxis(Transform handle)
         {
             for (int i = 0; i < balls.Count; ++i)
             {
@@ -530,7 +513,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 var cubeRenderer = cube.GetComponent<Renderer>();
                 cornerRenderers.Add(cubeRenderer);
                 cornerColliders.Add(cube.GetComponent<Collider>());
-                corners.Add(cube);
+                corners.Add(cube.transform);
 
                 if (handleMaterial != null)
                 {
@@ -556,7 +539,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 var ballRenderer = ball.GetComponent<Renderer>();
                 ballRenderers.Add(ballRenderer);
                 ballColliders.Add(ball.GetComponent<Collider>());
-                balls.Add(ball);
+                balls.Add(ball.transform);
 
                 if (handleMaterial != null)
                 {
@@ -615,7 +598,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     linkRenderer.material = wireframeMaterial;
                 }
 
-                links.Add(link);
+                links.Add(link.transform);
             }
         }
 
@@ -628,6 +611,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             if (boxColliderToUse != null)
             {
                 cachedTargetCollider = boxColliderToUse;
+                cachedTargetCollider.transform.hasChanged = true;
             }
             else
             {
@@ -695,9 +679,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 for (int i = 0; i < colliders.Length; ++i)
                 {
-                    if (colliders[i].bounds.size != Vector3.zero)
+                    Bounds colliderBounds = colliders[i].bounds;
+                    if (colliderBounds.size != Vector3.zero)
                     {
-                        bounds.Encapsulate(colliders[i].bounds);
+                        bounds.Encapsulate(colliderBounds);
                     }
                 }
 
@@ -708,12 +693,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 }
             }
 
-            //Renderer bounds is local. Requires transform to global coord system.
+            //Renderer bounds is local. Requires transform to global coordinate system.
             Renderer[] childRenderers = targetObject.GetComponentsInChildren<Renderer>();
             if (childRenderers.Length > 0)
             {
                 bounds = childRenderers[0].bounds;
-                var _corners = new Vector3[CORNER_COUNT];
 
                 for (int i = 0; i < childRenderers.Length; ++i)
                 {
@@ -722,7 +706,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 GetCornerPositionsFromBounds(bounds, ref boundsCorners);
 
-                for (int cornerIndex = 0; cornerIndex < _corners.Length; ++cornerIndex)
+                for (int cornerIndex = 0; cornerIndex < boundsCorners.Length; ++cornerIndex)
                 {
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cube.name = cornerIndex.ToString();
@@ -828,18 +812,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         private void InitializeDataStructures()
         {
-            rigRoot = new GameObject("rigRoot");
+            rigRoot = new GameObject("rigRoot").transform;
             rigRoot.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
 
             boundsCorners = new Vector3[8];
 
-            corners = new List<GameObject>();
+            corners = new List<Transform>();
             cornerColliders = new List<Collider>();
             cornerRenderers = new List<Renderer>();
-            balls = new List<GameObject>();
+            balls = new List<Transform>();
             ballRenderers = new List<Renderer>();
             ballColliders = new List<Collider>();
-            links = new List<GameObject>();
+            links = new List<Transform>();
             linkRenderers = new List<Renderer>();
         }
 
@@ -848,14 +832,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             if (boundsCorners != null && edgeCenters != null)
             {
                 edgeCenters[0] = (boundsCorners[0] + boundsCorners[1]) * 0.5f;
-                edgeCenters[1] = (boundsCorners[1] + boundsCorners[2]) * 0.5f;
-                edgeCenters[2] = (boundsCorners[2] + boundsCorners[3]) * 0.5f;
-                edgeCenters[3] = (boundsCorners[3] + boundsCorners[0]) * 0.5f;
+                edgeCenters[1] = (boundsCorners[0] + boundsCorners[2]) * 0.5f;
+                edgeCenters[2] = (boundsCorners[3] + boundsCorners[2]) * 0.5f;
+                edgeCenters[3] = (boundsCorners[3] + boundsCorners[1]) * 0.5f;
 
                 edgeCenters[4] = (boundsCorners[4] + boundsCorners[5]) * 0.5f;
-                edgeCenters[5] = (boundsCorners[5] + boundsCorners[6]) * 0.5f;
-                edgeCenters[6] = (boundsCorners[6] + boundsCorners[7]) * 0.5f;
-                edgeCenters[7] = (boundsCorners[7] + boundsCorners[4]) * 0.5f;
+                edgeCenters[5] = (boundsCorners[4] + boundsCorners[6]) * 0.5f;
+                edgeCenters[6] = (boundsCorners[7] + boundsCorners[6]) * 0.5f;
+                edgeCenters[7] = (boundsCorners[7] + boundsCorners[5]) * 0.5f;
 
                 edgeCenters[8] = (boundsCorners[0] + boundsCorners[4]) * 0.5f;
                 edgeCenters[9] = (boundsCorners[1] + boundsCorners[5]) * 0.5f;
@@ -890,7 +874,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private Vector3 GetLinkDimensions()
         {
             float linkLengthAdjustor = wireframeShape == WireframeType.Cubic ? 2.0f : 1.0f - (6.0f * linkRadius);
-            return (currentBoundsSize * linkLengthAdjustor) + new Vector3(linkRadius, linkRadius, linkRadius);
+            return (currentBoundsExtents * linkLengthAdjustor) + new Vector3(linkRadius, linkRadius, linkRadius);
         }
 
         private void ResetHandleVisibility()
@@ -924,10 +908,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             SetHiddenHandles();
         }
 
-        private void ShowOneHandle(GameObject handle)
+        private void ShowOneHandle(Transform handle)
         {
             //turn off all balls
-            if (balls != null)
+            if (ballRenderers != null)
             {
                 for (int i = 0; i < ballRenderers.Count; ++i)
                 {
@@ -936,7 +920,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
 
             //turn off all corners
-            if (corners != null)
+            if (cornerRenderers != null)
             {
                 for (int i = 0; i < cornerRenderers.Count; ++i)
                 {
@@ -955,49 +939,36 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         private void UpdateBounds()
         {
-            Vector3 boundsSize = Vector3.zero;
-            Vector3 centroid = Vector3.zero;
-
-            //store current rotation then zero out the rotation so that the bounds
-            //are computed when the object is in its 'axis aligned orientation'.
-            Quaternion currentRotation = targetObject.transform.rotation;
-            targetObject.transform.rotation = Quaternion.identity;
-
             if (cachedTargetCollider != null)
             {
-                boundsSize = cachedTargetCollider.bounds.extents;
-                centroid = cachedTargetCollider.bounds.center;
-            }
+                // Store current rotation then zero out the rotation so that the bounds
+                // are computed when the object is in its 'axis aligned orientation'.
+                Quaternion currentRotation = targetObject.transform.rotation;
+                targetObject.transform.rotation = Quaternion.identity;
+                UnityPhysics.SyncTransforms(); // Update collider bounds
 
-            //after bounds are computed, restore rotation...
-            targetObject.transform.rotation = currentRotation;
+                Vector3 boundsExtents = cachedTargetCollider.bounds.extents;
 
-            if (boundsSize != Vector3.zero)
-            {
-                if (flattenAxis == FlattenModeType.FlattenAuto)
+                // After bounds are computed, restore rotation...
+                targetObject.transform.rotation = currentRotation;
+                UnityPhysics.SyncTransforms();
+
+                if (boundsExtents != Vector3.zero)
                 {
-                    float min = Mathf.Min(boundsSize.x, Mathf.Min(boundsSize.y, boundsSize.z));
-                    flattenAxis = min.Equals(boundsSize.x) ? FlattenModeType.FlattenX : (min.Equals(boundsSize.y) ? FlattenModeType.FlattenY : FlattenModeType.FlattenZ);
+                    if (flattenAxis == FlattenModeType.FlattenAuto)
+                    {
+                        float min = Mathf.Min(boundsExtents.x, Mathf.Min(boundsExtents.y, boundsExtents.z));
+                        flattenAxis = min.Equals(boundsExtents.x) ? FlattenModeType.FlattenX : (min.Equals(boundsExtents.y) ? FlattenModeType.FlattenY : FlattenModeType.FlattenZ);
+                    }
+
+                    boundsExtents.x = flattenAxis == FlattenModeType.FlattenX ? 0.0f : boundsExtents.x;
+                    boundsExtents.y = flattenAxis == FlattenModeType.FlattenY ? 0.0f : boundsExtents.y;
+                    boundsExtents.z = flattenAxis == FlattenModeType.FlattenZ ? 0.0f : boundsExtents.z;
+                    currentBoundsExtents = boundsExtents;
+
+                    GetCornerPositionsFromBounds(new Bounds(Vector3.zero, boundsExtents * 2.0f), ref boundsCorners);
+                    CalculateEdgeCenters();
                 }
-
-                boundsSize.x = flattenAxis == FlattenModeType.FlattenX ? 0.0f : boundsSize.x;
-                boundsSize.y = flattenAxis == FlattenModeType.FlattenY ? 0.0f : boundsSize.y;
-                boundsSize.z = flattenAxis == FlattenModeType.FlattenZ ? 0.0f : boundsSize.z;
-
-                currentBoundsSize = boundsSize;
-                boundsCentroid = centroid;
-
-                boundsCorners[0] = centroid - new Vector3(centroid.x - currentBoundsSize.x, centroid.y - currentBoundsSize.y, centroid.z - currentBoundsSize.z);
-                boundsCorners[1] = centroid - new Vector3(centroid.x + currentBoundsSize.x, centroid.y - currentBoundsSize.y, centroid.z - currentBoundsSize.z);
-                boundsCorners[2] = centroid - new Vector3(centroid.x + currentBoundsSize.x, centroid.y + currentBoundsSize.y, centroid.z - currentBoundsSize.z);
-                boundsCorners[3] = centroid - new Vector3(centroid.x - currentBoundsSize.x, centroid.y + currentBoundsSize.y, centroid.z - currentBoundsSize.z);
-
-                boundsCorners[4] = centroid - new Vector3(centroid.x - currentBoundsSize.x, centroid.y - currentBoundsSize.y, centroid.z + currentBoundsSize.z);
-                boundsCorners[5] = centroid - new Vector3(centroid.x + currentBoundsSize.x, centroid.y - currentBoundsSize.y, centroid.z + currentBoundsSize.z);
-                boundsCorners[6] = centroid - new Vector3(centroid.x + currentBoundsSize.x, centroid.y + currentBoundsSize.y, centroid.z + currentBoundsSize.z);
-                boundsCorners[7] = centroid - new Vector3(centroid.x - currentBoundsSize.x, centroid.y + currentBoundsSize.y, centroid.z + currentBoundsSize.z);
-
-                CalculateEdgeCenters();
             }
         }
 
@@ -1005,42 +976,42 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             if (rigRoot != null && targetObject != null)
             {
-                rigRoot.transform.rotation = Quaternion.identity;
-                rigRoot.transform.position = Vector3.zero;
+                rigRoot.rotation = Quaternion.identity;
+                rigRoot.position = Vector3.zero;
 
                 for (int i = 0; i < corners.Count; ++i)
                 {
-                    corners[i].transform.position = boundsCorners[i];
+                    corners[i].position = boundsCorners[i];
                 }
 
                 Vector3 linkDimensions = GetLinkDimensions();
 
                 for (int i = 0; i < edgeCenters.Length; ++i)
                 {
-                    balls[i].transform.position = edgeCenters[i];
-                    links[i].transform.position = edgeCenters[i];
+                    balls[i].position = edgeCenters[i];
+                    links[i].position = edgeCenters[i];
 
                     if (edgeAxes[i] == CardinalAxisType.X)
                     {
-                        links[i].transform.localScale = new Vector3(linkRadius, linkDimensions.x, linkRadius);
+                        links[i].localScale = new Vector3(linkRadius, linkDimensions.x, linkRadius);
                     }
                     else if (edgeAxes[i] == CardinalAxisType.Y)
                     {
-                        links[i].transform.localScale = new Vector3(linkRadius, linkDimensions.y, linkRadius);
+                        links[i].localScale = new Vector3(linkRadius, linkDimensions.y, linkRadius);
                     }
                     else
                     {
-                        links[i].transform.localScale = new Vector3(linkRadius, linkDimensions.z, linkRadius);
+                        links[i].localScale = new Vector3(linkRadius, linkDimensions.z, linkRadius);
                     }
                 }
 
                 //move rig into position and rotation
-                rigRoot.transform.position = cachedTargetCollider.bounds.center;
-                rigRoot.transform.rotation = targetObject.transform.rotation;
+                rigRoot.position = cachedTargetCollider.bounds.center;
+                rigRoot.rotation = targetObject.transform.rotation;
             }
         }
 
-        private HandleType GetHandleType(GameObject handle)
+        private HandleType GetHandleType(Transform handle)
         {
             for (int i = 0; i < balls.Count; ++i)
             {
@@ -1145,28 +1116,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         private void GetCornerPositionsFromBounds(Bounds bounds, ref Vector3[] positions)
         {
-            Vector3 center = bounds.center;
-            Vector3 extents = bounds.extents;
-            float leftEdge = center.x - extents.x;
-            float rightEdge = center.x + extents.x;
-            float bottomEdge = center.y - extents.y;
-            float topEdge = center.y + extents.y;
-            float frontEdge = center.z - extents.z;
-            float backEdge = center.z + extents.z;
-
-            if (positions == null || positions.Length != CORNER_COUNT)
+            int numCorners = 1 << 3;
+            if (positions == null || positions.Length != numCorners)
             {
-                positions = new Vector3[CORNER_COUNT];
+                positions = new Vector3[numCorners];
             }
 
-            positions[LeftBottomFront] = new Vector3(leftEdge, bottomEdge, frontEdge);
-            positions[LeftBottomBack] = new Vector3(leftEdge, bottomEdge, backEdge);
-            positions[LeftTopFront] = new Vector3(leftEdge, topEdge, frontEdge);
-            positions[LeftTopBack] = new Vector3(leftEdge, topEdge, backEdge);
-            positions[RightBottonFront] = new Vector3(rightEdge, bottomEdge, frontEdge);
-            positions[RightBottomBack] = new Vector3(rightEdge, bottomEdge, backEdge);
-            positions[RightTopFront] = new Vector3(rightEdge, topEdge, frontEdge);
-            positions[RightTopBack] = new Vector3(rightEdge, topEdge, backEdge);
+            // Permutate all axes using minCorner and maxCorner.
+            Vector3 minCorner = bounds.center - bounds.extents;
+            Vector3 maxCorner = bounds.center + bounds.extents;
+            for (int c = 0; c < numCorners; c++)
+            {
+                positions[c] = new Vector3(
+                    (c & (1 << 0)) == 0 ? minCorner[0] : maxCorner[0],
+                    (c & (1 << 1)) == 0 ? minCorner[1] : maxCorner[1],
+                    (c & (1 << 2)) == 0 ? minCorner[2] : maxCorner[2]);
+            }
         }
 
         private static Vector3 PointToRay(Vector3 origin, Vector3 end, Vector3 closestPoint)
@@ -1198,15 +1163,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         currentInputSource = eventData.InputSource;
                         currentPointer = pointer;
                         grabbedHandle = grabbedCollider.gameObject;
-                        currentHandleType = GetHandleType(grabbedHandle);
-                        currentRotationAxis = GetRotationAxis(grabbedHandle);
+                        Transform grabbedHandleTransform = grabbedHandle.transform;
+                        currentHandleType = GetHandleType(grabbedHandleTransform);
+                        currentRotationAxis = GetRotationAxis(grabbedHandleTransform);
                         currentPointer.TryGetPointingRay(out initialGrabRay);
                         initialGrabMag = distance;
                         initialGrabbedPosition = grabbedHandle.transform.position;
                         initialGrabbedCentroid = targetObject.transform.position;
                         initialScale = targetObject.transform.localScale;
                         pointer.TryGetPointerPosition(out initialGrabPoint);
-                        ShowOneHandle(grabbedHandle);
+                        ShowOneHandle(grabbedHandleTransform);
                         initialGazePoint = Vector3.zero;
                     }
                 }
@@ -1261,7 +1227,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public void OnPointerUp(MixedRealityPointerEventData eventData) { }
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
         public void OnInputPressed(InputEventData<float> eventData) { }
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData){}
+        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
         public void OnPositionChanged(InputEventData<Vector3> eventData) { }
         public void OnRotationChanged(InputEventData<Quaternion> eventData) { }
         public void OnSourceDetected(SourceStateEventData eventData) { }

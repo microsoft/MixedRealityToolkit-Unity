@@ -1,30 +1,28 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UInput = UnityEngine.Input;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
+namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
-    [MixedRealityDataProvider(
-        typeof(Interfaces.InputSystem.IMixedRealityInputSystem),
-        (SupportedPlatforms)(-1))]  // All platforms supported by Unity
+    [MixedRealityDataProvider(typeof(IMixedRealityInputSystem), (SupportedPlatforms)(-1))]  // All platforms supported by Unity
     public class MouseDeviceManager : BaseDeviceManager, IMixedRealityExtensionService
     {
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="registrar">The <see cref="Interfaces.IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public MouseDeviceManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        public MouseDeviceManager(
+            IMixedRealityServiceRegistrar registrar,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
 
         /// <summary>
         /// Current Mouse Controller.
@@ -34,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!Input.mousePresent)
+            if (!UInput.mousePresent)
             {
                 Disable();
                 return;
@@ -54,13 +52,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
 
             MixedRealityRaycaster.DebugEnabled = true;
 
+            const Handedness handedness = Handedness.Any;
+            System.Type controllerType = typeof(MouseController);
+
+            // Make sure that the handedness declared in the controller attribute matches what we expect
+            {
+                var controllerAttribute = MixedRealityControllerAttribute.Find(controllerType);
+                if (controllerAttribute != null)
+                {
+                    Handedness[] handednesses = controllerAttribute.SupportedHandedness;
+                    Debug.Assert(handednesses.Length == 1 && handednesses[0] == Handedness.Any, "Unexpected mouse handedness declared in MixedRealityControllerAttribute");
+                }
+            }
+
             if (MixedRealityToolkit.InputSystem != null)
             {
-                var pointers = RequestPointers(new SystemType(typeof(MouseController)), Handedness.Any, true);
+                var pointers = RequestPointers(new SystemType(controllerType), handedness, true);
                 mouseInputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
             }
 
-            Controller = new MouseController(TrackingState.NotApplicable, Handedness.Any, mouseInputSource);
+            Controller = new MouseController(TrackingState.NotApplicable, handedness, mouseInputSource);
 
             if (mouseInputSource != null)
             {
@@ -77,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
-            if (Input.mousePresent && Controller == null) { Enable(); }
+            if (UInput.mousePresent && Controller == null) { Enable(); }
 
             Controller?.Update();
         }

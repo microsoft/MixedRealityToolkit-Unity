@@ -1,15 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 {
     [CustomEditor(typeof(MixedRealitySpatialAwarenessMeshObserverProfile))]
     public class MixedRealitySpatialAwarenessMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
@@ -78,9 +76,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            if (GUILayout.Button("Back to Configuration Profile"))
+            if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
+                return;
             }
 
             EditorGUILayout.Space();
@@ -142,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     EditorGUILayout.PropertyField(levelOfDetail, lodContent);
                     EditorGUILayout.PropertyField(trianglesPerCubicMeter, trianglesPerCubicMeterContent);
-                    EditorGUILayout.HelpBox("The value of Triangls per Cubic Meter is ignored unless Level of Detail is set to Custom.", MessageType.Info);
+                    EditorGUILayout.HelpBox("The value of Triangles per Cubic Meter is ignored unless Level of Detail is set to Custom.", MessageType.Info);
                 }
             }
 

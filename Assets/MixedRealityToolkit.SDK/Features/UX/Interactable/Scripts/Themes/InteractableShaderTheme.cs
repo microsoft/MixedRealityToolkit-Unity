@@ -2,17 +2,20 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableShaderTheme : InteractableThemeBase
     {
+        private static InteractableThemePropertyValue emptyValue = new InteractableThemePropertyValue();
+
         protected MaterialPropertyBlock propertyBlock;
         protected List<ShaderProperties> shaderProperties;
+        protected Renderer renderer;
+
+        private InteractableThemePropertyValue startValue = new InteractableThemePropertyValue();
 
         public InteractableShaderTheme()
         {
@@ -43,6 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
             }
 
             propertyBlock = InteractableThemeShaderUtils.GetMaterialPropertyBlock(host, shaderProperties.ToArray());
+
+            renderer = Host.GetComponent<Renderer>();
         }
 
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
@@ -70,32 +75,33 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     break;
             }
 
-            SetPropertyBlock(Host, propertyBlock);
+            renderer.SetPropertyBlock(propertyBlock);
         }
 
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             if (Host == null)
-                return new InteractableThemePropertyValue();
+                return emptyValue;
 
-            InteractableThemePropertyValue start = new InteractableThemePropertyValue();
+            startValue.Reset();
+
             string propId = property.GetShaderPropId();
             switch (property.Type)
             {
                 case InteractableThemePropertyValueTypes.Color:
-                    start.Color = propertyBlock.GetVector(propId);
+                    startValue.Color = propertyBlock.GetVector(propId);
                     break;
                 case InteractableThemePropertyValueTypes.ShaderFloat:
-                    start.Float = propertyBlock.GetFloat(propId);
+                    startValue.Float = propertyBlock.GetFloat(propId);
                     break;
                 case InteractableThemePropertyValueTypes.shaderRange:
-                    start.Float = propertyBlock.GetFloat(propId);
+                    startValue.Float = propertyBlock.GetFloat(propId);
                     break;
                 default:
                     break;
             }
 
-            return start;
+            return startValue;
         }
 
         public static float GetFloat(GameObject host, string propId)

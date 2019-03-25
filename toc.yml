@@ -1,0 +1,7 @@
+- name: Home
+  href: README.md
+- name: Guides
+  href: Documentation/
+  homepage: Documentation/GettingStartedWithTheMRTK.md
+- name: API Documentation
+  href: api_doc/

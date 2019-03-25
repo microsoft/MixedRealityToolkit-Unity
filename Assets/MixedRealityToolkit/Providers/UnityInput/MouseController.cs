@@ -1,20 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UInput = UnityEngine.Input;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
+namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
     /// <summary>
     /// Manages the mouse using unity input system.
     /// </summary>
-    [MixedRealityController(SupportedControllerType.Mouse, new[] { Handedness.None })]
+    [MixedRealityController(SupportedControllerType.Mouse, new[] { Handedness.Any })]
     public class MouseController : BaseController
     {
         /// <summary>
@@ -58,13 +54,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// </summary>
         public void Update()
         {
-            if (!Input.mousePresent) { return; }
+            if (!UInput.mousePresent) { return; }
 
             // Bail early if our mouse isn't in our game window.
-            if (Input.mousePosition.x < 0 ||
-                Input.mousePosition.y < 0 ||
-                Input.mousePosition.x > Screen.width ||
-                Input.mousePosition.y > Screen.height)
+            if (UInput.mousePosition.x < 0 ||
+                UInput.mousePosition.y < 0 ||
+                UInput.mousePosition.x > Screen.width ||
+                UInput.mousePosition.y > Screen.height)
             {
                 return;
             }
@@ -75,12 +71,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
                 controllerPose.Rotation = InputSource.Pointers[0].BaseCursor.Rotation;
             }
 
-            // Don't ask me why it's mapped weird. Bc Unity...
-            mouseDelta.x = -Input.GetAxis("Mouse Y");
-            mouseDelta.y = Input.GetAxis("Mouse X");
+            mouseDelta.x = -UInput.GetAxis("Mouse Y");
+            mouseDelta.y = UInput.GetAxis("Mouse X");
             MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, mouseDelta);
             MixedRealityToolkit.InputSystem?.RaiseSourcePoseChanged(InputSource, this, controllerPose);
-            MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, Input.mouseScrollDelta);
+            MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, UInput.mouseScrollDelta);
 
             for (int i = 0; i < Interactions.Length; i++)
             {
@@ -106,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
 
                 if (Interactions[i].InputType == DeviceInputType.Scroll)
                 {
-                    Interactions[i].Vector2Data = Input.mouseScrollDelta;
+                    Interactions[i].Vector2Data = UInput.mouseScrollDelta;
 
                     if (Interactions[i].Changed)
                     {
@@ -116,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
 
                 if (Interactions[i].AxisType == AxisType.Digital)
                 {
-                    var keyButton = Input.GetKey(Interactions[i].KeyCode);
+                    var keyButton = UInput.GetKey(Interactions[i].KeyCode);
 
                     // Update the interaction data source
                     Interactions[i].BoolData = keyButton;

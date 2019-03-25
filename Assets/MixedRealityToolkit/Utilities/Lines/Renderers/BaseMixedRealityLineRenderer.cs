@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Lines;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Base class for Mixed Reality Line Renderers.
@@ -15,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
     {
         [SerializeField]
         [Tooltip("The line data this component will render")]
-        private BaseMixedRealityLineDataProvider lineDataSource;
+        protected BaseMixedRealityLineDataProvider lineDataSource;
 
         /// <summary>
         /// The line data this component will render
@@ -148,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
         }
 
         /// <summary>
-        /// Get the <see cref="Color"/> along the normalized length of the line.
+        /// Get the <see href="https://docs.unity3d.com/ScriptReference/Color.html">Color</see> along the normalized length of the line.
         /// </summary>
         /// <param name="normalizedLength"></param>
         /// <returns></returns>
@@ -176,6 +174,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 
             return lineWidth.Evaluate(Mathf.Repeat(normalizedLength + widthOffset, 1f)) * widthMultiplier;
         }
+
+        public virtual void Update()
+        {
+            UpdateLine();
+        }
+
+        protected abstract void UpdateLine();
 
 #if UNITY_EDITOR
         protected virtual void OnDrawGizmos()

@@ -2,17 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Linq;
 using UnityEngine.Assertions;
-using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Physics;
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// This script allows for an object to be movable, scalable, and rotatable with one or two hands. 
@@ -24,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
     /// 
     public class ManipulationHandler : BaseFocusHandler,
         IMixedRealityInputHandler,
-        IMixedRealityInputHandler<MixedRealityPose>, 
+        IMixedRealityInputHandler<MixedRealityPose>,
         IMixedRealitySourceStateHandler
     {
         #region Private Enums
@@ -58,6 +54,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         private RotationConstraintType constraintOnRotation = RotationConstraintType.None;
 
         [SerializeField]
+        [Tooltip("Constrain movement")]
+        private MovementConstraintType constraintOnMovement = MovementConstraintType.None;
+
+        [SerializeField]
         private HandMovementType handMoveType = HandMovementType.OneAndTwoHanded;
 
         [System.Flags]
@@ -84,11 +84,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         private GazeHandHelper gazeHandHelper;
         #endregion
 
-        #region Monobehaviour Functions
+        #region MonoBehaviour Functions
         private void Awake()
         {
             gazeHandHelper = new GazeHandHelper();
-            m_moveLogic = new TwoHandMoveLogic();
+            m_moveLogic = new TwoHandMoveLogic(constraintOnMovement);
             m_rotateLogic = new TwoHandRotateLogic(constraintOnRotation);
             m_scaleLogic = new TwoHandScaleLogic();
         }
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
                 UpdateStateMachine();
             }
         }
-        #endregion Monobehaviour Functions
+        #endregion MonoBehaviour Functions
 
         #region Private Methods
         private void SetManipulationMode(TwoHandedManipulation mode)
@@ -232,9 +232,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         #endregion Private Methods
 
         #region Event Handlers From Interfaces
-        /// <summary>
-        /// /// Event Handler receives input from inputSource
-        /// </summary>
+
+        /// <inheritdoc />
         public void OnInputDown(InputEventData eventData)
         {
             gazeHandHelper.AddSource(eventData);
@@ -242,9 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             eventData.Use();
         }
 
-        /// <summary>
-        /// Event Handler receives input from inputSource
-        /// </summary>
+        /// <inheritdoc />
         public void OnInputUp(InputEventData eventData)
         {
             gazeHandHelper.RemoveSource(eventData);
@@ -252,10 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             eventData.Use();
         }
 
-        /// <summary>
-        /// Event Handler receives input from IMixedRealityInputHandler<MixedRealityPose>
-        /// </summary>
-        /// <param name="eventData"></param>
+        /// <inheritdoc />
         public void OnInputChanged(InputEventData<MixedRealityPose> eventData)
         {
             gazeHandHelper.UpdateSource(eventData);
@@ -263,9 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             eventData.Use();
         }
 
-        /// <summary>
-        /// Event Handler when a InputSource is lost- part of IMixedRealitySourceStateHander interface
-        /// </summary>
+        /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
             gazeHandHelper.RemoveSource(eventData);

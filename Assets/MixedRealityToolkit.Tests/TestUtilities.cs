@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Editor;
 using NUnit.Framework;
 using System.Linq;
 using UnityEditor.SceneManagement;
@@ -33,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Tests
             Assert.IsTrue(MixedRealityToolkit.IsInitialized);
             Assert.IsNotNull(MixedRealityToolkit.Instance);
-            Assert.IsFalse(MixedRealityToolkit.HasActiveProfile);
+            Assert.IsFalse(MixedRealityToolkit.Instance.HasActiveProfile);
 
             var configuration = useDefaultProfile
                 ? GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>()

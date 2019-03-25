@@ -1,20 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Component that allows dragging a <see cref="GameObject"/>.
+    /// Component that allows dragging a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.
     /// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
     /// and then repositioning the object based on that.
     /// </summary>

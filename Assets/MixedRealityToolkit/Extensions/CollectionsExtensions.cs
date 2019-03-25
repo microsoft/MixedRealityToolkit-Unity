@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for .Net Collection objects, e.g. Lists, Dictionaries, Arrays
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <typeparam name="TElement">The type of element in the collection.</typeparam>
         /// <param name="elements">The collection of sorted elements to be inserted into.</param>
         /// <param name="toInsert">The element to insert.</param>
-        /// <param name="comparer">The comparer to use when sorting or <see cref="null"/> to use <see cref="Comparer{T}.Default"/>.</param>
+        /// <param name="comparer">The comparer to use when sorting or null to use <see cref="Comparer{T}.Default"/>.</param>
         /// <returns></returns>
         public static int SortedInsert<TElement>(this List<TElement> elements, TElement toInsert, IComparer<TElement> comparer = null)
         {

@@ -1,14 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Providers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -17,7 +11,7 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
+namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
@@ -27,10 +21,15 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="registrar">The <see cref="Core.Interfaces.IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public WindowsDictationInputProvider(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        public WindowsDictationInputProvider(
+            IMixedRealityServiceRegistrar registrar,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
 
         /// <summary>
         /// Is the Dictation Manager currently running?

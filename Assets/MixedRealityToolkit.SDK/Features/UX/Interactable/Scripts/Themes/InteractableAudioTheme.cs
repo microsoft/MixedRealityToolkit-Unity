@@ -2,14 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableAudioTheme : InteractableThemeBase
     {
+        private AudioSource audioSource;
 
         public InteractableAudioTheme()
         {
@@ -26,6 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 });
         }
 
+        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        {
+            base.Init(host, settings);
+            audioSource = Host.GetComponentInChildren<AudioSource>();
+        }
+
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             InteractableThemePropertyValue start = new InteractableThemePropertyValue();
@@ -39,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
-            AudioSource audioSource = Host.GetComponentInChildren<AudioSource>();
             if (audioSource == null)
             {
                 audioSource = Host.AddComponent<AudioSource>();

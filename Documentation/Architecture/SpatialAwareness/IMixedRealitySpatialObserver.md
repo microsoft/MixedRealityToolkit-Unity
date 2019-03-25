@@ -2,11 +2,11 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| Core | Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem |
+| Core | Microsoft.MixedReality.Toolkit.SpatialAwareness |
 
 The IMixedRealitySpatialObserver is the interface that defines the requirements for platform specific spatial observers which provide data to the spatial awareness system.
 
-<img src="Images/IMixedRealitySpatialObserver.png">
+<img src="../../../External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialObserver.png">
 
 ## IsRunning
 
@@ -26,4 +26,4 @@ Instructs the spatial observer to stop actively observing the enviornment.
 
 ## See Also
 
-- [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
+- [Mixed Reality Spatial Awareness System Architecture](SpatialAwarenessSystemArchitecture.md)

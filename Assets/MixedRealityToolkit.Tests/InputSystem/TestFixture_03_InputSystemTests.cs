@@ -1,11 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Services.InputSystem;
+using Microsoft.MixedReality.Toolkit.Input;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -34,12 +30,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = inputSystemProfile;
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService(typeof(IMixedRealityInputSystem), new MixedRealityInputSystem());
+            MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile, MixedRealityToolkit.Instance.MixedRealityPlayspace));
 
             // Tests
-            Assert.IsNotEmpty(MixedRealityToolkit.ActiveSystems);
-            Assert.AreEqual(1, MixedRealityToolkit.ActiveSystems.Count);
-            Assert.AreEqual(0, MixedRealityToolkit.RegisteredMixedRealityServices.Count);
+            Assert.IsNotEmpty(MixedRealityToolkit.Instance.ActiveSystems);
+            Assert.AreEqual(1, MixedRealityToolkit.Instance.ActiveSystems.Count);
+            Assert.AreEqual(0, MixedRealityToolkit.Instance.RegisteredMixedRealityServices.Count);
         }
 
         [Test]

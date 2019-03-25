@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     /// <summary>
     /// Implements a scale logic that will scale an object based on the 
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         }
 
         /// <summary>
-        /// update Gameobject with new Scale state
+        /// update GameObject with new Scale state
         /// </summary>
         /// <param name="handsPressedMap"></param>
         /// <returns>a Vector3 describing the new Scale of the object being manipulated</returns>

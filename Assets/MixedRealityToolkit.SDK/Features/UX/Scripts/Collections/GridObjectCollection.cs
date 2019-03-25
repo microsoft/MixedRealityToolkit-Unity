@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// A Grid Object Collection is simply a set of child objects organized with some
@@ -260,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         }
 
         /// <summary>
-        /// Update the facing of a node given the nodes new position for facing orign with node and orientation type
+        /// Update the facing of a node given the nodes new position for facing origin with node and orientation type
         /// </summary>
         /// <param name="node"></param>
         protected void UpdateNodeFacing(ObjectCollectionNode node)

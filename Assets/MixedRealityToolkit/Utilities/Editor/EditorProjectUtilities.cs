@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [InitializeOnLoad]
     public class EditorProjectUtilities
@@ -32,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
 
         /// <summary>
         /// Displays a message indicating that a project was loaded in an unsupported version of Unity and allows the user
-        /// to continu or exit.
+        /// to continue or exit.
         /// </summary>
         private static void DisplayIncorrectEditorVersionDialog()
         {
