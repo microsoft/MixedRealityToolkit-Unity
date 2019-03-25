@@ -16,6 +16,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
         [SerializeField]
+        [Implements(typeof(IMixedRealityInputDeviceManager), TypeGrouping.ByNamespaceFlat)]
+        private SystemType[] dataProviderTypes = new SystemType[0];
+
+        public SystemType[] DataProviderTypes
+        {
+            get { return dataProviderTypes; }
+            internal set { dataProviderTypes = value; }
+        }
+
+        [SerializeField]
         [Tooltip("The focus provider service concrete type to use when raycasting.")]
         [Implements(typeof(IMixedRealityFocusProvider), TypeGrouping.ByNamespaceFlat)]
         private SystemType focusProviderType;

@@ -1,15 +1,22 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using UnityEngine;
+using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     [CustomEditor(typeof(MixedRealityInputSystemProfile))]
     public class MixedRealityInputSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
+        private static readonly GUIContent AddProviderContent = new GUIContent("+ Add Data Provider", "Add Data Provider");
+        private static readonly GUIContent RemoveProviderContent = new GUIContent("-", "Remove Data Provider");
+
+        private static bool showDataProviders = true;
+        private SerializedProperty dataProviderTypes;
+
         private static bool showFocusProperties = true;
         private SerializedProperty focusProviderType;
 
@@ -40,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
+            dataProviderTypes = serializedObject.FindProperty("dataProviderTypes");
             focusProviderType = serializedObject.FindProperty("focusProviderType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
@@ -76,6 +84,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             serializedObject.Update();
             EditorGUI.BeginChangeCheck();
             bool changed = false;
+
+            EditorGUILayout.Space();
+            showDataProviders = EditorGUILayout.Foldout(showDataProviders, "Data Providers", true);
+            if (showDataProviders)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    RenderList(dataProviderTypes);
+                }
+            }
 
             EditorGUILayout.Space();
             showFocusProperties = EditorGUILayout.Foldout(showFocusProperties, "Focus Settings", true);
@@ -152,6 +170,45 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
             }
+        }
+
+        private static void RenderList(SerializedProperty list)
+        {
+            EditorGUILayout.Space();
+            GUILayout.BeginVertical();
+
+            if (GUILayout.Button(AddProviderContent, EditorStyles.miniButton))
+            {
+                list.arraySize += 1;
+                SerializedProperty dataProvider = list.GetArrayElementAtIndex(list.arraySize - 1);
+            }
+
+            GUILayout.Space(12f);
+
+            if (list == null || list.arraySize == 0)
+            {
+                EditorGUILayout.HelpBox("The Mixed Reality Input System requires one or more data providers.", MessageType.Warning);
+                GUILayout.EndVertical();
+                return;
+            }
+
+            for (int i = 0; i < list.arraySize; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                // TODO: need to display this with name(?), priority, runtime platforms and type (NO profile)
+                SerializedProperty dataProvider = list.GetArrayElementAtIndex(i);
+                EditorGUILayout.PropertyField(dataProvider, GUIContent.none);
+
+                if (GUILayout.Button(RemoveProviderContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                {
+                    list.DeleteArrayElementAtIndex(i);
+                }
+
+                EditorGUILayout.EndHorizontal();
+            }
+
+            GUILayout.EndVertical();
         }
     }
 }
