@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MRTK.Core
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core
 {
     public interface IStateArray<T> : IStateArrayBase, IEnumerable<T> where T : struct, IItemState, IItemStateComparer<T>
     {

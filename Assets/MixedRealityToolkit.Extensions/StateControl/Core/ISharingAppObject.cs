@@ -1,4 +1,4 @@
-﻿namespace MRTK.Core
+﻿namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core
 {
     /// <summary>
     /// Manager objects are expected to:

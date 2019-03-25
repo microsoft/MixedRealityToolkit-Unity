@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using MRTK.Core;
+using Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core;
 using UnityEngine;
 
-namespace MRTK.StateControl
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl
 {
     [MixedRealityExtensionService(SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsStandalone | SupportedPlatforms.MacStandalone)]
     public class AppState : BaseExtensionService, IAppState, IAppStateReadOnly, IAppStateReadWrite

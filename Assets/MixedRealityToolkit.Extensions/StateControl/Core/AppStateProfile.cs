@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using MRTK.Core;
+using Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core;
 using UnityEngine;
 
-namespace MRTK.StateControl
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl
 {
     [MixedRealityServiceProfile(typeof(IAppState))]
     [CreateAssetMenu(fileName = "AppStateProfile", menuName = "Mixed Reality Toolkit/AppStateProfile")]

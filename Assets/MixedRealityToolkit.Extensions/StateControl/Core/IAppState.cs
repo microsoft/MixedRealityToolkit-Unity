@@ -1,7 +1,7 @@
 ﻿using Microsoft.MixedReality.Toolkit;
-using MRTK.Core;
+using Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core;
 
-namespace MRTK.StateControl
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl
 {
     public interface IAppState : IAppStateReadWrite, ISharingAppObject, IMixedRealityExtensionService { }
 }

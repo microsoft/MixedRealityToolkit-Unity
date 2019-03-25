@@ -1,8 +1,8 @@
-﻿using MRTK.Core;
+﻿using Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core;
 using System;
 using System.Collections.Generic;
 
-namespace MRTK.StateControl
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl
 {
     public interface IAppStateData : IEnumerable<IStateArrayBase>, ISharingAppObject
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MRTK.StateControl
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl
 {
     public interface IAppStateSource
     {

@@ -1,10 +1,7 @@
 {
-    "name": "MRTK.StateControl.Photon",
+    "name": "Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core",
     "references": [
-        "Microsoft.MixedReality.Toolkit",
-        "MRTK.Core",
-        "PhotonRealtime",
-        "PhotonUnityNetworking"
+        "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

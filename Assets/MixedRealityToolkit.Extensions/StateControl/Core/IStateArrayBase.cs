@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MRTK.Core
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core
 {
     public interface IStateArrayBase
     {

@@ -1,8 +1,10 @@
 {
-    "name": "Sharing.Inspectors",
+    "name": "Microsoft.MixedReality.Toolkit.Extensions.StateControl.Photon",
     "references": [
-        "MRTK.Core",
-        "Microsoft.MixedReality.Toolkit"
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core",
+        "PhotonRealtime",
+        "PhotonUnityNetworking"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

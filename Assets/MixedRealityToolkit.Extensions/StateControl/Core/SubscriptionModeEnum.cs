@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MRTK.StateControl
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl
 {
     [Serializable]
     public enum SubscriptionModeEnum : byte
