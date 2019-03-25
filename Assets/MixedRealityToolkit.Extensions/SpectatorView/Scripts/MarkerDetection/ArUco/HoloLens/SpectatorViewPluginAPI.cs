@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
+using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
+using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection
 {

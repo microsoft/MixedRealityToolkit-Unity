@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
+using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection
 {

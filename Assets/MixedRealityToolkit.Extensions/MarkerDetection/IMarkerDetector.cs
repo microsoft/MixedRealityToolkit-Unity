@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
+namespace Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection
 {
     public class Marker
     {

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
+namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 {
     public delegate void SpatialCoordinateStateUpdateHandler(byte[] payload);
 
