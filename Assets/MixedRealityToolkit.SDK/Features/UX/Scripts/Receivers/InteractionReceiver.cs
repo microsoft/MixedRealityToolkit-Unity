@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
     /// based on events from those interactable objects. This is the base abstract class to extend from.
     /// </summary>
     public abstract class InteractionReceiver : BaseInputHandler,
-        IMixedRealityFocusHandler,
+        IMixedRealityFocusChangedHandler,
         IMixedRealityInputHandler,
         IMixedRealityInputHandler<float>,
         IMixedRealityInputHandler<Vector2>,
@@ -156,10 +156,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             return (interactables != null && interactables.Contains(interactable));
         }
 
-        #region IMixedRealityFocusHandler Implementation
+        #region IMixedRealityFocusChangedHandler Implementation
 
         /// <inheritdoc />
-        void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
+        void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { /*Unused*/ } 
+
+        void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
         {
             if (eventData.OldFocusedObject != null && IsInteractable(eventData.OldFocusedObject))
             {
@@ -167,16 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        /// <inheritdoc />
-        void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
-        {
-            if (eventData.NewFocusedObject != null && IsInteractable(eventData.NewFocusedObject))
-            {
-                FocusEnter(eventData.NewFocusedObject, eventData);
-            }
-        }
-
-        #endregion IMixedRealityFocusHandler Implementation
+        #endregion IMixedRealityFocusChangedHandler Implementation
 
         #region IMixedRealityInputHandler Implementation
 
