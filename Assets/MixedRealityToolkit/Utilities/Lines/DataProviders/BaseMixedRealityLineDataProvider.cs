@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// Base class that provides data about a line.
     /// </summary>
-    /// <remarks>Data to be consumed by other classes like the <see cref="Renderers.BaseMixedRealityLineRenderer"/></remarks>
+    /// <remarks>Data to be consumed by other classes like the <see cref="BaseMixedRealityLineRenderer"/></remarks>
     [ExecuteAlways] 
     public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
