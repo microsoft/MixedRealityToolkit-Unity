@@ -7,9 +7,7 @@ using UnityEngine;
 using UnityEngine.Apple.ReplayKit;
 #endif
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
-
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Recording
+namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
 {
     public class iOSRecordingService : MonoBehaviour,
         IRecordingService

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces
+namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
 {
     public interface IRecordingService : IDisposable
     {

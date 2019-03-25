@@ -6,6 +6,7 @@ using UnityEngine;
 
 using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
 using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
+using Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 {

@@ -5,7 +5,7 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Recording
+namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
 {
     public class AndroidRecordingService : MonoBehaviour,
     IRecordingService
