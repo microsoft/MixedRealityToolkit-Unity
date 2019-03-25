@@ -76,8 +76,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     if (!HideNoActiveToolkitWarning)
                     {
                         NoActiveToolkitWarning.OpenWindow(configurationProfile);
-                        return;
                     }
+                    return; 
                 }
             }
 
@@ -332,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 activeWindow.minSize = new Vector2(400, 80);
                 activeWindow.titleContent = new GUIContent("No Active Toolkit Found");
 
-                activeWindow.Show(true);
+                activeWindow.Show(true); 
             }
 
             private void OnGUI()
