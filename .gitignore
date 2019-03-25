@@ -63,3 +63,16 @@ Assets/ThirdParty.meta
 Assets/TextMesh Pro.meta
 Assets/TextMesh Pro/
 --Version/
+
+# ===== #
+# NuGet #
+# ===== #
+Assets/NuGet.config
+Assets/NuGet.config.meta
+Assets/NuGet/
+Assets/NuGet.meta
+Assets/packages.config
+Assets/packages.config.meta
+Assets/Packages/
+Assets/Packages.meta
+Packages/
