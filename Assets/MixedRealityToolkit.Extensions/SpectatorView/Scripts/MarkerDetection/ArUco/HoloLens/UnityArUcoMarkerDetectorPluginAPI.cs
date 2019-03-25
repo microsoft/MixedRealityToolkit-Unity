@@ -10,8 +10,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA;
 #endif
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
+using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection
 {

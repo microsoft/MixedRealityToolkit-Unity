@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking;
+using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 {

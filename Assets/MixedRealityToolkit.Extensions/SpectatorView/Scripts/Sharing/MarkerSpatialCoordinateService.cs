@@ -8,10 +8,11 @@ using UnityEngine;
 
 using UnityEngine.XR.ARFoundation;
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
+using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
+using Microsoft.MixedReality.Toolkit.Extensions.Sharing;
 using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.SpatialCoordinates
+namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
 {
     public enum MarkerSpatialCoordinateServiceOverlayState
     {

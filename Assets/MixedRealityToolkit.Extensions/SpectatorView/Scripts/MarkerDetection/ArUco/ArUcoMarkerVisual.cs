@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
+using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
 using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection

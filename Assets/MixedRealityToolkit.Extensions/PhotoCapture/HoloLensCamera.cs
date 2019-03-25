@@ -44,7 +44,7 @@ using Quaternion = UnityEngine.Quaternion;
 using Debug = UnityEngine.Debug;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
+namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
 {
     /// <summary>
     /// The type of camera

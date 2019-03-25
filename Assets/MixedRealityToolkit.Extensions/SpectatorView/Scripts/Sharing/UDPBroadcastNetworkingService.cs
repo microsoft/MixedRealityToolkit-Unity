@@ -8,10 +8,10 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Interfaces;
+using Microsoft.MixedReality.Toolkit.Extensions.Sharing;
 using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Networking
+namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
 {
     public delegate void UDPBroadcastConnectHandler(int serverPort, int clientPort);
 
