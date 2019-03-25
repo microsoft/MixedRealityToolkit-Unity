@@ -4,11 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using MRTK.Core;
 using UnityEditor;
 using UnityEngine;
 
-namespace MRTK.StateControl
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl.Inspectors
 {
     [CustomEditor(typeof(AppStateProfile))]
     public class AppStateProfileEditor : Editor

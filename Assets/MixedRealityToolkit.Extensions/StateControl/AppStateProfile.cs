@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl

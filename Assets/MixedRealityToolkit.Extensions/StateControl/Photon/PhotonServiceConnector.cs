@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using Photon.Pun;
-using MRTK.Core;
 using Photon.Realtime;
 using System.Collections;
 using System;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
-namespace MRTK.Networking
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl.Photon
 {
     public class PhotonServiceConnector : MonoBehaviourPunCallbacks
     {

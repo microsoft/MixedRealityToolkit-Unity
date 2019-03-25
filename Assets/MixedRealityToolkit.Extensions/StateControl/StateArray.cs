@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl
 {
     // We use this class to get / set items in our sync list state in a standard way
     public class StateArray<T> : IStateArray<T> where T : struct, IItemState, IItemStateComparer<T>

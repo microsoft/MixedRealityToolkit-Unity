@@ -2,7 +2,7 @@
     "name": "Microsoft.MixedReality.Toolkit.Extensions.StateControl.Photon",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core",
+        "Microsoft.MixedReality.Toolkit.Extensions.StateControl",
         "PhotonRealtime",
         "PhotonUnityNetworking"
     ],

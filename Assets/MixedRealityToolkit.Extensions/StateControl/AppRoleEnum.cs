@@ -1,4 +1,4 @@
-﻿namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core
+﻿namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl
 {
     public enum AppRoleEnum : byte
     {

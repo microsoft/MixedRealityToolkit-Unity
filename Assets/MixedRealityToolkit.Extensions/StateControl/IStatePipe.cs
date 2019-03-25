@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl
 {
     public interface IStatePipe
     {

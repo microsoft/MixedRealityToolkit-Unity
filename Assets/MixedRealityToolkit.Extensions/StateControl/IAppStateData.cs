@@ -1,5 +1,4 @@
-﻿using Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl

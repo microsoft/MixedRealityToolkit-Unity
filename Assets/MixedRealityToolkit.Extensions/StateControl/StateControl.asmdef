@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core",
+    "name": "Microsoft.MixedReality.Toolkit.Extensions.StateControl",
     "references": [
         "Microsoft.MixedReality.Toolkit"
     ],

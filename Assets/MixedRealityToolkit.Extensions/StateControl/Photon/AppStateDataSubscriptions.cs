@@ -1,4 +1,5 @@
 ﻿using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Extensions.StateControl;
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 #endif
 using UnityEngine;
 
-namespace MRTK.StateControl.Photon
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl.Photon
 {
     public class AppStateDataSubscriptions : MonoBehaviour, IAppStateDataSubscriptions, IPunObservable
     {

@@ -1,7 +1,7 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Extensions.StateControl.Inspectors",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core",
+        "Microsoft.MixedReality.Toolkit.Extensions.StateControl",
         "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],

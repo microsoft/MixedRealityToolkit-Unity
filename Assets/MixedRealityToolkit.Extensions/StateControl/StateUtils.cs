@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl
 {
     public static class StateUtils
     {

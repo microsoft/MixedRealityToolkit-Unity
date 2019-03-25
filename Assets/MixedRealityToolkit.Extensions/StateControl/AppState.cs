@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Extensions.StateControl.Core;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl

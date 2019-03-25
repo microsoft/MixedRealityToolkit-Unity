@@ -1,5 +1,4 @@
 ﻿using Photon.Pun;
-using MRTK.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,10 +9,8 @@ using System.Text;
 #endif
 using UnityEngine;
 using Photon.Realtime;
-using MRTK.Networking;
-using Microsoft.MixedReality.Toolkit;
 
-namespace MRTK.StateControl.Photon
+namespace Microsoft.MixedReality.Toolkit.Extensions.StateControl.Photon
 {
     [RequireComponent(typeof(AppStateDataSubscriptions))]
     [ExecuteAlways]
