@@ -10,6 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CustomEditor(typeof(MixedRealityToolkitConfigurationProfile))]
     public class MixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
+        const string HideNoActiveToolkitWarningKey = "MRTK_HideNoActiveToolkitWarningKey";
+        private static bool HideNoActiveToolkitWarning = true;
+
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
 
         // Experience properties
@@ -69,19 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 if (managerSearch.Length == 0)
                 {
-                    if (EditorUtility.DisplayDialog(
-                        "Attention!",
-                        "There is no active Mixed Reality Toolkit in your scene!\n\nWould you like to create one now?",
-                        "Yes",
-                        "Later"))
+                    HideNoActiveToolkitWarning = SessionState.GetBool(HideNoActiveToolkitWarningKey, false);
+                    if (!HideNoActiveToolkitWarning)
                     {
-                        var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-                        Debug.Assert(playspace != null);
-                        MixedRealityToolkit.Instance.ActiveProfile = configurationProfile;
-                    }
-                    else
-                    {
-                        Debug.LogWarning("No Mixed Reality Toolkit in your scene.");
+                        NoActiveToolkitWarning.OpenWindow(configurationProfile);
                         return;
                     }
                 }
@@ -317,6 +311,53 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (changed)
             {
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(configurationProfile);
+            }
+        }
+
+        private class NoActiveToolkitWarning : EditorWindow
+        {
+            private static NoActiveToolkitWarning activeWindow;
+            private MixedRealityToolkitConfigurationProfile configurationProfile;
+            private bool hideWarning = false;
+
+            public static void OpenWindow(MixedRealityToolkitConfigurationProfile configurationProfile)
+            {
+                // If we already have an active window, bail
+                if (activeWindow != null)
+                    return;
+
+                activeWindow = EditorWindow.GetWindow<NoActiveToolkitWarning>();
+                activeWindow.configurationProfile = configurationProfile;
+                activeWindow.maxSize = new Vector2(400, 80);
+                activeWindow.minSize = new Vector2(400, 80);
+                activeWindow.titleContent = new GUIContent("No Active Toolkit Found");
+
+                activeWindow.Show(true);
+            }
+
+            private void OnGUI()
+            {
+                EditorGUILayout.HelpBox("There is no active Mixed Reality Toolkit in your scene. Would you like to create one now?", MessageType.Warning);
+
+                hideWarning = EditorGUILayout.Toggle("Don't show this again", hideWarning);
+
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Yes"))
+                {
+                    var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+                    Debug.Assert(playspace != null);
+                    MixedRealityToolkit.Instance.ActiveProfile = configurationProfile;
+
+                    SessionState.SetBool(HideNoActiveToolkitWarningKey, hideWarning);
+                    Close();
+                }
+
+                if (GUILayout.Button("No"))
+                {
+                    SessionState.SetBool(HideNoActiveToolkitWarningKey, hideWarning);
+                    Close();
+                }
+                EditorGUILayout.EndHorizontal();
             }
         }
     }
