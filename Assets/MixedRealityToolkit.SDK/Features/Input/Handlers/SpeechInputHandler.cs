@@ -8,7 +8,7 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// This component handles the speech input events raised form the <see cref="Core.Interfaces.InputSystem.IMixedRealityInputSystem"/>.
+    /// This component handles the speech input events raised form the <see cref="IMixedRealityInputSystem"/>.
     /// </summary>
     [DisallowMultipleComponent]
     public class SpeechInputHandler : BaseInputHandler, IMixedRealitySpeechHandler
