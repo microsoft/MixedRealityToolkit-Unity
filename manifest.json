@@ -13,30 +13,24 @@
       "is_incremental": false
     },
     {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
       "type": "Conceptual",
       "source_relative_path": "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/BoomBox/README.md",
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/BoomBox/README.html",
-          "hash": "YfI64ls0osoZLLIyiqbkJw=="
+          "hash": "iDbC77GBIoes1B/gbL7SWA=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
       "type": "Conceptual",
       "source_relative_path": "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Lantern/README.md",
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Lantern/README.html",
-          "hash": "oqVRHm8GvhplUdS8pjEqFg=="
+          "hash": "dknvYazxT9EWkwx+eiSmHw=="
         }
       },
       "is_incremental": false,
@@ -1264,6 +1258,28 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/favicon.ico"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/gltf/boombox_screenshot.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/gltf/boombox_screenshot.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/gltf/lantern_screenshot.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/gltf/lantern_screenshot.jpg"
         }
       },
       "is_incremental": false,
@@ -7904,7 +7920,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfObject.html",
-          "hash": "/huq4YNQ7etC+1Zjykq6GA=="
+          "hash": "vKYKq/VE5OmZpuZv1BcGYQ=="
         }
       },
       "is_incremental": false,
@@ -8048,7 +8064,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.ConstructGltf.html",
-          "hash": "Rjrd48DWDUZmPWDcNjtARg=="
+          "hash": "qLgezTfI9YbF2FTDpT14Ig=="
         }
       },
       "is_incremental": false,
@@ -8120,7 +8136,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.GltfUtility.html",
-          "hash": "scAfNIf4wIQmLxksbCkzmw=="
+          "hash": "z2+Pj0APIPQle3B9dXzAVw=="
         }
       },
       "is_incremental": false,
