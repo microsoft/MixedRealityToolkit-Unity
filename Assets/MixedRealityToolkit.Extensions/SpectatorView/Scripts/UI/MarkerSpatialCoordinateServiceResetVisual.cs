@@ -20,13 +20,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
         /// </summary>
         [Tooltip("Button pressed to reset the MarkerSpatialCoordinateService")]
         [SerializeField]
-        Button _resetButton;
+        protected Button _resetButton;
 
         /// <inheritdoc />
         public event ResetSpatialCoordinatesHandler ResetSpatialCoordinates;
 
+#pragma warning disable 67
         /// <inheritdoc />
         public event OverlayVisibilityRequest OverlayVisibilityRequest;
+#pragma warning restore 67
 
         protected void Awake()
         {

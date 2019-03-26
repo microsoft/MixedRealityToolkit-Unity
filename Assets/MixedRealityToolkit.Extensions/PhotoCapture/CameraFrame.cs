@@ -1,11 +1,26 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
+// We have this CAN_USE_UNITY_TYPES macro definition so that this file can serve as an example
+// for developers building C# windows camera applications outside of Unity.
+// Unity specific types should be contained behind this macro with suitable counterparts
+// defined when this macro is not available
+#define CAN_USE_UNITY_TYPES
+
+// The WINDOWS_UWP macro allows references to WinRT APIs within Unity
+#if WINDOWS_UWP
+#define CAN_USE_UWP_TYPES
+#endif
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
+
+#if CAN_USE_UWP_TYPES
+using Windows.Storage;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
 {

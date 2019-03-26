@@ -16,8 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
     public class SpectatorViewPluginArUcoMarkerDetector : MonoBehaviour,
         IMarkerDetector
     {
+#pragma warning disable 67
         /// <inheritdoc/>
         public event MarkersUpdatedHandler MarkersUpdated;
+#pragma warning restore 67
 
         /// <summary>
         /// Physical size of markers being detected
@@ -30,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         private SpectatorViewPluginAPI _api;
         private bool _detecting = false;
         private Dictionary<int, List<Marker>> _markerObservations;
-        private int _requiredObservations = 5;
+        protected int _requiredObservations = 5;
 
         protected void Start()
         {

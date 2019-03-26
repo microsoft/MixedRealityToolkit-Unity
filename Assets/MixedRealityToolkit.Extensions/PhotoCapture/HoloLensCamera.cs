@@ -17,9 +17,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 #if CAN_USE_UWP_TYPES
-using Windows.Storage;
-using Windows.Media.Core;
-using Windows.Media.MediaProperties;
 using Windows.Media.Devices;
 using Windows.Graphics.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -860,7 +857,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
             CameraType = CameraType.Invalid;
             CaptureMode = captureMode;
 
+#if CAN_USE_UWP_TYPES
             IntPtr coordinateSystemPtr;
+#endif
+
 #if CAN_USE_UNITY_TYPES && UNITY_WSA
             // this must be done from the main thread, so done in 
             coordinateSystemPtr = UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr();

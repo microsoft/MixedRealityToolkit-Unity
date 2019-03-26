@@ -45,14 +45,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
         /// </summary>
         [Tooltip("Amount of time (in seconds) to press and hold the screen in order to toggle mobile UI visibility")]
         [SerializeField]
-        float _holdTimeToDisplay = 1.0f;
+        protected float _holdTimeToDisplay = 1.0f;
 
         /// <summary>
         /// List of MonoBehaviours implementing <see cref="IMobileOverlayVisualChild"/>. Errors will be thrown if any elements don't implement IMobileOverlayVisualChild.
         /// </summary>
         [Tooltip("List of MonoBehaviours implementing IMobileOverlayVisualChild. Errors will be thrown if any elements don't implement IMobileOverlayVisualChild.")]
         [SerializeField]
-        List<MonoBehaviour> _children;
+        protected List<MonoBehaviour> _children;
 
         private List<IMobileOverlayVisualChild> _overlayChildren;
         private float _lastTouchTime = 0;

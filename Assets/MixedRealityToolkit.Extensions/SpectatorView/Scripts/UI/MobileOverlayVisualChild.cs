@@ -11,8 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
     public class MobileOverlayVisualChild : MonoBehaviour,
         IMobileOverlayVisualChild
     {
+#pragma warning disable 67
         /// <inheritdoc />
         public event OverlayVisibilityRequest OverlayVisibilityRequest;
+#pragma warning restore 67
 
         /// <inheritdoc />
         public void Show()
