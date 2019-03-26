@@ -31,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit
         public uint Priority => priority;
 
         [SerializeField]
+        [EnumFlags]
         private SupportedPlatforms runtimePlatform;
 
         /// <inheritdoc />

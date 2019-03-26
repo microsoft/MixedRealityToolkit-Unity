@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
-        SupportedPlatforms.WindowsUniversal)]
+        SupportedPlatforms.WindowsUniversal,
+        "Windows Mixed Reality Device Manager")]
     public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager, IMixedRealityExtensionService
     {
         /// <summary>

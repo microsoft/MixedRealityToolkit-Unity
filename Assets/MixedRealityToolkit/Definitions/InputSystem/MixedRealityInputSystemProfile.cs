@@ -18,12 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // todo: use custom type
         [SerializeField]
         [Implements(typeof(IMixedRealityInputDeviceManager), TypeGrouping.ByNamespaceFlat)]
-        private MixedRealityServiceConfiguration[] dataProviderTypes = new MixedRealityServiceConfiguration[0];
+        private MixedRealityInputDataProviderConfiguration[] dataProviderConfigurations = new MixedRealityInputDataProviderConfiguration[0];
 
-        public MixedRealityServiceConfiguration[] DataProviderTypes
+        public MixedRealityInputDataProviderConfiguration[] DataProviderConfigurations
         {
-            get { return dataProviderTypes; }
-            internal set { dataProviderTypes = value; }
+            get { return dataProviderConfigurations; }
+            internal set { dataProviderConfigurations = value; }
         }
 
         [SerializeField]

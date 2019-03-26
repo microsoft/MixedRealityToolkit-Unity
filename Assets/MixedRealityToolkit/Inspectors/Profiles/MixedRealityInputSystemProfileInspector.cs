@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
 using UnityEditor;
+using Microsoft.MixedReality.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
@@ -15,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent RemoveProviderContent = new GUIContent("-", "Remove Data Provider");
 
         private static bool showDataProviders = true;
-        private SerializedProperty dataProviderTypes;
+        private SerializedProperty dataProviderConfigurations;
 
         private static bool showFocusProperties = true;
         private SerializedProperty focusProviderType;
@@ -47,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
-            dataProviderTypes = serializedObject.FindProperty("dataProviderTypes");
+            dataProviderConfigurations = serializedObject.FindProperty("dataProviderConfigurations");
             focusProviderType = serializedObject.FindProperty("focusProviderType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
@@ -91,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    RenderList(dataProviderTypes);
+                    RenderList(dataProviderConfigurations);
                 }
             }
 
@@ -177,6 +178,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             EditorGUILayout.Space();
 
+            bool changed = false;
+
             using (new EditorGUILayout.VerticalScope())
             {
                 if (GUILayout.Button(AddProviderContent, EditorStyles.miniButton))
@@ -184,10 +187,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     list.InsertArrayElementAtIndex(list.arraySize);
                     SerializedProperty dataProvider = list.GetArrayElementAtIndex(list.arraySize - 1);
 
+                    SerializedProperty providerName = dataProvider.FindPropertyRelative("componentName");
+                    providerName.stringValue = $"New data provider {list.arraySize - 1}";
+
                     SerializedProperty runtimePlatform = dataProvider.FindPropertyRelative("runtimePlatform");
                     runtimePlatform.intValue = -1;
 
                     serializedObject.ApplyModifiedProperties();
+
+                    Utilities.SystemType providerType = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[list.arraySize - 1].ComponentType;
+                    providerType.Type = null;
+
+                    return;
                 }
 
                 GUILayout.Space(12f);
@@ -200,32 +211,67 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 for (int i = 0; i < list.arraySize; i++)
                 {
-                //    SerializedProperty dataProvider = list.GetArrayElementAtIndex(i);
-                //    SerializedProperty componentType = dataProvider.FindPropertyRelative("componentType");
-                //    SerializedProperty runtimePlatform = dataProvider.FindPropertyRelative("runtimePlatform");
-                //    SerializedProperty componentName = dataProvider.FindPropertyRelative("componentName");
-                //    componentName.stringValue = !string.IsNullOrWhiteSpace(componentType.stringValue) ? componentType.stringValue : "New Data Provider";
+                    SerializedProperty dataProvider = list.GetArrayElementAtIndex(i);
+                    SerializedProperty providerName = dataProvider.FindPropertyRelative("componentName");
+                    SerializedProperty providerType = dataProvider.FindPropertyRelative("componentType");
+                    SerializedProperty runtimePlatform = dataProvider.FindPropertyRelative("runtimePlatform");
 
-                //    using (new EditorGUILayout.VerticalScope())
-                //    {
-                //        using (new EditorGUILayout.HorizontalScope())
-                //        {
-                //            EditorGUILayout.LabelField(componentName.stringValue);
+                    using (new EditorGUILayout.VerticalScope())
+                    {
+                        using (new EditorGUILayout.HorizontalScope())
+                        {
+                            EditorGUILayout.LabelField(providerName.stringValue);
 
-                //            if (GUILayout.Button(RemoveProviderContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
-                //            {
-                //                list.DeleteArrayElementAtIndex(i);
-                //            }
-                //        }
-                //            ////configFoldouts[i] = EditorGUILayout.Foldout(configFoldouts[i], componentName.stringValue, true);
+                            if (GUILayout.Button(RemoveProviderContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                            {
+                                list.DeleteArrayElementAtIndex(i);
+                                serializedObject.ApplyModifiedProperties();
+                                changed = true;
+                                break;
+                            }
+                        }
 
-                //            // TODO: need to display this with name(?), priority and type (NO profile)
-                //            EditorGUILayout.PropertyField(componentType);
-                //            EditorGUILayout.PropertyField(runtimePlatform);
+                        EditorGUI.BeginChangeCheck();
+                        EditorGUILayout.PropertyField(providerType);
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            serializedObject.ApplyModifiedProperties();
+                            System.Type type = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[i].ComponentType.Type;
+                            ApplyDataProviderConfiguration(type, providerName, runtimePlatform);
+                        }
 
-                //            ////EditorGUILayout.PropertyField(dataProvider, GUIContent.none);
-                //    }
+                        EditorGUI.BeginChangeCheck();
+                        EditorGUILayout.PropertyField(runtimePlatform);
+                        changed |= EditorGUI.EndChangeCheck();
+
+                        serializedObject.ApplyModifiedProperties();
+                    }
                 }
+            }
+
+            if (changed)
+            {
+                // todo: find different way to handle...
+                EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
+            }
+        }
+
+        private void ApplyDataProviderConfiguration(System.Type type, SerializedProperty providerName, SerializedProperty runtimePlatform)
+        {
+            if (type != null)
+            {
+                MixedRealityDataProviderAttribute providerAttribute = MixedRealityDataProviderAttribute.Find(type) as MixedRealityDataProviderAttribute;
+                if (providerAttribute != null)
+                {
+                    providerName.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : type.Name;
+                    runtimePlatform.intValue = (int)providerAttribute.RuntimePlatforms;
+                }
+                else
+                {
+                    providerName.stringValue = type.Name;
+                }
+
+                serializedObject.ApplyModifiedProperties();
             }
         }
     }
