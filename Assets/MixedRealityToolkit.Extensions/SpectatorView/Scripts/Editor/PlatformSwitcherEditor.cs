@@ -8,10 +8,13 @@ using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Editor
 {
+    /// <summary>
+    /// Defines functionality for switching platforms in the Unity editor
+    /// </summary>
     [CustomEditor(typeof(PlatformSwitcher))]
     public class PlatformSwitcherEditor : UnityEditor.Editor
     {
-        const float _buttonHeight = 30;
+        private readonly float _buttonHeight = 30;
 
         public override void OnInspectorGUI()
         {

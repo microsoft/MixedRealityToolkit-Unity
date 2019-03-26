@@ -5,11 +5,16 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 {
+    /// <summary>
+    /// Base class that provides showing/hiding functionality for <see cref="IMobileOverlayVisualChild"/>
+    /// </summary>
     public class MobileOverlayVisualChild : MonoBehaviour,
         IMobileOverlayVisualChild
     {
+        /// <inheritdoc />
         public event OverlayVisibilityRequest OverlayVisibilityRequest;
 
+        /// <inheritdoc />
         public void Show()
         {
             if (gameObject != null)
@@ -18,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             }
         }
 
+        /// <inheritdoc />
         public void Hide()
         {
             if (gameObject != null)
