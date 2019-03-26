@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit
         public static T EnsureComponent<T>(this GameObject gameObject) where T : Component
         {
             T foundComponent = gameObject.GetComponent<T>();
-            return foundComponent == null ? gameObject.AddComponent<T>() : foundComponent;
+            return foundComponent ? foundComponent : gameObject.AddComponent<T>();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit
         public static Component EnsureComponent(this GameObject gameObject, Type component)
         {
             var foundComponent = gameObject.GetComponent(component);
-            return foundComponent == null ? gameObject.AddComponent(component) : foundComponent;
+            return foundComponent ? foundComponent : gameObject.AddComponent(component);
         }
     }
 }
