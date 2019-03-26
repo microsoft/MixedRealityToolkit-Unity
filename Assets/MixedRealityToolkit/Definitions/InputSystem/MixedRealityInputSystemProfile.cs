@@ -15,9 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [MixedRealityServiceProfile(typeof(IMixedRealityInputSystem))]
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
-        // todo: use custom type
         [SerializeField]
-        [Implements(typeof(IMixedRealityInputDeviceManager), TypeGrouping.ByNamespaceFlat)]
         private MixedRealityInputDataProviderConfiguration[] dataProviderConfigurations = new MixedRealityInputDataProviderConfiguration[0];
 
         public MixedRealityInputDataProviderConfiguration[] DataProviderConfigurations

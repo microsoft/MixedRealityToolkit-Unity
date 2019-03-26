@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit
         private MixedRealityInputSystemProfile inputSystemProfile;
 
         /// <summary>
-        /// Input System profile for setting wiring up events and actions to input devices.
+        /// Input System profile for configuring events and actions to input devices.
         /// </summary>
         public MixedRealityInputSystemProfile InputSystemProfile
         {
@@ -100,12 +100,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         [SerializeField]
-        [Tooltip("Input System Class to instantiate at runtime.")]
+        [Tooltip("Input System class to instantiate at runtime.")]
         [Implements(typeof(IMixedRealityInputSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType inputSystemType;
 
         /// <summary>
-        /// Input System Script File to instantiate at runtime.
+        /// Input System class to instantiate at runtime.
         /// </summary>
         public SystemType InputSystemType
         {
@@ -127,12 +127,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         [SerializeField]
-        [Tooltip("Boundary System Class to instantiate at runtime.")]
+        [Tooltip("Boundary System class to instantiate at runtime.")]
         [Implements(typeof(IMixedRealityBoundarySystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType boundarySystemType;
 
         /// <summary>
-        /// Boundary System Script File to instantiate at runtime.
+        /// Boundary System class to instantiate at runtime.
         /// </summary>
         public SystemType BoundarySystemSystemType
         {
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit
         private MixedRealityBoundaryVisualizationProfile boundaryVisualizationProfile;
 
         /// <summary>
-        /// Active profile for controller mapping configuration
+        /// Active profile for boundary visualization
         /// </summary>
         public MixedRealityBoundaryVisualizationProfile BoundaryVisualizationProfile
         {
@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit
         private bool enableTeleportSystem = false;
 
         /// <summary>
-        /// Enable and configure the boundary system.
+        /// Enable and configure the teleport system.
         /// </summary>
         public bool IsTeleportSystemEnabled
         {
@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit
         private SystemType teleportSystemType;
 
         /// <summary>
-        /// Teleport System Script File to instantiate at runtime.
+        /// Teleport System class to instantiate at runtime.
         /// </summary>
         public SystemType TeleportSystemSystemType
         {
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         [SerializeField]
-        [Tooltip("Enable the Spatial Awareness system on Startup")]
+        [Tooltip("Enable the Spatial Awareness system on startup")]
         private bool enableSpatialAwarenessSystem = false;
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit
         private SystemType spatialAwarenessSystemType;
 
         /// <summary>
-        /// Boundary System Script File to instantiate at runtime.
+        /// Spatial Awarenss System class to instantiate at runtime.
         /// </summary>
         public SystemType SpatialAwarenessSystemSystemType
         {
@@ -208,7 +208,20 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         [SerializeField]
-        [Tooltip("Profile for wiring up diagnostic assets.")]
+        [Tooltip("Profile for configuring the spatial awareness system.")]
+        private MixedRealitySpatialAwarenessSystemProfile spatialAwarenessSystemProfile;
+
+        /// <summary>
+        /// Active profile for spatial awareness system
+        /// </summary>
+        public MixedRealitySpatialAwarenessSystemProfile SpatialAwarenessSystemProfile
+        {
+            get { return spatialAwarenessSystemProfile; }
+            internal set { spatialAwarenessSystemProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Profile for configuring diagnostic components.")]
         private MixedRealityDiagnosticsProfile diagnosticsSystemProfile;
 
         /// <summary>
@@ -234,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         [SerializeField]
-        [Tooltip("Diagnostics System Class to instantiate at runtime.")]
+        [Tooltip("Diagnostics System class to instantiate at runtime.")]
         [Implements(typeof(IMixedRealityDiagnosticsSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType diagnosticsSystemType;
 

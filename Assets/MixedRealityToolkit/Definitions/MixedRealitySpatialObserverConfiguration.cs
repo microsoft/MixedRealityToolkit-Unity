@@ -5,13 +5,13 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Input
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     [Serializable]
-    public struct MixedRealityInputDataProviderConfiguration : IMixedRealityServiceConfiguration
+    public struct MixedRealitySpatialObserverConfiguration : IMixedRealityServiceConfiguration
     {
         [SerializeField]
-        [Implements(typeof(IMixedRealityInputDeviceManager), TypeGrouping.ByNamespaceFlat)]
+        [Implements(typeof(IMixedRealitySpatialAwarenessMeshObserver), TypeGrouping.ByNamespaceFlat)]
         private SystemType componentType;
 
         /// <inheritdoc />
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="componentName"></param>
         /// <param name="priority"></param>
         /// <param name="runtimePlatform"></param>
-        public MixedRealityInputDataProviderConfiguration(
+        public MixedRealitySpatialObserverConfiguration(
             SystemType componentType,
             string componentName,
             uint priority,

@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
 using UnityEditor;
-using Microsoft.MixedReality.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
@@ -72,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
+            // todo: find good way to update...
             if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
             {
                 return;
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Input System Profile", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("The Input System Profile helps developers configure input no matter what platform you're building for.", MessageType.Info);
+            EditorGUILayout.HelpBox("The Input System Profile helps developers configure input for cross-platform applications.", MessageType.Info);
 
             CheckProfileLock(target);
 
