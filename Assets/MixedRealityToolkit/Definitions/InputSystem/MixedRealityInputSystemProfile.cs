@@ -15,11 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [MixedRealityServiceProfile(typeof(IMixedRealityInputSystem))]
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
+        // todo: use custom type
         [SerializeField]
         [Implements(typeof(IMixedRealityInputDeviceManager), TypeGrouping.ByNamespaceFlat)]
-        private SystemType[] dataProviderTypes = new SystemType[0];
+        private MixedRealityServiceConfiguration[] dataProviderTypes = new MixedRealityServiceConfiguration[0];
 
-        public SystemType[] DataProviderTypes
+        public MixedRealityServiceConfiguration[] DataProviderTypes
         {
             get { return dataProviderTypes; }
             internal set { dataProviderTypes = value; }

@@ -168,19 +168,26 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             if (changed)
             {
+                // todo: update reference below....
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
             }
         }
 
-        private static void RenderList(SerializedProperty list)
+        private void RenderList(SerializedProperty list)
         {
             EditorGUILayout.Space();
+
             using (new EditorGUILayout.VerticalScope())
             {
                 if (GUILayout.Button(AddProviderContent, EditorStyles.miniButton))
                 {
-                    list.arraySize += 1;
+                    list.InsertArrayElementAtIndex(list.arraySize);
                     SerializedProperty dataProvider = list.GetArrayElementAtIndex(list.arraySize - 1);
+
+                    SerializedProperty runtimePlatform = dataProvider.FindPropertyRelative("runtimePlatform");
+                    runtimePlatform.intValue = -1;
+
+                    serializedObject.ApplyModifiedProperties();
                 }
 
                 GUILayout.Space(12f);
@@ -193,18 +200,31 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 for (int i = 0; i < list.arraySize; i++)
                 {
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
+                //    SerializedProperty dataProvider = list.GetArrayElementAtIndex(i);
+                //    SerializedProperty componentType = dataProvider.FindPropertyRelative("componentType");
+                //    SerializedProperty runtimePlatform = dataProvider.FindPropertyRelative("runtimePlatform");
+                //    SerializedProperty componentName = dataProvider.FindPropertyRelative("componentName");
+                //    componentName.stringValue = !string.IsNullOrWhiteSpace(componentType.stringValue) ? componentType.stringValue : "New Data Provider";
 
-                        // TODO: need to display this with name(?), priority and type (NO profile)
-                        SerializedProperty dataProvider = list.GetArrayElementAtIndex(i);
-                        EditorGUILayout.PropertyField(dataProvider, GUIContent.none);
+                //    using (new EditorGUILayout.VerticalScope())
+                //    {
+                //        using (new EditorGUILayout.HorizontalScope())
+                //        {
+                //            EditorGUILayout.LabelField(componentName.stringValue);
 
-                        if (GUILayout.Button(RemoveProviderContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
-                        {
-                            list.DeleteArrayElementAtIndex(i);
-                        }
-                    }
+                //            if (GUILayout.Button(RemoveProviderContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                //            {
+                //                list.DeleteArrayElementAtIndex(i);
+                //            }
+                //        }
+                //            ////configFoldouts[i] = EditorGUILayout.Foldout(configFoldouts[i], componentName.stringValue, true);
+
+                //            // TODO: need to display this with name(?), priority and type (NO profile)
+                //            EditorGUILayout.PropertyField(componentType);
+                //            EditorGUILayout.PropertyField(runtimePlatform);
+
+                //            ////EditorGUILayout.PropertyField(dataProvider, GUIContent.none);
+                //    }
                 }
             }
         }
