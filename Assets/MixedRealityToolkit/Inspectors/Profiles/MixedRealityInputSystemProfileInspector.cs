@@ -175,40 +175,38 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static void RenderList(SerializedProperty list)
         {
             EditorGUILayout.Space();
-            GUILayout.BeginVertical();
-
-            if (GUILayout.Button(AddProviderContent, EditorStyles.miniButton))
+            using (new EditorGUILayout.VerticalScope())
             {
-                list.arraySize += 1;
-                SerializedProperty dataProvider = list.GetArrayElementAtIndex(list.arraySize - 1);
-            }
-
-            GUILayout.Space(12f);
-
-            if (list == null || list.arraySize == 0)
-            {
-                EditorGUILayout.HelpBox("The Mixed Reality Input System requires one or more data providers.", MessageType.Warning);
-                GUILayout.EndVertical();
-                return;
-            }
-
-            for (int i = 0; i < list.arraySize; i++)
-            {
-                EditorGUILayout.BeginHorizontal();
-
-                // TODO: need to display this with name(?), priority, runtime platforms and type (NO profile)
-                SerializedProperty dataProvider = list.GetArrayElementAtIndex(i);
-                EditorGUILayout.PropertyField(dataProvider, GUIContent.none);
-
-                if (GUILayout.Button(RemoveProviderContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                if (GUILayout.Button(AddProviderContent, EditorStyles.miniButton))
                 {
-                    list.DeleteArrayElementAtIndex(i);
+                    list.arraySize += 1;
+                    SerializedProperty dataProvider = list.GetArrayElementAtIndex(list.arraySize - 1);
                 }
 
-                EditorGUILayout.EndHorizontal();
-            }
+                GUILayout.Space(12f);
 
-            GUILayout.EndVertical();
+                if (list == null || list.arraySize == 0)
+                {
+                    EditorGUILayout.HelpBox("The Mixed Reality Input System requires one or more data providers.", MessageType.Warning);
+                    return;
+                }
+
+                for (int i = 0; i < list.arraySize; i++)
+                {
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+
+                        // TODO: need to display this with name(?), priority and type (NO profile)
+                        SerializedProperty dataProvider = list.GetArrayElementAtIndex(i);
+                        EditorGUILayout.PropertyField(dataProvider, GUIContent.none);
+
+                        if (GUILayout.Button(RemoveProviderContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                        {
+                            list.DeleteArrayElementAtIndex(i);
+                        }
+                    }
+                }
+            }
         }
     }
 }
