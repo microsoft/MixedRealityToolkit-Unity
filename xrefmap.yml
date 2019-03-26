@@ -34664,6 +34664,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetColor
   nameWithType: BaseMixedRealityLineRenderer.GetColor
+- uid: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetNormalizedPointAlongLine(System.Int32)
+  name: GetNormalizedPointAlongLine(Int32)
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.html#Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_GetNormalizedPointAlongLine_System_Int32_
+  commentId: M:Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetNormalizedPointAlongLine(System.Int32)
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetNormalizedPointAlongLine(System.Int32)
+  nameWithType: BaseMixedRealityLineRenderer.GetNormalizedPointAlongLine(Int32)
+- uid: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetNormalizedPointAlongLine*
+  name: GetNormalizedPointAlongLine
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.html#Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_GetNormalizedPointAlongLine_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetNormalizedPointAlongLine
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetNormalizedPointAlongLine
+  nameWithType: BaseMixedRealityLineRenderer.GetNormalizedPointAlongLine
 - uid: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetWidth(System.Single)
   name: GetWidth(Single)
   href: api/Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.html#Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_GetWidth_System_Single_
@@ -34735,6 +34748,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.LineWidth
   nameWithType: BaseMixedRealityLineRenderer.LineWidth
+- uid: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.PointDistributionMode
+  name: PointDistributionMode
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.html#Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_PointDistributionMode
+  commentId: P:Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.PointDistributionMode
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.PointDistributionMode
+  nameWithType: BaseMixedRealityLineRenderer.PointDistributionMode
+- uid: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.PointDistributionMode*
+  name: PointDistributionMode
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.html#Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_PointDistributionMode_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.PointDistributionMode
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.PointDistributionMode
+  nameWithType: BaseMixedRealityLineRenderer.PointDistributionMode
 - uid: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.StepMode
   name: StepMode
   href: api/Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.html#Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_StepMode
@@ -34748,19 +34774,6 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.StepMode
   nameWithType: BaseMixedRealityLineRenderer.StepMode
-- uid: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.Update
-  name: Update()
-  href: api/Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.html#Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_Update
-  commentId: M:Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.Update
-  fullName: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.Update()
-  nameWithType: BaseMixedRealityLineRenderer.Update()
-- uid: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.Update*
-  name: Update
-  href: api/Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.html#Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_Update_
-  commentId: Overload:Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.Update
-  isSpec: "True"
-  fullName: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.Update
-  nameWithType: BaseMixedRealityLineRenderer.Update
 - uid: Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.UpdateLine
   name: UpdateLine()
   href: api/Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.html#Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_UpdateLine

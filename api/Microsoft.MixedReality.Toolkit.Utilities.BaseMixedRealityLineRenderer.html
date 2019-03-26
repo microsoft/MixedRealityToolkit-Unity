@@ -263,6 +263,32 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_PointDistributionMode_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.PointDistributionMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_PointDistributionMode" data-uid="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.PointDistributionMode">PointDistributionMode</h4>
+  <div class="markdown level1 summary"><p>Method for distributing rendered points along line.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PointDistributionMode PointDistributionMode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.PointDistributionMode.html">PointDistributionMode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_StepMode_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.StepMode*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_StepMode" data-uid="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.StepMode">StepMode</h4>
   <div class="markdown level1 summary"><p>Method for gathering points along line. Interpolated uses normalized length. FromSource uses line's base points. (FromSource may not look right for all LineDataProvider types.)</p>
@@ -385,6 +411,48 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_GetNormalizedPointAlongLine_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetNormalizedPointAlongLine*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_GetNormalizedPointAlongLine_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetNormalizedPointAlongLine(System.Int32)">GetNormalizedPointAlongLine(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual float GetNormalizedPointAlongLine(int stepNum)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">stepNum</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_GetWidth_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetWidth*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_GetWidth_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.GetWidth(System.Single)">GetWidth(Single)</h4>
   <div class="markdown level1 summary"><p>Get the width of the line along the normalized length of the line.</p>
@@ -426,16 +494,6 @@
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_Update_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.Update*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_Update" data-uid="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.Update">Update()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void Update()</code></pre>
-  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_BaseMixedRealityLineRenderer_UpdateLine_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineRenderer.UpdateLine*"></a>
