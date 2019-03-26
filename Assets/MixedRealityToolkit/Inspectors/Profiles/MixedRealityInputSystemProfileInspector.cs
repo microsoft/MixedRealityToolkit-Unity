@@ -39,6 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static bool showSpeechCommandsProperties = true;
         private SerializedProperty speechCommandsProfile;
 
+        private static bool[] providerFoldouts;
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -58,6 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerVisualizationProfile = serializedObject.FindProperty("controllerVisualizationProfile");
+
+            providerFoldouts = new bool[dataProviderConfigurations.arraySize];
         }
 
         public override void OnInspectorGUI()
@@ -198,6 +202,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     Utilities.SystemType providerType = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[list.arraySize - 1].ComponentType;
                     providerType.Type = null;
 
+                    providerFoldouts = new bool[list.arraySize];
+
                     return;
                 }
 
@@ -220,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     {
                         using (new EditorGUILayout.HorizontalScope())
                         {
-                            EditorGUILayout.LabelField(providerName.stringValue);
+                            providerFoldouts[i] = EditorGUILayout.Foldout(providerFoldouts[i], providerName.stringValue, true);
 
                             if (GUILayout.Button(RemoveProviderContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                             {
@@ -231,20 +237,26 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             }
                         }
 
-                        EditorGUI.BeginChangeCheck();
-                        EditorGUILayout.PropertyField(providerType);
-                        if (EditorGUI.EndChangeCheck())
+                        if (providerFoldouts[i] || RenderAsSubProfile)
                         {
+                            using (new EditorGUI.IndentLevelScope())
+                            {
+                                EditorGUI.BeginChangeCheck();
+                                EditorGUILayout.PropertyField(providerType);
+                                if (EditorGUI.EndChangeCheck())
+                                {
+                                    serializedObject.ApplyModifiedProperties();
+                                    System.Type type = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[i].ComponentType.Type;
+                                    ApplyDataProviderConfiguration(type, providerName, runtimePlatform);
+                                }
+
+                                EditorGUI.BeginChangeCheck();
+                                EditorGUILayout.PropertyField(runtimePlatform);
+                                changed |= EditorGUI.EndChangeCheck();
+                            }
+
                             serializedObject.ApplyModifiedProperties();
-                            System.Type type = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[i].ComponentType.Type;
-                            ApplyDataProviderConfiguration(type, providerName, runtimePlatform);
                         }
-
-                        EditorGUI.BeginChangeCheck();
-                        EditorGUILayout.PropertyField(runtimePlatform);
-                        changed |= EditorGUI.EndChangeCheck();
-
-                        serializedObject.ApplyModifiedProperties();
                     }
                 }
             }
