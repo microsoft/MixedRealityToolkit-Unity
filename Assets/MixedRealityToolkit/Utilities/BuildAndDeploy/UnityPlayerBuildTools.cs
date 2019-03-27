@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                         break;
                     case "-scenes":
                         buildInfo.Scenes = from scene in arguments[++i].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                                           select scene.TrimStart().TrimEnd();
+                                           select scene.Trim();
                         break;
                     case "-buildOutput":
                         buildInfo.OutputDirectory = arguments[++i];
