@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Base Component for handling Focus on <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s.
     /// </summary>
     [RequireComponent(typeof(Collider))]
-    public abstract class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler
+    public abstract class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityFocusChangedHandler
     {
         [SerializeField]
         [Tooltip("Is focus enabled for this component?")]
