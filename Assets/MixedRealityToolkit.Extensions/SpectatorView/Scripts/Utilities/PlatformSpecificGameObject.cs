@@ -5,11 +5,31 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
 {
+    /// <summary>
+    /// Helper class for enabling/disabling platform specific GameObjects
+    /// </summary>
     public class PlatformSpecificGameObject : MonoBehaviour
     {
-        [SerializeField] bool _enableOnHoloLens;
-        [SerializeField] bool _enableOnAndroid;
-        [SerializeField] bool _enableOnIos;
+        /// <summary>
+        /// Check to have associated GameObject enabled for HoloLens Platform.
+        /// </summary>
+        [Tooltip("Check to have associated GameObject enabled for HoloLens Platform.")]
+        [SerializeField]
+        protected bool _enableOnHoloLens;
+
+        /// <summary>
+        /// Check to have associated GameObject enabled for Android Platform.
+        /// </summary>
+        [Tooltip("Check to have associated GameObject enabled for Android Platform.")]
+        [SerializeField]
+        protected bool _enableOnAndroid;
+
+        /// <summary>
+        /// Check to have associated GameObject enabled for iOS Platform.
+        /// </summary>
+        [Tooltip("Check to have associated GameObject enabled for iOS Platform.")]
+        [SerializeField]
+        protected bool _enableOnIos;
 
         private void OnValidate()
         {

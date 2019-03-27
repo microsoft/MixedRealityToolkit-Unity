@@ -10,30 +10,88 @@ using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 {
+    /// <summary>
+    /// Class that facilitates the Spectator View experience
+    /// </summary>
     public class SpectatorView : MonoBehaviour
     {
-        [SerializeField] MonoBehaviour MatchMakingService;
-        [SerializeField] MonoBehaviour PlayerService;
-        [SerializeField] MonoBehaviour NetworkingService;
-        [SerializeField] MonoBehaviour SpatialCoordinateService;
-        [SerializeField] MonoBehaviour AndroidRecordingService;
-        [SerializeField] MonoBehaviour IosRecordingService;
-        [SerializeField] MonoBehaviour RecordingServiceVisual;
-        [SerializeField] List<MonoBehaviour> PlayerStateObservers;
+        /// <summary>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.IMatchMakingService"/>
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Sharing.IMatchMakingService. Note: errors will be generated if the provided MonoBehaviour does not implement IMatchMakingService")]
+        [SerializeField]
+        protected MonoBehaviour MatchMakingService;
 
+        /// <summary>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.IPlayerService"/>
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Sharing.IPlayerService. Note: errors will be generated if the provided MonoBehaviour does not implement IPlayerService")]
+        [SerializeField]
+        protected MonoBehaviour PlayerService;
+
+        /// <summary>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.INetworkingService"/>
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Sharing.INetworkingService. Note: errors will be generated if the provided MonoBehaviour does not implement INetworkingService")]
+        [SerializeField]
+        protected MonoBehaviour NetworkingService;
+
+        /// <summary>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.ISpatialCoordinateService"/>
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Sharing.ISpatialCoordinateService. Note: errors will be generated if the provided MonoBehaviour does not implement ISpatialCoordinateService")]
+        [SerializeField]
+        protected MonoBehaviour SpatialCoordinateService;
+
+        /// <summary>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingService"/> for the Android platform
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingService for the Android platform. Note: errors will be generated if the provided MonoBehaviour does not implement IRecordingService")]
+        [SerializeField]
+        protected MonoBehaviour AndroidRecordingService;
+
+        /// <summary>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingService"/> for the iOS platform
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingService for the iOS platform. Note: errors will be generated if the provided MonoBehaviour does not implement IRecordingService")]
+        [SerializeField]
+        protected MonoBehaviour IosRecordingService;
+
+        /// <summary>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingServiceVisual"/>
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingServiceVisual. Note: errors will be generated if the provided MonoBehaviour does not implement IRecordingServiceVisual")]
+        [SerializeField]
+        protected MonoBehaviour RecordingServiceVisual;
+
+        /// <summary>
+        /// List of MonoBehaviours that implement <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.IPlayerStateObserver"/>
+        /// </summary>
+        [Tooltip("List of MonoBehaviours that observe player state changes. Note: errors will be generated if any of the provided MonoBehaviours do not implement IPlayerStateObserver")]
+        [SerializeField]
+        protected List<MonoBehaviour> PlayerStateObservers;
+
+        /// <summary>
+        /// Transform from the local application origin to the shared application origin
+        /// </summary>
         public Matrix4x4 LocalOriginToSharedOrigin { get; set; }
+
+        /// <summary>
+        /// If set, a transform from the local appliation origin to the shared appliation origin will be set to this SceneRoot GameObject
+        /// </summary>
         public GameObject SceneRoot { get; set; }
-        IMatchMakingService _matchMakingService;
-        IPlayerService _playerService;
-        INetworkingService _networkingService;
-        ISpatialCoordinateService _spatialCoordinateService;
-        List<IPlayerStateObserver> _playerStateObservers;
-        IRecordingService _recordingService;
-        IRecordingServiceVisual _recordingServiceVisual;
 
-        bool _validState = true;
+        protected IMatchMakingService _matchMakingService;
+        protected IPlayerService _playerService;
+        protected INetworkingService _networkingService;
+        protected ISpatialCoordinateService _spatialCoordinateService;
+        protected List<IPlayerStateObserver> _playerStateObservers;
+        protected IRecordingService _recordingService;
+        protected IRecordingServiceVisual _recordingServiceVisual;
 
-        void OnValidate()
+        protected bool _validState = true;
+
+        protected void OnValidate()
         {
 #if UNITY_EDITOR
             FieldHelper.ValidateType<IMatchMakingService>(MatchMakingService);
@@ -51,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
 #endif
         }
 
-        void Awake()
+        protected void Awake()
         {
             _matchMakingService = MatchMakingService as IMatchMakingService;
             _playerService = PlayerService as IPlayerService;
@@ -78,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             SetupRecordingService();
         }
 
-        void Start()
+        protected void Start()
         {
             // Allow spectator view logic to exist across multiple scenes
             DontDestroyOnLoad(gameObject);
@@ -93,12 +151,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             }
         }
 
-        private void OnDataReceivedEvent(string playerId, byte[] payload)
+        protected void OnDataReceivedEvent(string playerId, byte[] payload)
         {
             _spatialCoordinateService.Sync(playerId, payload);
         }
 
-        private void OnPlayerConnected(string playerId)
+        protected void OnPlayerConnected(string playerId)
         {
             Debug.Log("Observed new player: " + playerId);
             foreach (var observer in _playerStateObservers)
@@ -107,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             }
         }
 
-        private void OnPlayerDisconnected(string playerId)
+        protected void OnPlayerDisconnected(string playerId)
         {
             Debug.Log("Player lost: " + playerId);
             foreach (var observer in _playerStateObservers)
@@ -116,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             }
         }
 
-        private void OnSpatialCoordinateStateUpdated(byte[] payload)
+        protected void OnSpatialCoordinateStateUpdated(byte[] payload)
         {
             if (_matchMakingService.IsConnected())
             {
@@ -127,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             }
         }
 
-        void Update()
+        protected void Update()
         {
             if (_validState)
             {
@@ -162,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
             }
         }
 
-        private void SetupRecordingService()
+        protected void SetupRecordingService()
         {
             _recordingServiceVisual = RecordingServiceVisual as IRecordingServiceVisual;
 

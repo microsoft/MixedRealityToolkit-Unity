@@ -6,18 +6,23 @@ using System;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
 {
+    /// <summary>
+    /// Class implementing <see cref="IRecordingService"/> for the Android platform
+    /// </summary>
     public class AndroidRecordingService : MonoBehaviour,
     IRecordingService
     {
-        const string _fileNamePrefix = "spectatorView";
-        const string _fileNameExt = ".mp4";
+        private readonly string _fileNamePrefix = "spectatorView";
+        private readonly string _fileNameExt = ".mp4";
         private bool _initialized = false;
         private bool _recording = false;
 
+        /// <inheritdoc />
         public void Dispose()
         {
         }
 
+        /// <inheritdoc />
         public void Initialize()
         {
             if (!_initialized)
@@ -44,6 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
             }
         }
 
+        /// <inheritdoc />
         public bool IsInitialized()
         {
             if (_initialized)
@@ -64,6 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
             return false;
         }
 
+        /// <inheritdoc />
         public bool StartRecording()
         {
             if (_initialized && !_recording)
@@ -93,6 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
             return false;
         }
 
+        /// <inheritdoc />
         public void StopRecording()
         {
             if (_initialized && _recording)
@@ -118,6 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
             }
         }
 
+        /// <inheritdoc />
         public bool IsRecordingAvailable()
         {
             try
@@ -135,6 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
             return false;
         }
 
+        /// <inheritdoc />
         public void ShowRecording()
         {
             try
@@ -150,6 +160,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
             }
         }
 
+        /// <summary>
+        /// Obtains a Unity wrapper object for the Android application's default activity
+        /// </summary>
+        /// <returns>Unity wrapper object for the Android application's default activity</returns>
         private AndroidJavaObject GetScreenRecorderActivity()
         {
             using (var classType = new AndroidJavaClass("java.lang.Class"))
@@ -164,7 +178,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
             }
         }
 
-        private String GetLastErrorMessage()
+        /// <summary>
+        /// Gets the last error message cached by the Android recording service
+        /// </summary>
+        /// <returns>last error message cached by the Android recording service</returns>
+        private string GetLastErrorMessage()
         {
             try
             {
@@ -181,7 +199,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
             return "Failed to obtain last error message";
         }
 
-        private String GetUniqueFileName()
+        /// <summary>
+        /// Generates a unique file name based on time
+        /// </summary>
+        /// <returns>Unique file name based on time</returns>
+        private string GetUniqueFileName()
         {
             var fileStamp = DateTime.Now.ToString("yyyy'_'MM'_'dd'_'HH':'mm':'ss");
             return _fileNamePrefix + "_" + fileStamp + _fileNameExt;

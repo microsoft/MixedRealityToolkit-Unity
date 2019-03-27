@@ -8,25 +8,58 @@ using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 {
+    /// <summary>
+    /// Delegate called to toggle visibility for <see cref="IMobileOverlayVisualChild"/>ren.
+    /// </summary>
+    /// <param name="visible">If true, show any associated game object/UI. If false, hide said content</param>
     public delegate void OverlayVisibilityRequest(bool visible);
 
+    /// <summary>
+    /// Interface implemented by classes that show/hide based on spectator view UI visibility changes
+    /// </summary>
     public interface IMobileOverlayVisualChild
     {
+        /// <summary>
+        /// Show any associated UI/GameObjects
+        /// </summary>
         void Show();
+
+        /// <summary>
+        /// Hide any associated UI/GameObjects
+        /// </summary>
         void Hide();
+
+        /// <summary>
+        /// Event for requesting to show/hide spectator view UI
+        /// </summary>
         event OverlayVisibilityRequest OverlayVisibilityRequest;
     }
 
+    /// <summary>
+    /// Helper class responsible for facilitating visibility changes in mobile UI
+    /// </summary>
     public class MobileOverlayVisual : MonoBehaviour
     {
-        [SerializeField] float _holdTimeToDisplay = 1.0f;
-        [SerializeField] List<MonoBehaviour> _children;
-        List<IMobileOverlayVisualChild> _overlayChildren;
-        float _lastTouchTime = 0;
-        bool _touching = false;
-        bool _uiToggledForTouch = false;
-        bool _showingUI = false;
-        bool _uiNeedsUpdate = false;
+        /// <summary>
+        /// Amount of time (in seconds) to press and hold the screen in order to toggle mobile UI visibility.
+        /// </summary>
+        [Tooltip("Amount of time (in seconds) to press and hold the screen in order to toggle mobile UI visibility")]
+        [SerializeField]
+        protected float _holdTimeToDisplay = 1.0f;
+
+        /// <summary>
+        /// List of MonoBehaviours implementing <see cref="IMobileOverlayVisualChild"/>. Errors will be thrown if any elements don't implement IMobileOverlayVisualChild.
+        /// </summary>
+        [Tooltip("List of MonoBehaviours implementing IMobileOverlayVisualChild. Errors will be thrown if any elements don't implement IMobileOverlayVisualChild.")]
+        [SerializeField]
+        protected List<MonoBehaviour> _children;
+
+        private List<IMobileOverlayVisualChild> _overlayChildren;
+        private float _lastTouchTime = 0;
+        private bool _touching = false;
+        private bool _uiToggledForTouch = false;
+        private bool _showingUI = false;
+        private bool _uiNeedsUpdate = false;
 
         private void OnValidate()
         {
@@ -52,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             }
         }
 
-        void Update()
+        private void Update()
         {
             if (Input.touchCount > 0)
             {
@@ -81,17 +114,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             }
         }
 
-        void ToggleUIVisibility()
+        private void ToggleUIVisibility()
         {
             SetUIVisibility(!_showingUI);
         }
 
-        void OnOverlayVisibilityRequest(bool visibility)
+        private void OnOverlayVisibilityRequest(bool visibility)
         {
             SetUIVisibility(visibility);
         }
 
-        void SetUIVisibility(bool visibility)
+        private void SetUIVisibility(bool visibility)
         {
             if (_showingUI != visibility)
             {
@@ -100,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             }
         }
 
-        void UpdateUI()
+        private void UpdateUI()
         {
             if (_children != null)
             {

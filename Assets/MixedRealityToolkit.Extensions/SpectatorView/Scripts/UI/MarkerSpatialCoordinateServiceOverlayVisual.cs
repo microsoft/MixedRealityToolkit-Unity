@@ -8,25 +8,36 @@ using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 {
+    /// <summary>
+    /// Helper class for displaying state changes related to the <see cref="Sharing.MarkerSpatialCoordinateService"/>.
+    /// </summary>
     public class MarkerSpatialCoordinateServiceOverlayVisual : MonoBehaviour,
         IMarkerSpatialCoordinateServiceOverlayVisual
     {
-        [SerializeField] Text _text;
+        /// <summary>
+        /// Text UI element for displaying text related to MarkerSpatialCoordinateService state changes.
+        /// </summary>
+        [Tooltip("Text UI element for displaying text related to MarkerSpatialCoordinateService state changes.")]
+        [SerializeField]
+        protected Text _text;
 
-        const string waitingForUserText = "Waiting for user...";
-        const string locatingLocalOriginText = "Locating local origin...";
-        const string locatingMarkerText = "Locating marker...";
+        protected string waitingForUserText = "Waiting for user...";
+        protected string locatingLocalOriginText = "Locating local origin...";
+        protected string locatingMarkerText = "Locating marker...";
 
+        /// <inheritdoc />
         public void ShowVisual()
         {
             gameObject.SetActive(true);
         }
 
+        /// <inheritdoc />
         public void HideVisual()
         {
             gameObject.SetActive(false);
         }
 
+        /// <inheritdoc />
         public void UpdateVisualState(MarkerSpatialCoordinateServiceOverlayState state)
         {
             if (_text == null)
