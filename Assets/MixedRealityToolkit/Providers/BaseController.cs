@@ -144,12 +144,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private bool SetupCurrentOrDefaultInteractions()
         {
-            if (Interactions == null || Interactions.Length < 1)
+            if (Interactions == null || Interactions.Length == 0)
             {
                 SetupDefaultInteractions(ControllerHandedness);
 
                 // We still don't have controller mappings, so this may be a custom controller. 
-                return Interactions == null || Interactions.Length < 1;
+                return Interactions != null && Interactions.Length > 0;
             }
 
             return true;
