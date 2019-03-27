@@ -1,0 +1,36 @@
+﻿- name: About MRTK
+  items:
+  - name: MRTK-SDK
+    href: ../MRTK-SDK.md
+  - name: MRTK-vNext
+    href: ../MRTK-vNext.md
+  - name: Mixed Reality Services
+    href: ../External/Documentation/MixedRealityServices.md
+- name: Contributing
+  href: ../CONTRIBUTING.md
+  items:
+  - name: Feature Contribution Process
+    href: ../Feature_Contribution_Process.md
+  - name: Coding Guidelines
+    href: ../CodingGuidelines.md
+  - name: Documentation Guide
+    href: ../DocumentationGuide.md
+  - name: Developer Docs Generation
+    href: DevDocGuide.md
+- name: How-tos
+  href: ../External/HowTo/README.md
+  items:
+  - name: Getting Started
+    href: GettingStartedWithTheMRTK.md
+  - name: Downloading MRTK
+    href: DownloadingTheMRTK.md
+  - name: Configuration Guide
+    href: MixedRealityConfigurationGuide.md
+- name: Planning
+  items:
+  - name: MRTK-WorkRoadmap
+    href: ../MRTK-WorkRoadmap.md
+  - name: Roadmap
+    href: ../Roadmap.md
+- name: Notice
+  href: ../NOTICE.md

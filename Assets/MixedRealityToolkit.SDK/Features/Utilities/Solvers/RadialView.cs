@@ -3,75 +3,137 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// RadialViewPoser solver locks a tag-along type object within a view cone
     /// </summary>
     public class RadialView : Solver
     {
-        private enum ReferenceDirectionEnum
-        {
-            /// <summary>
-            /// Orient towards head including roll, pitch and yaw
-            /// </summary>
-            ObjectOriented,
-            /// <summary>
-            /// Orient toward head but ignore roll
-            /// </summary>
-            FacingWorldUp,
-            /// <summary>
-            /// Orient towards head but remain vertical or gravity aligned
-            /// </summary>
-            GravityAligned
-        }
-
         [SerializeField]
         [Tooltip("Which direction to position the element relative to: HeadOriented rolls with the head, HeadFacingWorldUp view direction but ignores head roll, and HeadMoveDirection uses the direction the head last moved without roll")]
-        private ReferenceDirectionEnum referenceDirection = ReferenceDirectionEnum.FacingWorldUp;
+        private RadialViewReferenceDirection referenceDirection = RadialViewReferenceDirection.FacingWorldUp;
+
+        /// <summary>
+        /// Which direction to position the element relative to:
+        /// HeadOriented rolls with the head,
+        /// HeadFacingWorldUp view direction but ignores head roll,
+        /// and HeadMoveDirection uses the direction the head last moved without roll.
+        /// </summary>
+        public RadialViewReferenceDirection ReferenceDirection
+        {
+            get { return referenceDirection; }
+            set { referenceDirection = value; }
+        }
 
         [SerializeField]
         [Tooltip("Min distance from eye to position element around, i.e. the sphere radius")]
         private float minDistance = 1f;
 
+        /// <summary>
+        /// Min distance from eye to position element around, i.e. the sphere radius.
+        /// </summary>
+        public float MinDistance
+        {
+            get { return minDistance; }
+            set { minDistance = value; }
+        }
+
         [SerializeField]
         [Tooltip("Max distance from eye to element")]
         private float maxDistance = 2f;
+
+        /// <summary>
+        /// Max distance from eye to element.
+        /// </summary>
+        public float MaxDistance
+        {
+            get { return maxDistance; }
+            set { maxDistance = value; }
+        }
 
         [SerializeField]
         [Tooltip("The element will stay at least this far away from the center of view")]
         private float minViewDegrees = 0f;
 
+        /// <summary>
+        /// The element will stay at least this far away from the center of view.
+        /// </summary>
+        public float MinViewDegrees
+        {
+            get { return minViewDegrees; }
+            set { minViewDegrees = value; }
+        }
+
         [SerializeField]
         [Tooltip("The element will stay at least this close to the center of view")]
         private float maxViewDegrees = 30f;
 
+        /// <summary>
+        /// The element will stay at least this close to the center of view.
+        /// </summary>
+        public float MaxViewDegrees
+        {
+            get { return maxViewDegrees; }
+            set { maxViewDegrees = value; }
+        }
+
         [SerializeField]
-        [Tooltip("Apply a different clamp to vertical FOV than horizontal.  Vertical = Horizontal * aspectV")]
+        [Tooltip("Apply a different clamp to vertical FOV than horizontal. Vertical = Horizontal * aspectV")]
         private float aspectV = 1f;
+
+        /// <summary>
+        /// Apply a different clamp to vertical FOV than horizontal. Vertical = Horizontal * AspectV.
+        /// </summary>
+        public float AspectV
+        {
+            get { return aspectV; }
+            set { aspectV = value; }
+        }
 
         [SerializeField]
         [Tooltip("Option to ignore angle clamping")]
         private bool ignoreAngleClamp = false;
 
+        /// <summary>
+        /// Option to ignore angle clamping.
+        /// </summary>
+        public bool IgnoreAngleClamp
+        {
+            get { return ignoreAngleClamp; }
+            set { ignoreAngleClamp = value; }
+        }
+
         [SerializeField]
         [Tooltip("Option to ignore distance clamping")]
         private bool ignoreDistanceClamp = false;
+
+        /// <summary>
+        /// Option to ignore distance clamping.
+        /// </summary>
+        public bool IgnoreDistanceClamp
+        {
+            get { return ignoreDistanceClamp; }
+            set { ignoreDistanceClamp = value; }
+        }
 
         [SerializeField]
         [Tooltip("If true, element will orient to ReferenceDirection, otherwise it will orient to ref position.")]
         private bool orientToReferenceDirection = false;
 
         /// <summary>
+        /// If true, element will orient to ReferenceDirection, otherwise it will orient to ref position.
+        /// </summary>
+        public bool OrientToReferenceDirection
+        {
+            get { return orientToReferenceDirection; }
+            set { orientToReferenceDirection = value; }
+        }
+
+        /// <summary>
         /// Position to the view direction, or the movement direction, or the direction of the view cone.
         /// </summary>
-        private Vector3 ReferenceDirection
-        {
-            get
-            {
-                return SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.forward : Vector3.forward;
-            }
-        }
+        private Vector3 SolverReferenceDirection => SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.forward : Vector3.forward;
 
         /// <summary>
         /// The up direction to use for orientation.
@@ -83,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             {
                 Vector3 upReference = Vector3.up;
 
-                if (referenceDirection == ReferenceDirectionEnum.ObjectOriented)
+                if (referenceDirection == RadialViewReferenceDirection.ObjectOriented)
                 {
                     upReference = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.up : Vector3.up;
                 }
@@ -121,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
             if (orientToReferenceDirection)
             {
-                goalRotation = Quaternion.LookRotation(ReferenceDirection, refDirUp);
+                goalRotation = Quaternion.LookRotation(SolverReferenceDirection, refDirUp);
             }
             else
             {
@@ -129,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             }
 
             // If gravity aligned then zero out the x and z axes on the rotation
-            if (referenceDirection == ReferenceDirectionEnum.GravityAligned)
+            if (referenceDirection == RadialViewReferenceDirection.GravityAligned)
             {
                 goalRotation.x = goalRotation.z = 0f;
             }
@@ -167,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         private void GetDesiredOrientation(ref Vector3 desiredPos)
         {
             // Determine reference locations and directions
-            Vector3 direction = ReferenceDirection;
+            Vector3 direction = SolverReferenceDirection;
             Vector3 upDirection = UpReference;
             Vector3 referencePoint = ReferencePoint;
             Vector3 elementPoint = transform.position;

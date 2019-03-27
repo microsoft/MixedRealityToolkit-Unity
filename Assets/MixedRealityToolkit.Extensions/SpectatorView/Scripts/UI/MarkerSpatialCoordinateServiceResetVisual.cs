@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing;
 namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 {
     /// <summary>
-    /// Helper class for UI responsible for resetting the <see cref="MarkerSpatialCoordinateService"/>.
+    /// Helper class for UI responsible for resetting the <see cref="Sharing.MarkerSpatialCoordinateService"/>.
     /// </summary>
     public class MarkerSpatialCoordinateServiceResetVisual : MonoBehaviour,
         IMarkerSpatialCoordinateServiceResetVisual,

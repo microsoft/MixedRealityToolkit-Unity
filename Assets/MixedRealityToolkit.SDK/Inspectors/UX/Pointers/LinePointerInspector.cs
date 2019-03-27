@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.SDK.UX.Pointers;
+using Microsoft.MixedReality.Toolkit.Input.Editor;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [CustomEditor(typeof(LinePointer))]
     public class LinePointerInspector : BaseControllerPointerInspector
@@ -18,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         private SerializedProperty lineRenderers;
 
         private bool linePointerFoldout = true;
+        private const int maxRecommendedLinecastResolution = 20;
 
         protected override void OnEnable()
         {
@@ -42,12 +44,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             if (linePointerFoldout)
             {
                 EditorGUI.indentLevel++;
+
+                int lineCastResolutionValue = lineCastResolution.intValue;
+                if (lineCastResolutionValue > maxRecommendedLinecastResolution)
+                {
+                    EditorGUILayout.LabelField("Note: values above " + maxRecommendedLinecastResolution + " should only be used when your line is expected to be highly non-uniform.", EditorStyles.miniLabel);
+                }
+
+                EditorGUILayout.PropertyField(lineCastResolution);
                 EditorGUILayout.PropertyField(lineColorSelected);
                 EditorGUILayout.PropertyField(lineColorValid);
                 EditorGUILayout.PropertyField(lineColorInvalid);
                 EditorGUILayout.PropertyField(lineColorNoTarget);
                 EditorGUILayout.PropertyField(lineColorLockFocus);
-                EditorGUILayout.PropertyField(lineCastResolution);
                 EditorGUILayout.PropertyField(lineRenderers, true);
                 EditorGUI.indentLevel--;
             }

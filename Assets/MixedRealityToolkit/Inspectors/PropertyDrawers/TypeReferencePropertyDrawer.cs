@@ -1,8 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -10,10 +9,10 @@ using UnityEditor.Compilation;
 using UnityEngine;
 using Assembly = System.Reflection.Assembly;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Custom property drawer for <see cref="SystemType"/> properties.
+    /// Custom property drawer for <see cref="Utilities.SystemType"/> properties.
     /// </summary>
     [CustomPropertyDrawer(typeof(SystemType))]
     [CustomPropertyDrawer(typeof(SystemTypeAttribute), true)]
@@ -34,12 +33,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
         /// </summary>
         /// <remarks>
         /// <para>This property must be set immediately before presenting a class
-        /// type reference property field using <see cref="EditorGUI.PropertyField(Rect,SerializedProperty)"/>
-        /// or <see cref="EditorGUILayout.PropertyField(SerializedProperty,UnityEngine.GUILayoutOption[])"/> since the value of this
-        /// property is reset to <c>null</c> each time the control is drawn.</para>
-        /// <para>Since filtering makes extensive use of <see cref="ICollection{Type}.Contains"/>
+        /// type reference property field using <see href="https://docs.unity3d.com/ScriptReference/EditorGUI.PropertyField.html">EditorGUI.PropertyField</see>
+        /// since the value of this property is reset to <c>null</c> each time the control is drawn.</para>
+        /// <para>Since filtering makes extensive use of <see cref="System.Collections.Generic.ICollection{Type}.Contains"/>
         /// it is recommended to use a collection that is optimized for fast
-        /// look ups such as <see cref="HashSet{Type}"/> for better performance.</para>
+        /// look ups such as HashSet for better performance.</para>
         /// </remarks>
         /// <example>
         /// <para>Exclude a specific type from being selected:</para>
@@ -178,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
                     break;
 
                 case EventType.Repaint:
-                    // Remove assembly name and namespace from content of popup control.
+                    // Remove assembly name and namespace from content of pop-up control.
                     var classRefParts = classRef.Split(',');
                     var className = classRefParts[0].Trim();
                     className = className.Substring(className.LastIndexOf(".", StringComparison.Ordinal) + 1);

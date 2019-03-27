@@ -1,11 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
-using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
+namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
     /// <summary>
     /// The interface contract that defines the Diagnostics system in the Mixed Reality Toolkit
@@ -13,43 +10,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
     public interface IMixedRealityDiagnosticsSystem : IMixedRealityEventSystem, IMixedRealityEventSource
     {
         /// <summary>
-        /// Enable / disable the diagnostic display
+        /// Enable / disable diagnostic display.
         /// </summary>
-        bool Visible { get; set; }
+        /// <remarks>
+        /// When set to true, visibility settings for individual diagnostics are honored. When set to false,
+        /// all visualizations are hidden.
+        /// </remarks>
+        bool ShowDiagnostics { get; set; }
 
         /// <summary>
-        /// Enable / disable cpu profiling when the diagnostic panel is visible. 
+        /// Enable / disable the profiler display.
         /// </summary>
-        bool ShowCpu { get; set; }
+        bool ShowProfiler { get; set; }
 
         /// <summary>
-        /// The cpu use tracker.
+        /// The amount of time, in seconds, to collect frames for frame rate calculation.
         /// </summary>
-        CpuUseTracker CpuUseTracker { get; }
-
-        /// <summary>
-        /// Enable / disable fps profiling when the diagnostic panel is visible. 
-        /// </summary>
-        bool ShowFps { get; set; }
-
-        /// <summary>
-        /// The fps use tracker.
-        /// </summary>
-        FpsUseTracker FpsUseTracker { get; }
-
-        /// <summary>
-        /// Enable / disable memory profiling when the diagnostic panel is visible. 
-        /// </summary>
-        bool ShowMemory { get; set; }
-
-        /// <summary>
-        /// The memory use tracker.
-        /// </summary>
-        MemoryUseTracker MemoryUseTracker { get; }
-
-        /// <summary>
-        /// Gets the <see cref="GameObject"/> that represents the diagnostic visualization
-        /// </summary>
-        GameObject DiagnosticVisualization { get; }
+        float FrameRateDuration { get; }
     }
 }

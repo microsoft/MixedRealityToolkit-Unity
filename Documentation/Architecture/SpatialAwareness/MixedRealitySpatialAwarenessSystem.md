@@ -2,9 +2,9 @@
 
 | Toolkit Layer | Namespace |
 | --- | --- |
-| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
+| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SpatialAwareness |
 
-The MixedRealitySpatialAwarenessSystem class provides the default implementation of the spatial awareness system. Implements the [IMixedRealitySpatialAwarenessSystem](./IMixedRealitySpatialAwarenessSystem.md) interface.
+The MixedRealitySpatialAwarenessSystem class provides the default implementation of the spatial awareness system. Implements the [IMixedRealitySpatialAwarenessSystem](IMixedRealitySpatialAwarenessSystem.md) interface.
 
 ## General System Controls
 
@@ -58,7 +58,7 @@ Gets the bit mask that corresponds to the value specified in MeshPhysicsLayer.
 
 ### MeshLevelOfDetail
 
-Gets or sets the level of detail, as a [SpatialAwarenessMeshLevelOfDetail](./SpatialAwarenessMeshLevelOfDetail.md) value, for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter.
+Gets or sets the level of detail, as a [SpatialAwarenessMeshLevelOfDetail](SpatialAwarenessMeshLevelOfDetail.md) value, for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter.
 
 Specifying any other value will cause MeshTrianglesPerCubicMeter to be overwritten.
 
@@ -152,12 +152,12 @@ Returns the collection of GameObjects managed by the surface finding subsystem.
 
 The spatial awareness system raises events on the following handler types to indicate when spatial data is added, updated and removed.
 
-- [IMixedRealitySpatialAwarenessMeshHandler](./IMixedRealitySpatialAwarenessMeshHandler.md)
-- [IMixedRealitySpatialAwarenessSurfaceFindingHandler](./IMixedRealitySpatialAwarenessSurfaceFindingHandler.md)
+- [IMixedRealitySpatialAwarenessMeshHandler](IMixedRealitySpatialAwarenessMeshHandler.md)
+- [IMixedRealitySpatialAwarenessSurfaceFindingHandler](IMixedRealitySpatialAwarenessSurfaceFindingHandler.md)
 
 ## See Also
 
-- [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
-- [IMixedRealitySpatialAwarenessSystem Interface](./IMixedRealitySpatialAwarenessSystem.md)
-- [SpatialAwarenessMeshDisplayOptions Enumeration](./SpatialAwarenessMeshDisplayOptions.md)
-- [SpatialAwarenessMeshLevelOfDetail Enumeration](./SpatialAwarenessMeshLevelOfDetail.md)
+- [Mixed Reality Spatial Awareness System Architecture](SpatialAwarenessSystemArchitecture.md)
+- [IMixedRealitySpatialAwarenessSystem Interface](IMixedRealitySpatialAwarenessSystem.md)
+- [SpatialAwarenessMeshDisplayOptions Enumeration](SpatialAwarenessMeshDisplayOptions.md)
+- [SpatialAwarenessMeshLevelOfDetail Enumeration](SpatialAwarenessMeshLevelOfDetail.md)

@@ -1,15 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
+namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     [CustomEditor(typeof(SpeechInputHandler))]
     public class SpeechInputHandlerInspector : BaseInputHandlerInspector
@@ -113,12 +111,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
                 // the remove element button
                 bool elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
 
+                EditorGUILayout.EndHorizontal();
+
                 if (elementRemoved)
                 {
                     list.DeleteArrayElementAtIndex(index);
-                }
 
-                EditorGUILayout.EndHorizontal();
+                    if (index == list.arraySize)
+                    {
+                        EditorGUI.indentLevel--;
+                        return;
+                    }
+                }
 
                 SerializedProperty keywordProperty = speechCommandProperty.FindPropertyRelative("keyword");
 

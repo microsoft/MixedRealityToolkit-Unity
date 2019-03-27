@@ -4,13 +4,13 @@
 //
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A background with 'fake' inertia
     /// Useful for soft or liquid objects
     /// </summary>
-    public class ToolTipBackgroundBlob : ToolTipBackground
+    public class ToolTipBackgroundBlob : MonoBehaviour, IToolTipBackground
     {
         // Which transforms to use for each type of distortion
         // See the ToolTipBalloon prefab for an example of which transforms to target
@@ -29,7 +29,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         [SerializeField]
         private Transform attachPointOffset = null;
 
+        [SerializeField]
+        private ToolTip toolTip = null;
+
         #endregion Transform Targets
+
+                /// <summary>
+        /// Determines whether background of Tooltip is visible.
+        /// </summary>
+        public bool IsVisible
+        {
+            set
+            {
+                if (BackgroundRenderer)
+                {
+                    BackgroundRenderer.enabled = value;
+                }
+            }
+        }
 
         [Header("Blob settings")]
         [SerializeField]
@@ -168,9 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         public MeshRenderer BackgroundRenderer;
 
-        protected override void OnEnable()
+        private void OnEnable()
         {
-            base.OnEnable();
             lastPosition = positionTarget.position;
             inertialContentBounds = defaultBounds;
             localContentBounds = defaultBounds;
@@ -178,14 +194,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             backgroundRendererMeshFilter = BackgroundRenderer.GetComponent<MeshFilter>();
         }
 
-        protected override void ScaleToFitContent()
+        public void OnContentChange(Vector3 localContentSize, Vector3 localContentOffset, Transform contentParentTransform)
         {
-            // Get the local size of the content - this is the scale of the text under the content parent
-            Vector3 localContentSize = ToolTipContent.LocalContentSize;
-            Vector3 localContentOffset = ToolTipContent.LocalContentOffset;
 
             // Get the size of the mesh and use this to adjust the local content size on the x / y axis
-            // This will accomodate meshes that aren't built to 1,1 scale
+            // This will accommodate meshes that aren't built to 1,1 scale
             Bounds meshBounds = backgroundRendererMeshFilter.sharedMesh.bounds;
             localContentSize.x /= meshBounds.size.x;
             localContentSize.y /= meshBounds.size.y;
@@ -225,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             rotationTarget.Rotate(velocity * blobRotation * 360);
 
             // Adjust the tool tip attach position
-            ToolTipContent.AttachPointPosition = attachPointOffset.position;
+            toolTip.AttachPointPosition = attachPointOffset.position;
 
             lastPosition = currentPosition;
         }

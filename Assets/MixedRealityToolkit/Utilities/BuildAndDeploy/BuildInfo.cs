@@ -8,112 +8,90 @@ using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
+namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
-    public class BuildInfo
+    public class BuildInfo : IBuildInfo
     {
-        public string OutputDirectory { get; set; }
+        public BuildInfo(bool isCommandLine = false)
+        {
+            IsCommandLine = isCommandLine;
+            BuildSymbols = string.Empty;
+            BuildTarget = EditorUserBuildSettings.activeBuildTarget;
+            Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path);
+        }
 
+        /// <inheritdoc />
+        public virtual BuildTarget BuildTarget { get; }
+
+        /// <inheritdoc />
+        public bool IsCommandLine { get; }
+
+        private string outputDirectory;
+
+        /// <inheritdoc />
+        public string OutputDirectory
+        {
+            get => string.IsNullOrEmpty(outputDirectory) ? outputDirectory = BuildDeployPreferences.BuildDirectory : outputDirectory;
+            set => outputDirectory = value;
+        }
+
+        /// <inheritdoc />
         public IEnumerable<string> Scenes { get; set; }
 
-        public IEnumerable<CopyDirectoryInfo> CopyDirectories { get; set; }
+        /// <inheritdoc />
+        public Action<IBuildInfo> PreBuildAction { get; set; }
 
-        public Action<BuildInfo> PreBuildAction { get; set; }
+        /// <inheritdoc />
+        public Action<IBuildInfo, BuildReport> PostBuildAction { get; set; }
 
-        public Action<BuildInfo, BuildReport> PostBuildAction { get; set; }
-
+        /// <inheritdoc />
         public BuildOptions BuildOptions { get; set; }
 
-        public BuildTarget BuildTarget { get; set; }
+        /// <inheritdoc />
+        public ColorSpace? ColorSpace { get; set; }
 
+        /// <inheritdoc />
+        public ScriptingImplementation? ScriptingBackend { get; set; }
+
+        /// <inheritdoc />
+        public bool AutoIncrement { get; set; } = false;
+
+        /// <inheritdoc />
+        public string BuildSymbols { get; set; }
+
+        /// <inheritdoc />
+        public string BuildPlatform { get; set; }
+
+        /// <inheritdoc />
         public string Configuration
         {
             get
             {
-                if (!HasConfigurationSymbol() || HasAnySymbols(UwpPlayerBuildTools.BuildSymbolDebug))
+                if (!this.HasConfigurationSymbol())
                 {
-                    return UwpPlayerBuildTools.BuildSymbolDebug;
+                    return UnityPlayerBuildTools.BuildSymbolMaster;
                 }
 
-                return HasAnySymbols(UwpPlayerBuildTools.BuildSymbolRelease) ?
-                        UwpPlayerBuildTools.BuildSymbolRelease :
-                        UwpPlayerBuildTools.BuildSymbolMaster;
+                return this.HasAnySymbols(UnityPlayerBuildTools.BuildSymbolDebug)
+                    ? UnityPlayerBuildTools.BuildSymbolDebug
+                    : this.HasAnySymbols(UnityPlayerBuildTools.BuildSymbolRelease)
+                        ? UnityPlayerBuildTools.BuildSymbolRelease
+                        : UnityPlayerBuildTools.BuildSymbolMaster;
             }
-        }
-
-        public string BuildPlatform { get; set; }
-
-        public WSASDK? WSASdk { get; set; }
-
-        public string WSAUwpSdk { get; set; }
-
-        public WSAUWPBuildType? WSAUWPBuildType { get; set; }
-
-        public bool? WSAGenerateReferenceProjects { get; set; }
-
-        public ColorSpace? ColorSpace { get; set; }
-
-        public bool IsCommandLine { get; set; }
-
-        public bool BuildAppx => HasAnySymbols("-buildAppx");
-
-        public string BuildSymbols { get; private set; }
-
-        public BuildInfo()
-        {
-            BuildSymbols = string.Empty;
-            BuildPlatform = "x86";
-        }
-
-        public void AppendSymbols(params string[] symbol)
-        {
-            AppendSymbols((IEnumerable<string>)symbol);
-        }
-
-        public void AppendSymbols(IEnumerable<string> symbols)
-        {
-            string[] toAdd = symbols.Except(BuildSymbols.Split(';'))
-                                    .Where(sym => !string.IsNullOrEmpty(sym)).ToArray();
-
-            if (!toAdd.Any())
+            set
             {
-                return;
+                if (this.HasConfigurationSymbol())
+                {
+                    this.RemoveSymbols(new[]
+                    {
+                        UnityPlayerBuildTools.BuildSymbolDebug,
+                        UnityPlayerBuildTools.BuildSymbolRelease,
+                        UnityPlayerBuildTools.BuildSymbolMaster
+                    });
+                }
+
+                this.AppendSymbols(value);
             }
-
-            if (!string.IsNullOrEmpty(BuildSymbols))
-            {
-                BuildSymbols += ";";
-            }
-
-            BuildSymbols += string.Join(";", toAdd);
-        }
-
-        public bool HasAnySymbols(params string[] symbols)
-        {
-            return BuildSymbols.Split(';').Intersect(symbols).Any();
-        }
-
-        public bool HasConfigurationSymbol()
-        {
-            return HasAnySymbols(
-                UwpPlayerBuildTools.BuildSymbolDebug,
-                UwpPlayerBuildTools.BuildSymbolRelease,
-                UwpPlayerBuildTools.BuildSymbolMaster);
-        }
-
-        public static IEnumerable<string> RemoveConfigurationSymbols(string symbols)
-        {
-            return symbols.Split(';').Except(new[]
-            {
-                UwpPlayerBuildTools.BuildSymbolDebug,
-                UwpPlayerBuildTools.BuildSymbolRelease,
-                UwpPlayerBuildTools.BuildSymbolMaster
-            });
-        }
-
-        public bool HasAnySymbols(IEnumerable<string> symbols)
-        {
-            return BuildSymbols.Split(';').Intersect(symbols).Any();
         }
     }
 }

@@ -1,18 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     public static class MixedRealityRaycaster
     {
         public static bool DebugEnabled = false;
 
         /// <summary>
-        /// Simple raycasts each physics <see cref="RayStep"/>.
+        /// Simple raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
         /// </summary>
         /// <param name="step"></param>
         /// <param name="prioritizedLayerMasks"></param>
@@ -24,9 +22,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         }
 
         /// <summary>
-        /// Simple raycasts each physics <see cref="RayStep"/> within a specified maximum distance.
+        /// Simple raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> within a specified maximum distance.
         /// </summary>
         /// <param name="step"></param>
+        /// <param name="maxDistance"></param>
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
@@ -43,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         }
 
         /// <summary>
-        /// Box raycasts each physics <see cref="RayStep"/>.
+        /// Box raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
         /// </summary>
         /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastBoxPhysicsStep(RayStep step, Vector3 extents, Vector3 targetPosition, Matrix4x4 matrix, float maxDistance, LayerMask[] prioritizedLayerMasks, int raysPerEdge, bool isOrthographic, out Vector3[] points, out Vector3[] normals, out bool[] hits)
@@ -110,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         }
 
         /// <summary>
-        /// Sphere raycasts each physics <see cref="RayStep"/>.
+        /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
         /// </summary>
         /// <param name="step"></param>
         /// <param name="radius"></param>
@@ -123,10 +122,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         }
 
         /// <summary>
-        /// Sphere raycasts each physics <see cref="RayStep"/> within a specified maximum distance.
+        /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> within a specified maximum distance.
         /// </summary>
         /// <param name="step"></param>
         /// <param name="radius"></param>
+        /// <param name="maxDistance"></param>
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>

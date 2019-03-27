@@ -245,6 +245,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edea428b5e02f9144b45b9fbd5ba5278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectAction:
+    id: 1
+    description: Select
+    axisConstraint: 2
   hideThisObject: {fileID: 0}
   spawnThisPrefab: {fileID: 0}
   updateSolverTargetToClickSource: 1

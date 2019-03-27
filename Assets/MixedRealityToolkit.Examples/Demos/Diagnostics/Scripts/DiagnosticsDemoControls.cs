@@ -1,8 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
@@ -19,40 +18,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             await new WaitUntil(() => MixedRealityToolkit.DiagnosticsSystem != null);
 
-            // Turn on the diagnostics for this demo.
-            MixedRealityToolkit.DiagnosticsSystem.Visible = true;
+            // Turn on the diagnostic visualizations for this demo.
+            MixedRealityToolkit.DiagnosticsSystem.ShowDiagnostics = true;
         }
 
         /// <summary>
-        /// Shows or hides the diagnostics information display.
+        /// Shows or hides all enabled diagnostics.
         /// </summary>
         public void OnToggleDiagnostics()
         {
-            MixedRealityToolkit.DiagnosticsSystem.Visible = !MixedRealityToolkit.DiagnosticsSystem.Visible;
+            MixedRealityToolkit.DiagnosticsSystem.ShowDiagnostics = !MixedRealityToolkit.DiagnosticsSystem.ShowDiagnostics;
         }
 
         /// <summary>
-        /// Shows or hides the frame rate display.
+        /// Shows or hides the profiler display.
         /// </summary>
-        public void OnToggleFrameRate()
+        public void OnToggleProfiler()
         {
-            MixedRealityToolkit.DiagnosticsSystem.ShowFps = !MixedRealityToolkit.DiagnosticsSystem.ShowFps;
-        }
-
-        /// <summary>
-        /// Shows or hides the memory usage display.
-        /// </summary>
-        public void OnToggleMemory()
-        {
-            MixedRealityToolkit.DiagnosticsSystem.ShowMemory = !MixedRealityToolkit.DiagnosticsSystem.ShowMemory;
-        }
-
-        /// <summary>
-        /// Shows or hides the processor usage display.
-        /// </summary>
-        public void OnToggleProcessor()
-        {
-            MixedRealityToolkit.DiagnosticsSystem.ShowCpu = !MixedRealityToolkit.DiagnosticsSystem.ShowCpu;
+            MixedRealityToolkit.DiagnosticsSystem.ShowProfiler = !MixedRealityToolkit.DiagnosticsSystem.ShowProfiler;
         }
     }
 }

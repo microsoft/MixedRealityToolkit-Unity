@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
 using System;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.EventDatum
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Generic Base Event Data for Sending Events through the Event System.
@@ -28,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="eventSystem">Usually <see cref="EventSystem.current"/></param>
+        /// <param name="eventSystem">Usually <see href="https://docs.unity3d.com/ScriptReference/EventSystems.EventSystem-current.html">EventSystems.EventSystem.current</see></param>
         public GenericBaseEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>

@@ -2,15 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Services.InputSystem;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Waits for a controller to be initialized, then synchronizes its transform position to a specified handedness.
@@ -47,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         public bool IsTracked { get; protected set; } = false;
 
         /// <summary>
-        /// The current tracking state of the assigned <see cref="IMixedRealityController"/>
+        /// The current tracking state of the assigned <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController"/>
         /// </summary>
         protected TrackingState TrackingState = TrackingState.NotTracked;
 
@@ -139,13 +134,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <inheritdoc />
         public virtual void OnSourcePoseChanged(SourcePoseEventData<MixedRealityPose> eventData)
         {
-            if (eventData.SourceId == Controller?.InputSource.SourceId)
+            if (UseSourcePoseData &&
+                eventData.SourceId == Controller?.InputSource.SourceId)
             {
-                if (UseSourcePoseData && TrackingState == TrackingState.Tracked)
-                {
-                    transform.localPosition = eventData.SourceData.Position;
-                    transform.localRotation = eventData.SourceData.Rotation;
-                }
+                TrackingState = TrackingState.Tracked;
+                transform.localPosition = eventData.SourceData.Position;
+                transform.localRotation = eventData.SourceData.Rotation;
             }
         }
 

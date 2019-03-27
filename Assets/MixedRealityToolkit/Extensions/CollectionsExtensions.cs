@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for .Net Collection objects, e.g. Lists, Dictionaries, Arrays
@@ -41,12 +41,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// Inserts an item in its sorted position into an already sorted collection. This is useful if you need to consume the
         /// collection in between insertions and need it to stay correctly sorted the whole time. If you just need to insert a
         /// bunch of items and then consume the sorted collection at the end, it's faster to add all the elements and then use
-        /// <see cref="List{T}.Sort"/> at the end.
+        /// <see cref="System.Collections.Generic.List{T}.Sort"/> at the end.
         /// </summary>
         /// <typeparam name="TElement">The type of element in the collection.</typeparam>
         /// <param name="elements">The collection of sorted elements to be inserted into.</param>
         /// <param name="toInsert">The element to insert.</param>
-        /// <param name="comparer">The comparer to use when sorting or <see cref="null"/> to use <see cref="Comparer{T}.Default"/>.</param>
+        /// <param name="comparer">The comparer to use when sorting or null to use <see cref="System.Collections.Generic.Comparer{T}.Default"/>.</param>
         /// <returns></returns>
         public static int SortedInsert<TElement>(this List<TElement> elements, TElement toInsert, IComparer<TElement> comparer = null)
         {

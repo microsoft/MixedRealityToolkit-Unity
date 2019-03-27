@@ -1,17 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
+using UnityPhysics = UnityEngine.Physics;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
+namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     public class TeleportPointer : LinePointer
     {
@@ -62,11 +59,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [SerializeField]
         [Tooltip("Layers that are considered 'valid' for navigation")]
-        protected LayerMask ValidLayers = Physics.DefaultRaycastLayers;
+        protected LayerMask ValidLayers = UnityPhysics.DefaultRaycastLayers;
 
         [SerializeField]
         [Tooltip("Layers that are considered 'invalid' for navigation")]
-        protected LayerMask InvalidLayers = Physics.IgnoreRaycastLayer;
+        protected LayerMask InvalidLayers = UnityPhysics.IgnoreRaycastLayer;
 
         private Vector2 currentInputPosition = Vector2.zero;
 
@@ -101,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
-        public override bool IsInteractionEnabled => !IsTeleportRequestActive && teleportEnabled;
+        public override bool IsInteractionEnabled => !IsTeleportRequestActive && teleportEnabled && MixedRealityToolkit.IsTeleportSystemEnabled;
 
         /// <inheritdoc />
         public override float PointerOrientation
@@ -146,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             for (int i = 0; i < Rays.Length; i++)
             {
                 Vector3 currentPoint = LineBase.GetUnClampedPoint(stepSize * (i + 1));
-                Rays[i] = new RayStep(lastPoint, currentPoint);
+                Rays[i].UpdateRayStep(ref lastPoint, ref currentPoint);
                 lastPoint = currentPoint;
             }
 
@@ -251,7 +248,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             // Don't process input if we've got an active teleport request in progress.
-            if (IsTeleportRequestActive) { return; }
+            if (IsTeleportRequestActive || !MixedRealityToolkit.IsTeleportSystemEnabled)
+            {
+                return;
+            }
 
             if (eventData.SourceId == InputSourceParent.SourceId &&
                 eventData.Handedness == Handedness &&
@@ -375,21 +375,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             if (eventData.Pointer.PointerId == PointerId)
             {
                 IsTeleportRequestActive = false;
-                BaseCursor?.SetVisibility(true);
             }
             else
             {
                 IsTeleportRequestActive = true;
                 BaseCursor?.SetVisibility(false);
             }
-        }
-
-        /// <inheritdoc />
-        public override void OnTeleportStarted(TeleportEventData eventData)
-        {
-            // Turn off all pointers while we teleport.
-            IsTeleportRequestActive = true;
-            BaseCursor?.SetVisibility(false);
         }
 
         /// <inheritdoc />

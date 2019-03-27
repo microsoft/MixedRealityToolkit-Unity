@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Services.InputSystem;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Base class for the Mixed Reality Toolkit's SDK input handlers.

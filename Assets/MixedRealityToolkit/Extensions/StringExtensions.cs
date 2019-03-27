@@ -4,7 +4,7 @@
 using System;
 using System.Text;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// <see cref="String"/> Extensions.
@@ -52,18 +52,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             // Add the remaining characters.
             for (int i = 1; i < value.Length; i++)
             {
-                var wasLastCharacterUpper = false;
-
-                if (i < value.Length && i != 0)
-                {
-                    wasLastCharacterUpper = char.IsLetter(result[i - 1]) && char.IsUpper(result[i - 1]);
-                }
-
                 if (char.IsLetter(value[i]) &&
-                    char.IsUpper(value[i]) &&
-                    !wasLastCharacterUpper)
+                    char.IsUpper(value[i]))
                 {
-                    result += " ";
+                    // Add a space if the previous character is not upper-case.
+                    // e.g. "LeftHand" -> "Left Hand"
+                    if (i != 1 && // First character is upper-case in result.
+                        (!char.IsLetter(value[i - 1]) || char.IsLower(value[i - 1])))
+                    {
+                        result += " ";
+                    }
+                    // If previous character is upper-case, only add space if the next
+                    // character is lower-case. Otherwise assume this character to be inside
+                    // an acronym.
+                    // e.g. "OpenVRLeftHand" -> "Open VR Left Hand"
+                    else if (i < value.Length - 1 &&
+                        char.IsLetter(value[i + 1]) && char.IsLower(value[i + 1]))
+                    {
+                        result += " ";
+                    }
                 }
 
                 result += value[i];

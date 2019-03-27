@@ -8,35 +8,35 @@ It is expected that many platforms may not support one or more of the interfaces
 
 Each interface defined will implement one or more Properties, Methods and/or Events (PMEs) that can be accessed by application code.
 
-<img src="Images/SpatialAwarenessSystemArchitecture.png">
+<img src="../../../External/ReadMeImages/SpatialAwareness/SpatialAwarenessSystemArchitecture.png">
 
 ## Interfaces
 
-- [IMixedRealitySpatialAwarenessSystem](./IMixedRealitySpatialAwarenessSystem.md)
-- [IMixedRealitySpatialAwarenessMeshHandler](./IMixedRealitySpatialAwarenessMeshHandler.md)
-- [IMixedRealitySpatialAwarenessSurfaceFindingHandler](./IMixedRealitySpatialAwarenessSurfaceFindingHandler.md)
-- [IMixedRealitySpatialObserver](./IMixedRealitySpatialObserver.md)
+- [IMixedRealitySpatialAwarenessSystem](IMixedRealitySpatialAwarenessSystem.md)
+- [IMixedRealitySpatialAwarenessMeshHandler](IMixedRealitySpatialAwarenessMeshHandler.md)
+- [IMixedRealitySpatialAwarenessSurfaceFindingHandler](IMixedRealitySpatialAwarenessSurfaceFindingHandler.md)
+- [IMixedRealitySpatialObserver](IMixedRealitySpatialObserver.md)
 
 ## Classes
 
-- [MixedRealitySpatialAwarenessSystem](./MixedRealitySpatialAwarenessSystem.md)
-- [MixedRealitySpatialAwarenessMeshHandler](./MixedRealitySpatialAwarenessMeshHandler.md)
-- [MixedRealitySpatialAwarenessSurfaceFindingHandler](./MixedRealitySpatialAwarenessSurfaceFindingHandler.md)
+- [MixedRealitySpatialAwarenessSystem](MixedRealitySpatialAwarenessSystem.md)
+- [MixedRealitySpatialAwarenessMeshHandler](MixedRealitySpatialAwarenessMeshHandler.md)
+- [MixedRealitySpatialAwarenessPlanarSurfaceHandler](MixedRealitySpatialAwarenessPlanarSurfaceHandler.md)
 
 ## Enumerations
 
-- [SpatialAwarenessMeshDisplayOptions](./SpatialAwarenessMeshDisplayOptions.md)
-- [SpatialAwarenessMeshLevelOfDetail](./SpatialAwarenessMeshLevelOfDetail.md)
-- [SpatialAwarenessSurfaceTypes](./SpatialAwarenessSurfaceTypes.md)
+- [SpatialAwarenessMeshDisplayOptions](SpatialAwarenessMeshDisplayOptions.md)
+- [SpatialAwarenessMeshLevelOfDetail](SpatialAwarenessMeshLevelOfDetail.md)
+- [SpatialAwarenessSurfaceTypes](SpatialAwarenessSurfaceTypes.md)
 
 ## Event Data Types
 
-- [MixedRealitySpatialAwarenessEventData](./MixedRealitySpatialAwarenessEventData.md)
+- [MixedRealitySpatialAwarenessEventData](MixedRealitySpatialAwarenessEventData.md)
 
 ## Configuration Profile
 
-- [MixedRealitySpatialAwarenessProfile](./MixedRealitySpatialAwarenessProfile.md)
-- [MixedRealitySpatialAwarenessProfileInspector](./MixedRealitySpatialAwarenessProfileInspector/md)
+- [MixedRealitySpatialAwarenessProfile](MixedRealitySpatialAwarenessProfile.md)
+- [MixedRealitySpatialAwarenessProfileInspector](MixedRealitySpatialAwarenessProfileInspector.md)
  
 ## Example Implementation
 

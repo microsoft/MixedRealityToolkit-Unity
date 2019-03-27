@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Data;
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +12,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     public class ControllerPopupWindow : EditorWindow
     {
@@ -85,20 +83,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
         private ControllerPopupWindow thisWindow;
 
-        private Handedness currentHandedness;
-        private SupportedControllerType currentControllerType;
+        private MixedRealityControllerMapping currentControllerMapping;
 
         private Vector2 mouseDragOffset;
         private GUIStyle flippedLabelStyle;
         private Texture2D currentControllerTexture;
         private ControllerInputActionOption currentControllerOption;
 
-        private bool IsCustomController => currentControllerType == SupportedControllerType.GenericOpenVR ||
-                                           currentControllerType == SupportedControllerType.GenericUnity;
-
         private void OnFocus()
         {
-            currentControllerTexture = ControllerMappingLibrary.GetControllerTexture(currentControllerType, currentHandedness);
+            currentControllerTexture = ControllerMappingLibrary.GetControllerTexture(currentControllerMapping.ControllerType, currentControllerMapping.Handedness);
 
             #region Interaction Constraint Setup
 
@@ -192,16 +186,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             #endregion  Interaction Constraint Setup
         }
 
-        public static void Show(SupportedControllerType controllerType, SerializedProperty interactionsList, Handedness handedness = Handedness.None)
+        public static void Show(MixedRealityControllerMapping controllerMapping, SerializedProperty interactionsList, Handedness handedness = Handedness.None)
         {
-            window = (ControllerPopupWindow)GetWindow(typeof(ControllerPopupWindow));
-            window.Close();
-            window = (ControllerPopupWindow)CreateInstance(typeof(ControllerPopupWindow));
+            if (window != null)
+            {
+                window.Close();
+            }
+
+            window = null;
+
+            window = CreateInstance<ControllerPopupWindow>();
             window.thisWindow = window;
-            var handednessTitleText = handedness != Handedness.None ? $"{handedness} Hand " : string.Empty;
-            window.titleContent = new GUIContent($"{controllerType} {handednessTitleText}Input Action Assignment");
-            window.currentControllerType = controllerType;
-            window.currentHandedness = handedness;
+            window.titleContent = new GUIContent($"{controllerMapping.Description} - Input Action Assignment");
+            window.currentControllerMapping = controllerMapping;
             window.currentInteractionList = interactionsList;
             isMouseInRects = new bool[interactionsList.arraySize];
 
@@ -228,9 +225,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             {
                 controllerInputActionOptions = JsonUtility.FromJson<ControllerInputActionOptions>(File.ReadAllText($"{Application.dataPath}{EditorWindowOptionsPath}"));
 
-                if (controllerInputActionOptions.Controllers.Any(option => option.Controller == controllerType && option.Handedness == handedness))
+                if (controllerInputActionOptions.Controllers.Any(option => option.Controller == controllerMapping.SupportedControllerType && option.Handedness == handedness))
                 {
-                    window.currentControllerOption = controllerInputActionOptions.Controllers.FirstOrDefault(option => option.Controller == controllerType && option.Handedness == handedness);
+                    window.currentControllerOption = controllerInputActionOptions.Controllers.FirstOrDefault(option => option.Controller == controllerMapping.SupportedControllerType && option.Handedness == handedness);
 
                     if (window.currentControllerOption != null && window.currentControllerOption.IsLabelFlipped == null)
                     {
@@ -239,11 +236,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 }
             }
 
-            window.ShowUtility();
-            var windowSize = new Vector2(controllerType == SupportedControllerType.GenericOpenVR || controllerType == SupportedControllerType.GenericUnity ? 896f : 768f, 512f);
+            var windowSize = new Vector2(controllerMapping.HasCustomInteractionMappings ? 896f : 768f, 512f);
             window.maxSize = windowSize;
             window.minSize = windowSize;
             window.CenterOnMainWin();
+            window.ShowUtility();
+
             defaultLabelWidth = EditorGUIUtility.labelWidth;
             defaultFieldWidth = EditorGUIUtility.fieldWidth;
         }
@@ -267,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 };
             }
 
-            if (!IsCustomController && currentControllerTexture != null)
+            if (!currentControllerMapping.HasCustomInteractionMappings && currentControllerTexture != null)
             {
                 GUILayout.BeginHorizontal();
                 GUI.DrawTexture(ControllerRectPosition, currentControllerTexture);
@@ -276,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
             try
             {
-                RenderInteractionList(currentInteractionList, IsCustomController);
+                RenderInteractionList(currentInteractionList, currentControllerMapping.HasCustomInteractionMappings);
             }
             catch (Exception)
             {
@@ -340,12 +338,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                     }
                     else
                     {
-                        if (!controllerInputActionOptions.Controllers.Any(option => option.Controller == currentControllerType && option.Handedness == currentHandedness))
+                        if (!controllerInputActionOptions.Controllers.Any(
+                            option => option.Controller == currentControllerMapping.SupportedControllerType && option.Handedness == currentControllerMapping.Handedness))
                         {
                             currentControllerOption = new ControllerInputActionOption
                             {
-                                Controller = currentControllerType,
-                                Handedness = currentHandedness,
+                                Controller = currentControllerMapping.SupportedControllerType,
+                                Handedness = currentControllerMapping.Handedness,
                                 InputLabelPositions = new Vector2[currentInteractionList.arraySize],
                                 IsLabelFlipped = new bool[currentInteractionList.arraySize]
                             };
@@ -604,11 +603,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                     {
                         bool skip = false;
                         var description = interactionDescription.stringValue;
-                        if (currentControllerType == SupportedControllerType.WindowsMixedReality && currentHandedness == Handedness.None)
+                        if (currentControllerMapping.SupportedControllerType == SupportedControllerType.WindowsMixedReality
+                            && currentControllerMapping.Handedness == Handedness.None)
                         {
                             if (description == "Grip Press" ||
                                 description == "Trigger Position" ||
-                                description == "Trigger Touched" ||
+                                description == "Trigger Touch" ||
                                 description == "Touchpad Position" ||
                                 description == "Touchpad Touch" ||
                                 description == "Touchpad Press" ||
