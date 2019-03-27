@@ -23,7 +23,8 @@
       {
         // generate html for conceptual docs
         "files": ["*.md", "*.yml", //root dir md and toc files
-                "Documentation/**", "Assets/**", "External/Documentation/**", "External/HowTo/**" // conceptual docs subfolders
+                "Documentation/**/*.md", "Assets/**/*.md", "External/Documentation/**/*.md", "External/HowTo/**/*.md", // conceptual docs subfolders md files
+				"Documentation/**/*.yml", "Assets/**/*.yml" // conceptual docs subfolders toc yml files
                 ]
       }
     ],
