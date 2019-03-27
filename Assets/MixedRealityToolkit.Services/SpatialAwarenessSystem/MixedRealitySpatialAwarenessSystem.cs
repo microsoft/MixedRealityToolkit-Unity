@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                 for (int i = 0; i < profile.ObserverConfigurations.Length; i++)
                 {
                     MixedRealitySpatialObserverConfiguration configuration = profile.ObserverConfigurations[i];
-                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, profile };
+                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.ObserverProfile };
 
                     if (Registrar.RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
                         configuration.ComponentType.Type,
