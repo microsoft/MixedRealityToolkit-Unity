@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
                         interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
 
-                        var playspace = GetPlayspace();
+                        var playspace = Playspace;
                         if (playspace != null)
                         {
                             currentGripPose.Position = playspace.TransformPoint(currentGripPosition);
@@ -532,8 +532,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private void EnsureControllerModel(InteractionSourceState interactionSourceState)
         {
             if (controllerModelInitialized ||
-                GetControllerVisualizationProfile() == null ||
-                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+                ControllerVisualizationProfile == null ||
+                !ControllerVisualizationProfile.GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
                 controllerModelInitialized = true;
                 return;
@@ -554,8 +554,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             // It's unclear whether the interaction source will be available during setup, so we attempt to create
             // the controller model on an input update
             if (failedToObtainControllerModel ||
-                GetControllerVisualizationProfile() == null ||
-                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+                ControllerVisualizationProfile == null ||
+                !ControllerVisualizationProfile.GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
                 controllerModelInitialized = true;
                 return base.TryRenderControllerModel(controllerType);
@@ -594,7 +594,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 gltfGameObject = await gltfObject.ConstructAsync();
                 if (gltfGameObject != null)
                 {
-                    var visualizationProfile = GetControllerVisualizationProfile();
+                    var visualizationProfile = ControllerVisualizationProfile;
                     if (visualizationProfile != null)
                     {
                         var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
