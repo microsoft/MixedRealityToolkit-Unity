@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
         private static readonly GUIContent ComponentTypeContent = new GUIContent("Type");
         private static readonly GUIContent RuntimePlatformContent = new GUIContent("Platform(s)");
-        private static readonly GUIContent ConfigurationProfileContent = new GUIContent("Profile");
+        private static readonly GUIContent ObserverProfileContent = new GUIContent("Profile");
 
         private static bool showObservers = true;
         private SerializedProperty observerConfigurations;
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     SerializedProperty runtimePlatform = observer.FindPropertyRelative("runtimePlatform");
                     runtimePlatform.intValue = -1;
 
-                    SerializedProperty configurationProfile = observer.FindPropertyRelative("configurationProfile");
+                    SerializedProperty configurationProfile = observer.FindPropertyRelative("observerProfile");
                     configurationProfile.objectReferenceValue = null;
 
                     serializedObject.ApplyModifiedProperties();
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     SerializedProperty observer = list.GetArrayElementAtIndex(i);
                     SerializedProperty observerName = observer.FindPropertyRelative("componentName");
                     SerializedProperty observerType = observer.FindPropertyRelative("componentType");
-                    SerializedProperty configurationProfile = observer.FindPropertyRelative("configurationProfile");
+                    SerializedProperty observerProfile = observer.FindPropertyRelative("observerProfile");
                     SerializedProperty runtimePlatform = observer.FindPropertyRelative("runtimePlatform");
 
                     using (new EditorGUILayout.VerticalScope())
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                                 {
                                     serializedObject.ApplyModifiedProperties();
                                     System.Type type = ((MixedRealitySpatialAwarenessSystemProfile)serializedObject.targetObject).ObserverConfigurations[i].ComponentType.Type;
-                                    ApplyObserverConfiguration(type, observerName, configurationProfile, runtimePlatform);
+                                    ApplyObserverConfiguration(type, observerName, observerProfile, runtimePlatform);
                                     break;
                                 }
 
@@ -154,12 +154,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                                 changed |= EditorGUI.EndChangeCheck();
 
                                 System.Type serviceType = null;
-                                if (configurationProfile.objectReferenceValue != null)
+                                if (observerProfile.objectReferenceValue != null)
                                 {
                                     serviceType = (target as MixedRealitySpatialAwarenessSystemProfile).ObserverConfigurations[i].ComponentType;
                                 }
 
-                                changed |= RenderProfile(configurationProfile, ConfigurationProfileContent, true, serviceType);
+                                changed |= RenderProfile(observerProfile, ObserverProfileContent, true, serviceType);
                             }
 
                             serializedObject.ApplyModifiedProperties();

@@ -37,12 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
 
         [SerializeField]
-        private BaseSpatialAwarenessObserverProfile configurationProfile;
+        private BaseSpatialAwarenessObserverProfile observerProfile;
 
         /// <summary>
         /// 
         /// </summary>
-        public BaseSpatialAwarenessObserverProfile ConfigurationProfile => configurationProfile;
+        public BaseSpatialAwarenessObserverProfile ObserverProfile => observerProfile;
 
         /// <summary>
         /// 
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             this.componentName = componentName;
             this.priority = priority;
             this.runtimePlatform = runtimePlatform;
-            this.configurationProfile = configurationProfile;
+            this.observerProfile = configurationProfile;
         }
     }
 }
