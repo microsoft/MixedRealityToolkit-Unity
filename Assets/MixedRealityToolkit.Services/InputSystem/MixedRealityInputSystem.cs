@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private MixedRealityInputActionRulesProfile CurrentInputActionRulesProfile { get; set; }
 
-        #region IMixedRealityManager Implementation
+        #region IMixedRealityService Implementation
 
         /// <inheritdoc />
         /// <remarks>
@@ -198,9 +198,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
             dictationEventData = new DictationEventData(EventSystem.current);
         }
 
+        private List<IMixedRealityInputDeviceManager> deviceManagers = new List<IMixedRealityInputDeviceManager>();
+
         /// <inheritdoc />
         public override void Enable()
         {
+            MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+
+            if ((deviceManagers.Count == 0) && (profile != null))
+            {
+                // Register the input device managers.
+                for (int i = 0; i < profile.DataProviderConfigurations.Length; i++)
+                {
+                    MixedRealityInputDataProviderConfiguration configuration = profile.DataProviderConfigurations[i];
+                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, profile };
+
+                    if (Registrar.RegisterDataProvider<IMixedRealityInputDeviceManager>(
+                        configuration.ComponentType.Type,
+                        configuration.RuntimePlatform,
+                        args))
+                    {
+                        deviceManagers.Add(Registrar.GetDataProvider<IMixedRealityInputDeviceManager>(configuration.ComponentName));
+                    }
+                }
+            }
+
             InputEnabled?.Invoke();
         }
 
@@ -234,12 +256,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            if (deviceManagers.Count > 0)
+            {
+                // Unregister the input device managers.
+                for (int i = 0; i < deviceManagers.Count; i++)
+                {
+                    if (deviceManagers[i] != null)
+                    {
+                        Registrar?.UnregisterDataProvider<IMixedRealityInputDeviceManager>(deviceManagers[i]);
+                    }
+                }
+            }
+            deviceManagers.Clear();
+
             InputDisabled?.Invoke();
         }
 
-        #endregion IMixedRealityManager Implementation
+        #endregion IMixedRealityService Implementation
 
-        #region IEventSystemManager Implementation
+        #region IMixedRealityEventSystem Implementation
 
         /// <inheritdoc />
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
@@ -357,7 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.Unregister(listener);
         }
 
-        #endregion IEventSystemManager Implementation
+        #endregion IMixedRealityEventSystem Implementation
 
         #region Input Disabled Options
 

@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             }
         }
 
-        #region IMixedRealityToolkit Implementation
+        #region IMixedRealityToolkitService Implementation
 
         private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
 
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             }
         }
 
-        #endregion IMixedRealityToolkit Implementation
+        #endregion IMixedRealityToolkitService Implementation
 
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
