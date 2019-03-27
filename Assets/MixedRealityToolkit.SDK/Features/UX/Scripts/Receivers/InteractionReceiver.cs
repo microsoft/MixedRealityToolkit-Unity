@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public List<GameObject> Interactables
         {
             get { return interactables; }
-            private set { value = interactables; }
+            private set { interactables = value; }
         }
 
         [Tooltip("Targets for the receiver to affect")]
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public List<GameObject> Targets
         {
             get { return targets; }
-            private set { value = targets; }
+            private set { targets = value; }
         }
 
         #endregion Public Members

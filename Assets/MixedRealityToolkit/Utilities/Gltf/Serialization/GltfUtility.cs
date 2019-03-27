@@ -25,10 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// Imports a glTF object from the provided uri.
         /// </summary>
         /// <param name="uri">the path to the file to load</param>
-        /// <returns>New <see cref="GltfObject"/> imported from uri.</returns>
+        /// <returns>New <see cref="Schema.GltfObject"/> imported from uri.</returns>
         /// <remarks>
         /// Must be called from the main thread.
-        /// If the <see cref="Application.isPlaying"/> is false, then this method will run synchronously.
+        /// If the <see href="https://docs.unity3d.com/ScriptReference/Application-isPlaying.html">Application.isPlaying</see> is false, then this method will run synchronously.
         /// </remarks>
         public static async Task<GltfObject> ImportGltfObjectFromPathAsync(string uri)
         {
@@ -158,8 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// Gets a glTF object from the provided json string.
         /// </summary>
         /// <param name="jsonString">String defining a glTF Object.</param>
-        /// <returns><see cref="GltfObject"/></returns>
-        /// <remarks>Returned <see cref="GltfObject"/> still needs to be initialized using <see cref="ConstructGltf.ConstructAsync"/>.</remarks>
+        /// <returns><see cref="Schema.GltfObject"/></returns>
+        /// <remarks>Returned <see cref="Schema.GltfObject"/> still needs to be initialized using <see cref="ConstructGltf.ConstructAsync"/>.</remarks>
         public static GltfObject GetGltfObjectFromJson(string jsonString)
         {
             var gltfObject = JsonUtility.FromJson<GltfObject>(jsonString);
@@ -207,8 +207,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// Gets a glTF object from the provided byte array
         /// </summary>
         /// <param name="glbData">Raw glb byte data.</param>
-        /// <returns><see cref="GltfObject"/></returns>
-        /// <remarks>Returned <see cref="GltfObject"/> still needs to be initialized using <see cref="ConstructGltf.ConstructAsync"/>.</remarks>
+        /// <returns><see cref="Schema.GltfObject"/></returns>
+        /// <remarks>Returned <see cref="Schema.GltfObject"/> still needs to be initialized using <see cref="ConstructGltf.ConstructAsync"/>.</remarks>
         public static GltfObject GetGltfObjectFromGlb(byte[] glbData)
         {
             const int stride = sizeof(uint);
