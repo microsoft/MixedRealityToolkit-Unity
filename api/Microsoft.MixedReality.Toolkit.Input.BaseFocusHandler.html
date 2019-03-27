@@ -98,13 +98,14 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html">IMixedRealityFocusHandler</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html">IMixedRealityFocusChangedHandler</a></div>
     <div><span class="xref">IEventSystemHandler</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_BaseFocusHandler_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler, IEventSystemHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityFocusChangedHandler, IEventSystemHandler</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -192,7 +193,9 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseFocusHandler_OnBeforeFocusChange_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseFocusHandler.OnBeforeFocusChange*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseFocusHandler_OnBeforeFocusChange_Microsoft_MixedReality_Toolkit_Input_FocusEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseFocusHandler.OnBeforeFocusChange(Microsoft.MixedReality.Toolkit.Input.FocusEventData)">OnBeforeFocusChange(FocusEventData)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Focus event that is raised before the focus is actually changed.
+<remarks>Useful for logic that needs to take place before focus changes.</remarks></p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -219,7 +222,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseFocusHandler_OnFocusChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseFocusHandler.OnFocusChanged*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseFocusHandler_OnFocusChanged_Microsoft_MixedReality_Toolkit_Input_FocusEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseFocusHandler.OnFocusChanged(Microsoft.MixedReality.Toolkit.Input.FocusEventData)">OnFocusChanged(FocusEventData)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Focus event that is raised when the focused object is changed.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -301,6 +305,9 @@
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html">IMixedRealityFocusHandler</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html">IMixedRealityFocusChangedHandler</a>
   </div>
   <div>
       <span class="xref">IEventSystemHandler</span>

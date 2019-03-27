@@ -100,6 +100,7 @@ and then repositioning the object based on that.</p>
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html">IMixedRealityFocusHandler</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html">IMixedRealityFocusChangedHandler</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler</a>&lt;<span class="xref">MixedRealityPose</span>&gt;</div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html">IMixedRealityPointerHandler</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html">IMixedRealitySourceStateHandler</a></div>
@@ -130,7 +131,7 @@ and then repositioning the object based on that.</p>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_DragAndDropHandler_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DragAndDropHandler : BaseFocusHandler, IMixedRealityFocusHandler, IMixedRealityInputHandler&lt;MixedRealityPose&gt;, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler, IEventSystemHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class DragAndDropHandler : BaseFocusHandler, IMixedRealityFocusHandler, IMixedRealityFocusChangedHandler, IMixedRealityInputHandler&lt;MixedRealityPose&gt;, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler, IEventSystemHandler</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -360,6 +361,9 @@ and then repositioning the object based on that.</p>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html">IMixedRealityFocusHandler</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html">IMixedRealityFocusChangedHandler</a>
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler&lt;T&gt;</a>
