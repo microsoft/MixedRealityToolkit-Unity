@@ -1,29 +1,41 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 
-namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityInputSystem"/>
+    /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/>
     /// </summary>
-    public class MixedRealityInputSystem : BaseEventSystem, IMixedRealityInputSystem
+    public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem
     {
+        public MixedRealityInputSystem(
+            IMixedRealityServiceRegistrar registrar,
+            MixedRealityInputSystemProfile profile,
+            Transform playspace) : base(registrar, profile)
+        {
+            if (registrar == null)
+            {
+                Debug.LogError("The MixedRealityInputSystem object requires a valid IMixedRealityServiceRegistrar instance.");
+            }
+
+            if (playspace == null)
+            {
+                Debug.LogError("The MixedRealityInputSystem object requires a valid playspace Transform.");
+            }
+            Playspace = playspace;
+        }
+
+        /// <summary>
+        /// The transform of the playspace scene object.
+        /// </summary>
+        private Transform Playspace = null;
+
         /// <inheritdoc />
         public event Action InputEnabled;
 
@@ -39,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         private IMixedRealityFocusProvider focusProvider = null;
 
         /// <inheritdoc />
-        public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = MixedRealityToolkit.Instance.GetService<IMixedRealityFocusProvider>());
+        public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = Registrar.GetService<IMixedRealityFocusProvider>());
 
         /// <inheritdoc />
         public IMixedRealityGazeProvider GazeProvider { get; private set; }
@@ -88,6 +100,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             bool addedComponents = false;
 
+            MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+            if (profile == null)
+            {
+                Debug.LogError("The Input system is missing the required Input System Profile!");
+                return;
+            }
+
             if (!Application.isPlaying)
             {
                 var standaloneInputModules = UnityEngine.Object.FindObjectsOfType<StandaloneInputModule>();
@@ -125,15 +144,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 CameraCache.Main.gameObject.EnsureComponent<StandaloneInputModule>();
             }
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
+            if (profile.InputActionRulesProfile != null)
             {
-                Debug.LogError("The Input system is missing the required Input System Profile!");
-                return;
-            }
-
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile != null)
-            {
-                CurrentInputActionRulesProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
+                CurrentInputActionRulesProfile = profile.InputActionRulesProfile;
             }
             else
             {
@@ -141,11 +154,14 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 return;
             }
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
+            if (profile.PointerProfile != null)
             {
-                if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType?.Type != null)
+                if (profile.PointerProfile.GazeProviderType?.Type != null)
                 {
-                    GazeProvider = CameraCache.Main.gameObject.EnsureComponent(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+                    GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+                    GazeProvider.InputSystem = this;
+                    GazeProvider.Playspace = Playspace;
+                    GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
                 }
                 else
                 {
@@ -322,9 +338,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         }
 
         /// <summary>
-        /// Register a <see cref="GameObject"/> to listen to events that will receive all input events, regardless
-        /// of which other <see cref="GameObject"/>s might have handled the event beforehand.
-        /// <remarks>Useful for listening to events when the <see cref="GameObject"/> is currently not being raycasted against by the <see cref="FocusProvider"/>.</remarks>
+        /// Register a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen to events that will receive all input events, regardless
+        /// of which other <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s might have handled the event beforehand.
+        /// <remarks>Useful for listening to events when the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is currently not being raycasted against by the <see cref="FocusProvider"/>.</remarks>
         /// </summary>
         /// <param name="listener">Listener to add.</param>
         public override void Register(GameObject listener)
@@ -333,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         }
 
         /// <summary>
-        /// Unregister a <see cref="GameObject"/> from listening to input events.
+        /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to input events.
         /// </summary>
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)

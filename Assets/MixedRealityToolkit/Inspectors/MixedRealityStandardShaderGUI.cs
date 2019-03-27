@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
     /// A custom shader inspector for the "Mixed Reality Toolkit/Standard" shader.
@@ -100,12 +100,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             public static GUIContent triplanarMappingBlendSharpness = new GUIContent("Blend Sharpness", "The Power of the Blend with the Normal");
             public static GUIContent directionalLight = new GUIContent("Directional Light", "Affected by One Unity Directional Light");
             public static GUIContent specularHighlights = new GUIContent("Specular Highlights", "Calculate Specular Highlights");
+            public static GUIContent sphericalHarmonics = new GUIContent("Spherical Harmonics", "Read From Spherical Harmonics Data for Ambient Light");
             public static GUIContent reflections = new GUIContent("Reflections", "Calculate Glossy Reflections");
             public static GUIContent refraction = new GUIContent("Refraction", "Calculate Refraction");
             public static GUIContent refractiveIndex = new GUIContent("Refractive Index", "Ratio of Indices of Refraction at the Surface Interface");
             public static GUIContent rimLight = new GUIContent("Rim Light", "Enable Rim (Fresnel) Lighting");
             public static GUIContent rimColor = new GUIContent("Color", "Rim Highlight Color");
             public static GUIContent rimPower = new GUIContent("Power", "Rim Highlight Saturation");
+            public static GUIContent vertexColors = new GUIContent("Vertex Colors", "Enable Vertex Color Tinting");
             public static GUIContent clippingPlane = new GUIContent("Clipping Plane", "Enable Clipping Against a Plane");
             public static GUIContent clippingSphere = new GUIContent("Clipping Sphere", "Enable Clipping Against a Sphere");
             public static GUIContent clippingBox = new GUIContent("Clipping Box", "Enable Clipping Against a Box");
@@ -176,12 +178,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
         protected MaterialProperty smoothness;
         protected MaterialProperty directionalLight;
         protected MaterialProperty specularHighlights;
+        protected MaterialProperty sphericalHarmonics;
         protected MaterialProperty reflections;
         protected MaterialProperty refraction;
         protected MaterialProperty refractiveIndex;
         protected MaterialProperty rimLight;
         protected MaterialProperty rimColor;
         protected MaterialProperty rimPower;
+        protected MaterialProperty vertexColors;
         protected MaterialProperty clippingPlane;
         protected MaterialProperty clippingSphere;
         protected MaterialProperty clippingBox;
@@ -251,12 +255,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             triplanarMappingBlendSharpness = FindProperty("_TriplanarMappingBlendSharpness", props);
             directionalLight = FindProperty("_DirectionalLight", props);
             specularHighlights = FindProperty("_SpecularHighlights", props);
+            sphericalHarmonics = FindProperty("_SphericalHarmonics", props);
             reflections = FindProperty("_Reflections", props);
             refraction = FindProperty("_Refraction", props);
             refractiveIndex = FindProperty("_RefractiveIndex", props);
             rimLight = FindProperty("_RimLight", props);
             rimColor = FindProperty("_RimColor", props);
             rimPower = FindProperty("_RimPower", props);
+            vertexColors = FindProperty("_VertexColors", props);
             clippingPlane = FindProperty("_ClippingPlane", props);
             clippingSphere = FindProperty("_ClippingSphere", props);
             clippingBox = FindProperty("_ClippingBox", props);
@@ -533,6 +539,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 materialEditor.ShaderProperty(specularHighlights, Styles.specularHighlights, 2);
             }
 
+            materialEditor.ShaderProperty(sphericalHarmonics, Styles.sphericalHarmonics);
+
             materialEditor.ShaderProperty(reflections, Styles.reflections);
 
             if (PropertyEnabled(reflections))
@@ -552,6 +560,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 materialEditor.ShaderProperty(rimColor, Styles.rimColor, 2);
                 materialEditor.ShaderProperty(rimPower, Styles.rimPower, 2);
             }
+
+            materialEditor.ShaderProperty(vertexColors, Styles.vertexColors);
 
             materialEditor.ShaderProperty(clippingPlane, Styles.clippingPlane);
 

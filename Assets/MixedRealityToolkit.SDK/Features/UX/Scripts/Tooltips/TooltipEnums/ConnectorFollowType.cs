@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// How does the Tooltip track with its parent object
@@ -21,10 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// <summary>
         /// Anchor and pivot will follow target like it's parented, but only on Y axis
         /// </summary>
-        YRotation = 1 << 2,
+        PositionAndYRotation = 1 << 2,
         /// <summary>
         /// Anchor and pivot will follow target like it's parented
         /// </summary>
-        XRotation = 1 << 3,
+        PositionAndXYRotation = 1 << 3,
     }
 }

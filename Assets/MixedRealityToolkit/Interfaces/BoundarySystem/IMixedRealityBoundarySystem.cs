@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using UnityEngine.Experimental.XR;
+using UnityBoundary = UnityEngine.Experimental.XR.Boundary;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     /// <summary>
     /// Manager interface for a Boundary system in the Mixed Reality Toolkit
@@ -72,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// Enable / disable ceiling rendering.
         /// </summary>
         /// <remarks>
-        /// The ceiling is defined as a <see cref="GameObject"/> positioned <see cref="BoundaryHeight"/> above the floor.
+        /// The ceiling is defined as a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> positioned <see cref="BoundaryHeight"/> above the floor.
         /// </remarks>
         bool ShowBoundaryCeiling { get; set; }
 
@@ -110,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         /// Boundary.Type.PlayArea for the inscribed volume
         /// Boundary.Type.TrackedArea for the area defined by the boundary edges.
         /// </remarks>
-        bool Contains(Vector3 location, Boundary.Type boundaryType = Boundary.Type.TrackedArea);
+        bool Contains(Vector3 location, UnityBoundary.Type boundaryType = UnityBoundary.Type.TrackedArea);
 
         /// <summary>
         /// Returns the description of the inscribed rectangular bounds.
@@ -123,31 +121,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
         bool TryGetRectangularBoundsParams(out Vector2 center, out float angle, out float width, out float height);
 
         /// <summary>
-        /// Gets the <see cref="GameObject"/> that represents the user's floor.
+        /// Gets the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> that represents the user's floor.
         /// </summary>
         /// <returns>The floor visualization object or null if one does not exist.</returns>
         GameObject GetFloorVisualization();
 
         /// <summary>
-        /// Gets the <see cref="GameObject"/> that represents the user's play area.
+        /// Gets the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> that represents the user's play area.
         /// </summary>
         /// <returns>The play area visualization object or null if one does not exist.</returns>
         GameObject GetPlayAreaVisualization();
 
         /// <summary>
-        /// Gets the <see cref="GameObject"/> that represents the user's tracked area.
+        /// Gets the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> that represents the user's tracked area.
         /// </summary>
         /// <returns>The tracked area visualization object or null if one does not exist.</returns>
         GameObject GetTrackedAreaVisualization();
 
         /// <summary>
-        /// Gets the <see cref="GameObject"/> that represents the user's boundary walls.
+        /// Gets the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> that represents the user's boundary walls.
         /// </summary>
         /// <returns>The boundary wall visualization object or null if one does not exist.</returns>
         GameObject GetBoundaryWallVisualization();
 
         /// <summary>
-        /// Gets the <see cref="GameObject"/> that represents the upper surface of the user's boundary.
+        /// Gets the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> that represents the upper surface of the user's boundary.
         /// </summary>
         /// <returns>The boundary ceiling visualization object or null if one does not exist.</returns>
         GameObject GetBoundaryCeilingVisualization();

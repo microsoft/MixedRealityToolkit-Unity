@@ -1,21 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
+using UnityPhysics = UnityEngine.Physics;
 
-namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// This class provides Gaze as an Input Source so users can interact with objects using their head.
@@ -48,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         /// </summary>
         [SerializeField]
         [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.")]
-        private LayerMask[] raycastLayerMasks = { Physics.DefaultRaycastLayers };
+        private LayerMask[] raycastLayerMasks = { UnityPhysics.DefaultRaycastLayers };
 
         /// <summary>
         /// Current stabilization method, used to smooth out the gaze ray data.
@@ -84,6 +76,12 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         }
 
         /// <inheritdoc />
+        public IMixedRealityInputSystem InputSystem { private get; set; }
+
+        /// <inheritdoc />
+        public Transform Playspace { private get; set; }
+
+        /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
         {
             get
@@ -103,6 +101,9 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         /// <inheritdoc />
         public IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
         private InternalGazePointer gazePointer = null;
+
+        /// <inheritdoc />
+        public GameObject GazeCursorPrefab { private get; set; }
 
         /// <inheritdoc />
         public IMixedRealityCursor GazeCursor => GazePointer.BaseCursor;
@@ -194,12 +195,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
                 // Update gaze info from stabilizer
                 if (stabilizer != null)
                 {
-                    stabilizer.UpdateStability(newGazeOrigin, gazeTransform.rotation);
-                    newGazeOrigin = stabilizer.StablePosition;
-                    newGazeNormal = stabilizer.StableRay.direction;
+                    stabilizer.UpdateStability(gazeTransform.localPosition, gazeTransform.localRotation * Vector3.forward);
+                    newGazeOrigin = gazeTransform.parent.TransformPoint(stabilizer.StablePosition);
+                    newGazeNormal = gazeTransform.parent.TransformDirection(stabilizer.StableRay.direction);
                 }
 
-                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * pointerExtent));
+                Vector3 endPoint = newGazeOrigin + (newGazeNormal * pointerExtent);
+                Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
 
                 gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
             }
@@ -242,9 +244,10 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the pressed button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that pressed the pointer.</param>
+            /// <param name="inputSource"></param>
             public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
-                MixedRealityToolkit.InputSystem.RaisePointerDown(this, mixedRealityInputAction, handedness, inputSource);
+                gazeProvider.InputSystem?.RaisePointerDown(this, mixedRealityInputAction, handedness, inputSource);
             }
 
             /// <summary>
@@ -252,10 +255,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the released button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that released the pointer.</param>
+            /// <param name="inputSource"></param>
             public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
-                MixedRealityToolkit.InputSystem.RaisePointerClicked(this, mixedRealityInputAction, 0, handedness, inputSource);
-                MixedRealityToolkit.InputSystem.RaisePointerUp(this, mixedRealityInputAction, handedness, inputSource);
+                gazeProvider.InputSystem?.RaisePointerClicked(this, mixedRealityInputAction, 0, handedness, inputSource);
+                gazeProvider.InputSystem?.RaisePointerUp(this, mixedRealityInputAction, handedness, inputSource);
             }
         }
 
@@ -349,7 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         {
             base.OnDisable();
             GazePointer.BaseCursor?.SetVisibility(false);
-            MixedRealityToolkit.InputSystem?.RaiseSourceLost(GazeInputSource);
+            InputSystem?.RaiseSourceLost(GazeInputSource);
         }
 
         #endregion MonoBehaviour Implementation
@@ -401,12 +405,10 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
 
             gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
 
-            if (GazeCursor == null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab != null)
+            if ((GazeCursor == null) &&
+                (GazeCursorPrefab != null))
             {
-                var cursor = Instantiate(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.GazeCursorPrefab, MixedRealityToolkit.Instance.MixedRealityPlayspace);
+                GameObject cursor = Instantiate(GazeCursorPrefab, Playspace);
                 SetGazeCursor(cursor);
             }
 
@@ -416,7 +418,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSystem
         private async void RaiseSourceDetected()
         {
             await WaitUntilInputSystemValid;
-            MixedRealityToolkit.InputSystem.RaiseSourceDetected(GazeInputSource);
+            InputSystem?.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
         }
 

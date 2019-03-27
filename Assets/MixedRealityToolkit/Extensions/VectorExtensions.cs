@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for Unity's Vector struct
@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Get the relative mapping based on a source Vec3 and a radius for spherical mapping.
         /// </summary>
-        /// <param name="source">The source <see cref="Vector3"/> to be mapped to sphere</param>
+        /// <param name="source">The source <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> to be mapped to sphere</param>
         /// <param name="radius">This is a <see cref="float"/> for the radius of the sphere</param>
         /// <returns></returns>
         public static Vector3 SphericalMapping(Vector3 source, float radius)
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Get the relative mapping based on a source Vec3 and a radius for cylinder mapping.
         /// </summary>
-        /// <param name="source">The source <see cref="Vector3"/> to be mapped to cylinder</param>
+        /// <param name="source">The source <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> to be mapped to cylinder</param>
         /// <param name="radius">This is a <see cref="float"/> for the radius of the cylinder</param>
         /// <returns></returns>
         public static Vector3 CylindricalMapping(Vector3 source, float radius)
@@ -206,13 +206,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Get the relative mapping based on a source Vec3 and a radius for radial mapping.
         /// </summary>
-        /// <param name="source">The source <see cref="Vector3"/> to be mapped to cylinder</param>
+        /// <param name="source">The source <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> to be mapped to cylinder</param>
         /// <param name="radialRange">The total range of the radial in degrees as a <see cref="float"/></param>
         /// <param name="radius">This is a <see cref="float"/> for the radius of the radial</param>
         /// <param name="row">The current row as a <see cref="int"/> for the radial calculation</param>
-        /// <param name="totalRow">The total rows as a <see cref="int"/> for the radial calculation</param>
+        /// <param name="totalRows">The total rows as a <see cref="int"/> for the radial calculation</param>
         /// <param name="column">The current column as a <see cref="int"/> for the radial calculation</param>
-        /// <param name="totalColumn">The total columns as a <see cref="int"/> for the radial calculation</param>
+        /// <param name="totalColumns">The total columns as a <see cref="int"/> for the radial calculation</param>
         /// <returns></returns>
         public static Vector3 RadialMapping(Vector3 source, float radialRange, float radius, int row, int totalRows, int column, int totalColumns)
         {
@@ -233,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Randomized mapping based on a source Vec3 and a radius for randomization distance.
         /// </summary>
-        /// <param name="source">The source <see cref="Vector3"/> to be mapped to cylinder</param>
+        /// <param name="source">The source <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> to be mapped to cylinder</param>
         /// <param name="radius">This is a <see cref="float"/> for the radius of the cylinder</param>
         /// <returns></returns>
         public static Vector3 ScatterMapping(Vector3 source, float radius)

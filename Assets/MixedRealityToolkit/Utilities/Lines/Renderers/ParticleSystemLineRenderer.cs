@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// attaches a set of particles to the line
@@ -176,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             }
         }
 
-        private void Update()
+        protected override void UpdateLine()
         {
             if (!LineDataSource.enabled)
             {
@@ -203,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             {
                 for (int i = 0; i < LineStepCount; i++)
                 {
-                    float normalizedDistance = (1f / (LineStepCount - 1)) * i;
+                    float normalizedDistance = GetNormalizedPointAlongLine(i);
                     ParticleSystem.Particle particle = mainParticleArray[i];
                     particle.position = LineDataSource.GetPoint(normalizedDistance);
                     particle.startColor = GetColor(normalizedDistance);

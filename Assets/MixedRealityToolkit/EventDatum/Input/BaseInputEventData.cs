@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using System;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Base class of all Input Events.
@@ -39,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="eventSystem">Typically will be <see cref="EventSystem.current"/></param>
+        /// <param name="eventSystem">Typically will be <see href="https://docs.unity3d.com/ScriptReference/EventSystems.EventSystem-current.html">EventSystems.EventSystem.current</see></param>
         protected BaseInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>

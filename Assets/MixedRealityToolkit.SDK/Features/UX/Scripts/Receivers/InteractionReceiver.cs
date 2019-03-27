@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// An interaction receiver is simply a component that attached to a list of interactable objects and does something
@@ -17,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
     /// </summary>
     public abstract class InteractionReceiver : BaseInputHandler,
         IMixedRealityFocusChangedHandler,
+        IMixedRealityInputHandler,
         IMixedRealityInputHandler<float>,
         IMixedRealityInputHandler<Vector2>,
         IMixedRealityGestureHandler<Vector2>,
@@ -35,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         public List<GameObject> Interactables
         {
             get { return interactables; }
-            private set { value = interactables; }
+            private set { interactables = value; }
         }
 
         [Tooltip("Targets for the receiver to affect")]
@@ -47,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         public List<GameObject> Targets
         {
             get { return targets; }
-            private set { value = targets; }
+            private set { targets = value; }
         }
 
         #endregion Public Members
@@ -56,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         [Tooltip("When true, this interaction receiver will draw connections in the editor to Interactables and Targets")]
         private bool drawEditorConnections = true;
 
-        #region MonoBehaviour implementation
+        #region MonoBehaviour Implementation
 
         /// <summary>
         /// On enable, set the BaseInputHandler's IsFocusRequired to false to receive all events.
@@ -104,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        #endregion MonoBehaviour implementation
+        #endregion MonoBehaviour Implementation
 
         /// <summary>
         /// Register an interactable with this receiver.
@@ -176,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
 
         #endregion IMixedRealityFocusChangedHandler Implementation
 
-        #region IMixedRealityInputHandler Impmentations
+        #region IMixedRealityInputHandler Implementation
 
         /// <inheritdoc />
         void IMixedRealityInputHandler.OnInputUp(InputEventData eventData)
@@ -227,9 +226,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        #endregion IMixedRealityInputHandler Impmentations
+        #endregion IMixedRealityInputHandler Implementation
 
-        #region IMixedRealityGestureHandler Impmentations
+        #region IMixedRealityGestureHandler Implementation
 
         /// <inheritdoc />
         void IMixedRealityGestureHandler.OnGestureStarted(InputEventData eventData)
@@ -321,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        #endregion IMixedRealityGestureHandler Impmentations
+        #endregion IMixedRealityGestureHandler Implementation
 
         #region Protected Virtual Callback Functions
 

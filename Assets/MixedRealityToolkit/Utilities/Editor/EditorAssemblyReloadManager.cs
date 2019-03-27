@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     public static class EditorAssemblyReloadManager
     {
@@ -26,15 +26,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
                 if (locked)
                 {
                     EditorApplication.LockReloadAssemblies();
-                    EditorWindow.focusedWindow.ShowNotification(new GUIContent("Assembly reloading temporarily paused."));
+
+                    if (!Application.isBatchMode)
+                    {
+                        EditorWindow.focusedWindow.ShowNotification(new GUIContent("Assembly reloading temporarily paused."));
+                    }
                 }
                 else
                 {
                     EditorApplication.UnlockReloadAssemblies();
                     EditorApplication.delayCall += () => AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-                    EditorWindow.focusedWindow.ShowNotification(new GUIContent("Assembly reloading resumed."));
+
+                    if (!Application.isBatchMode)
+                    {
+                        EditorWindow.focusedWindow.ShowNotification(new GUIContent("Assembly reloading resumed."));
+                    }
                 }
             }
+            get => locked;
         }
     }
 }

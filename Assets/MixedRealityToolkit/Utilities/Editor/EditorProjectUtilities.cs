@@ -3,10 +3,10 @@
 
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [InitializeOnLoad]
-    internal class EditorProjectUtilities
+    public class EditorProjectUtilities
     {
         /// <summary>
         /// Static constructor that allows for executing code on project load.
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
 
         /// <summary>
         /// Displays a message indicating that a project was loaded in an unsupported version of Unity and allows the user
-        /// to continu or exit.
+        /// to continue or exit.
         /// </summary>
         private static void DisplayIncorrectEditorVersionDialog()
         {
@@ -42,6 +42,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
             {
                 EditorApplication.Exit(0);
             }
+        }
+
+        /// <summary>
+        /// Finds the path of a directory relative to the project directory.
+        /// </summary>
+        /// <param name="packageDirectory">The name of the directory to search for.</param>
+        /// <param name="path">The output parameter in which the fully qualified path is returned.</param>
+        /// <returns>True if the directory could be found, false otherwise.</returns>
+        public static bool FindRelativeDirectory(string packageDirectory, out string path)
+        {
+            return MixedRealityEditorSettings.FindRelativeDirectory(UnityEngine.Application.dataPath, packageDirectory, out path);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Defines the display order of the Assets > Create > Mixed Reality Toolkit > Profiles menu items.
@@ -18,7 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         Speech,
         BoundaryVisualization,
         ControllerVisualization,
-        SpatialAwareness,
+        SpatialAwareness,   // todo: remove
+        SpatialAwarenessMeshObserver,
+        SpatialAwarenessSurfaceObserver,
         Gestures,
         Diagnostics,
         RegisteredServiceProviders,

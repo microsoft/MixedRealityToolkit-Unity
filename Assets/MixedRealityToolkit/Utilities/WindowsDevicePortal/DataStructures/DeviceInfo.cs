@@ -3,9 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.WebRequestRest;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal.DataStructures
+namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 {
     [Serializable]
     public class DeviceInfo

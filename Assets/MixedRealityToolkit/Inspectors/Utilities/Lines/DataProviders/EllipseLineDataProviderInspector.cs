@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [CustomEditor(typeof(EllipseLineDataProvider))]
-    public class EllipseLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
+    public class EllipseLineDataProviderInspector : BaseLineDataProviderInspector
     {
         private SerializedProperty resolution;
         private SerializedProperty radius;

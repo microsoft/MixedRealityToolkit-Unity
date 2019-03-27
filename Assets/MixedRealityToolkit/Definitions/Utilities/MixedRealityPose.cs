@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     [Serializable]
     public struct MixedRealityPose : IEqualityComparer
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         /// The default value for a Six Dof Transform.
         /// </summary>
         /// <returns>
-        /// <see cref="Vector3.zero"/> and <see cref="Quaternion.identity"/>.
+        /// <see href="https://docs.unity3d.com/ScriptReference/Vector3-zero.html">Vector3.zero</see> and <see href="https://docs.unity3d.com/ScriptReference/Quaternion-identity.html">Quaternion.identity</see>.
         /// </returns>
         public static MixedRealityPose ZeroIdentity { get; } = new MixedRealityPose(Vector3.zero, Quaternion.identity);
 

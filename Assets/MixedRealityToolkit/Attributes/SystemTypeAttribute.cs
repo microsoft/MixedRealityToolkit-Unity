@@ -1,23 +1,23 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 #if WINDOWS_UWP && !ENABLE_IL2CPP
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Attributes
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Base class for class selection constraints that can be applied when selecting
-    /// a <see cref="SystemType"/> with the Unity inspector.
+    /// a <see cref="Utilities.SystemType"/> with the Unity inspector.
     /// </summary>
     public abstract class SystemTypeAttribute : PropertyAttribute
     {
         /// <summary>
-        /// Gets or sets grouping of selectable classes. Defaults to <see cref="TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.
+        /// Gets or sets grouping of selectable classes. Defaults to <see cref="Utilities.TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.
         /// </summary>
         public TypeGrouping Grouping { get; protected set; }
 
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
         /// 
         /// </summary>
         /// <param name="type">Initializes a new instance of the <see cref="SystemTypeAttribute"/> class.</param>
-        /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
+        /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="Utilities.TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
         public SystemTypeAttribute(Type type, TypeGrouping grouping = TypeGrouping.ByNamespaceFlat)
         {
 #if WINDOWS_UWP && !ENABLE_IL2CPP

@@ -1,18 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(MixedRealityToolkitConfigurationProfile))]
     public class MixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
+        const string HideNoActiveToolkitWarningKey = "MRTK_HideNoActiveToolkitWarningKey";
+        private static bool HideNoActiveToolkitWarning = true;
+
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
 
         // Experience properties
@@ -40,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private static bool showSpatialAwarenessProperties = true;
         private SerializedProperty enableSpatialAwarenessSystem;
         private SerializedProperty spatialAwarenessSystemType;
-        private SerializedProperty spatialAwarenessProfile;
         // Diagnostic system properties
         private static bool showDiagnosticProperties = true;
         private SerializedProperty enableDiagnosticsSystem;
@@ -57,6 +56,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             base.OnEnable();
 
+            if (target == null)
+            {
+                // Either when we are recompiling, or the inspector window is hidden behind another one, the target can get destroyed (null) and thereby will raise an ArgumentException when accessing serializedObject. For now, just return.
+                return;
+            }
+
             configurationProfile = target as MixedRealityToolkitConfigurationProfile;
 
             // Create The MR Manager if none exists.
@@ -67,21 +72,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                 if (managerSearch.Length == 0)
                 {
-                    if (EditorUtility.DisplayDialog(
-                        "Attention!",
-                        "There is no active Mixed Reality Toolkit in your scene!\n\nWould you like to create one now?",
-                        "Yes",
-                        "Later"))
+                    HideNoActiveToolkitWarning = SessionState.GetBool(HideNoActiveToolkitWarningKey, false);
+                    if (!HideNoActiveToolkitWarning)
                     {
-                        var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-                        Debug.Assert(playspace != null);
-                        MixedRealityToolkit.Instance.ActiveProfile = configurationProfile;
+                        NoActiveToolkitWarning.OpenWindow(configurationProfile);
                     }
-                    else
-                    {
-                        Debug.LogWarning("No Mixed Reality Toolkit in your scene.");
-                        return;
-                    }
+                    return; 
                 }
             }
 
@@ -90,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-            if (!MixedRealityToolkit.HasActiveProfile)
+            if (!MixedRealityToolkit.Instance.HasActiveProfile)
             {
                 return;
             }
@@ -114,7 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             // Spatial Awareness system configuration
             enableSpatialAwarenessSystem = serializedObject.FindProperty("enableSpatialAwarenessSystem");
             spatialAwarenessSystemType = serializedObject.FindProperty("spatialAwarenessSystemType");
-            spatialAwarenessProfile = serializedObject.FindProperty("spatialAwarenessProfile");
             // Diagnostics system configuration
             enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
@@ -149,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 if (GUILayout.Button("Create new profiles"))
                 {
                     ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
-                    var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit-Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;
+                    var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;
                     MixedRealityToolkit.Instance.ActiveProfile = newProfile;
                     Selection.activeObject = newProfile;
                 }
@@ -276,7 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
                     EditorGUILayout.PropertyField(spatialAwarenessSystemType);
-                    changed |= RenderProfile(spatialAwarenessProfile);
+                    EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer. Spatial Awareness observers are registered as Additional Service Providers.", MessageType.Info);
                 }
             }
 
@@ -287,6 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    EditorGUILayout.HelpBox("It is recommended to enable the Diagnostics system during development. Be sure to disable prior to building your shipping product.", MessageType.Warning);
                     EditorGUILayout.PropertyField(enableDiagnosticsSystem);
                     EditorGUILayout.PropertyField(diagnosticsSystemType);
                     changed |= RenderProfile(diagnosticsSystemProfile);
@@ -315,6 +311,53 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             if (changed)
             {
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(configurationProfile);
+            }
+        }
+
+        private class NoActiveToolkitWarning : EditorWindow
+        {
+            private static NoActiveToolkitWarning activeWindow;
+            private MixedRealityToolkitConfigurationProfile configurationProfile;
+            private bool hideWarning = false;
+
+            public static void OpenWindow(MixedRealityToolkitConfigurationProfile configurationProfile)
+            {
+                // If we already have an active window, bail
+                if (activeWindow != null)
+                    return;
+
+                activeWindow = EditorWindow.GetWindow<NoActiveToolkitWarning>();
+                activeWindow.configurationProfile = configurationProfile;
+                activeWindow.maxSize = new Vector2(400, 80);
+                activeWindow.minSize = new Vector2(400, 80);
+                activeWindow.titleContent = new GUIContent("No Active Toolkit Found");
+
+                activeWindow.Show(true); 
+            }
+
+            private void OnGUI()
+            {
+                EditorGUILayout.HelpBox("There is no active Mixed Reality Toolkit in your scene. Would you like to create one now?", MessageType.Warning);
+
+                hideWarning = EditorGUILayout.Toggle("Don't show this again", hideWarning);
+
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Yes"))
+                {
+                    var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+                    Debug.Assert(playspace != null);
+                    MixedRealityToolkit.Instance.ActiveProfile = configurationProfile;
+
+                    SessionState.SetBool(HideNoActiveToolkitWarningKey, hideWarning);
+                    Close();
+                }
+
+                if (GUILayout.Button("No"))
+                {
+                    SessionState.SetBool(HideNoActiveToolkitWarningKey, hideWarning);
+                    Close();
+                }
+                EditorGUILayout.EndHorizontal();
             }
         }
     }

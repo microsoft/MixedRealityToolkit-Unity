@@ -4,10 +4,10 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// A copy of the <see cref="AnimatorControllerParameter"/> because that class is not Serializable and cannot be modified in the editor.
+    /// A copy of the <see href="https://docs.unity3d.com/ScriptReference/AnimatorControllerParameter.html">AnimatorControllerParameter</see> because that class is not Serializable and cannot be modified in the editor.
     /// </summary>
     [Serializable]
     public struct AnimatorParameter

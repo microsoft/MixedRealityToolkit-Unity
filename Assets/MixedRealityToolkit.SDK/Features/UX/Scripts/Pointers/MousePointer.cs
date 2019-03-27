@@ -1,16 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Internal Touch Pointer Implementation.
@@ -25,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         private bool isDisabled = true;
 
-        #region IMixedRealityMousePointer Implementaiton
+        #region IMixedRealityMousePointer Implementation
 
         [SerializeField]
         [Tooltip("Should the mouse cursor be hidden when no active input is received?")]
@@ -52,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #endregion IMixedRealityMousePointer Implementation
 
-        #region IMixedRealityPointer Implementaiton
+        #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
         public override bool IsInteractionEnabled => isInteractionEnabled;
@@ -90,9 +85,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        #endregion IMixedRealityPointer Implementaiton
+        #endregion IMixedRealityPointer Implementation
 
-        #region IMixedRealitySourcePoseHandler Implementaiton
+        #region IMixedRealitySourcePoseHandler Implementation
 
         /// <inheritdoc />
         public override void OnSourceDetected(SourceStateEventData eventData)
@@ -137,9 +132,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        #endregion IMixedRealitySourcePoseHandler Implementaiton
+        #endregion IMixedRealitySourcePoseHandler Implementation
 
-        #region IMixedRealityInputHandler Implementaiton
+        #region IMixedRealityInputHandler Implementation
 
         /// <inheritdoc />
         public override void OnInputDown(InputEventData eventData)
@@ -179,9 +174,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        #endregion IMixedRealityInputHandler Implementaiton
+        #endregion IMixedRealityInputHandler Implementation
 
-        #region Monobehaviour Implementaiton
+        #region MonoBehaviour Implementation
 
         protected override void Start()
         {
@@ -218,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        #endregion Monobehaviour Implementaiton
+        #endregion MonoBehaviour Implementation
 
         private void UpdateMousePosition(float mouseX, float mouseY)
         {
