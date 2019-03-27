@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
 using UnityEditor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
@@ -13,6 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     {
         private static readonly GUIContent AddProviderContent = new GUIContent("+ Add Data Provider", "Add Data Provider");
         private static readonly GUIContent RemoveProviderContent = new GUIContent("-", "Remove Data Provider");
+
+        private static readonly GUIContent ComponentTypeContent = new GUIContent("Type");
+        private static readonly GUIContent RuntimePlatformContent = new GUIContent("Platform(s)");
 
         private static bool showDataProviders = true;
         private SerializedProperty dataProviderConfigurations;
@@ -199,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                     serializedObject.ApplyModifiedProperties();
 
-                    Utilities.SystemType providerType = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[list.arraySize - 1].ComponentType;
+                    SystemType providerType = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[list.arraySize - 1].ComponentType;
                     providerType.Type = null;
 
                     providerFoldouts = new bool[list.arraySize];
@@ -242,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             using (new EditorGUI.IndentLevelScope())
                             {
                                 EditorGUI.BeginChangeCheck();
-                                EditorGUILayout.PropertyField(providerType);
+                                EditorGUILayout.PropertyField(providerType, ComponentTypeContent);
                                 if (EditorGUI.EndChangeCheck())
                                 {
                                     serializedObject.ApplyModifiedProperties();
@@ -251,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                 }
 
                                 EditorGUI.BeginChangeCheck();
-                                EditorGUILayout.PropertyField(runtimePlatform);
+                                EditorGUILayout.PropertyField(runtimePlatform, RuntimePlatformContent);
                                 changed |= EditorGUI.EndChangeCheck();
                             }
 

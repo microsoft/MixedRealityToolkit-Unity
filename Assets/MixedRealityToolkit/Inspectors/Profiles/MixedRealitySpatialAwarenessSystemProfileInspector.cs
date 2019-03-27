@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
 using UnityEditor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 {
@@ -13,6 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
     {
         private static readonly GUIContent AddObserverContent = new GUIContent("+ Add Spatial Observer", "Add Spatial Observer");
         private static readonly GUIContent RemoveObserverContent = new GUIContent("-", "Remove Spatial Observer");
+
+        private static readonly GUIContent ComponentTypeContent = new GUIContent("Type");
+        private static readonly GUIContent RuntimePlatformContent = new GUIContent("Platform(s)");
+        private static readonly GUIContent ConfigurationProfileContent = new GUIContent("Profile");
 
         private static bool showObservers = true;
         private SerializedProperty observerConfigurations;
@@ -86,14 +91,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     SerializedProperty runtimePlatform = observer.FindPropertyRelative("runtimePlatform");
                     runtimePlatform.intValue = -1;
 
-                    SerializedProperty observerProfile = observer.FindPropertyRelative("componentProfile");
-                    // todo
+                    SerializedProperty configurationProfile = observer.FindPropertyRelative("configurationProfile");
+                    configurationProfile.objectReferenceValue = null;
 
                     serializedObject.ApplyModifiedProperties();
 
-                    // todo
-                    //Utilities.SystemType providerType = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[list.arraySize - 1].ComponentType;
-                    //providerType.Type = null;
+                    SystemType observerType = ((MixedRealitySpatialAwarenessSystemProfile)serializedObject.targetObject).ObserverConfigurations[list.arraySize - 1].ComponentType;
+                    observerType.Type = null;
 
                     observerFoldouts = new bool[list.arraySize];
                     return;
@@ -112,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     SerializedProperty observer = list.GetArrayElementAtIndex(i);
                     SerializedProperty observerName = observer.FindPropertyRelative("componentName");
                     SerializedProperty observerType = observer.FindPropertyRelative("componentType");
-                    SerializedProperty observerProfile = observer.FindPropertyRelative("componentProfile");
+                    SerializedProperty configurationProfile = observer.FindPropertyRelative("configurationProfile");
                     SerializedProperty runtimePlatform = observer.FindPropertyRelative("runtimePlatform");
 
                     using (new EditorGUILayout.VerticalScope())
@@ -136,21 +140,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                             using (new EditorGUI.IndentLevelScope())
                             {
                                 EditorGUI.BeginChangeCheck();
-                                EditorGUILayout.PropertyField(observerType);
+                                EditorGUILayout.PropertyField(observerType, ComponentTypeContent);
                                 if (EditorGUI.EndChangeCheck())
                                 {
                                     serializedObject.ApplyModifiedProperties();
-                                    // todo
-                                    //System.Type type = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[i].ComponentType.Type;
-                                    //ApplyDataProviderConfiguration(type, providerName, runtimePlatform);
+                                    System.Type type = ((MixedRealitySpatialAwarenessSystemProfile)serializedObject.targetObject).ObserverConfigurations[i].ComponentType.Type;
+                                    ApplyObserverConfiguration(type, observerName, configurationProfile, runtimePlatform);
                                 }
 
                                 EditorGUI.BeginChangeCheck();
-                                EditorGUILayout.PropertyField(runtimePlatform);
+                                EditorGUILayout.PropertyField(runtimePlatform, RuntimePlatformContent);
                                 changed |= EditorGUI.EndChangeCheck();
-                            }
 
-                            changed |= RenderProfile(observerProfile);
+                                changed |= RenderProfile(configurationProfile, ConfigurationProfileContent);
+                            }
 
                             serializedObject.ApplyModifiedProperties();
                         }
@@ -160,8 +163,31 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                 if (changed)
                 {
                     // todo: find different way to handle...
-                    // EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
+                    EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
                 }
+            }
+        }
+        private void ApplyObserverConfiguration(
+            System.Type type, 
+            SerializedProperty observerName,
+            SerializedProperty configurationProfile,
+            SerializedProperty runtimePlatform)
+        {
+            if (type != null)
+            {
+                MixedRealityDataProviderAttribute observerAttribute = MixedRealityDataProviderAttribute.Find(type) as MixedRealityDataProviderAttribute;
+                if (observerAttribute != null)
+                {
+                    observerName.stringValue = !string.IsNullOrWhiteSpace(observerAttribute.Name) ? observerAttribute.Name : type.Name;
+                    configurationProfile.objectReferenceValue = observerAttribute.DefaultProfile;
+                    runtimePlatform.intValue = (int)observerAttribute.RuntimePlatforms;
+                }
+                else
+                {
+                    observerName.stringValue = type.Name;
+                }
+
+                serializedObject.ApplyModifiedProperties();
             }
         }
     }

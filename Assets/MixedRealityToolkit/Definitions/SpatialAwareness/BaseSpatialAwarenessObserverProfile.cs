@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         private AutoStartBehavior startupBehavior = AutoStartBehavior.AutoStart;
 
         /// <summary>
-        /// Indicates if the observer is to start immediately or wait for manual startup.
+        /// Indicates if the observer is to start immedi ately or wait for manual startup.
         /// </summary>
         public AutoStartBehavior StartupBehavior => startupBehavior;
 
