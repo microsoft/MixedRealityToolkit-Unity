@@ -66,3 +66,16 @@ Assets/TextMesh Pro/
 Assets/StreamingAssets/GltfModels/
 Assets/StreamingAssets/GltfModels.meta
 Assets/StreamingAssets.meta
+
+# ===== #
+# NuGet #
+# ===== #
+Assets/NuGet.config
+Assets/NuGet.config.meta
+Assets/NuGet/
+Assets/NuGet.meta
+Assets/packages.config
+Assets/packages.config.meta
+Assets/Packages/
+Assets/Packages.meta
+Packages/

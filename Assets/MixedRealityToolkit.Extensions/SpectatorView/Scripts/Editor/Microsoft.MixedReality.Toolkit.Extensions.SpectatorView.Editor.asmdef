@@ -1,0 +1,16 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Editor",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Extensions.SpectatorView"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
