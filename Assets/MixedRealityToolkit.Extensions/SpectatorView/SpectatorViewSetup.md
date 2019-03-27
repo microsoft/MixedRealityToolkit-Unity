@@ -18,12 +18,16 @@
 3. [Android Studio](https://developer.android.com/studio)
 
 # Example Unity Scene
-Spectator View currently has one example scene (Assets/MixedRealityToolkit.Extensions/SpectatorView/Examples/HoloLensExampleScene.unity). It may be worth compiling and running said scene before attempting to setup your own Spectator View experience.
+Spectator View currently has two example scenes. It may be worth compiling and running one of said scenes before attempting to setup your own Spectator View experience.
+
+1) **HoloLensExampleMRTKScene.unity** - An example scene that is configured to use the core MRTK functionality
+2) **HoloLensExampleScene.unity** - An example scene that has no dependencies on the core MRTK functionality
+>>Note both scenes can be found at Assets/MixedRealityToolkit.Extensions/SpectatorView/Scenes/
 
 # Setting Up New Projects
 
 ## HoloLens
-1) Add the Spectator View - HoloLens prefab (Assets/MixedRealityToolkit.Extensions/SpectatorView/Prefabs/Spectator View - HoloLens.prefab) to your unity scene.
+1) Add the 'Spectator View - HoloLens' prefab (Assets/MixedRealityToolkit.Extensions/SpectatorView/Prefabs/Spectator View - HoloLens.prefab) to your unity scene.
 2) Place all content in your scene under an empty parent GameObject
 2) Add the [SceneRoot MonoBehaviour](xref:Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.SceneRoot) to your empty parent GameObject
 
