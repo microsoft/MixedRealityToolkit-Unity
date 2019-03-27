@@ -135,4 +135,3 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
     }
 }
-
