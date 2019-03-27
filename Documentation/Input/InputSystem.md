@@ -4,12 +4,20 @@
 
 # Input System
 
-MRTK's input system allows you to:
-- Consume inputs from a variety of input devices in your scripts.
-- Define abstract actions like "press" and associate them to different inputs.
-- Setup pointers attached to input devices that apply focus to game objects and drive application logic via events.
+## Introduction
 
-This page provides an introduction to the most commonly used input functionality and the underlying concepts.
+The Input System in MRTK allows you to:
+- Consume inputs from a variety of input sources, like 6 DOF controllers, articulated hands or speech, via input events.
+- Define abstract actions, like *Select* or *Menu*, and associate them to different inputs.
+- Setup pointers attached to controllers to drive UI components via focus and pointer events.
+
+Inputs are produced by **Input Service Providers**. Each provider corresponds to a particular source of input: Open VR, Windows Mixed Reality (WMR), Unity Joystick, Windows Speech, etc. Providers are added to your project via the **Registered Service Providers Profile**  in the *Mixed Reality Toolkit* component and will produce input events automatically when the corresponding input sources are available, e.g. when a WMR controller is detected or a gamepad connected.
+
+**Input Actions** are abstractions over raw inputs meant to help isolating application logic from the specific input sources producing an input. For example, it can be useful to define a *Select* action and map it to the left mouse button, a button in a gamepad and a trigger in a 6 DOF controller. You can then have your application logic listen for input events mapped to that action instead of having to be aware of all the different inputs that can produce it. Input Actions are defined in the **Input Actions Profile** and mapped to inputs in the **Controller Mapping Profile**, both found within the *Input System Profile* in the *Mixed Reality Toolkit* component.
+
+**Controllers**
+
+**Pointers**
 
 ## Controllers and Input Actions
 
@@ -73,6 +81,7 @@ Speech commands are events raised when the user says a specific keyword. You can
 
 ## Dictation
 
+The dication service allows users to record audio clips and, via Windows Speech services, obtain a transcription of the audio.
 
 
 ## Input Events
