@@ -4,14 +4,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection
 {
     /// <summary>
-    /// Class implementing <see cref="Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection.IMarkerDetector"/> capable of detecting ArUco markers
+    /// Class implementing <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection.IMarkerDetector"/> capable of detecting ArUco markers
     /// </summary>
     public class SpectatorViewPluginArUcoMarkerDetector : MonoBehaviour,
         IMarkerDetector

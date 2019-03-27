@@ -4,7 +4,7 @@
 using UnityEngine;
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording
 {
     /// <summary>
     /// Class implementing <see cref="IRecordingService"/> for the Android platform

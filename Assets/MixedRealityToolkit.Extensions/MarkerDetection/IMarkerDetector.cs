@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
 {
     /// <summary>
     /// Delegate called when markers have been detected by an <see cref="IMarkerDetector"/>

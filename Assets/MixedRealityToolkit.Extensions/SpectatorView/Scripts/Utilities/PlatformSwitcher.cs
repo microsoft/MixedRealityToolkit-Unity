@@ -3,10 +3,10 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities
 {
     /// <summary>
-    /// MonoBehaviour associated with <see cref="Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Editor.PlatformSwitcherEditor"/>
+    /// MonoBehaviour associated with <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor.PlatformSwitcherEditor"/>
     /// </summary>
     public class PlatformSwitcher : MonoBehaviour
     {

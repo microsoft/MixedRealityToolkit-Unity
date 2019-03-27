@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
 {
     /// <summary>
     /// Delegate called when a new spatial coordinate state payload has been created

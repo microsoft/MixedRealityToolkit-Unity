@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities
 {
     /// <summary>
     /// Helper class for creating and placing multiple prefabs at different locations in the scene

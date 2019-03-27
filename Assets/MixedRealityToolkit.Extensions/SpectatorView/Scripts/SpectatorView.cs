@@ -4,11 +4,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording;
-using Microsoft.MixedReality.Toolkit.Extensions.Sharing;
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     /// <summary>
     /// Class that facilitates the Spectator View experience
@@ -16,56 +16,56 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
     public class SpectatorView : MonoBehaviour
     {
         /// <summary>
-        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.IMatchMakingService"/>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IMatchMakingService"/>
         /// </summary>
-        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Sharing.IMatchMakingService. Note: errors will be generated if the provided MonoBehaviour does not implement IMatchMakingService")]
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IMatchMakingService. Note: errors will be generated if the provided MonoBehaviour does not implement IMatchMakingService")]
         [SerializeField]
         protected MonoBehaviour MatchMakingService;
 
         /// <summary>
-        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.IPlayerService"/>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IPlayerService"/>
         /// </summary>
-        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Sharing.IPlayerService. Note: errors will be generated if the provided MonoBehaviour does not implement IPlayerService")]
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IPlayerService. Note: errors will be generated if the provided MonoBehaviour does not implement IPlayerService")]
         [SerializeField]
         protected MonoBehaviour PlayerService;
 
         /// <summary>
-        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.INetworkingService"/>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.INetworkingService"/>
         /// </summary>
-        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Sharing.INetworkingService. Note: errors will be generated if the provided MonoBehaviour does not implement INetworkingService")]
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.INetworkingService. Note: errors will be generated if the provided MonoBehaviour does not implement INetworkingService")]
         [SerializeField]
         protected MonoBehaviour NetworkingService;
 
         /// <summary>
-        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.ISpatialCoordinateService"/>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.ISpatialCoordinateService"/>
         /// </summary>
-        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Sharing.ISpatialCoordinateService. Note: errors will be generated if the provided MonoBehaviour does not implement ISpatialCoordinateService")]
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.ISpatialCoordinateService. Note: errors will be generated if the provided MonoBehaviour does not implement ISpatialCoordinateService")]
         [SerializeField]
         protected MonoBehaviour SpatialCoordinateService;
 
         /// <summary>
-        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingService"/> for the Android platform
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording.IRecordingService"/> for the Android platform
         /// </summary>
-        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingService for the Android platform. Note: errors will be generated if the provided MonoBehaviour does not implement IRecordingService")]
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording.IRecordingService for the Android platform. Note: errors will be generated if the provided MonoBehaviour does not implement IRecordingService")]
         [SerializeField]
         protected MonoBehaviour AndroidRecordingService;
 
         /// <summary>
-        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingService"/> for the iOS platform
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording.IRecordingService"/> for the iOS platform
         /// </summary>
-        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingService for the iOS platform. Note: errors will be generated if the provided MonoBehaviour does not implement IRecordingService")]
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording.IRecordingService for the iOS platform. Note: errors will be generated if the provided MonoBehaviour does not implement IRecordingService")]
         [SerializeField]
         protected MonoBehaviour IosRecordingService;
 
         /// <summary>
-        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingServiceVisual"/>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording.IRecordingServiceVisual"/>
         /// </summary>
-        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording.IRecordingServiceVisual. Note: errors will be generated if the provided MonoBehaviour does not implement IRecordingServiceVisual")]
+        [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording.IRecordingServiceVisual. Note: errors will be generated if the provided MonoBehaviour does not implement IRecordingServiceVisual")]
         [SerializeField]
         protected MonoBehaviour RecordingServiceVisual;
 
         /// <summary>
-        /// List of MonoBehaviours that implement <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.IPlayerStateObserver"/>
+        /// List of MonoBehaviours that implement <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IPlayerStateObserver"/>
         /// </summary>
         [Tooltip("List of MonoBehaviours that observe player state changes. Note: errors will be generated if any of the provided MonoBehaviours do not implement IPlayerStateObserver")]
         [SerializeField]

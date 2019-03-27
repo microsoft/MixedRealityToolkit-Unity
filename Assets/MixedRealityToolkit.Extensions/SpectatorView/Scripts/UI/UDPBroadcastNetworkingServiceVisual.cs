@@ -6,9 +6,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Sharing;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.UI
 {
     public class UDPBroadcastNetworkingServiceVisual : MonoBehaviour,
         IUDPBroadcastNetworkingServiceVisual

@@ -5,7 +5,7 @@ using System;
 using System.Text;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
 {
     /// <summary>
     /// Helper class containing data related to detected markers
