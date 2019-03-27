@@ -5,7 +5,7 @@
 This document outlines the documentation guidelines and standards for the Mixed Reality Toolkit (MRTK). Herein you will find the standards for the following formsfs of the MRTK documentation:
 
 - [Source](#source-documentation)
-- [Conceptual](#conceptual-documentation)
+- [How-To](#how-to-documentation)
 - [Design](#design-documentation)
 - [Performance Notes](#performance-notes)
 - [Breaking Changes](#breaking-changes)
