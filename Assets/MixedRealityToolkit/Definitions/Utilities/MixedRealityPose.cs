@@ -79,6 +79,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return $"{position} | {rotation}";
         }
 
+        /// The Z axis of the pose in world space
+        public Vector3 Forward => rotation * Vector3.forward;
+
+        /// The Y axis of the pose in world space
+        public Vector3 Up => rotation * Vector3.up;
+
+        /// The X axis of the pose in world space
+        public Vector3 Right => rotation * Vector3.right;
+
         #region IEqualityComparer Implementation
 
         bool IEqualityComparer.Equals(object left, object right)
