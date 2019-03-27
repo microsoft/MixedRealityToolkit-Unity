@@ -71,7 +71,7 @@ Accepting these options is completely optional (except .NET 4), if you click **L
 The toolkit has been designed so that there is just one object that is mandatory in your scene.  This is there to provide the core configuration and runtime for the Mixed Reality Toolkit (one of the key advantages in the new framework).
 
 Configuring your scene is extremely simple by simply selecting the following from the Editor menu:
-> Mixed Reality Toolkit -> Configure
+> Mixed Reality Toolkit -> Add to Scene and Configure
 
 ![](../External/ReadMeImages/MRTK_ConfigureScene.png)
 
