@@ -52,4 +52,14 @@ The majority of the Spectator View setup logic can be found in [SpectatorView.cs
 >Note: [SpectatorView.cs](Scripts/SpectatorView.cs) applies the transform for the local application origin to the shared application origin to a root game object. But, this transform could also be applied to the spectator camera compared to any game content.
 
 ## Customizing UI
-coming soon...
+Various components in spectator view utilize UI for a richer user experience. These UI interactions have been abstracted with the following interfaces in hopes of enabling further customization.
+
+### Screen Recording UI
+* [**IRecordingServiceVisual**](../ScreenRecording/IRecordingServiceVisual.cs) - Interface definition that enables user interactions with a RecordingService. This allows starting, stopping and viewing recordings.
+
+### UDPBroadcastNetworkingService UI
+* [**IUDPBroadcastNetworkingServiceVisual**](Scripts/Sharing/UDPBroadcastNetworkingService.cs) - Interface definition that allows a user to specify server and client ports for the UDPBroadcastNetworkingService. This enables having multiple spectator view experiences run on the same network.
+
+### MarkerSpatialCoordinateService UI
+* [**IMarkerSpatialCoordinateServiceOverlayVisual**](Scripts/Sharing/MarkerSpatialCoordinateService.cs) - Interface definition that allows the MarkerSpatialCoordinateService to display state information to the user. This is helpful for guiding users through the marker detection steps.
+* [**IMarkerSpatialCoordinateServiceResetVisual**](Scripts/Sharing/MarkerSpatialCoordinateService.cs) - Interface definition that allows a user to reset the MarkerSpatialCoordinateService's coordinate system. This is helpful if an inaccurate marker location is obtained or if a mobile device loses tracking.
