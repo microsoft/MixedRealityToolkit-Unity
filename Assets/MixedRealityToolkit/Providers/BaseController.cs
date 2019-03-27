@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected MixedRealityControllerVisualizationProfile ControllerVisualizationProfile => InputSystemProfile?.ControllerVisualizationProfile;
 
-        protected bool IsControllerMappingEnabled => InputSystemProfile?.IsControllerMappingEnabled;
+        protected bool IsControllerMappingEnabled => InputSystemProfile != null && InputSystemProfile.IsControllerMappingEnabled;
 
         protected MixedRealityControllerMapping[] ControllerMappings => InputSystemProfile?.ControllerMappingProfile?.MixedRealityControllerMappingProfiles;
 
