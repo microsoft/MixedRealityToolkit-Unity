@@ -9,7 +9,7 @@ MRTK's input system allows you to:
 - Define abstract actions like "press" and associate them to different inputs.
 - Setup pointers attached to input devices that apply focus to game objects and drive application logic via events.
 
-In this page we describe the main input concepts and how they work together to provide the input system functionality.
+This page provides an introduction to the most commonly used input functionality and the underlying concepts.
 
 ## Controllers and Input Actions
 
@@ -67,9 +67,13 @@ Both of these input sources use the _Gesture Settings_ profile to translate Unit
 
 ## Speech
 
-MRTK allows you to define your own speech commands via the *Speech Commands Profile*, found under the _Input System Settings_ profile. A command is defined by the text of the keyword that will cause its event to be raised and, optionally, an input action associated with it. To listen to speech events, implement [`IMixedRealitySpeechHandler`](Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) in your script.
+Speech commands are events raised when the user says a specific keyword. You can create commands in the *Speech Commands Profile*, found under the _Input System Settings_ profile, by specifying a keyword and, optionally, a key that will also raise the event and an input action associated with it. See [Speech and Dictation Events](#speech-and-dictation-events) for speech event details.
 
 <img src="../../External/ReadMeImages/Input/SpeechCommands.png" width="256" align="center">
+
+## Dictation
+
+
 
 ## Input Events
 
@@ -118,6 +122,4 @@ The *OnGestureCompleted* and *OnGestureUpdated* events can receive typed data by
 
 ### Speech and Dictation Events
 
-
-
-**TODO**
+- *On Speech Keyword Recognized*: raised on recognition of a speech keyword and received via [`IMixedRealitySpeechHandler`](Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler).
