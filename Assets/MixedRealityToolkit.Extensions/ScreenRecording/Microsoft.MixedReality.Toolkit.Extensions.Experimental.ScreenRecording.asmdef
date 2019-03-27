@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording",
+    "name": "Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording",
     "references": [
     ],
     "optionalUnityReferences": [],

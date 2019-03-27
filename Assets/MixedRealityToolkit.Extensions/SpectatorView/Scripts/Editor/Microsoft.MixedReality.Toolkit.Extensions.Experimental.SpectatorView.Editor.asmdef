@@ -1,9 +1,12 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection",
+    "name": "Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor",
     "references": [
+        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

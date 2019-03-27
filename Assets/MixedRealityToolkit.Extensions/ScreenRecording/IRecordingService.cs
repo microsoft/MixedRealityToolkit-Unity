@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording
 {
     /// <summary>
     /// An interface implemented by classes that perform screen recording

@@ -8,10 +8,10 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.Sharing;
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Sharing
 {
     /// <summary>
     /// Delegate used to specify server and client ports to the <see cref="UDPBroadcastNetworkingService"/>
@@ -43,9 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
 
     /// <summary>
     /// UDP based component that implements
-    /// <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.IMatchMakingService"/>,
-    /// <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.IPlayerService"/>
-    /// and <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.INetworkingService"/>
+    /// <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IMatchMakingService"/>,
+    /// <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IPlayerService"/>
+    /// and <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.INetworkingService"/>
     /// </summary>
     public class UDPBroadcastNetworkingService : MonoBehaviour,
         IMatchMakingService,

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities
 {
     /// <summary>
     /// Helper class for enabling/disabling platform specific GameObjects

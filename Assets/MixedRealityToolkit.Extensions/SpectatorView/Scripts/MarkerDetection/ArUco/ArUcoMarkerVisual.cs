@@ -3,10 +3,10 @@
 
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection
 {
     /// <summary>
     /// Controls displaying an ArUco marker on a Unity RawImage

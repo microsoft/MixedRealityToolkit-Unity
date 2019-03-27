@@ -1,10 +1,10 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Extensions.SpectatorView",
+    "name": "Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection",
+        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection",
         "Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture",
-        "Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording",
-        "Microsoft.MixedReality.Toolkit.Extensions.Sharing",
+        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording",
+        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing",
         "Unity.XR.ARFoundation"
     ],
     "optionalUnityReferences": [],

@@ -1,8 +1,8 @@
 # Spectator View Debugging
 
-## Troubleshooting the [MarkerSpatialCoordinateService](xref:Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing.MarkerSpatialCoordinateService)
+## Troubleshooting the [MarkerSpatialCoordinateService](xref:Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Sharing.MarkerSpatialCoordinateService)
 
-If Unity scene content feels poorly aligned in the physical world across devices, there is some built in functionality within the Marker Spatial Coordinate Service for showing debug visuals. Check 'Show Debug Visuals' in the unity editor for [MarkerSpatialCoordinateService](xref:Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing.MarkerSpatialCoordinateService) and recompile to enable this functionality.
+If Unity scene content feels poorly aligned in the physical world across devices, there is some built in functionality within the Marker Spatial Coordinate Service for showing debug visuals. Check 'Show Debug Visuals' in the unity editor for [MarkerSpatialCoordinateService](xref:Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Sharing.MarkerSpatialCoordinateService) and recompile to enable this functionality.
 
 ### Main User (HoloLens) Debug Visuals
 On the HoloLens device, debug visuals will be shown at the following locations:

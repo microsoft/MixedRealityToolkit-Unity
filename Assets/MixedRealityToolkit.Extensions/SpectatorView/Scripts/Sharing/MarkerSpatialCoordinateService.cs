@@ -8,11 +8,11 @@ using UnityEngine;
 
 using UnityEngine.XR.ARFoundation;
 
-using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
-using Microsoft.MixedReality.Toolkit.Extensions.Sharing;
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Sharing
 {
     /// <summary>
     /// Enum for various visual states associated with setting up a <see cref="MarkerSpatialCoordinateService"/> shared coordinate system
@@ -64,8 +64,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
     }
 
     /// <summary>
-    /// Class that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.ISpatialCoordinateService"/>
-    /// and <see cref="Microsoft.MixedReality.Toolkit.Extensions.Sharing.IPlayerStateObserver"/> to provide a marker based shared spatial coordinate system
+    /// Class that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.ISpatialCoordinateService"/>
+    /// and <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IPlayerStateObserver"/> to provide a marker based shared spatial coordinate system
     /// </summary>
     public class MarkerSpatialCoordinateService : MonoBehaviour,
         ISpatialCoordinateService,

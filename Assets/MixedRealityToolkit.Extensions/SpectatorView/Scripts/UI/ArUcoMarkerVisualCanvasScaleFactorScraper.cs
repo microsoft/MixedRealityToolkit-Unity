@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.UI
 {
     /// <summary>
     /// Helper class for obtaining additional scaling information to apply to ArUco Marker Images
