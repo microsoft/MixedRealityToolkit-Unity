@@ -35994,6 +35994,25 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.DebugLogWarning
   nameWithType: DebugUtilities.DebugLogWarning
+- uid: Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.DrawPoint(Vector3,Color,System.Single)
+  name: DrawPoint(Vector3, Color, Single)
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.html#Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_DrawPoint_Vector3_Color_System_Single_
+  commentId: M:Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.DrawPoint(Vector3,Color,System.Single)
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.DrawPoint(Vector3, Color, System.Single)
+  nameWithType: DebugUtilities.DrawPoint(Vector3, Color, Single)
+- uid: Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.DrawPoint(Vector3,Quaternion,Color,System.Single)
+  name: DrawPoint(Vector3, Quaternion, Color, Single)
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.html#Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_DrawPoint_Vector3_Quaternion_Color_System_Single_
+  commentId: M:Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.DrawPoint(Vector3,Quaternion,Color,System.Single)
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.DrawPoint(Vector3, Quaternion, Color, System.Single)
+  nameWithType: DebugUtilities.DrawPoint(Vector3, Quaternion, Color, Single)
+- uid: Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.DrawPoint*
+  name: DrawPoint
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.html#Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_DrawPoint_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.DrawPoint
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.DrawPoint
+  nameWithType: DebugUtilities.DrawPoint
 - uid: Microsoft.MixedReality.Toolkit.Utilities.Easing
   name: Easing
   href: api/Microsoft.MixedReality.Toolkit.Utilities.Easing.html
