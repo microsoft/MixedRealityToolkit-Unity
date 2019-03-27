@@ -4794,13 +4794,13 @@ MonoBehaviour:
   _showDebugVisual: 1
   _debugVisualHelper: {fileID: 7276281634823046365}
   _markerSize: 0.04
-  MarkerDetector: {fileID: 7276281634926089533}
-  _pointsRequiredForValidLocalOrigin: 4
-  MarkerVisual: {fileID: 7276281633001593579}
   _useMarkerSpatialCoordinateVisual: 1
   HoloLensOverlayVisual: {fileID: 7276281634040079794}
   MobileOverlayVisual: {fileID: 7276281633299260384}
   MobileResetVisual: {fileID: 7276281633261797892}
+  MarkerDetector: {fileID: 7276281634926089533}
+  _pointsRequiredForValidLocalOrigin: 4
+  MarkerVisual: {fileID: 7276281633001593579}
 --- !u!114 &7276281634823046365
 MonoBehaviour:
   m_ObjectHideFlags: 0

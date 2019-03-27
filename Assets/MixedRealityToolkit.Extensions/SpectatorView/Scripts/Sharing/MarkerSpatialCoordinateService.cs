@@ -983,11 +983,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        protected void OnToggleDebugVisuals()
-        {
-            _showDebugVisual = !_showDebugVisual;
-        }
-
         protected void OnResetSpatialCoordinates()
         {
             if (_actAsUser)
