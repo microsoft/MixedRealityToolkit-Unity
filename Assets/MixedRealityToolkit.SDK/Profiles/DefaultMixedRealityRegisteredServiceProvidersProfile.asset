@@ -13,11 +13,4 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityRegisteredServiceProvidersProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  configurations:
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
-    componentName: Windows Speech Input
-    priority: 10
-    runtimePlatform: 25
-    configurationProfile: {fileID: 0}
+  configurations: []

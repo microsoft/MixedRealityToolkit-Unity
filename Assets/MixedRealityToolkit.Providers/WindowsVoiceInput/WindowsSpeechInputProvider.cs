@@ -60,6 +60,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         public override void Enable()
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
+            
+            // Avoid repeated enabling
+            if (keywordRecognizer != null) { return; }
 
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
             if (profile == null) { return; }

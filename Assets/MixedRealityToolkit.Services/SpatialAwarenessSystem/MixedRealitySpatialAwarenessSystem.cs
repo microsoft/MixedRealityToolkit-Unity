@@ -84,13 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                     }
                 }
             }
-
-            // Get the collection of registered observers.
-            IReadOnlyList<IMixedRealitySpatialAwarenessObserver> services = Registrar.GetServices<IMixedRealitySpatialAwarenessObserver>();
-            for (int i = 0; i < services.Count; i++)
-            {
-                observers.Add(services[i] as IMixedRealitySpatialAwarenessObserver);
-            }
         }
 
         /// <inheritdoc/>
