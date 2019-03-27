@@ -4,12 +4,12 @@
 //
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Renders meshes at the corners of a tool tip
     /// </summary>
-    public class ToolTipBackgroundCorners : ToolTipBackground
+    public class ToolTipBackgroundCorners : MonoBehaviour, IToolTipBackground
     {
         private enum ScaleModeEnum
         {
@@ -21,6 +21,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             /// Make the corners scale to the tooltip content parent's lossy scale
             /// </summary>
             Local,
+        }
+
+        public bool IsVisible
+        {
+            set
+            {
+                cornerBotLeft.gameObject.SetActive(value);
+                cornerTopRight.gameObject.SetActive(value);
+                cornerBotRight.gameObject.SetActive(value);
+                cornerBotLeft.gameObject.SetActive(value);
+            }
         }
 
         [SerializeField]
@@ -42,19 +53,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         [SerializeField]
         private ScaleModeEnum scaleMode = ScaleModeEnum.World;
 
-        protected override void ContentChange()
-        {
-            ScaleToFitContent();
-        }
-
-        protected override void ScaleToFitContent()
+        public void OnContentChange(Vector3 localContentSize, Vector3 localContentOffset, Transform contentParentTransform)
         {
             // Get the local size of the content - this is the scale of the text under the content parent
-            Vector3 localContentSize = ToolTipContent.LocalContentSize;
             localContentSize.z = 1;
             // Multiply it by 0.5 to get extents
             localContentSize *= 0.5f;
-            Vector3 localContentOffset = ToolTipContent.LocalContentOffset;
 
             // Put the corner objects at the corners
             var topLeft = new Vector3(-localContentSize.x + localContentOffset.x, localContentSize.y + localContentOffset.y, localContentOffset.x);
@@ -87,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             switch (scaleMode)
             {
                 case ScaleModeEnum.World:
-                    Vector3 lossyScale = ToolTipContent.ContentParentTransform.lossyScale;
+                    Vector3 lossyScale = contentParentTransform.lossyScale;
                     globalScale.x /= lossyScale.x;
                     globalScale.y /= lossyScale.y;
                     globalScale.z /= lossyScale.z;
@@ -120,16 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             {
                 cornerBotLeft.localScale = globalScale * cornerScale;
             }
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (Application.isPlaying)
-            {
-                return;
-            }
-
-            ScaleToFitContent();
         }
     }
 }

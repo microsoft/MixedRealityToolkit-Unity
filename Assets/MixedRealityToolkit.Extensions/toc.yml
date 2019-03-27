@@ -1,0 +1,17 @@
+- name: Marker Detection
+  href: MarkerDetection/MarkerDetectionArchitecture.md
+- name: Photo Capture
+  href: PhotoCapture/PhotoCaptureArchitecture.md
+- name: Screen Recording
+  href: ScreenRecording/ScreenRecordingArchitecture.md
+- name: Sharing
+  href: Sharing/SharingArchitecture.md
+- name: Spectator View
+  href: SpectatorView/SpectatorView.md
+  items:
+  - name: Spectator View Architecture
+    href: SpectatorView/SpectatorViewArchitecture.md
+  - name: Spectator View Setup
+    href: SpectatorView/SpectatorViewSetup.md
+  - name: Spectator View Debugging
+    href: SpectatorView/SpectatorViewDebugging.md

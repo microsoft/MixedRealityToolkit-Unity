@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// The purpose of this class is to provide a cached reference to the main camera. Calling Camera.main
@@ -66,7 +66,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         /// <param name="newMain">New main camera to cache</param>
         public static Camera Refresh(Camera newMain)
         {
-            Debug.Assert(newMain != null, "No camera with MainCamera tag found in scene.  Did you forget to tag your camera?");
+            if (newMain == null)
+            {
+                Debug.LogWarning("A null camera was passed into CameraCache.Refresh()");
+            }
             return cachedCamera = newMain;
         }
     }

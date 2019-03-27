@@ -38,29 +38,31 @@ This ensures documentation is properly generated and disseminated for all all cl
 
 ## MRTK namespace rules
 
-The vNext structure adheres to a strict namespace culture of mapping the namespace 1-1 with the folder structure of the project.  This ensures that classes are easy to discover and maintain.  It also ensures the dependencies of any class are laid out in the beginning using definitions of the file.
+The Mixed Reality Toolkit uses a feature based namespace model, where all foundational namespaces begin with "Microsoft.MixedReality.Toolkit". In general, you need not specify the toolkit layer (ex: Core, Providers, Services) in your namespaces.
 
-![](/External/ReadMeImages/MRTK-NameSpaceExample.png)
+The currently defined namespaces are:
+
+- Microsoft.MixedReality.Toolkit
+- Microsoft.MixedReality.Toolkit.Boundary
+- Microsoft.MixedReality.Toolkit.Diagnostics
+- Microsoft.MixedReality.Toolkit.Editor
+- Microsoft.MixedReality.Toolkit.Input
+- Microsoft.MixedReality.Toolkit.SpatialAwareness
+- Microsoft.MixedReality.Toolkit.Teleport
+- Microsoft.MixedReality.Toolkit.Utilities
+
+For namespaces with a large amount of types, it is acceptable to create a limited number of sub-namespaces to aid in scoping usage.
 
 ### Do:
 
 ```c#
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions
+namespace Microsoft.MixedReality.Toolkit.Boundary
 {
-    /// <summary>
-    /// The ButtonAction defines the set of actions exposed by a controller.
-    /// Denoting the available buttons / interactions that a controller supports.
-    /// </summary>
-    public enum ButtonAction
-    {
-    }
+    // Interface, class or data type definition.
 }
 ```
 
-Absolutely no class / struct / enum or other definition should be entered in to the project without the appropriate namespace definition.
+Omitting the namespace for an interface, class or data type will cause your change to be blocked.
 
 ## Spaces vs Tabs
 Please be sure to use 4 spaces instead of tabs when contributing to this project.

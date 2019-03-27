@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [CustomEditor(typeof(ParabolaPhysicalLineDataProvider))]
-    public class ParabolaPhysicalLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
+    public class ParabolaPhysicalLineDataProviderInspector : BaseLineDataProviderInspector
     {
         private SerializedProperty gravity;
         private SerializedProperty velocity;

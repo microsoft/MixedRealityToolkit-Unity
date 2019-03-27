@@ -89,7 +89,7 @@ $nugetJobs = Get-ChildItem *.nuspec -Recurse | Foreach-Object {
     Write-Verbose "Starting nuget job for $($_.FullName)"
     Start-Job { 
         param($name, $outDir, $props) 
-        nuget pack $name -OutputDirectory $outDir -Properties $props 
+        nuget pack $name -OutputDirectory $outDir -Properties $props -Exclude *.nuspec.meta
     } -ArgumentList $_.FullName, $OutputDirectory, "version=$Version;releaseNotes=$releaseNotes"
 }
 

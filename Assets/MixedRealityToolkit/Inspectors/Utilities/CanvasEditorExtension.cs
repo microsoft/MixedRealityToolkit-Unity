@@ -1,19 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
     /// Helper class to assign the UIRaycastCamera when creating a new canvas object and assigning the world space render mode.
     /// </summary>
     [CustomEditor(typeof(Canvas))]
-    public class CanvasEditorExtension : Editor
+    public class CanvasEditorExtension : UnityEditor.Editor
     {
         private const string DialogText = "Hi there, we noticed that you've changed this canvas to use WorldSpace.\n\n" +
                                           "In order for the InputManager to work properly with uGUI raycasting we'd like to update this canvas' " +
@@ -23,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 
         private bool hasUtility = false;
 
-        private static bool IsUtilityValid => MixedRealityToolkit.HasActiveProfile && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && MixedRealityToolkit.InputSystem?.FocusProvider != null;
+        private static bool IsUtilityValid => MixedRealityToolkit.Instance.HasActiveProfile && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && MixedRealityToolkit.InputSystem?.FocusProvider != null;
 
         private void OnEnable()
         {

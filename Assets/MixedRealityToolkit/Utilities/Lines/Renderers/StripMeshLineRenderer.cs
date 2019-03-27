@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Draws a strip of polygons along the line
@@ -16,14 +15,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
 
         [SerializeField]
         private Material lineMaterial = null;
-
         [SerializeField]
         private float uvOffset = 0f;
 
+        [SerializeField]
+        [HideInInspector]
+        private MeshRenderer stripMeshRenderer;
+        [SerializeField]
+        [HideInInspector]
+        private GameObject meshRendererGameObject;
+
         private Mesh stripMesh;
         private Material lineMatInstance;
-        private MeshRenderer stripMeshRenderer;
-        private GameObject meshRendererGameObject;
 
         private readonly List<Vector3> positions = new List<Vector3>();
         private readonly List<Vector3> forwards = new List<Vector3>();
@@ -95,8 +98,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             }
         }
 
-        public void Update()
+        protected override void UpdateLine()
         {
+            if (stripMeshRenderer == null)
+            {
+                Debug.LogError("Strip mesh renderer has been destroyed - disabling");
+                enabled = false;
+            }
+
             if (!LineDataSource.enabled)
             {
                 stripMeshRenderer.enabled = false;
@@ -108,20 +117,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             forwards.Clear();
             colors.Clear();
             widths.Clear();
-
+            
             for (int i = 0; i <= LineStepCount; i++)
             {
-                float normalizedDistance = (1f / (LineStepCount - 1)) * i;
+                float normalizedDistance = GetNormalizedPointAlongLine(i);
                 positions.Add(LineDataSource.GetPoint(normalizedDistance));
                 colors.Add(GetColor(normalizedDistance));
                 widths.Add(GetWidth(normalizedDistance));
-                forwards.Add(LineDataSource.GetRotation(normalizedDistance) * Vector3.down);
+                forwards.Add(LineDataSource.GetVelocity(normalizedDistance));
             }
 
-            GenerateStripMesh(positions, colors, widths, uvOffset, forwards, stripMesh);
+            GenerateStripMesh(positions, colors, widths, uvOffset, forwards, stripMesh, LineDataSource.LineTransform.up);
         }
 
-        public static void GenerateStripMesh(List<Vector3> positionList, List<Color> colorList, List<float> thicknessList, float uvOffsetLocal, List<Vector3> forwardList, Mesh mesh)
+        public static void GenerateStripMesh(List<Vector3> positionList, List<Color> colorList, List<float> thicknessList, float uvOffsetLocal, List<Vector3> forwardList, Mesh mesh, Vector3 up)
         {
             int vertexCount = positionList.Count * 2;
             int colorCount = colorList.Count * 2;
@@ -146,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             {
                 int index = (int)(x * 0.5f);
                 Vector3 forward = forwardList[index];
-                Vector3 right = Vector3.Cross(forward, Vector3.up).normalized;
+                Vector3 right = Vector3.Cross(forward, up).normalized;
                 float thickness = thicknessList[index] * 0.5f;
                 stripMeshVertices[2 * x] = positionList[x] - right * thickness;
                 stripMeshVertices[2 * x + 1] = positionList[x] + right * thickness;

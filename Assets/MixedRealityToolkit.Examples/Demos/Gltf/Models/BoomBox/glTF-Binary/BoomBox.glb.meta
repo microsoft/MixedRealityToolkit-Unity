@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: d6584b783db3a89468febf0682649901
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: main/glTF Scene BoomBox
+    100002: main/glTF Scene BoomBox/BoomBox
+    400000: main/glTF Scene BoomBox/Transform
+    400002: main/glTF Scene BoomBox/BoomBox/Transform
+    2100000: BoomBox_Mat
+    2300000: main/glTF Scene BoomBox/BoomBox/MeshRenderer
+    2800000: Texture_0
+    2800002: Texture_1
+    2800004: Texture_2
+    2800006: Texture_3
+    3300000: main/glTF Scene BoomBox/BoomBox/MeshFilter
+    4300000: BoomBox
+    11400000: glTF data
+    100100000: main
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 75911c45f303c8f45927f5efeaa50cc4, type: 3}

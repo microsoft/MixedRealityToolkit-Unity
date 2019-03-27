@@ -1,22 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
-using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Teleport;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
@@ -75,9 +66,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public virtual Vector3 PointerDirection => raycastOrigin != null ? raycastOrigin.forward : transform.forward;
 
         /// <summary>
-        /// Set a new cursor for this <see cref="IMixedRealityPointer"/>
+        /// Set a new cursor for this <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>
         /// </summary>
-        /// <remarks>This <see cref="GameObject"/> must have a <see cref="IMixedRealityCursor"/> attached to it.</remarks>
+        /// <remarks>This <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> must have a <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityCursor"/> attached to it.</remarks>
         /// <param name="newCursor">The new cursor</param>
         public virtual void SetCursor(GameObject newCursor = null)
         {
@@ -129,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.OnEnable();
 
-            if (MixedRealityToolkit.IsInitialized && MixedRealityToolkit.TeleportSystem != null && !lateRegisterTeleport)
+            if (MixedRealityToolkit.IsTeleportSystemEnabled && MixedRealityToolkit.TeleportSystem != null && !lateRegisterTeleport)
             {
                 MixedRealityToolkit.TeleportSystem.Register(gameObject);
             }
@@ -139,14 +130,34 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.Start();
 
-            if (lateRegisterTeleport)
+            if (lateRegisterTeleport && MixedRealityToolkit.IsTeleportSystemEnabled)
             {
-                await new WaitUntil(() => MixedRealityToolkit.TeleportSystem != null);
+                if (MixedRealityToolkit.TeleportSystem == null)
+                {
+                    await new WaitUntil(() => MixedRealityToolkit.TeleportSystem != null);
+
+                    // We've been destroyed during the await.
+                    if (this == null)
+                    {
+                        return;
+                    }
+                }
+
                 lateRegisterTeleport = false;
                 MixedRealityToolkit.TeleportSystem.Register(gameObject);
             }
 
-            await WaitUntilInputSystemValid;
+            if (MixedRealityToolkit.InputSystem == null)
+            {
+                await WaitUntilInputSystemValid;
+            }
+
+            // We've been destroyed during the await.
+            if (this == null)
+            {
+                return;
+            }
+
             SetCursor();
         }
 
@@ -165,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #region IMixedRealityPointer Implementation
 
-        /// <inheritdoc cref="IMixedRealityController" />
+        /// <inheritdoc />
         public override IMixedRealityController Controller
         {
             get { return base.Controller; }
