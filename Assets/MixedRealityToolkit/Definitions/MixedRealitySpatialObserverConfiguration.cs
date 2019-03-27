@@ -35,6 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
         /// <inheritdoc />
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
+        
+        [SerializeField]
+        // private MixedRealitySpatialAwarenessObserverProfile
 
         /// <summary>
         /// 

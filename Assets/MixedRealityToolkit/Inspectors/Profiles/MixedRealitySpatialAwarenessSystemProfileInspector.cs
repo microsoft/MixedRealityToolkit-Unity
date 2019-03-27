@@ -80,13 +80,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     list.InsertArrayElementAtIndex(list.arraySize);
                     SerializedProperty observer = list.GetArrayElementAtIndex(list.arraySize - 1);
 
-                    SerializedProperty providerName = observer.FindPropertyRelative("componentName");
-                    providerName.stringValue = $"New spatial observer {list.arraySize - 1}";
+                    SerializedProperty observerName = observer.FindPropertyRelative("componentName");
+                    observerName.stringValue = $"New spatial observer {list.arraySize - 1}";
 
                     SerializedProperty runtimePlatform = observer.FindPropertyRelative("runtimePlatform");
                     runtimePlatform.intValue = -1;
 
-                    // todo - profile
+                    SerializedProperty observerProfile = observer.FindPropertyRelative("componentProfile");
+                    // todo
 
                     serializedObject.ApplyModifiedProperties();
 
@@ -111,8 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                     SerializedProperty observer = list.GetArrayElementAtIndex(i);
                     SerializedProperty observerName = observer.FindPropertyRelative("componentName");
                     SerializedProperty observerType = observer.FindPropertyRelative("componentType");
+                    SerializedProperty observerProfile = observer.FindPropertyRelative("componentProfile");
                     SerializedProperty runtimePlatform = observer.FindPropertyRelative("runtimePlatform");
-                    // todo: profile
 
                     using (new EditorGUILayout.VerticalScope())
                     {
@@ -148,6 +149,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                                 EditorGUILayout.PropertyField(runtimePlatform);
                                 changed |= EditorGUI.EndChangeCheck();
                             }
+
+                            changed |= RenderProfile(observerProfile);
 
                             serializedObject.ApplyModifiedProperties();
                         }
