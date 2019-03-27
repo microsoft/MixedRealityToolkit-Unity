@@ -1,4 +1,6 @@
-# Troubleshooting the [MarkerSpatialCoordinateService](Scripts/Sharing/MarkerSpatialCoordinateService.cs)
+# Spectator View Debugging
+
+## Troubleshooting the [MarkerSpatialCoordinateService](Scripts/Sharing/MarkerSpatialCoordinateService.cs)
 
 If Unity scene content feels poorly aligned in the physical world across devices, there is some built in functionality within the Marker Spatial Coordinate Service for showing debug visuals. Check 'Show Debug Visuals' in the unity editor for [MarkerSpatialCoordinateService.cs](Scripts/Sharing/MarkerSpatialCoordinateService.cs) and recompile to enable this functionality. 
 
