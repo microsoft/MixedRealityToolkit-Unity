@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The list of controller templates your application can use.")]
         private MixedRealityControllerMapping[] mixedRealityControllerMappingProfiles = new MixedRealityControllerMapping[0];
 
-        public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles != null ? mixedRealityControllerMappingProfiles : null;
+        public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
 
 #if UNITY_EDITOR
 
