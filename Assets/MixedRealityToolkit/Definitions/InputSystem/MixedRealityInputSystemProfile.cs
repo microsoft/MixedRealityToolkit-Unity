@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public MixedRealityControllerVisualizationProfile ControllerVisualizationProfile
         {
-            get { return controllerVisualizationProfile; }
+            get { return controllerVisualizationProfile != null ? controllerVisualizationProfile : null; }
             internal set { controllerVisualizationProfile = value; }
         }
     }

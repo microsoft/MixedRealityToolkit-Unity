@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit
                     UnityEditor.EditorGUIUtility.PingObject(Instance);
                 }
 #endif // UNITY_EDITOR
-                return activeProfile;
+                return activeProfile != null ? activeProfile : null;
             }
             set
             {

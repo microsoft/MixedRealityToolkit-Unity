@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public MixedRealityInputSystemProfile InputSystemProfile
         {
-            get { return inputSystemProfile; }
+            get { return inputSystemProfile != null ? inputSystemProfile : null; }
             internal set { inputSystemProfile = value; }
         }
 
