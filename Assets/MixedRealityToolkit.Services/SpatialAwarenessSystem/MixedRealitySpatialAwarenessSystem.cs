@@ -12,7 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// </summary>
     public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem
     {
-        public MixedRealitySpatialAwarenessSystem(IMixedRealityServiceRegistrar registrar) : base(registrar, null) // spatial awareness does not yet use a profile
+        public MixedRealitySpatialAwarenessSystem(
+            IMixedRealityServiceRegistrar registrar,
+            MixedRealitySpatialAwarenessSystemProfile profile) : base(registrar, profile)
         {
             if (registrar == null)
             {
@@ -44,7 +46,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         {
             base.Disable();
 
-            // Clear the collection of registered observers.
+            if (observers.Count > 0)
+            {
+                // Unregister the spatial observers
+                for (int i = 0; i < observers.Count; i++)
+                {
+                    if (observers[i] != null)
+                    {
+                        Registrar.UnregisterDataProvider<IMixedRealitySpatialAwarenessObserver>(observers[i]);
+                    }
+                }
+            }
             observers.Clear();
         }
 
@@ -53,11 +65,24 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         {
             base.Enable();
 
-            if (observers.Count != 0)
+            MixedRealitySpatialAwarenessSystemProfile profile = ConfigurationProfile as MixedRealitySpatialAwarenessSystemProfile;
+
+            if ((observers.Count == 0) && (profile != null))
             {
-                // todo: ensure this is a clean pattern
-                Debug.LogWarning("The spatial awareness system is already enabled.");
-                return;
+                // Register the spatial observers.
+                for (int i = 0; i < profile.ObserverConfigurations.Length; i++)
+                {
+                    MixedRealitySpatialObserverConfiguration configuration = profile.ObserverConfigurations[i];
+                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, profile };
+
+                    if (Registrar.RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
+                        configuration.ComponentType.Type,
+                        configuration.RuntimePlatform,
+                        args))
+                    {
+                        observers.Add(Registrar.GetDataProvider<IMixedRealitySpatialAwarenessObserver>(configuration.ComponentName));
+                    }
+                }
             }
 
             // Get the collection of registered observers.
@@ -71,9 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc/>
         public override void Reset()
         {
-            base.Reset();
-            // todo: base Reset should likely call Disable, then Initialize
-            InitializeInternal();
+            Disable();
+            Initialize();
+            Enable();
         }
 
         /// <inheritdoc/>

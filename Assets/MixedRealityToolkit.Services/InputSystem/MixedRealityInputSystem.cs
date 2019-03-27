@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (deviceManagers[i] != null)
                     {
-                        Registrar?.UnregisterDataProvider<IMixedRealityInputDeviceManager>(deviceManagers[i]);
+                        Registrar.UnregisterDataProvider<IMixedRealityInputDeviceManager>(deviceManagers[i]);
                     }
                 }
             }
