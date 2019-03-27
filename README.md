@@ -27,9 +27,10 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 
 # Supported Platform 
 
-The Mixed Reality Toolkit vNext will includes many APIs to accelerate the development of MR / XR / VR / AR projects for a range of supported devices, starting with
+The Mixed Reality Toolkit V2 will includes many APIs to accelerate the development of MR / XR / VR / AR projects for a range of supported devices, starting with
 
  - Microsoft HoloLens
+ - Microsoft HoloLens 2
  - Microsoft Immersive headsets (IHMD)
  - OpenVR (HTC Vive / Oculus Rift)
  
@@ -72,15 +73,18 @@ Find this readme, other documentation articles and the MRTK api reference on our
 
 # Engage with the Community
 
-Join us on [Slack](https://holodevelopers.slack.com/) where our developers are actively are actively answering questions and sharing out the latest thinking from the dev team. 
+Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/).
 
-[Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) is a great place to ask for how-to using MRTK or troubleshooting an issue. Use the tag "mrtk" for it show up in the developer team's sights.
+Ask questions about using MRRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk).
 
-For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
+Search for solution or file a new issue in [GitHub](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
 
 Deep dive into project plan and learn how you can contribute to MRTK in our [wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki).  
 
-File an issue here if something isn't working right in MRTK.
+Join our weekly community shiproom to hear directly from the feature team. (link to come soon) 
+
+For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
+
 
 # Examples and QuickStart scenes
 
