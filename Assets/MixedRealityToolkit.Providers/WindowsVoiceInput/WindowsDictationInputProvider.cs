@@ -96,12 +96,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             if (dictationRecognizer == null)
             {
                 dictationRecognizer = new DictationRecognizer();
+                dictationRecognizer.DictationHypothesis += DictationRecognizer_DictationHypothesis;
+                dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
+                dictationRecognizer.DictationComplete += DictationRecognizer_DictationComplete;
+                dictationRecognizer.DictationError += DictationRecognizer_DictationError;
             }
-
-            dictationRecognizer.DictationHypothesis += DictationRecognizer_DictationHypothesis;
-            dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
-            dictationRecognizer.DictationComplete += DictationRecognizer_DictationComplete;
-            dictationRecognizer.DictationError += DictationRecognizer_DictationError;
         }
 
         /// <inheritdoc />

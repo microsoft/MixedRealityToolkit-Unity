@@ -61,9 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
             
-            // Avoid repeated enabling
-            if (keywordRecognizer != null) { return; }
-
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
             if (profile == null) { return; }
 
@@ -79,8 +76,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
 
             RecognitionConfidenceLevel = profile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
-            keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
-            keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+
+            if (keywordRecognizer == null)
+            {
+                keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
+                keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+            }
 
             if (profile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
             {
