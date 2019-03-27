@@ -50,13 +50,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public static MixedRealityPose ZeroIdentity { get; } = new MixedRealityPose(Vector3.zero, Quaternion.identity);
 
         [SerializeField]
+        [Tooltip("The position of the pose")]
         private Vector3 position;
 
+        /// <summary>
+        /// The position of the pose.
+        /// </summary>
         public Vector3 Position { get { return position; } set { position = value; } }
 
         [SerializeField]
+        [Tooltip("The rotation of the pose.")]
         private Quaternion rotation;
 
+        /// <summary>
+        /// The rotation of the pose.
+        /// </summary>
         public Quaternion Rotation { get { return rotation; } set { rotation = value; } }
 
         public static MixedRealityPose operator +(MixedRealityPose left, MixedRealityPose right)
@@ -79,13 +87,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return $"{position} | {rotation}";
         }
 
-        /// The Z axis of the pose in world space
+        /// <summary>
+        /// The Z axis of the pose in world space.
+        /// </summary>
         public Vector3 Forward => rotation * Vector3.forward;
 
-        /// The Y axis of the pose in world space
+        /// <summary>
+        /// The Y axis of the pose in world space.
+        /// </summary>
         public Vector3 Up => rotation * Vector3.up;
 
-        /// The X axis of the pose in world space
+        /// <summary>
+        /// The X axis of the pose in world space.
+        /// </summary>
         public Vector3 Right => rotation * Vector3.right;
 
         #region IEqualityComparer Implementation
