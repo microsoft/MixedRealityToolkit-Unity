@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -212,9 +213,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                     case "-autoIncrement":
                         buildInfo.AutoIncrement = true;
                         break;
-                    case "-scenes":
-                        buildInfo.Scenes = from scene in arguments[++i].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                                           select scene.Trim();
+                    case "-sceneList":
+                        buildInfo.Scenes.Union(from scene in arguments[++i].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                               select scene.Trim());
+                        break;
+                    case "-sceneListJson":
+                        string path = arguments[++i];
+                        if (File.Exists(path))
+                        {
+                            buildInfo.Scenes.Union(JsonUtility.FromJson<List<string>>(File.ReadAllText(path)));
+                        }
                         break;
                     case "-buildOutput":
                         buildInfo.OutputDirectory = arguments[++i];
