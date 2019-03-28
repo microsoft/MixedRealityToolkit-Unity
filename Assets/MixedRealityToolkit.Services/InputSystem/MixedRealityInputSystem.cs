@@ -245,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
         {
             Debug.Assert(eventData != null);
-            Debug.Assert(!(eventData is  MixedRealityPointerEventData), "HandleEvent called with a pointer event. All events raised by pointer should call HandlePointerEvent");
+            Debug.Assert(!(eventData is MixedRealityPointerEventData), "HandleEvent called with a pointer event. All events raised by pointer should call HandlePointerEvent");
 
             if (disabledRefCount > 0)
             {
@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
             DispatchEventToGlobalListeners(baseInputEventData, eventHandler);
-            
+
             if (baseInputEventData.used)
             {
                 // All global listeners get a chance to see the event,
@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DispatchEventToFallbackHandlers(baseInputEventData, eventHandler);
             }
         }
-        
+
         /// <summary>
         /// Handles a pointer event
         /// Assumption: We only send pointer events to the objects that pointers are focusing, except for global event listeners (which listen to everything)
@@ -304,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Debug.Assert(pointerEventData.Pointer != null, "Trying to dispatch event on pointer but pointerEventData is null");
 
-            DispatchEventToObjectFocusedByPointer(pointerEventData.Pointer, baseInputEventData, false, eventHandler);                
+            DispatchEventToObjectFocusedByPointer(pointerEventData.Pointer, baseInputEventData, false, eventHandler);
 
             if (!baseInputEventData.used)
             {
@@ -323,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}");
 
             // Send the event to global listeners
-            base.HandleEvent(baseInputEventData, eventHandler);            
+            base.HandleEvent(baseInputEventData, eventHandler);
         }
 
         private void DispatchEventToFallbackHandlers<T>(BaseInputEventData baseInputEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
@@ -336,12 +336,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        
         /// <summary>
         /// Dispatch an input event to the object focused by the given IMixedRealityPointer.
         /// If a modal dialog is active, dispatch the pointer event to that modal dialog
         /// Returns true if the event was handled by a modal handler
-        private bool DispatchEventToObjectFocusedByPointer<T>(IMixedRealityPointer mixedRealityPointer, BaseInputEventData baseInputEventData, 
+        private bool DispatchEventToObjectFocusedByPointer<T>(IMixedRealityPointer mixedRealityPointer, BaseInputEventData baseInputEventData,
             bool modalEventHandled, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
             GameObject focusedObject = FocusProvider?.GetFocusedObject(mixedRealityPointer);
@@ -849,10 +848,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
         {
-            // Create input event
-            pointerEventData.Initialize(pointer, handedness, inputAction);
-
-            ExecutePointerDown(HandlePointerDown(pointer));
+            RaisePointerDown(pointer, inputAction, handedness);
         }
 
         /// <inheritdoc />
@@ -933,10 +929,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
         {
-            // Create input event
-            pointerEventData.Initialize(pointer, handedness, inputAction);
-
-            ExecutePointerUp(HandlePointerUp(pointer));
+            RaisePointerUp(pointer, inputAction, handedness);
         }
 
         /// <inheritdoc />
