@@ -25,14 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool ShowBackground
         {
-            get
-            {
-                return showBackground;
-            }
-            set
-            {
-                showBackground = value;
-            }
+            get { return showBackground; }
+            set { showBackground = value; }
         }
 
         [SerializeField]
@@ -62,14 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool ShowConnector
         {
-            get
-            {
-                return showConnector;
-            }
-            set
-            {
-                showConnector = value;
-            }
+            get { return showConnector; }
+            set { showConnector = value; }
         }
 
         [SerializeField]
@@ -81,14 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public DisplayMode TipState
         {
-            get
-            {
-                return tipState;
-            }
-            set
-            {
-                tipState = value;
-            }
+            get { return tipState; }
+            set { tipState = value; }
         }
 
         [SerializeField]
@@ -100,14 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public DisplayMode GroupTipState
         {
-            set
-            {
-                groupTipState = value;
-            }
-            get
-            {
-                return groupTipState;
-            }
+            set { groupTipState = value; }
+            get { return groupTipState; }
         }
 
         [SerializeField]
@@ -119,14 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public DisplayMode MasterTipState
         {
-            set
-            {
-                masterTipState = value;
-            }
-            get
-            {
-                return masterTipState;
-            }
+            set { masterTipState = value; }
+            get { return masterTipState; }
         }
 
         [SerializeField]
@@ -137,14 +107,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public GameObject Anchor
         {
-            get
-            {
-                return anchor;
-            }
-            set
-            {
-                anchor = value;
-            }
+            get { return anchor; }
+            set { anchor = value; }
         }
 
         [Tooltip("Pivot point that text will rotate around as well as the point where the Line will be rendered to.")]
@@ -182,10 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     RefreshLocalContent();                   
                 }
             }
-            get
-            {
-                return toolTipText;
-            }
+            get { return toolTipText; }
         }
 
         [SerializeField]
@@ -211,10 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float ContentScale
         {
-            get
-            {
-                return contentScale;
-            }
+            get { return contentScale; }
             set
             {
                 contentScale = value;
@@ -243,6 +201,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// point where ToolTip is attached
+        /// </summary>
+        public Vector3 AttachPointPosition
+        {
+            get { return attachPointPosition; }
+            set
+            {
+                // apply the difference to the offset
+                attachPointOffset = value - contentParent.transform.TransformPoint(localAttachPoint);
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Added as an offset to the pivot position. Modifying AttachPointPosition directly changes this value.")]
+        private Vector3 attachPointOffset;
+
         [SerializeField]
         [Tooltip("The line connecting the anchor to the pivot. If present, this component will be updated automatically.\n\nRecommended: SimpleLine, Spline, and ParabolaConstrainted")]
         private BaseMixedRealityLineDataProvider toolTipLine;
@@ -254,8 +229,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public Vector2 LocalContentSize => localContentSize;
 
+        private Vector3 pivotPosition;
+        private Vector3 attachPointPosition;
+        private Vector3 anchorPosition;
         private Vector3 localAttachPoint;
-        private Vector3 attachPointOffset;
         private Vector3[] localAttachPointPositions;
         private List<IToolTipBackground> backgrounds = new List<IToolTipBackground>();
         private List<IToolTipHighlight> highlights = new List<IToolTipHighlight>();
@@ -268,36 +245,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public Vector3 PivotPosition
         {
-            get
-            {
-                return pivot.transform.position;
-            }
+            get { return pivotPosition; }
             set
             {
+                pivotPosition = value;
                 pivot.transform.position = value;
-            }
-        }
-
-        /// <summary>
-        /// point where ToolTip is attached
-        /// </summary>
-        public Vector3 AttachPointPosition
-        {
-            get
-            {
-                return contentParent.transform.TransformPoint(localAttachPoint) + attachPointOffset;
-            }
-            set
-            {
-                // apply the difference to the offset
-                attachPointOffset = value - contentParent.transform.TransformPoint(localAttachPoint);
             }
         }
 
         /// <summary>
         /// point where ToolTip connector is attached
         /// </summary>
-        public Vector3 AnchorPosition => anchor.transform.position;
+        public Vector3 AnchorPosition
+        {
+            get { return anchorPosition; }
+            set { anchor.transform.position = value; }
+        }
 
         /// <summary>
         /// Transform of object to which ToolTip is attached
@@ -418,6 +381,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected virtual void Update()
         {
+            // Cache our pivot / anchor / attach point positions
+            pivotPosition = pivot.transform.position;
+            anchorPosition = anchor.transform.position;
+            attachPointPosition = contentParent.transform.TransformPoint(localAttachPoint) + attachPointOffset;
+
             // Enable / disable our line if it exists
             if (toolTipLine != null)
             {
@@ -658,6 +626,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     labelTransform = new GameObject("Label").transform;
                     labelTransform.SetParent(contentParent.transform);
                     labelTransform.localScale = Vector3.one * 0.005f;
+                    labelTransform.localPosition = Vector3.zero;
                 }
                 label = labelTransform.gameObject;
             }
