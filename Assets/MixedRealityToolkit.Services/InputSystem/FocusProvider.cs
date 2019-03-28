@@ -554,6 +554,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (!objectIsStillFocusedByOtherPointer)
                 {
+                    // Policy: only raise focus exit if no other pointers are still focusing the object
                     MixedRealityToolkit.InputSystem.RaiseFocusExit(pointer, unfocusedObject);
                 }
 
@@ -772,8 +773,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointerData.CurrentPointerTarget == null || overridePhysicsRaycast) && raycastResult.isValid &&
-                 raycastResult.module != null && raycastResult.module.eventCamera == UIRaycastCamera)
+            if ((pointerData.CurrentPointerTarget == null || overridePhysicsRaycast)
+                && raycastResult.isValid
+                && raycastResult.module != null
+                && raycastResult.module.eventCamera == UIRaycastCamera)
             {
                 newUiRaycastPosition.x = raycastResult.screenPosition.x;
                 newUiRaycastPosition.y = raycastResult.screenPosition.y;
