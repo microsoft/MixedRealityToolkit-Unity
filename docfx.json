@@ -36,7 +36,7 @@
       },
       {
         // resources documentation is referring to (eg images, videos, audio, etc)
-        "files": [ "External/ReadMeImages/**", "Documentation/Images/**" ],
+        "files": [ "External/ReadMeImages/**", "Documentation/Images/**", "Documentation/Videos/**" ],
       },
     ],
     "template": [

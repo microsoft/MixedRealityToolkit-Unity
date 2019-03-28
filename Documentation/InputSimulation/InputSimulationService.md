@@ -33,9 +33,17 @@ Head movement can be emulated by the Input Simulation Service.
 2. Press and hold the __Mouse Look Button__ (default: Right mouse button).
 3. Move the mouse in the viewport window to rotate the camera.
 
+<video width="400" controls="controls">
+  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_CameraRotation.mp4"></source>
+</video>
+
 ## Moving the camera
 
 Press and hold the movement keys (W/A/S/D for forward/left/back/right).
+
+<video width="400" controls="controls">
+  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_CameraMovement.mp4"></source>
+</video>
 
 # Hand Simulation
 
