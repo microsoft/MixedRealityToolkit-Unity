@@ -37,7 +37,9 @@ Head movement can be emulated by the Input Simulation Service.
 
 Press and hold the movement keys (W/A/S/D for forward/left/back/right).
 
-<video width="400" controls="controls">
+---
+
+<video width="600" controls="controls">
   <source type="video/mp4" src="../Videos/MRTK_InputSimulation_CameraControl.mp4"></source>
 </video>
 
@@ -80,6 +82,12 @@ Hands can be rotated when precise direction is required.
 * Pitch rotates around the X axis (default: F/R keys for clockwise/counter-clockwise rotation)
 * Roll rotates around the Z axis (default: X/Z keys for clockwise/counter-clockwise rotation)
 
+---
+
+<video width="600" controls="controls">
+  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_HandMovement.mp4"></source>
+</video>
+
 ## Hand Gestures
 
 Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.
@@ -96,6 +104,10 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 
 | Note: The _Pinch_ gesture is the only gesture that performs the "Select" action at this point. |
 | --- |
+
+## Hand Interaction
+
+
 
 ## Two-Hand Manipulation
 
