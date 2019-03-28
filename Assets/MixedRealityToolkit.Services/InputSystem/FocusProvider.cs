@@ -935,7 +935,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pendingPointerSpecificFocusChange.Clear();
         }
 
-        #endregion Accessors
+        #endregion Utilities
 
         #region ISourceState Implementation
 
