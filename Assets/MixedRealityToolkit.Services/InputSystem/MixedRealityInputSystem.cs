@@ -557,10 +557,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DetectedControllers.Remove(controller);
             }
 
-            FocusProvider?.OnSourceLost(sourceStateEventData);
-
             // Pass handler through HandleEvent to perform modal/fallback logic
+            // Events have to be handled before FocusProvider.OnSourceLost since they won't be passed on without a focused object
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
+
+            FocusProvider?.OnSourceLost(sourceStateEventData);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceLostEventHandler =
