@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
     }
 
     /// <summary>
-    /// Struct containing information realted to a camera's resolution and framerate.
+    /// Struct containing information related to a camera's resolution and framerate.
     /// </summary>
     public struct CameraResolution : IEquatable<CameraResolution>
     {
