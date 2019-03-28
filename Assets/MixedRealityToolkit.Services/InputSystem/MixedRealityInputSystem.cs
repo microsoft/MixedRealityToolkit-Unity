@@ -340,6 +340,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Dispatch an input event to the object focused by the given IMixedRealityPointer.
         /// If a modal dialog is active, dispatch the pointer event to that modal dialog
         /// Returns true if the event was handled by a modal handler
+        /// </summary>
         private bool DispatchEventToObjectFocusedByPointer<T>(IMixedRealityPointer mixedRealityPointer, BaseInputEventData baseInputEventData,
             bool modalEventHandled, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
