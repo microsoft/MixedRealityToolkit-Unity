@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get
             {
                 MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
-                
+
                 if ((Service != null) &&
                     (profile != null) &&
                     profile.PointerProfile != null)
@@ -700,7 +700,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     case RaycastMode.Simple:
                         if (MixedRealityRaycaster.RaycastSimplePhysicsStep(pointerRays[i], prioritizedLayerMasks, out physicsHit))
                         {
-                            UpdatePointerRayOnHit(pointerData, pointerRays, in physicsHit, i);  
+                            UpdatePointerRayOnHit(pointerData, pointerRays, in physicsHit, i);
                             return;
                         }
                         break;
@@ -773,10 +773,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointerData.CurrentPointerTarget == null || overridePhysicsRaycast)
-                && raycastResult.isValid
-                && raycastResult.module != null
-                && raycastResult.module.eventCamera == UIRaycastCamera)
+            if ((pointerData.CurrentPointerTarget == null || overridePhysicsRaycast) &&
+                raycastResult.isValid &&
+                raycastResult.module != null &&
+                raycastResult.module.eventCamera == UIRaycastCamera)
             {
                 newUiRaycastPosition.x = raycastResult.screenPosition.x;
                 newUiRaycastPosition.y = raycastResult.screenPosition.y;
