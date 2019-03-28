@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public TimeSpan PhraseDuration { get; private set; }
 
         /// <summary>
-        /// The moment in time when uttering of the phrase began.
+        /// The moment in UTC time when uttering of the phrase began.
         /// </summary>
         public DateTime PhraseStartTime { get; private set; }
 

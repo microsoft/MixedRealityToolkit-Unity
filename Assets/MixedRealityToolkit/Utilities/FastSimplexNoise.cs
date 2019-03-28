@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return x < xi ? xi - 1 : xi;
         }
 
-        public FastSimplexNoise() : this(DateTime.Now.Ticks) { }
+        public FastSimplexNoise() : this(DateTime.UtcNow.Ticks) { }
 
         public FastSimplexNoise(long seed)
         {
