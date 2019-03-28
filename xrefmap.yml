@@ -45327,6 +45327,32 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV6_IsAvailable
   nameWithType: WindowsApiChecker.UniversalApiContractV6_IsAvailable
+- uid: Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV7_IsAvailable
+  name: UniversalApiContractV7_IsAvailable
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.html#Microsoft_MixedReality_Toolkit_Windows_Utilities_WindowsApiChecker_UniversalApiContractV7_IsAvailable
+  commentId: P:Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV7_IsAvailable
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV7_IsAvailable
+  nameWithType: WindowsApiChecker.UniversalApiContractV7_IsAvailable
+- uid: Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV7_IsAvailable*
+  name: UniversalApiContractV7_IsAvailable
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.html#Microsoft_MixedReality_Toolkit_Windows_Utilities_WindowsApiChecker_UniversalApiContractV7_IsAvailable_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV7_IsAvailable
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV7_IsAvailable
+  nameWithType: WindowsApiChecker.UniversalApiContractV7_IsAvailable
+- uid: Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV8_IsAvailable
+  name: UniversalApiContractV8_IsAvailable
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.html#Microsoft_MixedReality_Toolkit_Windows_Utilities_WindowsApiChecker_UniversalApiContractV8_IsAvailable
+  commentId: P:Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV8_IsAvailable
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV8_IsAvailable
+  nameWithType: WindowsApiChecker.UniversalApiContractV8_IsAvailable
+- uid: Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV8_IsAvailable*
+  name: UniversalApiContractV8_IsAvailable
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.html#Microsoft_MixedReality_Toolkit_Windows_Utilities_WindowsApiChecker_UniversalApiContractV8_IsAvailable_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV8_IsAvailable
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.UniversalApiContractV8_IsAvailable
+  nameWithType: WindowsApiChecker.UniversalApiContractV8_IsAvailable
 - uid: Microsoft.MixedReality.Toolkit.WindowsDevicePortal
   name: Microsoft.MixedReality.Toolkit.WindowsDevicePortal
   href: api/Microsoft.MixedReality.Toolkit.WindowsDevicePortal.html
