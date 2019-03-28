@@ -95,9 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        /// <inheritdoc />
-        public GameObject OverrideFocusedObject { get; set; }
-
         #endregion IFocusProvider Properties
 
         /// <summary>
@@ -379,8 +376,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public GameObject GetFocusedObject(IMixedRealityPointer pointingSource)
         {
-            if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
-
             if (pointingSource == null)
             {
                 Debug.LogError("No Pointer passed to get focused object");

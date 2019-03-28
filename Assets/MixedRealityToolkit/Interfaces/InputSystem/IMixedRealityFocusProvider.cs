@@ -28,13 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Camera UIRaycastCamera { get; }
 
         /// <summary>
-        /// To tap on a hologram even when not focused on,
-        /// set OverrideFocusedObject to desired game object.
-        /// If it's null, then focused object will be used.
-        /// </summary>
-        GameObject OverrideFocusedObject { get; set; }
-
-        /// <summary>
         /// Gets the currently focused object for the pointing source.
         /// <para><remarks>If the pointing source is not registered, then the Gaze's Focused <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is returned.</remarks></para>
         /// </summary>
