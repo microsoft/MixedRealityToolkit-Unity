@@ -366,7 +366,7 @@
       "output": {
         ".html": {
           "relative_path": "CodingGuidelines.html",
-          "hash": "i2q6duqPzMX0vGtaQ9rCog=="
+          "hash": "R1trd93nmxFpmy97RcYdVw=="
         }
       },
       "is_incremental": false,
@@ -2748,7 +2748,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.GenericBaseEventData.html",
-          "hash": "iV1xhJHLLwO3rVBEUEE4LQ=="
+          "hash": "pr2HaNba3ogWbeWeb/CGZw=="
         }
       },
       "is_incremental": false,
@@ -2964,7 +2964,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseInputEventData.html",
-          "hash": "jXberIgEMq8K314FHeKbew=="
+          "hash": "LYn80Ayh6gGGzxerftMMTA=="
         }
       },
       "is_incremental": false,
@@ -4248,7 +4248,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SpeechEventData.html",
-          "hash": "dVv1+beqeawmwYqtfeEhsw=="
+          "hash": "CSc7hsl7gZQBMPsOq62dwg=="
         }
       },
       "is_incremental": false,
