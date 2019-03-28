@@ -121,10 +121,4 @@ You can find our planning material on [our wiki](https://github.com/Microsoft/Mi
 ### How to Contribute
 View the [**How To Contribute**](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/How-to-Contribute) wiki page for the most up to date instructions on contributing to the Mixed Reality Toolkit!
 
-### Build Status
-
-| Branch | Status |
-|---|---|
-| `mrtk_development` |[![Build status](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_apis/build/status/public/mrtk_development-CI)](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/latest?definitionId=1)|
-
 ### For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/Branch-Guide).
