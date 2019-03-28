@@ -146,9 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (groupSettingsFoldout)
             {
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                EditorGUILayout.LabelField("Higher states will override lower states unless set to 'None.'", EditorStyles.miniLabel);
-                EditorGUILayout.EndVertical();
+                EditorGUILayout.HelpBox("Higher states will override lower states unless set to 'None.'", MessageType.Info);
 
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(masterTipState);
@@ -175,9 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 if (!hasAllObjects)
                 {
-                    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                    EditorGUILayout.LabelField("Warning: ToolTip will not function unless all objects are present.", EditorStyles.miniLabel);
-                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.HelpBox("ToolTip will not function unless all objects are present.", MessageType.Warning);
                 }
 
                 EditorGUILayout.PropertyField(anchor);

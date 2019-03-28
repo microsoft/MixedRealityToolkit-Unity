@@ -4,6 +4,7 @@
 //
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -12,7 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Class for Tooltip object
     /// Creates a floating tooltip that is attached to an object and moves to stay in view as object rotates with respect to the view.
     /// </summary>
-    [RequireComponent(typeof(ToolTipConnector))]
     [ExecuteAlways]
     public class ToolTip : MonoBehaviour
     {
@@ -32,7 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set
             {
                 showBackground = value;
-                GetComponent<ToolTipBackgroundMesh>().IsVisible = value;
             }
         }
 
@@ -75,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("Display the state of the tooltip.")]
-        private DisplayMode tipState;
+        private DisplayMode tipState = DisplayMode.On;
 
         /// <summary>
         /// The display the state of the tooltip.
@@ -260,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3[] localAttachPointPositions;
         private List<IToolTipBackground> backgrounds = new List<IToolTipBackground>();
         private List<IToolTipHighlight> highlights = new List<IToolTipHighlight>();
-        private TextMesh cachedLabelText;
+        private TextMeshPro cachedLabelText;
         private int prevTextLength = -1;
         private int prevTextHash = -1;
 
@@ -374,16 +373,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        protected virtual void OnValidate()
+        {
+            ValidateHeirarchy();
+
+            label.EnsureComponent<TextMeshPro>();
+            gameObject.EnsureComponent<ToolTipConnector>();
+        }
+
         /// <summary>
         /// virtual functions
         /// </summary>
         protected virtual void OnEnable()
         {
+            ValidateHeirarchy();
+
             // Get our line if it exists
             if (toolTipLine == null)
-            {
                 toolTipLine = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
-            }
+
+            // Make sure the tool tip text isn't empty
+            if (string.IsNullOrEmpty(toolTipText))
+                toolTipText = " ";
 
             backgrounds.Clear();
             foreach (IToolTipBackground background in GetComponents(typeof(IToolTipBackground)))
@@ -452,17 +463,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 prevTextLength = currentTextLength;
 
                 if (cachedLabelText == null)
-                    cachedLabelText = label.GetComponent<TextMesh>();
+                    cachedLabelText = label.GetComponent<TextMeshPro>();
 
                 if (cachedLabelText != null && !string.IsNullOrEmpty(toolTipText))
                 {
                     cachedLabelText.fontSize = fontSize;
                     cachedLabelText.text = toolTipText.Trim();
-                    cachedLabelText.lineSpacing = 1;
-                    cachedLabelText.anchor = TextAnchor.MiddleCenter;
+                    // Force text mesh to use center alignment
+                    cachedLabelText.alignment = TextAlignmentOptions.CenterGeoAligned;
+                    // Update text so we get an accurate scale
+                    cachedLabelText.ForceMeshUpdate();
                     // Get the world scale of the text
                     // Convert that to local scale using the content parent
-                    Vector3 localScale = GetTextMeshLocalScale(cachedLabelText);
+                    Vector3 localScale = Vector3.Scale(cachedLabelText.transform.lossyScale / contentScale, cachedLabelText.textBounds.size);
                     localContentSize.x = localScale.x + backgroundPadding.x;
                     localContentSize.y = localScale.y + backgroundPadding.y;
                 }
@@ -587,6 +600,70 @@ namespace Microsoft.MixedReality.Toolkit.UI
             localScale.y = textMesh.transform.worldToLocalMatrix.MultiplyVector(rendererScale).y * transformScale.y;
 
             return localScale;
+        }
+
+        private void ValidateHeirarchy()
+        {
+            // Generate default objects if we haven't set up our tooltip yet
+            if (anchor == null)
+            {
+                Transform anchorTransform = transform.Find("Anchor");
+                if (anchorTransform == null)
+                {
+                    anchorTransform = new GameObject("Anchor").transform;
+                    anchorTransform.SetParent(transform);
+                    anchorTransform.localPosition = Vector3.zero;
+                }
+                anchor = anchorTransform.gameObject;
+            }
+
+            if (anchor.transform.parent != transform)
+                anchor.transform.SetParent(transform);
+
+            if (pivot == null)
+            {
+                Transform pivotTransform = transform.Find("Pivot");
+                if (pivotTransform == null)
+                {
+                    pivotTransform = new GameObject("Pivot").transform;
+                    pivotTransform.SetParent(transform);
+                    pivotTransform.localPosition = Vector3.up;
+                }
+                pivot = pivotTransform.gameObject;
+            }
+
+            if (pivot.transform.parent != transform)
+                pivot.transform.SetParent(transform, true);
+
+            if (contentParent == null)
+            {
+                Transform contentParentTransform = pivot.transform.Find("ContentParent");
+                if (contentParentTransform == null)
+                {
+                    contentParentTransform = new GameObject("ContentParent").transform;
+                    contentParentTransform.SetParent(pivot.transform);
+                    contentParentTransform.localPosition = Vector3.zero;
+                }
+                contentParent = contentParentTransform.gameObject;
+            }
+
+            if (contentParent.transform.parent != pivot.transform)
+                contentParent.transform.SetParent(pivot.transform, true);
+
+            if (label == null)
+            {
+                Transform labelTransform = contentParent.transform.Find("Label");
+                if (labelTransform == null)
+                {
+                    labelTransform = new GameObject("Label").transform;
+                    labelTransform.SetParent(contentParent.transform);
+                    labelTransform.localScale = Vector3.one * 0.005f;
+                }
+                label = labelTransform.gameObject;
+            }
+
+            if (label.transform.parent != contentParent.transform)
+                label.transform.SetParent(contentParent.transform.parent, true);
         }
     }
 }

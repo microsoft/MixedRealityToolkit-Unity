@@ -29,17 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private ToolTip toolTip;
 
-        private bool IsTooltipValid
-        {
-            get
-            {
-                if (toolTip == null)
-                    toolTip = gameObject.EnsureComponent<ToolTip>();
-
-                return toolTip != null;
-            }
-        }
-
         [SerializeField]
         [Tooltip("The follow style of the tooltip connector")]
         private ConnectorFollowType connectorFollowType = ConnectorFollowType.AnchorOnly;
@@ -133,8 +122,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-            if (!IsTooltipValid)
+            toolTip = gameObject.GetComponent<ToolTip>();
+            if (toolTip == null)
             {
+                Debug.LogWarning("This component only works with a ToolTip.");
+                enabled = false;
                 return;
             }
 
@@ -143,11 +135,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdatePosition()
         {
-            if (!IsTooltipValid)
-            {
-                return;
-            }
-
             if (target == null)
             {
                 return;
