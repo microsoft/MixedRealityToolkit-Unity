@@ -7,15 +7,20 @@ using UnityEngine;
 using UnityEngine.Apple.ReplayKit;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording
 {
+    /// <summary>
+    /// Class implementing <see cref="IRecordingService"/> for the iOS platform
+    /// </summary>
     public class iOSRecordingService : MonoBehaviour,
         IRecordingService
     {
+        /// <inheritdoc />
         public void Dispose()
         {
         }
 
+        /// <inheritdoc />
         public void Initialize()
         {
 #if UNITY_IOS
@@ -29,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
 #endif
         }
 
+        /// <inheritdoc />
         public bool IsInitialized()
         {
 #if UNITY_IOS
@@ -38,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
 #endif
         }
 
+        /// <inheritdoc />
         public bool StartRecording()
         {
 
@@ -66,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
 #endif
         }
 
+        /// <inheritdoc />
         public void StopRecording()
         {
 #if !UNITY_IOS
@@ -87,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
 #endif
         }
 
+        /// <inheritdoc />
         public bool IsRecordingAvailable()
         {
 #if !UNITY_IOS
@@ -103,6 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording
 #endif
         }
 
+        /// <inheritdoc />
         public void ShowRecording()
         {
 #if !UNITY_IOS

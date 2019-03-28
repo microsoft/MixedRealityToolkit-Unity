@@ -5,11 +5,14 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection
 {
+    /// <summary>
+    /// Wrapper class for SpectatorViewPlugin.dll built out of the MixedRealityToolkit repo
+    /// </summary>
     public class SpectatorViewPluginAPI
     {
         [DllImport("SpectatorViewPlugin", EntryPoint = "Initialize")]
@@ -36,10 +39,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         [DllImport("SpectatorViewPlugin", EntryPoint = "GetDetectedMarkerPose")]
         internal static extern bool GetDetectedMarkerPoseNative(int detectedId, float[] position, float[] rotation);
 
+        /// <summary>
+        /// True if the SpectatorViewPlugin.dll has been successfully initialized
+        /// </summary>
         public bool IsInitialized { get; private set; } = false;
+
         private float _markerSize = 0.03f; // meters
         private const int _arucoDictionaryId = 10; // equivalent to cv::aruco::DICT_6X6_250
 
+        /// <summary>
+        /// Called to initialize SpectatorViewPlugin.dll
+        /// </summary>
+        /// <param name="markerSize">Physical size of the markers being detected in meters</param>
         public bool Initialize(float markerSize)
         {
             _markerSize = markerSize;
@@ -58,6 +69,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             return false;
         }
 
+        /// <summary>
+        /// Assesses the provided image for ArUco markers
+        /// </summary>
+        /// <param name="imageData"></param>
+        /// <param name="imageWidth"></param>
+        /// <param name="imageHeight"></param>
+        /// <param name="pixelFormat"></param>
+        /// <param name="intrinsics"></param>
+        /// <param name="extrinsics"></param>
+        /// <returns></returns>
         public Dictionary<int, Marker> ProcessImage(
             byte[] imageData,
             uint imageWidth,
@@ -167,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             return dictionary;
         }
 
-        bool IsValidPixelFormat(PixelFormat pixelFormat)
+        private bool IsValidPixelFormat(PixelFormat pixelFormat)
         {
             return (pixelFormat == PixelFormat.BGRA8);
         }

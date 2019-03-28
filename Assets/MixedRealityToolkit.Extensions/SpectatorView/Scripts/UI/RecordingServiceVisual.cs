@@ -4,43 +4,89 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-using Microsoft.MixedReality.Toolkit.Extensions.ScreenRecording;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.UI
 {
     public class RecordingServiceVisual : MonoBehaviour,
         IRecordingServiceVisual,
         IMobileOverlayVisualChild
     {
-        enum RecordingState
+        /// <summary>
+        /// Screen recording states
+        /// </summary>
+        protected enum RecordingState
         {
             Ready,
             Initializing,
             Recording
         }
 
-        [SerializeField] Button _recordButton;
-        [SerializeField] Image _startRecordingImage;
-        [SerializeField] Image _stopRecordingImage;
-        [SerializeField] Button _previewButton;
-        [SerializeField] Image _countdownImage;
-        [SerializeField] Text _countdownText;
-        [SerializeField] float _countdownLength = 3;
+        /// <summary>
+        /// Button that toggles starting/stopping recording
+        /// </summary>
+        [Tooltip("Button that toggles starting/stopping recording")]
+        [SerializeField]
+        protected Button _recordButton;
 
-        IRecordingService _recordingService;
-        float _recordingStartTime = 0;
-        RecordingState state = RecordingState.Ready;
-        bool _updateUI = false;
-        bool _readyToRecord = false;
+        /// <summary>
+        /// Image enabled on recording button when not recording
+        /// </summary>
+        [Tooltip("Image enabled on recording button when not recording")]
+        [SerializeField]
+        protected Image _startRecordingImage;
 
+        /// <summary>
+        /// Image enabled on recording button when recording
+        /// </summary>
+        [Tooltip("Image enabled on recording button when recording")]
+        [SerializeField]
+        protected Image _stopRecordingImage;
+
+        /// <summary>
+        /// Button used to view last recorded video
+        /// </summary>
+        [Tooltip("Button used to view last recorded video")]
+        [SerializeField]
+        protected Button _previewButton;
+
+        /// <summary>
+        /// Image shown when counting down to start recording
+        /// </summary>
+        [Tooltip("Image shown when counting down to start recording")]
+        [SerializeField]
+        protected Image _countdownImage;
+
+        /// <summary>
+        /// Text updated to contain current countdown value when starting recording
+        /// </summary>
+        [Tooltip("Text updated to contain current countdown value when starting recording")]
+        [SerializeField]
+        protected Text _countdownText;
+
+        /// <summary>
+        /// Length of time (in seconds) for countdown to start recording
+        /// </summary>
+        [Tooltip("Length of time (in seconds) for countdown to start recording")]
+        [SerializeField]
+        protected float _countdownLength = 3;
+
+        private IRecordingService _recordingService;
+        private float _recordingStartTime = 0;
+        private RecordingState state = RecordingState.Ready;
+        private bool _updateUI = false;
+        private bool _readyToRecord = false;
+
+        /// <inheritdoc/>
         public event OverlayVisibilityRequest OverlayVisibilityRequest;
 
+        /// <inheritdoc/>
         public void SetRecordingService(IRecordingService recordingService)
         {
             _recordingService = recordingService;
         }
 
-        void Awake()
+        protected void Awake()
         {
             if (_recordingService == null)
             {
@@ -52,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             _previewButton.onClick.AddListener(OnPreviewClick);
         }
 
-        void Update()
+        protected void Update()
         {
             if (_recordingService != null &&
                 _previewButton != null)
@@ -118,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
 
         private void StopRecording()
         {
-            // Todo - support stopping recording during initialization
+            // Note: There is currently no support for stopping a recording during initialization
 
             Debug.Log("Stopping recording");
             _recordingService.StopRecording();
@@ -183,6 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             }
         }
 
+        /// <inheritdoc/>
         public void Show()
         {
             if (state == RecordingState.Recording)
@@ -193,6 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             gameObject.SetActive(true);
         }
 
+        /// <inheritdoc/>
         public void Hide()
         {
             gameObject.SetActive(false);
@@ -203,11 +251,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
                 _recordingService.StartRecording();
                 state = RecordingState.Recording;
             }
-        }
-
-        public bool IsShowing()
-        {
-            return gameObject.activeSelf;
         }
     }
 }

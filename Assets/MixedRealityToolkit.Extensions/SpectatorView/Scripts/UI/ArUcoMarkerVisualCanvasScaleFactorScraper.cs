@@ -1,15 +1,29 @@
 ﻿using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.UI
 {
+    /// <summary>
+    /// Helper class for obtaining additional scaling information to apply to ArUco Marker Images
+    /// </summary>
     public class ArUcoMarkerVisualCanvasScaleFactorScraper : MonoBehaviour
     {
-        [SerializeField] Canvas _parentCanvas;
-        [SerializeField] ArUcoMarkerVisual _markerVisual;
+        /// <summary>
+        /// Parent canvas containing ArUco marker visual.
+        /// </summary>
+        [Tooltip("Parent canvas containing ArUco marker visual.")]
+        [SerializeField]
+        protected Canvas _parentCanvas;
 
-        void Awake()
+        /// <summary>
+        /// ArUcoMarkerVisual requiring additional scaling based on parent canvas.
+        /// </summary>
+        [Tooltip("ArUcoMarkerVisual requiring additional scaling based on parent canvas.")]
+        [SerializeField]
+        protected ArUcoMarkerVisual _markerVisual;
+
+        protected void Awake()
         {
             if (_parentCanvas == null)
             {

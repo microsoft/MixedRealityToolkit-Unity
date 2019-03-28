@@ -4,17 +4,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection
 {
+    /// <summary>
+    /// Class implementing <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection.IMarkerDetector"/> capable of detecting ArUco markers
+    /// </summary>
     public class SpectatorViewPluginArUcoMarkerDetector : MonoBehaviour,
         IMarkerDetector
     {
+#pragma warning disable 67
+        /// <inheritdoc/>
         public event MarkersUpdatedHandler MarkersUpdated;
+#pragma warning restore 67
 
+        /// <summary>
+        /// Physical size of markers being detected
+        /// </summary>
+        [Tooltip("Physical size of markers being detected")]
         [SerializeField]
         private float _markerSize = 0.03f;
 
@@ -22,9 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
         private SpectatorViewPluginAPI _api;
         private bool _detecting = false;
         private Dictionary<int, List<Marker>> _markerObservations;
-        private int _requiredObservations = 5;
+        protected int _requiredObservations = 5;
 
-        private void Start()
+        protected void Start()
         {
 #if UNITY_WSA
             _api = new SpectatorViewPluginAPI();
@@ -37,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
 #endif
         }
 
-        private void Update()
+        protected void Update()
         {
             if (_detecting)
             {
@@ -49,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             }
         }
 
+        /// <inheritdoc/>
         public void StartDetecting()
         {
 #if UNITY_WSA
@@ -63,6 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
 #endif
         }
 
+        /// <inheritdoc/>
         public void StopDetecting()
         {
             _detecting = false;
@@ -74,6 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
 #endif
         }
 
+        /// <inheritdoc/>
         public void SetMarkerSize(float size)
         {
             _markerSize = size;
@@ -169,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
 #endif
         }
 
-        private Marker CalcAverageMarker(List<Marker> markers)
+        private static Marker CalcAverageMarker(List<Marker> markers)
         {
             var count = (float)markers.Count;
             var averagePos = Vector3.zero;
@@ -186,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             return new Marker(id, averagePos, averageRot);
         }
 
-        private Quaternion CalcAverageQuaternion(Quaternion[] quaternions)
+        private static Quaternion CalcAverageQuaternion(Quaternion[] quaternions)
         {
             Quaternion mean = quaternions[0];
             var text = "Quaternions: ";

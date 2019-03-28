@@ -1,17 +1,14 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities
+using UnityEngine;
+
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities
 {
+    /// <summary>
+    /// MonoBehaviour associated with <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor.PlatformSwitcherEditor"/>
+    /// </summary>
     public class PlatformSwitcher : MonoBehaviour
     {
-        /// <summary>
-        /// Available platforms
-        /// </summary>
-        public enum Platform
-        {
-            HoloLens = 0,
-            iOS,
-            Android
-        }
     }
 }

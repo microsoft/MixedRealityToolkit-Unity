@@ -8,27 +8,52 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.Sharing;
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Sharing
 {
+    /// <summary>
+    /// Delegate used to specify server and client ports to the <see cref="UDPBroadcastNetworkingService"/>
+    /// </summary>
+    /// <param name="serverPort"></param>
+    /// <param name="clientPort"></param>
     public delegate void UDPBroadcastConnectHandler(int serverPort, int clientPort);
 
+    /// <summary>
+    /// Interface implemented by a UI component to set server and client ports
+    /// </summary>
     public interface IUDPBroadcastNetworkingServiceVisual
     {
+        /// <summary>
+        /// Event called when new server and client ports have been specified
+        /// </summary>
         event UDPBroadcastConnectHandler OnConnect;
+
+        /// <summary>
+        /// Called to show the visual
+        /// </summary>
         void ShowVisual();
+
+        /// <summary>
+        /// Called to hide the visual
+        /// </summary>
         void HideVisual();
     }
 
+    /// <summary>
+    /// UDP based component that implements
+    /// <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IMatchMakingService"/>,
+    /// <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IPlayerService"/>
+    /// and <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.INetworkingService"/>
+    /// </summary>
     public class UDPBroadcastNetworkingService : MonoBehaviour,
         IMatchMakingService,
         IPlayerService,
         INetworkingService
     {
         #region Helper classes
-        class PlayerData
+        private class PlayerData
         {
             public string Id { get; set; }
             public float LastMessageTimestamp { get; set; }
@@ -46,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        class Message
+        private class Message
         {
             public byte[] Data { get; internal set; }
             public NetworkPriority Priority { get; internal set; }
@@ -60,29 +85,73 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
         }
         #endregion
 
-        [SerializeField] bool _useUdpBroadcastVisual;
-        [SerializeField] MonoBehaviour HoloLensUdpBroadcastVisual;
-        [SerializeField] MonoBehaviour MobileUdpBroadcastVisual;
-        IUDPBroadcastNetworkingServiceVisual _udpBroadcastVisual;
+        /// <summary>
+        /// If true, this service will show a visual (if defined) to obtain server and client ports.
+        /// If false, no visual is shown and the service will use the default server and client ports.
+        /// </summary>
+        [Tooltip("If true, the UDPBroadcastNetworkingService will show a visual (if defined) to obtain server and client ports. If false, the UDPBroadcastNetworking service will use the default ports defined in the editor.")]
+        [SerializeField]
+        protected bool _useUdpBroadcastVisual;
 
-        [SerializeField] int _serverBroadcastPort = 48888;
-        [SerializeField] int _clientBroadcastPort = 48889;
-        [SerializeField] float _broadcastInterval = 0.25f;
-        [SerializeField] float _disconnectTimeout = 120.0f;
+        /// <summary>
+        /// MonoBehaviour that implements  <see cref="IUDPBroadcastNetworkingServiceVisual"/> for the HoloLens experience.
+        /// Note: an error is thrown if a MonoBehaviour is specified that doesn't implement  <see cref="IUDPBroadcastNetworkingServiceVisual"/>.
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements IUDPBroadcastNetworkingServiceVisual for the HoloLens experience. Note: an error is thrown if a MonoBehaviour is specified that doesn't implement IUDPBroadcastNetworkingServiceVisual.")]
+        [SerializeField]
+        protected MonoBehaviour HoloLensUdpBroadcastVisual;
 
-        bool _actAsServer = false;
-        bool _connected = false;
+        /// <summary>
+        /// MonoBehaviour that implements <see cref="IUDPBroadcastNetworkingServiceVisual"/> for the Mobile experience.
+        /// Note: an error is thrown if a MonoBehaviour is specified that doesn't implement  <see cref="IUDPBroadcastNetworkingServiceVisual"/>.
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements IUDPBroadcastNetworkingServiceVisual for the Mobile experience. Note: an error is thrown if a MonoBehaviour is specified that doesn't implement IUDPBroadcastNetworkingServiceVisual.")]
+        [SerializeField]
+        protected MonoBehaviour MobileUdpBroadcastVisual;
 
-        UdpClient _senderUdp;
-        List<IPEndPoint> _broadcastIpEndPoints;
-        UdpClient _receiverUdp;
-        int _receiverPort;
-        Dictionary<IPEndPoint, PlayerData> _receiverIpEndPoints;
+        protected IUDPBroadcastNetworkingServiceVisual _udpBroadcastVisual;
 
-        Message _currentMessage = null;
-        float _prevBroadcastTime = 0;
+        /// <summary>
+        /// Default server port value used if <see cref="UDPBroadcastNetworkingService._useUdpBroadcastVisual"/> is set to false
+        /// </summary>
+        [Tooltip("Default server port value used if UseUdpBroadcastVisual is set to false")]
+        [SerializeField]
+        protected int _serverBroadcastPort = 48888;
 
-        void OnValidate()
+        /// <summary>
+        /// Default client port value used if <see cref="UDPBroadcastNetworkingService._useUdpBroadcastVisual"/> is set to false
+        /// </summary>
+        [Tooltip("Default client port value used if UseUdpBroadcastVisual is set to false")]
+        [SerializeField]
+        protected int _clientBroadcastPort = 48889;
+
+        /// <summary>
+        /// Time inbetween attempted UDP Broadcasts in seconds
+        /// </summary>
+        [Tooltip("Time inbetween attempted UDP Broadcasts in seconds")]
+        [SerializeField]
+        float _broadcastInterval = 0.25f;
+
+        /// <summary>
+        /// Timeout in seconds for other players in the shared application. If no broadcast is heard for a player within this timeout, the player is considered disconnected.
+        /// </summary>
+        [Tooltip("Timeout in seconds for other players in the shared application. If no broadcast is heard for a player within this timeout, the player is considered disconnected.")]
+        [SerializeField]
+        float _disconnectTimeout = 120.0f;
+
+        protected bool _actAsServer = false;
+        protected bool _connected = false;
+
+        private UdpClient _senderUdp;
+        private List<IPEndPoint> _broadcastIpEndPoints;
+        private UdpClient _receiverUdp;
+        private int _receiverPort;
+        private Dictionary<IPEndPoint, PlayerData> _receiverIpEndPoints;
+
+        private Message _currentMessage = null;
+        private float _prevBroadcastTime = 0;
+
+        protected void OnValidate()
         {
 #if UNITY_EDITOR
             FieldHelper.ValidateType<IUDPBroadcastNetworkingServiceVisual>(HoloLensUdpBroadcastVisual);
@@ -90,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
 #endif
         }
 
-        void Awake()
+        protected void Awake()
         {
             // TODO - update here if future scenario requires device other than hololens to act as server
 #if UNITY_WSA
@@ -112,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        void Update()
+        protected void Update()
         {
             var diff = Time.time - _prevBroadcastTime;
             if (_senderUdp != null &&
@@ -162,10 +231,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
+        /// <inheritdoc/>
         public event DataHandler DataReceived;
+
+        /// <inheritdoc/>
         public event PlayerConnectedHandler PlayerConnected;
+
+        /// <inheritdoc/>
         public event PlayerDisconnectedHandler PlayerDisconnected;
 
+        /// <inheritdoc/>
         public void Connect()
         {
             if (_useUdpBroadcastVisual)
@@ -223,6 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             _connected = true;
         }
 
+        /// <inheritdoc/>
         public bool Disconnect()
         {
             if (!_connected)
@@ -239,11 +315,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             return true;
         }
 
+        /// <inheritdoc/>
         public bool IsConnected()
         {
             return _connected;
         }
 
+        /// <inheritdoc/>
         public bool SendData(byte[] data, NetworkPriority priority)
         {
             if (!_connected)
@@ -263,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             return true;
         }
 
-        void BroadcastData()
+        private void BroadcastData()
         {
             if (_broadcastIpEndPoints != null &&
                 _connected &&
@@ -291,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        List<IPEndPoint> GetBroadcastIPEndPoints(int port)
+        private List<IPEndPoint> GetBroadcastIPEndPoints(int port)
         {
             List<IPEndPoint> result = new List<IPEndPoint>();
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
@@ -312,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             return result;
         }
 
-        IPAddress GetBroadcastAddress(IPAddress ipAddress)
+        private IPAddress GetBroadcastAddress(IPAddress ipAddress)
         {
             uint orig = BitConverter.ToUInt32(ipAddress.GetAddressBytes(), 0);
             IPAddress subnetMaskIp = GetSubnetMask(ipAddress);
@@ -321,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             return new IPAddress(BitConverter.GetBytes(broadcast));
         }
 
-        IPAddress GetSubnetMask(IPAddress ipAddress)
+        private IPAddress GetSubnetMask(IPAddress ipAddress)
         {
             foreach (NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces())
             {

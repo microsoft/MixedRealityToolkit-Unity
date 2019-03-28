@@ -8,12 +8,15 @@ using UnityEngine;
 
 using UnityEngine.XR.ARFoundation;
 
-using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
-using Microsoft.MixedReality.Toolkit.Extensions.Sharing;
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Utilities;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Sharing
 {
+    /// <summary>
+    /// Enum for various visual states associated with setting up a <see cref="MarkerSpatialCoordinateService"/> shared coordinate system
+    /// </summary>
     public enum MarkerSpatialCoordinateServiceOverlayState
     {
         waitingForUser,
@@ -22,26 +25,55 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
         none
     }
 
+    /// <summary>
+    /// Interface for displaying various visual states associated with setting up a <see cref="MarkerSpatialCoordinateService"/> shared coordinate system
+    /// </summary>
     public interface IMarkerSpatialCoordinateServiceOverlayVisual
     {
+        /// <summary>
+        /// Updates the visual state to the requested state
+        /// </summary>
+        /// <param name="state"></param>
         void UpdateVisualState(MarkerSpatialCoordinateServiceOverlayState state);
+
+        /// <summary>
+        /// Shows the visual
+        /// </summary>
         void ShowVisual();
+
+        /// <summary>
+        /// Hides the visual
+        /// </summary>
         void HideVisual();
     }
 
+    /// <summary>
+    /// Delegate called to reset the a <see cref="MarkerSpatialCoordinateService"/> shared coordinate system
+    /// </summary>
     public delegate void ResetSpatialCoordinatesHandler();
+
+    /// <summary>
+    /// Implemented by visuals that want to reset a <see cref="MarkerSpatialCoordinateService"/> shared coordinate system
+    /// </summary>
     public interface IMarkerSpatialCoordinateServiceResetVisual
     {
+        /// <summary>
+        /// Event called when a user specifies to reset the shared spatial coordinate system
+        /// </summary>
         event ResetSpatialCoordinatesHandler ResetSpatialCoordinates;
     }
 
+    /// <summary>
+    /// Class that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.ISpatialCoordinateService"/>
+    /// and <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IPlayerStateObserver"/> to provide a marker based shared spatial coordinate system
+    /// </summary>
     public class MarkerSpatialCoordinateService : MonoBehaviour,
         ISpatialCoordinateService,
         IPlayerStateObserver
     {
         #region Serializable  Classes
         [Serializable]
-        class TransformData
+        private class TransformData
         {
             public bool Valid;
             public Vector3 Position;
@@ -72,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
         };
 
         [Serializable]
-        class Spectator
+        private class Spectator
         {
             public string Id;
             public int MarkerId;
@@ -148,13 +180,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
         }
 
         [Serializable]
-        class User
+        private class User
         {
             public int AvailableMarkerId;
             public Dictionary<string, Spectator> Spectators;
             public TransformData UserOriginToUserCamera;
 
-            // TODO - figure out a better process for serialization than this additional list
+            // Future state serialization refactors should avoid maintaining this second data structure for serialization
             public List<Spectator> SpectatorList;
 
             private StringBuilder _stringBuilder;
@@ -222,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        class SerializationHelper
+        private class SerializationHelper
         {
             public static byte[] Serialize(User user)
             {
@@ -251,7 +283,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
         }
         #endregion
 
-        enum VisualState
+        /// <summary>
+        /// Various visual states possible when setting up the <see cref="MarkerSpatialCoordinateService"/> based spatial coordinate system
+        /// </summary>
+        protected enum VisualState
         {
             locatingLocalOrigin,
             locatingMarker,
@@ -260,46 +295,120 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             none
         }
 
-        [SerializeField] Camera _aRFoundationCamera;
-        [SerializeField] ARPointCloudManager _aRPointCloudManager;
-        [SerializeField] bool _showDebugVisual;
-        [SerializeField] DebugVisualHelper _debugVisualHelper;
-        [SerializeField] float _markerSize = 0.04f;
+        /// <summary>
+        /// AR Camera used for Mobile Device's AR Foundation experience.
+        /// </summary>
+        [Tooltip("AR Camera used for Mobile Device's AR Foundation experience.")]
+        [SerializeField]
+        protected Camera _aRFoundationCamera;
 
-        bool _actAsUser = false;
-        bool _initialized = false;
-        bool _localOriginEstablished = false;
-        bool _listeningToPointCloudChanges = false;
-        VisualState _visualState = VisualState.none;
-        GameObject _sharedOriginVisual;
+        /// <summary>
+        /// AR Point Cloud Manager defined for mobile device's AR Foundation experience. Said manager will be used to determine whether or not the mobile device has found its local application origin.
+        /// </summary>
+        [Tooltip("AR Point Cloud Manager defined for mobile device's AR Foundation experience. Said manager will be used to determine whether or not the mobile device has found its local application origin.")]
+        [SerializeField]
+        protected ARPointCloudManager _aRPointCloudManager;
 
-        // User specific fields
-        string _userPlayerId = "";
-        Dictionary<string, string> _spectatorIds;
-        User _cachedSelfUser;
-        [SerializeField] MonoBehaviour MarkerDetector;
-        IMarkerDetector _markerDetector;
-        bool _detectingMarkers = false;
-        Dictionary<string, GameObject> _markerVisuals = new Dictionary<string, GameObject>();
-        Dictionary<string, GameObject> _cameraVisuals = new Dictionary<string, GameObject>();
+        /// <summary>
+        /// If true, debug visuals will be added to the unity scene to reflect positions of <see cref="User"/>s and <see cref="Spectator"/>s in the shared application space.
+        /// A debug visual will also be shown at the shared application origin.
+        /// </summary>
+        [Tooltip("If true, debug visuals will be added to the unity scene to reflect positions of Users and Spectators in the shared application space. A debug visual will also be shown at the shared application origin.")]
+        [SerializeField]
+        protected bool _showDebugVisual;
 
-        // Spectator specific fields
-        Spectator _cachedSelfSpectator = new Spectator();
-        [SerializeField] int _pointsRequiredForValidLocalOrigin = 4;
-        [SerializeField] MonoBehaviour MarkerVisual;
-        IMarkerVisual _markerVisual;
-        User _cachedUser;
-        GameObject _userCameraVisual;
+        /// <summary>
+        /// Helper class for showing debug visuals.
+        /// </summary>
+        [Tooltip("Helper class for showing debug visuals.")]
+        [SerializeField]
+        protected DebugVisualHelper _debugVisualHelper;
 
-        [SerializeField] bool _useMarkerSpatialCoordinateVisual;
-        [SerializeField] MonoBehaviour HoloLensOverlayVisual;
-        [SerializeField] MonoBehaviour MobileOverlayVisual;
-        [SerializeField] MonoBehaviour MobileResetVisual;
-        IMarkerSpatialCoordinateServiceOverlayVisual _markerSpatialCoordinateOverlayVisual;
-        IMarkerSpatialCoordinateServiceResetVisual _markerSpatialCoordinateResetVisual;
-        bool _needUIUpdate = true;
+        /// <summary>
+        /// Physical marker size in meters to use for showing and detecting markers (default value is 0.04).
+        /// </summary>
+        [Tooltip("Physical marker size in meters to use for showing and detecting markers (default value is 0.04).")]
+        [SerializeField]
+        protected float _markerSize = 0.04f;
 
-        void OnValidate()
+        /// <summary>
+        /// If true, the MarkerSpatialCoordinateService will attempt to show a visual reflecting the shared coordinate system setup state in the application.
+        /// If false, no visual is shown.
+        /// </summary>
+        [Tooltip("If true, the MarkerSpatialCoordinateService will attempt to show a visual reflecting the shared coordinate system setup state in the application. If false, no visual is shown.")]
+        [SerializeField]
+        protected bool _useMarkerSpatialCoordinateVisual;
+
+        /// <summary>
+        /// MonoBehaviour that implements <see cref="IMarkerSpatialCoordinateServiceOverlayVisual"/> for the HoloLens experience. Note: an error is thrown if the MonoBehaviour does not implement IMarkerSpatialCoordinateServiceOverlayVisual.
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements IMarkerSpatialCoordinateServiceOverlayVisual for the HoloLens experience. This visual is only shown if UseMarkerSpatialCoordinateVisual is set to true. Note: an error is thrown if the MonoBehaviour does not implement IMarkerSpatialCoordinateServiceOverlayVisual.")]
+        [SerializeField]
+        protected MonoBehaviour HoloLensOverlayVisual;
+
+        /// <summary>
+        /// MonoBehaviour that implements <see cref="IMarkerSpatialCoordinateServiceOverlayVisual"/> for the Mobile experience. Note: an error is thrown if the MonoBehaviour does not implement IMarkerSpatialCoordinateServiceOverlayVisual.
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements IMarkerSpatialCoordinateServiceOverlayVisual for the Mobile experience. This visual is only shown if UseMarkerSpatialCoordinateVisual is set to true. Note: an error is thrown if the MonoBehaviour does not implement IMarkerSpatialCoordinateServiceOverlayVisual.")]
+        [SerializeField]
+        protected MonoBehaviour MobileOverlayVisual;
+
+        /// <summary>
+        /// MonoBehaviour that implements <see cref="IMarkerSpatialCoordinateServiceResetVisual"/> for the Mobile experience. Note: an error is thrown if the MonoBehaviour does not implement IMarkerSpatialCoordinateServiceResetVisual.
+        /// </summary>
+        [Tooltip("MonoBehaviour that implements IMarkerSpatialCoordinateServiceResetVisual for the Mobile experience. Note: an error is thrown if the MonoBehaviour does not implement IMarkerSpatialCoordinateServiceResetVisual.")]
+        [SerializeField]
+        protected MonoBehaviour MobileResetVisual;
+
+        protected IMarkerSpatialCoordinateServiceOverlayVisual _markerSpatialCoordinateOverlayVisual;
+        protected IMarkerSpatialCoordinateServiceResetVisual _markerSpatialCoordinateResetVisual;
+        protected bool _needUIUpdate = true;
+        protected bool _actAsUser = false;
+        protected bool _initialized = false;
+        protected bool _localOriginEstablished = false;
+        protected bool _listeningToPointCloudChanges = false;
+        protected VisualState _visualState = VisualState.none;
+        protected GameObject _sharedOriginVisual;
+
+        #region User specific fields
+        /// <summary>
+        /// Marker detector used by the primary user to locate spectators in the shared scene.
+        /// </summary>
+        [Tooltip("Marker detector used by the primary user to locate spectators in the scene.")]
+        [SerializeField]
+        protected MonoBehaviour MarkerDetector;
+
+        protected string _userPlayerId = "";
+        protected Dictionary<string, string> _spectatorIds;
+        protected IMarkerDetector _markerDetector;
+        protected bool _detectingMarkers = false;
+        protected Dictionary<string, GameObject> _markerVisuals = new Dictionary<string, GameObject>();
+        protected Dictionary<string, GameObject> _cameraVisuals = new Dictionary<string, GameObject>();
+        private User _cachedSelfUser;
+        #endregion
+
+        #region Spectator specific fields
+        /// <summary>
+        /// Number of point cloud points to detect before assessing the mobile device has found in the AR scene (default value is 4).
+        /// </summary>
+        [Tooltip("Number of point cloud points to detect before assessing the mobile device has found in the AR scene (default value is 4).")]
+        [SerializeField]
+        protected int _pointsRequiredForValidLocalOrigin = 4;
+
+        /// <summary>
+        /// Marker visual displayed by a spectator to the primary user in order to locate the spectator in the shared scene.
+        /// </summary>
+        [Tooltip("Marker visual displayed by a spectator to the primary user in order to locate the spectator in the shared scene.")]
+        [SerializeField]
+        protected MonoBehaviour MarkerVisual;
+
+        protected IMarkerVisual _markerVisual;
+        protected GameObject _userCameraVisual;
+        private Spectator _cachedSelfSpectator = new Spectator();
+        private User _cachedUser;
+        #endregion
+
+        protected void OnValidate()
         {
 #if UNITY_EDITOR
             FieldHelper.ValidateType<IMarkerDetector>(MarkerDetector);
@@ -310,7 +419,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
 #endif
         }
 
-        void Awake()
+        protected void Awake()
         {
             // TODO - update here if future scenario requires device other than hololens to act as user
 #if UNITY_WSA
@@ -340,7 +449,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             Initialize();
         }
 
-        void Update()
+        protected void Update()
         {
             if (NeedsToPopulate())
             {
@@ -376,15 +485,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             {
                 _cachedSelfSpectator.SpectatorOriginToSpectatorCamera = GetLocalCameraTransform();
 
-                // TODO - assess whether assuming the camera is behind the marker is accurate enough
+                // Note: the SpectatorMarkerToSpectatorCamera defined here may vary in accuracy across devices.
                 _cachedSelfSpectator.SpectatorMarkerToSpectatorCamera.Position = Vector3.zero;
                 _cachedSelfSpectator.SpectatorMarkerToSpectatorCamera.Rotation = Quaternion.Euler(0, 180, 0);
                 _cachedSelfSpectator.SpectatorMarkerToSpectatorCamera.Valid = true;
             }
         }
 
+        /// <inheritdoc/>
         public event SpatialCoordinateStateUpdateHandler SpatialCoordinateStateUpdated;
 
+        /// <inheritdoc/>
         public void Sync(string playerId, byte[] payload)
         {
             if (_actAsUser)
@@ -478,6 +589,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
+        /// <inheritdoc/>
         public bool TryGetLocalOriginToSharedOrigin(out Matrix4x4 localOriginToSharedOrigin)
         {
             localOriginToSharedOrigin = Matrix4x4.identity;
@@ -499,10 +611,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             return false;
         }
 
+        /// <inheritdoc/>
         public void PlayerConnected(string playerId)
         {
         }
 
+        /// <inheritdoc/>
         public void PlayerDisconnected(string playerId)
         {
             if (playerId == _userPlayerId)
@@ -537,7 +651,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        void Initialize()
+        protected void Initialize()
         {
             if (!_initialized)
             {
@@ -556,7 +670,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        bool NeedsToPopulate()
+        protected bool NeedsToPopulate()
         {
             if (_actAsUser)
             {
@@ -582,7 +696,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        void Populate()
+        protected void Populate()
         {
             EstablishLocalOrigin();
 
@@ -617,13 +731,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        bool WaitingOnUser()
+        protected bool WaitingOnUser()
         {
             // A spectator is waiting on the user if it does not have a valid marker id
             return !_actAsUser && !_cachedSelfSpectator.HasValidMarkerId();
         }
 
-        void EstablishLocalOrigin()
+        protected void EstablishLocalOrigin()
         {
 #if UNITY_WSA
             _localOriginEstablished = true;
@@ -678,7 +792,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
         }
 #endif
 
-        byte[] GenerateStatePayload()
+        protected byte[] GenerateStatePayload()
         {
             if (_actAsUser)
             {
@@ -692,7 +806,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        void DetectMarkers()
+        protected void DetectMarkers()
         {
             if (_markerDetector == null)
             {
@@ -713,7 +827,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
 
         }
 
-        void StopDetectingMarkers()
+        protected void StopDetectingMarkers()
         {
             if (_markerDetector == null)
             {
@@ -733,7 +847,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        void ShowMarker()
+        protected void ShowMarker()
         {
             if (!_cachedSelfSpectator.HasValidMarkerId())
             {
@@ -752,7 +866,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             _markerVisual.ShowMarker(_cachedSelfSpectator.MarkerId);
         }
 
-        void HideMarker()
+        protected void HideMarker()
         {
             Debug.Log("Hiding marker");
 
@@ -768,7 +882,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        void OnMarkersUpdated(Dictionary<int, Marker> markerDictionary)
+        protected void OnMarkersUpdated(Dictionary<int, Marker> markerDictionary)
         {
             Debug.Log("Markers updated, observed " + markerDictionary.Count + " markers");
 
@@ -793,7 +907,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        TransformData GetLocalCameraTransform()
+        private TransformData GetLocalCameraTransform()
         {
             var localCameraTransform = new TransformData();
 #if UNITY_ANDROID || UNITY_IOS
@@ -815,7 +929,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             return localCameraTransform;
         }
 
-        static bool TryCalculateUserOriginToSpectatorOriginTransform(Spectator spectator, out Matrix4x4 userOriginToSpectatorOrigin)
+        private static bool TryCalculateUserOriginToSpectatorOriginTransform(Spectator spectator, out Matrix4x4 userOriginToSpectatorOrigin)
         {
             userOriginToSpectatorOrigin = Matrix4x4.identity;
 
@@ -833,7 +947,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             return false;
         }
 
-        static bool TryCalculateSpectatorOriginToUserOriginTransform(Spectator spectator, out Matrix4x4 spectatorOriginToUserOrigin)
+        private static bool TryCalculateSpectatorOriginToUserOriginTransform(Spectator spectator, out Matrix4x4 spectatorOriginToUserOrigin)
         {
             spectatorOriginToUserOrigin = Matrix4x4.identity;
 
@@ -847,17 +961,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             return false;
         }
 
-        static Vector4 GetPosition(Matrix4x4 matrix)
+        protected static Vector4 GetPosition(Matrix4x4 matrix)
         {
             return matrix.GetColumn(3);
         }
 
-        static Quaternion GetRotation(Matrix4x4 matrix)
+        protected static Quaternion GetRotation(Matrix4x4 matrix)
         {
             return Quaternion.LookRotation(matrix.GetColumn(2), matrix.GetColumn(1));
         }
 
-        void SetVisualState(VisualState visualState)
+        protected void SetVisualState(VisualState visualState)
         {
             if (_visualState != visualState)
             {
@@ -869,12 +983,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        void OnToggleDebugVisuals()
-        {
-            _showDebugVisual = !_showDebugVisual;
-        }
-
-        void OnResetSpatialCoordinates()
+        protected void OnResetSpatialCoordinates()
         {
             if (_actAsUser)
             {
@@ -954,7 +1063,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             _needUIUpdate = false;
         }
 
-        void ShowDebugVisuals()
+        protected void ShowDebugVisuals()
         {
             // Note: This show debug visual functionality assumes that no parent transforms are applied to this game object
 
@@ -1050,7 +1159,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing
             }
         }
 
-        static void AssessAndCleanUpDebugVisuals(Dictionary<string, Spectator> knownSpectators, Dictionary<string, GameObject> debugVisuals)
+        private static void AssessAndCleanUpDebugVisuals(Dictionary<string, Spectator> knownSpectators, Dictionary<string, GameObject> debugVisuals)
         {
             if (knownSpectators.Count != debugVisuals.Count)
             {

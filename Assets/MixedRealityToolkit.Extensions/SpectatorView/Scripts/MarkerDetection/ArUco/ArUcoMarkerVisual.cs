@@ -3,13 +3,13 @@
 
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetection
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection
 {
     /// <summary>
-    /// Controls displaying a ArUco marker on a canvas
+    /// Controls displaying an ArUco marker on a Unity RawImage
     /// </summary>
     public class ArUcoMarkerVisual : MonoBehaviour,
         IMarkerVisual
@@ -68,13 +68,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             "100110001000110110101000010011010100"
         };
 
+        /// <summary>
+        /// RawImage used for displaying the ArUco marker
+        /// </summary>
+        [Tooltip("RawImage used for displaying the ArUco marker")]
         [SerializeField]
-        RawImage _rawImage;
+        protected RawImage _rawImage;
+
+        /// <summary>
+        /// Physical size to display the marker (in meters)
+        /// </summary>
+        [Tooltip("Physical size to display the marker (in meters)")]
         [SerializeField]
-        float _markerSize = 0.03f; // meters
+        protected float _markerSize = 0.03f; // meters
+
+        /// <summary>
+        /// Any additional scale factor to account for when displaying the marker
+        /// </summary>
+        [Tooltip("Any additional scale factor to account for when displaying the marker")]
         [SerializeField]
         public float _additionalScaleFactor = 1.0f;
 
+        /// <inheritdoc />
         public void ShowMarker(int id)
         {
             if (_rawImage == null)
@@ -93,6 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             }
         }
 
+        /// <inheritdoc />
         public void HideMarker()
         {
             if (_rawImage == null)
@@ -104,6 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             gameObject.SetActive(false);
         }
 
+        /// <inheritdoc />
         public void SetMarkerSize(float size)
         {
             _markerSize = size;
@@ -115,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             }
         }
 
-        public float GetMarkerSizeInPixels()
+        private float GetMarkerSizeInPixels()
         {
             float dpi = Screen.dpi;
 
@@ -141,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             return markerWidthInPixelsScaled;
         }
 
-        static Texture2D MakeMarkerTex(string data, int dataSize = 6, int border = 1)
+        private static Texture2D MakeMarkerTex(string data, int dataSize = 6, int border = 1)
         {
             bool[] boolData = new bool[data.Length];
             for (int i = 0; i < data.Length; i++)
@@ -151,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.MarkerDetectio
             return MakeMarkerTex(boolData, dataSize, border);
         }
 
-        static Texture2D MakeMarkerTex(bool[] data, int dataSize = 6, int border = 1)
+        private static Texture2D MakeMarkerTex(bool[] data, int dataSize = 6, int border = 1)
         {
             int size = dataSize + border * 2;
             Color[] colorData = new Color[size * size];

@@ -6,31 +6,63 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-using Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.Sharing;
+using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Sharing;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.UI
 {
     public class UDPBroadcastNetworkingServiceVisual : MonoBehaviour,
         IUDPBroadcastNetworkingServiceVisual
     {
-        [SerializeField] InputField _serverPortInputField;
-        [SerializeField] InputField _clientPortInputField;
-        [SerializeField] Text _errorText;
-        [SerializeField] int _defaultServerPort = 49998;
-        [SerializeField] int _defaultClientPort = 49999;
-        
+        /// <summary>
+        /// Input Field UI for setting server port
+        /// </summary>
+        [Tooltip("Input Field containing server port for UDPBroadcastNetworkingService")]
+        [SerializeField]
+        protected InputField _serverPortInputField;
+
+        /// <summary>
+        /// Input Field UI for setting client port
+        /// </summary>
+        [Tooltip("Input Field containing client port for UDPBroadcastNetworkingService")]
+        [SerializeField]
+        protected InputField _clientPortInputField;
+
+        /// <summary>
+        /// Text UI for displaying error messages
+        /// </summary>
+        [Tooltip("Text ui for displaying error messages")]
+        [SerializeField]
+        protected Text _errorText;
+
+        /// <summary>
+        /// Default server port value
+        /// </summary>
+        [Tooltip("Default server port value")]
+        [SerializeField]
+        protected int _defaultServerPort = 48888;
+
+        /// <summary>
+        /// Default client port value
+        /// </summary>
+        [Tooltip("Default client port value")]
+        [SerializeField]
+        protected int _defaultClientPort = 48889;
+
+        /// <inheritdoc/>
         public event UDPBroadcastConnectHandler OnConnect;
 
 #if UNITY_WSA
-        TouchScreenKeyboard _keyboard = null;
-        InputField _previousInputField = null;
+        protected TouchScreenKeyboard _keyboard = null;
+        protected InputField _previousInputField = null;
 #endif
 
+        /// <inheritdoc/>
         public void ShowVisual()
         {
             gameObject.SetActive(true);
         }
 
+        /// <inheritdoc/>
         public void HideVisual()
         {
             if (_errorText != null)
@@ -42,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
         }
 
 #if UNITY_WSA
-        void Update()
+        protected void Update()
         {
             if (_serverPortInputField == null ||
                 _clientPortInputField == null)
@@ -101,7 +133,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView.UI
             }
         }
 #endif
-
+        /// <summary>
+        /// Call to assess user provided server and client ports.
+        /// If ports are valid, an attempt will be made to setup a connection for the associated <see cref="Sharing.UDPBroadcastNetworkingService"/>
+        /// </summary>
         public void OnConnectButtonPress()
         {
             if (_errorText != null)

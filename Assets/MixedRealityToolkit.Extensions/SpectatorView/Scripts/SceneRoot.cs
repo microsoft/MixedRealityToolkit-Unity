@@ -3,8 +3,12 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.SpectatorView
+namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
+    /// <summary>
+    /// A helper class for tagging the GameObject to transform relative to the shared application origin in a spectator view scene.
+    /// On Start, this script will attempt to set its parent GameObject as <see cref="SpectatorView.SceneRoot"/>.
+    /// </summary>
     public class SceneRoot : MonoBehaviour
     {
         private void Start()
