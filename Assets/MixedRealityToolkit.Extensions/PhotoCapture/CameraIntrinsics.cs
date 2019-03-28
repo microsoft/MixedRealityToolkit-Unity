@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
         /// </summary>
         public Matrix4x4 UndistortedProjectionTransform { get; private set; }
 
-        ./// <summary>
+        /// <summary>
         /// CameraIntrinsics constructor
         /// </summary>
         /// <param name="focalLength">focal length for the camera</param>
