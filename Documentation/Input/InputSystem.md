@@ -1,7 +1,3 @@
-**TODO**
-
-    - Terminology pass to make sure we're using the standard terms.
-
 # Input System
 
 ## Introduction
@@ -11,46 +7,82 @@ The Input System in MRTK allows you to:
 - Define abstract actions, like *Select* or *Menu*, and associate them to different inputs.
 - Setup pointers attached to controllers to drive UI components via focus and pointer events.
 
-Inputs are produced by **Input Service Providers**. Each provider corresponds to a particular source of input: Open VR, Windows Mixed Reality (WMR), Unity Joystick, Windows Speech, etc. Providers are added to your project via the **Registered Service Providers Profile**  in the *Mixed Reality Toolkit* component and will produce input events automatically when the corresponding input sources are available, e.g. when a WMR controller is detected or a gamepad connected.
+In this section we will introduce the main MRTK concepts the you neeed to understand to make use of this functionality.
 
-**Input Actions** are abstractions over raw inputs meant to help isolating application logic from the specific input sources producing an input. For example, it can be useful to define a *Select* action and map it to the left mouse button, a button in a gamepad and a trigger in a 6 DOF controller. You can then have your application logic listen for input events mapped to that action instead of having to be aware of all the different inputs that can produce it. Input Actions are defined in the **Input Actions Profile** and mapped to inputs in the **Controller Mapping Profile**, both found within the *Input System Profile* in the *Mixed Reality Toolkit* component.
+Inputs are produced by [**Input Providers**](#input-providers). Each provider corresponds to a particular source of input: Open VR, Windows Mixed Reality (WMR), Unity Joystick, Windows Speech, etc. Providers are added to your project via the **Registered Service Providers Profile** in the *Mixed Reality Toolkit* component and will produce [**Input Events**](#input-events) automatically when the corresponding input sources are available, e.g. when a WMR controller is detected or a gamepad connected.
 
-**Controllers**
+[**Input Actions**](#input-actions) are abstractions over raw inputs meant to help isolating application logic from the specific input sources producing an input. For example, it can be useful to define a *Select* action and map it to the left mouse button, a button in a gamepad and a trigger in a 6 DOF controller. You can then have your application logic listen for input events mapped to that action instead of having to be aware of all the different inputs that can produce it. Input Actions are defined in the **Input Actions Profile**, found within the *Input System Profile* in the *Mixed Reality Toolkit* component.
 
-**Pointers**
+[**Controllers**](#controllers) are created by *input providers* as input devices are detected and destroyed when they're lost or disconnected. The WMR input provider, for example, will create *WMR controllers* for 6 DOF devices and *WMR articulated hand controllers* for articulated hands. Controller inputs can be mapped to input actions via the **Controller Mapping Profile**, inside the *Input System Profile*. Inputs events raised by the controller will include the associated input action, if any.
 
-## Controllers and Input Actions
+Controllers can have [**Pointers**](#pointers) attached to them that query the scene to determine the game object with focus and raise events on it. As an example, our *line pointer* performs a raycast against the scene using the controller pose to compute the origin and direction of the ray. The pointers created for each controller are set up in the **Pointer Profile**, under the *Input System Profile*.
 
-A controller in MRTK is an input device. Some of the controller types supported are:
+<img src="../../External/ReadMeImages/Input/EventFlow.png" width="256" align="center">
 
-- Hololens Gestures
-- WMR Controller
-- Xbox Controller
-- Oculus Remote/Touch
-- Vive Knuckles/Wand
-- Generic Open VR Controller
-- Mouse and touch screen
+The **Speech** input provider doesn't create any controllers but instead allows you to define keywords that will raise speech input events when recognized. The **Speech Commands Profile** in the *Input System Profile* is where you configure the keywords to recognize and, optionally, the input action the map to. This way you can for example use the keyword *Select* to have the same effect as a left mouse click, by mapping both to the same action.
 
-The *Registered Service Providers Profile* contains a service provider for each controller type in use. There you can add new providers or remove existing ones.
+**Dictation**
+
+**Gesture Recognizer**
+
+**Advance Topics** : Controller Visualization, Gaze Provider, Focus Provider, Action Rules, Input System
+
+## Input Providers
+
+We currently support the following input providers and corresponding controllers:
+
+Input Provider | Controllers
+--- | ---
+Input Simulation Service | Simulated Hand
+Mouse Device Manager | Mouse
+OpenVR Device Manager | Generic OpenVR, Vive Wand, Vive Knuckles, Oculus Touch, Oculus Remote, Windows Mixed Reality OpenVR
+Unity Joystick Manager | Generic Joystick
+Unity Touch Device Manager | Unity Touch Controller
+Windows Dictation Input Provider | *
+Windows Mixed Reality Device Manager | WMR Articulated Hand, WMR Controller, WMR GGV Hand
+Windows Speech Input Provider | *
+
+\* Dictation and Speech providers don't create any controllers, they raise their own specialized input events directly.
 
 <img src="../../External/ReadMeImages/Input/RegisteredServiceProviders.png" width="256" align="center">
+
+<sup>Registered Service Providers Profile. Found in the Mixed Reality Toolkit component, is the place to go to add or remove input providers.</sup>
+
+## Input Events
+
+At the script level you consume input events by implementing one of the event handler interfaces:
+
+Handler | Events | Description
+--- | --- | ---
+[`IMixedRealitySourceStateHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler) | Source Detected / Lost | Raised when an input source is detected/lost, like when an articulated hand is detected or lost track of.
+[`IMixedRealitySourcePoseHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourcePoseHandler) | Source Pose Changed | Raised on source pose changes. The source pose represents the general pose of the input source. Specific poses, like the grip or pointer pose in a six DOF controller, can be obtained via `IMixedRealityInputHandler<MixedRealityPose>`.
+[`IMixedRealityInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler) | Input Up / Down | Raised on changes to on/off inputs like buttons.
+[`IMixedRealityInputHandler<T>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) | Input Changed | Raised on changes to inputs of the given type. **T** can take the following values: `float` (e.g. analog trigger), `Vector2` (e.g. gamepad thumbstick), `Vector3` (e.g. position-only tracked device), `Quaternion` (e.g. orientation-only tracked device) and [`MixedRealityPose`](xref:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose) (e.g. fully tracked device).
+[`IMixedRealityFocusChangedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler) | Before Focus Changed / Focus Changed | Raised on both the game object losing focus and the one gaining it every time a pointer changes focus.
+[`IMixedRealityFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler) | Focus Enter / Exit | Raised on the game object gaining focus when the first pointer enters it and on the one losing focus when the last pointer leaves it.
+[`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler) | Pointer Down / Up / Clicked | Raised to report pointer input.
+[`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) | Speech Keyword Recognized | Raised on recognition of one of the keywords configured in the *Speech Commands Profile*.
+[`IMixedRealityDictationHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationHandler) | Dictation Hypothesis / Result / Complete / Error | Raised by dictation systems to report the results of a dictation session.
+[`IMixedRealityGestureHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler) | Gesture Started / Updated / Completed / Canceled | Raised on gesture detection.
+[`IMixedRealityGestureHandler<T>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler`1) | Gesture Updated / Completed | Raised on detection of gestures containing additional data of the given type. See the [**Gestures**](#gestures) section for details on possible values for **T**.
+
+By default a script will receive events only while in focus by a pointer. To receive events while out of focus, register the script's game object as a global listener via [`MixedRealityToolkit.InputSystem.Register`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem) or derive the script from [`InputSystemGlobalListener`](xref:Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener).
+
+## Input Actions
+
+Input actions can be configured in the *Input Actions Profile* specifying a name for the action and the *Axis Type* of the physical inputs it can be mapped to. The input action mapped to a physical input, if any, is stored in *input events*.
+
+<img src="../../External/ReadMeImages/Input/InputActions.png" width="256" align="center">
+
+## Controllers
 
 Each controller type has a number of *physical inputs*. Each of these is defined by an *Axis Type*, telling us the data type of the input value (Digital, Single Axis, Dual Axis, Six Dof, ...), and an *Input Type* (Button Press, Trigger, Thumb Stick, Spatial Pointer, ...) describing the origin of the input. Physical inputs are mapped to *input actions* via *interaction mappings* in *Controller Input Mapping Profile*.
 
 <img src="../../External/ReadMeImages/Input/ControllerInputMapping.png" width="512" align="center">
 
-
-*Input actions* are user abstractions over physical device inputs used to map application actions like "select" to different controller inputs (e.g. mouse click, controller button, finger tap, ...). They can be configured in the *Input Actions Profile* specifying a name for the action and the *Axis Type* of the physical inputs it can be mapped to. The input action mapped to a physical input, if any, is stored in *input events*.
-
-<img src="../../External/ReadMeImages/Input/InputActions.png" width="256" align="center">
-
-Controller inputs can be read subscribing to input events as described in the [Input Events](#input-events) section.
-
 ## Pointers
 
-A pointer is basically a ray attached to a controller that gives *focus* to the game object it is pointing to. For a game object to be able to receive focus it must have a collider, so it can be hit by physics raycasts, and belong to one of the layers defined in the *Pointer Raycast Layer Masks* in the *Pointer Profile*.
-
-Pointers are instanced automatically at runtime when a new controller is detected. The pointers that are created for each controller type are defined in the *Pointer Options* in the *Pointer Profile*. You can have more than one pointer attached to a controller; for example, with the default pointer profile, WMR controllers get both a line and a parabolic pointer for normal selection and teleportation respectively. Pointers communicate with each other to decide which one is active.
+Pointers are instanced automatically at runtime when a new controller is detected. You can have more than one pointer attached to a controller; for example, with the default pointer profile, WMR controllers get both a line and a parabolic pointer for normal selection and teleportation respectively. Pointers communicate with each other to decide which one is active.
 
 MRTK provides a set of pointer prefabs in *Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers*. You can use your own prefabs as long as they contain one of the pointer scripts in *Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers* or any other script implementing [`IMixedRealityPointer`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer).
 
@@ -69,54 +101,12 @@ Gestures are input events based on human hands. There are two types of devices t
 
   [`UnityTouchController`](xref:Microsoft.MixedReality.Toolkit.Input.UnityInput) wraps the [Unity Touch class](https://docs.unity3d.com/ScriptReference/Touch.html) that supports physical touch screens.
 
-Both of these input sources use the _Gesture Settings_ profile to translate Unity's Touch and Gesture events respectively into MRTK's [Input Actions](#controllers-and-input-actions). This profile can be found under the _Input System Settings_ profile.
+Both of these input sources use the _Gesture Settings_ profile to translate Unity's Touch and Gesture events respectively into MRTK's [Input Actions](#input-actions). This profile can be found under the _Input System Settings_ profile.
 
 <img src="../../External/ReadMeImages/Input/GestureProfile.png" width="256" align="center">
 
-## Speech
-
-Speech commands are events raised when the user says a specific keyword. You can create commands in the *Speech Commands Profile*, found under the _Input System Settings_ profile, by specifying a keyword and, optionally, a key that will also raise the event and an input action associated with it. See [Speech and Dictation Events](#speech-and-dictation-events) for speech event details.
-
-<img src="../../External/ReadMeImages/Input/SpeechCommands.png" width="256" align="center">
-
-## Dictation
-
-The dication service allows users to record audio clips and, via Windows Speech services, obtain a transcription of the audio.
-
-
-## Input Events
-
-To receive input events in your script you must implement one of the *event handler interfaces*. By default you will only receive events when the script's game object or any of its children are focused by a pointer. If you want to receive events always, regardless of focus, register your game object as a *global listener* via *MixedRealityToolkit.InputSystem.Register* or derive your script from [`InputSystemGlobalListener`](xref:Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener).
-
-Next, we'll go over the different event types and their corresponding interfaces.
-
-### Input Source Events
-
-These events refer to the general state of a controller as opossed to its specific inputs. The following information is available:
-- *Source detected or lost*: raised a new controller is detected or lost. Received via the [`IMixedRealitySourceStateHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler) interface.
-- *Source pose changed*: reports the general pose of the controller. Received via the [`IMixedRealitySourcePoseHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourcePoseHandler) interface.
-
-### Generic Input Events
-
-These events notify changes in specific controller inputs. Check the *controller mappings* for a list of inputs per controller type.
-- *Input down and up*: raised for button and trigger like inputs. Received via the [`IMixedRealityInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler) interface.
-- *Input changed*: raised on changes to inputs that have a value other than just down or up, like analog triggers, thumb sticks or 6 DOF poses. Received via the [`IMixedRealityInputHandler<T>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) interface, where *T* stands for the type of input value (float, Vector2, MixedRealityPose, ...).
-
-### Pointer and Focus Events
-
-- *Pointer down, clicked and up*: received via [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler).
-- *Before focus change and on focus change*: raised immediately before and when the game object focused by a pointer changes. Received via [`IMixedRealityFocusChangedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler).
-- *On focus enter and exit*: raised when focus enters or leaves a game object. Received via [`IMixedRealityFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler).
-
-### Gesture Events
-
-[`IMixedRealityGestureHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler) defines the events that are raised by the input system:
-- *OnGestureStarted*: A new gesture has been started.
-- *OnGestureCompleted*: An active gesture successfully completed.
-- *OnGestureCanceled*: An active gesture has been cancelled.
-- *OnGestureUpdated*: An active gesture's state has been updated.
-
-The *OnGestureCompleted* and *OnGestureUpdated* events can receive typed data by implementing the generic [`IMixedRealityGestureHandler<TYPE>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler`1) handler class. ```TYPE``` can be one of the following:
+Gestures events are received by implementing one of the gesture handler interfaces: [`IMixedRealityGestureHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler)  and [`IMixedRealityGestureHandler<TYPE>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler`1) (see table of [event handlers](#input-events)).
+When implementing the generic version, the *OnGestureCompleted* and *OnGestureUpdated* events can receive typed data of the following types:
 - ```Vector2```
   2D position gesture. Currently supported sources:
   - [```deltaPosition```](https://docs.unity3d.com/ScriptReference/Touch-deltaPosition.html) on a touch screen
@@ -129,6 +119,12 @@ The *OnGestureCompleted* and *OnGestureUpdated* events can receive typed data by
 - ```MixedRealityPose```
   Combined 3D position/rotation gesture. No currently supported sources.
 
-### Speech and Dictation Events
+## Speech
 
-- *On Speech Keyword Recognized*: raised on recognition of a speech keyword and received via [`IMixedRealitySpeechHandler`](Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler).
+Speech commands are events raised when the user says a specific keyword. You can create commands in the *Speech Commands Profile*, found under the _Input System Settings_ profile, by specifying a keyword and, optionally, a key that will also raise the event and an input action associated with it.
+
+<img src="../../External/ReadMeImages/Input/SpeechCommands.png" width="256" align="center">
+
+## Dictation
+
+The dication service allows users to record audio clips and, via Windows Speech services, obtain a transcription of the audio.
