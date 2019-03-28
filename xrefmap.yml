@@ -19987,19 +19987,6 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.DefaultProfilePath
   nameWithType: MixedRealityExtensionServiceAttribute.DefaultProfilePath
-- uid: Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.Find(System.Type)
-  name: Find(Type)
-  href: api/Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.html#Microsoft_MixedReality_Toolkit_MixedRealityExtensionServiceAttribute_Find_System_Type_
-  commentId: M:Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.Find(System.Type)
-  fullName: Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.Find(System.Type)
-  nameWithType: MixedRealityExtensionServiceAttribute.Find(Type)
-- uid: Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.Find*
-  name: Find
-  href: api/Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.html#Microsoft_MixedReality_Toolkit_MixedRealityExtensionServiceAttribute_Find_
-  commentId: Overload:Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.Find
-  isSpec: "True"
-  fullName: Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.Find
-  nameWithType: MixedRealityExtensionServiceAttribute.Find
 - uid: Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.PackageFolder
   name: PackageFolder
   href: api/Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.html#Microsoft_MixedReality_Toolkit_MixedRealityExtensionServiceAttribute_PackageFolder
