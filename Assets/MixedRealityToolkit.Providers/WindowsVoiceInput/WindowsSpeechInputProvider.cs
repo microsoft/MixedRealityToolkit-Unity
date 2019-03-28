@@ -56,13 +56,13 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
 
-            InputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource("Windows Speech Input Source");
+            InputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource("Windows Speech Input Source", sourceType: InputSourceType.Voice);
 
             var newKeywords = new string[Commands.Length];
 
             for (int i = 0; i < Commands.Length; i++)
             {
-                newKeywords[i] = Commands[i].Keyword;
+                newKeywords[i] = Commands[i].LocalizedKeyword;
             }
 
             RecognitionConfidenceLevel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 {
                     if (UInput.GetKeyDown(Commands[i].KeyCode))
                     {
-                        OnPhraseRecognized((ConfidenceLevel)RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.UtcNow, Commands[i].Keyword);
+                        OnPhraseRecognized((ConfidenceLevel)RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.UtcNow, Commands[i].LocalizedKeyword);
                     }
                 }
             }
@@ -128,9 +128,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             for (int i = 0; i < Commands?.Length; i++)
             {
-                if (Commands[i].Keyword == text)
+                if (Commands[i].LocalizedKeyword == text)
                 {
-                    MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(InputSource, Commands[i].Action, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, text);
+                    MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(InputSource, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, Commands[i]);
                     break;
                 }
             }

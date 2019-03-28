@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -62,5 +63,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Mapping definition for this controller, linking the Physical inputs to logical Input System Actions
         /// </summary>
         MixedRealityInteractionMapping[] Interactions { get; }
+
+        Vector3 AngularVelocity { get; }
+
+        Vector3 Velocity { get; }
+
+        /// <summary>
+        /// Some controllers such as articulated should only be able 
+        /// to invoke pointing/distant interactions in certain poses.
+        /// </summary>
+        bool IsInPointingPose { get;  }
     }
 }

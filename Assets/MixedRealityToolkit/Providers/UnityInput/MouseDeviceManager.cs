@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             if (MixedRealityToolkit.InputSystem != null)
             {
-                var pointers = RequestPointers(new SystemType(controllerType), handedness, true);
+                var pointers = RequestPointers(SupportedControllerType.Mouse, handedness);
                 mouseInputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
             }
 

@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A array of assembly qualified names (for example, 
         /// "Microsoft.MixedReality.Toolkit.UI.InteractableActivateTheme, 
-        /// Microsoft.MixedReality.Toolkit.SDK")
+        /// Microsoft.MixedReality.Toolkit.UI")
         /// </summary>
         public string[] AssemblyQualifiedNames { get; private set; }
 

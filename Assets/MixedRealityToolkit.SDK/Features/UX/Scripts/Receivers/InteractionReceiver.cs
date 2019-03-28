@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// based on events from those interactable objects. This is the base abstract class to extend from.
     /// </summary>
     public abstract class InteractionReceiver : BaseInputHandler,
+        IMixedRealityTouchHandler,
         IMixedRealityFocusChangedHandler,
         IMixedRealityInputHandler,
         IMixedRealityInputHandler<float>,
@@ -322,6 +323,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion IMixedRealityGestureHandler Implementation
 
+        #region IMixedRealityHandTrackingHandler Implementation
+
+        /// <inheritdoc />
+        void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                TouchStarted(eventData.selectedObject, eventData);
+            }
+        }
+
+        public void OnTouchUpdated(HandTrackingInputEventData eventData)
+        {
+        }
+
+        /// <inheritdoc />
+        void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                TouchCompleted(eventData.selectedObject, eventData);
+            }
+
+        }
+
+        #endregion IMixedRealityHandTrackingHandler Implementation
+
         #region Protected Virtual Callback Functions
 
         /// <summary>
@@ -456,6 +484,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="targetObject"></param>
         /// <param name="eventData"></param>
         protected virtual void GestureCanceled(GameObject targetObject, InputEventData eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives a touch started event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void TouchStarted(GameObject targetObject, HandTrackingInputEventData eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives a grab completed event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void TouchCompleted(GameObject targetObject, HandTrackingInputEventData eventData) { }
 
         #endregion Protected Virtual Callback Functions
     }

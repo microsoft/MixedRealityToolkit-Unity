@@ -1,8 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
+﻿using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     public class WindowsMixedRealityControllerVisualizer : MixedRealityControllerVisualizer
     {
