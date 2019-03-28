@@ -41539,6 +41539,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Equals
   nameWithType: MixedRealityPose.Equals
+- uid: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Forward
+  name: Forward
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html#Microsoft_MixedReality_Toolkit_Utilities_MixedRealityPose_Forward
+  commentId: P:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Forward
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Forward
+  nameWithType: MixedRealityPose.Forward
+- uid: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Forward*
+  name: Forward
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html#Microsoft_MixedReality_Toolkit_Utilities_MixedRealityPose_Forward_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Forward
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Forward
+  nameWithType: MixedRealityPose.Forward
 - uid: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.GetHashCode
   name: GetHashCode()
   href: api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html#Microsoft_MixedReality_Toolkit_Utilities_MixedRealityPose_GetHashCode
@@ -41604,6 +41617,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Position
   nameWithType: MixedRealityPose.Position
+- uid: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Right
+  name: Right
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html#Microsoft_MixedReality_Toolkit_Utilities_MixedRealityPose_Right
+  commentId: P:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Right
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Right
+  nameWithType: MixedRealityPose.Right
+- uid: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Right*
+  name: Right
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html#Microsoft_MixedReality_Toolkit_Utilities_MixedRealityPose_Right_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Right
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Right
+  nameWithType: MixedRealityPose.Right
 - uid: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Rotation
   name: Rotation
   href: api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html#Microsoft_MixedReality_Toolkit_Utilities_MixedRealityPose_Rotation
@@ -41630,6 +41656,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.ToString
   nameWithType: MixedRealityPose.ToString
+- uid: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Up
+  name: Up
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html#Microsoft_MixedReality_Toolkit_Utilities_MixedRealityPose_Up
+  commentId: P:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Up
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Up
+  nameWithType: MixedRealityPose.Up
+- uid: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Up*
+  name: Up
+  href: api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html#Microsoft_MixedReality_Toolkit_Utilities_MixedRealityPose_Up_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Up
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.Up
+  nameWithType: MixedRealityPose.Up
 - uid: Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.ZeroIdentity
   name: ZeroIdentity
   href: api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html#Microsoft_MixedReality_Toolkit_Utilities_MixedRealityPose_ZeroIdentity
