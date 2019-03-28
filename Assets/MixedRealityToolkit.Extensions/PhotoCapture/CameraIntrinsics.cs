@@ -7,64 +7,62 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
 {
+    /// <summary>
+    /// Contains information on camera intrinsic parameters.
+    /// Note: This class wraps logic in Windows.Media.Devices.Core.CameraIntrinsics for use in Unity.
+    /// </summary>
     public class CameraIntrinsics
     {
-        //
-        // Summary:
-        //     Gets the focal length of the camera.
-        //
-        // Returns:
-        //     The focal length of the camera.
+        /// <summary>
+        /// Gets the focal length of the camera.
+        /// </summary>
         public Vector2 FocalLength { get; private set; }
-        //
-        // Summary:
-        //     Gets the image height of the camera, in pixels.
-        //
-        // Returns:
-        //     The image height of the camera, in pixels.
+
+        /// <summary>
+        /// Gets the image height of the camera, in pixels.
+        /// </summary>
         public uint ImageHeight { get; private set; }
-        //
-        // Summary:
-        //     Gets the image width of the camera, in pixels.
-        //
-        // Returns:
-        //     The image width of the camera, in pixels.
+
+        /// <summary>
+        /// Gets the image width of the camera, in pixels.
+        /// </summary>
         public uint ImageWidth { get; private set; }
-        //
-        // Summary:
-        //     Gets the principal point of the camera.
-        //
-        // Returns:
-        //     The principal point of the camera.
+
+        /// <summary>
+        /// Gets the principal point of the camera.
+        /// </summary>
         public Vector2 PrincipalPoint { get; private set; }
-        //
-        // Summary:
-        //     Gets the radial distortion coefficient of the camera.
-        //
-        // Returns:
-        //     The radial distortion coefficient of the camera.
+
+        /// <summary>
+        /// Gets the radial distortion coefficient of the camera.
+        /// </summary>
         public Vector3 RadialDistortion { get; private set; }
-        //
-        // Summary:
-        //     Gets the tangential distortion coefficient of the camera.
-        //
-        // Returns:
-        //     The tangential distortion coefficient of the camera.
+
+        /// <summary>
+        /// Gets the tangential distortion coefficient of the camera.
+        /// </summary>
         public Vector2 TangentialDistortion { get; private set; }
-        //
-        // Summary:
-        //     Gets a matrix that transforms a 3D point to video frame pixel coordinates without
-        //     compensating for the distortion model of the camera. The 2D point resulting from
-        //     this transformation will not accurately map to the pixel coordinate in a video
-        //     frame unless the app applies its own distortion compensation. This is useful
-        //     for apps that choose to implement GPU-based distortion compensation instead of
-        //     using UndistortPoint, which uses the CPU to compute the distortion compensation.
-        //
-        // Returns:
-        //     Gets a matrix that transforms a 3D point to the video frame pixel coordinates
-        //     without compensating for the distortion model of the camera.
+
+        /// <summary>
+        ///     Gets a matrix that transforms a 3D point to video frame pixel coordinates without
+        ///     compensating for the distortion model of the camera.The 2D point resulting from
+        ///     this transformation will not accurately map to the pixel coordinate in a video
+        ///     frame unless the app applies its own distortion compensation.This is useful
+        ///     for apps that choose to implement GPU-based distortion compensation instead of
+        ///     using UndistortPoint, which uses the CPU to compute the distortion compensation.
+        /// </summary>
         public Matrix4x4 UndistortedProjectionTransform { get; private set; }
 
+        ./// <summary>
+        /// CameraIntrinsics constructor
+        /// </summary>
+        /// <param name="focalLength">focal length for the camera</param>
+        /// <param name="imageWidth">image width in pixels</param>
+        /// <param name="imageHeight">image height in pixels</param>
+        /// <param name="principalPoint">principal point for the camera </param>
+        /// <param name="radialDistortion">radial distortion for the camera</param>
+        /// <param name="tangentialDistortion">tangential distortion for the camera</param>
+        /// <param name="undistortedProjectionTransform">Undistorted projection transform for the camera</param>
         public CameraIntrinsics(
             Vector2 focalLength,
             uint imageWidth,
