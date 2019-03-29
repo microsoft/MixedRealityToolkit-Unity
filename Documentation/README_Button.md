@@ -3,7 +3,7 @@
 The button supports all available input methods including articulated hand input for the near interactions and gaze + air-tap for the far interactions. You can also use voice command to trigger the button.
 
 ## How to use the Pressable Button prefab
-Simply drag PressableButton.prefab or PressableButtonPlated.prefab into the scene. These button prefabs are already configured to have audio-visual feedback for the various types of inputs, including articulated hand input and gaze. The events exposed in the `PressableButton` and the [`Interactable`](README_Interactable.md) component can be used to trigger additional actions. 
+Simply drag [PressableButton.prefab](/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButton.prefab) or [PressableButtonPlated.prefab](/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonPlated.prefab) into the scene. These button prefabs are already configured to have audio-visual feedback for the various types of inputs, including articulated hand input and gaze. The events exposed in the `PressableButton` and the [`Interactable`](README_Interactable.md) component can be used to trigger additional actions. 
 
 The Pressable Buttons in the HandInteractionExamples scene use [`Interactable`](README_Interactable.md)'s *OnClick* event to trigger a change in the color of a cube. This event gets triggered for different types of input methods such as gaze, air-tap, hand-ray, as well as physical button presses through the `PressableButton` script.
 
