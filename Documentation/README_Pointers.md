@@ -1,7 +1,7 @@
 # Pointers
 ![Pointer](/External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)
 
-A pointer is something attached to a controller that gives focus and dispatches inputs to the game object it is pointing to [1].
+A pointer is something attached to a controller that gives focus and dispatches inputs to the game object it is pointing to [^1].
 
 For a game object to be able to receive focus it must have a collider (so it can be hit by physics raycasts) and belong to one of the layers defined in the Pointer Raycast Layer Masks in the Pointer Profile.
 
@@ -27,7 +27,7 @@ For other controllers like HoloLens 2 articulated hands, the rotation matches th
 
 
 ### GGV Pointer
-GGV stands for "Gaze, Gesture, Voice"[2]. The GGV pointer's position and direction is driven by the head's position and rotation. The pointer is used to provide input that matches the HoloLens V1 input style of head gaze + airtap[3].
+GGV stands for "Gaze, Gesture, Voice"[^2]. The GGV pointer's position and direction is driven by the head's position and rotation. The pointer is used to provide input that matches the HoloLens V1 input style of head gaze + airtap[^3].
 
 In the pointer profile you can see that the V1 Hololens input system is provided for you via the mapping of "GGVHand" (V1 HoloLens hand) to the GGVPointer. 
 
@@ -72,4 +72,3 @@ Teleport pointer is used for teleportation.
 [1]: https://github.com/luis-valverde-ms/MixedRealityToolkit-Unity/blob/feature/input_docs/Documentation/Input/InputSystem.md
 [2]: https://docs.microsoft.com/en-us/windows/mixed-reality/gaze
 [3]: https://docs.microsoft.com/en-us/windows/mixed-reality/gestures
-[4]: https://docs.microsoft.com/en-us/windows/mixed-reality/voice-input
