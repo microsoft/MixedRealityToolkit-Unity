@@ -18,11 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="name"></param>
         /// <param name="pointers"></param>
-        public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null)
+        public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other)
         {
             SourceId = MixedRealityToolkit.InputSystem.GenerateNewSourceId();
             SourceName = name;
             Pointers = pointers ?? new[] { MixedRealityToolkit.InputSystem.GazeProvider.GazePointer };
+            SourceType = sourceType;
         }
 
         /// <inheritdoc />
@@ -33,6 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public virtual IMixedRealityPointer[] Pointers { get; }
+
+        /// <inheritdoc />
+        public InputSourceType SourceType { get; set; }
 
         #region IEquality Implementation
 

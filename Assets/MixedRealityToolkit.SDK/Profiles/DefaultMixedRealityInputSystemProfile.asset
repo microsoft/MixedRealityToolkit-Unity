@@ -29,3 +29,9 @@ MonoBehaviour:
     type: 2}
   controllerVisualizationProfile: {fileID: 11400000, guid: 345c06fdf3732db46b96299bd3cba653,
     type: 2}
+  enableHandTracking: 1
+  handTrackingProfile: {fileID: 11400000, guid: 7f1e3cd673742f94ca860ac7ae733024,
+    type: 2}
+  enableInputSimulation: 1
+  inputSimulationProfile: {fileID: 11400000, guid: 41478039094d47641bf4e09c20e61a5a,
+    type: 2}

@@ -48,6 +48,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityGazeProvider GazeProvider { get; }
 
         /// <summary>
+        /// The current Eye Gaze Provider that's been implemented by this Input System.
+        /// </summary>
+        IMixedRealityEyeGazeProvider EyeGazeProvider { get; }
+
+        /// <summary>
         /// Indicates if input is currently enabled or not.
         /// </summary>
         bool IsInputEnabled { get; }
@@ -115,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>a new unique Id for the input source.</returns>
         uint GenerateNewSourceId();
 
-        IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null);
+        IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other);
 
         /// <summary>
         /// Raise the event that the Input Source was detected.
@@ -540,12 +545,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// 
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="inputAction"></param>
         /// <param name="confidence"></param>
         /// <param name="phraseDuration"></param>
         /// <param name="phraseStartTime"></param>
-        /// <param name="text"></param>
-        void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, MixedRealityInputAction inputAction, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, string text);
+        /// <param name="command"></param>
+        void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SpeechCommands command);
 
         #endregion Speech Keyword Events
 
@@ -584,6 +588,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void RaiseDictationError(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null);
 
         #endregion Dictation Events
+
+        #region Hand Events
+
+        /// <summary>
+        /// Notify system that articulated hand joint info has been updated
+        /// </summary>
+        void RaiseHandJointsUpdated(IMixedRealityInputSource source, Handedness handedness, IDictionary<TrackedHandJoint, MixedRealityPose> jointPoses);
+
+        /// <summary>
+        /// Notify system that articulated hand mesh has been updated
+        /// </summary>
+        void RaiseHandMeshUpdated(IMixedRealityInputSource source, Handedness handedness, HandMeshInfo handMeshInfo);
+
+        void RaiseOnTouchStarted(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint);
+
+        void RaiseOnTouchUpdated(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint);
+
+        void RaiseOnTouchCompleted(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint);
+
+        #endregion Hand Events
 
         #endregion Input Events
     }

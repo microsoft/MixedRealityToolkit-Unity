@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="Interfaces.IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="controllingHand">The handedness of the controller making the request.</param>
         /// <param name="useSpecificType">Only register pointers with a specific type.</param>
         /// <returns></returns>
-        protected virtual IMixedRealityPointer[] RequestPointers(SystemType controllerType, Handedness controllingHand, bool useSpecificType = false)
+        protected virtual IMixedRealityPointer[] RequestPointers(SupportedControllerType controllerType, Handedness controllingHand)
         {
             var pointers = new List<IMixedRealityPointer>();
 
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     var pointerProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions[i];
 
-                    if (((useSpecificType && pointerProfile.ControllerType.Type == controllerType.Type) || (!useSpecificType && pointerProfile.ControllerType.Type == null)) &&
+                    if ((pointerProfile.ControllerType == controllerType) &&
                         (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab, MixedRealityToolkit.Instance.MixedRealityPlayspace);
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         else
                         {
-                            Debug.LogWarning($"Failed to attach {pointerProfile.PointerPrefab.name} to {controllerType.Type.Name}.");
+                            Debug.LogWarning($"Failed to attach {pointerProfile.PointerPrefab.name} to {controllerType}.");
                         }
                     }
                 }

@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eebbca41bb0b40d298ef201735d08616, type: 3}
+  m_Name: HandInteractionAllExampleMixedRealityRegisteredServiceProvidersProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 1
+  configurations:
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager,
+        Microsoft.MixedReality.Toolkit
+    componentName: Unity Joystick Manager
+    priority: 10
+    runtimePlatform: -1
+    configurationProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRDeviceManager,
+        Microsoft.MixedReality.Toolkit.Providers.OpenVR
+    componentName: Unity Open VR Device Manager
+    priority: 10
+    runtimePlatform: 7
+    configurationProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
+    componentName: Windows Mixed Reality Provider
+    priority: 10
+    runtimePlatform: 8
+    configurationProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
+    componentName: Windows Speech Input Provider
+    priority: 10
+    runtimePlatform: 25
+    configurationProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
+    componentName: Windows Dictation Input Provider
+    priority: 10
+    runtimePlatform: 25
+    configurationProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchDeviceManager,
+        Microsoft.MixedReality.Toolkit
+    componentName: Unity Touch Input Manger
+    priority: 10
+    runtimePlatform: -1
+    configurationProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Input.HandJointService, Microsoft.MixedReality.Toolkit
+    componentName: Hand Joint Service
+    priority: 10
+    runtimePlatform: -1
+    configurationProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Input.InputSimulationService, Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    componentName: In-Editor Input Simulation
+    priority: 10
+    runtimePlatform: 16
+    configurationProfile: {fileID: 11400000, guid: 41478039094d47641bf4e09c20e61a5a,
+      type: 2}

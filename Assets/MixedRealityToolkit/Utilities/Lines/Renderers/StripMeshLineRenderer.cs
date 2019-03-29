@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             
             for (int i = 0; i <= LineStepCount; i++)
             {
-                float normalizedDistance = (1f / (LineStepCount - 1)) * i;
+                float normalizedDistance = GetNormalizedPointAlongLine(i);
                 positions.Add(LineDataSource.GetPoint(normalizedDistance));
                 colors.Add(GetColor(normalizedDistance));
                 widths.Add(GetWidth(normalizedDistance));

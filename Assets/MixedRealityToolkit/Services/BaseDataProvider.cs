@@ -5,18 +5,18 @@
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// The base data provider implements <see cref="Interfaces.IMixedRealityDataProvider"/> and provides default properties for all data providers.
+    /// The base data provider implements <see cref="IMixedRealityDataProvider"/> and provides default properties for all data providers.
     /// </summary>
     /// <remarks>
-    /// Empty, but reserved for future use, in case additional <see cref="Interfaces.IMixedRealityDataProvider"/> properties or methods are assigned.
+    /// Empty, but reserved for future use, in case additional <see cref="IMixedRealityDataProvider"/> properties or methods are assigned.
     /// </remarks>
     public abstract class BaseDataProvider : BaseExtensionService, IMixedRealityDataProvider
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="Interfaces.IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
-        /// <param name="service">The <see cref="Interfaces.IMixedRealityService"/> to which the provider is providing data.</param>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
+        /// <param name="service">The <see cref="IMixedRealityService"/> to which the provider is providing data.</param>
         /// <param name="name">The friendly name of the data provider.</param>
         /// <param name="priority">The registration priority of the data provider.</param>
         /// <param name="profile">The configuration profile for the data provider.</param>

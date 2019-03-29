@@ -12,7 +12,7 @@ using Assembly = System.Reflection.Assembly;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Custom property drawer for <see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/> properties.
+    /// Custom property drawer for <see cref="Utilities.SystemType"/> properties.
     /// </summary>
     [CustomPropertyDrawer(typeof(SystemType))]
     [CustomPropertyDrawer(typeof(SystemTypeAttribute), true)]

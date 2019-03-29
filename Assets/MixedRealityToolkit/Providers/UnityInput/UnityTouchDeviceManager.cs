@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="Interfaces.IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                 if (MixedRealityToolkit.InputSystem != null)
                 {
-                    var pointers = RequestPointers(typeof(UnityTouchController), Handedness.Any, true);
+                    var pointers = RequestPointers(SupportedControllerType.TouchScreen, Handedness.Any);
                     inputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource($"Touch {touch.fingerId}", pointers);
                 }
 

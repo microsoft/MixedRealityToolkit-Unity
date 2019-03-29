@@ -20,8 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="Core.Interfaces.IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
-        /// <param name="spatialAwarenessSystem">The <see cref="Core.Interfaces.SpatialAwarenessSystem.IMixedRealitySpatialAwarenessSystem"/> to which the observer is providing data.</param>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="spatialAwarenessSystem">The <see cref="SpatialAwareness.IMixedRealitySpatialAwarenessSystem"/> to which the observer is providing data.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
@@ -86,8 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                     return null;
             }
 
-            var pointers = RequestPointers(controllerType, controllingHand);
-            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
+            var pointers = RequestPointers(currentControllerType, controllingHand);
+            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, InputSourceType.Controller);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
 
             if (detectedController == null)

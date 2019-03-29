@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Base Class for pointers that don't inherit from MonoBehaviour.
     /// </summary>
-    public class GenericPointer : IMixedRealityPointer
+    public abstract class GenericPointer : IMixedRealityPointer
     {
         /// <summary>
         /// Constructor.
@@ -32,7 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 controller = value;
-                inputSourceParent = controller.InputSource;
+
+                if (controller != null)
+                {
+                    inputSourceParent = controller.InputSource;
+                }
             }
         }
 
@@ -62,13 +66,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
 
+        private bool isInteractionEnabled = true;
+
         /// <inheritdoc />
-        public bool IsInteractionEnabled { get; set; }
+        public bool IsInteractionEnabled
+        {
+            get { return isInteractionEnabled && IsActive; }
+            set
+            {
+                isInteractionEnabled = value;
+                if (BaseCursor != null)
+                {
+                    BaseCursor.SetVisibility(value);
+                }
+            }
+        }
+
+        public bool IsActive { get; set; }
 
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The pointer's maximum extent when raycasting.
+        /// </summary>
         public virtual float PointerExtent { get; set; } = 10f;
 
         /// <inheritdoc />
@@ -83,56 +104,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IPointerResult Result { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Ray stabilizer used when calculating position of pointer end point.
+        /// </summary>
         public IBaseRayStabilizer RayStabilizer { get; set; }
 
         /// <inheritdoc />
-        public RaycastMode RaycastMode { get; set; } = RaycastMode.Simple;
-
+        public SceneQueryType SceneQueryType { get; set; } = SceneQueryType.SimpleRaycast;
+        
         /// <inheritdoc />
         public float SphereCastRadius { get; set; }
 
-        public float PointerOrientation { get; } = 0f;
+        /// <inheritdoc />
+        public abstract Vector3 Position { get; }
 
         /// <inheritdoc />
-        public virtual void OnPreRaycast()
-        {
-            Ray pointingRay;
-            if (TryGetPointingRay(out pointingRay))
-            {
-                Rays[0].CopyRay(pointingRay, PointerExtent);
-            }
-
-            if (RayStabilizer != null)
-            {
-                RayStabilizer.UpdateStability(Rays[0].Origin, Rays[0].Direction);
-                Rays[0].CopyRay(RayStabilizer.StableRay, PointerExtent);
-            }
-        }
+        public abstract Quaternion Rotation { get; }
 
         /// <inheritdoc />
-        public virtual void OnPostRaycast() { }
+        public abstract void OnPreSceneQuery();
 
         /// <inheritdoc />
-        public virtual bool TryGetPointerPosition(out Vector3 position)
-        {
-            position = Vector3.zero;
-            return false;
-        }
-
-        /// <inheritdoc />
-        public virtual bool TryGetPointingRay(out Ray pointingRay)
-        {
-            pointingRay = default(Ray);
-            return false;
-        }
-
-        /// <inheritdoc />
-        public virtual bool TryGetPointerRotation(out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
-            return false;
-        }
+        public abstract void OnPostSceneQuery();
 
         #region IEquality Implementation
 

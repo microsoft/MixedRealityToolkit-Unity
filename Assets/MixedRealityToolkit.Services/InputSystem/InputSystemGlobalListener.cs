@@ -32,9 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     await WaitUntilInputSystemValid;
                 }
 
+                // We've been destroyed during the await.
                 if (this == null)
                 {
-                    // We've been destroyed during the await.
                     return;
                 }
 

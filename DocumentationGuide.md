@@ -5,7 +5,7 @@
 This document outlines the documentation guidelines and standards for the Mixed Reality Toolkit (MRTK). Herein you will find the standards for the following formsfs of the MRTK documentation:
 
 - [Source](#source-documentation)
-- [Conceptual](#conceptual-documentation)
+- [How-To](#how-to-documentation)
 - [Design](#design-documentation)
 - [Performance Notes](#performance-notes)
 - [Breaking Changes](#breaking-changes)
@@ -112,7 +112,7 @@ When defining and enumeration, code must also document the meaning of the enum v
 
 ---
 
-## Conceptual Documentation
+## How-To Documentation
 
 Many users of the Mixed Reality Toolkit may not need to use the API documentation. These users will take advantage of our pre-made, reusable prefabs and scripts to create their experiences.
 
@@ -136,6 +136,8 @@ Some examples where design documentation can be helpful:
 - Sound effect files
 
 This type of documentation is **strongly** recommended, and **may** be requested as part of a Pull Request review. 
+
+This may or may not be different from the Design Recommendation on the [MS Developer site](https://docs.microsoft.com/en-us/windows/mixed-reality/design)
 
 [Go to Top](#documentation-guidelines)
 

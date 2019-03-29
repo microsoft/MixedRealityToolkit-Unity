@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="Interfaces.IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     break;
             }
 
-            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller");
+            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller", sourceType: InputSourceType.Controller);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
 
             if (detectedController == null)

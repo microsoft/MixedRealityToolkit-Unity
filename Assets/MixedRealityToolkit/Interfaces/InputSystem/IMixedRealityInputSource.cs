@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
@@ -14,5 +13,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Array of pointers associated with this input source.
         /// </summary>
         IMixedRealityPointer[] Pointers { get; }
+
+        /// <summary>
+        /// The type of input source this object represents.
+        /// </summary>
+        InputSourceType SourceType { get; }
     }
 }

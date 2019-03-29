@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="Core.Interfaces.IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
@@ -84,18 +84,26 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 return;
             }
 
-            inputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource(Name);
+            inputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource(Name, sourceType: InputSourceType.Voice);
             dictationResult = string.Empty;
 
-            if (dictationRecognizer == null)
+            try
             {
-                dictationRecognizer = new DictationRecognizer();
-            }
+                if (dictationRecognizer == null)
+                {
+                    dictationRecognizer = new DictationRecognizer();
+                }
 
-            dictationRecognizer.DictationHypothesis += DictationRecognizer_DictationHypothesis;
-            dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
-            dictationRecognizer.DictationComplete += DictationRecognizer_DictationComplete;
-            dictationRecognizer.DictationError += DictationRecognizer_DictationError;
+                dictationRecognizer.DictationHypothesis += DictationRecognizer_DictationHypothesis;
+                dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
+                dictationRecognizer.DictationComplete += DictationRecognizer_DictationComplete;
+                dictationRecognizer.DictationError += DictationRecognizer_DictationError;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"Failed to start dictation recognizer. Are microphone permissions granted? Exception: {ex}");
+                Disable();
+            }
         }
 
         /// <inheritdoc />

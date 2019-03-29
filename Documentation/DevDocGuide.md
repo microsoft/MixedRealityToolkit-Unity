@@ -119,6 +119,15 @@ The versioning system can also be used for showing doc versions from other dev b
 * **Run docfx locally** and check for warnings in the output whenever you modify existing APIs or update documentation pages
 * Watch out for docfx **warnings on CI** after completing and merging your PR into one of the official MRTK branches
 
+## Common errors when generating docs
+*  toc.yml errors: usually happens when an .md file gets moved/renamed or removed but the table of content file (toc.yml) pointing to that file wasn't updated accordingly. On the website this will result in a broken link on our top level or side navigation
+* /// comments errors
+  * xml tag errors - docfx like any other xml parser can't handle malformed xml tags.
+  * typos in crefs
+  * incomplete namespace identifiers - docfx won't need the full namespace to the symbol you're referring to but the relative part of the namespace that's not included in the surrounding namespace of the cref.   
+    Example: if you're in a namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput and the file you want to link in is Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityServiceRegistrar your cref can look like this: cref="Interfaces.IMixedRealityServiceRegistrar"
+  * External crefs - As long as there's no xref service available (and listed in the docfx build file) crefs to external libraries won't work. If you still want to link to a specific external symbol that doesn't have xref service but an online api documentation you can use a href instead. Example: linking to EditorPrefs of Unity: <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>
+
 ## See also
 * [DocFX](https://dotnet.github.io/docfx/index.html)
 * [MRTK developer documentation on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/)

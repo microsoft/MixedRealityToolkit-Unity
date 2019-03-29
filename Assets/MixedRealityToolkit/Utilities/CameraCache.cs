@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             get
             {
-                var mainCamera = cachedCamera == null ? Refresh(Camera.main) : cachedCamera;
+                var mainCamera = cachedCamera ?? Refresh(Camera.main);
 
                 if (mainCamera == null)
                 {

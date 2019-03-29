@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                     return (T)observers[i];
                 }
             }
-            
+
             return default(T);
         }
 

@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// Constructs the glTF Object.
         /// </summary>
         /// <param name="gltfObject"></param>
-        /// <returns>The new <see cref="GameObject"/> of the final constructed <see cref="GltfScene"/></returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> of the final constructed <see cref="Schema.GltfScene"/></returns>
         public static async void Construct(this GltfObject gltfObject)
         {
             await gltfObject.ConstructAsync();
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// Constructs the glTF Object.
         /// </summary>
         /// <param name="gltfObject"></param>
-        /// <returns>The new <see cref="GameObject"/> of the final constructed <see cref="GltfScene"/></returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> of the final constructed <see cref="Schema.GltfScene"/></returns>
         public static async Task<GameObject> ConstructAsync(this GltfObject gltfObject)
         {
             if (!gltfObject.asset.version.Contains("2.0"))
