@@ -214,15 +214,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                         buildInfo.AutoIncrement = true;
                         break;
                     case "-sceneList":
-                        buildInfo.Scenes = buildInfo.Scenes.Union(from scene in arguments[++i].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                                                                  select scene.Trim());
+                        buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(arguments[++i]));
                         break;
                     case "-sceneListFile":
                         string path = arguments[++i];
                         if (File.Exists(path))
                         {
-                            buildInfo.Scenes = buildInfo.Scenes.Union(from scene in File.ReadAllText(path).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                                                                      select scene.TrimStart().TrimEnd());
+                            buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(File.ReadAllText(path)));
                         }
                         else
                         {
@@ -247,6 +245,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                         break;
                 }
             }
+        }
+
+        private static IEnumerable<string> SplitSceneList(string sceneList)
+        {
+            return from scene in sceneList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                   select scene.Trim();
         }
 
         /// <summary>
