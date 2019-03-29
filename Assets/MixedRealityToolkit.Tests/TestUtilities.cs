@@ -17,12 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {
-        public static Scene testScene;
-
-        public static void InitializeMixedRealityToolkit()
-        {
-            MixedRealityToolkit.ConfirmInitialized();
-        }
+        private static Scene testScene;
+        public static Scene TestScene => testScene;
 
         public static void CleanupScene()
         {
@@ -51,10 +47,37 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             cameraObject.tag = "MainCamera";
         }
 
-        public static void InitializeMixedRealityToolkitScene(bool useDefaultProfile = false)
+        public static IEnumerator LoadTestSceneAsync()
+        {
+            // SceneManager.LoadScene("Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples");
+            // SceneManager.LoadScene("HandInteractionExamples");
+            // SceneManager.LoadScene("TestScene");
+            var loadSceneOp = SceneManager.LoadSceneAsync("HandInteractionExamples");
+            loadSceneOp.allowSceneActivation = true;
+            while (!loadSceneOp.isDone)
+            {
+                yield return null;
+            }
+            testScene = SceneManager.GetActiveScene();
+            Assert.IsTrue(testScene.IsValid());
+            Assert.IsTrue(testScene.isLoaded);
+        }
+
+        public static void InitializeMixedRealityToolkit()
+        {
+            MixedRealityToolkit.ConfirmInitialized();
+        }
+
+        public static IEnumerator InitializeMixedRealityToolkitScene(bool useDefaultProfile = false)
         {
             // Setup
             CleanupScene();
+
+            var loadOp = LoadTestSceneAsync();
+            while (loadOp.MoveNext())
+            {
+                yield return null;
+            }
 
             if (!MixedRealityToolkit.IsInitialized)
             {
