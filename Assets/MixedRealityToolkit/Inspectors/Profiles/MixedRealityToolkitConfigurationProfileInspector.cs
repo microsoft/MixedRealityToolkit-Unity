@@ -300,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Registered Services configuration
             EditorGUILayout.Space();
-            showRegisteredServiceProperties = EditorGUILayout.Foldout(showRegisteredServiceProperties, "Additional Service Providers", true);
+            showRegisteredServiceProperties = EditorGUILayout.Foldout(showRegisteredServiceProperties, "Extension Services", true);
             if (showRegisteredServiceProperties)
             {
                 using (new EditorGUI.IndentLevelScope())

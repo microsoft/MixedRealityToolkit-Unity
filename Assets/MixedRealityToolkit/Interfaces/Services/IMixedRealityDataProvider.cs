@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// Generic interface for all Mixed Reality Data providers
     /// </summary>
-    public interface IMixedRealityDataProvider : IMixedRealityExtensionService
+    public interface IMixedRealityDataProvider : IMixedRealityService
     {
         // Reserved for future use.
     }

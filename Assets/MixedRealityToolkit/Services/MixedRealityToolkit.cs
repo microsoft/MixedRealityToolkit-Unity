@@ -427,64 +427,17 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (ActiveProfile.RegisteredServiceProvidersProfile != null)
             {
-                for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile.Configurations?.Length; i++)
+                for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile?.Configurations?.Length; i++)
                 {
                     var configuration = ActiveProfile.RegisteredServiceProvidersProfile.Configurations[i];
 
-                    if (typeof(IMixedRealityDataProvider).IsAssignableFrom(configuration.ComponentType.Type))
-                    {
-                        IMixedRealityService serviceInstance = null;
-
-                        // todo: this is temporary while we move away from registering data providers as extension services.
-                        BaseMixedRealityProfile profile = configuration.ConfigurationProfile;
-                        object[] attributes = configuration.ComponentType.Type.GetCustomAttributes(true);
-                        foreach(object o in attributes)
-                        {
-                            MixedRealityDataProviderAttribute dataProviderAttribute = o as MixedRealityDataProviderAttribute;
-                            if (dataProviderAttribute == null) { continue; }
-
-                            Type serviceInterfaceType = dataProviderAttribute.ServiceInterfaceType;
-
-                            if (serviceInterfaceType == typeof(IMixedRealityBoundarySystem))
-                            {
-                                serviceInstance = GetService<IMixedRealityBoundarySystem>();
-                                break;
-                            }
-                            else if (serviceInterfaceType == typeof(IMixedRealityDiagnosticsSystem))
-                            {
-                                serviceInstance = GetService<IMixedRealityDiagnosticsSystem>();
-                                break;
-                            }
-                            else if (serviceInterfaceType == typeof(IMixedRealityInputSystem))
-                            {
-                                serviceInstance = GetService<IMixedRealityInputSystem>();
-                                // Input system data providers receive the input system profile
-                                profile = ActiveProfile.InputSystemProfile;
-                                break;
-                            }
-                            else if (serviceInterfaceType == typeof(IMixedRealitySpatialAwarenessSystem))
-                            {
-                                serviceInstance = GetService<IMixedRealitySpatialAwarenessSystem>();
-                                break;
-                            }
-                            else if (serviceInterfaceType == typeof(IMixedRealityTeleportSystem))
-                            {
-                                serviceInstance = GetService<IMixedRealityTeleportSystem>();
-                                break;
-                            }
-                        }
-
-                        object[] args = { this, serviceInstance, configuration.ComponentName, configuration.Priority, profile };
-                        RegisterService<IMixedRealityDataProvider>(configuration.ComponentType, configuration.RuntimePlatform, args);
-                    }
-                    else if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
+                    if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
                     {
                         object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
-                        RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, args);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"{configuration.ComponentName} does not implement IMixedRealityDataProvider or IMixedRealityExtensionService and could not be registered");
+                        if (!RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, args))
+                        {
+                            Debug.LogError($"Failed to register {configuration.ComponentName}");
+                        }
                     }
                 }
             }

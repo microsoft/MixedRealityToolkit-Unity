@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1), // All platforms supported by Unity
         "Unity Mouse Device Manager")]  
-    public class MouseDeviceManager : BaseInputDeviceManager, IMixedRealityExtensionService
+    public class MouseDeviceManager : BaseInputDeviceManager
     {
         /// <summary>
         /// Constructor.

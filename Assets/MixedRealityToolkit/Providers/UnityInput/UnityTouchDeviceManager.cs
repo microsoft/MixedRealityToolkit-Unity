@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1),  // All platforms supported by Unity
         "Unity Touch Device Manager")]
-    public class UnityTouchDeviceManager : BaseInputDeviceManager, IMixedRealityExtensionService
+    public class UnityTouchDeviceManager : BaseInputDeviceManager
     {
         /// <summary>
         /// Constructor.
