@@ -74,7 +74,7 @@ Find this readme, other documentation articles and the MRTK api reference on our
 | UI for Bounding Box's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
 
 # Example Scene
-You can find various types of interactions and UI controls in this example scene.
+You can find various types of interactions and UI controls in [this example scene](/Documentation/README_HandInteractionExamples.md).
 
 [![Button](/External/ReadMeImages/MRTK_Examples.png)](/Documentation/README_HandInteractionExamples.md)
 
