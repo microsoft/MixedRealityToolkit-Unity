@@ -2,10 +2,8 @@
 
 # What is MixedRealityToolkit
 
-MRTK is a Microsoft Driven open source project. 
-
-MRTK-Unity...
-* Provides the **basic building blocks for MR app development on HoloLens, WMR, and OpenVR**.
+MRTK is a Microsoft Driven open source project. MRTK-Unity...
+* Provides the **basic building blocks for MR app development on HoloLens, Windows Mixed Reality (WMR), and OpenVR**.
 * Showcases UX best practices with **UI controls and interactions that matches Windows Mixed Reality and HoloLens Shell**. 
 * **Enables rapid prototyping** via in-editor simulation that allows you to see changes immediately.
 * **Supports a wide range of platforms**, including
@@ -29,22 +27,18 @@ MRTK-Unity...
 | To develop apps for mixed reality headsets, you need the Windows 10 Fall Creators Update | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
 
 # Getting Started with MRTK 
+1. [Download MRTK](Documentation/DownloadingTheMRTK.md)
+2. Follow this [Getting Started Guide](Documentation/GettingStartedWithTheMRTK.md)
+3. Check out [Mixed Reality Toolkit configuration guide](Documentation/MixedRealityConfigurationGuide.md)
 
-You can find out how to use MRTK to develop for Windows Mixed Reality on the MS Developer Site.
-
-The Mixed Reality team have prepared a few guides for getting up to speed on using the new Mixed Reality Toolkit, which can be found here:
-
-* [Downloading the Mixed Reality Toolkit](Documentation/DownloadingTheMRTK.md)
-* [Getting Started with the Mixed Reality Toolkit](Documentation/GettingStartedWithTheMRTK.md)
-* [Mixed Reality Toolkit configuration guide](Documentation/MixedRealityConfigurationGuide.md)
-
+### More documentation
 Find this readme, other documentation articles and the MRTK api reference on our [MRTK Dev Portal on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/). 
 
 # Engage with the Community
 
 Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/).
 
-Ask questions about using MRRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk).
+Ask questions about using MRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) using the **MRTK** tag.
 
 Search for solution or file a new issue in [GitHub](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
 
