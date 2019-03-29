@@ -37,7 +37,7 @@ The logic for the button movement with hand press interaction.
 This script sends events from hand press interaction to [`Interactable`](README_Interactable.md).
 
 #### Interactable
-[`Interactable`](README_Interactable.md) handles various types of interaction states and events. HoloLens GGV input or immersive headset motion controller input is directly handled by this script.
+[`Interactable`](README_Interactable.md) handles various types of interaction states and events. HoloLens gaze, gesture, and voice input and immersive headset motion controller input are directly handled by this script.
 
 #### Audio Source
 Unity `Audio Source` for the audio feedback clips
