@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         protected MonoBehaviour NetworkingService;
 
         /// <summary>
-        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.ISpatialCoordinateService"/>
+        /// MonoBehaviour that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.ISpatialCoordinateServiceOld"/>
         /// </summary>
         [Tooltip("MonoBehaviour that implements Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.ISpatialCoordinateService. Note: errors will be generated if the provided MonoBehaviour does not implement ISpatialCoordinateService")]
         [SerializeField]
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         protected IMatchMakingService _matchMakingService;
         protected IPlayerService _playerService;
         protected INetworkingService _networkingService;
-        protected ISpatialCoordinateService _spatialCoordinateService;
+        protected ISpatialCoordinateServiceOld _spatialCoordinateService;
         protected List<IPlayerStateObserver> _playerStateObservers;
         protected IRecordingService _recordingService;
         protected IRecordingServiceVisual _recordingServiceVisual;
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             FieldHelper.ValidateType<IMatchMakingService>(MatchMakingService);
             FieldHelper.ValidateType<IPlayerService>(PlayerService);
             FieldHelper.ValidateType<INetworkingService>(NetworkingService);
-            FieldHelper.ValidateType<ISpatialCoordinateService>(SpatialCoordinateService);
+            FieldHelper.ValidateType<ISpatialCoordinateServiceOld>(SpatialCoordinateService);
             FieldHelper.ValidateType<IRecordingService>(AndroidRecordingService);
             FieldHelper.ValidateType<IRecordingService>(IosRecordingService);
             FieldHelper.ValidateType<IRecordingServiceVisual>(RecordingServiceVisual);
@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             _matchMakingService = MatchMakingService as IMatchMakingService;
             _playerService = PlayerService as IPlayerService;
             _networkingService = NetworkingService as INetworkingService;
-            _spatialCoordinateService = SpatialCoordinateService as ISpatialCoordinateService;
+            _spatialCoordinateService = SpatialCoordinateService as ISpatialCoordinateServiceOld;
 
             if (_matchMakingService == null ||
                 _playerService == null ||

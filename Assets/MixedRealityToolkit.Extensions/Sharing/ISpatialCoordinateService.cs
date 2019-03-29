@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
     /// <summary>
     /// Interface implemented by classes that establish a shared coordinate system
     /// </summary>
-    public interface ISpatialCoordinateService
+    public interface ISpatialCoordinateServiceOld
     {
         /// <summary>
         /// Obtains a transform from the local application origin to the shared application origin
