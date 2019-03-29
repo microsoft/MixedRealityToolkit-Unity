@@ -105,9 +105,19 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 | Note: The _Pinch_ gesture is the only gesture that performs the "Select" action at this point. |
 | --- |
 
-## Hand Interaction
+## One-Hand Manipulation
 
+1. Press and hold hand control key (Space/Left Shift)
+2. Point at object
+3. Hold mouse button to pinch
+4. Use mouse to move the object
+5. Release mouse button to stop interaction
 
+---
+
+<video width="600" controls="controls">
+  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_SingleHandInteraction.mp4"></source>
+</video>
 
 ## Two-Hand Manipulation
 
@@ -120,3 +130,19 @@ For manipulating objects with two hands at the same time the persistent hand mod
   3. Press mouse button to activate the _Pinch_ gesture. In persistent mode the gesture will remain active when you release the mouse button.
 3. Repeat the process with the other hand, grabbing the same object in a second spot.
 4. Now that both hands are grabbing the same object, you can move either of them to perform two-handed manipulation.
+
+---
+
+<video width="600" controls="controls">
+  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_TwoHandInteraction.mp4"></source>
+</video>
+
+## GGV Interaction
+
+TODO
+
+---
+
+<!-- <video width="600" controls="controls">
+  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_GGVHandInteraction.mp4"></source>
+</video> -->
