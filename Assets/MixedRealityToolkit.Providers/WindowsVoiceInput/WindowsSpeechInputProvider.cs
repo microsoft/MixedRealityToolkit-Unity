@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 {
                     if (UInput.GetKeyDown(Commands[i].KeyCode))
                     {
-                        OnPhraseRecognized((ConfidenceLevel)RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, Commands[i].Keyword);
+                        OnPhraseRecognized((ConfidenceLevel)RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.UtcNow, Commands[i].Keyword);
                     }
                 }
             }

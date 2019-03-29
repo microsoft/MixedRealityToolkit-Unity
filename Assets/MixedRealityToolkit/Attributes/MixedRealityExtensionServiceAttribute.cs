@@ -81,12 +81,17 @@ namespace Microsoft.MixedReality.Toolkit
             PackageFolder = packageFolder;
         }
 
+#if UNITY_EDITOR
         /// <summary>
         /// Convenience function for retrieving the attribute given a certain class type.
         /// </summary>
+        /// <remarks>
+        /// This function is only available in a UnityEditor context.
+        /// </remarks>
         public static MixedRealityExtensionServiceAttribute Find(Type type)
         {
             return type.GetCustomAttributes(typeof(MixedRealityExtensionServiceAttribute), true).FirstOrDefault() as MixedRealityExtensionServiceAttribute;
         }
+#endif // UNITY_EDITOR
     }
 }

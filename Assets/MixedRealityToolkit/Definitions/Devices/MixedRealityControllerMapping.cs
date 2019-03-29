@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                    string handednessText = string.Empty;
+                string handednessText = string.Empty;
                 switch (handedness)
                 {
                     case Handedness.Left:
