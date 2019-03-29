@@ -1,6 +1,6 @@
 # Button #
 ![Button](/External/ReadMeImages/Button/MRTK_Button_Main.png)
-The button supports all available input methods including articulated hand input for near interaction and gaze + air-tap for far interactions.
+The button supports all available input methods including articulated hand input for the near interactionS and gaze + air-tap for the far interactions. You can also use voice command to trigger the button.
 
 ## How to use the Pressable Button prefab
 Simply drag PressableButton.prefab or PressableButtonPlated.prefab into the scene. These button prefabs are already configured to have audio-visual feedback for the various types of inputs, including articulated hand input and gaze. The events exposed in the `PressableButton` and the [`Interactable`](README_Interactable.md) component can be used to trigger additional actions. 
