@@ -57,8 +57,8 @@ Bounding Box provides the following events. The example uses these events to pla
 <img src="/External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
 
 ### Make an object movable with Manipulation Handler ###
-If you want to make the object movable using far interaction, you can combine [`ManipulationHandler.cs`](README_ManipulationHandler) with `BoundingBox.cs`. [ManipulationHandler](README_ManipulationHandler) supports both one and two-handed interactions. To make [`ManipulationHandler.cs`](README_ManipulationHandler) work with near interaction, you should add `NearInteractionGrabbable.cs` too.
+If you want to make the object movable using far interaction, you can combine [`ManipulationHandler.cs`](README_ManipulationHandler.md) with `BoundingBox.cs`. [ManipulationHandler](README_ManipulationHandler.md) supports both one and two-handed interactions. To make [`ManipulationHandler.cs`](README_ManipulationHandler.md) work with near interaction, you should add `NearInteractionGrabbable.cs` too.
 
 <img src="/External/ReadMeImages/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
 
-In order for the bounding box edges to be highlighted the same way when moving it using [`ManipulationHandler`](README_ManipulationHandler)'s far interaction, it is advised to connect its events for **On Manipulation Started** / **On Manipulation Ended** to `BoundingBox.HightlightWires` / `BoundingBox.UnhighlightWires` respectively, as shown in the screenshot above.
+In order for the bounding box edges to be highlighted the same way when moving it using [`ManipulationHandler`](README_ManipulationHandler.md)'s far interaction, it is advised to connect its events for **On Manipulation Started** / **On Manipulation Ended** to `BoundingBox.HightlightWires` / `BoundingBox.UnhighlightWires` respectively, as shown in the screenshot above.
