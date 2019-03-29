@@ -1,0 +1,9 @@
+using System;
+
+namespace #NAMESPACE#
+{
+   public interface #INTERFACE_NAME# : IMixedRealityExtensionService
+    {
+        // Expose service features and abilities here
+    }
+}
