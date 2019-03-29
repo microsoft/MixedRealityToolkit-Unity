@@ -69,8 +69,7 @@ MonoBehaviour:
     componentName: Hand Joint Service
     priority: 10
     runtimePlatform: -1
-    configurationProfile: {fileID: 11400000, guid: 41478039094d47641bf4e09c20e61a5a,
-      type: 2}
+    configurationProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Input.InputSimulationService, Microsoft.MixedReality.Toolkit.Services.InputSimulation
     componentName: In-Editor Input Simulation
