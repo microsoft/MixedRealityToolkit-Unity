@@ -18,7 +18,7 @@ To leverage specific articulated hand input state information, you can use `Pres
 <img src="/External/ReadMeImages/Button/MRTK_Button_HowTo_PressableButton.png" width="450">
 
 ## Interaction States
-In the idle state, the button's front plate is not visible. As a finger approaches or a cursor from gaze input targets the surface, the front plate's glowing border becomes visible. There is additional highlighting of the fingertip position on the front plate surface. When pushed with a finger, the front plate moves with the fingertip.
+In the idle state, the button's front plate is not visible. As a finger approaches or a cursor from gaze input targets the surface, the front plate's glowing border becomes visible. There is additional highlighting of the fingertip position on the front plate surface. When pushed with a finger, the front plate moves with the fingertip. When the fingertip touches the surface of the front plate, it shows a subtle pulse effect to give visual feedback of the touch point.
 
 <img src="/External/ReadMeImages/Button/MRTK_Button_InteractionStates.png" width="600">
 
