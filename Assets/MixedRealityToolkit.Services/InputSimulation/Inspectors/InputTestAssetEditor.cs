@@ -17,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
             bool isGUIEnabled = GUI.enabled;
             var inputTest = target as InputTestAsset;
             bool hasKeyframes = inputTest.InputAnimation.keyframeCount > 0;
-            bool hasExpectedValues = inputTest.ExpectedValues.Count > 0;
 
             // show "Clear Input Animation"
             {
@@ -27,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
                 {
                     Undo.RecordObject(inputTest, "Cleared input test keyframes");
                     inputTest.InputAnimation.ClearKeyframes();
-                    inputTest.ExpectedValues.Clear();
                     EditorUtility.SetDirty(inputTest);
                 }
 
@@ -39,41 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
                 {
                     Undo.RecordObject(inputTest, "Recording input test keyframes");
                     inputTest.InputAnimation.ClearKeyframes();
-                    inputTest.ExpectedValues.Clear();
                     EditorUtility.SetDirty(inputTest);
 
                     inputTest.EnableInputRecording();
                     EditorApplication.isPlaying = true;
-                }
-            }
-
-            if (hasKeyframes)
-            {
-                // show "Clear Expected Values"
-                {
-                    GUI.enabled = isGUIEnabled && hasExpectedValues;
-
-                    if (GUILayout.Button("Clear Expected Values"))
-                    {
-                        Undo.RecordObject(inputTest, "Cleared input test expected values");
-                        inputTest.ExpectedValues.Clear();
-                        EditorUtility.SetDirty(inputTest);
-                    }
-
-                    GUI.enabled = isGUIEnabled;
-                }
-
-                // show "Record New Expected Values"
-                {
-                    if (GUILayout.Button("Record New Expected Values"))
-                    {
-                        Undo.RecordObject(inputTest, "Recording input test expected values");
-                        inputTest.ExpectedValues.Clear();
-                        EditorUtility.SetDirty(inputTest);
-
-                        inputTest.EnableTestRecording();
-                        EditorApplication.isPlaying = true;
-                    }
                 }
             }
 

@@ -38,32 +38,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public InputAnimationRecordingSettings RecordingSettings;
 
         /// <summary>
-        /// Test the tested object against expected values.
-        /// </summary>
-        public bool TestsEnabled = true;
-
-        /// <summary>
-        /// The object whose properties will be recorded and tested on playback.
-        /// </summary>
-        public ExposedReference<GameObject> TestedObject;
-
-        /// <summary>
         /// Controller input animation data.
         /// </summary>
         [SerializeField]
         private InputTestAnimation inputAnimation = new InputTestAnimation();
         public InputTestAnimation InputAnimation => inputAnimation;
-        /// <summary>
-        /// Recorded values of the tested object that are expected during playback.
-        /// </summary>
-        [SerializeField]
-        private InputTestValueMap expectedValues = new InputTestValueMap();
-        public InputTestValueMap ExpectedValues => expectedValues;
 
         /// Use input recording behavior when playable is created.
         private bool useInputRecording = false;
-        /// Use test recording behavior when playable is created.
-        private bool useTestRecording = false;
 
         /// </inheritdoc>
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
@@ -77,30 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // Only create recording playable once
                 useInputRecording = false;
-                useTestRecording = false;
 
-                return playable;
-            }
-            else if (useTestRecording && Application.isPlaying)
-            {
-                var playable = ScriptPlayable<InputTestRecordingBehaviour>.Create(graph);
-                var behaviour = playable.GetBehaviour();
-                behaviour.InputTest = this;
-                behaviour.TestedObject = TestedObject.Resolve(graph.GetResolver());
-
-                // Only create recording playable once
-                useInputRecording = false;
-                useTestRecording = false;
-
-                return playable;
-            }
-            else if (TestsEnabled)
-            {
-                var playable = ScriptPlayable<InputTestingBehaviour>.Create(graph);
-                var behaviour = playable.GetBehaviour();
-                behaviour.InputAnimation = InputAnimation;
-                behaviour.ExpectedValues = ExpectedValues;
-                behaviour.TestedObject = TestedObject.Resolve(graph.GetResolver());
                 return playable;
             }
             else
@@ -115,11 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void EnableInputRecording()
         {
             useInputRecording = true;
-        }
-
-        public void EnableTestRecording()
-        {
-            useTestRecording = true;
         }
     }
 }

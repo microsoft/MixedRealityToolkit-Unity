@@ -151,46 +151,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return true;
         }
 
-        internal class ExpectedValueInserter : IInteractionTestValueHandler
-        {
-            public InputTestValueMap values = null;
-            public double time;
-            public int componentID = -1;
-
-            public void AddValue<T>(string name, T value)
-            {
-                var key = new InputTestPropertyKey(componentID, name);
-                if (!values.TryGetValue(key, out var valueAnim))
-                {
-                    valueAnim = new InputTestCurve<object>();
-                    values.Add(key, valueAnim);
-                }
-
-                valueAnim.FindKeyframeInterval(time, out var low, out double lowTime, out var high, out double highTime);
-                bool valueChanged = low == null || !low.Equals(value);
-                if (valueChanged)
-                {
-                    valueAnim.InsertKeyframe(value, time);
-                }
-            }
-        }
-
-        public static void RecordExpectedValues(InputTestValueMap expectedValues, double time, List<Component> recordedComponents)
-        {
-            var inserter = new ExpectedValueInserter();
-            inserter.values = expectedValues;
-            inserter.time = time;
-
-            foreach (var comp in recordedComponents)
-            {
-                if (InteractionTester.TryGetTester(comp.GetType(), out var tester))
-                {
-                    inserter.componentID = comp.GetInstanceID();
-                    tester.GetTestValues(comp, inserter);
-                }
-            }
-        }
-
         public static void ApplyInputTestAnimation(InputTestAnimation animation, double time)
         {
             var inputSimService = MixedRealityToolkit.Instance.GetService<InputSimulationService>();
