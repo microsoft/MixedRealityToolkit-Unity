@@ -7,20 +7,20 @@ Simply drag PressableButton.prefab or PressableButtonPlated.prefab into the scen
 
 The Pressable Buttons in the HandInteractionExamples scene use [`Interactable`](README_Interactable.md)'s *OnClick* event to trigger a change in the color of a cube. This event gets triggered for different types of input methods such as gaze, air-tap, hand-ray, as well as physical button presses through the `PressableButton` script.
 
-![Button](/External/ReadMeImages/Button/MRTK_Button_HowToUse_Interactable.png =450x)
+<img src="/External/ReadMeImages/Button/MRTK_Button_HowToUse_Interactable.png" width="450">
 
 You can configure when the `PressableButton` fires the [`Interactable`](README_Interactable.md)'s *OnClick* event via the `PhysicalPressEventRouter` on the button. For example, you can set *OnClick* to fire when the button is first pressed, as opposed to be pressed, and then released, by setting *Interactable On Click* to *Event On Press*.
 
-![Button](/External/ReadMeImages/Button/MRTK_Button_HowTo_Events.png =450x)
+<img src="/External/ReadMeImages/Button/MRTK_Button_HowTo_Events.png" width="450">
 
 To leverage specific articulated hand input state information, you can use `PressableButton`'s events - *Touch Begin*, *Touch End*, *Button Pressed*, *Button Released*. These events will not fire in response to air-tap, hand-ray, or eye inputs, however.
 
-![Button](/External/ReadMeImages/Button/MRTK_Button_HowTo_PressableButton.png =450x)
+<img src="/External/ReadMeImages/Button/MRTK_Button_HowTo_PressableButton.png" width="450">
 
 ## Interaction States
 In the idle state, the button's front plate is not visible. As a finger approaches or a cursor from gaze input targets the surface, the front plate's glowing border becomes visible. There is additional highlighting of the fingertip position on the front plate surface. When pushed with a finger, the front plate moves with the fingertip.
 
-![Button](/External/ReadMeImages/Button/MRTK_Button_InteractionStates.png =600x)
+<img src="/External/ReadMeImages/Button/MRTK_Button_InteractionStates.png" width="600">
 
 ## Property Inspector of PressableButton 
 ![Button](/External/ReadMeImages/Button/MRTK_Button_Structure.png)
@@ -55,17 +55,17 @@ The *ButtonContent* object contains front plate, text label and icon. The *Fron
 #### Speech Input Handler
 The [`Interactable`](README_Interactable.md) script in Pressable Button already implements IMixedRealitySpeechHandler. A voice command keyword can be set here. 
 
-![Button](/External/ReadMeImages/Button/MRTK_Button_Speech1.png =450x)
+<img src="/External/ReadMeImages/Button/MRTK_Button_Speech1.png" width="450">
 
 #### Speech Input Profile
 Additionally, you need to register the voice command keyword in the global `Speech Commands Profile`. 
 
-![Button](/External/ReadMeImages/Button/MRTK_Button_Speech2.png =450x)
+<img src="/External/ReadMeImages/Button/MRTK_Button_Speech2.png" width="450">
 
 #### See-it, Say-it label
 The Pressable Button prefab has a placeholder TextMesh Pro label under the *SeeItSayItLabel* object. You can use this label to communicate the voice command keyword for the button to the user.
 
-![Button](/External/ReadMeImages/Button/MRTK_Button_Speech3.png =450x)
+<img src="/External/ReadMeImages/Button/MRTK_Button_Speech3.png" width="450">
 
 ## Using PressableButton on other types of objects
 
@@ -73,9 +73,9 @@ You can use the `PressableButton`s script to configure an object to react to fin
 
 In the HandInteractionExamples scene, you can take a look at the piano and round button examples which are both using `PressableButton`. 
 
-![Button](/External/ReadMeImages/Button/MRTK_Button_Custom1.png =450x)
+<img src="/External/ReadMeImages/Button/MRTK_Button_Custom1.png" width="450">
 
-![Button](/External/ReadMeImages/Button/MRTK_Button_Custom2.png =450x)
+<img src="/External/ReadMeImages/Button/MRTK_Button_Custom2.png" width="450">
 
 Each piano key has a `PressableButton` and a `NearInteractionTouchable` script assigned. It is important to verify that the *Local Forward* direction of `NearInteractionTouchable` is correct. It is represented by a white arrow in the editor. Make sure the arrow points away from the button's front face:
 
