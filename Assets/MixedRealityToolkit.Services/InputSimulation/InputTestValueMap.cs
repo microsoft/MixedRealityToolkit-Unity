@@ -1,10 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Devices.Hands;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -12,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.MixedReality.Toolkit.Services.InputSimulation
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     [System.Serializable]
     public class InputTestPropertyKey : Tuple<int, string>
@@ -80,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Services.InputSimulation
             Clear();
             for (int i = 0; i < serializedKeyComponentID.Count; ++i)
             {
-                Add(new InputTestPropertyKey(serializedKeyComponentID[i], serializedKeyName[i]), serializedValue[i]);
+                // Add(new InputTestPropertyKey(serializedKeyComponentID[i], serializedKeyName[i]), serializedValue[i]);
             }
             serializedKeyComponentID = null;
             serializedKeyName = null;

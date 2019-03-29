@@ -27,7 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public static IMixedRealityHand FindHand(Handedness handedness)
         {
-            Debug.Assert(MixedRealityToolkit.InputSystem.DetectedControllers != null);
             foreach (var detectedController in MixedRealityToolkit.InputSystem.DetectedControllers)
             {
                 var hand = detectedController as IMixedRealityHand;
