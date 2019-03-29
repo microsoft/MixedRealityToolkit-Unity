@@ -46,7 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                 return;
             }
 
-            // todo: find good way to update...
             if (DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile))
             {
                 return;
@@ -169,7 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
                 if (changed)
                 {
-                    // todo: find different way to handle...
                     EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
                 }
             }

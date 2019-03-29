@@ -31,9 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         public WindowsDictationInputProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
+            Transform playspace,
             string name = null,
             uint priority = DefaultPriority,
-            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
+            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, name, priority, profile, playspace) { }
 
         /// <summary>
         /// Is the Dictation Manager currently running?
