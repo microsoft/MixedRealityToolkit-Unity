@@ -27,6 +27,8 @@ When **UpdateLinkedTransform** is *true*, the solver will calculate position & o
 - **SolverHandler** has two fields for setting the reference object. You can choose a tracked object (such as the user camera or L/R motion controllers), or instead use the **TransformTarget** field which overrides any set tracked object. This enables you to have solvers reference any scene object. Yes, that means objects can have tag alongs and cast surface magnetism as well as tracked objects. Very handy.
 - Surface magnatism scripts rely on a *LayerMask* for raycasting. As a recommendation, create a custom *LayerMask* (the example uses *Surface*). Note that using *default* or *everything* will result in UI components or cursors contributing to the solver. This can produce weird and unexpected behavior. Objects lurching toward you etc...
 
+<img src="/External/ReadMeImages/Solver/MRTK_Solver_Orbital.png" width="450">
+Example of using Orbital solver in the [Slate prefab](README_Slate.md). 
 
 ## Expectations for Extending or Adding to the Solver System
 - To create a new solver script, you will want to extend from the abstract base class, *Solver*. This will ensure your new solver will tie into the state tracking and execution from both Solver and SolverHandler.
