@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public UnityEngine.Object ProfileAssetFolderObject { get; set; }
 
         public Type ServiceType { get; private set; }
-        public ScriptableObject ProfileInstance { get; private set; }
+        public BaseMixedRealityProfile ProfileInstance { get; private set; }
 
         #endregion
 
@@ -446,8 +446,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
 
+                // Force import the asset so it works with object reference values in serialized props
+                AssetDatabase.ImportAsset(profilePath, ImportAssetOptions.ForceUpdate);
+
                 // Load asset immediately to ensure it was created, and for registration later
-                ProfileInstance = AssetDatabase.LoadAssetAtPath<ScriptableObject>(profilePath);
+                ProfileInstance = AssetDatabase.LoadAssetAtPath<BaseMixedRealityProfile>(profilePath);
                 if (ProfileInstance == null)
                 {
                     creationLog.Add("Couldn't load profile instance after creation!");

@@ -324,7 +324,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Add spaces between camel case service name
             componentName.stringValue = System.Text.RegularExpressions.Regex.Replace(creator.ServiceName, "(\\B[A-Z])", " $1");
             configurationProfile.objectReferenceValue = creator.ProfileInstance;
-            runtimePlatform.enumValueIndex = (int)creator.Platforms;
+            runtimePlatform.intValue = (int)creator.Platforms;
+
             servicesProfileObject.ApplyModifiedProperties();
 
             // Select the profile so we can see what we've done
