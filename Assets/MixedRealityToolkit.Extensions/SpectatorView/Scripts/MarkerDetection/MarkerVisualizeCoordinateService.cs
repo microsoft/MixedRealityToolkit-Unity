@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// A variant of marker based <see cref="ISpatialCoordinateService"/> implementation. This one tracks coordinates displayed on the screen of current mobile device.
     /// The logic is that every time you start tracking a new coordinate is created and shown on the screen, after you stop tracking that coordinates location is no longer updated with the device.
     /// </summary>
-    public class MarkerVisualizeCoordinateService : SpatialCoordinateServiceBase<int>
+    public class MarkerVisualizerCoordinateService : SpatialCoordinateServiceBase<int>
     {
         private class SpatialCoordinate : SpatialCoordinateBase<int>
         {
@@ -54,9 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private readonly UnityEngine.Transform markerInWorldSpace;
         private readonly Func<int> generateMarkerId;
 
-        private SpatialCoordinate markerBeingVisualized;
+        private SpatialCoordinate markerCoordinate;
 
-        public MarkerVisualizeCoordinateService(IMarkerVisual markerVisual, UnityEngine.Transform markerInWorldSpace, Func<int> generateMarkerId)
+        public MarkerVisualizerCoordinateService(IMarkerVisual markerVisual, UnityEngine.Transform markerInWorldSpace, Func<int> generateMarkerId)
         {
             this.markerVisual = markerVisual ?? throw new ArgumentNullException(nameof(generateMarkerId));
             this.markerInWorldSpace = markerInWorldSpace;
@@ -74,26 +74,29 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             ThrowIfDisposed();
 
-            markerBeingVisualized = new SpatialCoordinate(generateMarkerId()) { IsLocated = true };
-            OnNewCoordinate(markerBeingVisualized.Id, markerBeingVisualized);
+            markerCoordinate = new SpatialCoordinate(generateMarkerId()) { IsLocated = true };
+            OnNewCoordinate(markerCoordinate.Id, markerCoordinate);
 
-            markerVisual.ShowMarker(markerBeingVisualized.Id);
+            markerVisual.ShowMarker(markerCoordinate.Id);
 
             // TODO we can probably get rid of UpdateTick and use a Unity synchronization context here to wait frames
             await Task.Delay(-1, cancellationToken).IgnoreCancellation();
 
             markerVisual.HideMarker();
-            markerBeingVisualized.IsLocated = false;
-            markerBeingVisualized = null;
+            markerCoordinate.IsLocated = false;
+            markerCoordinate = null;
         }
 
+        /// <summary>
+        /// Call this method each frame to process the marker position/rotation update.
+        /// </summary>
         public void UpdateTick()
         {
             ThrowIfDisposed();
 
-            if (markerBeingVisualized != null)
+            if (markerCoordinate != null)
             {
-                markerBeingVisualized.WorldToCoordinate = markerInWorldSpace.worldToLocalMatrix;
+                markerCoordinate.WorldToCoordinate = markerInWorldSpace.worldToLocalMatrix;
             }
         }
     }
