@@ -22903,15 +22903,15 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Physics.RayStep.GetPointByDistance
   nameWithType: RayStep.GetPointByDistance
-- uid: Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance(Microsoft.MixedReality.Toolkit.Physics.RayStep[],System.Single)
-  name: GetStepByDistance(RayStep[], Single)
-  href: api/Microsoft.MixedReality.Toolkit.Physics.RayStep.html#Microsoft_MixedReality_Toolkit_Physics_RayStep_GetStepByDistance_Microsoft_MixedReality_Toolkit_Physics_RayStep___System_Single_
-  commentId: M:Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance(Microsoft.MixedReality.Toolkit.Physics.RayStep[],System.Single)
-  name.vb: GetStepByDistance(RayStep(), Single)
-  fullName: Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance(Microsoft.MixedReality.Toolkit.Physics.RayStep[], System.Single)
-  fullName.vb: Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance(Microsoft.MixedReality.Toolkit.Physics.RayStep(), System.Single)
-  nameWithType: RayStep.GetStepByDistance(RayStep[], Single)
-  nameWithType.vb: RayStep.GetStepByDistance(RayStep(), Single)
+- uid: Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance(Microsoft.MixedReality.Toolkit.Physics.RayStep[],System.Single,System.Single@)
+  name: GetStepByDistance(RayStep[], Single, ref Single)
+  href: api/Microsoft.MixedReality.Toolkit.Physics.RayStep.html#Microsoft_MixedReality_Toolkit_Physics_RayStep_GetStepByDistance_Microsoft_MixedReality_Toolkit_Physics_RayStep___System_Single_System_Single__
+  commentId: M:Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance(Microsoft.MixedReality.Toolkit.Physics.RayStep[],System.Single,System.Single@)
+  name.vb: GetStepByDistance(RayStep(), Single, ByRef Single)
+  fullName: Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance(Microsoft.MixedReality.Toolkit.Physics.RayStep[], System.Single, ref System.Single)
+  fullName.vb: Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance(Microsoft.MixedReality.Toolkit.Physics.RayStep(), System.Single, ByRef System.Single)
+  nameWithType: RayStep.GetStepByDistance(RayStep[], Single, ref Single)
+  nameWithType.vb: RayStep.GetStepByDistance(RayStep(), Single, ByRef Single)
 - uid: Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance*
   name: GetStepByDistance
   href: api/Microsoft.MixedReality.Toolkit.Physics.RayStep.html#Microsoft_MixedReality_Toolkit_Physics_RayStep_GetStepByDistance_

@@ -469,13 +469,13 @@ public struct RayStep</code></pre>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_RayStep_GetStepByDistance_" data-uid="Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_RayStep_GetStepByDistance_Microsoft_MixedReality_Toolkit_Physics_RayStep___System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance(Microsoft.MixedReality.Toolkit.Physics.RayStep[],System.Single)">GetStepByDistance(RayStep[], Single)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_RayStep_GetStepByDistance_Microsoft_MixedReality_Toolkit_Physics_RayStep___System_Single_System_Single__" data-uid="Microsoft.MixedReality.Toolkit.Physics.RayStep.GetStepByDistance(Microsoft.MixedReality.Toolkit.Physics.RayStep[],System.Single,System.Single@)">GetStepByDistance(RayStep[], Single, ref Single)</h4>
   <div class="markdown level1 summary"><p>Returns a RayStep along an array of RaySteps by distance</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static (RayStep rayStep, float traveledDistance)GetStepByDistance(RayStep[] steps, float distance)</code></pre>
+    <pre><code class="lang-csharp hljs">public static RayStep GetStepByDistance(RayStep[] steps, float distance, ref float traveledDistance)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -497,6 +497,11 @@ public struct RayStep</code></pre>
         <td><span class="parametername">distance</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">traveledDistance</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -509,7 +514,7 @@ public struct RayStep</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetuple-2">ValueTuple</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.RayStep.html">RayStep</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a>&gt;</td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.RayStep.html">RayStep</a></td>
         <td></td>
       </tr>
     </tbody>
