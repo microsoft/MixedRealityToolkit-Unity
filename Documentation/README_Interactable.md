@@ -193,8 +193,8 @@ Custom Settings added to the new class will also be displayed in the inspector. 
 # Extending Events
 Like Themes, events can be extended to detect any state pattern or to expose functionality. 
 
-Custom events can be created and used in 2 main ways
-- Extend ReceiverBase to create a custom event that will show up in the dropdown list of event types. A Unity Event is provided by default, but additional Unity Events can be added or the event can be set to Hide UnityEvents.
+Custom events can be created and used in two main ways
+- Extend ReceiverBase to create a custom event that will show up in the dropdown list of event types. A Unity Event is provided by default, but additional Unity Events can be added or the event can be set to hide UnityEvents.
 This functionality allows a designer to work with an engineer on a project to create a custom event that the designer or implementer to setup in the editor.
 - Extend ReceiverBaseMonoBehavior to create a completely custom event component that can reside on the Interactable or another object. The ReceiverBaseMonoBehavior will reference the Interactable to detect state changes.
 This approach is the most direct for engineers that do not want to work through the inspector.
