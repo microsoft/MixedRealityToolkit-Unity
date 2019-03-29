@@ -31,7 +31,7 @@ Slate control contains Bounding Box script for scaling and rotating. For more in
 
 ## Scripts
 
-<img src="/External/ReadMeImages/Slate/MRTK_Slate_Scripts.png" width="650">
+<img src="/External/ReadMeImages/Slate/MRTK_Slate_Scripts.png">
 
 ### HandInteractionPan.cs
 This script handles articulated hand input for touching and moving the content on the slate's **ContentQuad**
