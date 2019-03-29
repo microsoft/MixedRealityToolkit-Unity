@@ -57,8 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Recorded values of the tested object that are expected during playback.
         /// </summary>
         [SerializeField]
-        private InputTestExpectedValueMap expectedValues = new InputTestExpectedValueMap();
-        public InputTestExpectedValueMap ExpectedValues => expectedValues;
+        private InputTestValueMap expectedValues = new InputTestValueMap();
+        public InputTestValueMap ExpectedValues => expectedValues;
 
         /// Use input recording behavior when playable is created.
         private bool useInputRecording = false;

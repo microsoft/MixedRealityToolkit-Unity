@@ -1,15 +1,67 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class InteractionTestValues : Dictionary<string, object>
+    // [System.Serializable]
+    // public class InteractionTestValueMap : IEnumerable, ISerializationCallbackReceiver
+    // {
+    //     [System.Serializable]
+    //     internal class SerializableIntList : List<Tuple<string, int>>
+    //     {}
+    //     [System.Serializable]
+    //     internal class SerializableBoolList : List<Tuple<string, bool>>
+    //     {}
+
+    //     private readonly SerializableIntList intValues = new SerializableIntList();
+    //     private readonly SerializableBoolList boolValues = new SerializableBoolList();
+
+    //     public void Add<T>(string name, T value)
+    //     {
+    //         Debug.LogWarning($"Interaction test does not support values of type {typeof(T)}");
+    //     }
+    //     public void Add(string name, int value)
+    //     {
+    //         intValues.Add(new Tuple<string, int>(name, value));
+    //     }
+    //     public void Add(string name, bool value)
+    //     {
+    //         boolValues.Add(new Tuple<string, bool>(name, value));
+    //     }
+
+    //     public IEnumerator GetEnumerator()
+    //     {
+    //         foreach (var v in intValues)
+    //         {
+    //             yield return v;
+    //         }
+    //         foreach (var v in boolValues)
+    //         {
+    //             yield return v;
+    //         }
+    //     }
+
+    //     public void OnBeforeSerialize()
+    //     {
+
+    //     }
+
+    //     public void OnAfterDeserialize()
+    //     {
+
+    //     }
+    // }
+
+    public interface IInteractionTestValueHandler
     {
+        void AddValue<T>(string name, T value);
     }
 
     public class InteractionTester
@@ -52,13 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Copy relevant values of an object into a dictionary for testing.
         /// </summary>
-        public virtual void GetTestValues(object tested, InteractionTestValues values)
-        {}
-
-        /// <summary>
-        /// Ascertain that values match the state of the tested object.
-        /// </summary>
-        public virtual void CheckTestValues(object tested, InteractionTestValues values)
+        public virtual void GetTestValues(object tested, IInteractionTestValueHandler values)
         {}
     }
 
@@ -72,76 +118,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Copy relevant values of an object into a dictionary for testing.
         /// </summary>
-        public virtual void GetTestValues(T tested, InteractionTestValues values)
-        {}
-
-        /// <summary>
-        /// Ascertain that values match the state of the tested object.
-        /// </summary>
-        public virtual void CheckTestValues(T tested, InteractionTestValues values)
+        public virtual void GetTestValues(T tested, IInteractionTestValueHandler values)
         {}
 
         /// <inheritdoc/>
-        public sealed override void GetTestValues(object _tested, InteractionTestValues values)
+        public sealed override void GetTestValues(object _tested, IInteractionTestValueHandler values)
         {
             var tested = _tested as T;
             GetTestValues(tested, values);
         }
-
-        /// <inheritdoc/>
-        public sealed override void CheckTestValues(object _tested, InteractionTestValues values)
-        {
-            var tested = _tested as T;
-            CheckTestValues(tested, values);
-        }
     }
 
-    // public class InteractableTester : ComponentInteractionTester<Interactable>
-    // {
-    //     /// <inheritdoc/>
-    //     public override void GetTestValues(Interactable tested, InteractionTestValues values)
-    //     {
-    //         // basic button states
-    //         values.Add("HasFocus", tested.HasFocus);
-    //         values.Add("HasPress", tested.HasPress);
-    //         values.Add("IsDisabled", tested.IsDisabled);
+    public class InteractableTester : ComponentInteractionTester<Interactable>
+    {
+        /// <inheritdoc/>
+        public override void GetTestValues(Interactable tested, IInteractionTestValueHandler values)
+        {
+            // basic button states
+            values.AddValue("HasFocus", tested.HasFocus);
+            values.AddValue("HasPress", tested.HasPress);
+            values.AddValue("IsDisabled", tested.IsDisabled);
 
-    //         // advanced button states from InteractableStates.InteractableStateEnum
-    //         values.Add("IsTargeted", tested.IsTargeted);
-    //         values.Add("IsInteractive", tested.IsInteractive);
-    //         values.Add("HasObservationTargeted", tested.HasObservationTargeted);
-    //         values.Add("HasObservation", tested.HasObservation);
-    //         values.Add("IsVisited", tested.IsVisited);
-    //         values.Add("IsToggled", tested.IsToggled);
-    //         values.Add("HasGesture", tested.HasGesture);
-    //         values.Add("HasGestureMax", tested.HasGestureMax);
-    //         values.Add("HasCollision", tested.HasCollision);
-    //         values.Add("HasVoiceCommand", tested.HasVoiceCommand);
-    //         values.Add("HasPhysicalTouch", tested.HasPhysicalTouch);
-    //         values.Add("HasCustom", tested.HasCustom);
-    //     }
-
-    //     /// <inheritdoc/>
-    //     public override void CheckTestValues(Interactable tested, InteractionTestValues values)
-    //     {
-    //         // basic button states
-    //         values["HasFocus"].Equals(tested.HasFocus);
-    //         values["HasPress"].Equals(tested.HasPress);
-    //         values["IsDisabled"].Equals(tested.IsDisabled);
-
-    //         // advanced button states from InteractableStates.InteractableStateEnum
-    //         values["IsTargeted"].Equals(tested.IsTargeted);
-    //         values["IsInteractive"].Equals(tested.IsInteractive);
-    //         values["HasObservationTargeted"].Equals(tested.HasObservationTargeted);
-    //         values["HasObservation"].Equals(tested.HasObservation);
-    //         values["IsVisited"].Equals(tested.IsVisited);
-    //         values["IsToggled"].Equals(tested.IsToggled);
-    //         values["HasGesture"].Equals(tested.HasGesture);
-    //         values["HasGestureMax"].Equals(tested.HasGestureMax);
-    //         values["HasCollision"].Equals(tested.HasCollision);
-    //         values["HasVoiceCommand"].Equals(tested.HasVoiceCommand);
-    //         values["HasPhysicalTouch"].Equals(tested.HasPhysicalTouch);
-    //         values["HasCustom"].Equals(tested.HasCustom);
-    //     }
-    // }
+            // advanced button states from InteractableStates.InteractableStateEnum
+            values.AddValue("IsTargeted", tested.IsTargeted);
+            values.AddValue("IsInteractive", tested.IsInteractive);
+            values.AddValue("HasObservationTargeted", tested.HasObservationTargeted);
+            values.AddValue("HasObservation", tested.HasObservation);
+            values.AddValue("IsVisited", tested.IsVisited);
+            values.AddValue("IsToggled", tested.IsToggled);
+            values.AddValue("HasGesture", tested.HasGesture);
+            values.AddValue("HasGestureMax", tested.HasGestureMax);
+            values.AddValue("HasCollision", tested.HasCollision);
+            values.AddValue("HasVoiceCommand", tested.HasVoiceCommand);
+            values.AddValue("HasPhysicalTouch", tested.HasPhysicalTouch);
+            values.AddValue("HasCustom", tested.HasCustom);
+        }
+    }
 }

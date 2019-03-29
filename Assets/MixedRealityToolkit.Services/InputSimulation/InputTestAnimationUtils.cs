@@ -151,32 +151,42 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return true;
         }
 
-        public static void RecordExpectedValues(InputTestExpectedValueMap expectedValues, double time, List<Component> recordedComponents)
+        internal class ExpectedValueInserter : IInteractionTestValueHandler
         {
+            public InputTestValueMap values = null;
+            public double time;
+            public int componentID = -1;
+
+            public void AddValue<T>(string name, T value)
+            {
+                var key = new InputTestPropertyKey(componentID, name);
+                if (!values.TryGetValue(key, out var valueAnim))
+                {
+                    valueAnim = new InputTestCurve<object>();
+                    values.Add(key, valueAnim);
+                }
+
+                valueAnim.FindKeyframeInterval(time, out var low, out double lowTime, out var high, out double highTime);
+                bool valueChanged = low == null || !low.Equals(value);
+                if (valueChanged)
+                {
+                    valueAnim.InsertKeyframe(value, time);
+                }
+            }
+        }
+
+        public static void RecordExpectedValues(InputTestValueMap expectedValues, double time, List<Component> recordedComponents)
+        {
+            var inserter = new ExpectedValueInserter();
+            inserter.values = expectedValues;
+            inserter.time = time;
+
             foreach (var comp in recordedComponents)
             {
                 if (InteractionTester.TryGetTester(comp.GetType(), out var tester))
                 {
-                    var testValues = new InteractionTestValues();
-                    tester.GetTestValues(comp, testValues);
-
-                    foreach (var item in testValues)
-                    {
-                        var testKey = new InputTestPropertyKey(comp.GetInstanceID(), item.Key);
-                        if (!expectedValues.TryGetValue(testKey, out var valueAnim))
-                        {
-                            valueAnim = new InputTestCurve<object>();
-                            expectedValues.Add(testKey, valueAnim);
-                        }
-
-                        valueAnim.FindKeyframeInterval(time, out var low, out double lowTime, out var high, out double highTime);
-
-                        bool valueChanged = low == null || !low.Equals(item.Value);
-                        if (valueChanged)
-                        {
-                            valueAnim.InsertKeyframe(item.Value, time);
-                        }
-                    }
+                    inserter.componentID = comp.GetInstanceID();
+                    tester.GetTestValues(comp, inserter);
                 }
             }
         }

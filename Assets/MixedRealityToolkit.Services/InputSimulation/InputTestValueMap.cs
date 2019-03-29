@@ -10,64 +10,55 @@ using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    [System.Serializable]
-    public class InputTestPropertyKey : Tuple<int, string>
-    {
-        public InputTestPropertyKey(int componentID, string name) : base(componentID, name)
-        {}
-    }
-
     /// <summary>
     /// Dictionary of values to test for.
     /// </summary>
     [System.Serializable]
-    public class InputTestExpectedValueMap : Dictionary<InputTestPropertyKey, InputTestCurve<object>>, ISerializationCallbackReceiver
+    public class InputTestValueMap : ISerializationCallbackReceiver
     {
+        [System.Serializable]
+        internal class Key : Tuple<int, string>
+        {
+            public Key(int componentID, string name) : base(componentID, name)
+            {}
+        }
+
+        Dictionary<Key, InputTestCurve<int>> intValues;
+        Dictionary<Key, InputTestCurve<bool>> boolValues;
+
         [SerializeField]
         [HideInInspector]
-        internal List<int> serializedKeyComponentID;
+        internal List<int> serializedKeyComponentIDs;
         [SerializeField]
         [HideInInspector]
-        internal List<string> serializedKeyName;
+        internal List<string> serializedKeyNames;
 
         [System.Serializable]
-        internal class SerializableValueCurve : ISerializationCallbackReceiver
-        {
-            public SerializableValueCurve(InputTestCurve<object> curve)
-            {
+        internal class IntCurve : InputTestCurve<int>
+        {}
+        [System.Serializable]
+        internal class BoolCurve : InputTestCurve<bool>
+        {}
 
-            }
-
-            public void OnBeforeSerialize()
-            {
-            }
-
-            public void OnAfterDeserialize()
-            {
-            }
-        }
         [SerializeField]
         [HideInInspector]
-        internal object serializedOopsie = 4;
+        internal IntCurve serializedIntValues;
         [SerializeField]
         [HideInInspector]
-        internal InputTestCurve<object> serializedTets = new InputTestCurve<object>();
-        [SerializeField]
-        [HideInInspector]
-        internal List<SerializableValueCurve> serializedValue;
+        internal BoolCurve serializedBoolValues;
 
         public void OnBeforeSerialize()
         {
-            serializedKeyComponentID = new List<int>(Count);
-            serializedKeyName = new List<string>(Count);
-            serializedValue = new List<SerializableValueCurve>(Count);
-            foreach (var item in this)
+            int totalCount = intValues.Count + boolValues.Count;
+            serializedKeyComponentIDs = new List<int>(totalCount);
+            serializedKeyNames = new List<string>(totalCount);
+            serializedIntValues = new IntCurve();
+            serializedBoolValues = new BoolCurve();
+            foreach (var item in intValues)
             {
-                serializedKeyComponentID.Add(item.Key.Item1);
-                serializedKeyName.Add(item.Key.Item2);
-                // var curve = new SerializableValueCurve();
-                // curve.``
-                // serializedValue.Add();
+                serializedKeyComponentIDs.Add(item.Key.Item1);
+                serializedKeyNames.Add(item.Key.Item2);
+                serializedIntValues.Add(item.Value)
             }
         }
 
