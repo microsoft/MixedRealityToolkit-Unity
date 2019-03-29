@@ -23,7 +23,7 @@ You can find fingertip visualization examples in almost any scene that works wit
 ### Inspector Properties ###
 
 #### FingerCursor ####
-![Fingertip Visualization](/External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Finger_Cursor_Inspector.png)
+<img src="/External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Finger_Cursor_Inspector.png" width="600">
 
 Many of the FingerCursor properties are inherited from the BaseCursor class. Important properties include the far/near surface margins and widths which drive the finger ring animation in the MixedRealityStandard shader. For other properties please hover over the inspector tool tips.
 
