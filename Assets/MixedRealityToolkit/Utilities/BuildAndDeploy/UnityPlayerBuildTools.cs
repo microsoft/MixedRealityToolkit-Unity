@@ -214,14 +214,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                         buildInfo.AutoIncrement = true;
                         break;
                     case "-sceneList":
-                        buildInfo.Scenes.Union(from scene in arguments[++i].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                                               select scene.Trim());
+                        buildInfo.Scenes = buildInfo.Scenes.Union(from scene in arguments[++i].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                                                  select scene.Trim());
                         break;
-                    case "-sceneListJson":
+                    case "-sceneListFile":
                         string path = arguments[++i];
                         if (File.Exists(path))
                         {
-                            buildInfo.Scenes.Union(JsonUtility.FromJson<List<string>>(File.ReadAllText(path)));
+                            buildInfo.Scenes = buildInfo.Scenes.Union(from scene in File.ReadAllText(path).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                                                      select scene.TrimStart().TrimEnd());
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"Scene list file at '{path}' does not exist.");
                         }
                         break;
                     case "-buildOutput":
