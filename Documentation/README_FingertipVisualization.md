@@ -33,6 +33,6 @@ Many of the FingerCursor properties are inherited from the BaseCursor class. Imp
 The proximity light settings control how the light looks when near and far from a surface. The center, middle, and outer colors control the gradient look of the light and can be custom tailored for the color palette of your application. Note, the colors are HDR (High Dynamic Range) to allow users to brighten the proximity light to values above one. For other properties please hover over the inspector tool tips.
 
 #### MixedRealityStandard Shader ####
-![Fingertip Visualization](/External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Mixed_Reality_Standard_Shader_Inspector.png =550x)
+<img src="/External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Mixed_Reality_Standard_Shader_Inspector.png" width="600">
 
 The MixedRealityStandard shader is used for many effects in the MRTK. The two settings important for fingertip visualization are "Near Fade" and "Proximity Light." Near Fade allows objects to fade in/out as a camera or light nears them. Make sure to check "Light" to allow proximity lights to drive the fade (rather than the camera). You can reverse the values of "Fade Begin" and "Fade Complete" to reverse a fade. Check "Proximity Light" for any surface you would like the proximity light to brighten. For other properties please hover over the inspector tool tips.
