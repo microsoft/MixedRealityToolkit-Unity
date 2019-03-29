@@ -8,10 +8,10 @@ https://gfycat.com/WarmOblongBilby
 The example scene demonstrates two ways to display a Tooltip on an object.
 
 ## Script files
-[Assets/HoloToolkit/UX/Scripts/Tooltip](/Assets/HoloToolkit/UX/Scripts/Tooltip)
+[/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips](/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips)
 
-## Prefab
-[Tooltip.prefab](/Assets/HoloToolkit/UX/Prefabs/ToolTip.prefab)
+## Prefabs
+[/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips](/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips)
 
 ## Example Scene
 [TooltipExamples.unity](/Assets/\MixedRealityToolkit.Examples/Demos/UX/Scenes/TooltipExamples.unity)
