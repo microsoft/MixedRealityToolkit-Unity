@@ -7,16 +7,16 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 {
-    [CustomEditor(typeof(InputTestAsset))]
-    public class InputTestAssetEditor : UnityEditor.Editor
+    [CustomEditor(typeof(InputAnimationAsset))]
+    public class InputAnimationAssetEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
 
             bool isGUIEnabled = GUI.enabled;
-            var inputTest = target as InputTestAsset;
-            bool hasKeyframes = inputTest.InputAnimation.keyframeCount > 0;
+            var asset = target as InputAnimationAsset;
+            bool hasKeyframes = asset.InputAnimation.keyframeCount > 0;
 
             // show "Clear Input Animation"
             {
@@ -24,9 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 
                 if (GUILayout.Button("Clear Input Animation"))
                 {
-                    Undo.RecordObject(inputTest, "Cleared input test keyframes");
-                    inputTest.InputAnimation.ClearKeyframes();
-                    EditorUtility.SetDirty(inputTest);
+                    Undo.RecordObject(asset, "Cleared input test keyframes");
+                    asset.InputAnimation.ClearKeyframes();
+                    EditorUtility.SetDirty(asset);
                 }
 
                 GUI.enabled = isGUIEnabled;
@@ -35,11 +35,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
             {
                 if (GUILayout.Button("Record New Input Animation"))
                 {
-                    Undo.RecordObject(inputTest, "Recording input test keyframes");
-                    inputTest.InputAnimation.ClearKeyframes();
-                    EditorUtility.SetDirty(inputTest);
+                    Undo.RecordObject(asset, "Recording input test keyframes");
+                    asset.InputAnimation.ClearKeyframes();
+                    EditorUtility.SetDirty(asset);
 
-                    inputTest.EnableInputRecording();
+                    asset.EnableInputRecording();
                     EditorApplication.isPlaying = true;
                 }
             }

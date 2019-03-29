@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public class InputPlaybackBehaviour : PlayableBehaviour
     {
-        public InputTestAnimation InputAnimation = null;
+        public InputAnimation InputAnimation = null;
 
         public override void OnPlayableDestroy(Playable playable)
         {
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             double currentTime = playable.GetTime();
-            InputTestAnimationUtils.ApplyInputTestAnimation(InputAnimation, currentTime);
+            InputAnimationUtils.ApplyInputAnimation(InputAnimation, currentTime);
         }
     }
 }

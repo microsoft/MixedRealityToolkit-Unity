@@ -8,13 +8,13 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public static class InputTestAnimationUtils
+    public static class InputAnimationUtils
     {
         public static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
-        public static void RecordInputTestKeyframe(InputTestAnimation animation, ulong frame)
+        public static void RecordKeyframe(InputAnimation animation, ulong frame)
         {
-            var keyframe = new InputTestData();
+            var keyframe = new InputKeyframe();
 
             RecordInputHandData(Handedness.Left, keyframe.HandDataLeft);
             RecordInputHandData(Handedness.Right, keyframe.HandDataRight);
@@ -26,10 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             animation.InsertKeyframe(keyframe, frame);
         }
 
-        public static bool RecordInputTestKeyframeFiltered(InputTestAnimation animation, double time, float epsilonFrame, float epsilonJointPositions, float epsilonCameraPosition, float epsilonCameraRotation)
+        public static bool RecordKeyframeFiltered(InputAnimation animation, double time, float epsilonFrame, float epsilonJointPositions, float epsilonCameraPosition, float epsilonCameraRotation)
         {
             // Reject if keyframes exist too close to current time
-            animation.FindKeyframeInterval(time, out InputTestData low, out double lowTime, out InputTestData high, out double highTime);
+            animation.FindKeyframeInterval(time, out InputKeyframe low, out double lowTime, out InputKeyframe high, out double highTime);
             if (low != null && Math.Abs(lowTime - time) <= epsilonFrame)
             {
                 return false;
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return false;
             }
 
-            var keyframe = new InputTestData();
+            var keyframe = new InputKeyframe();
             RecordInputHandData(Handedness.Left, keyframe.HandDataLeft);
             RecordInputHandData(Handedness.Right, keyframe.HandDataRight);
             if (CameraCache.Main)
@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return true;
         }
 
-        public static void ApplyInputTestAnimation(InputTestAnimation animation, double time)
+        public static void ApplyInputAnimation(InputAnimation animation, double time)
         {
             var inputSimService = MixedRealityToolkit.Instance.GetService<InputSimulationService>();
             if (inputSimService != null)

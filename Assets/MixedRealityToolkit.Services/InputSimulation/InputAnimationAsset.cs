@@ -26,8 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float epsilonCameraRotation = Mathf.Deg2Rad * 2.0f;
     }
 
-    // [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Input Test Asset", fileName = "InputTestAsset", order = 100)]
-    public class InputTestAsset : PlayableAsset
+    // [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Input Test Asset", fileName = "InputAnimationAsset", order = 100)]
+    public class InputAnimationAsset : PlayableAsset
     {
         /// </inheritdoc>
         public override double duration => (InputAnimation != null) ? Time.fixedUnscaledDeltaTime * InputAnimation.keyframeCount : 0.0;
@@ -41,8 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Controller input animation data.
         /// </summary>
         [SerializeField]
-        private InputTestAnimation inputAnimation = new InputTestAnimation();
-        public InputTestAnimation InputAnimation => inputAnimation;
+        private InputAnimation inputAnimation = new InputAnimation();
+        public InputAnimation InputAnimation => inputAnimation;
 
         /// Use input recording behavior when playable is created.
         private bool useInputRecording = false;
@@ -52,9 +52,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (useInputRecording && Application.isPlaying)
             {
-                var playable = ScriptPlayable<InputAnimationRecordingBehaviour>.Create(graph);
+                var playable = ScriptPlayable<InputRecordingBehaviour>.Create(graph);
                 var behaviour = playable.GetBehaviour();
-                behaviour.InputTest = this;
+                behaviour.Asset = this;
                 behaviour.Settings = RecordingSettings;
 
                 // Only create recording playable once

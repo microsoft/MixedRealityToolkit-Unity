@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             inputSimService.UserInputEnabled = false;
             inputSimService.Update();
 
-            // var sequence = Resources.Load<InputTestAnimation>("InputTestAnimation");
+            // var sequence = Resources.Load<InputAnimation>("InputAnimation");
             // int startFrame = Time.frameCount;
             // int lastFrame = startFrame + sequence.InputCurve.GetFrame(sequence.InputCurve.keyframeCount - 1);
 
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             // {
             //     var frame = Time.frameCount - startFrame;
 
-            //     InputTestAnimationUtils.ApplyInputTestAnimation(sequence, frame);
+            //     InputAnimationUtils.ApplyInputAnimation(sequence, frame);
 
             //     yield return new WaitForFixedUpdate();
             // }

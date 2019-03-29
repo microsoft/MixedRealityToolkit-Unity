@@ -10,14 +10,14 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class InputAnimationRecordingBehaviour : PlayableBehaviour
+    public class InputRecordingBehaviour : PlayableBehaviour
     {
         /// <summary>
         /// Settings for behaviour of the playable during play mode.
         /// </summary>
         public InputAnimationRecordingSettings Settings;
 
-        public InputTestAsset InputTest = null;
+        public InputAnimationAsset Asset = null;
 
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
@@ -26,21 +26,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 return;
             }
-            if (InputTest == null)
+            if (Asset == null)
             {
                 return;
             }
 
             double currentTime = playable.GetTime();
-            InputTestAnimationUtils.RecordInputTestKeyframeFiltered(
-                InputTest.InputAnimation,
+            InputAnimationUtils.RecordKeyframeFiltered(
+                Asset.InputAnimation,
                 currentTime,
                 Settings.epsilonTime,
                 Settings.epsilonJointPositions,
                 Settings.epsilonCameraPosition,
                 Settings.epsilonCameraRotation);
 
-            EditorUtility.SetDirty(InputTest);
+            EditorUtility.SetDirty(Asset);
         }
 
         public override void OnPlayableDestroy(Playable playable)

@@ -11,7 +11,7 @@ using System.Linq;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [System.Serializable]
-    public class InputTestCurve<T> : ISerializationCallbackReceiver
+    public class InputAnimationCurve<T> : ISerializationCallbackReceiver
     {
         internal class Keyframe
         {
@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     }
 
     [System.Serializable]
-    public class InputTestData
+    public class InputKeyframe
     {
         public SimulatedHandData HandDataLeft = new SimulatedHandData();
         public SimulatedHandData HandDataRight = new SimulatedHandData();
@@ -206,14 +206,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
     }
 
     [System.Serializable]
-    public class InputTestAnimation : InputTestCurve<InputTestData>
+    public class InputAnimation : InputAnimationCurve<InputKeyframe>
     {
         protected static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
         public bool Interpolate(double time, SimulatedHandData resultHandDataLeft, SimulatedHandData resultHandDataRight, out MixedRealityPose resultCameraPose)
         {
             // Find [low, high] bracket of keyframes
-            FindKeyframeInterval(time, out InputTestData low, out double lowTime, out InputTestData high, out double highTime);
+            FindKeyframeInterval(time, out InputKeyframe low, out double lowTime, out InputKeyframe high, out double highTime);
 
             // TODO interpolate/copy camera pose
             if (low != null && high != null)
