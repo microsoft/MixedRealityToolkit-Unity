@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -105,6 +106,7 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
             {
                 if (true == TryGetHandRayPoint(currentController, out tryRayTouchPoint))
                 {
+                    
                     touchingPoint = SnapFingerToQuad(tryRayTouchPoint);
                 }
                 else
@@ -139,13 +141,9 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
     private bool TryGetHandPoint(IMixedRealityController controller, out Vector3 handPoint)
     {
         Vector3 point = Vector3.zero;
-
-        if (controller != null &&
-            controller.InputSource != null &&
-            controller.InputSource.Pointers != null &&
-            controller.InputSource.Pointers.Length > 0)
+        if (true == HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, controller.ControllerHandedness, out MixedRealityPose pose))
         {
-            handPoint = controller.InputSource.Pointers[0].Position;
+            handPoint = pose.Position;
             return true;
         }
 
@@ -160,7 +158,7 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
             controller.InputSource.Pointers.Length > 0 &&
             controller.InputSource.Pointers[0].Result != null )
         {
-            handRayPoint = controller.InputSource.Pointers[0].Result.Details.Point;
+            handRayPoint = controller.InputSource.Pointers[0].Position;
             return true;
         }
 
@@ -264,6 +262,7 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
     private void UpdateTouchPoint()
     {
         Vector2 newUV = GetUVFromPoint(touchingPoint);
+        
         uvOffset = newUV - touchingUV;
         uvOffset.y = -uvOffset.y;
         touchingUV = newUV;
@@ -469,16 +468,19 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
             if (touchingSource == null)
             {
                 currentPointer = eventData.InputSource.Pointers[0];
-                currentController = eventData.Controller;
+                currentController = currentPointer.Controller;
                 touchingSource = eventData.InputSource;
-                
-                Vector3 touchingPoint = SnapFingerToQuad(currentPointer.Position);
+
+                TryGetHandPoint(eventData.Controller, out Vector3 handPt);
+
+                touchingPoint = SnapFingerToQuad(handPt);
                 touchingInitialPt = touchingPoint;
                 touchingUV = GetUVFromPoint(touchingPoint);
                 touchingInitialUV = touchingUV;
                 touchingUVOffset = touchingUVTotalOffset;
 
                 StartTouch();
+
                 eventData.Use();
             }
         }
@@ -489,51 +491,37 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
         {
             if (touchingSource == eventData.InputSource)
             {
-                currentPointer = null;
-                currentController = null;
-                touchingSource = null;
-                touchingPoint = Vector3.zero;
-                touchingInitialPt = Vector3.zero;
-                touchingUV = Vector2.zero;
-                touchingInitialUV = Vector2.zero;
-                touchingUVOffset = Vector2.zero;
-                EndTouch();
+                DisconnectTouch();
                 eventData.Use();
             }
         }
     }
-    public void OnTouchUpdated(HandTrackingInputEventData eventData)
-    {
-    }
+    public void OnTouchUpdated(HandTrackingInputEventData eventData) { }
     #endregion IMixedRealityHandTrackHandler
 
 
     #region BaseFocusHandler Methods
-    public override void OnFocusEnter(FocusEventData eventData)
-    {
-    }
+    public override void OnFocusEnter(FocusEventData eventData){}
     public override void OnFocusExit(FocusEventData eventData)
     {
-        if (currentPointer == eventData.Pointer)
-        {
-            DisconnectTouch();
-        }
+        DisconnectTouch();
     }
     #endregion
 
 
     #region IMixedRealityInputHandler Methods
-    public void OnInputDown(InputEventData eventData)
+    public void OnInputDown(InputEventData eventData)                          
     {
-        if (touchType == TouchType.HandRay)
+         if (touchType == TouchType.HandRay)
         {
             if (touchingSource == null)
             {
                 currentPointer = eventData.InputSource.Pointers[0];
                 currentController = currentPointer.Controller;
                 touchingSource = eventData.InputSource;
-                // touchingPoint = currentPointer.Rays[touchingSource.Pointers[0].Result.RayStepIndex].Terminus;
+
                 TryGetHandRayPoint(currentController, out touchingPoint);
+
                 touchingPoint = SnapFingerToQuad(touchingPoint);
                 touchingInitialPt = touchingPoint;
                 touchingUV = GetUVFromPoint(touchingPoint);
