@@ -1,9 +1,9 @@
 # Bounding Box #
 ![Bounding Box](/External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png)
 
-The `BoundingBox` script provides basic functionality for transforming objects in Windows Mixed Reality. Using handles on the corners and edges, you can scale or rotate the object. On HoloLens 2, the bounding box is responding to your finger's proximity. It shows visual feedback to help perceive the distance from the object. MRTK's bounding box provides various options which allow you to easily customize the interactions and visuals. 
+The `BoundingBox` script provides basic functionality for transforming objects in Windows Mixed Reality. Using handles on the corners and edges, you can scale or rotate the object. On HoloLens 2, the bounding box responds to your finger's proximity. It shows visual feedback to help perceive the distance from the object. MRTK's bounding box provides various options which allow you to easily customize the interactions and visuals. 
 
-For more information please see 'App Bar and Bounding Box' on Windows Dev Center.
+For more information please see [App Bar and Bounding Box](https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box) on Windows Dev Center.
 
 ### How to use Bounding Box ###
 You can enable Bounding Box by simply assigning the `BoundingBox` script to any GameObject.
