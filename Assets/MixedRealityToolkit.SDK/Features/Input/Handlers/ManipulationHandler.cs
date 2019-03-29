@@ -618,16 +618,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Private Event Handlers
 
         #region Unused Event Handlers
-
-        /// <inheritdoc />
-        public void OnInputPressed(InputEventData<float> eventData) { }
-
-        /// <inheritdoc />
-        public void OnBeforeFocusChange(FocusEventData eventData) { }
-
-        /// <inheritdoc />
-        public void OnFocusChanged(FocusEventData eventData) { }
-
         /// <inheritdoc />
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
         #endregion Unused Event Handlers
