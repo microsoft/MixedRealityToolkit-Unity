@@ -79,4 +79,4 @@ In the HandInteractionExamples scene, you can take a look at the piano and round
 
 Each piano key has a `PressableButton` and a `NearInteractionTouchable` script assigned. It is important to verify that the *Local Forward* direction of `NearInteractionTouchable` is correct. It is represented by a white arrow in the editor. Make sure the arrow points away from the button's front face:
 
-![Button](/External/ReadMeImages/Button/MRTK_Button_Custom3.png =450x)
+<img src="/External/ReadMeImages/Button/MRTK_Button_Custom3.png" width="450">
