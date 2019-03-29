@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -216,8 +217,19 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     case "-autoIncrement":
                         buildInfo.AutoIncrement = true;
                         break;
-                    case "-scenes":
-                        // TODO parse json scene list and set them.
+                    case "-sceneList":
+                        buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(arguments[++i]));
+                        break;
+                    case "-sceneListFile":
+                        string path = arguments[++i];
+                        if (File.Exists(path))
+                        {
+                            buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(File.ReadAllText(path)));
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"Scene list file at '{path}' does not exist.");
+                        }
                         break;
                     case "-buildOutput":
                         buildInfo.OutputDirectory = arguments[++i];
@@ -240,6 +252,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         break;
                 }
             }
+        }
+
+        private static IEnumerable<string> SplitSceneList(string sceneList)
+        {
+            return from scene in sceneList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                   select scene.Trim();
         }
 
         /// <summary>
