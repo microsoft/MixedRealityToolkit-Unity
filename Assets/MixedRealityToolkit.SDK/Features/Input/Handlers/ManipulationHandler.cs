@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
@@ -17,10 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// This script allows for an object to be movable, scalable, and rotatable with one or two hands. 
     /// You may also configure the script on only enable certain manipulations. The script works with 
     /// both HoloLens' gesture input and immersive headset's motion controller input.
-    /// See Assets/HoloToolkit-Examples/Input/Readme/README_TwoHandManipulationTest.md
-    /// for instructions on how to use the script.
     /// </summary>
-    /// 
     public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
     {
         #region Public Enums
@@ -195,27 +191,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion MonoBehaviour Functions
 
         #region Private Methods
-        private bool TryGetGripPositionAndOrientation(IMixedRealityPointer pointer, out Quaternion orientation, out Vector3 position)
-        {
-            var handController = pointer.Controller as IMixedRealityHand;
-            if (handController != null)
-            {
-                if (handController.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palm) &&
-                    handController.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose tip))
-                {
-                    orientation = palm.Rotation;
-                    position = tip.Position;
-                    return true;
-                }
-            }
-            orientation = Quaternion.identity;
-            position = Vector3.zero;
-            return false;
-        }
-        private void SetManipulationMode(TwoHandedManipulation mode)
-        {
-            twoHandedManipulationType = mode;
-        }
         private Vector3 GetPointersCentroid()
         {
             Vector3 sum = Vector3.zero;
@@ -259,6 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             return false;
         }
+
         private void UpdateStateMachine()
         {
             var handsPressedCount = pointerIdToPointerMap.Count;
@@ -325,6 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             InvokeStateUpdateFunctions(currentState, newState);
             currentState = newState;
         }
+
         private void InvokeStateUpdateFunctions(State oldState, State newState)
         {
             if (newState != oldState)
@@ -399,7 +376,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return controller.Interactions?.First(x => x.InputType == DeviceInputType.SpatialGrip);
         }
 
-        /// <inheritdoc />
         /// <inheritdoc />
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
