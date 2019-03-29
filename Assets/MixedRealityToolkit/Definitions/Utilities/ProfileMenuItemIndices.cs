@@ -24,6 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         Gestures,
         Diagnostics,
         RegisteredServiceProviders,
+        InputSimulation,
+        HandTracking,
         EyeTracking,
 
         Assembly = 99
