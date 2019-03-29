@@ -1,11 +1,11 @@
 # Pointers
 ![Pointer](/External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)
 
-A pointer is basically something attached to a controller that gives focus and dispatches inputs to the game object it is pointing to [1].
+A pointer is something attached to a controller that gives focus and dispatches inputs to the game object it is pointing to [1].
 
-For a game object to be able to receive focus it must have a collider, so it can be hit by physics raycasts, and belong to one of the layers defined in the Pointer Raycast Layer Masks in the Pointer Profile.
+For a game object to be able to receive focus it must have a collider (so it can be hit by physics raycasts) and belong to one of the layers defined in the Pointer Raycast Layer Masks in the Pointer Profile.
 
-Pointers are instanced automatically at runtime when a new controller is detected. The pointers that are created for each controller type are defined in the _Pointer Options_ in the _Pointer Profile_. You can have more than one pointer attached to a controller; for example, with the default pointer profile, WMR controllers get both a line and a parabolic pointer for normal selection and teleportation respectively. Pointers communicate with each other to decide which one is active.
+Pointers are instantiated automatically at runtime when a new controller is detected. The pointers that are created for each controller type are defined in the _Pointer Options_ in the _Pointer Profile_. You can have more than one pointer attached to a controller; for example, with the default pointer profile, WMR controllers get both a line and a parabolic pointer for normal selection and teleportation respectively. Pointers communicate with each other to decide which one is active.
 
 MRTK provides a set of pointer prefabs in _Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers_. You can use your own prefabs as long as they contain one of the pointer scripts in _Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers_ or any other script implementing `IMixedRealityPointer`.
 
