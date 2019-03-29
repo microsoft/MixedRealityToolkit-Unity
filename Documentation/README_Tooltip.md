@@ -14,7 +14,7 @@ The example scene demonstrates two ways to display a Tooltip on an object.
 [/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips](/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips)
 
 ## Example Scene
-[TooltipExamples.unity](/Assets/\MixedRealityToolkit.Examples/Demos/UX/Scenes/TooltipExamples.unity)
+[/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes](/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes)
 
 <img src="/External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png" width="600">
 
