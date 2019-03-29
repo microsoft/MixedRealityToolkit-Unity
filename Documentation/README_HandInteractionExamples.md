@@ -2,7 +2,7 @@
 ![Hand Interaction Examples](/External/ReadMeImages/MRTK_Examples.png)
 
 In this example scene, you can find various types of interactions and UI controls that supports HoloLens2's articulated hand input.
-You can find the HandInteractionExamples.unity scene under **Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes**
+You can find the **HandInteractionExamples.unity** scene under **Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes**
 
 ## Pressable Button
 See [Button](README_Button.md) page for the details.
