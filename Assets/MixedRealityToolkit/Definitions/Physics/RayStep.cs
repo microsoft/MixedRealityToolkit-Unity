@@ -137,7 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             Debug.Assert(steps != null);
             Debug.Assert(steps.Length > 0);
 
-            var (rayStep, remainingDistance) = GetStepByDistance(steps, distance);
+            float remainingDistance = 0;
+            RayStep rayStep = GetStepByDistance(steps, distance, ref remainingDistance);
             if (remainingDistance > 0)
             {
                 return Vector3.Lerp(rayStep.Origin, rayStep.Terminus, remainingDistance / rayStep.Length);
@@ -154,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <param name="steps"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public static (RayStep rayStep, float traveledDistance) GetStepByDistance(RayStep[] steps, float distance)
+        public static RayStep GetStepByDistance(RayStep[] steps, float distance, ref float traveledDistance)
         {
             Debug.Assert(steps != null);
             Debug.Assert(steps.Length > 0);
@@ -174,11 +175,13 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 }
                 else
                 {
-                    return (steps[i], remainingDistance);
+                    traveledDistance = remainingDistance;
+                    return steps[i];
                 }
             }
 
-            return (steps[steps.Length - 1], remainingDistance);
+            traveledDistance = remainingDistance;
+            return steps[steps.Length - 1];
         }
 
         /// <summary>
@@ -192,7 +195,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             Debug.Assert(steps != null);
             Debug.Assert(steps.Length > 0);
 
-            return GetStepByDistance(steps, distance).rayStep.Direction;
+            float traveledDistance = 0;
+            return GetStepByDistance(steps, distance, ref traveledDistance).Direction;
         }
 
         #endregion
