@@ -244,13 +244,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
         {
-            Debug.Assert(eventData != null);
-            Debug.Assert(!(eventData is MixedRealityPointerEventData), "HandleEvent called with a pointer event. All events raised by pointer should call HandlePointerEvent");
-
             if (disabledRefCount > 0)
             {
                 return;
             }
+
+            Debug.Assert(eventData != null);
+            Debug.Assert(!(eventData is MixedRealityPointerEventData), "HandleEvent called with a pointer event. All events raised by pointer should call HandlePointerEvent");
 
             var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
             DispatchEventToGlobalListeners(baseInputEventData, eventHandler);
