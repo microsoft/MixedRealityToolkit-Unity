@@ -4,19 +4,15 @@
 
 MRTK is a Microsoft Driven opensource project. 
 
-MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity. Latest Release of MRTK (V2) supports HoloLens/HoloLens 2, WMR, and OpenVR platform. Start your project with MRTK, and 
+MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity. Latest Release of MRTK (V2) supports HoloLens/HoloLens 2, WMR, and OpenVR platform. 
 
 # What's MRTK-Unity good for 
  
-* Provide basic features as an easy to use SDK to reduce the barrier-to-entry to get started.
-
-* Enable rapid prototyping by providing the basic building blocks for MR app development. 
-
-* Showcase best practices in MR with UI controls and interactions that matches the WMR and HoloLens Shell. 
-
-* Support a wide audience, allowing solutions to be built that will run on multiple VR / AR / XR platforms such as Mixed Reality,  Steam/Open VR.
-
-* Ensure an extensive framework for advanced integrators, with the ability to swap out core components with their own should they wish to, or simply extend the framework to add new capabilities.
+- Provide basic features as an easy to use SDK to reduce the barrier-to-entry to get started.
+- Enable rapid prototyping by providing the basic building blocks for MR app development. 
+- Showcase best practices in MR with UI controls and interactions that matches the WMR and HoloLens Shell. 
+- Support a wide audience, allowing solutions to be built that will run on multiple VR / AR / XR platforms such as Mixed Reality, Steam/Open VR.
+- Ensure an extensive framework for advanced integrators, with the ability to swap out core components with their own should they wish to, or simply extend the framework to add new capabilities.
 
 # Build Status
 
@@ -41,27 +37,17 @@ The Mixed Reality Toolkit V2 will includes many APIs to accelerate the developme
  
 # Feature areas
 
-* Input System
-
-* Articulated Hands + Gestures (HoloLens 2)
-
-* Eye Tracking (HoloLens2) 
-
-* Voice Commanding 
-
-* Gaze + Select (HoloLens)
-
-* Controller Visualization 
-
-* Teleportation 
-
-* UI Controls 
-
-* Solver and Interactions 
-
-* Spatial Understanding 
-
-* Diagnostic Tool 
+- Input System
+- Articulated Hands + Gestures (HoloLens 2)
+- Eye Tracking (HoloLens2)
+- Voice Commanding
+- Gaze + Select (HoloLens)
+- Controller Visualization
+- Teleportation
+- UI Controls
+- Solver and Interactions
+- Spatial Understanding
+- Diagnostic Tool
 
 
 # Getting Started with MRTK 
@@ -76,6 +62,22 @@ The Mixed Reality team have prepared a few guides for getting up to speed on usi
 
 Find this readme, other documentation articles and the MRTK api reference on our [MRTK Dev Portal on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/). 
 
+# Building blocks for UI and Interactions
+|  [![Button](/External/ReadMeImages/Button/MRTK_Button_Main.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_Button.md) [Button](/Assets/MixedRealityToolkit.SDK/Features/UX/README_Button.md) | [![Bounding Box](/External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_BoundingBox.md) [Bounding Box](/Assets/MixedRealityToolkit.SDK/Features/UX/README_BoundingBox.md) | [![Manipulation Handler](/External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_ManipulationHandler.md) [Manipulation Handler](/Assets/MixedRealityToolkit.SDK/Features/UX/README_ManipulationHandler.md) |
+|:--- | :--- | :--- |
+| A button control which supports various input methods including HoloLens2's articulated hand | Standard UI for manipulating objects in 3D space | Script for manipulating objects with one or two hands |
+|  [![Slate](/External/ReadMeImages/Slate/MRTK_Slate_Main.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_Slate.md) [Slate](/Assets/MixedRealityToolkit.SDK/Features/UX/README_Slate.md) | [![System Keyboard](/External/ReadMeImages/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_SystemKeyboard.md) [System Keyboard](/Assets/MixedRealityToolkit.SDK/Features/UX/README_SystemKeyboard.md) | [![Interactable](/External/ReadMeImages/Interactable/InteractableExamples.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_Interactable.md) [Interactable](/Assets/MixedRealityToolkit.SDK/Features/UX/README_Interactable.md) |
+| 2D style plane which supports scrolling with articulated hand input | Example script of using the system keyboard in Unity  | A script for making objects interactable with visual states and theme support |
+|  [![Solver](/External/ReadMeImages/Solver/MRTK_Solver_Main.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_Solver.md) [Solver](/Assets/MixedRealityToolkit.SDK/Features/UX/README_solver.md) | [![Object Collection](/External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Main.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_ObjectCollection.md) [Object Collection](/Assets/MixedRealityToolkit.SDK/Features/UX/README_ObjectCollection.md) | [![Tooltip](/External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_Tooltip.md) [Tooltip](/Assets/MixedRealityToolkit.SDK/Features/UX/README_Tooltip.md) |
+| Various object positioning behaviors such as tag-along, body-lock, constant view size and surface magnetism | Script for lay out an array of objects in a three-dimensional shape | Annotation UI with flexible anchor/pivot system which can be used for labeling motion controllers and object. |
+|  [![App Bar](/External/ReadMeImages/AppBar/MRTK_AppBar_Main.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_AppBar.md) [App Bar](/Assets/MixedRealityToolkit.SDK/Features/UX/README_AppBar.md) | [![Pointers](/External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_Pointers.md) [Pointers](/Assets/MixedRealityToolkit.SDK/Features/UX/README_Pointers.md) | [![Fingertip Visualization](/External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_FingertipVisualization.md) [Fingertip Visualization](/Assets/MixedRealityToolkit.SDK/Features/UX/README_FingertipVisualization.md) |
+| UI for Bounding Box's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
+
+# Example Scene
+You can find various types of interactions and UI controls in this example scene.
+
+[![Button](/External/ReadMeImages/MRTK_Examples.png)](/Assets/MixedRealityToolkit.SDK/Features/UX/README_HandInteractionExamples.md)
+
 # Engage with the Community
 
 Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/).
@@ -89,23 +91,6 @@ Deep dive into project plan and learn how you can contribute to MRTK in our [wik
 Join our weekly community shiproom to hear directly from the feature team. (link to come soon) 
 
 For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
-
-
-# Examples and QuickStart scenes
-
-One radical change to the Mixed Reality Toolkit vNext, will be the standards and approaches to real world example scenes.
-
-New examples will follow strict guidelines, such as:
-
-* Each example must have a use and demonstrate a real world test case (no tests).
-* Each example will use a standardized template, so all examples have the same look and feel.
-* Each sample will be fully documented, detailing both the use case it is demonstrating and how to implement the features demonstrated.
-
-> Check the "Work In Progress" section of the [Windows Mixed Reality - vNext SDK](MRTK-SDK.md) for a peek at the first new example.
-
-
-**External\How To** docs folder is meant to help everyone with migrating forward or any simple doubts they might have about the process.
-Please feel free to grow all these sections. We can't wait to see your additions!
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). 
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
