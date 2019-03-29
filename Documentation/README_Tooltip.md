@@ -16,7 +16,7 @@ The example scene demonstrates two ways to display a Tooltip on an object.
 ## Example Scene
 [TooltipExamples.unity](/Assets/\MixedRealityToolkit.Examples/Demos/UX/Scenes/TooltipExamples.unity)
 
-![Manipulation Handler](/External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png =600x)
+<img src="/External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png" width="600">
 
 In the scene file, you will be able to find various examples of ToolTip. First group on the left demonstrates the static ToolTip examples that are always visible. In the center, you can see the example of using multiple ToolTips on a single object. Each tooltip has different child object as a target object which works as an anchor. The group on the right shows the examples of dynamically spawning ToolTips.
 
