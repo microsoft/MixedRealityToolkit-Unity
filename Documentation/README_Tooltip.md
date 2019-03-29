@@ -30,5 +30,5 @@ A ToolTip can be dynamically added to an object at runtime as well as pre-set to
 
 
 ## Motion controller Tooltips
-The scene also includes two tooltip groups on the bottom. These ToolTips are layed out to match position of the buttons on the motion controllers. When motion controllers are detected, these ToolTips will be attached automatically to the controllers, using [AttachToController](/Assets/MixedRealityToolkit/InputModule/Scripts/Utilities/AttachToController.cs) script.
+The scene also includes two tooltip groups on the bottom. These ToolTips are layed out to match position of the buttons on the motion controllers. When motion controllers are detected, these ToolTips will be attached automatically to the controllers, using [`AttachToController`](/Assets/MixedRealityToolkit.SDK/Features/Utilities/Solvers/AttachToController.cs) script.
 
