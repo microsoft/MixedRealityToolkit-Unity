@@ -3,8 +3,8 @@
 # What is MixedRealityToolkit
 
 MRTK is a Microsoft Driven open source project. MRTK-Unity...
-* Provides the **basic building blocks for MR app development on HoloLens, Windows Mixed Reality (WMR), and OpenVR**.
-* Showcases UX best practices with **UI controls and interactions that matches Windows Mixed Reality and HoloLens Shell**. 
+* Provides the **basic building blocks for unity development on HoloLens, Windows Mixed Reality, and OpenVR**.
+* Showcases UX best practices with **UI controls that match Windows Mixed Reality and HoloLens Shell**. 
 * **Enables rapid prototyping** via in-editor simulation that allows you to see changes immediately.
 * **Supports a wide range of platforms**, including
   * Microsoft HoloLens
@@ -13,7 +13,7 @@ MRTK is a Microsoft Driven open source project. MRTK-Unity...
   * Windows Mixed Reality headsets
   * OpenVR headsets (HTC Vive / Oculus Rift)
     
-* Is **extensible**. Provides ability to swap out core components with their own should they wish to, or simply extend the framework to add new capabilities.
+* Is **extensible**. Provides devs ability to swap out core components and extend the framework.
 
 # Build Status
 
