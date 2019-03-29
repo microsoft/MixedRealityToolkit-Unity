@@ -64,11 +64,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.S
     }
 
     /// <summary>
-    /// Class that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.ISpatialCoordinateService"/>
+    /// Class that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.ISpatialCoordinateServiceOld"/>
     /// and <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing.IPlayerStateObserver"/> to provide a marker based shared spatial coordinate system
     /// </summary>
     public class MarkerSpatialCoordinateService : MonoBehaviour,
-        ISpatialCoordinateService,
+        ISpatialCoordinateServiceOld,
         IPlayerStateObserver
     {
         #region Serializable  Classes
