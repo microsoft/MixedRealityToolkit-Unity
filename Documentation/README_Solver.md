@@ -16,10 +16,10 @@ The following Solvers provide the building blocks for basic behavior:
 - **ConstantViewSize**, scales to maintain a constant size relative to the view of the referenced object.
 - **RadialView**, keeps the object within a view cone cast by the referenced object.
 - **SurfaceMagnetism**, casts rays to Surfaces in the world, and align the object to that surface.
-- **Momentum**, applies accel/velocity/friction to simulate momentum & springiness for an object being moved by other solvers/components.
+- **Momentum**, applies acceleration/velocity/friction to simulate momentum and springiness for an object being moved by other solvers/components.
 - **InBetween**, keeps an object in between two tracked objects.
  
-When **UpdateLinkedTransform** is *true*, the solver will calculate position & orrientation, but will not apply it. This lets other components use the transform values.
+When **UpdateLinkedTransform** is *true*, the solver will calculate position & orientation, but will not apply it. This lets other components use the transform values.
 
 
 ## How do I add a solver to my scene?
