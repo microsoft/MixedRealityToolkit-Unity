@@ -1,7 +1,7 @@
 # Fingertip Visualization
 ![Fingertip Visualization](/External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png)
 
-The fingertip visualization is primarily controlled by the `FingerCursor` prefab (and script) which is spawned as the cursor prefab of the `PokePointer`. Other components of the visualization include the `ProximityLight` script, and `MixedRealityStandard` shader.
+The fingertip affordance helps the user recognize the distance from the target object. The ring shape visual adjusts its size based on the distance from the fingertip to the object. The fingertip visualization is primarily controlled by the `FingerCursor` prefab (and script) which is spawned as the cursor prefab of the `PokePointer`. Other components of the visualization include the `ProximityLight` script, and `MixedRealityStandard` shader.
 
 ### How to use the Fingertip Visualization ###
 
