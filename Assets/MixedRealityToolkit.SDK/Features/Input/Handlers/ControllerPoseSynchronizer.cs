@@ -54,9 +54,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return controller; }
             set
             {
-                handedness = value.ControllerHandedness;
                 controller = value;
-                gameObject.name = $"{handedness}_{gameObject.name}";
+
+                if (controller != null && gameObject != null)
+                {
+                    handedness = value.ControllerHandedness;
+                    gameObject.name = $"{handedness}_{gameObject.name}";
+                }
             }
         }
 
@@ -137,7 +141,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (UseSourcePoseData &&
                 eventData.SourceId == Controller?.InputSource.SourceId)
             {
-                TrackingState = TrackingState.Tracked;
+                TrackingState = eventData.Controller.TrackingState;
+                IsTracked = (TrackingState == TrackingState.Tracked);
                 transform.localPosition = eventData.SourceData.Position;
                 transform.localRotation = eventData.SourceData.Rotation;
             }
@@ -176,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.localPosition = eventData.InputData;
+                    transform.position = eventData.InputData;
                 }
             }
         }
@@ -191,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.localRotation = eventData.InputData;
+                    transform.rotation = eventData.InputData;
                 }
             }
         }
@@ -206,8 +211,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.localPosition = eventData.InputData.Position;
-                    transform.localRotation = eventData.InputData.Rotation;
+                    transform.position = eventData.InputData.Position;
+                    transform.rotation = eventData.InputData.Rotation;
                 }
             }
         }

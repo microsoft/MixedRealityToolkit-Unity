@@ -42,6 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static bool showSpeechCommandsProperties = true;
         private SerializedProperty speechCommandsProfile;
 
+        private static bool showHandTrackingProperties = true;
+        private SerializedProperty handTrackingProfile;
+
         private static bool[] providerFoldouts;
 
         protected override void OnEnable()
@@ -63,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerVisualizationProfile = serializedObject.FindProperty("controllerVisualizationProfile");
+            handTrackingProfile = serializedObject.FindProperty("handTrackingProfile");
 
             providerFoldouts = new bool[dataProviderConfigurations.arraySize];
         }
@@ -163,6 +167,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 using (new EditorGUI.IndentLevelScope())
                 {
                     changed |= RenderProfile(speechCommandsProfile);
+                }
+            }
+
+            EditorGUILayout.Space();
+            showHandTrackingProperties = EditorGUILayout.Foldout(showHandTrackingProperties, "Hand Tracking Settings", true);
+            if (showHandTrackingProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    changed |= RenderProfile(handTrackingProfile);
                 }
             }
 

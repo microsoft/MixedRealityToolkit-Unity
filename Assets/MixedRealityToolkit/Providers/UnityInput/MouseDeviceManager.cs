@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             Transform playspace,
             string name = null,
             uint priority = DefaultPriority,
-            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, name, priority, profile, playspace) { }
+            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, playspace, name, priority, profile) { }
 
         /// <summary>
         /// Current Mouse Controller.
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             if (inputSystem != null)
             {
-                var pointers = RequestPointers(new SystemType(controllerType), handedness, true);
+                var pointers = RequestPointers(SupportedControllerType.Mouse, handedness);
                 mouseInputSource = inputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
             }
 

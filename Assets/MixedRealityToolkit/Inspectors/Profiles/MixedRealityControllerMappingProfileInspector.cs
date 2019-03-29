@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             using (var outerVerticalScope = new GUILayout.VerticalScope())
             {
                 GUILayout.HorizontalScope horizontalScope = null;
-                
+
                 for (int i = 0; i < thisProfile.MixedRealityControllerMappingProfiles.Length; i++)
                 {
                     MixedRealityControllerMapping controllerMapping = thisProfile.MixedRealityControllerMappingProfiles[i];
@@ -163,7 +163,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             if (controllerRenderList[j].SupportedControllerType == supportedControllerType &&
                                 controllerRenderList[j].Handedness == handedness)
                             {
-                                thisProfile.MixedRealityControllerMappingProfiles[i].SynchronizeInputActions(controllerRenderList[j].Interactions);
+                                try
+                                {
+                                    thisProfile.MixedRealityControllerMappingProfiles[i].SynchronizeInputActions(controllerRenderList[j].Interactions);
+                                }
+                                catch (ArgumentException e)
+                                {
+                                    Debug.LogError($"Controller mappings between {thisProfile.MixedRealityControllerMappingProfiles[i].Description} and {controllerMapping.Description} do not match. Error message: {e.Message}");
+                                }
                                 serializedObject.ApplyModifiedProperties();
                                 skip = true;
                             }
@@ -222,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                 {
                                     genericTypeListContent[genericTypeIdx] = new GUIContent("Unknown Controller");
                                 }
-                                
+
                                 genericTypeListIds[genericTypeIdx] = genericTypeIdx;
 
                                 if (controllerType == genericTypes[genericTypeIdx])
@@ -234,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                             currentGenericType = EditorGUILayout.IntPopup(GenericTypeContent, currentGenericType, genericTypeListContent, genericTypeListIds);
                             controllerType = genericTypes[currentGenericType];
-                            
+
                             {
                                 // Handedness dropdown
                                 var attribute = MixedRealityControllerAttribute.Find(controllerType);
@@ -245,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                     {
                                         handednessProperty.intValue = (int)attribute.SupportedHandedness[0];
                                     }
-                                    
+
                                     if (attribute.SupportedHandedness.Length >= 2)
                                     {
                                         var handednessListContent = new GUIContent[attribute.SupportedHandedness.Length];
@@ -299,7 +306,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                         if (supportedControllerType == SupportedControllerType.WindowsMixedReality &&
                             handedness == Handedness.None)
                         {
-                            controllerTitle = "HoloLens Gestures";
+                            controllerTitle = "HoloLens Voice and Clicker";
                         }
 
                         if (handedness != Handedness.Right)

@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             Transform playspace,
             string name = null,
             uint priority = DefaultPriority,
-            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, name, priority, profile, playspace) { }
+            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, playspace, name, priority, profile) { }
 
         private static readonly Dictionary<int, UnityTouchController> ActiveTouches = new Dictionary<int, UnityTouchController>();
 
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                 if (inputSystem != null)
                 {
-                    var pointers = RequestPointers(typeof(UnityTouchController), Handedness.Any, true);
+                    var pointers = RequestPointers(SupportedControllerType.TouchScreen, Handedness.Any);
                     inputSource = inputSystem.RequestNewGenericInputSource($"Touch {touch.fingerId}", pointers);
                 }
 

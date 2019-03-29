@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -50,6 +51,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     case Handedness.Left:
                     case Handedness.Right:
                         handednessText = $"{handedness} Hand ";
+                        // Avoid multiple occurrences of "Hand":
+                        controllerName = controllerName.Replace("Hand", "").Trim();
                         break;
                 }
 
@@ -148,12 +151,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Synchronizes the Input Actions of the same physical controller of a different concrete type.
         /// </summary>
         /// <param name="otherControllerMapping"></param>
-        internal void SynchronizeInputActions(MixedRealityInteractionMapping[] otherControllerMapping)
+        internal void SynchronizeInputActions(MixedRealityInteractionMapping[] otherControllerMapping) 
         {
             if (otherControllerMapping.Length != interactions.Length)
             {
-                Debug.LogError("Controller Input Actions must be the same length!");
-                return;
+                throw new ArgumentException($"otherControllerMapping length {otherControllerMapping.Length} does not match this length {interactions.Length}.");
             }
 
             for (int i = 0; i < interactions.Length; i++)

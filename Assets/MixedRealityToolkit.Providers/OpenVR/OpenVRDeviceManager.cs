@@ -92,8 +92,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
-            var pointers = RequestPointers(controllerType, controllingHand);
-            var inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
+            var pointers = RequestPointers(currentControllerType, controllingHand);
+            var inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, InputSourceType.Controller);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
 
             if (detectedController == null)

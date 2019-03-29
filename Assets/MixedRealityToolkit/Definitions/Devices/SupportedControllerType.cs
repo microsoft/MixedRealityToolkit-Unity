@@ -21,6 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         GenericUnity,
         Xbox,
         TouchScreen,
-        Mouse
+        Mouse,
+        ArticulatedHand,
+        GGVHand
     }
 }

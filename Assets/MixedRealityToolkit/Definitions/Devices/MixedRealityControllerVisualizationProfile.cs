@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Override Left Controller Model.")]
-        private GameObject globalLeftHandModel;
+        private GameObject globalLeftControllerModel;
 
         /// <summary>
         /// The Default controller model when there is no specific controller model for the Left hand or when no hand is specified (Handedness = none)
@@ -63,13 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </remarks>
         public GameObject GlobalLeftHandModel
         {
-            get { return globalLeftHandModel; }
-            private set { globalLeftHandModel = value; }
+            get { return globalLeftControllerModel; }
+            private set { globalLeftControllerModel = value; }
         }
 
         [SerializeField]
         [Tooltip("Override Right Controller Model.\nNote: If the default model is not found, the fallback is the global right hand model.")]
-        private GameObject globalRightHandModel;
+        private GameObject globalRightControllerModel;
 
         /// <summary>
         /// The Default controller model when there is no specific controller model for the Right hand.
@@ -79,8 +79,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </remarks>
         public GameObject GlobalRightHandModel
         {
-            get { return globalRightHandModel; }
-            private set { globalRightHandModel = value; }
+            get { return globalRightControllerModel; }
+            private set { globalRightControllerModel = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Override Left Hand Visualizer.")]
+        private GameObject globalLeftHandVisualizer;
+
+        /// <summary>
+        /// The Default controller model when there is no specific controller model for the Left hand or when no hand is specified (Handedness = none)
+        /// </summary>
+        /// <remarks>
+        /// If the default model for the left hand controller can not be found, the controller will fall back and use this for visualization.
+        /// </remarks>
+        public GameObject GlobalLeftHandVisualizer
+        {
+            get { return globalLeftHandVisualizer; }
+            private set { globalLeftHandVisualizer = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Override Right Controller Model.\nNote: If the default model is not found, the fallback is the global right hand model.")]
+        private GameObject globalRightHandVisualizer;
+
+        /// <summary>
+        /// The Default hand model when there is no specific hand model for the Right hand.
+        /// </summary>
+        /// <remarks>
+        /// If the default model for the right hand can not be found, the hand will fall back and use this for visualization.
+        /// </remarks>
+        public GameObject GlobalRightHandVisualizer
+        {
+            get { return globalRightHandVisualizer; }
+            private set { globalRightHandVisualizer = value; }
         }
 
         [SerializeField]

@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (gazeInputSource == null)
                 {
-                    gazeInputSource = new BaseGenericInputSource("Gaze");
+                    gazeInputSource = new BaseGenericInputSource("Gaze", sourceType: InputSourceType.Head);
                     gazePointer.SetGazeInputSourceParent(gazeInputSource);
                 }
 
@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <inheritdoc />
-            public override void OnPreRaycast()
+            public override void OnPreSceneQuery()
             {
                 Vector3 newGazeOrigin = gazeTransform.position;
                 Vector3 newGazeNormal = gazeTransform.forward;
@@ -206,35 +206,38 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
             }
 
-            public override void OnPostRaycast()
+            public override void OnPostSceneQuery()
             {
-                gazeProvider.HitInfo = Result.Details.LastRaycastHit;
-                gazeProvider.GazeTarget = Result.Details.Object;
-
-                if (Result.Details.Object != null)
+                if (Result != null)
                 {
-                    gazeProvider.lastHitDistance = (Result.Details.Point - Rays[0].Origin).magnitude;
-                    gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
-                    gazeProvider.HitNormal = Result.Details.Normal;
+                    gazeProvider.HitInfo = Result.Details.LastRaycastHit;
+                    gazeProvider.GazeTarget = Result.Details.Object;
+
+                    if (Result.Details.Object != null)
+                    {
+                        gazeProvider.lastHitDistance = (Result.Details.Point - Rays[0].Origin).magnitude;
+                        gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
+                        gazeProvider.HitNormal = Result.Details.Normal;
+                    }
                 }
             }
 
-            public override bool TryGetPointerPosition(out Vector3 position)
+            /// <inheritdoc />
+            public override Vector3 Position
             {
-                position = gazeTransform.position;
-                return true;
+                get
+                {
+                    return gazeTransform.position;
+                }
             }
 
-            public override bool TryGetPointingRay(out Ray pointingRay)
+            /// <inheritdoc />
+            public override Quaternion Rotation
             {
-                pointingRay = new Ray(gazeProvider.GazeOrigin, gazeProvider.GazeDirection);
-                return true;
-            }
-
-            public override bool TryGetPointerRotation(out Quaternion rotation)
-            {
-                rotation = gazeTransform.rotation;
-                return true;
+                get
+                {
+                    return gazeTransform.rotation;
+                }
             }
 
             #endregion IMixedRealityPointer Implementation
@@ -289,6 +292,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             await WaitUntilInputSystemValid;
 
+            if (this == null)
+            {
+                // We've been destroyed during the await.
+                return;
+            }
+
             GazePointer.BaseCursor?.SetVisibility(true);
 
             if (delayInitialization)
@@ -305,7 +314,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
             }
 
-            if (setCursorInvisibleWhenFocusLocked && GazePointer?.IsFocusLocked == GazeCursor?.IsVisible)
+            // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
+            // but don't touch the visibility when not active or not flagged.
+            if (setCursorInvisibleWhenFocusLocked && (GazePointer?.IsInteractionEnabled ?? false) && GazePointer?.IsFocusLocked == GazeCursor?.IsVisible)
             {
                 GazeCursor.SetVisibility(!GazePointer.IsFocusLocked);
             }
@@ -418,6 +429,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private async void RaiseSourceDetected()
         {
             await WaitUntilInputSystemValid;
+            if (this == null)
+            {
+                // We've been destroyed during the await.
+                return;
+            }
             InputSystem?.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
         }

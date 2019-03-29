@@ -94,7 +94,11 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (activeProfile != null)
             {
-                DisableAllServices();
+                // Services are only enabled when playing.
+                if (Application.IsPlaying(activeProfile))
+                {
+                    DisableAllServices();
+                }
                 DestroyAllServices();
             }
 
@@ -102,11 +106,19 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (profile != null)
             {
-                DisableAllServices();
+                if (Application.IsPlaying(profile))
+                {
+                    DisableAllServices();
+                }
                 DestroyAllServices();
             }
 
             InitializeServiceLocator();
+
+            if (profile != null && Application.IsPlaying(profile))
+            {
+                EnableAllServices();
+            }
         }
 
 #endregion Mixed Reality Toolkit Profile configuration
@@ -765,6 +777,11 @@ namespace Microsoft.MixedReality.Toolkit
             UpdateAllServices();
         }
 
+        private void LateUpdate()
+        {
+            LateUpdateAllServices();
+        }
+
         private void OnDisable()
         {
             DisableAllServices();
@@ -981,6 +998,27 @@ namespace Microsoft.MixedReality.Toolkit
             foreach (var service in registeredMixedRealityServices)
             {
                 service.Item2.Update();
+            }
+        }
+
+        private void LateUpdateAllServices()
+        {
+            // If the Mixed Reality Toolkit is not configured, stop.
+            if (activeProfile == null) { return; }
+
+            // If the Mixed Reality Toolkit is not initialized, stop.
+            if (!IsInitialized) { return; }
+
+            // Update all systems
+            foreach (var system in activeSystems)
+            {
+                system.Value.LateUpdate();
+            }
+
+            // Update all registered runtime services
+            foreach (var service in registeredMixedRealityServices)
+            {
+                service.Item2.LateUpdate();
             }
         }
 
@@ -1329,7 +1367,13 @@ namespace Microsoft.MixedReality.Toolkit
                     return teleportSystem;
                 }
 
-                teleportSystem = Instance.GetService<IMixedRealityTeleportSystem>(showLogs: logTeleportSystem);
+                // Quiet warnings as we check for the service. If it's not available, it has probably been
+                // disabled. We'll notify about that, in case it's an accident, but otherwise remain calm about it.
+                teleportSystem = Instance.GetService<IMixedRealityTeleportSystem>(showLogs: false);
+                if (logTeleportSystem && (teleportSystem == null))
+                {
+                    Debug.LogWarning("IMixedRealityTeleportSystem service is disabled. Teleport will not be available.\nCheck MRTK Configuration Profile settings if this is unexpected.");
+                }
                 // If we found a valid system, then we turn logging back on for the next time we need to search.
                 // If we didn't find a valid system, then we stop logging so we don't spam the debug window.
                 logTeleportSystem = teleportSystem != null;

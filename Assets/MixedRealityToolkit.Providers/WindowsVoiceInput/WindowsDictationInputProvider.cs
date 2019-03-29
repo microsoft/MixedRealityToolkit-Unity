@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             Transform playspace,
             string name = null,
             uint priority = DefaultPriority,
-            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, name, priority, profile, playspace) { }
+            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, playspace, name, priority, profile) { }
 
         /// <summary>
         /// Is the Dictation Manager currently running?
@@ -91,16 +91,25 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 return;
             }
 
-            inputSource = inputSystem.RequestNewGenericInputSource(Name);
+            inputSource = inputSystem.RequestNewGenericInputSource(Name, sourceType: InputSourceType.Voice);
             dictationResult = string.Empty;
 
-            if (dictationRecognizer == null)
+            try
             {
-                dictationRecognizer = new DictationRecognizer();
-                dictationRecognizer.DictationHypothesis += DictationRecognizer_DictationHypothesis;
-                dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
-                dictationRecognizer.DictationComplete += DictationRecognizer_DictationComplete;
-                dictationRecognizer.DictationError += DictationRecognizer_DictationError;
+                if (dictationRecognizer == null)
+                {
+                    dictationRecognizer = new DictationRecognizer();
+
+                    dictationRecognizer.DictationHypothesis += DictationRecognizer_DictationHypothesis;
+                    dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
+                    dictationRecognizer.DictationComplete += DictationRecognizer_DictationComplete;
+                    dictationRecognizer.DictationError += DictationRecognizer_DictationError;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"Failed to start dictation recognizer. Are microphone permissions granted? Exception: {ex}");
+                Disable();
             }
         }
 

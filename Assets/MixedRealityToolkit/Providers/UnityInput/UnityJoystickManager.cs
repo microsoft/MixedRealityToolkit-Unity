@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             Transform playspace,
             string name = null,
             uint priority = DefaultPriority,
-            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, name, priority, profile, playspace) { }
+            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, playspace, name, priority, profile) { }
 
         private const float DeviceRefreshInterval = 3.0f;
 
@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     break;
             }
 
-            var inputSource = inputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller");
+            var inputSource = inputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller", sourceType: InputSourceType.Controller);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
 
             if (detectedController == null)

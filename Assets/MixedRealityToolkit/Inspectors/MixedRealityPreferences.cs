@@ -132,19 +132,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
                 EditorGUI.BeginChangeCheck();
-                showCanvasUtilityPrompt = EditorGUILayout.Toggle(CanvasUtilityContent, ShowCanvasUtilityPrompt);
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    ShowCanvasUtilityPrompt = showCanvasUtilityPrompt;
-                }
-
-                if (!ShowCanvasUtilityPrompt)
-                {
-                    EditorGUILayout.HelpBox("Be aware that if a Canvas needs to receive input events it is required to have the CanvasUtility attached or the Focus Provider's UIRaycast Camera assigned to the canvas' camera reference.", MessageType.Warning);
-                }
-
-                EditorGUI.BeginChangeCheck();
                 var scriptLock = EditorGUILayout.Toggle("Is Script Reloading locked?", EditorAssemblyReloadManager.LockReloadAssemblies);
 
                 if (EditorGUI.EndChangeCheck())
@@ -158,4 +145,5 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return provider;
         }
     }
+
 }

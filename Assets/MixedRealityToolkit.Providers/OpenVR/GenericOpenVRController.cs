@@ -184,6 +184,13 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
                 // Devices are considered tracked if we receive position OR rotation data from the sensors.
                 TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
+
+                var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+                if (playspace != null)
+                {
+                    CurrentControllerPosition = playspace.TransformPoint(CurrentControllerPosition);
+                    CurrentControllerRotation = playspace.rotation * CurrentControllerRotation;
+                }
             }
             else
             {
