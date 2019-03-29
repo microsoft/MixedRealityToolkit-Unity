@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Simulated Input Profile", fileName = "MixedRealityInputSimulationProfile", order = 4)]
+    [MixedRealityServiceProfile(typeof(InputSimulationService))]
     public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile
     {
         [Header("Camera Control")]
