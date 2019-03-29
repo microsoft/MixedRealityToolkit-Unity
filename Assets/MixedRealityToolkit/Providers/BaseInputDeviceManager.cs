@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
         /// <param name="inputSystem">The <see cref="IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="inputSystemProfile">The input system configuration profile.</param>
         /// <param name="playspace">The <see cref="Transform"/> of the playspace object.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
@@ -24,20 +25,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public BaseInputDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
+            MixedRealityInputSystemProfile inputSystemProfile,
             Transform playspace,
             string name, 
             uint priority, 
-            MixedRealityInputSystemProfile profile): base(registrar, inputSystem, name, priority, profile)
+            BaseMixedRealityProfile profile): base(registrar, inputSystem, name, priority, profile)
         {
             if (inputSystem == null)
             {
                 Debug.LogError($"{name} requires a valid input system instance.");
             }
 
-            if (profile == null)
+            if (inputSystemProfile == null)
             {
                 Debug.LogError($"{name} requires a valid input system profile.");
             }
+            InputSystemProfile = inputSystemProfile;
 
             if (playspace == null)
             {
@@ -47,9 +50,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
+        /// The input system configuration profile in use in the application.
+        /// </summary>
+        protected MixedRealityInputSystemProfile InputSystemProfile = null;
+
+        /// <summary>
         /// Transform used to parent controllers and pointers so that they move correctly with the user during teleportation.
         /// </summary>
-        private Transform Playspace = null;
+        protected Transform Playspace = null;
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
@@ -65,15 +73,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var pointers = new List<IMixedRealityPointer>();
 
-            MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
-
             if ((Service != null) &&
-                (profile != null) &&
-                profile.PointerProfile != null)
+                (InputSystemProfile != null) &&
+                InputSystemProfile.PointerProfile != null)
             {
-                for (int i = 0; i < profile.PointerProfile.PointerOptions.Length; i++)
+                for (int i = 0; i < InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
                 {
-                    var pointerProfile = profile.PointerProfile.PointerOptions[i];
+                    var pointerProfile = InputSystemProfile.PointerProfile.PointerOptions[i];
 
                     if ((pointerProfile.ControllerType == controllerType) &&
                         (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))

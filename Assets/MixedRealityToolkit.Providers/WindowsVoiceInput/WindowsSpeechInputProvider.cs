@@ -31,10 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         public WindowsSpeechInputProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
+            MixedRealityInputSystemProfile inputSystemProfile,
             Transform playspace,
             string name = null, 
             uint priority = DefaultPriority, 
-            MixedRealityInputSystemProfile profile = null) : base(registrar, inputSystem, playspace, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
@@ -62,8 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
             
-            MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
-            if (profile == null) { return; }
+            if (InputSystemProfile == null) { return; }
 
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 newKeywords[i] = Commands[i].LocalizedKeyword;
             }
 
-            RecognitionConfidenceLevel = profile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
+            RecognitionConfidenceLevel = InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
 
             if (keywordRecognizer == null)
             {
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
             }
 
-            if (profile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
+            if (InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
             {
                 StartRecognition();
             }
