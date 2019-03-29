@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private static readonly GUIContent ComponentTypeContent = new GUIContent("Type");
         private static readonly GUIContent RuntimePlatformContent = new GUIContent("Platform(s)");
+        private static readonly GUIContent ProviderProfileContent = new GUIContent("Profile");
 
         private static bool showDataProviders = true;
         private SerializedProperty dataProviderConfigurations;
@@ -210,6 +211,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     SerializedProperty providerName = dataProvider.FindPropertyRelative("componentName");
                     providerName.stringValue = $"New data provider {list.arraySize - 1}";
 
+                    SerializedProperty configurationProfile = dataProvider.FindPropertyRelative("deviceManagerProfile");
+                    configurationProfile.objectReferenceValue = null;
+
                     SerializedProperty runtimePlatform = dataProvider.FindPropertyRelative("runtimePlatform");
                     runtimePlatform.intValue = -1;
 
@@ -236,6 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     SerializedProperty dataProvider = list.GetArrayElementAtIndex(i);
                     SerializedProperty providerName = dataProvider.FindPropertyRelative("componentName");
                     SerializedProperty providerType = dataProvider.FindPropertyRelative("componentType");
+                    SerializedProperty configurationProfile = dataProvider.FindPropertyRelative("deviceManagerProfile");
                     SerializedProperty runtimePlatform = dataProvider.FindPropertyRelative("runtimePlatform");
 
                     using (new EditorGUILayout.VerticalScope())
@@ -263,12 +268,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                 {
                                     serializedObject.ApplyModifiedProperties();
                                     System.Type type = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[i].ComponentType.Type;
-                                    ApplyDataProviderConfiguration(type, providerName, runtimePlatform);
+                                    ApplyDataProviderConfiguration(type, providerName, configurationProfile, runtimePlatform);
                                 }
 
                                 EditorGUI.BeginChangeCheck();
                                 EditorGUILayout.PropertyField(runtimePlatform, RuntimePlatformContent);
                                 changed |= EditorGUI.EndChangeCheck();
+
+                                System.Type serviceType = null;
+                                if (configurationProfile.objectReferenceValue != null)
+                                {
+                                    serviceType = (target as MixedRealityInputSystemProfile).DataProviderConfigurations[i].ComponentType;
+                                }
+
+                                changed |= RenderProfile(configurationProfile, ProviderProfileContent, true, serviceType);
                             }
 
                             serializedObject.ApplyModifiedProperties();
@@ -283,7 +296,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
         }
 
-        private void ApplyDataProviderConfiguration(System.Type type, SerializedProperty providerName, SerializedProperty runtimePlatform)
+        private void ApplyDataProviderConfiguration(
+            System.Type type, 
+            SerializedProperty providerName,
+            SerializedProperty configurationProfile,
+            SerializedProperty runtimePlatform)
         {
             if (type != null)
             {
@@ -291,6 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 if (providerAttribute != null)
                 {
                     providerName.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : type.Name;
+                    configurationProfile.objectReferenceValue = providerAttribute.DefaultProfile;
                     runtimePlatform.intValue = (int)providerAttribute.RuntimePlatforms;
                 }
                 else

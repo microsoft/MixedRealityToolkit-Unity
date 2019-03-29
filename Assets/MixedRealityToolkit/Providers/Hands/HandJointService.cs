@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    [MixedRealityDataProvider(
+        typeof(IMixedRealityInputSystem),
+        (SupportedPlatforms)(-1), // All platforms supported by Unity
+        "Hand Joint Service")]
     public class HandJointService : BaseInputDeviceManager, IMixedRealityHandJointService
     {
         private IMixedRealityHand leftHand;

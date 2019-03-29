@@ -10,7 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsEditor,
-        "Profiles/DefaultMixedRealityInputSimulationProfile.asset", "MixedRealityToolkit.SDK")]
+        "Input Simulation Service",
+        "Profiles/DefaultMixedRealityInputSimulationProfile.asset", 
+        "MixedRealityToolkit.SDK")]
     public class InputSimulationService : BaseInputDeviceManager
     {
         private ManualCameraControl cameraControl = null;

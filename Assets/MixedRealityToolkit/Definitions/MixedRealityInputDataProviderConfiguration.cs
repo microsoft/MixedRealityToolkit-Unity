@@ -36,6 +36,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
 
+        [SerializeField]
+        private BaseMixedRealityProfile deviceManagerProfile;
+
+        /// <summary>
+        /// Device manager specific configuration profile.
+        /// </summary>
+        public BaseMixedRealityProfile DeviceManagerProfile => deviceManagerProfile;
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -43,16 +52,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="componentName"></param>
         /// <param name="priority"></param>
         /// <param name="runtimePlatform"></param>
+        /// <param name="profile"></param>
         public MixedRealityInputDataProviderConfiguration(
             SystemType componentType,
             string componentName,
             uint priority,
-            SupportedPlatforms runtimePlatform)
+            SupportedPlatforms runtimePlatform,
+            BaseMixedRealityProfile profile)
         {
             this.componentType = componentType;
             this.componentName = componentName;
             this.priority = priority;
             this.runtimePlatform = runtimePlatform;
+            deviceManagerProfile = profile;
         }
     }
 }
