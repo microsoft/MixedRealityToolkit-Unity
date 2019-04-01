@@ -62,6 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DisableCameraControl();
             }
 
+            if (profile.SimulateEyePosition)
+            {
+                MixedRealityToolkit.InputSystem?.EyeGazeProvider?.UpdateEyeGaze(null, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), System.DateTime.UtcNow);
+            }
+
             switch (profile.HandSimulationMode)
             {
                 case HandSimulationMode.Disabled:
