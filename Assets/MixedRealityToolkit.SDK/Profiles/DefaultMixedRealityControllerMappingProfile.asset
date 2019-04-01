@@ -2658,9 +2658,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 25
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -2671,9 +2671,9 @@ MonoBehaviour:
       axisType: 7
       inputType: 14
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -2688,9 +2688,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 25
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -2701,9 +2701,9 @@ MonoBehaviour:
       axisType: 7
       inputType: 14
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -3230,6 +3230,6 @@ MonoBehaviour:
         axisConstraint: 7
       keyCode: 0
       axisCodeX: 
-      axisCodeY:
+      axisCodeY: 
       invertXAxis: 0
-      invertYAxis: 0 
+      invertYAxis: 0

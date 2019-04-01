@@ -7,5 +7,5 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
-    guid: c224faf6723e0bf44b87f7a7719fcfc4
+    guid: 3dd4a396b5225f8469b9a1eb608bfa57
   m_configObjects: {}
