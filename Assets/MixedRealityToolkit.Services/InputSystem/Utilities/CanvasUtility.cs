@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
                     return;
                 }
 
-                if (IsPartOfScene(canvas.gameObject) && CanSupportMrtkInput(canvas) && (canvas.worldCamera != null))
+                if (IsPartOfScene(canvas.gameObject) && CanSupportMrtkInput(canvas) && (canvas.worldCamera != null) && !Application.isPlaying)
                 {
                     UnityEditor.EditorGUILayout.HelpBox("World Space Canvas should have no camera set to work properly with Mixed Reality Toolkit. At runtime, they'll get their camera set automatically.", UnityEditor.MessageType.Error);
                     if (GUILayout.Button("Clear World Camera"))
