@@ -39,5 +39,33 @@ namespace Microsoft.MixedReality.Toolkit
 
             return (Mathf.Abs(yaw) < horizontalFovHalf && Mathf.Abs(pitch) < verticalFovHalf);
         }
+
+        /// <summary>
+        /// Gets the frustrum size at a given distance from the camera.
+        /// </summary>
+        /// <param name="camera">The camera to get the frustrum size for</param>
+        /// <param name="distanceFromCamera">The distance from the camera to get the frustrum size at</param>
+        /// <returns></returns>
+        public static Vector2 GetFrustrumSizeForDistance(this Camera camera, float distanceFromCamera)
+        {
+            Vector2 frustrumSize = new Vector2
+            {
+                y = 2.0f * distanceFromCamera * Mathf.Tan(camera.fieldOfView * 0.5f * Mathf.Deg2Rad)
+            };
+            frustrumSize.x = frustrumSize.y * camera.aspect;
+
+            return frustrumSize;
+        }
+
+        /// <summary>
+        /// Gets the distance to the camera that a specific frustrum height would be at.
+        /// </summary>
+        /// <param name="camera">The camera to get the distance from</param>
+        /// <param name="frustrumHeight">The frustrum height</param>
+        /// <returns></returns>
+        public static float GetDistanceForFrustrumHeight(this Camera camera, float frustrumHeight)
+        {
+            return frustrumHeight * 0.5f / Mathf.Max(0.00001f, Mathf.Tan(camera.fieldOfView * 0.5f * Mathf.Deg2Rad));
+        }
     }
 }
