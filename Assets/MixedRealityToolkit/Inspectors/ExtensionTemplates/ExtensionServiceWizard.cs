@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Color disabledColor = Color.gray;
         private static readonly Color readOnlyColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
         private static readonly string servicesDocumentationURL = "https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki";
-        private static readonly Vector2 minWindowSize = new Vector2(500, 600);
+        private static readonly Vector2 minWindowSize = new Vector2(500, 0);
 
         private ExtensionServiceCreator creator = new ExtensionServiceCreator();
         private List<string> errors = new List<string>();
@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.HelpBox(error, MessageType.Error);
             }
 
-            GUILayout.FlexibleSpace();
+            EditorGUILayout.Space();
 
             GUI.color = readyToProgress ? enabledColor : disabledColor;
             if (GUILayout.Button("Next") && readyToProgress)
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.HelpBox(error, MessageType.Error);
             }
 
-            GUILayout.FlexibleSpace();
+            EditorGUILayout.Space();
 
             GUI.color = enabledColor;
             EditorGUILayout.BeginHorizontal();
@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         EditorGUILayout.LabelField(info, EditorStyles.wordWrappedMiniLabel);
                     }
 
-                    GUILayout.FlexibleSpace();
+                    EditorGUILayout.Space();
                     if (GUILayout.Button("Close"))
                     {
                         creator.ResetState();
