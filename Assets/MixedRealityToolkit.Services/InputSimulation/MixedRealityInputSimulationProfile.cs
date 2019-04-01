@@ -77,6 +77,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private string lookVertical = "LookVertical";
         public string LookVertical => lookVertical;
 
+        [Header("Eye Simulation")]
+        [SerializeField]
+        [Tooltip("Enable eye simulation")]
+        private bool simulateEyePosition = false;
+        public bool SimulateEyePosition => simulateEyePosition;
 
         [Header("Hand Simulation")]
         [SerializeField]

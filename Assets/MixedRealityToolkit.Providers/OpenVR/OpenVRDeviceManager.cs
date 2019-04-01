@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         {
             if (string.IsNullOrEmpty(joystickName) || !joystickName.Contains("OpenVR"))
             {
-                return SupportedControllerType.None;
+                return 0;
             }
 
             if (joystickName.Contains("Oculus Rift CV1"))

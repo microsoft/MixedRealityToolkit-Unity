@@ -361,10 +361,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Private Methods
 
         #region Hand Event Handlers
-        private bool IsEventAGrabInteraction(MixedRealityPointerEventData eventData)
-        {
-            return eventData.MixedRealityInputAction.Description == "Grip Press" || eventData.MixedRealityInputAction.Description == "Select";
-        }
 
         private MixedRealityInteractionMapping GetSpatialGripInfoForController(IMixedRealityController controller)
         {
@@ -390,7 +386,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 uint id = eventData.Pointer.PointerId;
                 // Ignore poke pointer events
                 if (!eventData.used
-                    && IsEventAGrabInteraction(eventData)
                     && !pointerIdToPointerMap.ContainsKey(eventData.Pointer.PointerId))
                 {
                     if (pointerIdToPointerMap.Count == 0)
@@ -446,6 +441,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             UpdateStateMachine();
             eventData.Use();
         }
+
         #endregion Hand Event Handlers
 
         #region Private Event Handlers

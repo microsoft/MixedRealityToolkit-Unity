@@ -1483,8 +1483,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            if (currentPointer == null && !eventData.used &&
-                (eventData.MixedRealityInputAction.Description == "Grip Press" || eventData.MixedRealityInputAction.Description == "Select"))
+            if (currentPointer == null && !eventData.used)
             {
                 GameObject grabbedHandle = eventData.Pointer.Result.CurrentPointerTarget;
                 Transform grabbedHandleTransform = grabbedHandle.transform;

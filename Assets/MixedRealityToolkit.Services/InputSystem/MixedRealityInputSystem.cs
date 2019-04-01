@@ -122,16 +122,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (inputModules.Length == 0)
                 {
-                    Debug.LogWarning($"Automatically adding a {typeof(MixedRealityInputModule).Name} to main camera. You should save this change to the scene.", CameraCache.Main);
-                    CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                    Debug.LogWarning($"Automatically adding a {typeof(StandaloneInputModule).Name} to main camera. You should save this change to the scene.", CameraCache.Main);
+                    CameraCache.Main.gameObject.AddComponent<StandaloneInputModule>();
                 }
-                else if ((inputModules.Length == 1) && (inputModules[0] is MixedRealityInputModule))
+                else if ((inputModules.Length == 1) && (inputModules[0] is StandaloneInputModule))
                 {
                     // Nothing. Input module is setup correctly.
                 }
                 else
                 {
-                    Debug.LogError($"For Mixed Reality Toolkit input to work properly, please remove your other input module(s) and add a {typeof(MixedRealityInputModule).Name} to your main camera.", inputModules[0]);
+                    Debug.LogError($"For Mixed Reality Toolkit input to work properly, please remove your other input module(s) and add a {typeof(StandaloneInputModule).Name} to your main camera.", inputModules[0]);
                 }
             }
 
@@ -275,13 +275,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
         {
-            Debug.Assert(eventData != null);
-            Debug.Assert(!(eventData is MixedRealityPointerEventData), "HandleEvent called with a pointer event. All events raised by pointer should call HandlePointerEvent");
-
             if (disabledRefCount > 0)
             {
                 return;
             }
+
+            Debug.Assert(eventData != null);
+            Debug.Assert(!(eventData is MixedRealityPointerEventData), "HandleEvent called with a pointer event. All events raised by pointer should call HandlePointerEvent");
 
             var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
             DispatchEventToGlobalListeners(baseInputEventData, eventHandler);
@@ -333,7 +333,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-
             Debug.Assert(pointerEventData.Pointer != null, "Trying to dispatch event on pointer but pointerEventData is null");
 
             DispatchEventToObjectFocusedByPointer(pointerEventData.Pointer, baseInputEventData, false, eventHandler);
@@ -368,11 +367,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-
         /// <summary>
         /// Dispatch an input event to the object focused by the given IMixedRealityPointer.
         /// If a modal dialog is active, dispatch the pointer event to that modal dialog
         /// Returns true if the event was handled by a modal handler
+        /// </summary>
         private bool DispatchEventToObjectFocusedByPointer<T>(IMixedRealityPointer mixedRealityPointer, BaseInputEventData baseInputEventData,
             bool modalEventHandled, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
@@ -876,7 +875,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
+            
             HandlePointerEvent(pointerEventData, OnPointerDownEventHandler);
+            
             if (pointer.Result?.Details.Object != null)
             {
                 pointer.IsFocusLocked = true;
@@ -941,7 +942,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void RaisePointerUp(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
+
             HandlePointerEvent(pointerEventData, OnPointerUpEventHandler);
+            
             pointer.IsFocusLocked = false;
         }
 
