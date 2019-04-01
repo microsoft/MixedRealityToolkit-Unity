@@ -190,7 +190,7 @@ PrefabInstance:
     - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: HoloToolkit.Unity.UX.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
       objectReference: {fileID: 0}
     - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
@@ -217,118 +217,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Done
       objectReference: {fileID: 0}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: button
-      value: 
-      objectReference: {fileID: 5875670466455260719}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: interactable
-      value: 
-      objectReference: {fileID: 3947857685051957395}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: primaryLabels.Array.data[0]
-      value: 
-      objectReference: {fileID: 5875670467598857697}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: primaryLabels.Array.data[1]
-      value: 
-      objectReference: {fileID: 5875670467076251584}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: seeItSayItLabel
-      value: 
-      objectReference: {fileID: 3379613107725524330}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: icon
-      value: 
-      objectReference: {fileID: 5875670468048282266}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: buttonType
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: displayOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Say "Done"
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 6890115627884418172}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[0].Target
-      value: 
-      objectReference: {fileID: 6131824884828500715}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[1].Target
-      value: 
-      objectReference: {fileID: 5875670468048282268}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[2].Target
-      value: 
-      objectReference: {fileID: 5875670467076251586}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[3].Target
-      value: 
-      objectReference: {fileID: 5875670467966042544}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[4].Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6760813262120842631, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Done
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 5875670467076251583}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Done
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_inputSource
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 5875670467598857692}
     - target: {fileID: 8985933140323738847, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -383,6 +271,158 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: button
+      value: 
+      objectReference: {fileID: 5875670466455260719}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: interactable
+      value: 
+      objectReference: {fileID: 3947857685051957395}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: primaryLabels.Array.data[0]
+      value: 
+      objectReference: {fileID: 5875670467598857697}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: primaryLabels.Array.data[1]
+      value: 
+      objectReference: {fileID: 5875670467076251584}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: seeItSayItLabel
+      value: 
+      objectReference: {fileID: 3379613107725524330}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 5875670468048282266}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: buttonType
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: displayOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[0].Target
+      value: 
+      objectReference: {fileID: 6131824884828500715}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[1].Target
+      value: 
+      objectReference: {fileID: 5875670468048282268}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[2].Target
+      value: 
+      objectReference: {fileID: 5875670467076251586}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[3].Target
+      value: 
+      objectReference: {fileID: 5875670467966042544}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[4].Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 114050950401502068}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3260291379440523098}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Done
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 5875670467076251583}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Done
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 5875670467598857692}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Say "Done"
+      objectReference: {fileID: 0}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 6890115627884418172}
+    - target: {fileID: 6760813262120842631, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8985933140441656736, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
@@ -607,7 +647,7 @@ PrefabInstance:
     - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: HoloToolkit.Unity.UX.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
       objectReference: {fileID: 0}
     - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
@@ -634,108 +674,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Adjust
       objectReference: {fileID: 0}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: button
-      value: 
-      objectReference: {fileID: 5875670466718024120}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: interactable
-      value: 
-      objectReference: {fileID: 3947857685348347652}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: primaryLabels.Array.data[0]
-      value: 
-      objectReference: {fileID: 5875670467856120438}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: primaryLabels.Array.data[1]
-      value: 
-      objectReference: {fileID: 5875670466231783511}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: seeItSayItLabel
-      value: 
-      objectReference: {fileID: 3379613107513021181}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: icon
-      value: 
-      objectReference: {fileID: 5875670467270929677}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: buttonType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: displayOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Say "Adjust"
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 6890115627101559787}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[0].Target
-      value: 
-      objectReference: {fileID: 6131824884049837436}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[1].Target
-      value: 
-      objectReference: {fileID: 5875670467270929675}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[2].Target
-      value: 
-      objectReference: {fileID: 5875670466231783509}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[3].Target
-      value: 
-      objectReference: {fileID: 5875670467220868647}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[4].Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6760813262120842631, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Adjust
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 5875670466231783464}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Adjust
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_inputSource
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 5875670467856120395}
     - target: {fileID: 8985933140323738847, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -790,6 +728,153 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: button
+      value: 
+      objectReference: {fileID: 5875670466718024120}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: interactable
+      value: 
+      objectReference: {fileID: 3947857685348347652}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: primaryLabels.Array.data[0]
+      value: 
+      objectReference: {fileID: 5875670467856120438}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: primaryLabels.Array.data[1]
+      value: 
+      objectReference: {fileID: 5875670466231783511}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: seeItSayItLabel
+      value: 
+      objectReference: {fileID: 3379613107513021181}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 5875670467270929677}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: buttonType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: displayOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[0].Target
+      value: 
+      objectReference: {fileID: 6131824884049837436}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[1].Target
+      value: 
+      objectReference: {fileID: 5875670467270929675}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[2].Target
+      value: 
+      objectReference: {fileID: 5875670466231783509}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[3].Target
+      value: 
+      objectReference: {fileID: 5875670467220868647}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[4].Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 114050950401502068}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3260291379652761805}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Adjust
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 5875670466231783464}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Adjust
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 5875670467856120395}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Say "Adjust"
+      objectReference: {fileID: 0}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 6890115627101559787}
+    - target: {fileID: 6760813262120842631, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8985933140441656736, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
@@ -1014,7 +1099,7 @@ PrefabInstance:
     - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: HoloToolkit.Unity.UX.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
       objectReference: {fileID: 0}
     - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
@@ -1041,118 +1126,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Show
       objectReference: {fileID: 0}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: button
-      value: 
-      objectReference: {fileID: 5875670467843972972}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: interactable
-      value: 
-      objectReference: {fileID: 3947857684192522704}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: primaryLabels.Array.data[0]
-      value: 
-      objectReference: {fileID: 5875670466705597602}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: primaryLabels.Array.data[1]
-      value: 
-      objectReference: {fileID: 5875670467222916739}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: seeItSayItLabel
-      value: 
-      objectReference: {fileID: 3379613108518374441}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: icon
-      value: 
-      objectReference: {fileID: 5875670466248799193}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: buttonType
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: visible
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Say "Show"
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 6890115625950971199}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[0].Target
-      value: 
-      objectReference: {fileID: 6131824885050925992}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[1].Target
-      value: 
-      objectReference: {fileID: 5875670466248799199}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[2].Target
-      value: 
-      objectReference: {fileID: 5875670467222916737}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[3].Target
-      value: 
-      objectReference: {fileID: 5875670466065633523}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[4].Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6760813262120842631, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Show
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 5875670467222916860}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Show
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_inputSource
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 5875670466705597599}
     - target: {fileID: 8985933140323738847, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1207,6 +1180,163 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: button
+      value: 
+      objectReference: {fileID: 5875670467843972972}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: interactable
+      value: 
+      objectReference: {fileID: 3947857684192522704}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: primaryLabels.Array.data[0]
+      value: 
+      objectReference: {fileID: 5875670466705597602}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: primaryLabels.Array.data[1]
+      value: 
+      objectReference: {fileID: 5875670467222916739}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: seeItSayItLabel
+      value: 
+      objectReference: {fileID: 3379613108518374441}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 5875670466248799193}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: buttonType
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: visible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[0].Target
+      value: 
+      objectReference: {fileID: 6131824885050925992}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[1].Target
+      value: 
+      objectReference: {fileID: 5875670466248799199}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[2].Target
+      value: 
+      objectReference: {fileID: 5875670467222916737}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[3].Target
+      value: 
+      objectReference: {fileID: 5875670466065633523}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[4].Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 114050950401502068}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3260291378513708569}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Show
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 5875670467222916860}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Show
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 5875670466705597599}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Say "Show"
+      objectReference: {fileID: 0}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 6890115625950971199}
+    - target: {fileID: 6760813262120842631, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8985933140441656736, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
@@ -1431,7 +1561,7 @@ PrefabInstance:
     - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: HoloToolkit.Unity.UX.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
       objectReference: {fileID: 0}
     - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
@@ -1458,118 +1588,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hide
       objectReference: {fileID: 0}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: button
-      value: 
-      objectReference: {fileID: 5875670468132926583}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: interactable
-      value: 
-      objectReference: {fileID: 3947857684447910603}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: primaryLabels.Array.data[0]
-      value: 
-      objectReference: {fileID: 5875670466994802617}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: primaryLabels.Array.data[1]
-      value: 
-      objectReference: {fileID: 5875670467545949592}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: seeItSayItLabel
-      value: 
-      objectReference: {fileID: 3379613108195223346}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: icon
-      value: 
-      objectReference: {fileID: 5875670466504710338}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: buttonType
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: displayOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Say "Hide"
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 6890115626206637604}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[0].Target
-      value: 
-      objectReference: {fileID: 6131824885298317491}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[1].Target
-      value: 
-      objectReference: {fileID: 5875670466504710340}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[2].Target
-      value: 
-      objectReference: {fileID: 5875670467545949594}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[3].Target
-      value: 
-      objectReference: {fileID: 5875670466288401384}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[4].Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6760813262120842631, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Hide
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 5875670467545949671}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Hide
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_inputSource
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 5875670466994802564}
     - target: {fileID: 8985933140323738847, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1624,6 +1642,158 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: button
+      value: 
+      objectReference: {fileID: 5875670468132926583}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: interactable
+      value: 
+      objectReference: {fileID: 3947857684447910603}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: primaryLabels.Array.data[0]
+      value: 
+      objectReference: {fileID: 5875670466994802617}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: primaryLabels.Array.data[1]
+      value: 
+      objectReference: {fileID: 5875670467545949592}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: seeItSayItLabel
+      value: 
+      objectReference: {fileID: 3379613108195223346}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 5875670466504710338}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: buttonType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: displayOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[0].Target
+      value: 
+      objectReference: {fileID: 6131824885298317491}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[1].Target
+      value: 
+      objectReference: {fileID: 5875670466504710340}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[2].Target
+      value: 
+      objectReference: {fileID: 5875670467545949594}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[3].Target
+      value: 
+      objectReference: {fileID: 5875670466288401384}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[4].Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 114050950401502068}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3260291378836614402}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Hide
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 5875670467545949671}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Hide
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 5875670466994802564}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Say "Hide"
+      objectReference: {fileID: 0}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 6890115626206637604}
+    - target: {fileID: 6760813262120842631, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8985933140441656736, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
@@ -1860,12 +2030,12 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 0.032
       objectReference: {fileID: 0}
-    - target: {fileID: 2207647899000345742, guid: 9215a7c858170d74fb2257375d5feaf1,
+    - target: {fileID: 3958481853798167113, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3958481853798167113, guid: 9215a7c858170d74fb2257375d5feaf1,
+    - target: {fileID: 2207647899000345742, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -1944,7 +2114,7 @@ PrefabInstance:
     - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: HoloToolkit.Unity.UX.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
       objectReference: {fileID: 0}
     - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
@@ -1971,103 +2141,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Remove
       objectReference: {fileID: 0}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: button
-      value: 
-      objectReference: {fileID: 3260291377988447938}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: interactable
-      value: 
-      objectReference: {fileID: 5367702728871346302}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: primaryLabels.Array.data[0]
-      value: 
-      objectReference: {fileID: 3260291379132060940}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: primaryLabels.Array.data[1]
-      value: 
-      objectReference: {fileID: 3260291378575425325}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: seeItSayItLabel
-      value: 
-      objectReference: {fileID: 5932013269696855431}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: icon
-      value: 
-      objectReference: {fileID: 3260291379616645751}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: buttonType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
-      propertyPath: displayOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Say "Remove"
-      objectReference: {fileID: 0}
-    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 2534094188257997969}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[0].Target
-      value: 
-      objectReference: {fileID: 3003035267076362758}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[1].Target
-      value: 
-      objectReference: {fileID: 3260291379616645745}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[2].Target
-      value: 
-      objectReference: {fileID: 3260291378575425327}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[3].Target
-      value: 
-      objectReference: {fileID: 3260291379565846877}
-    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: Profiles.Array.data[4].Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6760813262120842631, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Remove
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 3260291378575425362}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Remove
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 3260291379132060977}
     - target: {fileID: 8985933140323738847, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2122,6 +2195,143 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: button
+      value: 
+      objectReference: {fileID: 3260291377988447938}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: interactable
+      value: 
+      objectReference: {fileID: 5367702728871346302}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: primaryLabels.Array.data[0]
+      value: 
+      objectReference: {fileID: 3260291379132060940}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: primaryLabels.Array.data[1]
+      value: 
+      objectReference: {fileID: 3260291378575425325}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: seeItSayItLabel
+      value: 
+      objectReference: {fileID: 5932013269696855431}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 3260291379616645751}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: buttonType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
+      propertyPath: displayOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[0].Target
+      value: 
+      objectReference: {fileID: 3003035267076362758}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[1].Target
+      value: 
+      objectReference: {fileID: 3260291379616645745}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[2].Target
+      value: 
+      objectReference: {fileID: 3260291378575425327}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[3].Target
+      value: 
+      objectReference: {fileID: 3260291379565846877}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: Profiles.Array.data[4].Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 114050950401502068}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 2015213609325464733, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 5875670467301799863}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Remove
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 3260291378575425362}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Remove
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 3260291379132060977}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Say "Remove"
+      objectReference: {fileID: 0}
+    - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
+      value: 
+      objectReference: {fileID: 2534094188257997969}
+    - target: {fileID: 6760813262120842631, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8985933140441656736, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
