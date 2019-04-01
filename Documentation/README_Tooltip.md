@@ -31,7 +31,7 @@ This use of ToolTip assumes a ToolTip that is always showing or that is shown/hi
 
  
 ## Dynamically spawning
-A ToolTip can be dynamically added to an object at runtime as well as pre-set to show and hide on a Tap or focus. Simply add the **ToolTipSpawner** script to any GameObject. In the script's Inspector, you can set delays for appearing and disappearing. You can also set a lifetime so that the ToolTip when spawned, will disappear after a duration. You can also set style properties such as Background in the ToolTipSpawner script. This script is pre-populated with the ToiolTip prefab. The GameObject to which the spawned ToolTip is anchored is determined by the object that has been dragged into the Anchor field in the ToolTipSpawner Inspector. This is usually set to the object that has the ToolTipSpawner script.
+A ToolTip can be dynamically added to an object at runtime as well as pre-set to show and hide on a Tap or focus. Simply add the **ToolTipSpawner** script to any GameObject. In the script's Inspector, you can set delays for appearing and disappearing. You can also set a lifetime so that the ToolTip when spawned, will disappear after a duration. You can also set style properties such as Background in the ToolTipSpawner script. By default the ToolTip will be anchored to the object with the ToolTipSpawner script. You can override this by assigning a GameObject to the Anchor field.
 
 
 ## Motion controller Tooltips
