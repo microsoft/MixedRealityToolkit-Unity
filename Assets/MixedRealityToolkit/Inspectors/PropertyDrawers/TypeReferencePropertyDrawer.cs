@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
@@ -122,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region Control Drawing / Event Handling
 
-        private static string DrawTypeSelectionControl(Rect position, GUIContent label, string classRef, SystemTypeAttribute filter)
+        private static string DrawTypeSelectionControl(Rect position, GUIContent label, string classRef, SystemTypeAttribute filter, bool typeResolved)
         {
             if (label != null && label != GUIContent.none)
             {
@@ -186,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         TempContent.text = "(None)";
                     }
-                    else if (ResolveType(classRef) == null)
+                    else if (!typeResolved)
                     {
                         TempContent.text += " {Missing}";
                     }
@@ -211,14 +212,59 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             try
             {
                 bool restoreShowMixedValue = EditorGUI.showMixedValue;
+                bool typeResolved = string.IsNullOrEmpty(property.stringValue) || ResolveType(property.stringValue) != null;
                 EditorGUI.showMixedValue = property.hasMultipleDifferentValues;
-                property.stringValue = DrawTypeSelectionControl(position, label, property.stringValue, filter);
+
+                if (typeResolved)
+                {
+                    property.stringValue = DrawTypeSelectionControl(position, label, property.stringValue, filter, true);
+                }
+                else
+                {
+                    Rect dropdownPosition = new Rect(position.x, position.y, position.width - 90, position.height);
+                    Rect buttonPosition = new Rect(position.width - 75, position.y, 75, position.height);
+
+                    property.stringValue = DrawTypeSelectionControl(dropdownPosition, label, property.stringValue, filter, false);
+                    if (GUI.Button(buttonPosition, "Try Repair", EditorStyles.miniButton))
+                    {
+                        property.stringValue = TryRepairMissingReference(property.stringValue, filter);
+                    }
+                }
+
                 EditorGUI.showMixedValue = restoreShowMixedValue;
             }
             finally
             {
                 ExcludedTypeCollectionGetter = null;
             }
+        }
+
+        private static string TryRepairMissingReference(string classRef, SystemTypeAttribute filter)
+        {
+            string typeNameWithoutAssembly = classRef.Split(new string[] { "," }, StringSplitOptions.None)[0];
+            string typeNameWithoutNamespace = System.Text.RegularExpressions.Regex.Replace(typeNameWithoutAssembly, @"[.\w]+\.(\w+)", "$1");
+
+            Type repairedType;
+            if (FindTypeByName(typeNameWithoutNamespace, filter, out repairedType))
+            {
+                classRef = repairedType.AssemblyQualifiedName;
+            }
+
+            return classRef;
+        }
+
+        private static bool FindTypeByName(string typeName, SystemTypeAttribute filter, out Type type)
+        {
+            type = null;
+            foreach (Type t in GetFilteredTypes(filter))
+            {
+                if (t.Name.Equals(typeName))
+                {
+                    type = t;
+                    break;
+                }
+            }
+            return type != null;
         }
 
         private static void DisplayDropDown(Rect position, List<Type> types, Type selectedType, TypeGrouping grouping)
