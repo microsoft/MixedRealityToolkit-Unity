@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float closestDistance = 0.0f;
 
         // The closest touchable component limits the set of objects which are currently touchable.
-        // These are all the game objects in the subtree of the clostest touchable component's owner object.
+        // These are all the game objects in the subtree of the closest touchable component's owner object.
         private NearInteractionTouchable closestProximityTouchable = null;
         // The current object that is being touched. We need to make sure to consistently fire 
         // poke-down / poke-up events for this object. This is also the case when the object within
