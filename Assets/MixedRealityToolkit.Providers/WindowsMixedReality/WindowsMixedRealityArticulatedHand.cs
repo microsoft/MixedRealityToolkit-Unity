@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using Windows.Perception;
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
@@ -220,6 +221,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             base.UpdateControllerData(interactionSourceState);
 
 #if WINDOWS_UWP
+            // The articulated hand support is only present in the 18361 version and beyond Windows
+            // SDK (which contains the V8 drop of the Universal API Contract). In particular,
+            // the HandPose related APIs are only present on this version and above.
+            if (!WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            {
+                return;
+            }
+
             PerceptionTimestamp perceptionTimestamp = PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now);
             IReadOnlyList<SpatialInteractionSourceState> sources = spatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);
             foreach (SpatialInteractionSourceState sourceState in sources)
