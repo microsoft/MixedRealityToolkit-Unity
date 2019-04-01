@@ -8099,6 +8099,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.LocalScale
   nameWithType: BaseCursor.LocalScale
+- uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.LookRotationBlend
+  name: LookRotationBlend
+  href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_LookRotationBlend
+  commentId: P:Microsoft.MixedReality.Toolkit.Input.BaseCursor.LookRotationBlend
+  fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.LookRotationBlend
+  nameWithType: BaseCursor.LookRotationBlend
+- uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.LookRotationBlend*
+  name: LookRotationBlend
+  href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_LookRotationBlend_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Input.BaseCursor.LookRotationBlend
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.LookRotationBlend
+  nameWithType: BaseCursor.LookRotationBlend
 - uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.OnBeforeFocusChange(Microsoft.MixedReality.Toolkit.Input.FocusEventData)
   name: OnBeforeFocusChange(FocusEventData)
   href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_OnBeforeFocusChange_Microsoft_MixedReality_Toolkit_Input_FocusEventData_
@@ -8281,6 +8294,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.Position
   nameWithType: BaseCursor.Position
+- uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.PositionLerpTime
+  name: PositionLerpTime
+  href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_PositionLerpTime
+  commentId: P:Microsoft.MixedReality.Toolkit.Input.BaseCursor.PositionLerpTime
+  fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.PositionLerpTime
+  nameWithType: BaseCursor.PositionLerpTime
+- uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.PositionLerpTime*
+  name: PositionLerpTime
+  href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_PositionLerpTime_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Input.BaseCursor.PositionLerpTime
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.PositionLerpTime
+  nameWithType: BaseCursor.PositionLerpTime
 - uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.PrimaryCursorVisual
   name: PrimaryCursorVisual
   href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_PrimaryCursorVisual
@@ -8313,6 +8339,32 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.Rotation
   nameWithType: BaseCursor.Rotation
+- uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.RotationLerpTime
+  name: RotationLerpTime
+  href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_RotationLerpTime
+  commentId: P:Microsoft.MixedReality.Toolkit.Input.BaseCursor.RotationLerpTime
+  fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.RotationLerpTime
+  nameWithType: BaseCursor.RotationLerpTime
+- uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.RotationLerpTime*
+  name: RotationLerpTime
+  href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_RotationLerpTime_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Input.BaseCursor.RotationLerpTime
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.RotationLerpTime
+  nameWithType: BaseCursor.RotationLerpTime
+- uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.ScaleLerpTime
+  name: ScaleLerpTime
+  href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_ScaleLerpTime
+  commentId: P:Microsoft.MixedReality.Toolkit.Input.BaseCursor.ScaleLerpTime
+  fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.ScaleLerpTime
+  nameWithType: BaseCursor.ScaleLerpTime
+- uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.ScaleLerpTime*
+  name: ScaleLerpTime
+  href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_ScaleLerpTime_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Input.BaseCursor.ScaleLerpTime
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.ScaleLerpTime
+  nameWithType: BaseCursor.ScaleLerpTime
 - uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.SetVisibility(System.Boolean)
   name: SetVisibility(Boolean)
   href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_SetVisibility_System_Boolean_
@@ -8371,6 +8423,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.UpdateCursorTransform
   nameWithType: BaseCursor.UpdateCursorTransform
+- uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.UseUnscaledTime
+  name: UseUnscaledTime
+  href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_UseUnscaledTime
+  commentId: P:Microsoft.MixedReality.Toolkit.Input.BaseCursor.UseUnscaledTime
+  fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.UseUnscaledTime
+  nameWithType: BaseCursor.UseUnscaledTime
+- uid: Microsoft.MixedReality.Toolkit.Input.BaseCursor.UseUnscaledTime*
+  name: UseUnscaledTime
+  href: api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html#Microsoft_MixedReality_Toolkit_Input_BaseCursor_UseUnscaledTime_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Input.BaseCursor.UseUnscaledTime
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Input.BaseCursor.UseUnscaledTime
+  nameWithType: BaseCursor.UseUnscaledTime
 - uid: Microsoft.MixedReality.Toolkit.Input.BaseDeviceManager
   name: BaseDeviceManager
   href: api/Microsoft.MixedReality.Toolkit.Input.BaseDeviceManager.html
