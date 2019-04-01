@@ -51,6 +51,17 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
         public RecognitionConfidenceLevel RecognitionConfidenceLevel { get; set; }
 
+#if UNITY_EDITOR
+        /// <inheritdoc />
+        public override void Initialize()
+        {
+            if (!UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
+            {
+                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, true);
+            }
+        }
+#endif // UNITY_EDITOR
+
         /// <inheritdoc />
         public override void Enable()
         {
@@ -100,6 +111,17 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 keywordRecognizer.Dispose();
             }
         }
+
+#if UNITY_EDITOR
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            if (UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
+            {
+                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, false);
+            }
+        }
+#endif // UNITY_EDITOR
 
         /// <inheritdoc />
         public void StartRecognition()
