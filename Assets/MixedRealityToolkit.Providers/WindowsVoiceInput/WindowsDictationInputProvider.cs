@@ -13,8 +13,6 @@ using UnityEngine.Windows.Speech;
 
 namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-
     [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor)]
     public class WindowsDictationInputProvider : BaseDeviceManager, IMixedRealityDictationSystem
     {
@@ -31,11 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
 
-        /// <summary>
-        /// Is the Dictation Manager currently running?
-        /// </summary>
+        /// <inheritdoc />
         public bool IsListening { get; private set; } = false;
 
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         private bool hasFailed;
         private bool hasListener;
         private bool isTransitioning;
@@ -326,6 +323,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             textSoFar = null;
             dictationResult = string.Empty;
         }
-    }
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+    }
 }

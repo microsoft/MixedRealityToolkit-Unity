@@ -20,22 +20,67 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The distance from the hit surface to place the cursor")]
         private float surfaceCursorDistance = 0.02f;
 
+        /// <summary>
+        /// When lerping, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.
+        /// </summary>
+        public bool UseUnscaledTime
+        {
+            get { return useUnscaledTime; }
+            set { useUnscaledTime = value; }
+        }
+
         [Header("Motion")]
         [SerializeField]
         [Tooltip("When lerping, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
         private bool useUnscaledTime = true;
 
+        /// <summary>
+        /// Blend value for surface normal to user facing lerp.
+        /// </summary>
+        public float PositionLerpTime
+        {
+            get { return positionLerpTime; }
+            set { positionLerpTime = value; }
+        }
+
         [SerializeField]
         [Tooltip("Blend value for surface normal to user facing lerp")]
         private float positionLerpTime = 0.01f;
+
+        /// <summary>
+        /// Blend value for surface normal to user facing lerp.
+        /// </summary>
+        public float ScaleLerpTime
+        {
+            get { return scaleLerpTime; }
+            set { scaleLerpTime = value; }
+        }
 
         [SerializeField]
         [Tooltip("Blend value for surface normal to user facing lerp")]
         private float scaleLerpTime = 0.01f;
 
+        /// <summary>
+        /// Blend value for surface normal to user facing lerp.
+        /// </summary>
+        public float RotationLerpTime
+        {
+            get { return rotationLerpTime; }
+            set { rotationLerpTime = value; }
+        }
+
         [SerializeField]
         [Tooltip("Blend value for surface normal to user facing lerp")]
         private float rotationLerpTime = 0.01f;
+
+        /// <summary>
+        /// Blend value for surface normal to user facing lerp.
+        /// </summary>
+        public float LookRotationBlend
+        {
+            get { return lookRotationBlend; }
+            set { lookRotationBlend = value; }
+        }
 
         [Range(0, 1)]
         [SerializeField]
