@@ -780,7 +780,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 newUiRaycastPosition.x = raycastResult.screenPosition.x;
                 newUiRaycastPosition.y = raycastResult.screenPosition.y;
-                newUiRaycastPosition.z = raycastResult.distance;
+                newUiRaycastPosition.z = raycastResult.distance + UIRaycastCamera.nearClipPlane;
 
                 Vector3 worldPos = UIRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
 
@@ -844,7 +844,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         else if (threeDLayerIndex == uiLayerIndex)
                         {
-                            if (distance > uiRaycastResult.distance)
+                            if (distance > uiRaycastResult.distance + UIRaycastCamera.nearClipPlane)
                             {
                                 overridePhysicsRaycast = true;
                             }
@@ -852,7 +852,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        if (distance > uiRaycastResult.distance)
+                        if (distance > uiRaycastResult.distance + UIRaycastCamera.nearClipPlane)
                         {
                             overridePhysicsRaycast = true;
                         }
