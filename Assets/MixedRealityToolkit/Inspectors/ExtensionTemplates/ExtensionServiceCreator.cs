@@ -73,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly string ProfileFieldNameSearchString = "#PROFILE_FIELD_NAME#";
         private static readonly string SupportedPlatformsSearchString = "#SUPPORTED_PLATFORMS_PARAM#";
         private static readonly string ExtensionNamespaceSearchString = "#NAMESPACE#";
+        private static readonly string SampleCodeTemplate = "#INTERFACE_NAME# #SERVICE_NAME# = MixedRealityToolkit.Instance.GetService<#INTERFACE_NAME#>();";
 
         #endregion
 
@@ -112,6 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public CreateResult Result { get; private set; } = CreateResult.None;
         public string InterfaceName { get { return "I" + ServiceName; } }
         public string ProfileName { get { return ServiceName + "Profile"; } }
+        public string ServiceFieldName { get { return Char.ToLowerInvariant(ServiceName[0]) + ServiceName.Substring(1); } }
         public string ProfileFieldName { get { return Char.ToLowerInvariant(ProfileName[0]) + ProfileName.Substring(1); } }
         public string ProfileAssetName { get { return "Default" + ProfileName; } }
 
@@ -149,6 +151,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             get { return state.ProfileAssetFolderPath; }
             set { state.ProfileAssetFolderPath = value; }
+        }
+
+        public string SampleCode
+        {
+            get
+            {
+                string sampleCode = SampleCodeTemplate;
+                sampleCode = sampleCode.Replace(InterfaceNameSearchString, InterfaceName);
+                sampleCode = sampleCode.Replace(ServiceNameSearchString, ServiceFieldName);
+                return sampleCode;
+            }
         }
 
         private TextAsset ServiceTemplate { get; set; }

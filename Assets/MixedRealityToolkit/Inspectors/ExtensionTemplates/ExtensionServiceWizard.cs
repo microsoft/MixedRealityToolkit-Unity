@@ -11,14 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Color enabledColor = Color.white;
         private static readonly Color disabledColor = Color.gray;
         private static readonly Color readOnlyColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
+        private static readonly string servicesDocumentationURL = "https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki";
+        private static readonly Vector2 minWindowSize = new Vector2(500, 600);
 
         private ExtensionServiceCreator creator = new ExtensionServiceCreator();
         private List<string> errors = new List<string>();
-
-        // These are stored prior to compilation to ensure results are not wiped out
-        private ExtensionServiceCreator.CreateResult result;
-        private List<string> resultOutput = new List<string>();
-        // Ellipses display
+        private bool registered = false;
         private int numEllipses = 0;
 
         [MenuItem("Mixed Reality Toolkit/Create Extension Service...", false, 1)]
@@ -33,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             window = EditorWindow.CreateInstance<ExtensionServiceWizard>();
             window.titleContent = new GUIContent("Create Extension Service");
+            window.minSize = minWindowSize;
             window.ResetCreator();
             window.Show(true);
         }
@@ -47,7 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void OnEnable()
         {
-            Debug.Log("Initializing ExtensionServiceWizard window");
             if (creator == null)
                 creator = new ExtensionServiceCreator();
 
@@ -89,6 +87,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void DrawSelectNameAndPlatform()
         {
+            EditorGUILayout.Space();
+            EditorGUILayout.HelpBox("This wizard will help you set up and register a simple extension service. MRTK Services are similar to traditional Monobehaviour singletons but with more robust access and lifecycle control. Scripts can access services through the MRTK's service provider interface. For more information about services, click the link below.", MessageType.Info);
+            if (GUILayout.Button("Services Documentation", EditorStyles.miniButton))
+            {
+                Application.OpenURL(servicesDocumentationURL);
+            }
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Choose a name for your service.", EditorStyles.miniLabel);
 
@@ -258,37 +263,57 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     return;
             }
 
-            EditorGUILayout.HelpBox("Your service scripts have been created. Would you like to register this service in your current MixedRealityToolkit profile?", MessageType.Info);
+            EditorGUILayout.HelpBox("Your service scripts have been created.", MessageType.Info);
 
-            // Check to see whether it's possible ot register the profile
-            bool canRegisterProfile = true;
-            if (MixedRealityToolkit.Instance == null || !MixedRealityToolkit.Instance.HasActiveProfile)
+            if (!registered)
             {
-                EditorGUILayout.HelpBox("Toolkit has no active profile. Can't register service.", MessageType.Warning);
-                canRegisterProfile = false;
+                EditorGUILayout.LabelField("Would you like to register this service in your current MixedRealityToolkit profile?", EditorStyles.miniLabel);
+                // Check to see whether it's possible ot register the profile
+                bool canRegisterProfile = true;
+                if (MixedRealityToolkit.Instance == null || !MixedRealityToolkit.Instance.HasActiveProfile)
+                {
+                    EditorGUILayout.HelpBox("Toolkit has no active profile. Can't register service.", MessageType.Warning);
+                    canRegisterProfile = false;
+                }
+                else if (MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile == null)
+                {
+                    EditorGUILayout.HelpBox("Toolkit has no RegisteredServiceProvidersProfile. Can't register service.", MessageType.Warning);
+                    canRegisterProfile = false;
+                }
+                EditorGUILayout.Space();
+                EditorGUILayout.BeginHorizontal();
+                GUI.color = canRegisterProfile ? enabledColor : disabledColor;
+                if (GUILayout.Button("Register") && canRegisterProfile)
+                {
+                    RegisterServiceWithActiveMixedRealityProfile();
+                }
+                GUI.color = enabledColor;
+                if (GUILayout.Button("Not Now"))
+                {
+                    creator.ResetState();
+                    Close();
+                }
+                EditorGUILayout.EndHorizontal();
             }
-            else if (MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile == null)
+            else
             {
-                EditorGUILayout.HelpBox("Toolkit has no RegisteredServiceProvidersProfile. Can't register service.", MessageType.Warning);
-                canRegisterProfile = false;
-            }
+                EditorGUILayout.LabelField("Your service is now registered. Scripts can access this service like so:", EditorStyles.miniLabel);
 
-            EditorGUILayout.Space();
-            EditorGUILayout.BeginHorizontal();
-            GUI.color = canRegisterProfile ? enabledColor : disabledColor;
-            if (GUILayout.Button("Register") && canRegisterProfile)
-            {
-                RegisterServiceWithActiveMixedRealityProfile();
-                creator.ResetState();
-                Close();
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.TextField(creator.SampleCode);
+                if (GUILayout.Button("Copy Sample Code", EditorStyles.miniButton))
+                {
+                    EditorGUIUtility.systemCopyBuffer = creator.SampleCode;
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.Space();
+                if (GUILayout.Button("Close"))
+                {
+                    creator.ResetState();
+                    Close();
+                }
             }
-            GUI.color = enabledColor;
-            if (GUILayout.Button("Not Now"))
-            {
-                creator.ResetState();
-                Close();
-            }
-            EditorGUILayout.EndHorizontal();
         }
 
         private void RegisterServiceWithActiveMixedRealityProfile()
@@ -330,6 +355,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Select the profile so we can see what we've done
             Selection.activeObject = servicesProfile;
+
+            registered = true;
         }
 
         private async void CreateAssetsAsync()
