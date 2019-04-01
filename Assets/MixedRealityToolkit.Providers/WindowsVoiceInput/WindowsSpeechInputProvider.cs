@@ -13,8 +13,6 @@ using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
