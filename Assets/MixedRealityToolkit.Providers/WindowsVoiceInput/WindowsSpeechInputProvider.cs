@@ -40,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
         /// </summary>
-        // todo: fix...
         private static SpeechCommands[] Commands => MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands;
 
         /// <summary>

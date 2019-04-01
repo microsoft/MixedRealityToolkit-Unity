@@ -4,7 +4,8 @@
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Generic interface for all Mixed Reality Data providers
+    /// Required interface for all Mixed Reality data providers. Data providers are the components
+    /// that supply services with required information (ex: input controller state).
     /// </summary>
     public interface IMixedRealityDataProvider : IMixedRealityService
     {

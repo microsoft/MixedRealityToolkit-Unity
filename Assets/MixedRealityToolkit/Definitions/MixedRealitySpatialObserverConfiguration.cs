@@ -45,13 +45,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public BaseSpatialAwarenessObserverProfile ObserverProfile => observerProfile;
 
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
-        /// <param name="componentType"></param>
-        /// <param name="componentName"></param>
-        /// <param name="priority"></param>
-        /// <param name="runtimePlatform"></param>
-        /// <param name="configurationProfile"></param>
+        /// <param name="componentType">The <see cref="SystemType"/> of the observerr.</param>
+        /// <param name="componentName">The friendly name of the observer.</param>
+        /// <param name="priority">The load priority of the observer.</param>
+        /// <param name="runtimePlatform">The runtime platform(s) supported by the observer.</param>
+        /// <param name="configurationProfile">The configuration profile for the observer.</param>
         public MixedRealitySpatialObserverConfiguration(
             SystemType componentType,
             string componentName,
