@@ -40,11 +40,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
 
-        /// <summary>
-        /// Is the Dictation Manager currently running?
-        /// </summary>
+        /// <inheritdoc />
         public bool IsListening { get; private set; } = false;
 
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         private bool hasFailed;
         private bool hasListener;
         private bool isTransitioning;
@@ -151,6 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
             if (Application.isPlaying)
@@ -326,6 +326,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             textSoFar = null;
             dictationResult = string.Empty;
         }
-    }
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+    }
 }

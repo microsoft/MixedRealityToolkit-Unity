@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public interface IMixedRealityDictationSystem : IMixedRealityInputDeviceManager
     {
         /// <summary>
-        /// Is the system currently listing to dictation input?
+        /// Is the system currently listing for dictation input?
         /// </summary>
         bool IsListening { get; }
 
