@@ -45288,6 +45288,38 @@ references:
   commentId: T:Microsoft.MixedReality.Toolkit.Windows.Input.InteractionSourceExtensions
   fullName: Microsoft.MixedReality.Toolkit.Windows.Input.InteractionSourceExtensions
   nameWithType: InteractionSourceExtensions
+- uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider
+  name: WindowsDictationInputProvider
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.html
+  commentId: T:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider
+  nameWithType: WindowsDictationInputProvider
+- uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)
+  name: WindowsDictationInputProvider(IMixedRealityServiceRegistrar, String, UInt32, BaseMixedRealityProfile)
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.html#Microsoft_MixedReality_Toolkit_Windows_Input_WindowsDictationInputProvider__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar_System_String_System_UInt32_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_
+  commentId: M:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.WindowsDictationInputProvider(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar, System.String, System.UInt32, Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)
+  nameWithType: WindowsDictationInputProvider.WindowsDictationInputProvider(IMixedRealityServiceRegistrar, String, UInt32, BaseMixedRealityProfile)
+- uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.#ctor*
+  name: WindowsDictationInputProvider
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.html#Microsoft_MixedReality_Toolkit_Windows_Input_WindowsDictationInputProvider__ctor_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.#ctor
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.WindowsDictationInputProvider
+  nameWithType: WindowsDictationInputProvider.WindowsDictationInputProvider
+- uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.IsListening
+  name: IsListening
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.html#Microsoft_MixedReality_Toolkit_Windows_Input_WindowsDictationInputProvider_IsListening
+  commentId: P:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.IsListening
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.IsListening
+  nameWithType: WindowsDictationInputProvider.IsListening
+- uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.IsListening*
+  name: IsListening
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.html#Microsoft_MixedReality_Toolkit_Windows_Input_WindowsDictationInputProvider_IsListening_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.IsListening
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.IsListening
+  nameWithType: WindowsDictationInputProvider.IsListening
 - uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsGestureSettings
   name: WindowsGestureSettings
   href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsGestureSettings.html
@@ -45354,6 +45386,44 @@ references:
   commentId: F:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsGestureSettings.Tap
   fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsGestureSettings.Tap
   nameWithType: WindowsGestureSettings.Tap
+- uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider
+  name: WindowsSpeechInputProvider
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.html
+  commentId: T:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider
+  nameWithType: WindowsSpeechInputProvider
+- uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)
+  name: WindowsSpeechInputProvider(IMixedRealityServiceRegistrar, String, UInt32, BaseMixedRealityProfile)
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.html#Microsoft_MixedReality_Toolkit_Windows_Input_WindowsSpeechInputProvider__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar_System_String_System_UInt32_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_
+  commentId: M:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.WindowsSpeechInputProvider(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar, System.String, System.UInt32, Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)
+  nameWithType: WindowsSpeechInputProvider.WindowsSpeechInputProvider(IMixedRealityServiceRegistrar, String, UInt32, BaseMixedRealityProfile)
+- uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.#ctor*
+  name: WindowsSpeechInputProvider
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.html#Microsoft_MixedReality_Toolkit_Windows_Input_WindowsSpeechInputProvider__ctor_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.#ctor
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.WindowsSpeechInputProvider
+  nameWithType: WindowsSpeechInputProvider.WindowsSpeechInputProvider
+- uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.InputSource
+  name: InputSource
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.html#Microsoft_MixedReality_Toolkit_Windows_Input_WindowsSpeechInputProvider_InputSource
+  commentId: F:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.InputSource
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.InputSource
+  nameWithType: WindowsSpeechInputProvider.InputSource
+- uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.RecognitionConfidenceLevel
+  name: RecognitionConfidenceLevel
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.html#Microsoft_MixedReality_Toolkit_Windows_Input_WindowsSpeechInputProvider_RecognitionConfidenceLevel
+  commentId: P:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.RecognitionConfidenceLevel
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.RecognitionConfidenceLevel
+  nameWithType: WindowsSpeechInputProvider.RecognitionConfidenceLevel
+- uid: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.RecognitionConfidenceLevel*
+  name: RecognitionConfidenceLevel
+  href: api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.html#Microsoft_MixedReality_Toolkit_Windows_Input_WindowsSpeechInputProvider_RecognitionConfidenceLevel_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.RecognitionConfidenceLevel
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.RecognitionConfidenceLevel
+  nameWithType: WindowsSpeechInputProvider.RecognitionConfidenceLevel
 - uid: Microsoft.MixedReality.Toolkit.Windows.Utilities
   name: Microsoft.MixedReality.Toolkit.Windows.Utilities
   href: api/Microsoft.MixedReality.Toolkit.Windows.Utilities.html

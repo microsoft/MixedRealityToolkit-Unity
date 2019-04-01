@@ -3480,7 +3480,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationSystem.html",
-          "hash": "1vkySRcrN5lg9vJ3aa8roQ=="
+          "hash": "XTtzRqkoohg76DVuUuMePQ=="
         }
       },
       "is_incremental": false,
@@ -8912,6 +8912,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.html",
+          "hash": "8g302L1wfZ/rABli56SxTA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsGestureSettings.yml",
       "output": {
         ".html": {
@@ -8924,11 +8936,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.html",
+          "hash": "OxF/a9cESww0WujKmn5Xzg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Windows.Input.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Windows.Input.html",
-          "hash": "z2ss0mHzUhZv3ilxNCA3Sw=="
+          "hash": "RKH+qKeGj/L0mtA5I5bq3A=="
         }
       },
       "is_incremental": false,
@@ -9336,7 +9360,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "+24I+K/2r94K6twwFVcpVQ=="
+          "hash": "nIXA9oka7AVZywMbF2/Vyg=="
         }
       },
       "is_incremental": false,
@@ -9397,7 +9421,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 655,
+          "total_file_count": 657,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
