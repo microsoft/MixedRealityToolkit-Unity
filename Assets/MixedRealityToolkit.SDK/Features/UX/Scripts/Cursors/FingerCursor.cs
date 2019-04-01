@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void RotateToSurfaceNormal(Transform target, float deltaTime, Vector3 surfaceNormal)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(surfaceNormal);
+            Quaternion targetRotation = Quaternion.LookRotation(-surfaceNormal);
             target.rotation = Quaternion.Lerp(target.rotation, targetRotation, deltaTime / RotationLerpTime);
         }
     }
