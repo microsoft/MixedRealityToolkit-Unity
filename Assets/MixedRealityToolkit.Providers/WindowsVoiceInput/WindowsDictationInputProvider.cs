@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -15,21 +15,30 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-    [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor)]
-    public class WindowsDictationInputProvider : BaseDeviceManager, IMixedRealityDictationSystem
+    [MixedRealityDataProvider(
+        typeof(IMixedRealityInputSystem),
+        SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
+        "Windows Dictation Input")]
+    public class WindowsDictationInputProvider : BaseInputDeviceManager, IMixedRealityDictationSystem
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
+        /// <param name="inputSystem">The <see cref="IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="inputSystemProfile">The input system configuration profile.</param>
+        /// <param name="playspace">The <see cref="Transform"/> of the playspace object.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsDictationInputProvider(
             IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
+            MixedRealityInputSystemProfile inputSystemProfile,
+            Transform playspace,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
 
         /// <summary>
         /// Is the Dictation Manager currently running?
@@ -78,13 +87,15 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             if (!Application.isPlaying) { return; }
 
-            if (MixedRealityToolkit.InputSystem == null)
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
+            if (inputSystem == null)
             {
                 Debug.LogError($"Unable to start {Name}. An Input System is required for this feature.");
                 return;
             }
 
-            inputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource(Name, sourceType: InputSourceType.Voice);
+            inputSource = inputSystem.RequestNewGenericInputSource(Name, sourceType: InputSourceType.Voice);
             dictationResult = string.Empty;
 
             try
@@ -92,12 +103,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 if (dictationRecognizer == null)
                 {
                     dictationRecognizer = new DictationRecognizer();
-                }
 
-                dictationRecognizer.DictationHypothesis += DictationRecognizer_DictationHypothesis;
-                dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
-                dictationRecognizer.DictationComplete += DictationRecognizer_DictationComplete;
-                dictationRecognizer.DictationError += DictationRecognizer_DictationError;
+                    dictationRecognizer.DictationHypothesis += DictationRecognizer_DictationHypothesis;
+                    dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
+                    dictationRecognizer.DictationComplete += DictationRecognizer_DictationComplete;
+                    dictationRecognizer.DictationError += DictationRecognizer_DictationError;
+                }
             }
             catch (System.Exception ex)
             {
@@ -109,7 +120,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public override void Update()
         {
-            if (!Application.isPlaying || MixedRealityToolkit.InputSystem == null) { return; }
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
+            if (!Application.isPlaying || inputSystem == null) { return; }
 
             if (!isTransitioning && IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
@@ -120,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             if (!hasFailed && dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
                 hasFailed = true;
-                MixedRealityToolkit.InputSystem.RaiseDictationError(inputSource, "Dictation recognizer has failed!");
+                inputSystem.RaiseDictationError(inputSource, "Dictation recognizer has failed!");
             }
         }
 
@@ -155,7 +168,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public async Task StartRecordingAsync(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10, string micDeviceName = "")
         {
-            if (IsListening || isTransitioning || MixedRealityToolkit.InputSystem == null || !Application.isPlaying)
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
+            if (IsListening || isTransitioning || inputSystem == null || !Application.isPlaying)
             {
                 Debug.LogWarning("Unable to start recording");
                 return;
@@ -168,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             if (listener != null)
             {
                 hasListener = true;
-                MixedRealityToolkit.InputSystem.PushModalInputHandler(listener);
+               inputSystem.PushModalInputHandler(listener);
             }
 
             if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
@@ -193,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             if (dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
-                MixedRealityToolkit.InputSystem.RaiseDictationError(inputSource, "Dictation recognizer failed to start!");
+                inputSystem.RaiseDictationError(inputSource, "Dictation recognizer failed to start!");
                 return;
             }
 
@@ -221,9 +236,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             IsListening = false;
             isTransitioning = true;
 
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
             if (hasListener)
             {
-                MixedRealityToolkit.InputSystem.PopModalInputHandler();
+                inputSystem?.PopModalInputHandler();
                 hasListener = false;
             }
 
@@ -255,7 +272,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             // We don't want to append to textSoFar yet, because the hypothesis may have changed on the next event.
             dictationResult = $"{textSoFar} {text}...";
 
-            MixedRealityToolkit.InputSystem.RaiseDictationHypothesis(inputSource, dictationResult);
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+            inputSystem?.RaiseDictationHypothesis(inputSource, dictationResult);
         }
 
         /// <summary>
@@ -269,7 +287,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             dictationResult = textSoFar.ToString();
 
-            MixedRealityToolkit.InputSystem.RaiseDictationResult(inputSource, dictationResult);
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+            inputSystem?.RaiseDictationResult(inputSource, dictationResult);
         }
 
         /// <summary>
@@ -287,7 +306,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 dictationResult = "Dictation has timed out. Please try again.";
             }
 
-            MixedRealityToolkit.InputSystem.RaiseDictationComplete(inputSource, dictationResult, dictationAudioClip);
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+            inputSystem?.RaiseDictationComplete(inputSource, dictationResult, dictationAudioClip);
             textSoFar = null;
             dictationResult = string.Empty;
         }
@@ -301,7 +321,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             dictationResult = $"{error}\nHRESULT: {hresult}";
 
-            MixedRealityToolkit.InputSystem.RaiseDictationError(inputSource, dictationResult);
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+            inputSystem?.RaiseDictationError(inputSource, dictationResult);
             textSoFar = null;
             dictationResult = string.Empty;
         }
