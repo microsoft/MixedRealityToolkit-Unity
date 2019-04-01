@@ -139,10 +139,15 @@ For manipulating objects with two hands at the same time the persistent hand mod
 
 ## GGV Interaction
 
-TODO
+1. Enable GGV simulation by switching __Hand Simulation Mode__ to _Gestures_ in the [Input Simulation Profile](#enabling-the-input-simulation-service)
+   ![Hand gesture settings](../Images/MRTK_InputSimulation_SwitchToGGV.png)
+2. Rotate the camera to point the gaze cursor at the interactable object (right mouse button)
+3. Hold _Space_ to control the right hand
+4. Click and hold _left mouse button_ to interact
+5. Rotate the camera again to manipulate the object
 
 ---
 
-<!-- <video width="600" controls="controls">
-  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_GGVHandInteraction.mp4"></source>
-</video> -->
+<video width="600" controls="controls">
+  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_GGVInteraction.mp4"></source>
+</video>
