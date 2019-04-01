@@ -435,7 +435,6 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
                 touchingSource = eventData.InputSource;
                 currentController = touchingSource.Pointers[0].Controller;
                 TryGetHandPoint(currentController, TrackedHandJoint.Palm, out touchingPoint);
-               // touchingPoint = currentController.InputSource.Pointers[0].Position;
                 touchingPoint = SnapFingerToQuad(touchingPoint);
                 touchingInitialPt = touchingPoint;
                 touchingUV = GetUVFromPoint(touchingPoint);
