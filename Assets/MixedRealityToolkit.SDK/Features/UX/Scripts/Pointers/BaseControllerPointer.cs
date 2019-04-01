@@ -344,6 +344,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnPostSceneQuery() { }
 
+        ///  <inheritdoc />
+        public virtual void OnCurrentPointerTargetAboutToChange() { }
+
         #endregion IMixedRealityPointer Implementation
 
         #region IEquality Implementation

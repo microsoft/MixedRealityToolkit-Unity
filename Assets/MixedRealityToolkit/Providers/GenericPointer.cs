@@ -127,6 +127,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public abstract void OnPostSceneQuery();
 
+        /// <inheritdoc />
+        public abstract void OnCurrentPointerTargetAboutToChange();
+
         #region IEquality Implementation
 
         public static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)

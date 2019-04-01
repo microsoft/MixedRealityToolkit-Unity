@@ -22,13 +22,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         protected GameObject visuals;
-
-        private Vector3 closestNormal = Vector3.forward;
+        
         private float closestDistance = 0.0f;
 
-        private NearInteractionTouchable currentTouchableDown = null;
+        // The closest touchable component limits the set of objects which are currently touchable.
+        // These are all the game objects in the subtree of the clostest touchable component's owner object.
         private NearInteractionTouchable closestProximityTouchable = null;
-        
+        // The current object that is being touched. We need to make sure to consistently fire 
+        // poke-down / poke-up events for this object. This is also the case when the object within
+        // the same current closest touchable component's changes (e.g. Unity UI control elements).
+        private GameObject currentTouchableObjectDown = null;
+
         protected void OnValidate()
         {
             Debug.Assert(distBack > 0, this);
@@ -51,32 +55,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // Check proximity
-            closestProximityTouchable = null;
+            NearInteractionTouchable newClosestTouchable = null;
             {
-                float closestDist = distFront; // NOTE: Start at distFront for cutoff
+                closestDistance = distFront; // NOTE: Start at distFront for cutoff
                 foreach (var prox in NearInteractionTouchable.Instances)
                 {
-                    if (!prox.ColliderEnabled)
-                        continue;
-
-                    float dist = prox.DistanceToSurface(Position);
-                    if (dist < closestDist)
+                    if (prox.ColliderEnabled)
                     {
-                        closestNormal = prox.Forward;
-                        closestDist = dist;
-                        closestProximityTouchable = prox;
+                       float dist = prox.DistanceToSurface(Position);
+                       if (dist < closestDistance)
+                       {
+   
+                           closestDistance = dist;
+                           newClosestTouchable = prox;
+                       }
                     }
                 }
-                closestDistance = closestDist;
             }
-            IsActive = IsNearObject;
-            visuals.SetActive(IsNearObject);
 
             // Determine ray direction
             Vector3 rayDirection = Rotation * Vector3.forward;
-            if (closestProximityTouchable != null)
+            if (newClosestTouchable != null)
             {
-                rayDirection = -closestProximityTouchable.Forward;
+                rayDirection = -newClosestTouchable.Forward;
             }
 
             // Build ray (poke from in front to the back of the pointer position)
@@ -84,24 +85,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Vector3 end = Position + distFront * rayDirection;
             Rays[0].UpdateRayStep(ref start, ref end);
 
-            // Check if we are about to leave the currently focused object.
-            if (currentTouchableDown != null)
+            // Check if the currently touched object is still part of the new touchable.
+            if (currentTouchableObjectDown != null)
             {
-                RaycastHit hitInfo = default(RaycastHit);
-                PerformRayCastInternal(Rays[0], out hitInfo);
-
-                if (hitInfo.transform?.gameObject != currentTouchableDown.gameObject)
+                if (!IsObjectPartOfTouchable(currentTouchableObjectDown, newClosestTouchable))
                 {
-                    Debug.Assert(Result?.CurrentPointerTarget == currentTouchableDown.gameObject);
-
-                    // We need to raise the event now, since the pointer's focused object will change after we leave this function.
-                    // This will make sure the correct object receives the Leave event.
-                    TryRaisePokeUp(Position);
+                    TryRaisePokeUp(Result.CurrentPointerTarget, Position);
                 }
             }
 
             line.SetPosition(0, Position);
             line.SetPosition(1, end);
+
+            // Set new touchable only now: If we have to raise a poke-up event for the previous touchable object,
+            // we need to to so using the previous touchable in TryRaisePokeUp().
+            closestProximityTouchable = newClosestTouchable;
+
+            IsActive = IsNearObject;
+            visuals.SetActive(IsNearObject);
         }
 
         public override void OnPostSceneQuery()
@@ -111,14 +112,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 float dist = Vector3.Distance(Result.StartPoint, Result.Details.Point) - distBack;
                 bool newIsDown = (dist < debounceThreshold);
 
-                // Send events
                 if (newIsDown)
                 {
                     TryRaisePokeDown(Result.CurrentPointerTarget, Position);
                 }
                 else
                 {
-                    TryRaisePokeUp(Position);
+                    TryRaisePokeUp(Result.CurrentPointerTarget, Position);
                 }
             }
 
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 line.endColor = line.startColor = new Color(1, 1, 1, 0.25f);
             }
-            else if (currentTouchableDown == null)
+            else if (currentTouchableObjectDown == null)
             {
                 line.endColor = line.startColor = new Color(1, 1, 1, 0.75f);
             }
@@ -136,36 +136,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void PerformRayCastInternal(RayStep ray, out RaycastHit hitInfo)
+        public override void OnCurrentPointerTargetAboutToChange()
         {
-            LayerMask[] prioritizedLayerMasks = null;
-            var focusProvider = MixedRealityToolkit.InputSystem?.FocusProvider;
-            if (focusProvider != null)
+            if (currentTouchableObjectDown != null)
             {
-                prioritizedLayerMasks = focusProvider.FocusLayerMasks;
+                // We need to raise the event now, since the pointer's focused object or touchable will change 
+                // after we leave this function. This will make sure the same object that received the Down event
+                // will also receive the Up event.
+                TryRaisePokeUp(Result.CurrentPointerTarget, Position);
             }
-            else
-            {
-                prioritizedLayerMasks = new LayerMask[] { UnityEngine.Physics.DefaultRaycastLayers };
-            }
-
-            MixedRealityRaycaster.RaycastSimplePhysicsStep(ray, prioritizedLayerMasks, out hitInfo);
         }
 
         private void TryRaisePokeDown(GameObject targetObject, Vector3 touchPosition)
         {
-            if (currentTouchableDown == null)
+            if (currentTouchableObjectDown == null)
             {
                 // In order to get reliable up/down event behavior, only allow the closest touchable to be touched.
-                if (targetObject == closestProximityTouchable?.gameObject)
+                if (IsObjectPartOfTouchable(targetObject, closestProximityTouchable))
                 {
-                    currentTouchableDown = closestProximityTouchable;
+                    currentTouchableObjectDown = targetObject;
 
-                    if (currentTouchableDown.EventsToReceive == TouchableEventType.Pointer)
+                    if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                     {
                         MixedRealityToolkit.InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
                     }
-                    else if (currentTouchableDown.EventsToReceive == TouchableEventType.Touch)
+                    else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                     {
                         MixedRealityToolkit.InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, touchPosition);
                     }
@@ -177,52 +172,66 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void TryRaisePokeUp(Vector3 touchPosition)
+        private void TryRaisePokeUp(GameObject targetObject, Vector3 touchPosition)
         {
-            if (currentTouchableDown != null)
+            if (currentTouchableObjectDown != null)
             {
-                if (currentTouchableDown.EventsToReceive == TouchableEventType.Pointer)
+                Debug.Assert(Result.CurrentPointerTarget == currentTouchableObjectDown, "PokeUp will not be raised for correct object.");
+
+                if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                 {
                     MixedRealityToolkit.InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
                 }
-                else if (currentTouchableDown.EventsToReceive == TouchableEventType.Touch)
+                else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
                     MixedRealityToolkit.InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, touchPosition);
                 }
 
-                currentTouchableDown = null;
+                currentTouchableObjectDown = null;
             }
         }
 
         private void RaiseTouchUpdated(GameObject targetObject, Vector3 touchPosition)
         {
-            if (currentTouchableDown != null)
+            if (currentTouchableObjectDown != null)
             {
-                Debug.Assert(currentTouchableDown.gameObject == targetObject);
-                if (currentTouchableDown.EventsToReceive == TouchableEventType.Touch)
+                Debug.Assert(Result?.CurrentPointerTarget == currentTouchableObjectDown);
+
+                if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
                     MixedRealityToolkit.InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
                 }
             }
         }
 
-        public bool TryGetNearGraspPoint(out Vector3 position)
+        private static bool IsObjectPartOfTouchable(GameObject targetObject, NearInteractionTouchable touchable)
+        {
+            return targetObject != null && touchable != null &&
+                (targetObject == touchable.gameObject ||
+                // Descendant game objects are touchable as well. In particular, this is needed to be able to send
+                // touch events to Unity UI control elements.
+                (targetObject.transform != null && touchable.gameObject.transform != null &&
+                targetObject.transform.IsChildOf(touchable.gameObject.transform)));
+        }
+
+        /// <inheritdoc />
+        bool IMixedRealityNearPointer.TryGetNearGraspPoint(out Vector3 position)
         {
             position = Vector3.zero;
             return false;
         }
 
         /// <inheritdoc />
-        public bool TryGetDistanceToNearestSurface(out float distance)
+        bool IMixedRealityNearPointer.TryGetDistanceToNearestSurface(out float distance)
         {
             distance = closestDistance;
             return true;
         }
 
         /// <inheritdoc />
-        public bool TryGetNormalToNearestSurface(out Vector3 normal)
+        bool IMixedRealityNearPointer.TryGetNormalToNearestSurface(out Vector3 normal)
         {
-            normal = closestNormal;
+            normal = (closestProximityTouchable != null) ? closestProximityTouchable.Forward : Vector3.forward;
             return true;
         }
     }
