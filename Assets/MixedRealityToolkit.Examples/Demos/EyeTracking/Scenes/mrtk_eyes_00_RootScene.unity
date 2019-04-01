@@ -204,8 +204,8 @@ GameObject:
   - component: {fileID: 256863742}
   - component: {fileID: 256863741}
   - component: {fileID: 256863744}
-  - component: {fileID: 256863739}
   - component: {fileID: 256863738}
+  - component: {fileID: 256863740}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -251,7 +251,7 @@ MonoBehaviour:
   minHeadVelocityThreshold: 0.5
   maxHeadVelocityThreshold: 2
   preferEyeTracking: 1
---- !u!114 &256863739
+--- !u!114 &256863740
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -260,9 +260,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 256863736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a21b486d0bb44444b1418aaa38b44de, type: 3}
+  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!81 &256863741
 AudioListener:
   m_ObjectHideFlags: 0
