@@ -116,7 +116,7 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 ---
 
 <video width="600" controls="controls">
-  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_SingleHandInteraction.mp4"></source>
+  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_OneHandManipulation.mp4"></source>
 </video>
 
 ## Two-Hand Manipulation
@@ -134,7 +134,7 @@ For manipulating objects with two hands at the same time the persistent hand mod
 ---
 
 <video width="600" controls="controls">
-  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_TwoHandInteraction.mp4"></source>
+  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_TwoHandManipulation.mp4"></source>
 </video>
 
 ## GGV Interaction
@@ -149,5 +149,5 @@ For manipulating objects with two hands at the same time the persistent hand mod
 ---
 
 <video width="600" controls="controls">
-  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_GGVInteraction.mp4"></source>
+  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_GGVManipulation.mp4"></source>
 </video>
