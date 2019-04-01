@@ -263,6 +263,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
+            InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
+            InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
 
             interactionmanagerStates = InteractionManager.GetCurrentReading();
 
@@ -375,6 +377,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
+            InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
+            InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
 
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
@@ -419,16 +423,73 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     break;
             }
 
-            var pointers = interactionSource.supportsPointing ? RequestPointers(typeof(WindowsMixedRealityController), controllingHand) : null;
-            string nameModifier = controllingHand == Handedness.None ? interactionSource.kind.ToString() : controllingHand.ToString();
-            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers);
-            var detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
-
-            if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityController)))
+            IMixedRealityPointer[] pointers = null;
+            InputSourceType inputSourceType = InputSourceType.Other;
+            switch(interactionSource.kind)
             {
-                // Controller failed to be setup correctly.
-                // Return null so we don't raise the source detected.
-                return null;
+                case InteractionSourceKind.Controller:
+                    pointers = RequestPointers(SupportedControllerType.WindowsMixedReality, controllingHand);
+                    inputSourceType = InputSourceType.Controller;
+                    break;
+                case InteractionSourceKind.Hand:
+                    if(interactionSource.supportsPointing)
+                    {
+                        pointers = RequestPointers(SupportedControllerType.ArticulatedHand, controllingHand);
+                    }
+                    else
+                    {
+                        pointers = RequestPointers(SupportedControllerType.GGVHand, controllingHand);
+                    }
+                    inputSourceType = InputSourceType.Hand;
+                    break;
+                case InteractionSourceKind.Voice:
+                    // set to null: when pointers are null we use head gaze, which is what we want for voice
+                    break;
+                default:
+                    Debug.LogError($"Unknown new type in WindowsMixedRealityDeviceManager {interactionSource.kind}, make sure to add a SupportedControllerType");
+                    break;
+
+            }
+
+            string nameModifier = controllingHand == Handedness.None ? interactionSource.kind.ToString() : controllingHand.ToString();
+            var inputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers, inputSourceType);
+
+            WindowsMixedRealityController detectedController;
+            if (interactionSource.kind == InteractionSourceKind.Hand)
+            {
+                if (interactionSource.supportsPointing)
+                {
+                    detectedController = new WindowsMixedRealityArticulatedHand(TrackingState.NotTracked, controllingHand, inputSource);
+                    if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityArticulatedHand), inputSourceType))
+                    {
+                        // Controller failed to be setup correctly.
+                        // Return null so we don't raise the source detected.
+                        return null;
+                    }
+                }
+                else
+                {
+                    detectedController = new WindowsMixedRealityGGVHand(TrackingState.NotTracked, controllingHand, inputSource);
+                    if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityGGVHand), inputSourceType))
+                    {
+                        // Controller failed to be setup correctly.
+                        // Return null so we don't raise the source detected.
+                        return null;
+                    }
+
+                }
+
+            }
+            else
+            {
+                detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
+
+                if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityController), inputSourceType))
+                {
+                    // Controller failed to be setup correctly.
+                    // Return null so we don't raise the source detected.
+                    return null;
+                }
             }
 
             for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
@@ -451,6 +512,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (controller != null)
             {
                 MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+
+                foreach (IMixedRealityPointer pointer in controller.InputSource.Pointers)
+                {
+                    if (pointer != null)
+                    {
+                        pointer.Controller = null;
+                    }
+                }
             }
 
             activeControllers.Remove(interactionSource.id);
@@ -485,6 +554,30 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             controller?.UpdateController(args.state);
+        }
+
+        /// <summary>
+        /// SDK Interaction Source Pressed Event handler. Used only for voice.
+        /// </summary>
+        /// <param name="args">SDK source pressed event arguments</param>
+        private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs args)
+        {
+            if (args.state.source.kind == InteractionSourceKind.Voice)
+            {
+                GetController(args.state.source)?.UpdateController(args.state);
+            }
+        }
+
+        /// <summary>
+        /// SDK Interaction Source Released Event handler. Used only for voice.
+        /// </summary>
+        /// <param name="args">SDK source released event arguments</param>
+        private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs args)
+        {
+            if (args.state.source.kind == InteractionSourceKind.Voice)
+            {
+                GetController(args.state.source)?.UpdateController(args.state);
+            }
         }
 
         /// <summary>

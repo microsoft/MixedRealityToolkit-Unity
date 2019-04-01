@@ -61,6 +61,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion MonoBehaviour Implementation
 
+        #region SpeechInputHandler public methods
+        public void AddResponse(string keyword, UnityAction action)
+        {
+            string lowerKeyword = keyword.ToLower();
+            if (!responses.ContainsKey(lowerKeyword))
+            {
+                responses[lowerKeyword] = new UnityEvent();
+            }
+
+            responses[lowerKeyword].AddListener(action);
+        }
+
+        public void RemoveResponse(string keyword, UnityAction action)
+        {
+            string lowerKeyword = keyword.ToLower();
+            if(responses.ContainsKey(lowerKeyword))
+            {
+                responses[lowerKeyword].RemoveListener(action);
+            }
+        }
+        #endregion SpeechInputHandler public methods
+
         #region IMixedRealitySpeechHandler Implementation
 
         void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
@@ -68,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UnityEvent keywordResponse;
 
             // Check to make sure the recognized keyword exists in the methods dictionary, then invoke the corresponding method.
-            if (enabled && responses.TryGetValue(eventData.RecognizedText.ToLower(), out keywordResponse))
+            if (enabled && responses.TryGetValue(eventData.Command.Keyword.ToLower(), out keywordResponse))
             {
                 keywordResponse.Invoke();
             }
