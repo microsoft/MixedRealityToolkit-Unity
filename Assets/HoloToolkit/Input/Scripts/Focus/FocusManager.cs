@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if UNITY_2017_4_OR_NEWER && !UNITY_2017_4_0 && !UNITY_2017_4_1 && !UNITY_2017_4_2
+#define UNITY_2017_4_3_OR_NEWER
+#endif
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -639,7 +643,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
                 newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;
+                #if UNITY_2017_4_3_OR_NEWER
+                newUiRaycastPosition.z = uiRaycastResult.distance + UIRaycastCamera.nearClipPlane;
+                #else
                 newUiRaycastPosition.z = uiRaycastResult.distance;
+                #endif
 
                 Vector3 worldPos = UIRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
 
@@ -686,7 +694,11 @@ namespace HoloToolkit.Unity.InputModule
                         }
                         else if (threeDLayerIndex == uiLayerIndex)
                         {
+                            #if UNITY_2017_4_3_OR_NEWER
+                            if (pointer.LastRaycastHit.distance > uiRaycastResult.distance + UIRaycastCamera.nearClipPlane)
+                            #else
                             if (pointer.LastRaycastHit.distance > uiRaycastResult.distance)
+                            #endif
                             {
                                 overridePhysicsRaycast = true;
                             }
@@ -694,7 +706,11 @@ namespace HoloToolkit.Unity.InputModule
                     }
                     else
                     {
+                        #if UNITY_2017_4_3_OR_NEWER
+                        if (pointer.LastRaycastHit.distance > uiRaycastResult.distance + UIRaycastCamera.nearClipPlane)
+                        #else
                         if (pointer.LastRaycastHit.distance > uiRaycastResult.distance)
+                        #endif
                         {
                             overridePhysicsRaycast = true;
                         }
