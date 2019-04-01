@@ -33118,6 +33118,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.Toolkit.UI.ToolTip.OnEnable
   nameWithType: ToolTip.OnEnable
+- uid: Microsoft.MixedReality.Toolkit.UI.ToolTip.OnValidate
+  name: OnValidate()
+  href: api/Microsoft.MixedReality.Toolkit.UI.ToolTip.html#Microsoft_MixedReality_Toolkit_UI_ToolTip_OnValidate
+  commentId: M:Microsoft.MixedReality.Toolkit.UI.ToolTip.OnValidate
+  fullName: Microsoft.MixedReality.Toolkit.UI.ToolTip.OnValidate()
+  nameWithType: ToolTip.OnValidate()
+- uid: Microsoft.MixedReality.Toolkit.UI.ToolTip.OnValidate*
+  name: OnValidate
+  href: api/Microsoft.MixedReality.Toolkit.UI.ToolTip.html#Microsoft_MixedReality_Toolkit_UI_ToolTip_OnValidate_
+  commentId: Overload:Microsoft.MixedReality.Toolkit.UI.ToolTip.OnValidate
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.Toolkit.UI.ToolTip.OnValidate
+  nameWithType: ToolTip.OnValidate
 - uid: Microsoft.MixedReality.Toolkit.UI.ToolTip.Pivot
   name: Pivot
   href: api/Microsoft.MixedReality.Toolkit.UI.ToolTip.html#Microsoft_MixedReality_Toolkit_UI_ToolTip_Pivot
