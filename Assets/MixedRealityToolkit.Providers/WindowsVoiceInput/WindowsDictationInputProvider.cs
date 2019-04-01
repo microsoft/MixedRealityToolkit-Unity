@@ -295,6 +295,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             textSoFar = null;
             dictationResult = string.Empty;
         }
-    }
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+    }
 }

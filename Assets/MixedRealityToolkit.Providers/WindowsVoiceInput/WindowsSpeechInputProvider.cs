@@ -3,12 +3,12 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using UnityEngine;
-using UInput = UnityEngine.Input;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+using System;
+using UnityEngine;
 using UnityEngine.Windows.Speech;
+using UInput = UnityEngine.Input;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
 namespace Microsoft.MixedReality.Toolkit.Windows.Input
@@ -24,9 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsSpeechInputProvider(
-            IMixedRealityServiceRegistrar registrar, 
-            string name = null, 
-            uint priority = DefaultPriority, 
+            IMixedRealityServiceRegistrar registrar,
+            string name = null,
+            uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
 
         /// <summary>
@@ -137,6 +137,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 }
             }
         }
-    }
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+    }
 }
