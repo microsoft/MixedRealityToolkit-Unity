@@ -5,14 +5,15 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 #if WINDOWS_UWP
 using Windows.Perception;
-using Windows.UI.Input.Spatial;
 using Windows.Perception.People;
+using Windows.UI.Input.Spatial;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
@@ -55,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         public override void Initialize()
         {
-            if (Application.isPlaying)
+            if (Application.isPlaying && WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
                 AskForETPermission();
                 ReadProfile();
@@ -65,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public override void Update()
         {
 #if WINDOWS_UWP
-            if (WindowsMixedRealityUtilities.SpatialCoordinateSystem == null)
+            if (WindowsMixedRealityUtilities.SpatialCoordinateSystem == null || !WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
                 return;
             }
