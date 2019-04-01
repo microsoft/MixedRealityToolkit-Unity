@@ -7,7 +7,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class HandJointService : BaseDeviceManager, IMixedRealityHandJointService
+    [MixedRealityDataProvider(
+        typeof(IMixedRealityInputSystem),
+        (SupportedPlatforms)(-1), // All platforms supported by Unity
+        "Hand Joint Service")]
+    public class HandJointService : BaseInputDeviceManager, IMixedRealityHandJointService
     {
         private IMixedRealityHand leftHand;
         private IMixedRealityHand rightHand;
@@ -15,13 +19,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Dictionary<TrackedHandJoint, Transform> leftHandFauxJoints = new Dictionary<TrackedHandJoint, Transform>();
         private Dictionary<TrackedHandJoint, Transform> rightHandFauxJoints = new Dictionary<TrackedHandJoint, Transform>();
 
-        #region BaseDeviceManager Implementation
+        #region BaseInputDeviceManager Implementation
 
         public HandJointService(
             IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
+            MixedRealityInputSystemProfile inputSystemProfile,
+            Transform playspace,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
 
         /// <inheritdoc />
         public override void LateUpdate()
@@ -104,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion BaseDeviceManager Implementation
+        #endregion BaseInputDeviceManager Implementation
 
         #region IMixedRealityHandJointService Implementation
 
