@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 joystickName.Contains("OpenVR") ||
                 joystickName.Contains("Spatial"))
             {
-                return SupportedControllerType.None;
+                return 0;
             }
 
             if (joystickName.StartsWith("Xbox"))
