@@ -24,6 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Dictionary<string, Type> TypeMap = new Dictionary<string, Type>();
         private static readonly int ControlHint = typeof(SystemTypeReferencePropertyDrawer).GetHashCode();
         private static readonly GUIContent TempContent = new GUIContent();
+        private static readonly Color enabledColor = Color.white;
+        private static readonly Color disabledColor = Color.Lerp(Color.white, Color.clear, 0.5f);
 
         #region Type Filtering
 
@@ -211,9 +213,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             try
             {
+                Color restoreColor = GUI.color;
                 bool restoreShowMixedValue = EditorGUI.showMixedValue;
                 bool typeResolved = string.IsNullOrEmpty(property.stringValue) || ResolveType(property.stringValue) != null;
                 EditorGUI.showMixedValue = property.hasMultipleDifferentValues;
+
+                GUI.color = enabledColor;
 
                 if (typeResolved)
                 {
@@ -221,16 +226,40 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
                 else
                 {
-                    Rect dropdownPosition = new Rect(position.x, position.y, position.width - 90, position.height);
-                    Rect buttonPosition = new Rect(position.width - 75, position.y, 75, position.height);
-
-                    property.stringValue = DrawTypeSelectionControl(dropdownPosition, label, property.stringValue, filter, false);
-                    if (GUI.Button(buttonPosition, "Try Repair", EditorStyles.miniButton))
+                    if (SelectRepairedTypeWindow.WindowOpen)
                     {
-                        property.stringValue = TryRepairMissingReference(property.stringValue, filter);
+                        GUI.color = disabledColor;
+                        DrawTypeSelectionControl(position, label, property.stringValue, filter, false);
+                    }
+                    else
+                    {
+                        Rect dropdownPosition = new Rect(position.x, position.y, position.width - 90, position.height);
+                        Rect buttonPosition = new Rect(position.width - 75, position.y, 75, position.height);
+
+                        property.stringValue = DrawTypeSelectionControl(dropdownPosition, label, property.stringValue, filter, false);
+                        if (GUI.Button(buttonPosition, "Try Repair", EditorStyles.miniButton))
+                        {
+                            string typeNameWithoutAssembly = property.stringValue.Split(new string[] { "," }, StringSplitOptions.None)[0];
+                            string typeNameWithoutNamespace = System.Text.RegularExpressions.Regex.Replace(typeNameWithoutAssembly, @"[.\w]+\.(\w+)", "$1");
+
+                            Type[] repairedTypeOptions = FindTypesByName(typeNameWithoutNamespace, filter);
+                            if (repairedTypeOptions.Length > 1)
+                            {
+                                SelectRepairedTypeWindow.Display(repairedTypeOptions, property);
+                            }
+                            else if (repairedTypeOptions.Length > 0)
+                            {
+                                property.stringValue = repairedTypeOptions[0].AssemblyQualifiedName;
+                            }
+                            else
+                            {
+                                EditorUtility.DisplayDialog("No types found", "No types with the name '" + typeNameWithoutNamespace + "' were found.", "OK");
+                            }
+                        }
                     }
                 }
 
+                GUI.color = restoreColor;
                 EditorGUI.showMixedValue = restoreShowMixedValue;
             }
             finally
@@ -239,32 +268,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        private static string TryRepairMissingReference(string classRef, SystemTypeAttribute filter)
+        private static Type[] FindTypesByName(string typeName, SystemTypeAttribute filter)
         {
-            string typeNameWithoutAssembly = classRef.Split(new string[] { "," }, StringSplitOptions.None)[0];
-            string typeNameWithoutNamespace = System.Text.RegularExpressions.Regex.Replace(typeNameWithoutAssembly, @"[.\w]+\.(\w+)", "$1");
-
-            Type repairedType;
-            if (FindTypeByName(typeNameWithoutNamespace, filter, out repairedType))
-            {
-                classRef = repairedType.AssemblyQualifiedName;
-            }
-
-            return classRef;
-        }
-
-        private static bool FindTypeByName(string typeName, SystemTypeAttribute filter, out Type type)
-        {
-            type = null;
+            List<Type> types = new List<Type>();
             foreach (Type t in GetFilteredTypes(filter))
             {
                 if (t.Name.Equals(typeName))
                 {
-                    type = t;
-                    break;
+                    types.Add(t);
                 }
             }
-            return type != null;
+            return types.ToArray();
         }
 
         private static void DisplayDropDown(Rect position, List<Type> types, Type selectedType, TypeGrouping grouping)
@@ -338,5 +352,54 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             DrawTypeSelectionControl(position, property.FindPropertyRelative("reference"), label, attribute as SystemTypeAttribute);
         }
+
+        #region popup window definition
+
+        public class SelectRepairedTypeWindow : EditorWindow
+        {
+            private static Type[] repairedTypeOptions;
+            private static SerializedProperty property;
+            private static SelectRepairedTypeWindow window;
+
+            public static bool WindowOpen { get { return window != null; } }
+
+            public static void Display (Type[] repairedTypeOptions, SerializedProperty property)
+            {
+                if (window != null)
+                    window.Close();
+
+                SelectRepairedTypeWindow.repairedTypeOptions = repairedTypeOptions;
+                SelectRepairedTypeWindow.property = property;
+
+                window = ScriptableObject.CreateInstance(typeof(SelectRepairedTypeWindow)) as SelectRepairedTypeWindow;
+                window.titleContent = new GUIContent("Select repaired type");
+                window.ShowUtility();
+            }
+
+            private void OnGUI()
+            {
+                for (int i = 0; i < repairedTypeOptions.Length; i++)
+                {
+                    if (GUILayout.Button(repairedTypeOptions[i].FullName, EditorStyles.miniButton))
+                    {
+                        property.stringValue = repairedTypeOptions[i].AssemblyQualifiedName;
+                        property.serializedObject.ApplyModifiedProperties();
+                        Close();
+                    }
+                }
+            }
+
+            private void OnDisable()
+            {
+                window = null;
+            }
+
+            private void OnInspectorUpdate()
+            {
+                Repaint();
+            }
+        }
+
+        #endregion
     }
 }
