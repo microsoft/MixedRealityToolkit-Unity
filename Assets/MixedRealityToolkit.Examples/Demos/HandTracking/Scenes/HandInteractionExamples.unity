@@ -10925,8 +10925,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210487fc9a02cd049bdd702b7cb8b977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isHandMeshVisible: 0
-  isHandJointVisible: 0
+  isHandMeshVisible: 1
+  isHandJointVisible: 1
 --- !u!1 &1013338887 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 329340111926477333, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
