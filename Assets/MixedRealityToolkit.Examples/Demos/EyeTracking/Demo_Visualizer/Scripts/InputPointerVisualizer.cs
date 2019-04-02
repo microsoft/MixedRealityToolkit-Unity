@@ -29,8 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             ShowNone
         }
 
-        public InputSourceType inputType = InputSourceType.Eyes;
-        public bool useLiveInputStream = false;
+        [SerializeField]
+        private bool useLiveInputStream = false;
+
         private bool show_Origins = false;
         private bool show_Destinations = false;
         //private bool show_LinkO2O = false; // Origin to origin
@@ -40,20 +41,28 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         public VisModes ShowVisMode;
         private VisModes _showVisMode; // Using a private showTrace to detect when the item is changed in the Editor to trigger an vis update
 
-        private int NrOfTraceSamples;
-        public bool onlyShowForHitTargets = false;
+        [SerializeField]
+        private bool onlyShowForHitTargets = false;
 
+        [SerializeField]
         [Tooltip("Template for visualizing vector origin, e.g., a colored sphere.")]
-        public ParticleHeatmap tmplt_Origins;
-        [Tooltip("Template for visualizing hit pos, e.g., a colored sphere.")]
-        public ParticleHeatmap tmplt_Destinations;
+        private ParticleHeatmap tmplt_Origins = null;
 
+        [SerializeField]
+        [Tooltip("Template for visualizing hit pos, e.g., a colored sphere.")]
+        private ParticleHeatmap tmplt_Destinations = null;
+
+        [SerializeField]
         [Tooltip("Template for visualizing connecting lines between vector origins - Should be a line renderer.")]
-        public GameObject tmplt_LinkOrigToOrig;
+        private GameObject tmplt_LinkOrigToOrig = null;
+
+        [SerializeField]
         [Tooltip("Template for visualizing connecting lines between vector destinations - Should be a line renderer.")]
-        public GameObject tmplt_LinkDestToDest;
+        private GameObject tmplt_LinkDestToDest = null;
+
+        [SerializeField]
         [Tooltip("Template for visualizing the vector between vector origin and destination - Should be a line renderer.")]
-        public GameObject tmplt_LinkOrigToDest;
+        private GameObject tmplt_LinkOrigToDest = null;
 
         [Tooltip("Distance to default to in case of no hit target.")]
         public float cursorDist = 2f;
@@ -76,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         private int currentItemIndex = 0;
         private VisModes rememberState = VisModes.ShowOnlyDestinations;
         private bool isPaused = false;
+        private int numberOfTraceSamples;
 
         void Start()
         {
@@ -93,12 +103,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         public void ResetVisualizations()
         {
             ResetVis();
-            Debug.Log(">>INIT VIS ARRAY " + NrOfTraceSamples);
-            InitPointClouds(ref samples_Origins, tmplt_Origins, NrOfTraceSamples);
-            InitPointClouds(ref samples_Destinations, tmplt_Destinations, NrOfTraceSamples);
-            InitVisArrayObj(ref samples_LinkOrigToOrig, tmplt_LinkOrigToOrig, NrOfTraceSamples);
-            InitVisArrayObj(ref samples_LinkDestToDest, tmplt_LinkDestToDest, NrOfTraceSamples);
-            InitVisArrayObj(ref samples_LinkOrigToDest, tmplt_LinkOrigToDest, NrOfTraceSamples);
+            Debug.Log(">>INIT VIS ARRAY " + numberOfTraceSamples);
+            InitPointClouds(ref samples_Origins, tmplt_Origins, numberOfTraceSamples);
+            InitPointClouds(ref samples_Destinations, tmplt_Destinations, numberOfTraceSamples);
+            InitVisArrayObj(ref samples_LinkOrigToOrig, tmplt_LinkOrigToOrig, numberOfTraceSamples);
+            InitVisArrayObj(ref samples_LinkDestToDest, tmplt_LinkDestToDest, numberOfTraceSamples);
+            InitVisArrayObj(ref samples_LinkOrigToDest, tmplt_LinkOrigToDest, numberOfTraceSamples);
         }
 
         private void InitPointClouds(ref ParticleHeatmap pointCloud, ParticleHeatmap templateParticleSystem, int nrOfSamples)
@@ -122,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 array = new GameObject[nrOfSamples];
 
                 // Instantiate copies of the provided template at (0,0,0) - later we simply change the position
-                for (int i = 0; i < NrOfTraceSamples; i++)
+                for (int i = 0; i < numberOfTraceSamples; i++)
                 {
                     array[i] = Instantiate(template, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
                     array[i].transform.SetParent(transform, false);
@@ -265,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         public void UpdateDataVis(Ray cursorRay)
         {
             currentItemIndex++;
-            if (currentItemIndex >= NrOfTraceSamples)
+            if (currentItemIndex >= numberOfTraceSamples)
                 currentItemIndex = 0;
 
             try
@@ -412,10 +422,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         public int AmountOfSamples
         {
-            get { return NrOfTraceSamples; }
+            get { return numberOfTraceSamples; }
             set
             {
-                NrOfTraceSamples = value;
+                numberOfTraceSamples = value;
                 ResetVisualizations();
             }
         }

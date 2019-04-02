@@ -28,9 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         private bool is_a_valid_target = true;
 
-        /// <summary>
-        /// Associated TargetGridIterator to check whether the currently selected target is the correct one.
-        /// </summary>
+        [Tooltip("Associated TargetGridIterator to check whether the currently selected target is the correct one.")]
         [SerializeField]
         private TargetGroupIterator targetIterator = null;
 
@@ -41,14 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void SetUpAudio()
         {
-            if (audioSource == null)
-            {
-                audioSource = gameObject.AddComponent<AudioSource>();
-            }
-            else
-            {
-                audioSource = gameObject.GetComponent<AudioSource>();
-            }
+            audioSource = gameObject.EnsureComponent<AudioSource>();
 
             audioSource.playOnAwake = false;
             audioSource.enabled = true;

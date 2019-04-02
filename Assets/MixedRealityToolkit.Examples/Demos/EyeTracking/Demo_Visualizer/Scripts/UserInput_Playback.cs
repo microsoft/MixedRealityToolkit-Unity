@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         [SerializeField]
         private DrawOnTexture[] heatmapRefs = null; //TODO: How to have one heatmap handler?
 
-        private StreamReader sReader;
+        private StreamReader streamReader;
         private List<string> loggedLines;
 
 #if WINDOWS_UWP

@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         protected override void Start()
         {
             // Assigning values to base PanZoom class
-            textureRederer = RendererOfTextureToBeNavigated;
+            textureRenderer = RendererOfTextureToBeNavigated;
 
             ZoomAcceleration = Zoom_Acceleration;
             ZoomSpeedMax = Zoom_SpeedMax;
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         protected override void Update()
         {
-            UpdateValues(ref textureRederer, RendererOfTextureToBeNavigated);
+            UpdateValues(ref textureRenderer, RendererOfTextureToBeNavigated);
 
             UpdateValues(ref ZoomAcceleration, Zoom_Acceleration);
             UpdateValues(ref ZoomSpeedMax, Zoom_SpeedMax);

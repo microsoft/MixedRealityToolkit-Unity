@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         //private bool isWorldLocked = true;
 
         private TextMesh myTextMesh;
-        private DateTime startedT;
+        private DateTime startedTime;
 
         #endregion Variable declarations
 
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 visualFeedbackTemplate.SetActive(true);
 
                 // Start tracking the show time 
-                startedT = DateTime.Now;
+                startedTime = DateTime.Now;
             }
         }
 
@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 //}
 
                 // Hide visual feedback once we showed it long enough
-                if ((DateTime.Now - startedT).TotalSeconds > maxShowtimeInSeconds)
+                if ((DateTime.Now - startedTime).TotalSeconds > maxShowtimeInSeconds)
                 {
                     visualFeedbackTemplate.SetActive(false);
                 }

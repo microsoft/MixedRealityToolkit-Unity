@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// </summary>
     public class PanZoomBase_Texture : PanZoomBase
     {
-        protected Renderer textureRederer = null;
+        protected Renderer textureRenderer = null;
 
         private const string DefaultTextureShaderProperty = "_MainTex";
         private int textureTargetID = Shader.PropertyToID(DefaultTextureShaderProperty);
@@ -28,12 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         [SerializeField]
         private float DefaultAspectRatio = 1.0f;
+
         private float aspectRatio = -1;
 
-        private bool IsValid
-        {
-            get { return ((textureRederer != null) && (textureRederer.enabled)); }
-        }
+        private bool IsValid => (textureRenderer != null) && textureRenderer.enabled;
 
         public override void Initialize()
         {
@@ -55,13 +53,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                 //# Compute and set new scale  
                 ZoomStop();
-                scale = new Vector2(textureRederer.transform.localScale.x / aspectRatio, 1f);
-                textureRederer.materials[0].SetTextureScale(textureTargetID, scale);
+                scale = new Vector2(textureRenderer.transform.localScale.x / aspectRatio, 1f);
+                textureRenderer.materials[0].SetTextureScale(textureTargetID, scale);
 
                 //# Update new values for original ratio
                 originalRatio = new Vector3(scale.x, scale.y);
 
-                BoxCollider bcoll = textureRederer.gameObject.GetComponent<BoxCollider>();
+                BoxCollider bcoll = textureRenderer.gameObject.GetComponent<BoxCollider>();
                 if (bcoll != null)
                 {
                     origColliderSize = bcoll.size;
@@ -126,8 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 }
 
                 // Assign new values
-                textureRederer.materials[0].SetTextureOffset(textureTargetID, offset); // Pan
-                textureRederer.materials[0].SetTextureScale(textureTargetID, scale); // Zoom                 
+                textureRenderer.materials[0].SetTextureOffset(textureTargetID, offset); // Pan
+                textureRenderer.materials[0].SetTextureScale(textureTargetID, scale); // Zoom                 
             }
         }
 

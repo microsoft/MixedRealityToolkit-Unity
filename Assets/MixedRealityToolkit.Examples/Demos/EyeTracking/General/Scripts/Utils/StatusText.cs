@@ -22,7 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         }
         #endregion
 
-        public TextMesh status;
+        [SerializeField]
+        private TextMesh status = null;
 
         public void Start()
         {

@@ -15,10 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         internal RectTransform viewportRectTransf = null;
         internal bool isScrollText = false;
 
-        private bool IsValid
-        {
-            get { return (navRectTransf != null); }
-        }
+        private bool IsValid => navRectTransf != null;
 
         public override void Initialize()
         {
