@@ -71,8 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         [SerializeField]
         private DistorterGravity gravityDistorter = null;
 
-        BaseMixedRealityLineDataProvider
-
         /// <summary>
         /// The Gravity Distorter that is affecting the <see cref="Utilities.BaseMixedRealityLineDataProvider"/> attached to this pointer.
         /// </summary>
