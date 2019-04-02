@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Returns the pan speed.
         /// </summary>
-        /// <param name="uvCursorVal"> Normalized cursor position in the hit box. Center is assumed to be at [-0.5, 0.5].
+        /// <param name="uvCursorVal">Normalized cursor position in the hit box. Center is assumed to be at [-0.5, 0.5].</param>
         /// <param name="maxSpeed"></param>
         /// <param name="minDistThresh"></param>
         /// <returns></returns>

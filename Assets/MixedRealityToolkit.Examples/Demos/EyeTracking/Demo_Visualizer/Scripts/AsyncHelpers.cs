@@ -11,9 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
     public static class AsyncHelpers
     {
         /// <summary>
-        /// Execute's an async Task<T> method which has a void return value synchronously
+        /// Execute's an async Task method which has a void return value synchronously
         /// </summary>
-        /// <param name="task">Task<T> method to execute</param>
+        /// <param name="task">Task method to execute</param>
         public static void RunSync(Func<Task> task)
         {
             var oldContext = SynchronizationContext.Current;
@@ -41,10 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         }
 
         /// <summary>
-        /// Execute's an async Task<T> method which has a T return type synchronously
+        /// Execute's an async Task<typeparamref name="T"/> method which has a T return type synchronously
         /// </summary>
         /// <typeparam name="T">Return Type</typeparam>
-        /// <param name="task">Task<T> method to execute</param>
+        /// <param name="task">Task<typeparamref name="T"/> method to execute</param>
         /// <returns></returns>
         public static T RunSync<T>(Func<Task<T>> task)
         {
