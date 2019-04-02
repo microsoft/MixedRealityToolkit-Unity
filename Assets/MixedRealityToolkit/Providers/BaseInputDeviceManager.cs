@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Base input device manager to inherit from.
     /// </summary>
-    public class BaseInputDeviceManager : BaseDataProvider, IMixedRealityInputDeviceManager
+    public abstract class BaseInputDeviceManager : BaseDataProvider, IMixedRealityInputDeviceManager
     {
         /// <summary>
         /// Constructor.
