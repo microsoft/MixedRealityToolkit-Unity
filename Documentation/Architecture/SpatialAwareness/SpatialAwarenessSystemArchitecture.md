@@ -51,7 +51,7 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 
 The default spatial awareness system is a good example for developers looking to create their own implementation or to learn more about how the system works. It is provided as part of the Mixed Reality Toolkit Spatial Awareness service package. 
 
-The latest released code is available on [GitHub](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development_hl2/Assets/MixedRealityToolkit.Services/SpatialAwarenessSystem/MixedRealitySpatialAwarenessSystem.cs).
+The latest released code is available on [GitHub](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/SpatialAwarenessSystem/MixedRealitySpatialAwarenessSystem.cs).
 
 #### Class Documentation
 
