@@ -18,10 +18,12 @@ using Windows.UI.Input.Spatial;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
-    [MixedRealityExtensionService(
+    [MixedRealityDataProvider(
+        typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsUniversal,
+        "Windows Mixed Reality Eye Gaze Provider",
         "Profiles/DefaultMixedRealityEyeTrackingProfile.asset", "MixedRealityToolkit.SDK")]
-    public class WindowsMixedRealityEyeGazeDataProvider : BaseExtensionService, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider
+    public class WindowsMixedRealityEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider
     {
         /// <summary>
         /// Constructor.
@@ -31,9 +33,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsMixedRealityEyeGazeDataProvider(
             IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
+            MixedRealityInputSystemProfile inputSystemProfile,
+            Transform playspace,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
 
         public bool SmoothEyeTracking { get; set; } = false;
 
