@@ -1,6 +1,10 @@
 # Input Providers
 
-We currently support the following input providers with their corresponding controllers:
+Input providers are registered in the **Registered Service Providers Profile**, found in the Mixed Reality Toolkit component:
+
+<img src="../../External/ReadMeImages/Input/RegisteredServiceProviders.png" style="max-width:100%;">
+
+These are the input providers available out of the box, together with their corresponding controllers:
 
 Input Provider | Controllers
 --- | ---
@@ -15,6 +19,4 @@ Windows Speech Input Provider | *
 
 \* Dictation and Speech providers don't create any controllers, they raise their own specialized input events directly.
 
-<img src="../../External/ReadMeImages/Input/RegisteredServiceProviders.png" style="max-width:100%;">
-
-<sup>Registered Service Providers Profile. Found in the Mixed Reality Toolkit component, is the place to go to add or remove input providers.</sup>
+Custom input providers can be created implementing the [`IMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityDeviceManager) interface.

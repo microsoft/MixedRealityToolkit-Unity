@@ -33,17 +33,29 @@
     - name: Service Provider
       href: MixedRealityConfigurationGuide.md
     - name: Input
-      href: TODO.md
+      href: Input/Overview.md
       items:
+      - name: Input Providers
+        href: Input/InputProviders.md
+      - name: Input Events
+        href: Input/InputEvents.md
+      - name: Input Actions
+        href: Input/InputActions.md
+      - name: Controllers
+        href: Input/Controllers.md
+      - name: Pointers
+        href: Input/Pointers.md
+      - name: Gestures
+        href: Input/Gestures.md
+      - name: Speech
+        href: Input/Speech.md
+      - name: Dictation
+        href: Input/Dictation.md
       - name: Hands
-        href: TODO.md
-      - name: Voice
         href: TODO.md
       - name: Eye
         href: TODO.md
       - name: Gaze
-        href: TODO.md
-      - name: Controllers
         href: TODO.md
     - name: Recommended Interaction Models
       href: TODO.md
