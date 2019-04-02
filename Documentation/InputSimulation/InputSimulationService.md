@@ -11,12 +11,19 @@ Users can use a conventional keyboard and mouse combination to control simulated
 
 Input simulation is enabled by default in MRTK.
 
-Input simulation is an optional [Mixed Reality service](../../External/Documentation/MixedRealityServices.md). It can be added or removed in to the [Registered Service Providers profile](../TODO.md). Select _Microsoft.MixedReality.Toolkit.Input > InputSimulationService_ as the __Component Type__. The __Runtime Platform__ should always be _Windows Editor_ since the service depends on keyboard and mouse input. The Input Simulation Service has its own profile linked under __Configuration Profile__.
+Input simulation is an optional [Mixed Reality service](../../External/Documentation/MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../TODO.md).
+* __Type__ must be _Microsoft.MixedReality.Toolkit.Input > InputSimulationService_.
+* __Platform(s)__ should always be _Windows Editor_ since the service depends on keyboard and mouse input.
+* __Profile__ has all settings for input simulation.
 
-| __Warning__: Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type _Input Simulation_ or it will not work! |
-| --- |
+  | __Warning__: Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type _Input Simulation_ or it will not work! |
+  | --- |
 
-![Default Input Simulation service settings](../../External/Documentation/Images/MRTK_InputSimulation_RegisteredServicesEnable.png)
+![Input System Data Providers](../../External/Documentation/Images/MRTK_InputSimulation_InputSystemDataProviders.png)
+
+Open the linked profile to access settings for input simulation.
+
+![Input System Data Providers](../../External/Documentation/Images/MRTK_InputSimulation_InputSimulationProfile.png)
 
 # Camera Control
 
