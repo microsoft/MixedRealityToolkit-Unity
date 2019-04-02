@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
         private bool controllerModelInitialized = false;
-        private bool failedToObtainControllerModel = false;
+        private bool isControllerModelLoaded = false;
 
         #region Update data functions
 
@@ -543,7 +543,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             // Note: Obtaining models from the driver will require access to the InteractionSource.
             // It's unclear whether the interaction source will be available during setup, so we attempt to create
             // the controller model on an input update
-            if (failedToObtainControllerModel ||
+            if (!isControllerModelLoaded ||
                 GetControllerVisualizationProfile() == null ||
                 !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
@@ -607,10 +607,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
             }
 
-            if (gltfGameObject == null)
+            if (gltfGameObject != null)
+            {
+                isControllerModelLoaded = true;
+            }
+            else
             {
                 Debug.LogWarning("Failed to create controller model from driver, defaulting to BaseController behavior");
-                failedToObtainControllerModel = true;
                 TryRenderControllerModel(GetType(), InputSourceType.Controller);
             }
         }
