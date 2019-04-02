@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         [SerializeField]
         private DrawOnTexture[] heatmapRefs = null; //TODO: How to have one heatmap handler?
 
-        private StreamReader sReader;
+        private StreamReader streamReader;
         private List<string> loggedLines;
 
 #if WINDOWS_UWP
@@ -181,17 +181,28 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 #endregion
 
 #region Available player actions
-        public async void Load()
+        public void Load()
         {
 #if UNITY_EDITOR
-            txt_LoadingUpdate.text = "Load: " + FileName;
-            LoadNewFile(FileName);
-#else
-            txt_LoadingUpdate.text = "[Load.1] " + FileName;
-            //bool result = AsyncHelpers.RunSync<bool>(() => UWP_Load());
-            await UWP_Load();
+            LoadInEditor();
+#elif WINDOWS_UWP
+            LoadInUWP();
 #endif
         }
+
+        private void LoadInEditor()
+        {
+            txt_LoadingUpdate.text = "Load: " + FileName;
+            LoadNewFile(FileName);
+        }
+
+#if WINDOWS_UWP
+        private async void LoadInUWP()
+        {
+            txt_LoadingUpdate.text = "[Load.1] " + FileName;
+            await UWP_Load();
+        }
+#endif
 
         private string FileName
         {

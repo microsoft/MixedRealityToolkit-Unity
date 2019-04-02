@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="componentType">The <see cref="SystemType"/> of the observerr.</param>
+        /// <param name="componentType">The <see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/> of the observer.</param>
         /// <param name="componentName">The friendly name of the observer.</param>
         /// <param name="priority">The load priority of the observer.</param>
         /// <param name="runtimePlatform">The runtime platform(s) supported by the observer.</param>

@@ -9,14 +9,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     [RequireComponent(typeof(ParticleSystem))]
     public class ParticleHeatmap : MonoBehaviour
     {
-        //public Material heatmapShader;
-        public Gradient colorGradient;
-        public int maxNumberOfParticles = 100;
-        public float minParticleSize = .01f;
-        public float maxParticleSize = 0.5f;
+        [SerializeField]
+        private Gradient colorGradient = null;
+
+        [SerializeField]
+        private int maxNumberOfParticles = 100;
+
+        [SerializeField]
+        private float minParticleSize = .01f;
+
+        [SerializeField]
+        private float maxParticleSize = 0.5f;
 
         private int particleDecalDataIndex;
-
         private ParticleSystem particleSys;
         private ParticleSystem.EmissionModule emissionModule;
         private List<ParticleHeatmap_ParticleData> particleData;

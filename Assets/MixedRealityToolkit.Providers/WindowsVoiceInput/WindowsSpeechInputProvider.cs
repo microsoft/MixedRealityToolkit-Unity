@@ -3,18 +3,16 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using UnityEngine;
-using UInput = UnityEngine.Input;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+using System;
+using UnityEngine;
 using UnityEngine.Windows.Speech;
+using UInput = UnityEngine.Input;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
 namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
@@ -47,6 +45,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// </summary>
         public IMixedRealityInputSource InputSource = null;
 
+        /// <summary>
+        /// The minimum confidence level for the recognizer to fire an event.
+        /// </summary>
+        public RecognitionConfidenceLevel RecognitionConfidenceLevel { get; set; }
+
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         private KeywordRecognizer keywordRecognizer;
 
         /// <inheritdoc />
@@ -54,8 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             get { return keywordRecognizer != null && keywordRecognizer.IsRunning; }
         }
-
-        public RecognitionConfidenceLevel RecognitionConfidenceLevel { get; set; }
 
         /// <inheritdoc />
         public override void Enable()
@@ -151,6 +153,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 }
             }
         }
-    }
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+    }
 }

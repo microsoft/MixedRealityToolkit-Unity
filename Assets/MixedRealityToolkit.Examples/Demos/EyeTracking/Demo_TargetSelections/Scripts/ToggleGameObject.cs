@@ -7,7 +7,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     public class ToggleGameObject : MonoBehaviour
     {
-        public GameObject objToShowHide;
+        [SerializeField]
+        private GameObject objToShowHide = null;
 
         public void ShowIt()
         {

@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="componentType">The <see cref="SystemType"/> of the data provider.</param>
+        /// <param name="componentType">The <see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/> of the data provider.</param>
         /// <param name="componentName">The friendly name of the data provider.</param>
         /// <param name="priority">The load priority of the data provider.</param>
         /// <param name="runtimePlatform">The runtime platform(s) supported by the data provider.</param>

@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         /// <summary>
         /// When a Touch motion has occurred, this handler receives the event.
+        /// </summary>
         /// <remarks>
         /// A Touch motion is defined as occurring within the bounds of an object (transitive).
         /// </remarks>

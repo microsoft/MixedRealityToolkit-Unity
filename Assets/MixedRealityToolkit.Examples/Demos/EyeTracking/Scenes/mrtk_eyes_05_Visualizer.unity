@@ -868,7 +868,6 @@ MonoBehaviour:
   btn_StartPlayback_Inactive: {fileID: 0}
   btn_StartPlayback: {fileID: 0}
   btn_PausePlayback: {fileID: 0}
-  btn_LoadRecordedData: {fileID: 1144275215}
 --- !u!114 &508103279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2751,12 +2750,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4533479808906774273, guid: 231a4253eb1a74d4e87393459447cc95,
     type: 3}
   m_PrefabInstance: {fileID: 1109923578}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1144275215 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4533479808906774270, guid: 231a4253eb1a74d4e87393459447cc95,
-    type: 3}
-  m_PrefabInstance: {fileID: 918648544}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1172179872
 GameObject:
@@ -5192,7 +5185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 990f7954e360c0d49b7493ae45fe2e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputType: 5
   useLiveInputStream: 0
   ShowVisMode: 0
   onlyShowForHitTargets: 0

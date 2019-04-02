@@ -9,10 +9,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     public class DrawOnTexture : MonoBehaviour
     {
         public Texture2D HeatmapLookUpTable; //TODO: Replace with gradient?
-        //public Color drawBrushColor;
-        public float drawBrushSize; // aka spread
-        public float drawIntensity; // aka amplitude
-        public float minThreshDeltaHeatMap = 0.001f; // Mostly for performance to reduce spreading heatmap for small values.
+
+        [SerializeField]
+        private float drawBrushSize = 2000.0f; // aka spread
+
+        [SerializeField]
+        private float drawIntensity = 15.0f; // aka amplitude
+
+        [SerializeField]
+        private float minThreshDeltaHeatMap = 0.001f; // Mostly for performance to reduce spreading heatmap for small values.
+
         public bool UseLiveInputStream = false;
 
         private Texture2D myDrawTex;

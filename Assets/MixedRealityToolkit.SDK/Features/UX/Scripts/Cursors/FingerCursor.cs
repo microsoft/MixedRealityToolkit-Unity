@@ -212,8 +212,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Tries and get's hand joints based on the current pointer.
         /// </summary>
         /// <param name="joint">The joint type to get.</param>
-        /// <param name="position">Out parameter filled with joint position, otherwise <see cref="Vector3.zero"</param>
-        /// <param name="rotation">Out parameter filled with joint rotation, otherwise <see cref="Quaternion.identity"</param>
+        /// <param name="position">Out parameter filled with joint position, otherwise 
+        /// <see href="https://docs.unity3d.com/ScriptReference/Vector3-zero.html">Vector3.zero</see></param>
+        /// <param name="rotation">Out parameter filled with joint rotation, otherwise 
+        /// <see href="https://docs.unity3d.com/ScriptReference/Quaternion-identity.html">Quaternion.identity</see></param>
         /// <returns></returns>
         protected bool TryGetJoint(TrackedHandJoint joint, out Vector3 position, out Quaternion rotation)
         {

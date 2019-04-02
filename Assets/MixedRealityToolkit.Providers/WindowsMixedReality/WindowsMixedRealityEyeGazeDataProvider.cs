@@ -18,10 +18,12 @@ using Windows.UI.Input.Spatial;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
-    [MixedRealityExtensionService(
+    [MixedRealityDataProvider(
+        typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsUniversal,
+        "Windows Mixed Reality Eye Gaze Provider",
         "Profiles/DefaultMixedRealityEyeTrackingProfile.asset", "MixedRealityToolkit.SDK")]
-    public class WindowsMixedRealityEyeGazeDataProvider : BaseExtensionService, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider
+    public class WindowsMixedRealityEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider
     {
         /// <summary>
         /// Constructor.
@@ -31,9 +33,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsMixedRealityEyeGazeDataProvider(
             IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
+            MixedRealityInputSystemProfile inputSystemProfile,
+            Transform playspace,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
 
         public bool SmoothEyeTracking { get; set; } = false;
 
@@ -58,7 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (Application.isPlaying && WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
+#if WINDOWS_UWP
                 AskForETPermission();
+#endif
                 ReadProfile();
             }
         }
@@ -108,19 +115,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             SmoothEyeTracking = profile.SmoothEyeTracking;
         }
 
+#if WINDOWS_UWP
         /// <summary>
         /// Triggers a prompt to let the user decide whether to permit using eye tracking 
         /// </summary>
-        private void AskForETPermission()
+        private async void AskForETPermission()
         {
-#if WINDOWS_UWP
             if (!askedForETAccessAlready)  // Making sure this is only triggered once
             {
-                EyesPose.RequestAccessAsync();
                 askedForETAccessAlready = true;
+                await EyesPose.RequestAccessAsync();
             }
-#endif // WINDOWS_UWP
         }
+#endif // WINDOWS_UWP
 
         private Ray SmoothGaze(Ray? newGaze)
         {

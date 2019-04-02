@@ -17,7 +17,7 @@ MonoBehaviour:
   enableCameraProfile: 1
   cameraProfile: {fileID: 11400000, guid: de38e71178510674fae830377a72888a, type: 2}
   enableInputSystem: 1
-  inputSystemProfile: {fileID: 11400000, guid: 7762107a4a88a214388b97ea085fba3c, type: 2}
+  inputSystemProfile: {fileID: 11400000, guid: cc939e5f734608145a0be1e66727eac2, type: 2}
   inputSystemType:
     reference: Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem, Microsoft.MixedReality.Toolkit.Services.InputSystem
   enableBoundarySystem: 0
@@ -30,11 +30,11 @@ MonoBehaviour:
   enableSpatialAwarenessSystem: 0
   spatialAwarenessSystemType:
     reference: 
+  spatialAwarenessSystemProfile: {fileID: 0}
   diagnosticsSystemProfile: {fileID: 11400000, guid: 478436bd1083882479a52d067e98e537,
     type: 2}
   enableDiagnosticsSystem: 0
   diagnosticsSystemType:
     reference: Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem,
       Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
-  registeredServiceProvidersProfile: {fileID: 11400000, guid: 5ead5fd607c2d6543b447f36999a4847,
-    type: 2}
+  registeredServiceProvidersProfile: {fileID: 0}
