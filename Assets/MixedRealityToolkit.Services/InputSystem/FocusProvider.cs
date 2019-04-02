@@ -29,6 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
         private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
+        private PointerHitResult hitResult3d = new PointerHitResult();
+        private PointerHitResult hitResultUi = new PointerHitResult();
 
         #region IFocusProvider Properties
 
@@ -151,6 +153,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public int rayStepIndex;
             public float rayDistance;
 
+            public void Clear()
+            {
+                raycastHit = default(RaycastHit);
+                graphicsRaycastResult = default(RaycastResult);
+
+                hitObject = null;
+                hitPointOnObject = Vector3.zero;
+                hitNormalOnObject = Vector3.zero;
+
+                ray = default(RayStep);
+                rayStepIndex = 0;
+                rayDistance = 0.0f;
+            }
+
             /// <summary>
             /// Set hit focus information from a closest-colliders-to pointer check.
             /// </summary>
@@ -253,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (hitResult.hitObject != CurrentPointerTarget)
                 {
-                    Pointer.OnCurrentPointerTargetAboutToChange();
+                    Pointer.OnPreCurrentPointerTargetChange();
                 }
 
                 PreviousPointerTarget = CurrentPointerTarget;
@@ -327,9 +343,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
-                if (focusDetails.Object != null)
+                if (CurrentPointerTarget != null)
                 {
-                    Pointer.OnCurrentPointerTargetAboutToChange();
+                    Pointer.OnPreCurrentPointerTargetChange();
                 }
 
                 PreviousPointerTarget = clearPreviousObject ? null : CurrentPointerTarget;
@@ -716,17 +732,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     LayerMask[] prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
 
                     // Perform raycast to determine focused object
-                    PointerHitResult hit = new PointerHitResult(); // TODO: cache and clear
-                    QueryScene(pointer.Pointer, prioritizedLayerMasks, hit);
+                    hitResult3d.Clear();
+                    QueryScene(pointer.Pointer, prioritizedLayerMasks, hitResult3d);
+                    PointerHitResult hit = hitResult3d;
 
                     // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
                     if (EventSystem.current != null)
                     {
                         // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
-                        PointerHitResult hitUi = new PointerHitResult();
-                        RaycastGraphics(pointer.Pointer, pointer.GraphicEventData, prioritizedLayerMasks, hitUi);
+                        hitResultUi.Clear();
+                        RaycastGraphics(pointer.Pointer, pointer.GraphicEventData, prioritizedLayerMasks, hitResultUi);
 
-                        hit = GetPrioritizedHitResult(hit, hitUi, prioritizedLayerMasks);
+                        hit = GetPrioritizedHitResult(hit, hitResultUi, prioritizedLayerMasks);
                     }
 
                     // Apply the hit result only now so changes in the current target are detected only once per frame.
@@ -865,7 +882,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             {
                                 // Policy: in order for an collider to be near interactable it must have
                                 // a NearInteractionGrabbable component on it.
-                                // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap. 
+                                // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap, 
+                                //        but there may be other pointers using the same query type which have different semantics.
                                 if (collider.GetComponent<NearInteractionGrabbable>() == null)
                                 {
                                     continue;

@@ -16,26 +16,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             public override void OnInspectorGUI()
             {
-                MixedRealityInputModule t = (MixedRealityInputModule)target;
+                MixedRealityInputModule inputModule = (MixedRealityInputModule)target;
 
                 base.OnInspectorGUI();
 
-                if (Application.isPlaying && t.RaycastCamera != null)
+                if (Application.isPlaying && inputModule.RaycastCamera != null)
                 {
-                    foreach (var pointerData in t.pointerDataToUpdate)
+                    foreach (var pointerData in inputModule.pointerDataToUpdate)
                     {
                         IMixedRealityPointer pointer = pointerData.Value.pointer;
                         if (pointer.Rays != null && pointer.Rays.Length > 0)
                         {
-                            t.RaycastCamera.transform.position = pointer.Rays[0].Origin;
-                            t.RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction, Vector3.up);
+                            inputModule.RaycastCamera.transform.position = pointer.Rays[0].Origin;
+                            inputModule.RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction, Vector3.up);
 
-                            t.RaycastCamera.Render();
+                            inputModule.RaycastCamera.Render();
 
                             GUILayout.Label(pointer.PointerName);
                             GUILayout.Label(pointer.ToString());
                             GUILayout.Label(pointer.PointerId.ToString());
-                            GUILayout.Label(t.RaycastCamera.targetTexture);
+                            GUILayout.Label(inputModule.RaycastCamera.targetTexture);
                         }
                     }
                 }
@@ -48,15 +48,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 #endif
 
-        // TODO: Make sure Unity UI input capturing participates in MRTK focus locking correctly.
-        // TODO: Consider simulating touch events rather than mouse events for PokePointer. What are the tradeoffs?
-
         protected class PointerData
         {
             public IMixedRealityPointer pointer;
 
             public Vector3? lastMousePoint3d = null; // Last position of the pointer for the input in 3D.
-            public PointerEventData.FramePressState nextClickState = PointerEventData.FramePressState.NotChanged;
+            public PointerEventData.FramePressState nextPressState = PointerEventData.FramePressState.NotChanged;
 
             public MouseState mouseState = new MouseState();
             public PointerEventData eventDataLeft;
@@ -134,7 +131,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        // Remove Unity pointer if it exists, but leave the MRTK pointer in pointersData unless/until the pointer's source device is lost/disconnected.
                         ProcessMrtkPointerLost(pointerData);
                     }
                 }
@@ -155,6 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void ProcessMrtkPointerLost(PointerData pointerData)
         {
+            // Process a final mouse event in case the pointer is currently down.
             if (pointerData.lastMousePoint3d != null)
             {
                 IMixedRealityPointer pointer = pointerData.pointer;
@@ -162,24 +159,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 pointer.Result = null;
                 ProcessMouseEvent((int)pointer.PointerId);
 
-                pointerData.lastMousePoint3d = null; // Mark last mouse position invalid.
+                // Invalidate last mouse point.
+                pointerData.lastMousePoint3d = null; 
             }
         }
 
         /// <summary>
         /// Adds MRTK pointer support as mouse input for Unity UI.
         /// </summary>
-        protected override MouseState GetMousePointerEventData(int id)
+        protected override MouseState GetMousePointerEventData(int pointerId)
         {
             // Search for MRTK pointer with given id.
             // If found, generate mouse event data for pointer, otherwise call base implementation.
             PointerData pointerData;
-            if (pointerDataToUpdate.TryGetValue(id, out pointerData))
+            if (pointerDataToUpdate.TryGetValue(pointerId, out pointerData))
             {
                 return GetMousePointerEventDataForMrtkPointer(pointerData);
             }
 
-            return base.GetMousePointerEventData(id);
+            return base.GetMousePointerEventData(pointerId);
         }
 
         protected MouseState GetMousePointerEventDataForMrtkPointer(PointerData pointerData)
@@ -191,9 +189,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             RaycastCamera.transform.position = pointer.Rays[0].Origin;
             RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
 
-            // Populate data
+            // Populate eventDataLeft
             pointerData.eventDataLeft.Reset();
 
+            // The RayCastCamera is placed so that the current cursor position is in the center of the camera's view space.
             Vector3 viewportPos = new Vector3(0.5f, 0.5f, 1.0f);
             Vector2 newPos = RaycastCamera.ViewportToScreenPoint(viewportPos);
 
@@ -242,10 +241,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected PointerEventData.FramePressState StateForPointer(PointerData pointerData)
         {
-            PointerEventData.FramePressState ret = pointerData.nextClickState;
+            PointerEventData.FramePressState ret = pointerData.nextPressState;
 
             // Reset state
-            pointerData.nextClickState = PointerEventData.FramePressState.NotChanged;
+            pointerData.nextPressState = PointerEventData.FramePressState.NotChanged;
 
             return ret;
         }
@@ -254,16 +253,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            int id = (int)eventData.Pointer.PointerId;
-            Debug.Assert(pointerDataToUpdate.ContainsKey(id));
-            pointerDataToUpdate[id].nextClickState = PointerEventData.FramePressState.Released;
+            int pointerId = (int)eventData.Pointer.PointerId;
+            Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId));
+            pointerDataToUpdate[pointerId].nextPressState = PointerEventData.FramePressState.Released;
         }
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            int id = (int)eventData.Pointer.PointerId;
-            Debug.Assert(pointerDataToUpdate.ContainsKey(id));
-            pointerDataToUpdate[id].nextClickState = PointerEventData.FramePressState.Pressed;
+            int pointerId = (int)eventData.Pointer.PointerId;
+            Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId));
+            pointerDataToUpdate[pointerId].nextPressState = PointerEventData.FramePressState.Pressed;
         }
 
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
@@ -282,9 +281,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var pointer = inputSource.Pointers[i];
                 if (pointer.InputSourceParent == inputSource)
                 {
-                    int id = (int)pointer.PointerId;
-                    Debug.Assert(!pointerDataToUpdate.ContainsKey(id));
-                    pointerDataToUpdate.Add(id, new PointerData(pointer, eventSystem));
+                    int pointerId = (int)pointer.PointerId;
+                    Debug.Assert(!pointerDataToUpdate.ContainsKey(pointerId));
+                    pointerDataToUpdate.Add(pointerId, new PointerData(pointer, eventSystem));
                 }
             }
         }
@@ -297,16 +296,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var pointer = inputSource.Pointers[i];
                 if (pointer.InputSourceParent == inputSource)
                 {
-                    int id = (int)pointer.PointerId;
-                    Debug.Assert(pointerDataToUpdate.ContainsKey(id));
+                    int pointerId = (int)pointer.PointerId;
+                    Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId));
 
                     PointerData pointerData = null;
-                    if (pointerDataToUpdate.TryGetValue(id, out pointerData))
+                    if (pointerDataToUpdate.TryGetValue(pointerId, out pointerData))
                     {
                         Debug.Assert(!pointerDataToRemove.Contains(pointerData));
                         pointerDataToRemove.Add(pointerData);
 
-                        pointerDataToUpdate.Remove(id);
+                        pointerDataToUpdate.Remove(pointerId);
                     }
                 }
             }

@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public abstract void OnPostSceneQuery();
 
         /// <inheritdoc />
-        public abstract void OnCurrentPointerTargetAboutToChange();
+        public abstract void OnPreCurrentPointerTargetChange();
 
         #region IEquality Implementation
 

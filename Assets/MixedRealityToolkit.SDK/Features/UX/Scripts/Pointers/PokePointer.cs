@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public override void OnCurrentPointerTargetAboutToChange()
+        public override void OnPreCurrentPointerTargetChange()
         {
             if (currentTouchableObjectDown != null)
             {

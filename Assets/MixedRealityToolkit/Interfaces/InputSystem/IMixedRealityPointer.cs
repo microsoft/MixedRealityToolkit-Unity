@@ -120,6 +120,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Called during the scene query just before the current pointer target changes.
         /// </summary>
-        void OnCurrentPointerTargetAboutToChange();
+        void OnPreCurrentPointerTargetChange();
     }
 }
