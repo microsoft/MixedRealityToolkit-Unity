@@ -10,44 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [RequireComponent(typeof(Camera))]
     public class MixedRealityInputModule : StandaloneInputModule, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
     {
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(MixedRealityInputModule))]
-        public class Editor : UnityEditor.Editor
-        {
-            public override void OnInspectorGUI()
-            {
-                MixedRealityInputModule inputModule = (MixedRealityInputModule)target;
-
-                base.OnInspectorGUI();
-
-                if (Application.isPlaying && inputModule.RaycastCamera != null)
-                {
-                    foreach (var pointerData in inputModule.pointerDataToUpdate)
-                    {
-                        IMixedRealityPointer pointer = pointerData.Value.pointer;
-                        if (pointer.Rays != null && pointer.Rays.Length > 0)
-                        {
-                            inputModule.RaycastCamera.transform.position = pointer.Rays[0].Origin;
-                            inputModule.RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction, Vector3.up);
-
-                            inputModule.RaycastCamera.Render();
-
-                            GUILayout.Label(pointer.PointerName);
-                            GUILayout.Label(pointer.ToString());
-                            GUILayout.Label(pointer.PointerId.ToString());
-                            GUILayout.Label(inputModule.RaycastCamera.targetTexture);
-                        }
-                    }
-                }
-            }
-
-            public override bool RequiresConstantRepaint()
-            {
-                return true;
-            }
-        }
-#endif
-
         protected class PointerData
         {
             public IMixedRealityPointer pointer;
@@ -79,7 +41,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected readonly List<PointerData> pointerDataToRemove = new List<PointerData>();
 
-        protected Camera RaycastCamera { get; private set; }
+        public Camera RaycastCamera { get; private set; }
+
+        public IEnumerable<IMixedRealityPointer> ActiveMixedRealityPointers
+        {
+            get
+            {
+                foreach (var pointerDataEntry in pointerDataToUpdate)
+                {
+                    yield return pointerDataEntry.Value.pointer;
+                }
+            }
+        }
 
         public override void ActivateModule()
         {
