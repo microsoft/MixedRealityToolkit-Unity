@@ -7,7 +7,7 @@ between holograms and the real-world.
 
 ## Getting Started
 
-Adding support for spatial awareness requires two key components of the Mixed Reality Toolkit; the 
+Adding support for spatial awareness requires two key components of the Mixed Reality Toolkit: the 
 spatial awareness system and a supported platform provider.
 
 1. [Enable](enable-spatial-awareness) the spatial awareness system
