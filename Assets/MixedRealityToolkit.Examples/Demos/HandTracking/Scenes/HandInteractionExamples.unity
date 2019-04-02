@@ -210,9 +210,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 35689815}
-  m_Text: 'One/Two-handed
-
-    Scale Only'
+  m_Text: "One/Two-handed \nRotate about grab point"
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -7735,26 +7733,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: RotateStarted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: RotateStopped.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: ScaleStarted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: ScaleStopped.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7779420038487776846, guid: 937ce507dd7ee334ba569554e24adbdd,
         type: 3}
       propertyPath: m_Mesh
@@ -9133,9 +9111,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1039595587}
-  m_Text: 'Two Handed Manipulation
-
-    + Bounding Box
+  m_Text: 'Manipulation + Bounding Box
 
     Rotate about grab point'
   m_OffsetZ: 0
@@ -13883,7 +13859,7 @@ Transform:
   m_LocalScale: {x: 0.15647286, y: 0.15647286, z: 0.1564729}
   m_Children: []
   m_Father: {fileID: 1717458036}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1608872556
 AudioSource:
@@ -15761,9 +15737,9 @@ Transform:
   - {fileID: 1131694277}
   - {fileID: 223310248}
   - {fileID: 775880684}
+  - {fileID: 1608872555}
   - {fileID: 1666569905}
   - {fileID: 1349317003}
-  - {fileID: 1608872555}
   - {fileID: 1016469059}
   - {fileID: 563549574}
   - {fileID: 1540405709}
@@ -17950,8 +17926,8 @@ MonoBehaviour:
   manipulationType: 2
   twoHandedManipulationType: 0
   allowFarManipulation: 1
-  oneHandRotationModeNear: 4
-  oneHandRotationModeFar: 4
+  oneHandRotationModeNear: 6
+  oneHandRotationModeFar: 6
   releaseBehavior: -1
   constraintOnRotation: 0
   constraintOnMovement: 0
