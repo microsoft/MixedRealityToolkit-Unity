@@ -16,13 +16,13 @@ Input simulation is an optional [Mixed Reality service](../../External/Documenta
 | __Warning__: Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type _Input Simulation_ or it will not work! |
 | --- |
 
-![Default Input Simulation service settings](../Images/MRTK_InputSimulation_RegisteredServicesEnable.png)
+![Default Input Simulation service settings](../../External/Documentation/Images/MRTK_InputSimulation_RegisteredServicesEnable.png)
 
 # Camera Control
 
 Head movement can be emulated by the Input Simulation Service.
 
-![Camera control settings](../Images/MRTK_InputSimulation_CameraControlSettings.png)
+![Camera control settings](../../External/Documentation/Images/MRTK_InputSimulation_CameraControlSettings.png)
 
 ## Rotating the camera
 
@@ -40,14 +40,14 @@ Press and hold the movement keys (W/A/S/D for forward/left/back/right).
 ---
 
 <video width="600" controls="controls">
-  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_CameraControl.mp4"></source>
+  <source type="video/mp4" src="../../External/Documentation/Videos/MRTK_InputSimulation_CameraControl.mp4"></source>
 </video>
 
 # Hand Simulation
 
 The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabable objects.
 
-![Hand simulation mode](../Images/MRTK_InputSimulation_HandSimulationMode.png)
+![Hand simulation mode](../../External/Documentation/Images/MRTK_InputSimulation_HandSimulationMode.png)
 
 The __Hand Simulation Mode__ switches between two distinct input models.
 
@@ -65,17 +65,17 @@ The __Hand Simulation Mode__ switches between two distinct input models.
 
 ## Controlling hand movement
 
-![Hand control settings](../Images/MRTK_InputSimulation_HandControlSettings.png)
+![Hand control settings](../../External/Documentation/Images/MRTK_InputSimulation_HandControlSettings.png)
 
 Press and hold the _Left/Right Hand Manipulation Key_ (default: Left Shift/Space for left/right respectively) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Mouse movement will move the hand in the view plane.
 
 Once the manipulation key is released the hands will disappear after a short _Hand Hide Timeout_. To toggle hands on permanently, press the _Toggle Left/Right Hand Key_ (default: T/Y for left/right respectively). Press the toggle key again to hide the hands again.
 
-![Hand placement settings](../Images/MRTK_InputSimulation_HandPlacementSettings.png)
+![Hand placement settings](../../External/Documentation/Images/MRTK_InputSimulation_HandPlacementSettings.png)
 
 Hands can be moved further or closer to the camera using the _mouse wheel_.
 
-![Hand rotation settings](../Images/MRTK_InputSimulation_HandRotationSettings.png)
+![Hand rotation settings](../../External/Documentation/Images/MRTK_InputSimulation_HandRotationSettings.png)
 
 Hands can be rotated when precise direction is required.
 * Yaw rotates around the Y axis (default: E/Q keys for clockwise/counter-clockwise rotation)
@@ -85,14 +85,14 @@ Hands can be rotated when precise direction is required.
 ---
 
 <video width="600" controls="controls">
-  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_HandMovement.mp4"></source>
+  <source type="video/mp4" src="../../External/Documentation/Videos/MRTK_InputSimulation_HandMovement.mp4"></source>
 </video>
 
 ## Hand Gestures
 
 Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.
 
-![Hand gesture settings](../Images/MRTK_InputSimulation_HandGestureSettings.png)
+![Hand gesture settings](../../External/Documentation/Images/MRTK_InputSimulation_HandGestureSettings.png)
 
 1. First enable hand control using the manipulation keys (Left Shift/Space)
 
@@ -116,7 +116,7 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 ---
 
 <video width="600" controls="controls">
-  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_OneHandManipulation.mp4"></source>
+  <source type="video/mp4" src="../../External/Documentation/Videos/MRTK_InputSimulation_OneHandManipulation.mp4"></source>
 </video>
 
 ## Two-Hand Manipulation
@@ -134,13 +134,13 @@ For manipulating objects with two hands at the same time the persistent hand mod
 ---
 
 <video width="600" controls="controls">
-  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_TwoHandManipulation.mp4"></source>
+  <source type="video/mp4" src="../../External/Documentation/Videos/MRTK_InputSimulation_TwoHandManipulation.mp4"></source>
 </video>
 
 ## GGV Interaction
 
 1. Enable GGV simulation by switching __Hand Simulation Mode__ to _Gestures_ in the [Input Simulation Profile](#enabling-the-input-simulation-service)
-   ![Hand gesture settings](../Images/MRTK_InputSimulation_SwitchToGGV.png)
+   ![Hand gesture settings](../../External/Documentation/Images/MRTK_InputSimulation_SwitchToGGV.png)
 2. Rotate the camera to point the gaze cursor at the interactable object (right mouse button)
 3. Hold _Space_ to control the right hand
 4. Click and hold _left mouse button_ to interact
@@ -149,5 +149,5 @@ For manipulating objects with two hands at the same time the persistent hand mod
 ---
 
 <video width="600" controls="controls">
-  <source type="video/mp4" src="../Videos/MRTK_InputSimulation_GGVManipulation.mp4"></source>
+  <source type="video/mp4" src="../../External/Documentation/Videos/MRTK_InputSimulation_GGVManipulation.mp4"></source>
 </video>
