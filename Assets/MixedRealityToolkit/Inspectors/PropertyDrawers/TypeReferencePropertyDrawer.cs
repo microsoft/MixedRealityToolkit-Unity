@@ -233,10 +233,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                     else
                     {
+                        var errorContent = EditorGUIUtility.IconContent("d_console.erroricon.sml");
+                        GUI.Label(new Rect(position.width, position.y, position.width, position.height), errorContent);
+
                         Rect dropdownPosition = new Rect(position.x, position.y, position.width - 90, position.height);
                         Rect buttonPosition = new Rect(position.width - 75, position.y, 75, position.height);
 
                         property.stringValue = DrawTypeSelectionControl(dropdownPosition, label, property.stringValue, filter, false);
+
                         if (GUI.Button(buttonPosition, "Try Repair", EditorStyles.miniButton))
                         {
                             string typeNameWithoutAssembly = property.stringValue.Split(new string[] { "," }, StringSplitOptions.None)[0];
@@ -249,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             }
                             else if (repairedTypeOptions.Length > 0)
                             {
-                                property.stringValue = repairedTypeOptions[0].AssemblyQualifiedName;
+                                property.stringValue = SystemType.GetReference(repairedTypeOptions[0]);
                             }
                             else
                             {
@@ -382,7 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     if (GUILayout.Button(repairedTypeOptions[i].FullName, EditorStyles.miniButton))
                     {
-                        property.stringValue = repairedTypeOptions[i].AssemblyQualifiedName;
+                        property.stringValue = SystemType.GetReference(repairedTypeOptions[i]);
                         property.serializedObject.ApplyModifiedProperties();
                         Close();
                     }
