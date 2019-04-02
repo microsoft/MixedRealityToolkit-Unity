@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("If true and the hand mesh is available, try to access the hand mesh from the system. Note: this could reduce performance")]
-        [FormerlySerializedAs("EnableHandMeshUpdates")]
+        [FormerlySerializedAs("enableHandMeshUpdates")]
         private bool enableHandMeshVisualization = false;
         public bool EnableHandMeshVisualization
         {
