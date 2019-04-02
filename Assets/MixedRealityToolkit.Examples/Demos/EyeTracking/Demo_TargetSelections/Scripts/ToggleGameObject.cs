@@ -1,0 +1,30 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
+
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+{
+    public class ToggleGameObject : MonoBehaviour
+    {
+        public GameObject objToShowHide;
+
+        public void ShowIt()
+        {
+            ShowIt(true);
+        }
+
+        public void HideIt()
+        {
+            ShowIt(false);
+        }
+
+        private void ShowIt(bool showIt)
+        {
+            if (objToShowHide != null)
+            {
+                objToShowHide.SetActive(showIt);
+            }
+        }
+    }
+}

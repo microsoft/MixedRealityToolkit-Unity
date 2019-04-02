@@ -1,7 +1,7 @@
-- name: Definitions
-  href: Definitions/README.md
 - name: Event Datum
   href: EventDatum/README.md
+- name: Hands
+  href: Providers/Hands/README.md
 - name: Standard Assets
   href: StandardAssets/README.md
 - name: Utilities

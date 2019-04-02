@@ -4,20 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
-#if UNITY_WSA
-using UnityEngine;
-using UnityEngine.XR.WSA.Input;
-#endif
-
-#if WINDOWS_UWP
-
-using System;
-using System.Collections.Generic;
-using Windows.Perception;
-using Windows.Perception.People;
-using Windows.UI.Input.Spatial;
-#endif
-
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     /// <summary>
