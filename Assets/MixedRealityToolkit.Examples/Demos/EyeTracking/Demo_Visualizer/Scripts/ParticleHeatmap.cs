@@ -45,13 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             newParticle.position = pos;
             newParticle.radiusInMeter = Random.Range(minParticleSize, maxParticleSize);
 
-            //Vector3 particleRotationEuler = Quaternion.LookRotation(CameraCache.Main.transform.position - pos).eulerAngles;
-            //particleRotationEuler.z = Random.Range(0, 360);
-            //particleData[particleDecalDataIndex].rotation = particleRotationEuler;
-            //particleData[particleDecalDataIndex].color = Color.red; // colorGradient.Evaluate(0f);
-            //newParticle.color = colorGradient.Evaluate(Random.Range(0f, 1f));
-            //newParticle.color = colorGradient.Evaluate(DetermineNormalizedIntensity(newParticle.position, newParticle.radiusInMeter)); // colorGradient.Evaluate(Random.Range(0f, 1f));
-
             if (particleDecalDataIndex >= particleData.Count)
             {
                 particleData.Add(newParticle);
@@ -62,8 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
 
             particleDecalDataIndex++;
-
-            //UpdateColorForAllParticles();
         }
 
         public Vector3? GetPositionOfParticle(int index)
@@ -116,7 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 particleArray[i].position = particleData[i].position;
                 particleArray[i].startColor = particleData[i].color;
                 particleArray[i].startSize = particleData[i].radiusInMeter;
-                //particleArray[i].rotation3D = particleData[i].rotation;
             }
 
             particleSys.SetParticles(particleArray, particleArray.Length);

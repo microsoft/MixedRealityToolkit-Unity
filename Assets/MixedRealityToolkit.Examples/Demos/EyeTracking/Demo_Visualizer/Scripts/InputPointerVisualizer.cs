@@ -9,16 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
     /// <summary>
     /// This visualizer can be used to represent pointer input data, e.g., from a handheld controller,
     /// from hand, head or eye tracking. In general, it assumes a pointing origin and direction,
-    /// 
-    /// ------------
-    /// *** TODO ***
-    /// ------------
-    /// - Load log files
-    /// - Replace GameObjects with particle systems for higher perf on HoloLens
-    /// - Question: How to visualize data from multiple ppl? Color lookup table? Limit number of scanpaths visible at a time?
-    /// - Question: How can users load files from HoloLens? Built-in file explore? Load by session?
-    /// - Allow for tweaking parameters while viewing the scene, such as "transparency" etc.
-    /// ------------
     /// </summary>
     public class InputPointerVisualizer : MonoBehaviour
     {
@@ -34,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         private bool show_Origins = false;
         private bool show_Destinations = false;
-        //private bool show_LinkO2O = false; // Origin to origin
         private bool show_LinkD2D = false; // Destination to destination
         private bool show_LinkO2D = false; // Origin to destination
 
@@ -67,7 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         [Tooltip("Distance to default to in case of no hit target.")]
         public float cursorDist = 2f;
 
-        //TODO: Check if the following variables are still required?
         public float distThresh = 20.5f;
         public float nhist = 20; // Sample-based. Better to make it time-based.
         public float saccadeThresh = 20;
@@ -117,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             {
                 // Initialize particle system to represent loaded point cloud data
                 Debug.Log(">>InitPointClouds 02");
-                pointCloud = templateParticleSystem; // Instantiate(templateParticleSystem, new Vector3(0, 0, 0), Quaternion.identity) as ParticleDecalPool;
+                pointCloud = templateParticleSystem;
 
             }
             else
@@ -284,7 +272,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 UpdateVis_PointCloud(ref samples_Origins, currentItemIndex, cursorRay.origin, show_Origins);
 
                 // Vector destination / hit pos
-
                 Vector3? v = PerformHitTest(cursorRay);
 
                 if ((!v.HasValue) && (!onlyShowForHitTargets))
@@ -308,25 +295,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 }
 
                 lastDestination = v.Value;
-
-                // Connecting lines between... 
-                // ... Vector origins 
-                //if (samples_LinkOrigToOrig != null)
-                //{
-                //    UpdateConnectorLines(ref samples_LinkOrigToOrig, currentItemIndex,
-                //        samples_Origins[GetPrevLineIndex(currentItemIndex, samples_LinkOrigToOrig.Length)].transform.position,
-                //        samples_Origins[currentItemIndex].transform.position, show_LinkO2O);
-                //}
-
-                // ... Vector destinations 
-                //if (samples_LinkDestToDest != null)
-                //{
-                //    UpdateConnectorLines(ref samples_LinkDestToDest, currentItemIndex,
-                //        samples_Destinations[GetPrevLineIndex(currentItemIndex, samples_LinkDestToDest.Length)].transform.position,
-                //        samples_Destinations[currentItemIndex].transform.position, show_LinkD2D);
-                //}
-
-                // ... origin to destination 
                 if ((samples_Destinations != null) && (samples_LinkOrigToDest != null))
                 {
                     Vector3? pos1 = cursorRay.origin;
@@ -375,48 +343,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             }
         }
 
-        //public float TotalDistance()
-        //{
-        //    float distance = 0;
-        //    List<float> distances = new List<float>();
-        //    int count = 1;
-        //    for (int i = 1; i <= nhist; i++)
-        //    {
-        //        int i2 = currentItemIndex - i;
-        //        if (i2 < 0)
-        //            i2 = samples_Destinations.Length + i2;
-
-        //        float d = Vector3.Distance(samples_Destinations[i2].transform.position, samples_Destinations[currentItemIndex].transform.position); //samples[i+1].transform.position
-
-        //        if (d > saccadeThresh)
-        //            break;
-
-        //        distances.Add(d);
-        //        distance += d;
-        //        count++;
-        //    }
-
-
-        //    // Median distance
-        //    // distances.Sort();
-        //    // distance = distances[distances.Count / 2];
-
-        //    // Average distance
-        //    if (count > minNrOfSamples)
-        //        distance /= count;
-        //    else
-        //        distance = float.MaxValue;
-
-        //    return distance;
-        //}
-
         public bool IsDwelling()
         {
-            //if (TotalDistance() < distThresh)
-            //{
-            //    return true;
-            //}
-
             return false;
         }
 

@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private Ray? oldGaze;
         private int confidenceOfSaccade = 0;
-        private int confidenceOfSaccadeThreshold = 6; //TODO: This value should be adjusted based on the FPS of the ET system
+        private int confidenceOfSaccadeThreshold = 6; // TODO(https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/3767): This value should be adjusted based on the FPS of the ET system
         private Ray saccade_initialGazePoint;
         private List<Ray> saccade_newGazeCluster = new List<Ray>();
 

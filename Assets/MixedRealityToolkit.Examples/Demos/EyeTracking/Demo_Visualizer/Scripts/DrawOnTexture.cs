@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     public class DrawOnTexture : MonoBehaviour
     {
-        public Texture2D HeatmapLookUpTable; //TODO: Replace with gradient?
+        public Texture2D HeatmapLookUpTable;
 
         [SerializeField]
         private float drawBrushSize = 2000.0f; // aka spread
@@ -64,9 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void DrawAt2(Vector2 posUV, int maxRadius, float intensity)
         {
-            //TODO:
-            // * intensity: More efficient data type? should only be between 0 and 1
-            //
             if (MyDrawTexture != null)
             {
                 // Reset on first draw
@@ -87,27 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                 // Determine appropriate radius based on viewing duration: The longer looking in a small region the larger the radius
                 float dist = maxRadius;
-                //float dist = Vector2.Distance(center, prevPos);
-
-                //if (dist > 10)
-                //{
-                //     set back to min radius
-                //    dynamicRadius = minRadius;
-                //}
-                //else if (dist > 1)
-                //{
-                //    dynamicRadius = Mathf.Clamp(dynamicRadius + stepSizeRadius / dist, minRadius, maxRadius);
-                //}
-                //else 
-                //{
-                //    dynamicRadius = Mathf.Clamp(dynamicRadius + stepSizeRadius, minRadius, maxRadius);
-                //}
-
-                //Debug.Log("dist new vs old: "+ dist + " -- radius = "+ dynamicRadius);
-
-                //prevPos = center; //TODO: Should time out after a while;
-                
-
                 for (int ix = -(int)(dynamicRadius / 2); ix < dynamicRadius / 2; ix++)
                 {
                     for (int iy = -(int)(dynamicRadius / 2); iy < dynamicRadius / 2; iy++)
@@ -124,9 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                             float normalizedDist = (distCenterToCurrPnt / dynamicRadius / 2); // [0.0, 1.0]
                             float B = 4f;
                             float localNormalizedInterest = Mathf.Clamp(1 / (1 + Mathf.Pow(Mathf.Epsilon, -(B * normalizedDist))), 0, 1);
-
-                            //float quadIncreasePower = 4;
-                            //normValX = (float)Mathf.Pow(normValX, quadIncreasePower);
 
                             Color baseColor = MyDrawTexture.GetPixel((int)tx, (int)ty);
                             float delta = intensity * (1 - Mathf.Abs(localNormalizedInterest));
@@ -146,7 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                             MyDrawTexture.SetPixel((int)(tx), (int)(ty), col);
 
                             Color baseColor2 = MyDrawTexture.GetPixel((int)tx, (int)ty);
-                          //  Debug.LogFormat(">> adjustedAlphaX = {0}; baseColor2.a = {1}", adjustedAlphaX, baseColor2.a);
                         }
                     }
                 }
@@ -157,9 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private IEnumerator DrawAt(Vector2 posUV)
         {
-            //TODO:
-            // * intensity: More efficient data type? should only be between 0 and 1
-            //
             if (MyDrawTexture != null)
             {
                 // Reset on first draw
@@ -175,11 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     neverDrawnOn = false;
                 }
 
-                // Determine appropriate radius based on viewing duration: The longer looking in a small region the larger the radius
-                //TODO: Implement...
-
                 // Assign colors
-                //TODO: Could be parallelized
                 yield return null;
 
                 StartCoroutine(ComputeHeatmapAt(posUV, true, true));
@@ -246,12 +211,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             float amplitude = drawIntensity;
             float distCenterToCurrPnt = Vector2.Distance(origPivot, currPnt) / spread;
 
-            //float scaledInterest = Mathf.Clamp(1 - (distCenterToCurrPnt / spread), 0, 1) * amplitude;
-            //float scaledInterest = (1 - (Vector2.Distance(origPivot, currPnt) / spread)) * amplitude;
-
-            float B = 2f;// 1 / spread;//2f;
+            float B = 2f;
             float scaledInterest = 1 / (1 + Mathf.Pow(Mathf.Epsilon, -(B * distCenterToCurrPnt)));
-            float delta = scaledInterest / amplitude ; // Mathf.Abs(localNormalizedInterest);//(1 - Mathf.Abs(localNormalizedInterest));
+            float delta = scaledInterest / amplitude ;
             if (delta < minThreshDeltaHeatMap)
                 return false;
 
@@ -297,7 +259,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     }
 
                     Material[] mats = MyRenderer.sharedMaterials;
-                    //Debug.Log("mats.length = " + mats.Length);
 
                     Material[] mats2 = new Material[mats.Length + 1];
                     for (int i = 0; i < mats.Length; i++)

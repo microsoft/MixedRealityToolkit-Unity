@@ -20,10 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [Tooltip("The duration in seconds for which the visual feedback is shown.")]
         private float maxShowtimeInSeconds = 2.0f;
 
-        //[SerializeField]
-        //[Tooltip("Determines whether the feedback should follow the user or not.")]
-        //private bool isWorldLocked = true;
-
         private TextMesh myTextMesh;
         private DateTime startedTime;
 
@@ -85,14 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             if ((visualFeedbackTemplate != null) && (visualFeedbackTemplate.activeSelf))
             {
-                //// If the feedback is *not* world-locked, we need to keep updating its position and orientation. 
-                //// In this case, we would simply place and keep it at the center of the viewport 
-                //if (!isWorldLocked)
-                //{
-                //    speechFeedbackTemplate.transform.position = CameraCache.Main.transform.position + CameraCache.Main.transform.forward.normalized * 2f;
-                //    speechFeedbackTemplate.transform.rotation = Quaternion.FromToRotation(Vector3.forward, CameraCache.Main.transform.forward);
-                //}
-
                 // Hide visual feedback once we showed it long enough
                 if ((DateTime.Now - startedTime).TotalSeconds > maxShowtimeInSeconds)
                 {
