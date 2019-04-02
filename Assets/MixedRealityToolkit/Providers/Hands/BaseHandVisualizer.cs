@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             MixedRealityHandTrackingProfile handTrackingProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile;
-            if (handTrackingProfile != null && !handTrackingProfile.EnableHandMeshVisualization)
+            if (handTrackingProfile != null && !handTrackingProfile.EnableHandJointVisualization)
             {
                 // clear existing joint gameobjects / meshes
                 foreach (var joint in joints)
