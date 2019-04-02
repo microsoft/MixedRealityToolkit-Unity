@@ -798,7 +798,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     case SceneQueryType.SimpleRaycast:
                         if (MixedRealityRaycaster.RaycastSimplePhysicsStep(pointerRays[i], prioritizedLayerMasks, out physicsHit))
                         {
-                            UpdatePointerRayOnHit(pointerData, pointerRays, in physicsHit, i, rayStartDistance);
+                            UpdatePointerRayOnHit(pointerData, pointerRays, physicsHit, i, rayStartDistance);
                             return;
                         }
                         break;
@@ -808,7 +808,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     case SceneQueryType.SphereCast:
                         if (MixedRealityRaycaster.RaycastSpherePhysicsStep(pointerRays[i], pointerData.Pointer.SphereCastRadius, prioritizedLayerMasks, out physicsHit))
                         {
-                            UpdatePointerRayOnHit(pointerData, pointerRays, in physicsHit, i, rayStartDistance);
+                            UpdatePointerRayOnHit(pointerData, pointerRays, physicsHit, i, rayStartDistance);
                             return;
                         }
                         break;
@@ -854,7 +854,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static void UpdatePointerRayOnHit(PointerData pointerData, RayStep[] raySteps, in RaycastHit physicsHit, int hitRayIndex, float rayStartDistance)
+        private static void UpdatePointerRayOnHit(PointerData pointerData, RayStep[] raySteps, RaycastHit physicsHit, int hitRayIndex, float rayStartDistance)
         {
             Vector3 origin = raySteps[hitRayIndex].Origin;
             Vector3 terminus = physicsHit.point;
