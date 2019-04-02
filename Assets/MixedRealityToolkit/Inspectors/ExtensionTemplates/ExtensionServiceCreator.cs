@@ -65,9 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly string PersistentStateKey = "MRTK_ExtensionServiceWizard_State_Before_Recompilation";
         private static readonly string DefaultExtensionsFolder = "Assets/MixedRealityToolkit.Extensions";
         private static readonly string DefaultExtensionsFolderName = "MixedRealityToolkit.Extensions";
-        private static readonly string ServiceTemplatePath = "Assets/MixedRealityToolkit/Inspectors/ExtensionTemplates/ExtensionScriptTemplate.txt";
-        private static readonly string InterfaceTemplatePath = "Assets/MixedRealityToolkit/Inspectors/ExtensionTemplates/ExtensionInterfaceTemplate.txt";
-        private static readonly string ProfileTemplatePath = "Assets/MixedRealityToolkit/Inspectors/ExtensionTemplates/ExtensionProfileTemplate.txt";
+        private static readonly string ServiceTemplatePath = "ExtensionTemplates/ExtensionScriptTemplate.txt";
+        private static readonly string InterfaceTemplatePath = "ExtensionTemplates/ExtensionInterfaceTemplate.txt";
+        private static readonly string ProfileTemplatePath = "ExtensionTemplates/ExtensionProfileTemplate.txt";
         private static readonly string ScriptExtension = ".cs";
         private static readonly string ProfileExtension = ".asset";
         private static readonly string ServiceNameSearchString = "#SERVICE_NAME#";
@@ -167,9 +167,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        private TextAsset ServiceTemplate { get; set; }
-        private TextAsset InterfaceTemplate { get; set; }
-        private TextAsset ProfileTemplate { get; set; }
+        private string ServiceTemplate;
+        private string InterfaceTemplate;
+        private string ProfileTemplate;
 
         #endregion
 
@@ -226,22 +226,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (ServiceTemplate == null)
             {
-                ServiceTemplate = AssetDatabase.LoadAssetAtPath<TextAsset>(ServiceTemplatePath);
-                if (ServiceTemplate == null)
-                    errors.Add("Script template not found in " + ServiceTemplatePath);
+                if (!ReadTemplate(ServiceTemplatePath, ref ServiceTemplate))
+                    errors.Add("Script template not found in " + ServiceTemplatePath);             
             }
 
             if (InterfaceTemplate == null)
             {
-                InterfaceTemplate = AssetDatabase.LoadAssetAtPath<TextAsset>(InterfaceTemplatePath);
-                if (InterfaceTemplate == null)
+                if (!ReadTemplate(InterfaceTemplatePath, ref InterfaceTemplate))
                     errors.Add("Interface template not found in " + InterfaceTemplatePath);
             }
 
             if (ProfileTemplate == null)
             {
-                ProfileTemplate = AssetDatabase.LoadAssetAtPath<TextAsset>(ProfileTemplatePath);
-                if (ProfileTemplate == null)
+                if (!ReadTemplate(ProfileTemplatePath, ref ProfileTemplate))
                     errors.Add("Profile template not found in " + ProfileTemplatePath);
             }
 
@@ -252,6 +249,24 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             return errors.Count == 0;
+        }
+
+        private bool ReadTemplate(string templatePath, ref string template)
+        {
+            string dataPath = Application.dataPath.Replace("/Assets", string.Empty);
+            string path = System.IO.Path.Combine(dataPath, templatePath);
+
+            try
+            {
+                template = System.IO.File.ReadAllText(path);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(e.ToString());
+                return false;
+            }
+
+            return !string.IsNullOrEmpty(template);
         }
 
         public bool ValidateName(List<string> errors)
@@ -375,13 +390,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // At this point, we're ready to store a temporary state in editor prefs
             StoreState();
 
-            string serviceAsset = CreateTextAssetFromTemplate(ServiceTemplate.text);
+            string serviceAsset = CreateTextAssetFromTemplate(ServiceTemplate);
             WriteTextAssetToDisk(serviceAsset, ServiceName, ServiceFolderPath);
             if (Result == CreateResult.Error)
                 return;
 
             await Task.Delay(100);
-            string interfaceAsset = CreateTextAssetFromTemplate(InterfaceTemplate.text);
+            string interfaceAsset = CreateTextAssetFromTemplate(InterfaceTemplate);
             WriteTextAssetToDisk(interfaceAsset, InterfaceName, InterfaceFolderPath);
             if (Result == CreateResult.Error)
                 return;
@@ -390,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             string profileAsset = string.Empty;
             if (UsesProfile)
             {
-                profileAsset = CreateTextAssetFromTemplate(ProfileTemplate.text);
+                profileAsset = CreateTextAssetFromTemplate(ProfileTemplate);
                 WriteTextAssetToDisk(profileAsset, ProfileName, ProfileFolderPath);
                 if (Result == CreateResult.Error)
                     return;

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    public partial class ExtensionServiceWizard : EditorWindow
+    public class ExtensionServiceWizard : EditorWindow
     {
         private static ExtensionServiceWizard window;
         private static readonly Color enabledColor = Color.white;
