@@ -8,21 +8,30 @@ using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
-    [MixedRealityDataProvider(typeof(IMixedRealityInputSystem), (SupportedPlatforms)(-1))]  // All platforms supported by Unity
-    public class MouseDeviceManager : BaseDeviceManager, IMixedRealityExtensionService
+    [MixedRealityDataProvider(
+        typeof(IMixedRealityInputSystem),
+        (SupportedPlatforms)(-1), // All platforms supported by Unity
+        "Unity Mouse Device Manager")]  
+    public class MouseDeviceManager : BaseInputDeviceManager
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="inputSystemProfile">The input system configuration profile.</param>
+        /// <param name="playspace">The <see href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</see> of the playspace object.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public MouseDeviceManager(
             IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
+            MixedRealityInputSystemProfile inputSystemProfile,
+            Transform playspace,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
 
         /// <summary>
         /// Current Mouse Controller.
@@ -65,10 +74,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 }
             }
 
-            if (MixedRealityToolkit.InputSystem != null)
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
+            if (inputSystem != null)
             {
-                var pointers = RequestPointers(new SystemType(controllerType), handedness, true);
-                mouseInputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
+                var pointers = RequestPointers(SupportedControllerType.Mouse, handedness);
+                mouseInputSource = inputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
             }
 
             Controller = new MouseController(TrackingState.NotApplicable, handedness, mouseInputSource);
@@ -82,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             }
 
             Controller.SetupConfiguration(typeof(MouseController));
-            MixedRealityToolkit.InputSystem?.RaiseSourceDetected(Controller.InputSource, Controller);
+            inputSystem?.RaiseSourceDetected(Controller.InputSource, Controller);
         }
 
         /// <inheritdoc />
@@ -96,9 +107,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Disable()
         {
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
             if (Controller != null)
             {
-                MixedRealityToolkit.InputSystem?.RaiseSourceLost(Controller.InputSource, Controller);
+                inputSystem?.RaiseSourceLost(Controller.InputSource, Controller);
             }
         }
     }

@@ -1,17 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Teleport;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Microsoft.MixedReality.Toolkit.SpatialAwareness;
+
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
 #endif
@@ -93,7 +94,11 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (activeProfile != null)
             {
-                DisableAllServices();
+                // Services are only enabled when playing.
+                if (Application.IsPlaying(activeProfile))
+                {
+                    DisableAllServices();
+                }
                 DestroyAllServices();
             }
 
@@ -101,11 +106,19 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (profile != null)
             {
-                DisableAllServices();
+                if (Application.IsPlaying(profile))
+                {
+                    DisableAllServices();
+                }
                 DestroyAllServices();
             }
 
             InitializeServiceLocator();
+
+            if (profile != null && Application.IsPlaying(profile))
+            {
+                EnableAllServices();
+            }
         }
 
 #endregion Mixed Reality Toolkit Profile configuration
@@ -398,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_EDITOR
                 LayerExtensions.SetupLayer(31, "Spatial Awareness");
 #endif
-                object[] args = { this };
+                object[] args = { this, ActiveProfile.SpatialAwarenessSystemProfile };
                 if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType, args: args) && SpatialAwarenessSystem != null)
                 {
                     Debug.LogError("Failed to start the Spatial Awareness System!");
@@ -426,22 +439,17 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (ActiveProfile.RegisteredServiceProvidersProfile != null)
             {
-                for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile.Configurations?.Length; i++)
+                for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile?.Configurations?.Length; i++)
                 {
                     var configuration = ActiveProfile.RegisteredServiceProvidersProfile.Configurations[i];
 
-                    if (typeof(IMixedRealityDataProvider).IsAssignableFrom(configuration.ComponentType.Type))
+                    if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
                     {
-                        RegisterService<IMixedRealityDataProvider>(configuration.ComponentType, configuration.RuntimePlatform, this, null, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile);
-
-                    }
-                    else if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
-                    {
-                        RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, this, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"{configuration.ComponentName} does not implement IMixedRealityDataProvider or IMixedRealityExtensionService and could not be registered");
+                        object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
+                        if (!RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, args))
+                        {
+                            Debug.LogError($"Failed to register {configuration.ComponentName}");
+                        }
                     }
                 }
             }
@@ -769,6 +777,11 @@ namespace Microsoft.MixedReality.Toolkit
             UpdateAllServices();
         }
 
+        private void LateUpdate()
+        {
+            LateUpdateAllServices();
+        }
+
         private void OnDisable()
         {
             DisableAllServices();
@@ -985,6 +998,27 @@ namespace Microsoft.MixedReality.Toolkit
             foreach (var service in registeredMixedRealityServices)
             {
                 service.Item2.Update();
+            }
+        }
+
+        private void LateUpdateAllServices()
+        {
+            // If the Mixed Reality Toolkit is not configured, stop.
+            if (activeProfile == null) { return; }
+
+            // If the Mixed Reality Toolkit is not initialized, stop.
+            if (!IsInitialized) { return; }
+
+            // Update all systems
+            foreach (var system in activeSystems)
+            {
+                system.Value.LateUpdate();
+            }
+
+            // Update all registered runtime services
+            foreach (var service in registeredMixedRealityServices)
+            {
+                service.Item2.LateUpdate();
             }
         }
 
@@ -1333,7 +1367,13 @@ namespace Microsoft.MixedReality.Toolkit
                     return teleportSystem;
                 }
 
-                teleportSystem = Instance.GetService<IMixedRealityTeleportSystem>(showLogs: logTeleportSystem);
+                // Quiet warnings as we check for the service. If it's not available, it has probably been
+                // disabled. We'll notify about that, in case it's an accident, but otherwise remain calm about it.
+                teleportSystem = Instance.GetService<IMixedRealityTeleportSystem>(showLogs: false);
+                if (logTeleportSystem && (teleportSystem == null))
+                {
+                    Debug.LogWarning("IMixedRealityTeleportSystem service is disabled. Teleport will not be available.\nCheck MRTK Configuration Profile settings if this is unexpected.");
+                }
                 // If we found a valid system, then we turn logging back on for the next time we need to search.
                 // If we didn't find a valid system, then we stop logging so we don't spam the debug window.
                 logTeleportSystem = teleportSystem != null;

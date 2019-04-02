@@ -20,6 +20,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The distance from the hit surface to place the cursor")]
         private float surfaceCursorDistance = 0.02f;
 
+        public float SurfaceCursorDistance
+        {
+            get { return surfaceCursorDistance; }
+        }
+
         /// <summary>
         /// When lerping, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.
         /// </summary>
@@ -94,11 +99,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected bool IsSourceDetected => visibleSourcesCount > 0;
 
-        protected bool IsPointerDown = false;
+        public bool IsPointerDown = false;
 
         protected GameObject TargetedObject = null;
 
         private uint visibleSourcesCount = 0;
+        public uint VisibleSourcesCount
+        {
+            get { return visibleSourcesCount; }
+            set { visibleSourcesCount = value; }
+        }
 
         private Vector3 targetPosition;
         private Vector3 targetScale;

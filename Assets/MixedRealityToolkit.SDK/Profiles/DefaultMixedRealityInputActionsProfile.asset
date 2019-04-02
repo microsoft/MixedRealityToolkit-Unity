@@ -49,3 +49,6 @@ MonoBehaviour:
   - id: 12
     description: Mouse Delta
     axisConstraint: 4
+  - id: 13
+    description: Index Finger Pose
+    axisConstraint: 7

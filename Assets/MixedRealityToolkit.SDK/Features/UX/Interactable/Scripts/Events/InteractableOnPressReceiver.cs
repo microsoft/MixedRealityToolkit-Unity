@@ -29,9 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             bool hadDown = hasDown;
             hasDown = state.GetState(InteractableStates.InteractableStateEnum.Pressed).Value > 0;
 
-            bool focused = state.GetState(InteractableStates.InteractableStateEnum.Focus).Value > 0;
-
-            if (changed && hasDown != hadDown && focused)
+            if (changed && hasDown != hadDown)
             {
                 if (hasDown)
                 {

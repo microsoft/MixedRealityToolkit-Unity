@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -61,27 +61,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 controller = value;
-                InputSourceParent = value.InputSource;
-                Handedness = value.ControllerHandedness;
-                gameObject.name = "Spatial Mouse Pointer";
                 TrackingState = TrackingState.NotApplicable;
+
+                if (controller != null && gameObject != null)
+                {
+                    InputSourceParent = controller.InputSource;
+                    Handedness = controller.ControllerHandedness;
+                    gameObject.name = "Spatial Mouse Pointer";
+                }
             }
         }
 
         /// <inheritdoc />
-        public override void OnPreRaycast()
+        public override void OnPreSceneQuery()
         {
             transform.position = CameraCache.Main.transform.position;
 
-            Ray pointingRay;
-            if (TryGetPointingRay(out pointingRay))
-            {
-                Rays[0].CopyRay(pointingRay, PointerExtent);
+            Ray ray = new Ray(Position, Rotation * Vector3.forward);
+            Rays[0].CopyRay(ray, PointerExtent);
 
-                if (MixedRealityRaycaster.DebugEnabled)
-                {
-                    Debug.DrawRay(pointingRay.origin, pointingRay.direction * PointerExtent, Color.green);
-                }
+            if (MixedRealityRaycaster.DebugEnabled)
+            {
+                Debug.DrawRay(ray.origin, ray.direction * PointerExtent, Color.green);
             }
         }
 

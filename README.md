@@ -2,21 +2,18 @@
 
 # What is MixedRealityToolkit
 
-MRTK is a Microsoft Driven opensource project. 
-
-MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity. Latest Release of MRTK (V2) supports HoloLens/HoloLens 2, WMR, and OpenVR platform. Start your project with MRTK, and 
-
-# What's MRTK-Unity good for 
- 
-* Provide basic features as an easy to use SDK to reduce the barrier-to-entry to get started.
-
-* Enable rapid prototyping by providing the basic building blocks for MR app development. 
-
-* Showcase best practices in MR with UI controls and interactions that matches the WMR and HoloLens Shell. 
-
-* Support a wide audience, allowing solutions to be built that will run on multiple VR / AR / XR platforms such as Mixed Reality,  Steam/Open VR.
-
-* Ensure an extensive framework for advanced integrators, with the ability to swap out core components with their own should they wish to, or simply extend the framework to add new capabilities.
+MRTK is a Microsoft Driven open source project. MRTK-Unity...
+* Provides the **basic building blocks for unity development on HoloLens, Windows Mixed Reality, and OpenVR**.
+* Showcases UX best practices with **UI controls that match Windows Mixed Reality and HoloLens Shell**. 
+* **Enables rapid prototyping** via in-editor simulation that allows you to see changes immediately.
+* **Supports a wide range of platforms**, including
+  * Microsoft HoloLens
+  * Microsoft HoloLens 2
+  * Microsoft Immersive headsets (IHMD)
+  * Windows Mixed Reality headsets
+  * OpenVR headsets (HTC Vive / Oculus Rift)
+    
+* Is **extensible**. Provides devs ability to swap out core components and extend the framework.
 
 # Build Status
 
@@ -29,58 +26,49 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 | :--- | :--- | :--- | :--- |
 | To develop apps for mixed reality headsets, you need the Windows 10 Fall Creators Update | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
 
-
-# Supported Platform 
-
-The Mixed Reality Toolkit V2 will includes many APIs to accelerate the development of MR / XR / VR / AR projects for a range of supported devices, starting with
-
- - Microsoft HoloLens
- - Microsoft HoloLens 2
- - Microsoft Immersive headsets (IHMD)
- - OpenVR (HTC Vive / Oculus Rift)
- 
 # Feature areas
 
-* Input System
-
-* Articulated Hands + Gestures (HoloLens 2)
-
-* Eye Tracking (HoloLens2) 
-
-* Voice Commanding 
-
-* Gaze + Select (HoloLens)
-
-* Controller Visualization 
-
-* Teleportation 
-
-* UI Controls 
-
-* Solver and Interactions 
-
-* Spatial Understanding 
-
-* Diagnostic Tool 
-
+- Input System
+- Articulated Hands + Gestures (HoloLens 2)
+- Eye Tracking (HoloLens2)
+- Voice Commanding
+- Gaze + Select (HoloLens)
+- Controller Visualization
+- Teleportation
+- UI Controls
+- Solver and Interactions
+- Spatial Understanding
+- Diagnostic Tool
 
 # Getting Started with MRTK 
+1. [Download MRTK](Documentation/DownloadingTheMRTK.md)
+2. Follow this [Getting Started Guide](Documentation/GettingStartedWithTheMRTK.md)
+3. Check out [Mixed Reality Toolkit configuration guide](Documentation/MixedRealityConfigurationGuide.md)
 
-You can find out how to use MRTK to develop for Windows Mixed Reality on the MS Developer Site.
-
-The Mixed Reality team have prepared a few guides for getting up to speed on using the new Mixed Reality Toolkit, which can be found here:
-
-* [Downloading the Mixed Reality Toolkit](Documentation/DownloadingTheMRTK.md)
-* [Getting Started with the Mixed Reality Toolkit](Documentation/GettingStartedWithTheMRTK.md)
-* [Mixed Reality Toolkit configuration guide](Documentation/MixedRealityConfigurationGuide.md)
-
+### More documentation
 Find this readme, other documentation articles and the MRTK api reference on our [MRTK Dev Portal on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/). 
+
+# Building blocks for UI and Interactions
+|  [![Button](/External/ReadMeImages/Button/MRTK_Button_Main.png)](/Documentation/README_Button.md) [Button](/Documentation/README_Button.md) | [![Bounding Box](/External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png)](/Documentation/README_BoundingBox.md) [Bounding Box](/Documentation/README_BoundingBox.md) | [![Manipulation Handler](/External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png)](/Documentation/README_ManipulationHandler.md) [Manipulation Handler](/Documentation/README_ManipulationHandler.md) |
+|:--- | :--- | :--- |
+| A button control which supports various input methods including HoloLens2's articulated hand | Standard UI for manipulating objects in 3D space | Script for manipulating objects with one or two hands |
+|  [![Slate](/External/ReadMeImages/Slate/MRTK_Slate_Main.png)](/Documentation/README_Slate.md) [Slate](/Documentation/README_Slate.md) | [![System Keyboard](/External/ReadMeImages/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](/Documentation/README_SystemKeyboard.md) [System Keyboard](/Documentation/README_SystemKeyboard.md) | [![Interactable](/External/ReadMeImages/Interactable/InteractableExamples.png)](/Documentation/README_Interactable.md) [Interactable](/Documentation/README_Interactable.md) |
+| 2D style plane which supports scrolling with articulated hand input | Example script of using the system keyboard in Unity  | A script for making objects interactable with visual states and theme support |
+|  [![Solver](/External/ReadMeImages/Solver/MRTK_Solver_Main.png)](/Documentation/README_Solver.md) [Solver](/Documentation/README_Solver.md) | [![Object Collection](/External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Main.png)](/Documentation/README_ObjectCollection.md) [Object Collection](/Documentation/README_ObjectCollection.md) | [![Tooltip](/External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png)](/Documentation/README_Tooltip.md) [Tooltip](/Documentation/README_Tooltip.md) |
+| Various object positioning behaviors such as tag-along, body-lock, constant view size and surface magnetism | Script for lay out an array of objects in a three-dimensional shape | Annotation UI with flexible anchor/pivot system which can be used for labeling motion controllers and object. |
+|  [![App Bar](/External/ReadMeImages/AppBar/MRTK_AppBar_Main.png)](/Documentation/README_AppBar.md) [App Bar](/Documentation/README_AppBar.md) | [![Pointers](/External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)](/Documentation/README_Pointers.md) [Pointers](/Documentation/README_Pointers.md) | [![Fingertip Visualization](/External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png)](/Documentation/README_FingertipVisualization.md) [Fingertip Visualization](/Documentation/README_FingertipVisualization.md) |
+| UI for Bounding Box's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
+
+# Example Scene
+You can find various types of interactions and UI controls in [this example scene](/Documentation/README_HandInteractionExamples.md).
+
+[![Button](/External/ReadMeImages/MRTK_Examples.png)](/Documentation/README_HandInteractionExamples.md)
 
 # Engage with the Community
 
 Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/).
 
-Ask questions about using MRRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk).
+Ask questions about using MRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) using the **MRTK** tag.
 
 Search for solution or file a new issue in [GitHub](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
 
@@ -89,23 +77,6 @@ Deep dive into project plan and learn how you can contribute to MRTK in our [wik
 Join our weekly community shiproom to hear directly from the feature team. (link to come soon) 
 
 For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
-
-
-# Examples and QuickStart scenes
-
-One radical change to the Mixed Reality Toolkit vNext, will be the standards and approaches to real world example scenes.
-
-New examples will follow strict guidelines, such as:
-
-* Each example must have a use and demonstrate a real world test case (no tests).
-* Each example will use a standardized template, so all examples have the same look and feel.
-* Each sample will be fully documented, detailing both the use case it is demonstrating and how to implement the features demonstrated.
-
-> Check the "Work In Progress" section of the [Windows Mixed Reality - vNext SDK](MRTK-SDK.md) for a peek at the first new example.
-
-
-**External\How To** docs folder is meant to help everyone with migrating forward or any simple doubts they might have about the process.
-Please feel free to grow all these sections. We can't wait to see your additions!
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). 
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
