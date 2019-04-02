@@ -51,6 +51,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static bool showRegisteredServiceProperties = true;
         private SerializedProperty registeredServiceProvidersProfile;
 
+        // Editor settings
+        private static bool showEditorSettings = true;
+        private SerializedProperty useServiceInspectors;
+
         private MixedRealityToolkitConfigurationProfile configurationProfile;
 
         protected override void OnEnable()
@@ -119,6 +123,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Additional registered components configuration
             registeredServiceProvidersProfile = serializedObject.FindProperty("registeredServiceProvidersProfile");
+
+            // Editor settings
+            useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
         }
 
         public override void OnInspectorGUI()
@@ -300,6 +307,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 using (new EditorGUI.IndentLevelScope())
                 {
                     changed |= RenderProfile(registeredServiceProvidersProfile);
+                }
+            }
+
+            // Editor settings
+            EditorGUILayout.Space();
+            showEditorSettings = EditorGUILayout.Foldout(showEditorSettings, "Editor Settings", true);
+            if (showEditorSettings)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(useServiceInspectors);
                 }
             }
 
