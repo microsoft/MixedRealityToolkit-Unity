@@ -76,6 +76,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
+            MixedRealityHandTrackingProfile handTrackingProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile;
+            if (handTrackingProfile != null && !handTrackingProfile.EnableHandMeshVisualization)
+            {
+                // clear existing joint gameobjects / meshes
+                foreach (var joint in joints)
+                {
+                    Destroy(joint.Value.gameObject);
+                }
+
+                joints.Clear();
+                return;
+            }
+
             foreach (TrackedHandJoint handJoint in eventData.InputData.Keys)
             {
                 Transform jointTransform;

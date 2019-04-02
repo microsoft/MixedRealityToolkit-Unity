@@ -60,5 +60,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 enableHandMeshVisualization = value;
             }
         }
+
+        [SerializeField]
+        [Tooltip("Renders the hand joints. Note: this could reduce performance")]
+        private bool enableHandJointVisualization = false;
+        public bool EnableHandJointVisualization
+        {
+            get
+            {
+                return enableHandJointVisualization;
+            }
+
+            set
+            {
+                enableHandJointVisualization = value;
+            }
+        }
+
+        
     }
 }

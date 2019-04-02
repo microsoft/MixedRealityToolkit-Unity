@@ -9,13 +9,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     public class ToggleHandVisualisation : MonoBehaviour
     {
         public bool isHandMeshVisible = false;
+        public bool isHandJointVisible = false;
 
-        void updateHandMeshVisibility()
+        void updateHandVisibility()
         {
             MixedRealityHandTrackingProfile handTrackingProfile = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile;
             if (handTrackingProfile != null)
             { 
                 handTrackingProfile.EnableHandMeshVisualization = isHandMeshVisible;
+                handTrackingProfile.EnableHandJointVisualization = isHandJointVisible;
             }
         }
 
@@ -24,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         void Start()
         {
-            updateHandMeshVisibility();
+            updateHandVisibility();
         }
 
 
@@ -34,7 +36,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public void OnToggleHandMesh()
         {
             isHandMeshVisible = !isHandMeshVisible;
-            updateHandMeshVisibility();
+            updateHandVisibility();
+        }
+
+        /// <summary>
+        /// Toggles hand joint visualization
+        /// </summary>
+        public void OnToggleHandJoint()
+        {
+            isHandJointVisible = !isHandJointVisible;
+            updateHandVisibility();
         }
 
     }
