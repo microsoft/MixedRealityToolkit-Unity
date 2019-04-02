@@ -250,15 +250,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
             }
+
+            eventData.Use();
         }
 
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
             touchPoints.Add(eventData.InputData);
+            eventData.Use();
         }
         
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+            eventData.Use();
         }
         
         #endregion OnTouch
@@ -269,9 +273,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             GameObject initialMarker = new GameObject("Initial");
             initialMarker.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-
-            GameObject finalMarker = new GameObject("Final");
-            finalMarker.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
 
             if (movingButtonVisuals != null)
             {
