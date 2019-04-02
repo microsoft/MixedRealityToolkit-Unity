@@ -16666,7 +16666,6 @@ GameObject:
   m_Component:
   - component: {fileID: 912904229}
   - component: {fileID: 912904231}
-  - component: {fileID: 912904230}
   m_Layer: 0
   m_Name: Directional Light (2)
   m_TagString: Untagged
@@ -16688,18 +16687,6 @@ Transform:
   m_Father: {fileID: 1644104658}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &912904230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912904228}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!108 &912904231
 Light:
   m_ObjectHideFlags: 0
@@ -17591,10 +17578,19 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1738098756133216, guid: 427730042d0a7ac41b1d81947f081754, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114090657554267990, guid: 427730042d0a7ac41b1d81947f081754,
         type: 3}
       propertyPath: m_Text
       value: Eye-supported Target Selection & Positioning
+      objectReference: {fileID: 0}
+    - target: {fileID: 222072058555623264, guid: 427730042d0a7ac41b1d81947f081754,
+        type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114924912107220086, guid: 427730042d0a7ac41b1d81947f081754,
         type: 3}
@@ -17626,15 +17622,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1738098756133216, guid: 427730042d0a7ac41b1d81947f081754, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 222072058555623264, guid: 427730042d0a7ac41b1d81947f081754,
-        type: 3}
-      propertyPath: m_CullTransparentMesh
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 427730042d0a7ac41b1d81947f081754, type: 3}

@@ -744,7 +744,7 @@ MonoBehaviour:
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 1.0000001, y: 1.0000001}
-  collider: {fileID: 57483559}
+  touchableCollider: {fileID: 57483559}
 --- !u!82 &57483564
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3452,7 +3452,7 @@ MonoBehaviour:
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 1.0000001, y: 1.0000001}
-  collider: {fileID: 274842738}
+  touchableCollider: {fileID: 274842738}
 --- !u!82 &274842743
 AudioSource:
   m_ObjectHideFlags: 0
@@ -16643,7 +16643,7 @@ MonoBehaviour:
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 1.7308522, y: 1.7815493}
-  collider: {fileID: 1797042818}
+  touchableCollider: {fileID: 1797042818}
 --- !u!65 &1797042818
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18837,7 +18837,7 @@ MonoBehaviour:
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 1.0000001, y: 1.0000001}
-  collider: {fileID: 2305499673797701892}
+  touchableCollider: {fileID: 2305499673797701892}
 --- !u!82 &2305499673797701895
 AudioSource:
   m_ObjectHideFlags: 0

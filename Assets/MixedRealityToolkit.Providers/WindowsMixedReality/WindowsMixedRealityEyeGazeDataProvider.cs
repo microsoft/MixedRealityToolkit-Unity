@@ -58,7 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (Application.isPlaying && WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
+#if WINDOWS_UWP
                 AskForETPermission();
+#endif
                 ReadProfile();
             }
         }
@@ -108,19 +110,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             SmoothEyeTracking = profile.SmoothEyeTracking;
         }
 
+#if WINDOWS_UWP
         /// <summary>
         /// Triggers a prompt to let the user decide whether to permit using eye tracking 
         /// </summary>
-        private void AskForETPermission()
+        private async void AskForETPermission()
         {
-#if WINDOWS_UWP
             if (!askedForETAccessAlready)  // Making sure this is only triggered once
             {
-                EyesPose.RequestAccessAsync();
                 askedForETAccessAlready = true;
+                await EyesPose.RequestAccessAsync();
             }
-#endif // WINDOWS_UWP
         }
+#endif // WINDOWS_UWP
 
         private Ray SmoothGaze(Ray? newGaze)
         {
