@@ -58,8 +58,8 @@
         href: TODO.md
     - name: UX Building Blocks
       href: TODO.md
-    - name: Spatial Mapping
-      href: TODO.md
+    - name: Spatial Awareness
+      href: SpatialAwareness/SpatialAwarenessGettingStarted.md
     - name: In-Editor Input Simulation
       href: TODO.md
     - name: Performance Diagnostic Tool
