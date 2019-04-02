@@ -1,17 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Teleport;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Microsoft.MixedReality.Toolkit.SpatialAwareness;
+
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
 #endif
@@ -410,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_EDITOR
                 LayerExtensions.SetupLayer(31, "Spatial Awareness");
 #endif
-                object[] args = { this };
+                object[] args = { this, ActiveProfile.SpatialAwarenessSystemProfile };
                 if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType, args: args) && SpatialAwarenessSystem != null)
                 {
                     Debug.LogError("Failed to start the Spatial Awareness System!");
@@ -438,22 +439,17 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (ActiveProfile.RegisteredServiceProvidersProfile != null)
             {
-                for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile.Configurations?.Length; i++)
+                for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile?.Configurations?.Length; i++)
                 {
                     var configuration = ActiveProfile.RegisteredServiceProvidersProfile.Configurations[i];
 
-                    if (typeof(IMixedRealityDataProvider).IsAssignableFrom(configuration.ComponentType.Type))
+                    if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
                     {
-                        RegisterService<IMixedRealityDataProvider>(configuration.ComponentType, configuration.RuntimePlatform, this, null, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile);
-
-                    }
-                    else if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
-                    {
-                        RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, this, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"{configuration.ComponentName} does not implement IMixedRealityDataProvider or IMixedRealityExtensionService and could not be registered");
+                        object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
+                        if (!RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, args))
+                        {
+                            Debug.LogError($"Failed to register {configuration.ComponentName}");
+                        }
                     }
                 }
             }

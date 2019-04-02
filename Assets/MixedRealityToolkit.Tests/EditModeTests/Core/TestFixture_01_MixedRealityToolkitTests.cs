@@ -283,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestDataProvider2>(new TestDataProvider2(null, null, "Test16-2.2", 10));
 
             // Retrieve all extension services.
-            var allExtensionServices = MixedRealityToolkit.Instance.GetServices<IMixedRealityExtensionService>();
+            var allExtensionServices = MixedRealityToolkit.Instance.GetServices<IMixedRealityDataProvider>();
 
             // Tests
             Assert.AreEqual(4, allExtensionServices.Count);

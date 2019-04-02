@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         new ControllerInputActionOption
                         {
-                            Controller = SupportedControllerType.None,
+                            Controller = 0,
                             Handedness = Handedness.None,
                             InputLabelPositions = new[] {new Vector2(0, 0)},
                             IsLabelFlipped = new []{false}
@@ -352,11 +352,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             controllerInputActionOptions.Controllers.Add(currentControllerOption);
                             isMouseInRects = new bool[currentInteractionList.arraySize];
 
-                            if (controllerInputActionOptions.Controllers.Any(option => option.Controller == SupportedControllerType.None))
+                            if (controllerInputActionOptions.Controllers.Any(option => option.Controller == 0))
                             {
                                 controllerInputActionOptions.Controllers.Remove(
                                     controllerInputActionOptions.Controllers.Find(option =>
-                                        option.Controller == SupportedControllerType.None));
+                                        option.Controller == 0));
                             }
 
                             File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(controllerInputActionOptions));

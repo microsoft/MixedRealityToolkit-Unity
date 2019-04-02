@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Provides eye tracking information.
     /// </summary>
-    public interface IMixedRealityEyeGazeDataProvider : IMixedRealityDataProvider
+    public interface IMixedRealityEyeGazeDataProvider : IMixedRealityExtensionService
     {
         bool SmoothEyeTracking { get; set; }
     }
