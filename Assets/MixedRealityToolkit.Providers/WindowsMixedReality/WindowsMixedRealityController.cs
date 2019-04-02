@@ -607,11 +607,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
             }
 
-            if (gltfGameObject != null)
-            {
-                isControllerModelLoaded = true;
-            }
-            else
+
+            isControllerModelLoaded = (gltfGameObject != null);
+            if (!isControllerModelLoaded)
             {
                 Debug.LogWarning("Failed to create controller model from driver, defaulting to BaseController behavior");
                 TryRenderControllerModel(GetType(), InputSourceType.Controller);
