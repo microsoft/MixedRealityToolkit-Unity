@@ -44,23 +44,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             childrenToSort.Clear();
             
             int facadeIndex = 0;
+            ServiceFacade facade = null;
             foreach (IMixedRealityService service in MixedRealityToolkit.Instance.ActiveSystems.Values)
             {
-                facadeIndex = CreateFacade(MixedRealityToolkit.Instance.transform, service, facadeIndex, false);
+                facade = CreateFacade(MixedRealityToolkit.Instance.transform, service, ref facadeIndex);
             }
 
             foreach (Tuple<Type,IMixedRealityService> registeredService in MixedRealityToolkit.Instance.RegisteredMixedRealityServices)
             {
-                facadeIndex = CreateFacade(MixedRealityToolkit.Instance.transform, registeredService.Item2, facadeIndex, true);
+                facade = CreateFacade(MixedRealityToolkit.Instance.transform, registeredService.Item2, ref facadeIndex);
             }
 
-            childrenToSort.Sort(
+            /* Disabling this until we fix the child order bug.
+             * childrenToSort.Sort(
                 delegate (ServiceFacade s1, ServiceFacade s2) 
-                { return s1.Service.Priority.CompareTo(s2.Service.Priority); });
+                {
+                    if (s1.Service.Priority == s2.Service.Priority)
+                    {
+                        return s1.ServiceType.Name.CompareTo(s2.ServiceType.Name);
+                    }
 
+                    return s1.Service.Priority.CompareTo(s2.Service.Priority); }
+                );*/
+
+            // Set sibling index first
             for (int i = 0; i < childrenToSort.Count; i++)
                 childrenToSort[i].transform.SetSiblingIndex(i);
-            
+                        
+            // Delete any stragglers
             childrenToDelete.Clear();
             for (int i = facadeIndex; i < MixedRealityToolkit.Instance.transform.childCount; i++)
                 childrenToDelete.Add(MixedRealityToolkit.Instance.transform.GetChild(i));
@@ -69,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 GameObject.DestroyImmediate(childToDelete.gameObject);
         }
 
-        private static int CreateFacade(Transform parent, IMixedRealityService service, int facadeIndex, bool registeredService)
+        private static ServiceFacade CreateFacade(Transform parent, IMixedRealityService service, ref int facadeIndex)
         {
             ServiceFacade facade = null;
             if (facadeIndex > parent.transform.childCount - 1)
@@ -102,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
             facadeIndex++;
 
-            return facadeIndex;
+            return facade;
         }
 
         private static void DestroyAllChildren()
