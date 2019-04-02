@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This class provides Gaze as an Input Source so users can interact with objects using their head.
     /// </summary>
     [DisallowMultipleComponent]
-    public class GazeProvider : InputSystemGlobalListener, IMixedRealityGazeProvider, IMixedRealityInputHandler
+    public class GazeProvider : InputSystemGlobalListener, IMixedRealityGazeProvider, IMixedRealityEyeGazeProvider, IMixedRealityInputHandler
     {
         private const float VelocityThreshold = 0.1f;
 
@@ -73,6 +73,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return enabled; }
             set { enabled = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("True to prefer eye tracking over head gaze, when available.")]
+        private bool preferEyeTracking = false;
+
+        /// <inheritdoc />
+        public bool UseEyeTracking
+        {
+            get { return preferEyeTracking; }
+            set { preferEyeTracking = value; }
         }
 
         /// <inheritdoc />
@@ -141,6 +152,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private Vector3 lastHeadPosition = Vector3.zero;
 
+        /// <inheritdoc />
+        public bool IsEyeGazeValid => IsEyeTrackingAvailable && UseEyeTracking;
+
+        /// <inheritdoc />
+        public DateTime Timestamp { get; private set; }
+
+        private Ray latestEyeGaze = default(Ray);
+        private DateTime latestEyeTrackingUpdate = DateTime.MinValue;
+
+        private readonly float maxEyeTrackingTimeoutInSeconds = 2.0f;
+
         #region InternalGazePointer Class
 
         private class InternalGazePointer : GenericPointer
@@ -189,15 +211,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <inheritdoc />
             public override void OnPreSceneQuery()
             {
-                Vector3 newGazeOrigin = gazeTransform.position;
-                Vector3 newGazeNormal = gazeTransform.forward;
+                Vector3 newGazeOrigin = Vector3.zero;
+                Vector3 newGazeNormal = Vector3.zero;
 
-                // Update gaze info from stabilizer
-                if (stabilizer != null)
+                if (gazeProvider.preferEyeTracking && gazeProvider.IsEyeTrackingAvailable)
                 {
-                    stabilizer.UpdateStability(gazeTransform.localPosition, gazeTransform.localRotation * Vector3.forward);
-                    newGazeOrigin = gazeTransform.parent.TransformPoint(stabilizer.StablePosition);
-                    newGazeNormal = gazeTransform.parent.TransformDirection(stabilizer.StableRay.direction);
+                    gazeProvider.gazeInputSource.SourceType = InputSourceType.Eyes;
+                    newGazeOrigin = gazeProvider.latestEyeGaze.origin;
+                    newGazeNormal = gazeProvider.latestEyeGaze.direction;
+                }
+                else
+                {
+                    gazeProvider.gazeInputSource.SourceType = InputSourceType.Head;
+                    newGazeOrigin = gazeTransform.position;
+                    newGazeNormal = gazeTransform.forward;
+
+                    // Update gaze info from stabilizer
+                    if (stabilizer != null)
+                    {
+                        stabilizer.UpdateStability(gazeTransform.localPosition, gazeTransform.localRotation * Vector3.forward);
+                        newGazeOrigin = gazeTransform.parent.TransformPoint(stabilizer.StablePosition);
+                        newGazeNormal = gazeTransform.parent.TransformDirection(stabilizer.StableRay.direction);
+                    }
                 }
 
                 Vector3 endPoint = newGazeOrigin + (newGazeNormal * pointerExtent);
@@ -363,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected override void OnDisable()
         {
             base.OnDisable();
-            GazePointer.BaseCursor?.SetVisibility(false);
+            GazePointer?.BaseCursor?.SetVisibility(false);
             InputSystem?.RaiseSourceLost(GazeInputSource);
         }
 
@@ -450,6 +485,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             GazePointer.BaseCursor.SetVisibilityOnSourceDetected = false;
             GazePointer.BaseCursor.Pointer = GazePointer;
         }
+
+        public void UpdateEyeGaze(IMixedRealityEyeGazeDataProvider provider, Ray eyeRay, DateTime timestamp)
+        {
+            latestEyeGaze = eyeRay;
+            latestEyeTrackingUpdate = DateTime.UtcNow;
+            Timestamp = timestamp;
+        }
+
+        /// <summary>
+        /// Ensure that we work with recent Eye Tracking data. Return false if we haven't received any 
+        /// new Eye Tracking data for more than 'maxETTimeoutInSeconds' seconds.
+        /// </summary>
+        private bool IsEyeTrackingAvailable => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;
 
         #endregion Utilities
     }

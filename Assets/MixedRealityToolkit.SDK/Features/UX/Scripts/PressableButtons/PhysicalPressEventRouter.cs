@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     ///<summary>
-    /// This class exists to route <see cref="PushButton"/> events through to Interactable.
+    /// This class exists to route <see cref="Microsoft.MixedReality.Toolkit.UI.PressableButton"/> events through to Interactable.
     /// The result is being able to have physical touch call Interactable.OnPointerClicked.
     ///</summary>
     public class PhysicalPressEventRouter : MonoBehaviour

@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     ///<summary>
     /// A button that can be pushed via direct touch.
-    /// You can use <see cref="PhysicalPressEventRouter"/> to route these events to <see cref="Interactable"/>.
+    /// You can use <see cref="Microsoft.MixedReality.Toolkit.Examples.Demos.PhysicalPressEventRouter"/> to route these events to <see cref="Interactable"/>.
     ///</summary>
     [RequireComponent(typeof(BoxCollider))]
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
@@ -250,15 +250,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
             }
+
+            eventData.Use();
         }
 
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
             touchPoints.Add(eventData.InputData);
+            eventData.Use();
         }
         
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+            eventData.Use();
         }
         
         #endregion OnTouch
@@ -269,9 +273,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             GameObject initialMarker = new GameObject("Initial");
             initialMarker.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-
-            GameObject finalMarker = new GameObject("Final");
-            finalMarker.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
 
             if (movingButtonVisuals != null)
             {

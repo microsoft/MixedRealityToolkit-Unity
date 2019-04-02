@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Should the X axis be inverted?
         /// </summary>
         /// <remarks>
-        /// Only valid for <see cref="Utilities.AxisType.SingleAxis"/> and <see cref="Utilities.AxisType.DualAxis"/> inputs.
+        /// Only valid for <see cref="Microsoft.MixedReality.Toolkit.Utilities.AxisType.SingleAxis"/> and <see cref="Microsoft.MixedReality.Toolkit.Utilities.AxisType.DualAxis"/> inputs.
         /// </remarks>
         public bool InvertXAxis
         {
@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Should the Y axis be inverted?
         /// </summary>
         /// <remarks>
-        /// Only valid for <see cref="Utilities.AxisType.DualAxis"/> inputs.
+        /// Only valid for <see cref="Microsoft.MixedReality.Toolkit.Utilities.AxisType.DualAxis"/> inputs.
         /// </remarks>
         public bool InvertYAxis
         {
