@@ -757,15 +757,12 @@
       "version": ""
     },
     {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
       "type": "Toc",
       "source_relative_path": "Documentation/toc.yml",
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "iaXqrjufGvaWJYpG7kO86g=="
+          "hash": "JI29IBMDejTXBnnnDTMy8w=="
         }
       },
       "is_incremental": false,
@@ -12489,17 +12486,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 69,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 828,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -12509,10 +12505,11 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 828,
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
