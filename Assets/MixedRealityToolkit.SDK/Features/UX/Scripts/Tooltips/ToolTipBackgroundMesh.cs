@@ -28,10 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             set
             {
-                if (BackgroundRenderer)
-                {
-                    BackgroundRenderer.enabled = value;
-                }
+                if (BackgroundRenderer == null)
+                    return;
+
+                BackgroundRenderer.enabled = value;
             }
         }
 

@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             this.pointerPrefab = pointerPrefab;
         }
 
+        [EnumFlags]
         [SerializeField]
         [Tooltip("The controller this pointer will attach itself to at runtime.")]
         private SupportedControllerType controllerType;
@@ -33,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The type of Controller this pointer will attach itself to at runtime.
         /// </summary>
-        /// <remarks>If <see cref="Utilities.Handedness.None"/> is selected, then it will attach to any controller type</remarks>
+        /// <remarks>If <see cref="Microsoft.MixedReality.Toolkit.Utilities.Handedness.None"/> is selected, then it will attach to any controller type</remarks>
         public SupportedControllerType ControllerType => controllerType;
 
         [SerializeField]

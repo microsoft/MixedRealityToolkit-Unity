@@ -28,6 +28,7 @@ MonoBehaviour:
   mouseY: Mouse Y
   lookHorizontal: LookHorizontal
   lookVertical: LookVertical
+  simulateEyePosition: 0
   handSimulationMode: 2
   toggleLeftHandKey: 116
   toggleRightHandKey: 121

@@ -376,7 +376,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         /// <summary>
         /// Allows to manually enable wire (edge) highlighting (edges) of the bounding box.
-        /// This is useful if connected to the Manipulation events of a <see cref="ManipulationHandler"/> 
+        /// This is useful if connected to the Manipulation events of a
+        /// <see cref="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler"/> 
         /// when used in conjunction with this MonoBehavior.
         /// </summary>
         public void HighlightWires()

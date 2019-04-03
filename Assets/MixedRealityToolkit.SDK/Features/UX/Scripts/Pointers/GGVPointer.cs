@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private IMixedRealityInputSource inputSourceParent;
 
 
-        /// <inheritdoc cref="IMixedRealityController" />
+        /// <inheritdoc />
         public IMixedRealityController Controller
         {
             get { return controller; }

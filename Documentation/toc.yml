@@ -1,7 +1,5 @@
 ﻿- name: About MRTK
   items:
-  - name: MRTK-SDK
-    href: ../MRTK-SDK.md
   - name: MRTK-vNext
     href: ../MRTK-vNext.md
   - name: Mixed Reality Services
@@ -82,8 +80,6 @@
       href: TODO.md
 - name: Planning
   items:
-  - name: MRTK-WorkRoadmap
-    href: ../MRTK-WorkRoadmap.md
   - name: Roadmap
     href: ../Roadmap.md
 - name: Notice
