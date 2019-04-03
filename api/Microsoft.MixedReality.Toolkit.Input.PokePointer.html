@@ -460,6 +460,18 @@
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnPostSceneQuery">BaseControllerPointer.OnPostSceneQuery()</a></div>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPreCurrentPointerTargetChange_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPreCurrentPointerTargetChange*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPreCurrentPointerTargetChange" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPreCurrentPointerTargetChange">OnPreCurrentPointerTargetChange()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnPreCurrentPointerTargetChange()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnPreCurrentPointerTargetChange">BaseControllerPointer.OnPreCurrentPointerTargetChange()</a></div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPreSceneQuery_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPreSceneQuery*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPreSceneQuery" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPreSceneQuery">OnPreSceneQuery()</h4>
   <div class="markdown level1 summary"></div>
@@ -480,17 +492,19 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected void OnValidate()</code></pre>
   </div>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_TryGetDistanceToNearestSurface_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.TryGetDistanceToNearestSurface*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_TryGetDistanceToNearestSurface_System_Single__" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.TryGetDistanceToNearestSurface(System.Single@)">TryGetDistanceToNearestSurface(out Single)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetDistanceToNearestSurface_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetDistanceToNearestSurface*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetDistanceToNearestSurface_System_Single__" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetDistanceToNearestSurface(System.Single@)">IMixedRealityNearPointer.TryGetDistanceToNearestSurface(out Single)</h4>
   <div class="markdown level1 summary"><p>Near pointers often interact with surfaces.</p>
 <p>This method provides a mechanism to get the distance to the closest surface the near pointer is interacting with.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool TryGetDistanceToNearestSurface(out float distance)</code></pre>
+    <pre><code class="lang-csharp hljs">bool IMixedRealityNearPointer.TryGetDistanceToNearestSurface(out float distance)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -528,13 +542,19 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_TryGetNearGraspPoint_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.TryGetNearGraspPoint*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_TryGetNearGraspPoint_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.TryGetNearGraspPoint(Vector3@)">TryGetNearGraspPoint(out Vector3)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetNearGraspPoint_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetNearGraspPoint*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetNearGraspPoint_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetNearGraspPoint(Vector3@)">IMixedRealityNearPointer.TryGetNearGraspPoint(out Vector3)</h4>
+  <div class="markdown level1 summary"><p>For near pointer we may want to draw a tether between the pointer
+and the object.</p>
+<p>The visual grasp point (average of index and thumb) may actually be different from the pointer
+position (the palm).</p>
+<p>This method provides a mechanism to get the visual grasp point.</p>
+<p>NOTE: Not all near pointers have a grasp point (for example a poke pointer).</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool TryGetNearGraspPoint(out Vector3 position)</code></pre>
+    <pre><code class="lang-csharp hljs">bool IMixedRealityNearPointer.TryGetNearGraspPoint(out Vector3 position)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -564,21 +584,22 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p>True if a grasp point was retrieved, false if not.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_TryGetNormalToNearestSurface_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.TryGetNormalToNearestSurface*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_TryGetNormalToNearestSurface_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.TryGetNormalToNearestSurface(Vector3@)">TryGetNormalToNearestSurface(out Vector3)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetNormalToNearestSurface_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetNormalToNearestSurface*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetNormalToNearestSurface_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetNormalToNearestSurface(Vector3@)">IMixedRealityNearPointer.TryGetNormalToNearestSurface(out Vector3)</h4>
   <div class="markdown level1 summary"><p>Near pointers often interact with surfaces.</p>
 <p>This method provides a mechanism to get the normal of the closest surface the near pointer is interacting with.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool TryGetNormalToNearestSurface(out Vector3 normal)</code></pre>
+    <pre><code class="lang-csharp hljs">bool IMixedRealityNearPointer.TryGetNormalToNearestSurface(out Vector3 normal)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
