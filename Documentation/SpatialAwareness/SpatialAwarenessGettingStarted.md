@@ -10,9 +10,9 @@ between holograms and the real-world.
 Adding support for spatial awareness requires two key components of the Mixed Reality Toolkit: the 
 spatial awareness system and a supported platform provider.
 
-1. [Enable](enable-spatial-awareness) the spatial awareness system
-2. [Register](register-observers) and [configure](configure-observers) one or more spatial observers
-3. [Build and deploy](build-and-deploy) to a platform that supports spatial awareness
+1. [Enable](#enable-spatial-awareness) the spatial awareness system
+2. [Register](#register-observers) and [configure](#configure-observers) one or more spatial observers
+3. [Build and deploy](#build-and-deploy) to a platform that supports spatial awareness
 
 ### Enable Spatial Awareness
 

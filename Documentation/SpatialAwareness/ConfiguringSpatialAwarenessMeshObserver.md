@@ -110,5 +110,5 @@ Indicates the material to be used to cause the spatial mesh to occlude holograms
 - [IMixedRealitySpatialAwarenessObserver API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver)
 - [IMixedRealitySpatialAwarenessMeshObserver API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver)
 - [BaseSpatialObserver API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver)
-- [Spatial Awareness System](SpatialAwarenessSystemGettingStarted.md)
+- [Spatial Awareness System](SpatialAwarenessGettingStarted.md)
 - [Using Spatial Awareness in an Application](../TODO.md)
