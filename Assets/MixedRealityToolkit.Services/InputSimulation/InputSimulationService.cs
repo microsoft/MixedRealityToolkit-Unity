@@ -104,24 +104,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         handDataProvider.UpdateHandData(HandDataLeft, HandDataRight);
                     }
-
-                    DateTime currentTime = DateTime.UtcNow;
-                    double msSinceLastHandUpdate = currentTime.Subtract(new DateTime(lastHandUpdateTimestamp)).TotalMilliseconds;
-                    // TODO implement custom hand device update frequency here, use 1000/fps instead of 0
-                    if (msSinceLastHandUpdate > 0)
-                    {
-                        if (HandDataLeft.Timestamp > lastHandUpdateTimestamp)
-                        {
-                            UpdateHandInputSource(Handedness.Left, HandDataLeft);
-                        }
-                        if (HandDataRight.Timestamp > lastHandUpdateTimestamp)
-                        {
-                            UpdateHandInputSource(Handedness.Right, HandDataRight);
-                        }
-
-                        lastHandUpdateTimestamp = currentTime.Ticks;
-                    }
                     break;
+            }
+        }
+
+        /// <inheritdoc />
+        public override void LateUpdate()
+        {
+            var profile = GetInputSimulationProfile();
+
+            // Apply hand data in LateUpdate to ensure external changes are applied.
+            // HandDataLeft/Right can be modified after the services Update() call.
+            if (profile.HandSimulationMode != HandSimulationMode.Disabled)
+            {
+                DateTime currentTime = DateTime.UtcNow;
+                double msSinceLastHandUpdate = currentTime.Subtract(new DateTime(lastHandUpdateTimestamp)).TotalMilliseconds;
+                // TODO implement custom hand device update frequency here, use 1000/fps instead of 0
+                if (msSinceLastHandUpdate > 0)
+                {
+                    if (HandDataLeft.Timestamp > lastHandUpdateTimestamp)
+                    {
+                        UpdateHandInputSource(Handedness.Left, HandDataLeft);
+                    }
+                    if (HandDataRight.Timestamp > lastHandUpdateTimestamp)
+                    {
+                        UpdateHandInputSource(Handedness.Right, HandDataRight);
+                    }
+
+                    lastHandUpdateTimestamp = currentTime.Ticks;
+                }
             }
         }
 
