@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private IMixedRealityInputSource inputSourceParent;
 
 
-        /// <inheritdoc cref="IMixedRealityController" />
+        /// <inheritdoc />
         public IMixedRealityController Controller
         {
             get { return controller; }
@@ -167,6 +167,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Vector3 newGazeOrigin = gazeProvider.GazePointer.Rays[0].Origin;
             Vector3 endPoint = newGazeOrigin + (gazeProvider.GazePointer.Rays[0].Direction * MixedRealityToolkit.InputSystem.FocusProvider.GlobalPointingExtent);
             Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
+        }
+
+        public void OnPreCurrentPointerTargetChange()
+        {
         }
 
         /// <inheritdoc />

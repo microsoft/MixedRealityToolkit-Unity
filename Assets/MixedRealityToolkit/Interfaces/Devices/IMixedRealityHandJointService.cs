@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Mixed Reality Toolkit device definition, used to instantiate and manage a specific device / SDK
     /// </summary>
-    public interface IMixedRealityHandJointService : IMixedRealityExtensionService
+    public interface IMixedRealityHandJointService : IMixedRealityInputDeviceManager
     {
         /// <summary>
         /// Get a game object following the hand joint.

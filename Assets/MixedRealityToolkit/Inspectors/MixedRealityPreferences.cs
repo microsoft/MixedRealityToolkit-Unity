@@ -64,33 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #endregion Ignore startup settings prompt
 
-        #region Show Canvas Utility Prompt
-
-        private static readonly GUIContent CanvasUtilityContent = new GUIContent("Canvas world space utility dialogs", "Enable or disable the dialog popups for the world space canvas settings.\n\nThis setting only applies to the currently running project.");
-        private const string CANVAS_KEY = "EnableCanvasUtilityDialog";
-        private static bool isCanvasUtilityPrefLoaded;
-        private static bool showCanvasUtilityPrompt;
-
-        /// <summary>
-        /// Should the <see cref="Canvas"/> utility dialog show when updating the <see cref="RenderMode"/> settings on that component?
-        /// </summary>
-        public static bool ShowCanvasUtilityPrompt
-        {
-            get
-            {
-                if (!isCanvasUtilityPrefLoaded)
-                {
-                    showCanvasUtilityPrompt = EditorPreferences.Get(CANVAS_KEY, true);
-                    isCanvasUtilityPrefLoaded = true;
-                }
-
-                return showCanvasUtilityPrompt;
-            }
-            set => EditorPreferences.Set(CANVAS_KEY, showCanvasUtilityPrompt = value);
-        }
-
-        #endregion Show Canvas Utility Prompt
-
         [SettingsProvider]
         private static SettingsProvider Preferences()
         {
