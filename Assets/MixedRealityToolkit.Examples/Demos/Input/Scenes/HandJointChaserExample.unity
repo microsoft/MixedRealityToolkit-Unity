@@ -2959,7 +2959,7 @@ GameObject:
   - component: {fileID: 1066499001}
   - component: {fileID: 1066499008}
   - component: {fileID: 1066499005}
-  - component: {fileID: 1066499007}
+  - component: {fileID: 1066499006}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -3061,7 +3061,7 @@ MonoBehaviour:
   gazeTransform: {fileID: 0}
   minHeadVelocityThreshold: 0.5
   maxHeadVelocityThreshold: 2
---- !u!114 &1066499007
+--- !u!114 &1066499006
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3070,16 +3070,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1066499000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a21b486d0bb44444b1418aaa38b44de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &1066499008
 MonoBehaviour:
   m_ObjectHideFlags: 0
