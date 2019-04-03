@@ -347,24 +347,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitPanning: 1
-  RectTransfToNavigate: {fileID: 127185898}
-  RefToViewPort: {fileID: 1554205715}
-  AutoGazeScrollIsActive: 1
-  ScrollSpeed_x: 0.2
-  ScrollSpeed_y: 0.2
-  MinDistFromCenterForAutoScroll: {x: 0.2, y: 0.2}
-  UseSkimProofing: 1
-  SkimProofUpdateSpeed: 5
-  Zoom_Acceleration: 10
-  Zoom_SpeedMax: 1
-  Zoom_MinScale: 1
-  Zoom_MaxScale: 10
-  Zoom_TimeInSecToZoom: 1
-  Zoom_Gesture:
-    id: 9
-    description: Manipulate Action
+  rectTransfToNavigate: {fileID: 0}
+  refToViewPort: {fileID: 0}
+  zoomAcceleration: 10
+  zoomSpeedMax: 0.02
+  zoomMinScale: 0.1
+  zoomMaxScale: 1
+  zoomTimeInSecToZoom: 0.5
+  zoomGesture:
+    id: 0
+    description: None
     axisConstraint: 0
-  Zoom_GestureEnabledOnStartup: 0
+  zoomGestureEnabledOnStartup: 0
+  panAutoScrollIsActive: 1
+  panSpeedHorizontal: 0.3
+  panSpeedVertical: 0.3
+  panMinDistFromCenter: {x: 0.2, y: 0.2}
+  useSkimProofing: 0
+  skimProofUpdateSpeed: 5
 --- !u!114 &6659677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2041,15 +2041,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitPanning: 1
-  DefaultAspectRatio: 1
-  TextureRendererToBeScrolled: {fileID: 151708624}
-  AutoGazeScrollIsActive: 1
-  ScrollSpeed_x: 0
-  ScrollSpeed_y: 0.15
-  MinDistFromCenterForAutoScroll: {x: 0.2, y: 0.2}
-  OnLookAt_ColliderSize: {x: 1.2, y: 1.2, z: 1}
-  UseSkimProofing: 1
-  SkimProofUpdateSpeed: 5
+  defaultAspectRatio: 1
+  textureRendererToBeScrolled: {fileID: 0}
+  autoGazeScrollIsActive: 1
+  scrollSpeedHorizontal: 0
+  scrollSpeedVertical: 0.15
+  minDistFromCenterForAutoScroll: {x: 0.2, y: 0.2}
+  onLookAtColliderSize: {x: 1.2, y: 1.2, z: 1}
+  useSkimProofing: 0
+  skimProofUpdateSpeed: 5
 --- !u!114 &151708622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2986,13 +2986,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 4323231195413702660, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_Text
-      value: '<b>Zoom in:</b> Air-tap down, hold and pull the content towards you
-
-        <b>Zoom out:</b> Air-tap down, hold and push content away from you'
-      objectReference: {fileID: 0}
     - target: {fileID: 2701345762782396268, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
       propertyPath: m_IsActive
@@ -3002,6 +2995,13 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4323231195413702660, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_Text
+      value: '<b>Zoom in:</b> Air-tap down, hold and pull the content towards you
+
+        <b>Zoom out:</b> Air-tap down, hold and push content away from you'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b81ff345fab8e1e449e4b387889fc53c, type: 3}
@@ -4314,42 +4314,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: TheModule
       objectReference: {fileID: 0}
-    - target: {fileID: 2300036, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 71d471797c0e430783230146721c3fcb, type: 2}
-    - target: {fileID: 2300000, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d5334c45caee46be937b095a1e977dc6, type: 2}
-    - target: {fileID: 2300044, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: 71d573ea4cb045cdadc98e56044f6d2c, type: 2}
-    - target: {fileID: 2300046, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 71d471797c0e430783230146721c3fcb, type: 2}
-    - target: {fileID: 2300042, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 53ea63593b32415faf734536616f5fb3, type: 2}
-    - target: {fileID: 2300034, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d5334c45caee46be937b095a1e977dc6, type: 2}
-    - target: {fileID: 2300038, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: b0fcdc3322e34d9ea83e8399bd9f4031, type: 2}
-    - target: {fileID: 2300002, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d808c628536649eaa61f2a2f2d16c6cc, type: 2}
-    - target: {fileID: 2300048, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: b0fcdc3322e34d9ea83e8399bd9f4031, type: 2}
+    - target: {fileID: 400032, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400032, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.58
+      objectReference: {fileID: 0}
     - target: {fileID: 400048, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4406,18 +4378,46 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d5334c45caee46be937b095a1e977dc6, type: 2}
+    - target: {fileID: 2300002, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d808c628536649eaa61f2a2f2d16c6cc, type: 2}
+    - target: {fileID: 2300034, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d5334c45caee46be937b095a1e977dc6, type: 2}
+    - target: {fileID: 2300036, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 71d471797c0e430783230146721c3fcb, type: 2}
+    - target: {fileID: 2300038, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b0fcdc3322e34d9ea83e8399bd9f4031, type: 2}
     - target: {fileID: 2300040, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 71d573ea4cb045cdadc98e56044f6d2c, type: 2}
-    - target: {fileID: 400032, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400032, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.58
-      objectReference: {fileID: 0}
+    - target: {fileID: 2300042, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 53ea63593b32415faf734536616f5fb3, type: 2}
+    - target: {fileID: 2300044, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 71d573ea4cb045cdadc98e56044f6d2c, type: 2}
+    - target: {fileID: 2300046, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 71d471797c0e430783230146721c3fcb, type: 2}
+    - target: {fileID: 2300048, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b0fcdc3322e34d9ea83e8399bd9f4031, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c11bf713819a084d8cb4c35db20d042, type: 3}
 --- !u!4 &775880684 stripped
@@ -5742,25 +5742,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3fa384d7ab6dcb489d9bbe00a7bd429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limitPanning: 0
-  DefaultAspectRatio: 0.5
-  RendererOfTextureToBeNavigated: {fileID: 1198226481}
-  Zoom_Acceleration: 10
-  Zoom_SpeedMax: 0.8
-  Zoom_MinScale: 0.1
-  Zoom_MaxScale: 1
-  Zoom_TimeInSecToZoom: 0.8
-  Zoom_Gesture:
-    id: 9
-    description: Manipulate Action
+  limitPanning: 1
+  defaultAspectRatio: 0.5
+  rendererOfTextureToBeNavigated: {fileID: 1198226481}
+  zoomAcceleration: 10
+  zoomSpeedMax: 0.8
+  zoomMinScale: 0.1
+  zoomMaxScale: 1
+  zoomTimeInSecToZoom: 0.8
+  zoomGesture:
+    id: 0
+    description: None
     axisConstraint: 0
-  Zoom_GestureEnabledOnStartup: 1
-  Pan_AutoScrollIsActive: 1
-  Pan_Speed_x: 0.3
-  Pan_Speed_y: 0.3
-  Pan_MinDistFromCenter: {x: 0.2, y: 0.2}
-  UseSkimProofing: 1
-  SkimProofUpdateSpeed: 5
+  zoomGestureEnabledOnStartup: 1
+  panAutoScrollIsActive: 1
+  panSpeedHorizontal: 0.3
+  panSpeedVertical: 0.3
+  panMinDistFromCenter: {x: 0.2, y: 0.2}
+  useSkimProofing: 0
+  skimProofUpdateSpeed: 5
 --- !u!114 &1198226478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6694,11 +6694,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 4323231195413702660, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_Text
-      value: You can also simply <b>say</b> "Zoom in" or "Zoom out"!
-      objectReference: {fileID: 0}
     - target: {fileID: 2701345762782396268, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
       propertyPath: m_IsActive
@@ -6708,6 +6703,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4323231195413702660, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_Text
+      value: You can also simply <b>say</b> "Zoom in" or "Zoom out"!
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b81ff345fab8e1e449e4b387889fc53c, type: 3}
@@ -6854,15 +6854,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitPanning: 1
-  RectTransfToNavigate: {fileID: 1852894734}
-  RefToViewPort: {fileID: 1295463316}
-  AutoGazeScrollIsActive: 1
-  ScrollSpeed_x: 0
-  ScrollSpeed_y: 0.3
-  MinDistFromCenterForAutoScroll: {x: 0.2, y: 0.2}
-  UseSkimProofing: 1
-  SkimProofUpdateSpeed: 5
-  CustomStartPos: {x: 0, y: 0}
+  rectTransfToNavigate: {fileID: 1852894734}
+  refToViewPort: {fileID: 1295463316}
+  autoGazeScrollIsActive: 1
+  scrollSpeedHorizontal: 0
+  scrollSpeedVertical: 0.3
+  minDistFromCenterForAutoScroll: {x: 0.2, y: 0.2}
+  useSkimProofing: 1
+  skimProofUpdateSpeed: 5
+  customStartPos: {x: 0, y: 0}
 --- !u!114 &1380263302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8225,12 +8225,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 4323231195413702660, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_Text
-      value: "<b>Auto Scroll:</b> Stay in your reading flow. Simply read on and \non
-        and on..."
-      objectReference: {fileID: 0}
     - target: {fileID: 2701345762782396268, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
       propertyPath: m_IsActive
@@ -8240,6 +8234,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4323231195413702660, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_Text
+      value: "<b>Auto Scroll:</b> Stay in your reading flow. Simply read on and \non
+        and on..."
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b81ff345fab8e1e449e4b387889fc53c, type: 3}
@@ -8643,10 +8643,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 117.64717
       objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: c72691f7b364d264abdb41ef2f01c706, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: a817fa37f27ca3a4fa16203c8043be4a, type: 2}
     - target: {fileID: 400002, guid: c72691f7b364d264abdb41ef2f01c706, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -8659,6 +8655,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: c72691f7b364d264abdb41ef2f01c706, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a817fa37f27ca3a4fa16203c8043be4a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c72691f7b364d264abdb41ef2f01c706, type: 3}
 --- !u!4 &1627714072 stripped
@@ -9145,13 +9145,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 4323231195413702660, guid: b81ff345fab8e1e449e4b387889fc53c,
-        type: 3}
-      propertyPath: m_Text
-      value: '<b>Auto pan:</b> Once zoomed in, try to follow the course of
-
-        a street with your eye gaze and see what happens!'
-      objectReference: {fileID: 0}
     - target: {fileID: 2701345762782396268, guid: b81ff345fab8e1e449e4b387889fc53c,
         type: 3}
       propertyPath: m_IsActive
@@ -9161,6 +9154,13 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4323231195413702660, guid: b81ff345fab8e1e449e4b387889fc53c,
+        type: 3}
+      propertyPath: m_Text
+      value: '<b>Auto pan:</b> Once zoomed in, try to follow the course of
+
+        a street with your eye gaze and see what happens!'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b81ff345fab8e1e449e4b387889fc53c, type: 3}
@@ -9423,7 +9423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   focusEnabled: 1
-  timeToTriggerDwellInSec: 5
+  timeToTriggerDwellInSec: 0
   speedX: 0
   speedY: 4
   inverseX: 0
@@ -9989,15 +9989,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitPanning: 1
-  RectTransfToNavigate: {fileID: 1465011397}
-  RefToViewPort: {fileID: 240345431}
-  AutoGazeScrollIsActive: 1
-  ScrollSpeed_x: 0
-  ScrollSpeed_y: 0.3
-  MinDistFromCenterForAutoScroll: {x: 0.2, y: 0.2}
-  UseSkimProofing: 1
-  SkimProofUpdateSpeed: 5
-  CustomStartPos: {x: 0, y: 0}
+  rectTransfToNavigate: {fileID: 0}
+  refToViewPort: {fileID: 0}
+  autoGazeScrollIsActive: 1
+  scrollSpeedHorizontal: 0
+  scrollSpeedVertical: 0.3
+  minDistFromCenterForAutoScroll: {x: 0.2, y: 0.2}
+  useSkimProofing: 0
+  skimProofUpdateSpeed: 5
+  customStartPos: {x: 0, y: 0}
 --- !u!114 &2086128682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10069,21 +10069,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitPanning: 1
-  RectTransfToNavigate: {fileID: 1465011397}
-  RefToViewPort: {fileID: 0}
-  AutoGazeScrollIsActive: 1
-  ScrollSpeed_x: 0
-  ScrollSpeed_y: 0.3
-  MinDistFromCenterForAutoScroll: {x: 0.2, y: 0.2}
-  UseSkimProofing: 1
-  SkimProofUpdateSpeed: 5
-  Zoom_Acceleration: 0
-  Zoom_SpeedMax: 0
-  Zoom_MinScale: 1
-  Zoom_MaxScale: 10
-  Zoom_TimeInSecToZoom: 0.5
-  Zoom_Gesture:
-    id: 9
-    description: Manipulate Action
+  rectTransfToNavigate: {fileID: 0}
+  refToViewPort: {fileID: 0}
+  zoomAcceleration: 10
+  zoomSpeedMax: 0.02
+  zoomMinScale: 0.1
+  zoomMaxScale: 1
+  zoomTimeInSecToZoom: 0.5
+  zoomGesture:
+    id: 0
+    description: None
     axisConstraint: 0
-  Zoom_GestureEnabledOnStartup: 0
+  zoomGestureEnabledOnStartup: 0
+  panAutoScrollIsActive: 1
+  panSpeedHorizontal: 0.3
+  panSpeedVertical: 0.3
+  panMinDistFromCenter: {x: 0.2, y: 0.2}
+  useSkimProofing: 0
+  skimProofUpdateSpeed: 5

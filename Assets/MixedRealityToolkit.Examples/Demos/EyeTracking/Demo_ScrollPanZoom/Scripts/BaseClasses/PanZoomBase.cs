@@ -69,11 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         internal float ZoomMaxScale = 1.0f;
 
         /// <summary>
-        /// Type of hand gesture to use for zooming
-        /// </summary>
-        internal MixedRealityInputAction ZoomGesture;
-
-        /// <summary>
         /// Size of the GameObject's collider when being looked at.
         /// </summary>        
         internal Vector3? customColliderSizeOnLookAt = null;

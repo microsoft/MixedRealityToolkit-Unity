@@ -40,10 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         private float zoomTimeInSecToZoom = 0.5f;
 
-        [Tooltip("Type of hand gesture to use to zoom in/out.")]
-        [SerializeField]
-        private MixedRealityInputAction zoomGesture = MixedRealityInputAction.None;
-
         [Tooltip("Enable or disable hand gestures for zooming on startup.")]
         [SerializeField]
         private bool zoomGestureEnabledOnStartup = false;
@@ -86,7 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             ZoomSpeedMax = zoomSpeedMax;
             ZoomMinScale = zoomMinScale;
             ZoomMaxScale = zoomMaxScale;
-            ZoomGesture = zoomGesture;
             ZoomGestureEnabledOnStartup = zoomGestureEnabledOnStartup;
             timeInSecondsToZoom = zoomTimeInSecToZoom;
 
@@ -114,7 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             UpdateValues(ref ZoomSpeedMax, zoomSpeedMax);
             UpdateValues(ref ZoomMinScale, zoomMinScale);
             UpdateValues(ref ZoomMaxScale, zoomMaxScale);
-            UpdateValues(ref ZoomGesture, zoomGesture);
             UpdateValues(ref timeInSecondsToZoom, zoomTimeInSecToZoom);
 
             UpdateValues(ref autoGazePanIsActive, panAutoScrollIsActive);
