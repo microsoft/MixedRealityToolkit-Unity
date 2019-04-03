@@ -121,7 +121,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GenericPointer : IMixedRealityPointer, IEqualityComparer</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class GenericPointer : IMixedRealityPointer, IEqualityComparer</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -292,6 +292,31 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_IsActive_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.IsActive*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_IsActive" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.IsActive">IsActive</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsActive { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_IsFocusLocked_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.IsFocusLocked*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_IsFocusLocked" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.IsFocusLocked">IsFocusLocked</h4>
   <div class="markdown level1 summary"><p>Is the focus for this pointer currently locked?</p>
@@ -320,7 +345,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_IsInteractionEnabled_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.IsInteractionEnabled*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_IsInteractionEnabled" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.IsInteractionEnabled">IsInteractionEnabled</h4>
-  <div class="markdown level1 summary"><p>Has the conditions for the interaction been satisfied to enable the interaction?</p>
+  <div class="markdown level1 summary"><p>Is the pointer active and have the conditions for the interaction been satisfied to enable the interaction?</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -422,13 +447,14 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_PointerOrientation_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.PointerOrientation*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_PointerOrientation" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.PointerOrientation">PointerOrientation</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_Position_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.Position*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_Position" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.Position">Position</h4>
+  <div class="markdown level1 summary"><p>Pointer position.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float PointerOrientation { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract Vector3 Position { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -440,7 +466,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="xref">Vector3</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -449,7 +475,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_PrioritizedLayerMasksOverride_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.PrioritizedLayerMasksOverride*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_PrioritizedLayerMasksOverride" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.PrioritizedLayerMasksOverride">PrioritizedLayerMasksOverride</h4>
-  <div class="markdown level1 summary"><p>The physics layers to use when raycasting.</p>
+  <div class="markdown level1 summary"><p>The physics layers to use when performing scene queries.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -472,39 +498,13 @@
     </tbody>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_PrioritizedLayerMasksOverride_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If set, will override the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.html">IMixedRealityInputSystem</a>'s default raycasting layer mask array.</p>
+  <div class="markdown level1 remarks"><p>If set, will override the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.html">IMixedRealityInputSystem</a>'s default scene query layer mask array.</p>
 </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_RaycastMode_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.RaycastMode*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_RaycastMode" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.RaycastMode">RaycastMode</h4>
-  <div class="markdown level1 summary"><p>The physics raycast mode to use.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RaycastMode RaycastMode { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">RaycastMode</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_Rays_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.Rays*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_Rays" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.Rays">Rays</h4>
-  <div class="markdown level1 summary"><p>The raycast rays.</p>
+  <div class="markdown level1 summary"><p>The scene query rays.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -556,7 +556,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_Result_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.Result*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_Result" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.Result">Result</h4>
-  <div class="markdown level1 summary"><p>The physics raycast pointer result.</p>
+  <div class="markdown level1 summary"><p>The scene query pointer result.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -580,9 +580,61 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_Rotation_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.Rotation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_Rotation" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.Rotation">Rotation</h4>
+  <div class="markdown level1 summary"><p>Pointer rotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Quaternion Rotation { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_SceneQueryType_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.SceneQueryType*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_SceneQueryType" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.SceneQueryType">SceneQueryType</h4>
+  <div class="markdown level1 summary"><p>The type of physics scene query to use.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SceneQueryType SceneQueryType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SceneQueryType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_SphereCastRadius_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.SphereCastRadius*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_SphereCastRadius" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.SphereCastRadius">SphereCastRadius</h4>
-  <div class="markdown level1 summary"><p>The radius to use when <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_RaycastMode">RaycastMode</a> is set to Sphere.</p>
+  <div class="markdown level1 summary"><p>The radius to use when <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_SceneQueryType">SceneQueryType</a> is set to Sphere or SphereColliders.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -608,8 +660,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_TeleportHotSpot_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.TeleportHotSpot*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_TeleportHotSpot" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.TeleportHotSpot">TeleportHotSpot</h4>
-  <div class="markdown level1 summary"><p>The currently active teleport hotspot.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -752,164 +803,26 @@
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_OnPostRaycast_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.OnPostRaycast*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_OnPostRaycast" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.OnPostRaycast">OnPostRaycast()</h4>
-  <div class="markdown level1 summary"><p>Called after all rays have casted.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_OnPostSceneQuery_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.OnPostSceneQuery*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_OnPostSceneQuery" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.OnPostSceneQuery">OnPostSceneQuery()</h4>
+  <div class="markdown level1 summary"><p>Called after performing the scene query.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void OnPostRaycast()</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract void OnPostSceneQuery()</code></pre>
   </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_OnPreRaycast_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.OnPreRaycast*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_OnPreRaycast" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.OnPreRaycast">OnPreRaycast()</h4>
-  <div class="markdown level1 summary"><p>Called before all rays have casted.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_OnPreSceneQuery_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.OnPreSceneQuery*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_OnPreSceneQuery" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.OnPreSceneQuery">OnPreSceneQuery()</h4>
+  <div class="markdown level1 summary"><p>Called before performing the scene query.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void OnPreRaycast()</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract void OnPreSceneQuery()</code></pre>
   </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_TryGetPointerPosition_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.TryGetPointerPosition*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_TryGetPointerPosition_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.TryGetPointerPosition(Vector3@)">TryGetPointerPosition(out Vector3)</h4>
-  <div class="markdown level1 summary"><p>Returns the position of the input source, if available.
-Not all input sources support positional information, and those that do may not always have it available.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual bool TryGetPointerPosition(out Vector3 position)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Vector3</span></td>
-        <td><span class="parametername">position</span></td>
-        <td><p>Out parameter filled with the position if available, otherwise <a href="https://docs.unity3d.com/ScriptReference/Vector3-zero.html">Vector3.zero</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>True if a position was retrieved, false if not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_TryGetPointerRotation_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.TryGetPointerRotation*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_TryGetPointerRotation_Quaternion__" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.TryGetPointerRotation(Quaternion@)">TryGetPointerRotation(out Quaternion)</h4>
-  <div class="markdown level1 summary"><p>Returns the rotation of the input source, if available.
-Not all input sources support rotation information, and those that do may not always have it available.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual bool TryGetPointerRotation(out Quaternion rotation)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Quaternion</span></td>
-        <td><span class="parametername">rotation</span></td>
-        <td><p>Out parameter filled with the rotation if available, otherwise <a href="https://docs.unity3d.com/ScriptReference/Quaternion-identity.html">Quaternion.identity</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>True if an rotation was retrieved, false if not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_TryGetPointingRay_" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.TryGetPointingRay*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GenericPointer_TryGetPointingRay_Ray__" data-uid="Microsoft.MixedReality.Toolkit.Input.GenericPointer.TryGetPointingRay(Ray@)">TryGetPointingRay(out Ray)</h4>
-  <div class="markdown level1 summary"><p>Returns the pointing ray of the input source, if available.
-Not all input sources support pointing information, and those that do may not always have it available.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual bool TryGetPointingRay(out Ray pointingRay)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Ray</span></td>
-        <td><span class="parametername">pointingRay</span></td>
-        <td><p>Out parameter filled with the pointing ray if available.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>True if a pointing ray was retrieved, false if not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a>

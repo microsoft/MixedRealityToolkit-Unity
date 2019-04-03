@@ -129,76 +129,18 @@ Call Update any time to update the move logic and get a new rotation for the obj
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class TwoHandRotateLogic</code></pre>
   </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic__ctor_RotationConstraintType_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.#ctor(RotationConstraintType)">TwoHandRotateLogic(RotationConstraintType)</h4>
-  <div class="markdown level1 summary"><p>Constructor.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TwoHandRotateLogic(RotationConstraintType rotationConstraint)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">RotationConstraintType</span></td>
-        <td><span class="parametername">rotationConstraint</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic_GetCurrentRotationConstraint_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.GetCurrentRotationConstraint*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic_GetCurrentRotationConstraint" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.GetCurrentRotationConstraint">GetCurrentRotationConstraint()</h4>
-  <div class="markdown level1 summary"><p>The current rotation constraint might be modified based on disambiguation logic, for example
-XOrYBasedOnInitialHandPosition might change the current rotation constraint based on the
-initial hand positions at the start</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RotationConstraintType GetCurrentRotationConstraint()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">RotationConstraintType</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic_Setup_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.Setup*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic_Setup_Dictionary_System_UInt32_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.Setup(Dictionary{System.UInt32,Vector3})">Setup(Dictionary&lt;UInt32, Vector3&gt;)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic_Setup_Dictionary_System_UInt32_Vector3__Transform_RotationConstraintType_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.Setup(Dictionary{System.UInt32,Vector3},Transform,RotationConstraintType)">Setup(Dictionary&lt;UInt32, Vector3&gt;, Transform, RotationConstraintType)</h4>
   <div class="markdown level1 summary"><p>Setup the rotation logic.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Setup(Dictionary&lt;uint, Vector3&gt; handsPressedMap)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Setup(Dictionary&lt;uint, Vector3&gt; handsPressedMap, Transform t, RotationConstraintType rotationConstraint)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -215,18 +157,28 @@ initial hand positions at the start</p>
         <td><span class="parametername">handsPressedMap</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">t</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">RotationConstraintType</span></td>
+        <td><span class="parametername">rotationConstraint</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic_Update_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.Update*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic_Update_Dictionary_System_UInt32_Vector3__Quaternion_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.Update(Dictionary{System.UInt32,Vector3},Quaternion)">Update(Dictionary&lt;UInt32, Vector3&gt;, Quaternion)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic_Update_Dictionary_System_UInt32_Vector3__Quaternion_RotationConstraintType_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.Update(Dictionary{System.UInt32,Vector3},Quaternion,RotationConstraintType)">Update(Dictionary&lt;UInt32, Vector3&gt;, Quaternion, RotationConstraintType)</h4>
   <div class="markdown level1 summary"><p>Update the rotation based on input.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Quaternion Update(Dictionary&lt;uint, Vector3&gt; handsPressedMap, Quaternion currentRotation)</code></pre>
+    <pre><code class="lang-csharp hljs">public Quaternion Update(Dictionary&lt;uint, Vector3&gt; handsPressedMap, Quaternion currentRotation, RotationConstraintType rotationConstraint)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -248,6 +200,11 @@ initial hand positions at the start</p>
         <td><span class="parametername">currentRotation</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><span class="xref">RotationConstraintType</span></td>
+        <td><span class="parametername">rotationConstraint</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -261,7 +218,8 @@ initial hand positions at the start</p>
     <tbody>
       <tr>
         <td><span class="xref">Quaternion</span></td>
-        <td></td>
+        <td><p>Desired rotation</p>
+</td>
       </tr>
     </tbody>
   </table>

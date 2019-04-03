@@ -191,12 +191,12 @@ Call Update any time to update the move logic and get a new rotation for the obj
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic_Setup_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.Setup*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic_Setup_Vector3_Transform_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.Setup(Vector3,Transform)">Setup(Vector3, Transform)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic_Setup_Vector3_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.Setup(Vector3,Vector3)">Setup(Vector3, Vector3)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Setup(Vector3 startHandPositionMeters, Transform manipulationRoot)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Setup(Vector3 startHandPositionMeters, Vector3 manipulationObjectPosition)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -214,8 +214,8 @@ Call Update any time to update the move logic and get a new rotation for the obj
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">Transform</span></td>
-        <td><span class="parametername">manipulationRoot</span></td>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">manipulationObjectPosition</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -223,12 +223,12 @@ Call Update any time to update the move logic and get a new rotation for the obj
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic_Update_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.Update*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic_Update_Vector3_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.Update(Vector3,Vector3)">Update(Vector3, Vector3)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic_Update_Vector3_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.Update(Vector3,System.Boolean)">Update(Vector3, Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vector3 Update(Vector3 centroid, Vector3 manipulationObjectPosition)</code></pre>
+    <pre><code class="lang-csharp hljs">public Vector3 Update(Vector3 centroid, bool isNearMode)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -246,8 +246,8 @@ Call Update any time to update the move logic and get a new rotation for the obj
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">Vector3</span></td>
-        <td><span class="parametername">manipulationObjectPosition</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isNearMode</span></td>
         <td></td>
       </tr>
     </tbody>

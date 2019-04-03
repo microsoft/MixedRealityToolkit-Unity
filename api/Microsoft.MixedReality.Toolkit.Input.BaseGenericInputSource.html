@@ -132,13 +132,13 @@ pass pointers in their constructors and will fall back to either the Gaze or Mou
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseGenericInputSource__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseGenericInputSource.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseGenericInputSource__ctor_System_String_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer___" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseGenericInputSource.#ctor(System.String,Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer[])">BaseGenericInputSource(String, IMixedRealityPointer[])</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseGenericInputSource__ctor_System_String_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer___Microsoft_MixedReality_Toolkit_Input_InputSourceType_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseGenericInputSource.#ctor(System.String,Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer[],Microsoft.MixedReality.Toolkit.Input.InputSourceType)">BaseGenericInputSource(String, IMixedRealityPointer[], InputSourceType)</h4>
   <div class="markdown level1 summary"><p>Constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -158,6 +158,11 @@ pass pointers in their constructors and will fall back to either the Gaze or Mou
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a>[]</td>
         <td><span class="parametername">pointers</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSourceType.html">InputSourceType</a></td>
+        <td><span class="parametername">sourceType</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -238,6 +243,32 @@ pass pointers in their constructors and will fall back to either the Gaze or Mou
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_BaseGenericInputSource_SourceType_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseGenericInputSource.SourceType*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseGenericInputSource_SourceType" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseGenericInputSource.SourceType">SourceType</h4>
+  <div class="markdown level1 summary"><p>The type of input source this object represents.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InputSourceType SourceType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSourceType.html">InputSourceType</a></td>
         <td></td>
       </tr>
     </tbody>

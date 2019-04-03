@@ -93,6 +93,7 @@
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">BaseController</span></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseHand.html">BaseHand</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController.html">GenericJoystickController</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseController.html">MouseController</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchController.html">UnityTouchController</a></div>
@@ -178,6 +179,31 @@
   </table>
   <h3 id="properties">Properties
   </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_AngularVelocity_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.AngularVelocity*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_AngularVelocity" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.AngularVelocity">AngularVelocity</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 AngularVelocity { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_ControllerHandedness_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.ControllerHandedness*"></a>
@@ -362,6 +388,31 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_IsInPointingPose_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.IsInPointingPose*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_IsInPointingPose" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.IsInPointingPose">IsInPointingPose</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool IsInPointingPose { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_IsPositionApproximate_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.IsPositionApproximate*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_IsPositionApproximate" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.IsPositionApproximate">IsPositionApproximate</h4>
   <div class="markdown level1 summary"><p>Indicates the accuracy of the position data being reported.</p>
@@ -474,13 +525,38 @@ be sure to check this value before using rotation data.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_Velocity_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.Velocity*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_Velocity" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.Velocity">Velocity</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Velocity { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_Visualizer_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.Visualizer*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_Visualizer" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.Visualizer">Visualizer</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IMixedRealityControllerVisualizer Visualizer { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IMixedRealityControllerVisualizer Visualizer { get; protected set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -631,13 +707,13 @@ be sure to check this value before using rotation data.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_SetupConfiguration_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.SetupConfiguration*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_SetupConfiguration_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.SetupConfiguration(System.Type)">SetupConfiguration(Type)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_SetupConfiguration_System_Type_Microsoft_MixedReality_Toolkit_Input_InputSourceType_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.SetupConfiguration(System.Type,Microsoft.MixedReality.Toolkit.Input.InputSourceType)">SetupConfiguration(Type, InputSourceType)</h4>
   <div class="markdown level1 summary"><p>Setups up the configuration based on the Mixed Reality Controller Mapping Profile.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool SetupConfiguration(Type controllerType)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool SetupConfiguration(Type controllerType, InputSourceType inputSourceType = InputSourceType.Controller)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -652,6 +728,11 @@ be sure to check this value before using rotation data.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">controllerType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSourceType.html">InputSourceType</a></td>
+        <td><span class="parametername">inputSourceType</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -744,12 +825,12 @@ be sure to check this value before using rotation data.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_TryRenderControllerModel_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.TryRenderControllerModel*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_TryRenderControllerModel_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.TryRenderControllerModel(System.Type)">TryRenderControllerModel(Type)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_TryRenderControllerModel_System_Type_Microsoft_MixedReality_Toolkit_Input_InputSourceType_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.TryRenderControllerModel(System.Type,Microsoft.MixedReality.Toolkit.Input.InputSourceType)">TryRenderControllerModel(Type, InputSourceType)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual bool TryRenderControllerModel(Type controllerType)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -764,6 +845,11 @@ be sure to check this value before using rotation data.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">controllerType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSourceType.html">InputSourceType</a></td>
+        <td><span class="parametername">inputSourceType</span></td>
         <td></td>
       </tr>
     </tbody>

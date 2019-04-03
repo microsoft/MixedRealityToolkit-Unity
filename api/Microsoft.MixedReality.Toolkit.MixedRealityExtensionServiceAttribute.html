@@ -253,13 +253,13 @@ public class MixedRealityExtensionServiceAttribute : Attribute, _Attribute</code
   
   
   <a id="Microsoft_MixedReality_Toolkit_MixedRealityExtensionServiceAttribute__ctor_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityExtensionServiceAttribute__ctor_SupportedPlatforms_System_String_System_String_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.#ctor(SupportedPlatforms,System.String,System.String)">MixedRealityExtensionServiceAttribute(SupportedPlatforms, String, String)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityExtensionServiceAttribute__ctor_SupportedPlatforms_System_String_System_String_System_String_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.#ctor(SupportedPlatforms,System.String,System.String,System.String)">MixedRealityExtensionServiceAttribute(SupportedPlatforms, String, String, String)</h4>
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MixedRealityExtensionServiceAttribute(SupportedPlatforms runtimePlatforms, string defaultProfilePath = &quot;&quot;, string packageFolder = &quot;MixedRealityToolkit&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">public MixedRealityExtensionServiceAttribute(SupportedPlatforms runtimePlatforms, string name = &quot;&quot;, string defaultProfilePath = &quot;&quot;, string packageFolder = &quot;MixedRealityToolkit&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -276,6 +276,11 @@ public class MixedRealityExtensionServiceAttribute : Attribute, _Attribute</code
         <td><span class="parametername">runtimePlatforms</span></td>
         <td><p>The platforms on which the extension service is supported.</p>
 </td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
@@ -329,6 +334,32 @@ public class MixedRealityExtensionServiceAttribute : Attribute, _Attribute</code
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public virtual string DefaultProfilePath { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityExtensionServiceAttribute_Name_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.Name*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityExtensionServiceAttribute_Name" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.Name">Name</h4>
+  <div class="markdown level1 summary"><p>The friendly name for this service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual string Name { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">

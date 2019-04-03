@@ -86,7 +86,8 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_IMixedRealityDataProvider" data-uid="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider" class="text-break">Interface IMixedRealityDataProvider
   </h1>
-  <div class="markdown level0 summary"><p>Generic interface for all Mixed Reality Data providers</p>
+  <div class="markdown level0 summary"><p>Required interface for all Mixed Reality data providers. Data providers are the components
+that supply services with required information (ex: input controller state).</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
@@ -110,6 +111,9 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Update">IMixedRealityService.Update()</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_LateUpdate">IMixedRealityService.LateUpdate()</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Disable">IMixedRealityService.Disable()</a>
     </div>
     <div>
@@ -123,7 +127,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_IMixedRealityDataProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IMixedRealityDataProvider : IMixedRealityExtensionService, IMixedRealityService, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IMixedRealityDataProvider : IMixedRealityService, IDisposable</code></pre>
   </div>
 </article>
           </div>

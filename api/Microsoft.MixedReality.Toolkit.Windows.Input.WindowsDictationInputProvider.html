@@ -101,20 +101,20 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Windows_Input_WindowsDictationInputProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class WindowsDictationInputProvider : BaseDeviceManager, IMixedRealityDictationSystem</code></pre>
+    <pre><code class="lang-csharp hljs">public class WindowsDictationInputProvider : BaseInputDeviceManager, IMixedRealityDictationSystem</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Windows_Input_WindowsDictationInputProvider__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Windows_Input_WindowsDictationInputProvider__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar_System_String_System_UInt32_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)">WindowsDictationInputProvider(IMixedRealityServiceRegistrar, String, UInt32, BaseMixedRealityProfile)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Windows_Input_WindowsDictationInputProvider__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar_IMixedRealityInputSystem_MixedRealityInputSystemProfile_Transform_System_String_System_UInt32_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,IMixedRealityInputSystem,MixedRealityInputSystemProfile,Transform,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)">WindowsDictationInputProvider(IMixedRealityServiceRegistrar, IMixedRealityInputSystem, MixedRealityInputSystemProfile, Transform, String, UInt32, BaseMixedRealityProfile)</h4>
   <div class="markdown level1 summary"><p>Constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WindowsDictationInputProvider(IMixedRealityServiceRegistrar registrar, string name = null, uint priority = default(uint), BaseMixedRealityProfile profile = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public WindowsDictationInputProvider(IMixedRealityServiceRegistrar registrar, IMixedRealityInputSystem inputSystem, MixedRealityInputSystemProfile inputSystemProfile, Transform playspace, string name = null, uint priority = default(uint), BaseMixedRealityProfile profile = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -129,7 +129,25 @@
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a></td>
         <td><span class="parametername">registrar</span></td>
-        <td><p>The <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a> instance that loaded the service.</p>
+        <td><p>The <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a> instance that loaded the data provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IMixedRealityInputSystem</span></td>
+        <td><span class="parametername">inputSystem</span></td>
+        <td><p>The <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.html">IMixedRealityInputSystem</a> instance that receives data from this provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">MixedRealityInputSystemProfile</span></td>
+        <td><span class="parametername">inputSystemProfile</span></td>
+        <td><p>The input system configuration profile.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">playspace</span></td>
+        <td><p>The <a href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</a> of the playspace object.</p>
 </td>
       </tr>
       <tr>

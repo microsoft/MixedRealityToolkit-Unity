@@ -93,27 +93,36 @@
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html">BaseService</a></div>
-    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseExtensionService.html">BaseExtensionService</a></div>
-    <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseDeviceManager.html">BaseDeviceManager</a></div>
+    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider.html">BaseDataProvider</a></div>
+    <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html">BaseInputDeviceManager</a></div>
     <div class="level4"><span class="xref">UnityJoystickManager</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityDeviceManager.html">IMixedRealityDeviceManager</a></div>
-    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService.html">IMixedRealityExtensionService</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.html">IMixedRealityInputDeviceManager</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseDeviceManager.html#Microsoft_MixedReality_Toolkit_Input_BaseDeviceManager_RequestPointers_SystemType_Handedness_System_Boolean_">BaseDeviceManager.RequestPointers(SystemType, Handedness, Boolean)</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html#Microsoft_MixedReality_Toolkit_Input_BaseInputDeviceManager_InputSystemProfile">BaseInputDeviceManager.InputSystemProfile</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseExtensionService.html#Microsoft_MixedReality_Toolkit_BaseExtensionService_Registrar">BaseExtensionService.Registrar</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html#Microsoft_MixedReality_Toolkit_Input_BaseInputDeviceManager_Playspace">BaseInputDeviceManager.Playspace</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseExtensionService.html#Microsoft_MixedReality_Toolkit_BaseExtensionService_ConfigurationProfile">BaseExtensionService.ConfigurationProfile</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html#Microsoft_MixedReality_Toolkit_Input_BaseInputDeviceManager_RequestPointers_Microsoft_MixedReality_Toolkit_Input_SupportedControllerType_Handedness_">BaseInputDeviceManager.RequestPointers(SupportedControllerType, Handedness)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider.html#Microsoft_MixedReality_Toolkit_BaseDataProvider_Registrar">BaseDataProvider.Registrar</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider.html#Microsoft_MixedReality_Toolkit_BaseDataProvider_Service">BaseDataProvider.Service</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider.html#Microsoft_MixedReality_Toolkit_BaseDataProvider_ConfigurationProfile">BaseDataProvider.ConfigurationProfile</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_DefaultPriority">BaseService.DefaultPriority</a>
@@ -132,6 +141,9 @@
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Enable">BaseService.Enable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_LateUpdate">BaseService.LateUpdate()</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Destroy">BaseService.Destroy()</a>
@@ -171,21 +183,21 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_UnityInput_UnityJoystickManager_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[MixedRealityDataProvider(typeof(IMixedRealityInputSystem), null)]
-public class UnityJoystickManager : BaseDeviceManager, IMixedRealityDeviceManager, IMixedRealityExtensionService, IMixedRealityService, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">[MixedRealityDataProvider(typeof(IMixedRealityInputSystem), null, &quot;Unity Joystick Manager&quot;)]
+public class UnityJoystickManager : BaseInputDeviceManager, IMixedRealityInputDeviceManager, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_UnityInput_UnityJoystickManager__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_UnityInput_UnityJoystickManager__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar_System_String_System_UInt32_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)">UnityJoystickManager(IMixedRealityServiceRegistrar, String, UInt32, BaseMixedRealityProfile)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_UnityInput_UnityJoystickManager__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSystemProfile_Transform_System_String_System_UInt32_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem,Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystemProfile,Transform,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)">UnityJoystickManager(IMixedRealityServiceRegistrar, IMixedRealityInputSystem, MixedRealityInputSystemProfile, Transform, String, UInt32, BaseMixedRealityProfile)</h4>
   <div class="markdown level1 summary"><p>Constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnityJoystickManager(IMixedRealityServiceRegistrar registrar, string name = null, uint priority = 10U, BaseMixedRealityProfile profile = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public UnityJoystickManager(IMixedRealityServiceRegistrar registrar, IMixedRealityInputSystem inputSystem, MixedRealityInputSystemProfile inputSystemProfile, Transform playspace, string name = null, uint priority = 10U, BaseMixedRealityProfile profile = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -200,7 +212,25 @@ public class UnityJoystickManager : BaseDeviceManager, IMixedRealityDeviceManage
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a></td>
         <td><span class="parametername">registrar</span></td>
-        <td><p>The <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a> instance that loaded the service.</p>
+        <td><p>The <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a> instance that loaded the data provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.html">IMixedRealityInputSystem</a></td>
+        <td><span class="parametername">inputSystem</span></td>
+        <td><p>The <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.html">IMixedRealityInputSystem</a> instance that receives data from this provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystemProfile.html">MixedRealityInputSystemProfile</a></td>
+        <td><span class="parametername">inputSystemProfile</span></td>
+        <td><p>The input system configuration profile.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">playspace</span></td>
+        <td><p>The <a href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</a> of the playspace object.</p>
 </td>
       </tr>
       <tr>
@@ -291,7 +321,7 @@ public class UnityJoystickManager : BaseDeviceManager, IMixedRealityDeviceManage
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseDeviceManager.html#Microsoft_MixedReality_Toolkit_Input_BaseDeviceManager_GetActiveControllers">BaseDeviceManager.GetActiveControllers()</a></div>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html#Microsoft_MixedReality_Toolkit_Input_BaseInputDeviceManager_GetActiveControllers">BaseInputDeviceManager.GetActiveControllers()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_UnityInput_UnityJoystickManager_GetCurrentControllerType_" data-uid="Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager.GetCurrentControllerType*"></a>
@@ -397,10 +427,10 @@ public class UnityJoystickManager : BaseDeviceManager, IMixedRealityDeviceManage
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Update">BaseService.Update()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityDeviceManager.html">IMixedRealityDeviceManager</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.html">IMixedRealityInputDeviceManager</a>
   </div>
   <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService.html">IMixedRealityExtensionService</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a>
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>

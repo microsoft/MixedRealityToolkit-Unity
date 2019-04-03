@@ -116,6 +116,9 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Update">IMixedRealityService.Update()</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_LateUpdate">IMixedRealityService.LateUpdate()</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Disable">IMixedRealityService.Disable()</a>
     </div>
     <div>
@@ -129,7 +132,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IEventSystemHandler, IMixedRealityDataProvider, IMixedRealityExtensionService, IMixedRealityService, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IEventSystemHandler, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -181,34 +184,6 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_OverrideFocusedObject_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.OverrideFocusedObject*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_OverrideFocusedObject" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.OverrideFocusedObject">OverrideFocusedObject</h4>
-  <div class="markdown level1 summary"><p>To tap on a hologram even when not focused on,
-set OverrideFocusedObject to desired game object.
-If it's null, then focused object will be used.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">GameObject OverrideFocusedObject { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">GameObject</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -309,6 +284,49 @@ If it's null, then focused object will be used.</p>
       <tr>
         <td><span class="xref">GameObject</span></td>
         <td><p>Currently Focused Object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_GetPointers_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.GetPointers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_GetPointers__1" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.GetPointers``1">GetPointers&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Provides access to all registered pointers of a specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;T&gt; GetPointers&lt;T&gt;()
+    where T : class, IMixedRealityPointer</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of pointers to request. Use IMixedRealityPointer to access all pointers.</p>
 </td>
       </tr>
     </tbody>
@@ -446,57 +464,6 @@ If it's null, then focused object will be used.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_TryGetSpecificPointerGraphicEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.TryGetSpecificPointerGraphicEventData*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_TryGetSpecificPointerGraphicEventData_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_Microsoft_MixedReality_Toolkit_Input_GraphicInputEventData__" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.TryGetSpecificPointerGraphicEventData(Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer,Microsoft.MixedReality.Toolkit.Input.GraphicInputEventData@)">TryGetSpecificPointerGraphicEventData(IMixedRealityPointer, out GraphicInputEventData)</h4>
-  <div class="markdown level1 summary"><p>Get the Graphic Event Data for the specified pointing source.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool TryGetSpecificPointerGraphicEventData(IMixedRealityPointer pointer, out GraphicInputEventData graphicInputEventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a></td>
-        <td><span class="parametername">pointer</span></td>
-        <td><p>The pointer who's graphic event data we're looking for.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.GraphicInputEventData.html">GraphicInputEventData</a></td>
-        <td><span class="parametername">graphicInputEventData</span></td>
-        <td><p>The graphic event data for the specified pointer</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>True, if graphic event data exists.</p>
-</td>
       </tr>
     </tbody>
   </table>

@@ -62,30 +62,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit.Examples/SDK/Example01-BasicIntroduction/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit.Examples/SDK/Example01-BasicIntroduction/README.html",
-          "hash": "Erz6enk55+H4db55VUVlZw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit.Examples/SDK/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit.Examples/SDK/README.html",
-          "hash": "eyiYJpJdtj+eJ/CWKOqnNA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Assets/MixedRealityToolkit.Examples/StandardAssets/README.md",
       "output": {
         ".html": {
@@ -151,6 +127,18 @@
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Controllers/README.html",
           "hash": "R4we/wjRPjsUOv527jzO5w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/PressableButtons/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/PressableButtons/README.html",
+          "hash": "MFPNCQcnPKRew2EcJoco/Q=="
         }
       },
       "is_incremental": false,
@@ -266,11 +254,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit/Definitions/README.md",
+      "source_relative_path": "Assets/MixedRealityToolkit/EventDatum/README.md",
       "output": {
         ".html": {
-          "relative_path": "Assets/MixedRealityToolkit/Definitions/README.html",
-          "hash": "WR8uOsLYo+x8ob9nhPGnQg=="
+          "relative_path": "Assets/MixedRealityToolkit/EventDatum/README.html",
+          "hash": "YpmkTDUE0zcjLVWeK2epdw=="
         }
       },
       "is_incremental": false,
@@ -278,11 +266,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit/EventDatum/README.md",
+      "source_relative_path": "Assets/MixedRealityToolkit/Providers/Hands/README.md",
       "output": {
         ".html": {
-          "relative_path": "Assets/MixedRealityToolkit/EventDatum/README.html",
-          "hash": "YpmkTDUE0zcjLVWeK2epdw=="
+          "relative_path": "Assets/MixedRealityToolkit/Providers/Hands/README.html",
+          "hash": "rNvmR2bvt4iprqHaZMg4uQ=="
         }
       },
       "is_incremental": false,
@@ -546,7 +534,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/toc.html",
-          "hash": "YkgcXFN3/9mP6lSSRsRbjw=="
+          "hash": "JBO2B+10lKLHypH0+KGuEg=="
         }
       },
       "is_incremental": false,
@@ -582,7 +570,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "nuFqzLZVSgm+klbKxEgfIQ=="
+          "hash": "lHpXPPHYjRPPIWArTpfw+w=="
         }
       },
       "is_incremental": false,
@@ -602,6 +590,162 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/README_AppBar.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_AppBar.html",
+          "hash": "zkjfm2xjFYtEOMPo8QHE9g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_BoundingBox.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_BoundingBox.html",
+          "hash": "E9zPSW7TXtXl2zu9ciCy0w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_Button.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_Button.html",
+          "hash": "cp05y98yUDLa3rdO24gUmA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_FingertipVisualization.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_FingertipVisualization.html",
+          "hash": "Kc6TTwyekOUq2XxsS9cBMA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_HandInteractionExamples.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_HandInteractionExamples.html",
+          "hash": "IWmzFPlJ5myw4BLhIgE2ew=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_Interactable.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_Interactable.html",
+          "hash": "NlSAHvx3ZlcXN2bUEYiODQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_ManipulationHandler.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_ManipulationHandler.html",
+          "hash": "VytpP3GY144wBBGg4hsVyQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_ObjectCollection.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_ObjectCollection.html",
+          "hash": "dVO74lR2Xc+hNGkl8nF1kg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_Pointers.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_Pointers.html",
+          "hash": "rQFrBjXbDj0LY9GX5cHLIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_Slate.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_Slate.html",
+          "hash": "D0j3Dyie/Mrc5YWWGrC50g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_Solver.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_Solver.html",
+          "hash": "9M2vl/pb57cHMB3ihzyaHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_SystemKeyboard.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_SystemKeyboard.html",
+          "hash": "X0DuC0aZ3MbY5IUuUNQopA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_Tooltip.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_Tooltip.html",
+          "hash": "NsEY6/WmBwM8feFnpde11A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/TODO.md",
       "output": {
         ".html": {
@@ -613,12 +757,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Toc",
       "source_relative_path": "Documentation/toc.yml",
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "lsp/jfziioJUoF3Fxve5hg=="
+          "hash": "iaXqrjufGvaWJYpG7kO86g=="
         }
       },
       "is_incremental": false,
@@ -655,6 +802,259 @@
         ".html": {
           "relative_path": "External/HowTo/README.html",
           "hash": "PRrrDEl+IuPCcqOE4kzLNA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Setup1.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Setup1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Setup2.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Setup2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Assign.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Assign.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Events.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Events.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Examples.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Examples.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Structure.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Structure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom1.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom2.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom3.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom3.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_HowToUse_Interactable.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_HowToUse_Interactable.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_HowTo_Events.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_HowTo_Events.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_HowTo_PressableButton.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_HowTo_PressableButton.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_InteractionStates.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_InteractionStates.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Layout.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Layout.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_SeeItSayIt.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_SeeItSayIt.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech1.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech2.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech3.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech3.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Structure.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Structure.png"
         }
       },
       "is_incremental": false,
@@ -739,6 +1139,358 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Finger_Cursor_Inspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Finger_Cursor_Inspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Mixed_Reality_Standard_Shader_Inspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Mixed_Reality_Standard_Shader_Inspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Proximity_Light_Inspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Proximity_Light_Inspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_States.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_States.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_BoundingBox.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_BoundingBox.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Keyboard.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Keyboard.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Manipulation.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Manipulation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_PressTouch.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_PressTouch.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Slate.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Slate.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP1.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP2.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Unity.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Unity.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/Buttons.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/Buttons.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/DefaultStates.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/DefaultStates.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/DefaultTheme_button.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/DefaultTheme_button.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/DefaultTheme_values.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/DefaultTheme_values.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/Event_audioClip.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/Event_audioClip.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/Event_hold.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/Event_hold.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/Event_toggle.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/Event_toggle.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/Events.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/Events.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/InputFeatures.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/InputFeatures.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/InputFeatures_short.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/InputFeatures_short.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/InteractableExamples.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/InteractableExamples.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/InteractableInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/InteractableInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/InteractableInspector_basic.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/InteractableInspector_basic.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/InteractableInspector_basicSteps.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/InteractableInspector_basicSteps.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/InteractableReceiver.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/InteractableReceiver.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/Profile_toggle.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/Profile_toggle.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/Profiles_noTarget.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/Profiles_noTarget.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/StatesScriptableObject.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/StatesScriptableObject.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Interactable/Theme.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Interactable/Theme.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "External/ReadMeImages/MRTK-ControllerDiagram.png",
       "output": {
         "resource": {
@@ -776,50 +1528,6 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/MRTK-NameSpaceExample.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK-SDK-Example1.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK-SDK-Example1.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK-SDK-Example2.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK-SDK-Example2.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK-SDK-VRTKReference1.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK-SDK-VRTKReference1.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK-SDK-WIP1.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK-SDK-WIP1.png"
         }
       },
       "is_incremental": false,
@@ -926,6 +1634,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/MRTK_Examples.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/MRTK_Examples.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "External/ReadMeImages/MRTK_Logo_Rev.png",
       "output": {
         "resource": {
@@ -952,6 +1671,50 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/MRTK_UnitySetupPrompt.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Howto.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Howto.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Structure.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Structure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png"
         }
       },
       "is_incremental": false,
@@ -1190,10 +1953,263 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_3DObjects.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_3DObjects.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_ExampleScene1.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_ExampleScene1.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Layout_2DImages.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Layout_2DImages.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Types.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Types.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Unity.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Unity.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "External/ReadMeImages/OpenXR-HLA.jpg",
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/OpenXR-HLA.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_GGVPointer_HL1.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Pointers/MRTK_GGVPointer_HL1.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_GGVPointer_HL2.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Pointers/MRTK_GGVPointer_HL2.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_GrabPointer.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Pointers/MRTK_GrabPointer.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_MousePointer.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Pointers/MRTK_MousePointer.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_PointerProfile.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Pointers/MRTK_PointerProfile.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_Pointer_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Pointers/MRTK_Pointer_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_Pointers_Line.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Pointers/MRTK_Pointers_Line.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_Pointers_Parabolic.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Pointers/MRTK_Pointers_Parabolic.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_PokePointer.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Pointers/MRTK_PokePointer.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Box.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Box.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Buttons.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Buttons.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Scale.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Scale.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Scripts.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Scripts.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Structure.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Structure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Solver/MRTK_Solver_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Solver/MRTK_Solver_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Solver/MRTK_Solver_Orbital.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Solver/MRTK_Solver_Orbital.png"
         }
       },
       "is_incremental": false,
@@ -1245,6 +2261,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MRTK_SpatialAwareness_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/SpatialAwareness/MRTK_SpatialAwareness_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "External/ReadMeImages/SpatialAwareness/MixedRealitySpatialAwarenessEventData.png",
       "output": {
         "resource": {
@@ -1260,6 +2287,28 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessSystemArchitecture.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/SystemKeyboard/MRTK_SystemKeyboard_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/SystemKeyboard/MRTK_SystemKeyboard_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png"
         }
       },
       "is_incremental": false,
@@ -1389,30 +2438,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "MRTK-SDK.md",
-      "output": {
-        ".html": {
-          "relative_path": "MRTK-SDK.html",
-          "hash": "NvuEvII0znuJpk+sfIaIhg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "MRTK-WorkRoadmap.md",
-      "output": {
-        ".html": {
-          "relative_path": "MRTK-WorkRoadmap.html",
-          "hash": "vzIcjLAnPK7HK5yMiZewqA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "MRTK-vNext.md",
       "output": {
         ".html": {
@@ -1441,7 +2466,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "r8Ng7aUJTQSbBCkzETrz+Q=="
+          "hash": "nrOnZRuIK8WrPA0w0QwiLg=="
         }
       },
       "is_incremental": false,
@@ -1572,7 +2597,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseCoreSystem.html",
-          "hash": "pWIoH2clpbNsNajzMlpzSg=="
+          "hash": "sskq1x9gbd8egfmmEL/Ykg=="
         }
       },
       "is_incremental": false,
@@ -1584,7 +2609,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseDataProvider.html",
-          "hash": "ppAx4d8s0GC5hjA8vU8fzg=="
+          "hash": "y1t7kr6qhqtCK0SSXAYe5g=="
         }
       },
       "is_incremental": false,
@@ -1596,7 +2621,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseEventSystem.html",
-          "hash": "I2DgW+7dovAxpoPR/IrkYg=="
+          "hash": "FUuYYWS7RXVbfldqqOOMYQ=="
         }
       },
       "is_incremental": false,
@@ -1608,7 +2633,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseExtensionService.html",
-          "hash": "1lctY8ieYWVB8q5SWQFf9Q=="
+          "hash": "BjsNnsXVVVEZ5XNnY/ZLYA=="
         }
       },
       "is_incremental": false,
@@ -1620,7 +2645,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html",
-          "hash": "sPspPPR/Pgw+yUYOAlVgQg=="
+          "hash": "gkjrXNgA4LrasGiM39fSQw=="
         }
       },
       "is_incremental": false,
@@ -1632,7 +2657,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseService.html",
-          "hash": "h+Jd5wrogH3UdUeSVFZs9w=="
+          "hash": "KW9/HoJ6QkEb/76M28ERvw=="
         }
       },
       "is_incremental": false,
@@ -1704,7 +2729,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem.html",
-          "hash": "3y8mAl4nFysStDSAgGsybw=="
+          "hash": "EE4Ka/aQOChmxQNjcKfmnw=="
         }
       },
       "is_incremental": false,
@@ -1728,7 +2753,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.html",
-          "hash": "A5pDhVpwPYlehlmUMxS80Q=="
+          "hash": "xxaWq/ttPSkdAdnALzR9aQ=="
         }
       },
       "is_incremental": false,
@@ -1776,7 +2801,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BoundsExtensions.html",
-          "hash": "2yB2SAxOLWD7dd/yPAHiGg=="
+          "hash": "0WMdPSJBgk0pkGpwxOr8yw=="
         }
       },
       "is_incremental": false,
@@ -1976,6 +3001,78 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Core.Definitions.Devices.MixedRealityEyeTrackingProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Core.Definitions.Devices.MixedRealityEyeTrackingProfile.html",
+          "hash": "9bbbv17TBaHVjEq39wTIXA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Core.Definitions.Devices.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Core.Definitions.Devices.html",
+          "hash": "w2988xE1zbCN5J7x5VRjtg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices.IMixedRealityHandVisualizer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices.IMixedRealityHandVisualizer.html",
+          "hash": "G4Vj5vg2KMr4NdgMQMAEyA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices.html",
+          "hash": "Ny3CNKkZMZjzyqsyqcP5TA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityEyeSaccadeProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.IMixedRealityEyeSaccadeProvider.html",
+          "hash": "LedvdYQnoNHugdeGZ/V+GA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.html",
+          "hash": "8uQm5iGXgH4nSMI00gXmyA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Diagnostics.DiagnosticsEventData.yml",
       "output": {
         ".html": {
@@ -2028,7 +3125,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem.html",
-          "hash": "wELpvpyPfuXXRi7TgUq9OA=="
+          "hash": "YbGLJqlPYKllWCWYrjxcbw=="
         }
       },
       "is_incremental": false,
@@ -2052,7 +3149,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.html",
-          "hash": "Qx6ctgIVo8xeEXmLb4C4dA=="
+          "hash": "2uLl3yzGUcIj+M+PZUIPrQ=="
         }
       },
       "is_incremental": false,
@@ -2352,7 +3449,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI.Styles.html",
-          "hash": "Iv2FE6b+tfM7SmFX4D0XqA=="
+          "hash": "jc5eACwhXfKQyLBCD950mQ=="
         }
       },
       "is_incremental": false,
@@ -2364,7 +3461,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI.html",
-          "hash": "a1gDBqmnsKUmiCdMCxvsbQ=="
+          "hash": "nWtdqT9wJxdg3Jaan4wx0A=="
         }
       },
       "is_incremental": false,
@@ -2401,6 +3498,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.PrefabPropertyDrawer.html",
           "hash": "FiYdi2TWHeB/6/0TjWlG5A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.ProximityLightInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.ProximityLightInspector.html",
+          "hash": "6NO2JhLmoZ1E4r5IC6bUkw=="
         }
       },
       "is_incremental": false,
@@ -2496,7 +3605,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.html",
-          "hash": "zS2sVtyXLANGFt7LIsB2KQ=="
+          "hash": "qh8lzVRMrWA8IWlbG5GJww=="
         }
       },
       "is_incremental": false,
@@ -2552,6 +3661,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ColorChanger.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.ColorChanger.html",
+          "hash": "z87AM+pcRhKuHnK56d06pA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.DebugTextOutput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.DebugTextOutput.html",
+          "hash": "vxy2mExW2eaegSFO9246QA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.yml",
       "output": {
         ".html": {
@@ -2564,11 +3697,755 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.DemoTouchButton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.DemoTouchButton.html",
+          "hash": "X28RnneDiyhT++j187Cnog=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.DiagnosticsDemoControls.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.DiagnosticsDemoControls.html",
           "hash": "zUAvcjG45+0i5Bc9Oeh2lQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.AudioFeedbackPlayer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.AudioFeedbackPlayer.html",
+          "hash": "SDbsf5mvDEur2SH79I6j/Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.BlendOut.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.BlendOut.html",
+          "hash": "6l4s+SxTVsXAJMqmjVSP0w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeRenderMode.BlendMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeRenderMode.BlendMode.html",
+          "hash": "N07T6y2qgU/Zx55Sc2il0w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeRenderMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeRenderMode.html",
+          "hash": "jrmOj033DKwJeql7IQh9pg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeSize.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeSize.html",
+          "hash": "YTA4kdtUzBD1KHsWjPsQwQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ColorTap.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ColorTap.html",
+          "hash": "UlxQcT7awJf/3TTKLMcYRQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.DoNotRender.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.DoNotRender.html",
+          "hash": "4iXnf2mGDGmL108pVMjKKg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.DrawOnTexture.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.DrawOnTexture.html",
+          "hash": "E/4qRQ8Us9R4BbzdhpAnNQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.DwellSelection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.DwellSelection.html",
+          "hash": "2SECPBE7LL3Q1q4lkfJjvg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.EyeTrackingDemoUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.EyeTrackingDemoUtils.html",
+          "hash": "+0ggWowzA4DvVqfXJSBLLw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FaceUser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FaceUser.html",
+          "hash": "jxslHuMpRE0MPdC7MJs56Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze.html",
+          "hash": "26IWkWio+aAz0PSe0eK8Tw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze_GazeProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze_GazeProvider.html",
+          "hash": "XFXObjgiKICQkGyB4hGk+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.GrabReleaseDetector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.GrabReleaseDetector.html",
+          "hash": "ThJd+XDGVrN3zaSKEWTziQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehavior_DestroyOnSelect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehavior_DestroyOnSelect.html",
+          "hash": "1Gv5SGRRuvEqz2KHmHlfBA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.KeepFacingCamera.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.KeepFacingCamera.html",
+          "hash": "n5TxsCay7Wza8WhPBRSdIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.KeepThisAlive.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.KeepThisAlive.html",
+          "hash": "pfZ9JEEFF3xYc12UIdnYnQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.LoadAdditiveScene.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.LoadAdditiveScene.html",
+          "hash": "SxzI1hlAY6FN+OsoO0Cqig=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.AsyncHelpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.AsyncHelpers.html",
+          "hash": "qTLjt0BuFKFqZx+OxZvu4g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.BasicInputLogger.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.BasicInputLogger.html",
+          "hash": "jld/DNMbj4dM22dZdHTfyw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.CustomInputLogger.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.CustomInputLogger.html",
+          "hash": "NN4uapExiJQa/z2oesqFyw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.InputPointerVisualizer.VisModes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.InputPointerVisualizer.VisModes.html",
+          "hash": "JRvgFnx4aRMFZPtSM+9IBw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.InputPointerVisualizer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.InputPointerVisualizer.html",
+          "hash": "vJYy/jTCrpMmYpBgLE380g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.LogStructure.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.LogStructure.html",
+          "hash": "1crjBcfYCqqzJGBXPMIf+A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.LogStructure_EyeGaze.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.LogStructure_EyeGaze.html",
+          "hash": "tFnNciHy7Apmxp09DSrsxg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.UserInput_Playback.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.UserInput_Playback.html",
+          "hash": "z3cuYQMSZXvq0KzXfwieYw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.UserInput_Recorder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.UserInput_Recorder.html",
+          "hash": "nA01kC7ZXN7RAJdHMRBDeA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.UserInput_Recorder_Feedback.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.UserInput_Recorder_Feedback.html",
+          "hash": "GJklsZ2EwwP9J7zK0PplTA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.UserInput_Recorder_UIController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.UserInput_Recorder_UIController.html",
+          "hash": "QNW61WTne691MwHKR6Q5FA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging.html",
+          "hash": "hh44sSmKQ19STlF+KpgsJA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.MoveObjByEyeGaze.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.MoveObjByEyeGaze.html",
+          "hash": "SnjVUmjcKn3sxhgm73f75A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.MoveWithCamera.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.MoveWithCamera.html",
+          "hash": "YUPQp1oRPVCapLIThModkw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLoad_StartScene.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLoad_StartScene.html",
+          "hash": "rkyAmB145/D3OorZA3mu+Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAt_Rotate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAt_Rotate.html",
+          "hash": "uFZb6LNcOXt9JVb6Ur1vCQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAt_RotateByEyeGaze.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAt_RotateByEyeGaze.html",
+          "hash": "cuRyFuCDL5hDl4yi2pbozw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnSelect_VisualizerInputController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnSelect_VisualizerInputController.html",
+          "hash": "naZuF3VPGa6PsMFisqux0A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomBase.html",
+          "hash": "EpDD12CVVbXJ5ZxqgSwjqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomBase_RectTransf.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomBase_RectTransf.html",
+          "hash": "5EwTUk4aTIScFaovG5xz2Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomBase_Texture.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomBase_Texture.html",
+          "hash": "PL3PquOifWax0NSVLfX/mQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoom_RectTransf.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoom_RectTransf.html",
+          "hash": "2pQAk4ESxpy8h5U3rCmb6g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoom_Texture.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoom_Texture.html",
+          "hash": "AynQmv9/kfQH91BMu+82jQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ParticleHeatmap.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ParticleHeatmap.html",
+          "hash": "sexaC33hTdURT2MZcg7AsQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ParticleHeatmap_ParticleData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ParticleHeatmap_ParticleData.html",
+          "hash": "ZatZY6f+TIyfZ2/NISXgEg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PlacementSurfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PlacementSurfaces.html",
+          "hash": "ZJ1LAg9q2oUFGW4WzviIDg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Scroll_RectTransf.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Scroll_RectTransf.html",
+          "hash": "xQUPaWm1EUH+QlHhTwBpyw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Scroll_Texture.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Scroll_Texture.html",
+          "hash": "SMXE0Trrcubkv6HN+gfRNw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.SnapTo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.SnapTo.html",
+          "hash": "zcK+JF0RoNiYFHwHDdhnhw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Speech_VisualFeedback.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Speech_VisualFeedback.html",
+          "hash": "ATbzk6tHRTz63562C8VUkQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.StatusText.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.StatusText.html",
+          "hash": "NM8jbZRPmNJg0HR0dPRoQg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TargetEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TargetEventArgs.html",
+          "hash": "kOBOYAtzMQj5Y3sY7E7Yyg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TargetGroupCreator_Radial.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TargetGroupCreator_Radial.html",
+          "hash": "8NMHputA4wIQZFo/hLzx9Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TargetGroupIterator.TargetGroupEventHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TargetGroupIterator.TargetGroupEventHandler.html",
+          "hash": "voYJQaQFQKgiJzuXAuyemw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TargetGroupIterator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TargetGroupIterator.html",
+          "hash": "JdPG3LSGNGCgGXzBdRcd8w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Target_MoveToCamera.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Target_MoveToCamera.html",
+          "hash": "U61139V0MiAZMOa6KvoO4g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting.OnLookAt_ShowHoverFeedback.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting.OnLookAt_ShowHoverFeedback.html",
+          "hash": "twvkp3RDobpUv0TlXhSBmQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting.html",
+          "hash": "QGIg7WC6inDv+u++aMiSCg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ToggleGameObject.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ToggleGameObject.html",
+          "hash": "AohFBl/+ZUP/ZpblMzwttg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TransportToRespawnLocation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TransportToRespawnLocation.html",
+          "hash": "KmB1QBzWR4WEcRgEaixaoQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TriggerOnStartup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TriggerOnStartup.html",
+          "hash": "i0T0ZFR4oYWqWitwOucBFA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TriggerZone_PlaceObjsWithin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TriggerZone_PlaceObjsWithin.html",
+          "hash": "jhTcueYaRHfkUb2Bvrt3mg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.html",
+          "hash": "ztIyLbsb6rPIizWt5xDNNw=="
         }
       },
       "is_incremental": false,
@@ -2612,11 +4489,71 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.HandInteractionTouch.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.HandInteractionTouch.html",
+          "hash": "GQua8BVobUZ1OP5Ko9YcqA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.HandInteractionTouchRotate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.HandInteractionTouchRotate.html",
+          "hash": "BpdURdMXx0WQEdGwP75xdQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.LoFiFilterSelection.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.LoFiFilterSelection.html",
           "hash": "ttO9xHhFn1vMbuVky0NCsQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.OpenKeyboard.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.OpenKeyboard.html",
+          "hash": "6Ln4DSQA7Yux4Ldl5UH3dQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.PhysicalPressEventRouter.PhysicalPressEventBehavior.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.PhysicalPressEventRouter.PhysicalPressEventBehavior.html",
+          "hash": "z8BNMB3Kxy0e4IheyzA5xA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.PhysicalPressEventRouter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.PhysicalPressEventRouter.html",
+          "hash": "nDpz1Md82o9L1qMu5MsMuw=="
         }
       },
       "is_incremental": false,
@@ -2672,6 +4609,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ToggleBoundingBox.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.ToggleBoundingBox.html",
+          "hash": "1B3yyoJ7H3wKSOmEpAd1Lw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.Utilities.InspectorFields.Inspectors.InspectorFieldsExampleInspector.yml",
       "output": {
         ".html": {
@@ -2700,7 +4649,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "ehakYPNARHsTxleag1M3FA=="
+          "hash": "nx21EM68HLpxxIyzak+L2Q=="
         }
       },
       "is_incremental": false,
@@ -2760,7 +4709,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html",
-          "hash": "oM3wqKJppxD/1KuvoWLPyQ=="
+          "hash": "uqNL0M7lUEbXKhqYLFN5rQ=="
         }
       },
       "is_incremental": false,
@@ -2796,7 +4745,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html",
-          "hash": "9AFKsUjNcfC0ADGNpfKGcg=="
+          "hash": "oE9Wqc8tznAJ9zNs87ijvg=="
         }
       },
       "is_incremental": false,
@@ -2808,7 +4757,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService.html",
-          "hash": "b7iKpqKoXEXxyrFbVB51qg=="
+          "hash": "tyBw5rdcsLylPa0nzdslow=="
         }
       },
       "is_incremental": false,
@@ -2832,7 +4781,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.IMixedRealityService.html",
-          "hash": "e7e1xN8gX8SY0Jiiy2eZaQ=="
+          "hash": "e4dI5Y7DMFVKGKWSFnsa0Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceConfiguration.html",
+          "hash": "+pgE1BJcJajS2RhEKn1E5g=="
         }
       },
       "is_incremental": false,
@@ -2868,7 +4829,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.AnimatedCursor.html",
-          "hash": "mz4TANGw8uXLs3KV7POUog=="
+          "hash": "7skxlLwjANh4LVBlkMWV7g=="
         }
       },
       "is_incremental": false,
@@ -2892,7 +4853,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseController.html",
-          "hash": "lT8cRcB6ACZiRkiWmhhF4g=="
+          "hash": "09Mrst2q+aIkY5LVY94HMQ=="
         }
       },
       "is_incremental": false,
@@ -2904,7 +4865,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html",
-          "hash": "wkCm2pRdWe8WoKWPM2/f3g=="
+          "hash": "DgtD9sQJZg1pl2eFWO6qdw=="
         }
       },
       "is_incremental": false,
@@ -2916,7 +4877,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseCursor.html",
-          "hash": "8X15TU0mUo5A3UnYBPsCiA=="
+          "hash": "3+hdWsObNt5P8de4MqNvSQ=="
         }
       },
       "is_incremental": false,
@@ -2924,11 +4885,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.BaseDeviceManager.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.BaseEyeFocusHandler.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseDeviceManager.html",
-          "hash": "RTuJO7mXnFWn4sOBA7kkSA=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseEyeFocusHandler.html",
+          "hash": "yzFLyCHj1QMZVjQFexAqqQ=="
         }
       },
       "is_incremental": false,
@@ -2940,7 +4901,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseFocusHandler.html",
-          "hash": "HBiOnx/xgaDp+jJ1o68LLw=="
+          "hash": "8h7U+7y0ENi/dHSwW8RWZw=="
         }
       },
       "is_incremental": false,
@@ -2952,7 +4913,43 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseGenericInputSource.html",
-          "hash": "+47xz0rw44yhHNt5XIbULg=="
+          "hash": "i34ukseVjpc4ZGgFRsJKdw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.BaseHand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseHand.html",
+          "hash": "vAvPvbsXiERQ1MwU4wWVzw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer.html",
+          "hash": "plgWZSzjkFybzL0ECxYPqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html",
+          "hash": "C7pcKJ1IaTDryFXf4HtGcg=="
         }
       },
       "is_incremental": false,
@@ -2964,7 +4961,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseInputEventData.html",
-          "hash": "XCSmf+80U35NEG5AimAlow=="
+          "hash": "mvVsa4595BtlVMUW5O1w6A=="
         }
       },
       "is_incremental": false,
@@ -3032,6 +5029,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator.html",
+          "hash": "qxtBJPP/j6UYdhy0+5FGVA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.DeviceInputType.yml",
       "output": {
         ".html": {
@@ -3049,18 +5058,6 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DictationEventData.html",
           "hash": "1m7rZ9Pe992AFKYOzc4M4w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.DragAndDropHandler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DragAndDropHandler.html",
-          "hash": "e0LSxB5x5+FBfcSv2CO6Tg=="
         }
       },
       "is_incremental": false,
@@ -3296,6 +5293,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html",
+          "hash": "IFrWR1A8p1LoBep1jlLKVQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.FingerCursor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.FingerCursor.html",
+          "hash": "lqrbTP6m4zkbJuqfsFw8XA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.FocusEventData.yml",
       "output": {
         ".html": {
@@ -3312,7 +5333,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.FocusProvider.html",
-          "hash": "ff3B/iGa7qtdIAYsXxr3iQ=="
+          "hash": "t73YKrU5wz9jxq67Mao8Fg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.GGVPointer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.GGVPointer.html",
+          "hash": "B9UZI2k/wmBdSCfpwbMWwg=="
         }
       },
       "is_incremental": false,
@@ -3324,7 +5357,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.GazeProvider.html",
-          "hash": "49ZogXq0vqjGJugRbCYYDA=="
+          "hash": "MIlsSWRiFgcGGwli/plR1w=="
         }
       },
       "is_incremental": false,
@@ -3336,7 +5369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.GenericPointer.html",
-          "hash": "HePfh66hZMSkqLyOCf9t8g=="
+          "hash": "cXbhCz+q2kprK1GfqAs2EQ=="
         }
       },
       "is_incremental": false,
@@ -3356,11 +5389,95 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.GraphicInputEventData.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.HandGestureRecorder.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.GraphicInputEventData.html",
-          "hash": "LMulymsVdSi7uXFonyN0pQ=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandGestureRecorder.html",
+          "hash": "ICfm23Xj9SKsjt0z5sfpIQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.HandJointService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandJointService.html",
+          "hash": "QKC5dHberPOICyDOf6YrHg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.HandJointUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandJointUtils.html",
+          "hash": "EwZV4gdpgHL82WX7ZwLIHg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.HandMeshInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandMeshInfo.html",
+          "hash": "YUfIqo7yhz4gLWQjaXecOg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.HandPanEventData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandPanEventData.html",
+          "hash": "hrEpl8v0ndEtk0WnBX9/0w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.HandRay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandRay.html",
+          "hash": "7Ppsy88ZvEb4qW7sf3nJMw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.HandSimulationMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandSimulationMode.html",
+          "hash": "gp+Ib96C29Vo2QfzSTTk3w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.HandTrackingInputEventData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandTrackingInputEventData.html",
+          "hash": "4+qCia2Vnrqs+Wggu4/uWA=="
         }
       },
       "is_incremental": false,
@@ -3408,7 +5525,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html",
-          "hash": "HVJCIN38AH1/kqMD+Ct9UQ=="
+          "hash": "LfWyqu3/Tlzr8EZLf+C/bg=="
         }
       },
       "is_incremental": false,
@@ -3432,7 +5549,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityControllerVisualizer.html",
-          "hash": "RQlmcAWiDPWojYoEvBPXAg=="
+          "hash": "V5vIvq6qKPkLPiU62xtrbw=="
         }
       },
       "is_incremental": false,
@@ -3444,19 +5561,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityCursor.html",
-          "hash": "+12YjPjmMzllVYPmO9exeg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityDeviceManager.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityDeviceManager.html",
-          "hash": "l07cYClwgNAXBLxIFni+IA=="
+          "hash": "9z7eNPEKcpCbIETi4geaqQ=="
         }
       },
       "is_incremental": false,
@@ -3480,7 +5585,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationSystem.html",
-          "hash": "XTtzRqkoohg76DVuUuMePQ=="
+          "hash": "u8r3XXpVpfi5QZOSlJHcmQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider.html",
+          "hash": "33RjkDYmKaZjkIZCceYXZw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html",
+          "hash": "ebUTvaPAkaUxHws3I3EJsQ=="
         }
       },
       "is_incremental": false,
@@ -3516,7 +5645,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.html",
-          "hash": "rJ7w5wUyN8YaOAKuLTxgPw=="
+          "hash": "JgaeHIcd9y6rZv8TTbZV5g=="
         }
       },
       "is_incremental": false,
@@ -3560,6 +5689,78 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html",
+          "hash": "fEFpUK1Ie2nd0rnYMY7eKQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler.html",
+          "hash": "9+1nAYyNIaaihnY/pe+Rpg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointService.html",
+          "hash": "JxtcFHedpKcH+CDjShWgPw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler.html",
+          "hash": "a0z9RzSBvBEkrs2ZXUiLAw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandPanHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandPanHandler.html",
+          "hash": "9+AML2e+Kg627DCJoGe4BA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.html",
+          "hash": "Qd2QIE6HTFZOjy5/NBNSmA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.yml",
       "output": {
         ".html": {
@@ -3588,7 +5789,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html",
-          "hash": "3/WSUenN9HqRI/67L06gXA=="
+          "hash": "hkKvIT23ChvU+dDOOskLaw=="
         }
       },
       "is_incremental": false,
@@ -3600,7 +5801,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.html",
-          "hash": "4tUYa+fVw8X3EoLboyKKog=="
+          "hash": "hxvr7z55/C2Qehw+h15XtQ=="
         }
       },
       "is_incremental": false,
@@ -3612,7 +5813,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityMousePointer.html",
-          "hash": "K2ErBBP2gVtCGTlxeY8bbQ=="
+          "hash": "g8iZ0J19Mh7JVrV5OUnBTQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityNearPointer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityNearPointer.html",
+          "hash": "TbFK5sEbWoXB6By7lT5F0g=="
         }
       },
       "is_incremental": false,
@@ -3624,7 +5837,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html",
-          "hash": "QenhPMXarIbKL8rBDzjycg=="
+          "hash": "Xd/m+rlvtBI1ALWWeiy+xg=="
         }
       },
       "is_incremental": false,
@@ -3637,6 +5850,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html",
           "hash": "BPllX8JscMqkD5Sv6s9TuQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerMediator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerMediator.html",
+          "hash": "TwR4PQ06jSe0dP7pShQCTQ=="
         }
       },
       "is_incremental": false,
@@ -3696,7 +5921,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechSystem.html",
-          "hash": "Jqvy9Jip7K4N38JU961CRw=="
+          "hash": "zwDU6M6NL5zWhGzmW6er+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityTeleportPointer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityTeleportPointer.html",
+          "hash": "IxZuqe2Jlo6wqH28oGDg0Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.html",
+          "hash": "LCEyh0kVK6pSCsyUCtf9ng=="
         }
       },
       "is_incremental": false,
@@ -3708,7 +5957,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchPointer.html",
-          "hash": "OXFbqO8ZDwUgBc7cHQFsfQ=="
+          "hash": "7uuzwNEt0GK1MuxGQHagJw=="
         }
       },
       "is_incremental": false,
@@ -3816,7 +6065,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputEventData-1.html",
-          "hash": "ipSR1daNazHGNhd2RP3cMQ=="
+          "hash": "G9eqxrZv/RqJ2XekRuTjBA=="
         }
       },
       "is_incremental": false,
@@ -3836,11 +6085,59 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputSimulationControlMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSimulationControlMode.html",
+          "hash": "y0/C36Wrq8sKGRnyY0harg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputSimulationMouseButton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSimulationMouseButton.html",
+          "hash": "7WFSYcRjQ6EaprpggMfN/A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputSimulationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSimulationService.html",
+          "hash": "haBACroufJqA/s41ooJ5Ow=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputSourceType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSourceType.html",
+          "hash": "P9XFf7hhk2VHVyvq/tYx2A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html",
-          "hash": "UyfEK7TCniL3zrL0L7WTBQ=="
+          "hash": "bYGy2SMtvVNQAgK6sAg7nA=="
         }
       },
       "is_incremental": false,
@@ -3852,7 +6149,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InteractiveMeshCursor.html",
-          "hash": "Mwf4hCwr/Q4OpB1FcFkquQ=="
+          "hash": "DuoEGFI4e7ljGNj6sRn3wQ=="
         }
       },
       "is_incremental": false,
@@ -3876,7 +6173,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.LinePointer.html",
-          "hash": "tLyzQzSIz7c35VWCXg2xNA=="
+          "hash": "DwN+jP/avRhnxcRfUqIwBw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.ManualCameraControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.ManualCameraControl.html",
+          "hash": "IDyOBnY52DkAhDkV+/PGyA=="
         }
       },
       "is_incremental": false,
@@ -3900,7 +6209,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MeshCursor.html",
-          "hash": "oOLGKZNhXeA7licfuMLjUg=="
+          "hash": "DwXg+x5u32wIocOjG4eZYg=="
         }
       },
       "is_incremental": false,
@@ -3984,7 +6293,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationProfile.html",
-          "hash": "kilguv0PvLStOdmnuEFA7g=="
+          "hash": "51RL98APEFi0nrwjzttXQw=="
         }
       },
       "is_incremental": false,
@@ -4008,7 +6317,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizer.html",
-          "hash": "aHQ4+6LvQl4JO0fu4KZr7g=="
+          "hash": "WX/C7LiN5CU3V/fhCVNqqw=="
         }
       },
       "is_incremental": false,
@@ -4033,6 +6342,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityGesturesProfile.html",
           "hash": "FnnVBaEH0HvWdOhCxNqA+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.html",
+          "hash": "rn8SUOBSNMiM3XG+oZ0pkA=="
         }
       },
       "is_incremental": false,
@@ -4076,11 +6397,47 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputDataProviderConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputDataProviderConfiguration.html",
+          "hash": "mGB0i0mZYLq9VZiF4CmKVQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.html",
+          "hash": "iaV4Zp2YUnlxSgcMTuQ1tw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfileInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfileInspector.html",
+          "hash": "AUHKsY8DK/7uhB4EFuNOQA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem.html",
-          "hash": "Cn6Ls+mQMTR0wbx582T4ow=="
+          "hash": "mLWgrfzAs2egF8VlAOtEkg=="
         }
       },
       "is_incremental": false,
@@ -4092,7 +6449,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystemProfile.html",
-          "hash": "LPH1h4yy8SEduLOgSTbePA=="
+          "hash": "0PZrOfe6kgFEEvgKqjQFkA=="
         }
       },
       "is_incremental": false,
@@ -4128,7 +6485,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityPointerProfile.html",
-          "hash": "8nBSLuhTSxtlNW+IWYPUjQ=="
+          "hash": "oCdMAlWS/64+zzP/84o0Ww=="
         }
       },
       "is_incremental": false,
@@ -4152,7 +6509,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MousePointer.html",
-          "hash": "7AE6DAWmC3W81i8Tqbb+mg=="
+          "hash": "nyhwBmC6LvG0df+ZiK9mNA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html",
+          "hash": "z7PP4DBs9aIyjm4FySYBgw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html",
+          "hash": "00rfwXXH0O2BCRn5ojfkyQ=="
         }
       },
       "is_incremental": false,
@@ -4176,7 +6557,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.ObjectCursor.html",
-          "hash": "Vwbf0Lyl2js5yzfjNqGEJw=="
+          "hash": "1rNtyRm95cgu4JjXvK1fRA=="
         }
       },
       "is_incremental": false,
@@ -4200,7 +6581,127 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.PointerOption.html",
-          "hash": "zw3TVF902h52/GvaPkC23A=="
+          "hash": "m1EZLZU0ES1KGw1J5f/7xg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.PokePointer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html",
+          "hash": "EJAHU1N1+S39JeIYg14wAA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer.html",
+          "hash": "U9S6lt20PctAD5b6qvOBMQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand.html",
+          "hash": "s3m9zvnS+Vql3eScCoEJAw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand.html",
+          "hash": "xVuGepH94+9NjBBxwlcGNg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedHand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHand.html",
+          "hash": "jLcCnVdsc+66KNoKQQQRKw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.html",
+          "hash": "b8Q5XumHYKdhsieZ2Bz6tw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.html",
+          "hash": "om/00ulYuGId4UHzVI3Pdg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandPose.GestureId.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandPose.GestureId.html",
+          "hash": "8usKSzqH/9nk7BFu+99Hsg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandPose.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandPose.html",
+          "hash": "3t3XaXpioLfEOh6kNe0E6g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandUtils.html",
+          "hash": "0t4sBeMKf9NJROdLXYSZAQ=="
         }
       },
       "is_incremental": false,
@@ -4236,7 +6737,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SpeechCommands.html",
-          "hash": "rF6CAQlyUN4JeZM1O5cZRQ=="
+          "hash": "r2b83dsGQv+uvv6OLOhgbg=="
         }
       },
       "is_incremental": false,
@@ -4248,7 +6749,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SpeechEventData.html",
-          "hash": "N3WkbjR9gVxc+JzP5faMlg=="
+          "hash": "TZmwVMtZINua14YYwAyK4w=="
         }
       },
       "is_incremental": false,
@@ -4260,7 +6761,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.html",
-          "hash": "PfmnGVnLFi/NWhnEzJpvCQ=="
+          "hash": "YkukvuAPcIWtBZLfN5JYIQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SpherePointer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SpherePointer.html",
+          "hash": "3DdAMP1qM1wMLHWH3RjQgQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SpherePointerVisual.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SpherePointerVisual.html",
+          "hash": "+0HVhX+Mp2vHLiKN3MR8vA=="
         }
       },
       "is_incremental": false,
@@ -4284,7 +6809,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SpriteCursor.html",
-          "hash": "wJSZo4i8IOlUvEiCkBJ5Gw=="
+          "hash": "DLa1ESNQEsBPHjIDBdb9HA=="
         }
       },
       "is_incremental": false,
@@ -4296,7 +6821,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SupportedControllerType.html",
-          "hash": "zjntOGcLN+qtLWB2h1T1UA=="
+          "hash": "mNpEwEoiqDBmtHPA0PDR1w=="
         }
       },
       "is_incremental": false,
@@ -4308,7 +6833,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.TouchPointer.html",
-          "hash": "scQzAGMkk7vjk7rpEOZJ+Q=="
+          "hash": "TPv7rwus/ZiEt5SRElR6FQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.TouchableEventType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.TouchableEventType.html",
+          "hash": "jsMMV9mOhzIim06EU3znqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.TouchingState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.TouchingState.html",
+          "hash": "dP6zsm2N8F8RRBWdbOqTcw=="
         }
       },
       "is_incremental": false,
@@ -4320,7 +6869,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController.html",
-          "hash": "6jnp8uD48v206Qp3PBZqkw=="
+          "hash": "wBI56pm1AeXCoTzoyC/oKg=="
         }
       },
       "is_incremental": false,
@@ -4332,7 +6881,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseController.html",
-          "hash": "oEvAeKPvc7qjk1mcfJYG3A=="
+          "hash": "rnvIxOsRO5xSJCxn3X3x0A=="
         }
       },
       "is_incremental": false,
@@ -4344,7 +6893,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseDeviceManager.html",
-          "hash": "q1YwwiQDLg5b7CZ9+GMsEQ=="
+          "hash": "g1t9mTFKb+gnmiGZHtmG4Q=="
         }
       },
       "is_incremental": false,
@@ -4356,7 +6905,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager.html",
-          "hash": "I22eQLC7u0zdYMufLnHZEw=="
+          "hash": "IdgJ2rz+9valwwuB319tEA=="
         }
       },
       "is_incremental": false,
@@ -4368,7 +6917,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchController.html",
-          "hash": "mmMYtI0u/tVr8jr248Rqxw=="
+          "hash": "dg6/kyfdcQiwnNOleZ1+yQ=="
         }
       },
       "is_incremental": false,
@@ -4380,7 +6929,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchDeviceManager.html",
-          "hash": "Z+GCsF/36/7CtL+Y5DYsjQ=="
+          "hash": "xE3FRWKSxpmFwGVKPJfSsw=="
         }
       },
       "is_incremental": false,
@@ -4392,7 +6941,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.XboxController.html",
-          "hash": "r8JagBsE/DI0isGvnzLMrQ=="
+          "hash": "QEfbsldeWrwddMgC6VnTtA=="
         }
       },
       "is_incremental": false,
@@ -4412,11 +6961,83 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.Utilities.CanvasUtility.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.Utilities.CanvasUtility.html",
+          "hash": "JKwFZISNNCr1nXZOWgX2Nw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.Utilities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.Utilities.html",
+          "hash": "vyNsA3V/YGqG0VYvmAXDAg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer.html",
+          "hash": "Fzd03A+4DkZIyuGDaT3Alg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "bJynrscR2aFHyhnpc5QCIQ=="
+          "hash": "ZfSRsT3PrAMushOq/jHb1w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Inspectors.MixedRealityEyeTrackingProfileInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Inspectors.MixedRealityEyeTrackingProfileInspector.html",
+          "hash": "9VS26PqS7h7IUE3lENEWIQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Inspectors.MixedRealityHandTrackingProfileInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Inspectors.MixedRealityHandTrackingProfileInspector.html",
+          "hash": "mL/nBOaD8/occv4i3EeOHg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Inspectors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Inspectors.html",
+          "hash": "/oKPYJpSTQnsUyEI2GAPYw=="
         }
       },
       "is_incremental": false,
@@ -4512,7 +7133,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute.html",
-          "hash": "pnCiKVyoHPB0QZGlymUe0Q=="
+          "hash": "FHyIpgw3G1+9JhJVbKEVGA=="
         }
       },
       "is_incremental": false,
@@ -4524,7 +7145,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityExtensionServiceAttribute.html",
-          "hash": "zZ7p3N9d9rcEtiBVXpAimQ=="
+          "hash": "seKTAj7UcduOxMUwjSJG0A=="
         }
       },
       "is_incremental": false,
@@ -4548,7 +7169,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityServiceConfiguration.html",
-          "hash": "rOZjQYsH0qdxW4F+Rdlq8w=="
+          "hash": "V22EC7vpqOBw1XAszB8QaQ=="
         }
       },
       "is_incremental": false,
@@ -4584,7 +7205,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile.html",
-          "hash": "F6wK+ihsmY99g/8GAolSiQ=="
+          "hash": "dEjPhNdqpk2J7qQ+M7UScg=="
         }
       },
       "is_incremental": false,
@@ -4632,7 +7253,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRDeviceManager.html",
-          "hash": "1FL67eySLUIBA835EgW0lw=="
+          "hash": "YQ0Cou8+parMqb/yJ/k4zw=="
         }
       },
       "is_incremental": false,
@@ -4812,7 +7433,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Physics.FocusDetails.html",
-          "hash": "udSMYWgtXajshw7XAnG1WQ=="
+          "hash": "fgWIRalctt0TtWJVnaT2pQ=="
         }
       },
       "is_incremental": false,
@@ -4904,11 +7525,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Physics.RaycastMode.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Physics.RaycastResultComparer.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Physics.RaycastMode.html",
-          "hash": "Un+NyW6JiO/nht+Wz86N1A=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Physics.RaycastResultComparer.html",
+          "hash": "0C5Zk+Kxo35tgXztYv9ZtA=="
         }
       },
       "is_incremental": false,
@@ -4916,11 +7537,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Physics.RaycastResultComparer.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Physics.SceneQueryType.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Physics.RaycastResultComparer.html",
-          "hash": "0C5Zk+Kxo35tgXztYv9ZtA=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Physics.SceneQueryType.html",
+          "hash": "qu3X43AiLdSLmQcJzGKkcA=="
         }
       },
       "is_incremental": false,
@@ -4944,7 +7565,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.html",
-          "hash": "o3NrAZLzP9hNvMTqC2m6yQ=="
+          "hash": "I2HCmqhtlHeLI86vq2ee1g=="
         }
       },
       "is_incremental": false,
@@ -4956,7 +7577,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.html",
-          "hash": "MLwPBb1kz8i4cRTrwwtNbg=="
+          "hash": "JEr7nQT8vVojwqiWANrvbQ=="
         }
       },
       "is_incremental": false,
@@ -4992,7 +7613,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Physics.html",
-          "hash": "0NyzQSCOPGu/SVHlJSpkUg=="
+          "hash": "4U3SFwBSNWf3iVhS/HQonA=="
         }
       },
       "is_incremental": false,
@@ -5072,30 +7693,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SDK.UX.Controllers.WindowsMixedRealityControllerVisualizer.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.SDK.UX.Controllers.WindowsMixedRealityControllerVisualizer.html",
-          "hash": "8mPvvPh1OnLbZ+pKvbmfiw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SDK.UX.Controllers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.SDK.UX.Controllers.html",
-          "hash": "8SdjIWUECdSc6sgOMg2UcA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SDKType.yml",
       "output": {
         ".html": {
@@ -5120,11 +7717,47 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialAwarenessObserverProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialAwarenessObserverProfile.html",
+          "hash": "WaxihVLQfyxZr+sNEkd3eQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.html",
-          "hash": "95VCLgl7cqWZdLxiRpls4g=="
+          "hash": "YzprZn5wT6IsTLD//4nCcg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.MixedRealitySpatialAwarenessSystemProfileInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.MixedRealitySpatialAwarenessSystemProfileInspector.html",
+          "hash": "iaeqPit74yKEyqvk9RaEBA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.html",
+          "hash": "RcSUckU9Vt3Ae6wYceN9LA=="
         }
       },
       "is_incremental": false,
@@ -5136,7 +7769,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html",
-          "hash": "vMkVdI3lBmre/s2y86JwVQ=="
+          "hash": "5maiVU1xP0ISsoljkruDUA=="
         }
       },
       "is_incremental": false,
@@ -5172,7 +7805,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html",
-          "hash": "pVLwAaqp+leV+AJdcNHF7A=="
+          "hash": "0NJWWi13+sq1+LbH5wwEHg=="
         }
       },
       "is_incremental": false,
@@ -5184,7 +7817,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.html",
-          "hash": "CuJXPiPsmoqWfKUKEhGUCA=="
+          "hash": "Fd8ED+rJwMIOPhDVxZM9/w=="
         }
       },
       "is_incremental": false,
@@ -5220,7 +7853,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile.html",
-          "hash": "TiBPjwsH53VkKL3LXj69ww=="
+          "hash": "gcu3+PA19Y/lI8tBvN4W0g=="
         }
       },
       "is_incremental": false,
@@ -5232,7 +7865,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.html",
-          "hash": "4RR9TTBPxZTl7YCQsDCp1w=="
+          "hash": "VUaOHrBVOm8Iw52hpENEUw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystemProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystemProfile.html",
+          "hash": "2toL7Flj/HqY4ZTgOManHg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialObserverConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialObserverConfiguration.html",
+          "hash": "AWPuFM9bG44WY7zAvMKw3w=="
         }
       },
       "is_incremental": false,
@@ -5304,7 +7961,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.html",
-          "hash": "7bACAVTNT+3aEiprUVUTpA=="
+          "hash": "mnv7YzbwZ26K0kSmBjRvLA=="
         }
       },
       "is_incremental": false,
@@ -5412,7 +8069,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.IMixedRealityTeleportSystem.html",
-          "hash": "D7p6gdRUVOgsX1PdU85ceg=="
+          "hash": "DHqEGTneuO0b3eLwx4wbyg=="
         }
       },
       "is_incremental": false,
@@ -5424,7 +8081,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.MixedRealityTeleportSystem.html",
-          "hash": "85BZlQr61BQa2kKFPVXtJg=="
+          "hash": "MKnsJH0lo1oRQB6d9Y3TJg=="
         }
       },
       "is_incremental": false,
@@ -5436,7 +8093,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer.html",
-          "hash": "wI14YXHWumdmri49CR7owA=="
+          "hash": "npecDXcOUSX9WcuOJYtvUA=="
         }
       },
       "is_incremental": false,
@@ -5484,7 +8141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html",
-          "hash": "6ga5RWCu02fsNITt/QcMUQ=="
+          "hash": "SZpRiESsSfrFGzbA1qoi8w=="
         }
       },
       "is_incremental": false,
@@ -5576,11 +8233,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.TestFixture_01_SimplePlayModeTest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TestFixture_01_SimplePlayModeTest.html",
+          "hash": "mBAZ0zi7KFImGLDLpi4c9Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html",
-          "hash": "g3oPfSDz4FMitz0O3JaLzw=="
+          "hash": "DIeSxiLQ2QV7PJT8qtlHvA=="
         }
       },
       "is_incremental": false,
@@ -5592,7 +8261,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "Qpifngc2kJoS4UUpsnVMeg=="
+          "hash": "wg8WEGnAqvcxmJVP+ygq/Q=="
         }
       },
       "is_incremental": false,
@@ -5617,6 +8286,66 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.TransformExtensions.html",
           "hash": "P+lUwvN0k+vZZluyRBnpFg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.AppBar.AppBarDisplayTypeEnum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.AppBar.AppBarDisplayTypeEnum.html",
+          "hash": "Ue/cnk/sNGfo0gfPttyhAQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.AppBar.AppBarStateEnum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.AppBar.AppBarStateEnum.html",
+          "hash": "H+c/FPYNK8DpFg1Yfl9Xdw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.AppBar.ButtonTypeEnum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.AppBar.ButtonTypeEnum.html",
+          "hash": "ywMhYvWSpzjbh5cFjDxAKw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.AppBar.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.AppBar.html",
+          "hash": "bXRH+wykz/zvoMQd7s4p4w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.AppBarButton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.AppBarButton.html",
+          "hash": "DFu1Ld2OBTHA3CU9B0kNBQ=="
         }
       },
       "is_incremental": false,
@@ -5676,7 +8405,55 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ButtonBorder.html",
-          "hash": "d4YNXxaooR+jLf0pdTh/jg=="
+          "hash": "boKMq6LutIv9IBE7KKm35A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ButtonCollider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ButtonCollider.html",
+          "hash": "OPl7wq4D8eVNuZ2n7ShRsw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ButtonLayout.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ButtonLayout.html",
+          "hash": "/bjoBkmcfah4HENp8XDdlg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ButtonSize.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ButtonSize.html",
+          "hash": "Rm/ur6Fgn7kLQaU9U6KRjQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ButtonSizeOffset.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ButtonSizeOffset.html",
+          "hash": "6Kzh/SdP3vsng5FYs0ib7Q=="
         }
       },
       "is_incremental": false,
@@ -5804,11 +8581,59 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.Inspectors.UX.Pointers.SpherePointerInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Inspectors.UX.Pointers.SpherePointerInspector.html",
+          "hash": "YkHX21CouF2eQompdJxeNQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.Inspectors.UX.Pointers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Inspectors.UX.Pointers.html",
+          "hash": "dJdroJYdtOXoqMIssN7zRA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.Inspectors.Utilities.Solvers.AttachToControllerInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Inspectors.Utilities.Solvers.AttachToControllerInspector.html",
+          "hash": "ZE+pmrV/2FzvnhwkYQQvPw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.Inspectors.Utilities.Solvers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Inspectors.Utilities.Solvers.html",
+          "hash": "m7qqV8ZrlyKdV5whFI9adg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.Interactable.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Interactable.html",
-          "hash": "VTk3OmZ/FbaDCZqA00e/dw=="
+          "hash": "bA/qZzKBfl7hQ/kmRbiLZQ=="
         }
       },
       "is_incremental": false,
@@ -6156,7 +8981,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableStates.InteractableStateEnum.html",
-          "hash": "h2HbXde9zlWAjXI68yTSAQ=="
+          "hash": "KHdZsReyltXVtF3KaHkWJA=="
         }
       },
       "is_incremental": false,
@@ -6288,7 +9113,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableType.html",
-          "hash": "I64XKDPaQmngIEev7yjDFg=="
+          "hash": "TGJUdqBnvthrQgpZQeI03g=="
         }
       },
       "is_incremental": false,
@@ -6312,7 +9137,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableTypesContainer.html",
-          "hash": "vXZ6ZMvdhSDo9uiwNggoCQ=="
+          "hash": "89MxIBCRWlpORZJgk9anrA=="
         }
       },
       "is_incremental": false,
@@ -6324,7 +9149,79 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractionReceiver.html",
-          "hash": "8oDY2YKraIy/rw9OLEOhCA=="
+          "hash": "yFqgCBvOv9iHMantjdczIw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ManipulationEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ManipulationEvent.html",
+          "hash": "OWWL9KyJQoqxvYXCwn2gdQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ManipulationEventData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ManipulationEventData.html",
+          "hash": "7vWckoQJb7eCJhjboO8a5A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.HandMovementType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.HandMovementType.html",
+          "hash": "vRg83pZzSzSxExreczONFg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.ReleaseBehaviorType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.ReleaseBehaviorType.html",
+          "hash": "k5hdXeDX9OeKOf7KajPHFQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.RotateInOneHandType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.RotateInOneHandType.html",
+          "hash": "uDRdcRJov/sUC6PF+otgBw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.TwoHandedManipulation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.TwoHandedManipulation.html",
+          "hash": "dZkX4H7o4hnvz3ko6rZqMg=="
         }
       },
       "is_incremental": false,
@@ -6336,7 +9233,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.html",
-          "hash": "WJmEZoVR+KY1C40pLnf0/A=="
+          "hash": "PZNJI51Py8sb6fKPfJoSeA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.PressableButton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PressableButton.html",
+          "hash": "usst04egqID8KsOaxvls1g=="
         }
       },
       "is_incremental": false,
@@ -6469,6 +9378,30 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Theme.html",
           "hash": "8dthspqw30Jp6GgdtX/w6g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ThemeEaseSettings.BasicEaseCurves.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ThemeEaseSettings.BasicEaseCurves.html",
+          "hash": "38gcJs/Bt59XjGE+u/+W9A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ThemeEaseSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ThemeEaseSettings.html",
+          "hash": "H51mYKz+BX/au+e69tqcnQ=="
         }
       },
       "is_incremental": false,
@@ -6620,6 +9553,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.TouchEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.TouchEvent.html",
+          "hash": "EgKvPmxpW4fvkycu9OAp2A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.TouchEventData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.TouchEventData.html",
+          "hash": "lp2yZZ0zJ8d9lRbxEBubBg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.TypeRestriction.yml",
       "output": {
         ".html": {
@@ -6632,11 +9589,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.Utilities.Solvers.AttachToController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Utilities.Solvers.AttachToController.html",
+          "hash": "Lc5T2rsA8jENBpQeUmxVLg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.Utilities.Solvers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Utilities.Solvers.html",
+          "hash": "s3ntI0wQC2Cl5xkcMOxpfA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "Cr1r12QsxXkVOOOO6+7o9A=="
+          "hash": "qvVSK9u3Vc8kxdFjgEAp7Q=="
         }
       },
       "is_incremental": false,
@@ -6732,7 +9713,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineDataProvider.html",
-          "hash": "4MH40E24VWj6TR31CKiClA=="
+          "hash": "6nsthy5N+EH53eU6FEuEvg=="
         }
       },
       "is_incremental": false,
@@ -6768,7 +9749,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.BezierDataProvider.html",
-          "hash": "MbveJS3XJ4u5ovD6DLv7Dw=="
+          "hash": "SWwJDba7O+T2jCk+paEs7g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.BezierInertia.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.BezierInertia.html",
+          "hash": "292bY9Bf+ySvTGZNBy+jRw=="
         }
       },
       "is_incremental": false,
@@ -6780,7 +9773,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.BoundingBox.html",
-          "hash": "ex9X6amR7d/F3VMSnKUyfA=="
+          "hash": "TmtDirxJn5g0+34MyvrC/g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.BoundingBoxHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.BoundingBoxHelper.html",
+          "hash": "uHSIjMYxMsRZUa5YgO3CRg=="
         }
       },
       "is_incremental": false,
@@ -6805,18 +9810,6 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.CameraCache.html",
           "hash": "8b4RDcXu6xtWKCLreiRF0g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.CanvasUtility.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.CanvasUtility.html",
-          "hash": "hDjuumh9uWBeVNftfTAEvA=="
         }
       },
       "is_incremental": false,
@@ -6896,11 +9889,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.ControllerElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ControllerElement.html",
+          "hash": "snN+DsKMgvzQva4TGTiQmg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.CreateProfileMenuItemIndices.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.CreateProfileMenuItemIndices.html",
-          "hash": "cz9j68FHaTPcyUOdgkyhHw=="
+          "hash": "tcZln/cqSnubX6SYJbVspQ=="
         }
       },
       "is_incremental": false,
@@ -6985,18 +9990,6 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.BezierDataProviderInspector.html",
           "hash": "1vFQCllMFgQ/Uk8iZVUJGQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.CanvasEditorExtension.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.CanvasEditorExtension.html",
-          "hash": "a1YjBNV/k9lyPuhUaeAPYA=="
         }
       },
       "is_incremental": false,
@@ -7440,7 +10433,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.html",
-          "hash": "SmTw3FWHkCD/Veip5JQJ0A=="
+          "hash": "BNEjHToT7x1Kwp0rYfQHMQ=="
         }
       },
       "is_incremental": false,
@@ -7452,7 +10445,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.EllipseLineDataProvider.html",
-          "hash": "heB+4i+X7+wpFDymBKbY8Q=="
+          "hash": "Pps7zRZKjrE7XnSeNHMOow=="
         }
       },
       "is_incremental": false,
@@ -8364,7 +11357,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ParabolaConstrainedLineDataProvider.html",
-          "hash": "WntMbJS+c2v+1JKxRzslDA=="
+          "hash": "iiVXODzfYFfaOz2Mp6ZCsQ=="
         }
       },
       "is_incremental": false,
@@ -8376,7 +11369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ParabolaLineDataProvider.html",
-          "hash": "pSrbm75DRC9TrMIx1VwE5A=="
+          "hash": "iC9GJphflBpld020z0P8gg=="
         }
       },
       "is_incremental": false,
@@ -8388,7 +11381,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ParabolaPhysicalLineDataProvider.html",
-          "hash": "H6/N9x/8cGFX6LyZunLmiA=="
+          "hash": "dpBAMwbbW8J8h8aKmYlWQQ=="
         }
       },
       "is_incremental": false,
@@ -8444,6 +11437,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.ProximityLight.LightSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ProximityLight.LightSettings.html",
+          "hash": "tJEjE0fNm6b3OivzzSARvw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.ProximityLight.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ProximityLight.html",
+          "hash": "gnEtzF+MR2rPkApbws3NAw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.QuaternionSmoothed.yml",
       "output": {
         ".html": {
@@ -8484,7 +11501,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.RectangleLineDataProvider.html",
-          "hash": "KweWrWN/V2tFkH7AivmbJw=="
+          "hash": "Cojyldkh+zOCYoLftZyrBQ=="
         }
       },
       "is_incremental": false,
@@ -8556,7 +11573,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.SimpleLineDataProvider.html",
-          "hash": "NieorfZG8MOyPt4nxAZZUQ=="
+          "hash": "HpUHn9EwRLpxCWyh7OuCHQ=="
         }
       },
       "is_incremental": false,
@@ -8676,7 +11693,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html",
-          "hash": "FpRSD7yZNBPQtbm1jDUymQ=="
+          "hash": "5bZb+VZ0FBn1rchbY0nAMg=="
         }
       },
       "is_incremental": false,
@@ -8712,7 +11729,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.SplineDataProvider.html",
-          "hash": "LhRbUwGG04vMNEc2AYfZTA=="
+          "hash": "R1wOvmhqmj3NXyfi6E9Tig=="
         }
       },
       "is_incremental": false,
@@ -8792,11 +11809,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.TrackedHandJoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.TrackedHandJoint.html",
+          "hash": "8Gh5lJrHBcsbGGLCYp3KkA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html",
-          "hash": "jQ/BXIMYfgNE6qP/+yl2Fw=="
+          "hash": "WcjDECysde2soefFPgAQ4Q=="
         }
       },
       "is_incremental": false,
@@ -8868,7 +11897,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.html",
-          "hash": "wXL1vhDsGcWsVV/jrOW5rw=="
+          "hash": "yQPQIyyZF+WJc44AVpj7Ng=="
         }
       },
       "is_incremental": false,
@@ -8916,7 +11945,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.html",
-          "hash": "8g302L1wfZ/rABli56SxTA=="
+          "hash": "tfCQm82qteYgJHBQpSzHsg=="
         }
       },
       "is_incremental": false,
@@ -8940,7 +11969,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider.html",
-          "hash": "OxF/a9cESww0WujKmn5Xzg=="
+          "hash": "16WBkXgFGpD7A4DxVZ3hNQ=="
         }
       },
       "is_incremental": false,
@@ -9284,11 +12313,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand.html",
+          "hash": "z1UewmjOK6Kgc9E2t051Dw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController.html",
-          "hash": "39pp/dDe50OWFjwAc+pWww=="
+          "hash": "v8pMxqEHzYgcz4KJwEK6Fw=="
         }
       },
       "is_incremental": false,
@@ -9300,7 +12341,43 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager.html",
-          "hash": "wMdyO0p/ONMCATrdUMmM7w=="
+          "hash": "/EeFs5F4PwGcjkE5I4XzWA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityEyeGazeDataProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityEyeGazeDataProvider.html",
+          "hash": "Mbam77LonM7/zRr5+S3KMQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand.html",
+          "hash": "u59UbPmB5SRsYPC8cBdlDQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityUtilities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityUtilities.html",
+          "hash": "S1rRdF4+ABvKVodgehXYSg=="
         }
       },
       "is_incremental": false,
@@ -9312,7 +12389,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.html",
-          "hash": "azuNrWTdMSRvn7Q7Mkjx7w=="
+          "hash": "3hhC/bHDWUgnMTKVBv6BJQ=="
         }
       },
       "is_incremental": false,
@@ -9348,7 +12425,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.html",
-          "hash": "EJBNunIXLlzMKxl+gk5lvw=="
+          "hash": "JfKzJmZ+ComQ2ybKuE/dsg=="
         }
       },
       "is_incremental": false,
@@ -9360,7 +12437,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "nIXA9oka7AVZywMbF2/Vyg=="
+          "hash": "27M9cJLQj+tUbhJ6Say/UQ=="
         }
       },
       "is_incremental": false,
@@ -9412,16 +12489,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 59,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 657,
+          "total_file_count": 69,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -9431,11 +12509,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 828,
           "skipped_file_count": 0
         }
       }

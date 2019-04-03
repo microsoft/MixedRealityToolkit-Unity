@@ -89,6 +89,10 @@
   <div class="markdown level0 summary"><p>Defines a system, feature, or manager to be registered with as a <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService.html">IMixedRealityExtensionService</a> on startup.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceConfiguration.html">IMixedRealityServiceConfiguration</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -115,7 +119,7 @@
   <h5 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceConfiguration_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public struct MixedRealityServiceConfiguration</code></pre>
+public struct MixedRealityServiceConfiguration : IMixedRealityServiceConfiguration</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -304,6 +308,10 @@ public struct MixedRealityServiceConfiguration</code></pre>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceConfiguration.html">IMixedRealityServiceConfiguration</a>
+  </div>
 </article>
           </div>
           

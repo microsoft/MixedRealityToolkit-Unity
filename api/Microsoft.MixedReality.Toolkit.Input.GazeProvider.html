@@ -97,6 +97,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html">IMixedRealityEyeGazeProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityGazeProvider.html">IMixedRealityGazeProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.html">IMixedRealityInputHandler</a></div>
     <div><span class="xref">IEventSystemHandler</span></div>
@@ -111,7 +112,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GazeProvider : InputSystemGlobalListener, IMixedRealityGazeProvider, IMixedRealityInputHandler, IEventSystemHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class GazeProvider : InputSystemGlobalListener, IMixedRealityEyeGazeProvider, IMixedRealityGazeProvider, IMixedRealityInputHandler, IEventSystemHandler</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -509,6 +510,32 @@ If no object is currently being hit, this will use the last hit distance.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_IsEyeGazeValid_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.IsEyeGazeValid*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_IsEyeGazeValid" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.IsEyeGazeValid">IsEyeGazeValid</h4>
+  <div class="markdown level1 summary"><p>Whether eye gaze is valid. It may be invalid due to timeout or lack of tracking hardware or permissions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEyeGazeValid { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_Playspace_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.Playspace*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_Playspace" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.Playspace">Playspace</h4>
   <div class="markdown level1 summary"><p>The transform of the Mixed Reality Playspace</p>
@@ -529,6 +556,58 @@ If no object is currently being hit, this will use the last hit distance.</p>
     <tbody>
       <tr>
         <td><span class="xref">Transform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_Timestamp_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.Timestamp*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_Timestamp" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.Timestamp">Timestamp</h4>
+  <div class="markdown level1 summary"><p>DateTime in UTC when the signal was last updated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime Timestamp { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetime">DateTime</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_UseEyeTracking_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.UseEyeTracking*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_UseEyeTracking" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.UseEyeTracking">UseEyeTracking</h4>
+  <div class="markdown level1 summary"><p>True to provide eye tracking, when available.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UseEyeTracking { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -709,7 +788,47 @@ public void OnPositionInputChanged(InputEventData&lt;Vector2&gt; eventData)</cod
   </div>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_Start">InputSystemGlobalListener.Start()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_UpdateEyeGaze_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.UpdateEyeGaze*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_UpdateEyeGaze_Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeDataProvider_Ray_System_DateTime_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.UpdateEyeGaze(Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider,Ray,System.DateTime)">UpdateEyeGaze(IMixedRealityEyeGazeDataProvider, Ray, DateTime)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateEyeGaze(IMixedRealityEyeGazeDataProvider provider, Ray eyeRay, DateTime timestamp)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider.html">IMixedRealityEyeGazeDataProvider</a></td>
+        <td><span class="parametername">provider</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Ray</span></td>
+        <td><span class="parametername">eyeRay</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetime">DateTime</a></td>
+        <td><span class="parametername">timestamp</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html">IMixedRealityEyeGazeProvider</a>
+  </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityGazeProvider.html">IMixedRealityGazeProvider</a>
   </div>

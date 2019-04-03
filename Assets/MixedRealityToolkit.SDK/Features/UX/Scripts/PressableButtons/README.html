@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>High Level Description | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="High Level Description | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../../../../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../../../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<p>This folder contains the scripts necessary for making Interactable buttons that support Speech, Far Interaction and Near Interaction (Physical hand pressing)</p>
+<h2 id="high-level-description">High Level Description</h2>
+<p>PhysicalButtonMovement is similar to HandInteractionPress.
+It uses External Object Targeting (EOT) to move an Interactable element along a press direction vector.
+PhysicalButtonMovement needs a large BoxCollider on the Ignore Raycast layer (which it sets automatically)
+It tracks the position of both index tip fingers and uses this to move the button as needed.</p>
+<h2 id="states-and-events">States and Events</h2>
+<p>It then calls into a PhysicalPressEventRouter and calls events related to Touch, Press, Unpress (Default Click), and Untouch.</p>
+<ul>
+<li>Touch: When a finger is contacting with the button.</li>
+<li>Press: After the button has been pressed more than a threshhold amount.</li>
+<li>Unpress/Click: When the button has been released while in Press state.</li>
+<li>Untouch: When the finger is no longer touching the button.</li>
+</ul>
+<p>The PhysicalPressEventRouter receives events and sets Interactable's InteractableState accordingly.
+It also calls OnPointerClicked events, allowing for the PhysicalButtonMovement script to trigger Interactable.OnClicked UnityEvents (which speech/far interaction also execute)</p>
+<p>If PhysicalPressEventRouter does not satisfy your use case, you can write your own and utilize it instead.</p>
+<h2 id="touch-button--button-cage">Touch Button &amp; Button Cage</h2>
+<p>Pressable buttons feature a normally invisible mesh called a 'Button Cage' or a 'Button Box'
+This mesh has one direction as the button face (Negative Z).
+This mesh has a button shader applied to it. The shader observes the position of several global positions (assigned in the GlobalShaderProximityAssigner)
+TouchButton triggers the glow splash when the joint positions enter into a collider or meshrenderer's bounds.</p>
+<h2 id="prefabs">Prefabs</h2>
+<p>A Prefab is provide in MRTK.Examples/Demos/HandTracking/Prefabs/PressableButtons.</p>
+<h2 id="physicalbuttonmovement-customization">PhysicalButtonMovement Customization</h2>
+<p>You can customize variables within the PressableButtons, such as the dimensions of the detection box collider.</p>
+<ul>
+<li>PhysicalButtonMovement's box collider can have a variety of dimensions. It usually wants to be several times deeper than the button itself (whose box collider dimensions matter for gaze/far interaction)</li>
+<li>PhysicalButtonMovement's box collider can be larger on the X and Y axes if you want to have a more generous pressable region. This can result in close neighbor buttons getting pressed simultaneously, so be sure to avoid that case.</li>
+<li>PhysicalButtonMovement's Z size controls how deep the user can press before the button is released (a continuous depth press does not trigger a default click). <strong>Be sure to update ButtonSizeRelativeToCollider in PhysicalButtonMovement.cs</strong></li>
+</ul>
+<h2 id="dimensions">Dimensions</h2>
+<p>The sizing of .032 x .032 x .016 Unity units is the default dimensions of a button.
+The default sizing of the EOT Collider is .032 x .032 x .128 Unity units. This gives a decent pressable depth even if a developer adjusts the maximum press depth beyond the default .05 Unity units.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/PressableButtons/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../../styles/main.js"></script>
+  </body>
+</html>

@@ -154,6 +154,32 @@
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_SpeechEventData_Command_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechEventData.Command*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpeechEventData_Command" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechEventData.Command">Command</h4>
+  <div class="markdown level1 summary"><p>The text that was recognized.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SpeechCommands Command { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpeechCommands.html">SpeechCommands</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_SpeechEventData_Confidence_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechEventData.Confidence*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_SpeechEventData_Confidence" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechEventData.Confidence">Confidence</h4>
   <div class="markdown level1 summary"><p>A measure of correct recognition certainty.</p>
@@ -230,44 +256,18 @@
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_SpeechEventData_RecognizedText_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechEventData.RecognizedText*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpeechEventData_RecognizedText" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechEventData.RecognizedText">RecognizedText</h4>
-  <div class="markdown level1 summary"><p>The text that was recognized.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string RecognizedText { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_SpeechEventData_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechEventData.Initialize*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpeechEventData_Initialize_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_Microsoft_MixedReality_Toolkit_Input_MixedRealityInputAction_RecognitionConfidenceLevel_System_TimeSpan_System_DateTime_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechEventData.Initialize(Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,Microsoft.MixedReality.Toolkit.Input.MixedRealityInputAction,RecognitionConfidenceLevel,System.TimeSpan,System.DateTime,System.String)">Initialize(IMixedRealityInputSource, MixedRealityInputAction, RecognitionConfidenceLevel, TimeSpan, DateTime, String)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpeechEventData_Initialize_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_RecognitionConfidenceLevel_System_TimeSpan_System_DateTime_Microsoft_MixedReality_Toolkit_Input_SpeechCommands_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpeechEventData.Initialize(Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,RecognitionConfidenceLevel,System.TimeSpan,System.DateTime,Microsoft.MixedReality.Toolkit.Input.SpeechCommands)">Initialize(IMixedRealityInputSource, RecognitionConfidenceLevel, TimeSpan, DateTime, SpeechCommands)</h4>
   <div class="markdown level1 summary"><p>Populates the event with data.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, string recognizedText)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Initialize(IMixedRealityInputSource inputSource, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SpeechCommands command)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -282,11 +282,6 @@
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html">IMixedRealityInputSource</a></td>
         <td><span class="parametername">inputSource</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputAction.html">MixedRealityInputAction</a></td>
-        <td><span class="parametername">inputAction</span></td>
         <td></td>
       </tr>
       <tr>
@@ -305,8 +300,8 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">recognizedText</span></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpeechCommands.html">SpeechCommands</a></td>
+        <td><span class="parametername">command</span></td>
         <td></td>
       </tr>
     </tbody>

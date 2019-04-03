@@ -103,13 +103,14 @@ Passes state information and input data on to receivers that detect patterns and
     <div><span class="xref">IMixedRealityInputHandler</span></div>
     <div><span class="xref">IMixedRealityPointerHandler</span></div>
     <div><span class="xref">IMixedRealitySpeechHandler</span></div>
+    <div><span class="xref">IMixedRealityTouchHandler</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.html">Microsoft.MixedReality.Toolkit.UI</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_UI_Interactable_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler</code></pre>
+public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler, IMixedRealityTouchHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -1045,6 +1046,31 @@ public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMi
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool HasObservationTargeted { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasPhysicalTouch_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasPhysicalTouch*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasPhysicalTouch" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasPhysicalTouch">HasPhysicalTouch</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasPhysicalTouch { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2334,6 +2360,33 @@ requires isGlobal</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetPhysicalTouch_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetPhysicalTouch*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetPhysicalTouch_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetPhysicalTouch(System.Boolean)">SetPhysicalTouch(Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SetPhysicalTouch(bool touch)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">touch</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetPress_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetPress*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetPress_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetPress(System.Boolean)">SetPress(Boolean)</h4>
   <div class="markdown level1 summary"></div>
@@ -2478,18 +2531,6 @@ requires isGlobal</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual void SetupThemes()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetupVoiceCommand_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetupVoiceCommand*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetupVoiceCommand" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetupVoiceCommand">SetupVoiceCommand()</h4>
-  <div class="markdown level1 summary"><p>Setup voice commands from component VoiceCommand input field
-Supports toggles using a comma to separate keywords, no spaces please</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void SetupVoiceCommand()</code></pre>
   </div>
   
   
@@ -2651,16 +2692,6 @@ Supports toggles using a comma to separate keywords, no spaces please</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_StopVoiceCommand_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.StopVoiceCommand*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_StopVoiceCommand" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.StopVoiceCommand">StopVoiceCommand()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void StopVoiceCommand()</code></pre>
-  </div>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_TryGetInputActions_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TryGetInputActions*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_TryGetInputActions_System_String____" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TryGetInputActions(System.String[]@)">TryGetInputActions(out String[])</h4>
   <div class="markdown level1 summary"></div>
@@ -2737,6 +2768,9 @@ Supports toggles using a comma to separate keywords, no spaces please</p>
   </div>
   <div>
       <span class="xref">IMixedRealitySpeechHandler</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealityTouchHandler</span>
   </div>
 </article>
           </div>

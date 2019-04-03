@@ -94,8 +94,17 @@
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html">TeleportPointer</a></div>
     <div class="level2"><span class="xref">ParabolicTeleportPointer</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMixedRealityTeleportPointer</span></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.IMixedRealityTeleportHandler.html">IMixedRealityTeleportHandler</a></div>
+    <div><span class="xref">IEventSystemHandler</span></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_TeleportRequestRaised">TeleportPointer.TeleportRequestRaised</a>
+    </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_LineColorHotSpot">TeleportPointer.LineColorHotSpot</a>
     </div>
@@ -106,7 +115,22 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_InvalidLayers">TeleportPointer.InvalidLayers</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_GravityDistorter">TeleportPointer.GravityDistorter</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_Start">TeleportPointer.Start()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_OnDisable">TeleportPointer.OnDisable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_isTeleportRequestActive">TeleportPointer.isTeleportRequestActive</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_TeleportSurfaceResult">TeleportPointer.TeleportSurfaceResult</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_TeleportHotSpot">TeleportPointer.TeleportHotSpot</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_GetLineGradient_TeleportSurfaceResult_">TeleportPointer.GetLineGradient(TeleportSurfaceResult)</a>
@@ -118,13 +142,16 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_PointerOrientation">TeleportPointer.PointerOrientation</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_OnPostRaycast">TeleportPointer.OnPostRaycast()</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_OnPostSceneQuery">TeleportPointer.OnPostSceneQuery()</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_OnInputChanged_InputEventData_Vector2__">TeleportPointer.OnInputChanged(InputEventData&lt;Vector2&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_OnTeleportRequest_Microsoft_MixedReality_Toolkit_Teleport_TeleportEventData_">TeleportPointer.OnTeleportRequest(TeleportEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_OnTeleportStarted_Microsoft_MixedReality_Toolkit_Teleport_TeleportEventData_">TeleportPointer.OnTeleportStarted(TeleportEventData)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_OnTeleportCompleted_Microsoft_MixedReality_Toolkit_Teleport_TeleportEventData_">TeleportPointer.OnTeleportCompleted(TeleportEventData)</a>
@@ -137,7 +164,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Teleport_ParabolicTeleportPointer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ParabolicTeleportPointer : TeleportPointer</code></pre>
+    <pre><code class="lang-csharp hljs">public class ParabolicTeleportPointer : TeleportPointer, IMixedRealityTeleportPointer, IMixedRealityTeleportHandler, IEventSystemHandler</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -151,18 +178,20 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override void OnEnable()</code></pre>
   </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_OnEnable">TeleportPointer.OnEnable()</a></div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Teleport_ParabolicTeleportPointer_OnPreRaycast_" data-uid="Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer.OnPreRaycast*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Teleport_ParabolicTeleportPointer_OnPreRaycast" data-uid="Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer.OnPreRaycast">OnPreRaycast()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Teleport_ParabolicTeleportPointer_OnPreSceneQuery_" data-uid="Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer.OnPreSceneQuery*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Teleport_ParabolicTeleportPointer_OnPreSceneQuery" data-uid="Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer.OnPreSceneQuery">OnPreSceneQuery()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnPreRaycast()</code></pre>
+    <pre><code class="lang-csharp hljs">public override void OnPreSceneQuery()</code></pre>
   </div>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_OnPreRaycast">TeleportPointer.OnPreRaycast()</a></div>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html#Microsoft_MixedReality_Toolkit_Teleport_TeleportPointer_OnPreSceneQuery">TeleportPointer.OnPreSceneQuery()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Teleport_ParabolicTeleportPointer_OnValidate_" data-uid="Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer.OnValidate*"></a>
@@ -172,6 +201,16 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override void OnValidate()</code></pre>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealityTeleportPointer</span>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Teleport.IMixedRealityTeleportHandler.html">IMixedRealityTeleportHandler</a>
+  </div>
+  <div>
+      <span class="xref">IEventSystemHandler</span>
   </div>
 </article>
           </div>

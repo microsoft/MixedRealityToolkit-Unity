@@ -96,6 +96,7 @@
     <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html">ControllerPoseSynchronizer</a></div>
     <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html">BaseControllerPointer</a></div>
     <div class="level4"><span class="xref">LinePointer</span></div>
+      <div class="level5"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer.html">ShellHandRayPointer</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -111,12 +112,17 @@
     <div><span class="xref">IEventSystemHandler</span></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a></div>
     <div><span class="xref">IEqualityComparer</span></div>
-    <div><span class="xref">IMixedRealityTeleportHandler</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_DisableCursorOnStart">BaseControllerPointer.DisableCursorOnStart</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_raycastOrigin">BaseControllerPointer.raycastOrigin</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_pointerAction">BaseControllerPointer.pointerAction</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsSelectPressed">BaseControllerPointer.IsSelectPressed</a>
@@ -128,19 +134,10 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsHoldPressed">BaseControllerPointer.IsHoldPressed</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsTeleportRequestActive">BaseControllerPointer.IsTeleportRequestActive</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_PointerDirection">BaseControllerPointer.PointerDirection</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_SetCursor_GameObject_">BaseControllerPointer.SetCursor(GameObject)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Start">BaseControllerPointer.Start()</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnDisable">BaseControllerPointer.OnDisable()</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Controller">BaseControllerPointer.Controller</a>
@@ -161,16 +158,16 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_CursorModifier">BaseControllerPointer.CursorModifier</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_TeleportHotSpot">BaseControllerPointer.TeleportHotSpot</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsInteractionEnabled">BaseControllerPointer.IsInteractionEnabled</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsActive">BaseControllerPointer.IsActive</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsFocusLocked">BaseControllerPointer.IsFocusLocked</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_PointerExtent">BaseControllerPointer.PointerExtent</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_DefaultPointerExtent">BaseControllerPointer.DefaultPointerExtent</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Rays">BaseControllerPointer.Rays</a>
@@ -188,22 +185,16 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_RayStabilizer">BaseControllerPointer.RayStabilizer</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_RaycastMode">BaseControllerPointer.RaycastMode</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_SceneQueryType">BaseControllerPointer.SceneQueryType</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_SphereCastRadius">BaseControllerPointer.SphereCastRadius</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_PointerOrientation">BaseControllerPointer.PointerOrientation</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Position">BaseControllerPointer.Position</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_TryGetPointerPosition_Vector3__">BaseControllerPointer.TryGetPointerPosition(Vector3)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_TryGetPointingRay_Ray__">BaseControllerPointer.TryGetPointingRay(Ray)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_TryGetPointerRotation_Quaternion__">BaseControllerPointer.TryGetPointerRotation(Quaternion)</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Rotation">BaseControllerPointer.Rotation</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Equals_System_Object_">BaseControllerPointer.Equals(Object)</a>
@@ -212,22 +203,13 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_GetHashCode">BaseControllerPointer.GetHashCode()</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnSourceLost_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">BaseControllerPointer.OnSourceLost(SourceStateEventData)</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnInputUp_Microsoft_MixedReality_Toolkit_Input_InputEventData_">BaseControllerPointer.OnInputUp(InputEventData)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnInputDown_Microsoft_MixedReality_Toolkit_Input_InputEventData_">BaseControllerPointer.OnInputDown(InputEventData)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnTeleportRequest_TeleportEventData_">BaseControllerPointer.OnTeleportRequest(TeleportEventData)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnTeleportStarted_TeleportEventData_">BaseControllerPointer.OnTeleportStarted(TeleportEventData)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnTeleportCompleted_TeleportEventData_">BaseControllerPointer.OnTeleportCompleted(TeleportEventData)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnTeleportCanceled_TeleportEventData_">BaseControllerPointer.OnTeleportCanceled(TeleportEventData)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_Handedness">ControllerPoseSynchronizer.Handedness</a>
@@ -249,9 +231,6 @@
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">ControllerPoseSynchronizer.OnSourceDetected(SourceStateEventData)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourceLost_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">ControllerPoseSynchronizer.OnSourceLost(SourceStateEventData)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_Microsoft_MixedReality_Toolkit_TrackingState__">ControllerPoseSynchronizer.OnSourcePoseChanged(SourcePoseEventData&lt;TrackingState&gt;)</a>
@@ -306,7 +285,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_LinePointer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class LinePointer : BaseControllerPointer, IMixedRealityControllerPoseSynchronizer, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealityInputHandler&lt;float&gt;, IMixedRealityInputHandler&lt;Vector2&gt;, IMixedRealityInputHandler&lt;Vector3&gt;, IMixedRealityInputHandler&lt;Quaternion&gt;, IMixedRealityInputHandler&lt;MixedRealityPose&gt;, IEventSystemHandler, IMixedRealityPointer, IEqualityComparer, IMixedRealityTeleportHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class LinePointer : BaseControllerPointer, IMixedRealityControllerPoseSynchronizer, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealityInputHandler&lt;float&gt;, IMixedRealityInputHandler&lt;Vector2&gt;, IMixedRealityInputHandler&lt;Vector3&gt;, IMixedRealityInputHandler&lt;Quaternion&gt;, IMixedRealityInputHandler&lt;MixedRealityPose&gt;, IEventSystemHandler, IMixedRealityPointer, IEqualityComparer</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -458,14 +437,13 @@
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_LinePointer_GravityDistorter_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.GravityDistorter*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_LinePointer_GravityDistorter" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.GravityDistorter">GravityDistorter</h4>
-  <div class="markdown level1 summary"><p>The Gravity Distorter that is affecting the <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineDataProvider.html">BaseMixedRealityLineDataProvider</a> attached to this pointer.</p>
-</div>
+  <a id="Microsoft_MixedReality_Toolkit_Input_LinePointer_IsInteractionEnabled_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.IsInteractionEnabled*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_LinePointer_IsInteractionEnabled" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.IsInteractionEnabled">IsInteractionEnabled</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DistorterGravity GravityDistorter { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool IsInteractionEnabled { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -477,11 +455,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">DistorterGravity</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsInteractionEnabled">BaseControllerPointer.IsInteractionEnabled</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_LinePointer_LineBase_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.LineBase*"></a>
@@ -541,6 +521,18 @@
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnDisable_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnDisable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnDisable" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnDisable">OnDisable()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDisable()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnDisable">BaseControllerPointer.OnDisable()</a></div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnEnable*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnEnable">OnEnable()</h4>
   <div class="markdown level1 summary"></div>
@@ -553,30 +545,30 @@
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnEnable">BaseControllerPointer.OnEnable()</a></div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnPostRaycast_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnPostRaycast*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnPostRaycast" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnPostRaycast">OnPostRaycast()</h4>
-  <div class="markdown level1 summary"><p>Called after all rays have casted.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnPostSceneQuery_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnPostSceneQuery*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnPostSceneQuery" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnPostSceneQuery">OnPostSceneQuery()</h4>
+  <div class="markdown level1 summary"><p>Called after performing the scene query.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnPostRaycast()</code></pre>
+    <pre><code class="lang-csharp hljs">public override void OnPostSceneQuery()</code></pre>
   </div>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnPostRaycast">BaseControllerPointer.OnPostRaycast()</a></div>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnPostSceneQuery">BaseControllerPointer.OnPostSceneQuery()</a></div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnPreRaycast_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnPreRaycast*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnPreRaycast" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnPreRaycast">OnPreRaycast()</h4>
-  <div class="markdown level1 summary"><p>Called before all rays have casted.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnPreSceneQuery_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnPreSceneQuery*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnPreSceneQuery" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnPreSceneQuery">OnPreSceneQuery()</h4>
+  <div class="markdown level1 summary"><p>Called before performing the scene query.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnPreRaycast()</code></pre>
+    <pre><code class="lang-csharp hljs">public override void OnPreSceneQuery()</code></pre>
   </div>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnPreRaycast">BaseControllerPointer.OnPreRaycast()</a></div>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnPreSceneQuery">BaseControllerPointer.OnPreSceneQuery()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_LinePointer_OnValidate_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.OnValidate*"></a>
@@ -587,6 +579,43 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual void OnValidate()</code></pre>
   </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_LinePointer_SetLinePoints_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.SetLinePoints*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_LinePointer_SetLinePoints_Vector3_Vector3_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Input.LinePointer.SetLinePoints(Vector3,Vector3,System.Single)">SetLinePoints(Vector3, Vector3, Single)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void SetLinePoints(Vector3 startPoint, Vector3 endPoint, float distance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">startPoint</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">endPoint</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityControllerPoseSynchronizer.html">IMixedRealityControllerPoseSynchronizer</a>
@@ -623,9 +652,6 @@
   </div>
   <div>
       <span class="xref">IEqualityComparer</span>
-  </div>
-  <div>
-      <span class="xref">IMixedRealityTeleportHandler</span>
   </div>
 </article>
           </div>

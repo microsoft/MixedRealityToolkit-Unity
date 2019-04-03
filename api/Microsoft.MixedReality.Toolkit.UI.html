@@ -90,6 +90,12 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.AppBar.html">AppBar</a></h4>
+      <section><p>Logic for the App Bar. Generates buttons, manages states.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.AppBarButton.html">AppBarButton</a></h4>
+      <section><p>Button class used by AppBar.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Billboard.html">Billboard</a></h4>
       <section><p>The Billboard class implements the behaviors needed to keep a GameObject oriented towards the user.</p>
 </section>
@@ -115,9 +121,21 @@ Like creating a button background using a Cube and ButtonSize. The add another C
 Event if the background changes size, this element will remain 40 pixels smaller.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ButtonBorder.html">ButtonBorder</a></h4>
-      <section><p>Use a Unity primitive Cube or cylinder as a border segment relative to the scale of the AnchorTransform
+      <section><p>Use a Unity primitive cube or cylinder as a border segment relative to the scale of the AnchorTransform
 Use with ButtonSize on the component and the Anchor for consistent results
 Works best when using with ButtonSize, but not required - See ButtonSize for more info.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ButtonCollider.html">ButtonCollider</a></h4>
+      <section><p>Scales the collider on one object relative to the transform's scale of another object</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ButtonLayout.html">ButtonLayout</a></h4>
+      <section><p>Place an object in space relative to another object's scale
+Good for responsive buttons that can stretch and object realign</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ButtonSize.html">ButtonSize</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ButtonSizeOffset.html">ButtonSizeOffset</a></h4>
+      <section><p>Scales an object relative the scale of the AnchorTransform</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver.html">CustomInteractablesReceiver</a></h4>
       <section><p>Example of building a custom receiver that can be loaded as part of the events on the Interactable or
@@ -244,12 +262,20 @@ and their corresponding actual types.</p>
       <section><p>An interaction receiver is simply a component that attached to a list of interactable objects and does something
 based on events from those interactable objects. This is the base abstract class to extend from.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ManipulationEvent.html">ManipulationEvent</a></h4>
+      <section><p>A UnityEvent callback containing a ManipulationEventData payload.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ManipulationEventData.html">ManipulationEventData</a></h4>
+      <section><p>Information associated with a particular manipulation event.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.html">ManipulationHandler</a></h4>
       <section><p>This script allows for an object to be movable, scalable, and rotatable with one or two hands.
 You may also configure the script on only enable certain manipulations. The script works with
-both HoloLens' gesture input and immersive headset's motion controller input.
-See Assets/HoloToolkit-Examples/Input/Readme/README_TwoHandManipulationTest.md
-for instructions on how to use the script.</p>
+both HoloLens' gesture input and immersive headset's motion controller input.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PressableButton.html">PressableButton</a></h4>
+      <section><p>A button that can be pushed via direct touch.
+You can use <a class="xref" href="Microsoft.MixedReality.Toolkit.Examples.Demos.PhysicalPressEventRouter.html">PhysicalPressEventRouter</a> to route these events to <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interactable.html">Interactable</a>.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html">ReceiverBase</a></h4>
       <section><p>The base class for all receivers that attach to Interactables</p>
@@ -268,6 +294,9 @@ Extend this class to build new events or receivers from Interactables</p>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Theme.html">Theme</a></h4>
       <section><p>Theme scriptableObject for loading theme settings</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeEaseSettings.html">ThemeEaseSettings</a></h4>
+      <section><p>Ease settings and cunctionality for themes</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeTarget.html">ThemeTarget</a></h4>
       <section><p>A way to cache some serializes values to pass between buttons and handlers</p>
@@ -302,6 +331,11 @@ Applies its follow settings to the spawned ToolTip's ToolTipConnector component<
       <section><p>Static class providing useful functions for
 finding ToolTip Attach point information.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TouchEvent.html">TouchEvent</a></h4>
+      <section><p>A UnityEvent callback containing a TouchEventData payload.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TouchEventData.html">TouchEventData</a></h4>
+      <section></section>
     <h3 id="structs">Structs
   </h3>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableColorChildrenTheme.BlocksAndRenderer.html">InteractableColorChildrenTheme.BlocksAndRenderer</a></h4>
@@ -333,6 +367,12 @@ finding ToolTip Attach point information.</p>
       <section></section>
     <h3 id="enums">Enums
   </h3>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.AppBar.AppBarDisplayTypeEnum.html">AppBar.AppBarDisplayTypeEnum</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.AppBar.AppBarStateEnum.html">AppBar.AppBarStateEnum</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.AppBar.ButtonTypeEnum.html">AppBar.ButtonTypeEnum</a></h4>
+      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ConnectorFollowType.html">ConnectorFollowType</a></h4>
       <section><p>How does the Tooltip track with its parent object</p>
 </section>
@@ -355,9 +395,19 @@ finding ToolTip Attach point information.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertyValueTypes.html">InteractableThemePropertyValueTypes</a></h4>
       <section><p>Theme property value types used for converting theme values back and forth from serialized objects</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.HandMovementType.html">ManipulationHandler.HandMovementType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.ReleaseBehaviorType.html">ManipulationHandler.ReleaseBehaviorType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.RotateInOneHandType.html">ManipulationHandler.RotateInOneHandType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.TwoHandedManipulation.html">ManipulationHandler.TwoHandedManipulation</a></h4>
+      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBaseMonoBehavior.SearchScopes.html">ReceiverBaseMonoBehavior.SearchScopes</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ShaderPropertyType.html">ShaderPropertyType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeEaseSettings.BasicEaseCurves.html">ThemeEaseSettings.BasicEaseCurves</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ToolTipAttachPoint.html">ToolTipAttachPoint</a></h4>
       <section><p>Used to find a pivot point that is closest to the

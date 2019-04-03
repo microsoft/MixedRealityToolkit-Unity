@@ -94,9 +94,8 @@
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html">BaseService</a></div>
-    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseExtensionService.html">BaseExtensionService</a></div>
-    <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider.html">BaseDataProvider</a></div>
-    <div class="level4"><span class="xref">FocusProvider</span></div>
+    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider.html">BaseDataProvider</a></div>
+    <div class="level3"><span class="xref">FocusProvider</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -104,20 +103,19 @@
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html">IMixedRealitySourceStateHandler</a></div>
     <div><span class="xref">IEventSystemHandler</span></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
-    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService.html">IMixedRealityExtensionService</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider.html#Microsoft_MixedReality_Toolkit_BaseDataProvider_Registrar">BaseDataProvider.Registrar</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider.html#Microsoft_MixedReality_Toolkit_BaseDataProvider_Service">BaseDataProvider.Service</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseExtensionService.html#Microsoft_MixedReality_Toolkit_BaseExtensionService_Registrar">BaseExtensionService.Registrar</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseExtensionService.html#Microsoft_MixedReality_Toolkit_BaseExtensionService_ConfigurationProfile">BaseExtensionService.ConfigurationProfile</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider.html#Microsoft_MixedReality_Toolkit_BaseDataProvider_ConfigurationProfile">BaseDataProvider.ConfigurationProfile</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_DefaultPriority">BaseService.DefaultPriority</a>
@@ -127,6 +125,9 @@
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Enable">BaseService.Enable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_LateUpdate">BaseService.LateUpdate()</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Disable">BaseService.Disable()</a>
@@ -166,7 +167,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider, IMixedRealitySourceStateHandler, IEventSystemHandler, IMixedRealityDataProvider, IMixedRealityExtensionService, IMixedRealityService, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider, IMixedRealitySourceStateHandler, IEventSystemHandler, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -263,34 +264,6 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Name">BaseService.Name</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_OverrideFocusedObject_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.OverrideFocusedObject*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_OverrideFocusedObject" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.OverrideFocusedObject">OverrideFocusedObject</h4>
-  <div class="markdown level1 summary"><p>To tap on a hologram even when not focused on,
-set OverrideFocusedObject to desired game object.
-If it's null, then focused object will be used.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GameObject OverrideFocusedObject { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">GameObject</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_Priority_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.Priority*"></a>
@@ -427,6 +400,49 @@ If it's null, then focused object will be used.</p>
       <tr>
         <td><span class="xref">GameObject</span></td>
         <td><p>Currently Focused Object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_GetPointers_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.GetPointers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_GetPointers__1" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.GetPointers``1">GetPointers&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Provides access to all registered pointers of a specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;T&gt; GetPointers&lt;T&gt;()
+    where T : class, IMixedRealityPointer</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of pointers to request. Use IMixedRealityPointer to access all pointers.</p>
 </td>
       </tr>
     </tbody>
@@ -639,57 +655,6 @@ This method is called once all services have been registered in the Mixed Realit
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_TryGetSpecificPointerGraphicEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.TryGetSpecificPointerGraphicEventData*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_TryGetSpecificPointerGraphicEventData_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_Microsoft_MixedReality_Toolkit_Input_GraphicInputEventData__" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.TryGetSpecificPointerGraphicEventData(Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer,Microsoft.MixedReality.Toolkit.Input.GraphicInputEventData@)">TryGetSpecificPointerGraphicEventData(IMixedRealityPointer, out GraphicInputEventData)</h4>
-  <div class="markdown level1 summary"><p>Get the Graphic Event Data for the specified pointing source.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool TryGetSpecificPointerGraphicEventData(IMixedRealityPointer pointer, out GraphicInputEventData graphicInputEventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a></td>
-        <td><span class="parametername">pointer</span></td>
-        <td><p>The pointer who's graphic event data we're looking for.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.GraphicInputEventData.html">GraphicInputEventData</a></td>
-        <td><span class="parametername">graphicInputEventData</span></td>
-        <td><p>The graphic event data for the specified pointer</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>True, if graphic event data exists.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_UnregisterPointer_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.UnregisterPointer*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_UnregisterPointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.UnregisterPointer(Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer)">UnregisterPointer(IMixedRealityPointer)</h4>
   <div class="markdown level1 summary"><p>Unregisters the pointer with the Focus Manager.</p>
@@ -745,20 +710,6 @@ This method is called once all services have been registered in the Mixed Realit
   </div>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Update">BaseService.Update()</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_UpdateCanvasEventSystems_" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.UpdateCanvasEventSystems*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_UpdateCanvasEventSystems" data-uid="Microsoft.MixedReality.Toolkit.Input.FocusProvider.UpdateCanvasEventSystems">UpdateCanvasEventSystems()</h4>
-  <div class="markdown level1 summary"><p>Helper for assigning world space canvases event cameras.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UpdateCanvasEventSystems()</code></pre>
-  </div>
-  <h5 id="Microsoft_MixedReality_Toolkit_Input_FocusProvider_UpdateCanvasEventSystems_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Warning! Very expensive. Use sparingly at runtime.</p>
-</div>
   <h3 id="eii">Explicit Interface Implementations
   </h3>
   
@@ -799,9 +750,6 @@ This method is called once all services have been registered in the Mixed Realit
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a>
-  </div>
-  <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService.html">IMixedRealityExtensionService</a>
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>

@@ -123,6 +123,9 @@ All replacement systems for providing Input System functionality should derive f
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Update">IMixedRealityService.Update()</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_LateUpdate">IMixedRealityService.LateUpdate()</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Disable">IMixedRealityService.Disable()</a>
     </div>
     <div>
@@ -191,6 +194,32 @@ All replacement systems for providing Input System functionality should derive f
     <tbody>
       <tr>
         <td><span class="xref">HashSet</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html">IMixedRealityInputSource</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_EyeGazeProvider_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.EyeGazeProvider*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_EyeGazeProvider" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.EyeGazeProvider">EyeGazeProvider</h4>
+  <div class="markdown level1 summary"><p>The current Eye Gaze Provider that's been implemented by this Input System.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IMixedRealityEyeGazeProvider EyeGazeProvider { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html">IMixedRealityEyeGazeProvider</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -1140,6 +1169,82 @@ on the game object are given priority to input events before any focused objects
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseHandJointsUpdated_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseHandJointsUpdated*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseHandJointsUpdated_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_Handedness_IDictionary_TrackedHandJoint_MixedRealityPose__" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseHandJointsUpdated(Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,Handedness,IDictionary{TrackedHandJoint,MixedRealityPose})">RaiseHandJointsUpdated(IMixedRealityInputSource, Handedness, IDictionary&lt;TrackedHandJoint, MixedRealityPose&gt;)</h4>
+  <div class="markdown level1 summary"><p>Notify system that articulated hand joint info has been updated</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void RaiseHandJointsUpdated(IMixedRealityInputSource source, Handedness handedness, IDictionary&lt;TrackedHandJoint, MixedRealityPose&gt; jointPoses)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html">IMixedRealityInputSource</a></td>
+        <td><span class="parametername">source</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IDictionary</span>&lt;<span class="xref">TrackedHandJoint</span>, <span class="xref">MixedRealityPose</span>&gt;</td>
+        <td><span class="parametername">jointPoses</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseHandMeshUpdated_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseHandMeshUpdated*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseHandMeshUpdated_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_Handedness_Microsoft_MixedReality_Toolkit_Input_HandMeshInfo_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseHandMeshUpdated(Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,Handedness,Microsoft.MixedReality.Toolkit.Input.HandMeshInfo)">RaiseHandMeshUpdated(IMixedRealityInputSource, Handedness, HandMeshInfo)</h4>
+  <div class="markdown level1 summary"><p>Notify system that articulated hand mesh has been updated</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void RaiseHandMeshUpdated(IMixedRealityInputSource source, Handedness handedness, HandMeshInfo handMeshInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html">IMixedRealityInputSource</a></td>
+        <td><span class="parametername">source</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.HandMeshInfo.html">HandMeshInfo</a></td>
+        <td><span class="parametername">handMeshInfo</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseOnInputDown_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseOnInputDown*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseOnInputDown_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_Handedness_Microsoft_MixedReality_Toolkit_Input_MixedRealityInputAction_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseOnInputDown(Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,Handedness,Microsoft.MixedReality.Toolkit.Input.MixedRealityInputAction)">RaiseOnInputDown(IMixedRealityInputSource, Handedness, MixedRealityInputAction)</h4>
   <div class="markdown level1 summary"><p>Raise the input down event.</p>
@@ -1428,6 +1533,132 @@ on the game object are given priority to input events before any focused objects
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputAction.html">MixedRealityInputAction</a></td>
         <td><span class="parametername">inputAction</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseOnTouchCompleted_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseOnTouchCompleted*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseOnTouchCompleted_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_Microsoft_MixedReality_Toolkit_Input_IMixedRealityController_Handedness_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseOnTouchCompleted(Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,Microsoft.MixedReality.Toolkit.Input.IMixedRealityController,Handedness,Vector3)">RaiseOnTouchCompleted(IMixedRealityInputSource, IMixedRealityController, Handedness, Vector3)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void RaiseOnTouchCompleted(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html">IMixedRealityInputSource</a></td>
+        <td><span class="parametername">source</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html">IMixedRealityController</a></td>
+        <td><span class="parametername">controller</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">touchPoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseOnTouchStarted_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseOnTouchStarted*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseOnTouchStarted_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_Microsoft_MixedReality_Toolkit_Input_IMixedRealityController_Handedness_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseOnTouchStarted(Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,Microsoft.MixedReality.Toolkit.Input.IMixedRealityController,Handedness,Vector3)">RaiseOnTouchStarted(IMixedRealityInputSource, IMixedRealityController, Handedness, Vector3)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void RaiseOnTouchStarted(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html">IMixedRealityInputSource</a></td>
+        <td><span class="parametername">source</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html">IMixedRealityController</a></td>
+        <td><span class="parametername">controller</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">touchPoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseOnTouchUpdated_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseOnTouchUpdated*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseOnTouchUpdated_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_Microsoft_MixedReality_Toolkit_Input_IMixedRealityController_Handedness_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseOnTouchUpdated(Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,Microsoft.MixedReality.Toolkit.Input.IMixedRealityController,Handedness,Vector3)">RaiseOnTouchUpdated(IMixedRealityInputSource, IMixedRealityController, Handedness, Vector3)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void RaiseOnTouchUpdated(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html">IMixedRealityInputSource</a></td>
+        <td><span class="parametername">source</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html">IMixedRealityController</a></td>
+        <td><span class="parametername">controller</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">touchPoint</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -2318,12 +2549,12 @@ void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRe
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseSpeechCommandRecognized_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseSpeechCommandRecognized*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseSpeechCommandRecognized_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_Microsoft_MixedReality_Toolkit_Input_MixedRealityInputAction_RecognitionConfidenceLevel_System_TimeSpan_System_DateTime_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseSpeechCommandRecognized(Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,Microsoft.MixedReality.Toolkit.Input.MixedRealityInputAction,RecognitionConfidenceLevel,System.TimeSpan,System.DateTime,System.String)">RaiseSpeechCommandRecognized(IMixedRealityInputSource, MixedRealityInputAction, RecognitionConfidenceLevel, TimeSpan, DateTime, String)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RaiseSpeechCommandRecognized_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_RecognitionConfidenceLevel_System_TimeSpan_System_DateTime_Microsoft_MixedReality_Toolkit_Input_SpeechCommands_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RaiseSpeechCommandRecognized(Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,RecognitionConfidenceLevel,System.TimeSpan,System.DateTime,Microsoft.MixedReality.Toolkit.Input.SpeechCommands)">RaiseSpeechCommandRecognized(IMixedRealityInputSource, RecognitionConfidenceLevel, TimeSpan, DateTime, SpeechCommands)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, MixedRealityInputAction inputAction, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, string text)</code></pre>
+    <pre><code class="lang-csharp hljs">void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SpeechCommands command)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2338,11 +2569,6 @@ void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRe
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html">IMixedRealityInputSource</a></td>
         <td><span class="parametername">source</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputAction.html">MixedRealityInputAction</a></td>
-        <td><span class="parametername">inputAction</span></td>
         <td></td>
       </tr>
       <tr>
@@ -2361,8 +2587,8 @@ void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRe
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">text</span></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpeechCommands.html">SpeechCommands</a></td>
+        <td><span class="parametername">command</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -2370,12 +2596,12 @@ void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRe
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RequestNewGenericInputSource_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RequestNewGenericInputSource*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RequestNewGenericInputSource_System_String_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer___" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RequestNewGenericInputSource(System.String,Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer[])">RequestNewGenericInputSource(String, IMixedRealityPointer[])</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSystem_RequestNewGenericInputSource_System_String_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer___Microsoft_MixedReality_Toolkit_Input_InputSourceType_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.RequestNewGenericInputSource(System.String,Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer[],Microsoft.MixedReality.Toolkit.Input.InputSourceType)">RequestNewGenericInputSource(String, IMixedRealityPointer[], InputSourceType)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null)</code></pre>
+    <pre><code class="lang-csharp hljs">IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2395,6 +2621,11 @@ void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRe
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a>[]</td>
         <td><span class="parametername">pointers</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSourceType.html">InputSourceType</a></td>
+        <td><span class="parametername">sourceType</span></td>
         <td></td>
       </tr>
     </tbody>

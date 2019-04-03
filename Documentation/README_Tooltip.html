@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Tooltip | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Tooltip | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="tooltip">Tooltip</h1>
+
+<p><img src="/External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png" alt="Tooltip">
+This example scene demonstrates an implementation of the ToolTip user interface element. Tooltips are usually used to convey a hint or extra information upon closer inspection of an object. ToolTip can be used to explain button inputs on the motion controllers or to label objects in the physical environment.</p>
+<h2 id="demo-video">Demo Video</h2>
+<p>The <a href="https://gfycat.com/WarmOblongBilby">example scene</a> demonstrates two ways to display a Tooltip on an object.</p>
+<h2 id="script-files">Script files</h2>
+<p><a href="/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips">/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips</a></p>
+<h2 id="prefabs">Prefabs</h2>
+<p><a href="/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips">/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips</a></p>
+<h2 id="example-scene">Example Scene</h2>
+<p><a href="/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes">/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes</a></p>
+<img src="/External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png" width="600">
+<p>In the scene file, you will be able to find various examples of ToolTip. First group on the left demonstrates the static ToolTip examples that are always visible. In the center, you can see the example of using multiple ToolTips on a single object. Each tooltip has different child object as a target object which works as an anchor. The group on the right shows the examples of dynamically spawning ToolTips.</p>
+<h2 id="directly-adding-to-the-scene-and-attaching-to-an-object">Directly adding to the scene and attaching to an object</h2>
+<p>A ToolTip can be added directly to the Hierarchy and targeted to an object. To use this method:</p>
+<ul>
+<li>Add a GameObject and a <strong>ToolTip prefab</strong> object to the Scene Hierarchy.</li>
+<li>In the ToolTip prefab's Inspector panel, expand the Tool Tip (Script). Select a TipState and set other settings.</li>
+<li>Enter the ToolTip text in the Text field.</li>
+<li>Expand the ToolTipConnector (Script). Drag the object that is to have the ToolTip from the Hierarchy into the field labelled Target. This attaches the ToolToolTip connector to the object.</li>
+</ul>
+<p>This use of ToolTip assumes a ToolTip that is always showing or that is shown/hid in script by changing the TipState property of the ToolTip component.</p>
+<h2 id="dynamically-spawning">Dynamically spawning</h2>
+<p>A ToolTip can be dynamically added to an object at runtime as well as pre-set to show and hide on a Tap or focus. Simply add the <strong>ToolTipSpawner</strong> script to any GameObject. In the script's Inspector, you can set delays for appearing and disappearing. You can also set a lifetime so that the ToolTip when spawned, will disappear after a duration. You can also set style properties such as Background in the ToolTipSpawner script. By default the ToolTip will be anchored to the object with the ToolTipSpawner script. You can override this by assigning a GameObject to the Anchor field.</p>
+<h2 id="motion-controller-tooltips">Motion controller Tooltips</h2>
+<p>The scene also includes two tooltip groups on the bottom. These ToolTips are layed out to match position of the buttons on the motion controllers. When motion controllers are detected, these ToolTips will be attached automatically to the controllers, using <a href="/Assets/MixedRealityToolkit.SDK/Features/Utilities/Solvers/AttachToController.cs"><code>AttachToController</code></a> script.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_Tooltip.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
