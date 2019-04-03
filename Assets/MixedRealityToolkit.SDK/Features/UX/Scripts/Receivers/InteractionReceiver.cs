@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (IsInteractable(eventData.selectedObject))
             {
-                InputPressed(eventData.selectedObject, eventData);
+                FloatInputChanged(eventData.selectedObject, eventData);
             }
         }
 
@@ -381,11 +381,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected virtual void InputUp(GameObject targetObject, InputEventData eventData) { }
 
         /// <summary>
-        /// Raised when the target interactable object receives an input pressed event.
+        /// Raised when the target interactable object receives a float input changed event.
         /// </summary>
         /// <param name="targetObject"></param>
         /// <param name="eventData"></param>
-        protected virtual void InputPressed(GameObject targetObject, InputEventData<float> eventData) { }
+        protected virtual void FloatInputChanged(GameObject targetObject, InputEventData<float> eventData) { }
 
         /// <summary>
         /// Raised when the target interactable object receives an input changed event.

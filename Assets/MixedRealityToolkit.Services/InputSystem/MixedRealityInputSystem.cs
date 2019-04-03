@@ -989,65 +989,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion Input Down
 
-        #region Input Pressed
-
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler<float>> OnInputPressedEventHandler =
-            delegate (IMixedRealityInputHandler<float> handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<InputEventData<float>>(eventData);
-                handler.OnInputChanged(casted);
-            };
-
-        /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
-        {
-            inputAction = ProcessRules(inputAction, true);
-
-            // Create input event
-            floatInputEventData.Initialize(source, inputAction);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(floatInputEventData, OnInputPressedEventHandler);
-        }
-
-        /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
-        {
-            inputAction = ProcessRules(inputAction, true);
-
-            // Create input event
-            floatInputEventData.Initialize(source, handedness, inputAction);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(floatInputEventData, OnInputPressedEventHandler);
-        }
-
-        /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction, float pressAmount)
-        {
-            inputAction = ProcessRules(inputAction, pressAmount);
-
-            // Create input event
-            floatInputEventData.Initialize(source, inputAction, pressAmount);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(floatInputEventData, OnInputPressedEventHandler);
-        }
-
-        /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, float pressAmount)
-        {
-            inputAction = ProcessRules(inputAction, pressAmount);
-
-            // Create input event
-            floatInputEventData.Initialize(source, handedness, inputAction, pressAmount);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(floatInputEventData, OnInputPressedEventHandler);
-        }
-
-        #endregion Input Pressed
-
         #region Input Up
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler> OnInputUpEventHandler =
@@ -1082,6 +1023,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion Input Up
+
+        #region Float Input Changed
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler<float>> OnFloatInputChanged =
+            delegate (IMixedRealityInputHandler<float> handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<float>>(eventData);
+                handler.OnInputChanged(casted);
+            };
+
+        /// <inheritdoc />
+        public void RaiseFloatInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, float inputValue)
+        {
+            inputAction = ProcessRules(inputAction, inputValue);
+
+            // Create input event
+            floatInputEventData.Initialize(source, inputAction, inputValue);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(floatInputEventData, OnFloatInputChanged);
+        }
+
+        /// <inheritdoc />
+        public void RaiseFloatInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, float inputValue)
+        {
+            inputAction = ProcessRules(inputAction, inputValue);
+
+            // Create input event
+            floatInputEventData.Initialize(source, handedness, inputAction, inputValue);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(floatInputEventData, OnFloatInputChanged);
+        }
+
+        #endregion Float Input Changed
 
         #region Input Position Changed
 

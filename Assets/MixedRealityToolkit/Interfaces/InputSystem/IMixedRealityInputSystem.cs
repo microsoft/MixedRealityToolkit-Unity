@@ -306,42 +306,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion Input Down
 
-        #region Input Pressed
-
-        /// <summary>
-        /// Raise Input Pressed.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// Raise Input Pressed.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
-
-        /// <summary>
-        /// Raise Input Pressed.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction, float pressAmount);
-
-        /// <summary>
-        /// Raise Input Pressed.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, float pressAmount);
-
-        #endregion Input Pressed
-
         #region Input Up
 
         /// <summary>
@@ -360,6 +324,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
 
         #endregion Input Up
+
+        #region Float Input Changed
+
+        /// <summary>
+        /// Raise Float Input Changed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="inputAction"></param>
+        /// <param name="inputValue"></param>
+        void RaiseFloatInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, float inputValue);
+
+        /// <summary>
+        /// Raise Float Input Changed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="handedness"></param>
+        /// <param name="inputAction"></param>
+        /// <param name="inputValue"></param>
+        void RaiseFloatInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, float inputValue);
+
+        #endregion Float Input Changed
 
         #region Input Position Changed
 
