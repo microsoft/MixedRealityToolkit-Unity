@@ -347,7 +347,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitPanning: 1
-  handZoomEnabledOnStartup: 0
   RectTransfToNavigate: {fileID: 127185898}
   RefToViewPort: {fileID: 1554205715}
   AutoGazeScrollIsActive: 1
@@ -365,6 +364,7 @@ MonoBehaviour:
     id: 9
     description: Manipulate Action
     axisConstraint: 0
+  Zoom_GestureEnabledOnStartup: 0
 --- !u!114 &6659677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2041,7 +2041,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitPanning: 1
-  handZoomEnabledOnStartup: 0
   DefaultAspectRatio: 1
   TextureRendererToBeScrolled: {fileID: 151708624}
   AutoGazeScrollIsActive: 1
@@ -5744,7 +5743,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitPanning: 0
-  handZoomEnabledOnStartup: 1
   DefaultAspectRatio: 0.5
   RendererOfTextureToBeNavigated: {fileID: 1198226481}
   Zoom_Acceleration: 10
@@ -5756,12 +5754,13 @@ MonoBehaviour:
     id: 9
     description: Manipulate Action
     axisConstraint: 0
+  Zoom_GestureEnabledOnStartup: 1
   Pan_AutoScrollIsActive: 1
   Pan_Speed_x: 0.3
   Pan_Speed_y: 0.3
   Pan_MinDistFromCenter: {x: 0.2, y: 0.2}
   UseSkimProofing: 1
-  SkimProofUpdateSpeed: 8.5
+  SkimProofUpdateSpeed: 5
 --- !u!114 &1198226478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6855,7 +6854,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitPanning: 1
-  handZoomEnabledOnStartup: 0
   RectTransfToNavigate: {fileID: 1852894734}
   RefToViewPort: {fileID: 1295463316}
   AutoGazeScrollIsActive: 1
@@ -6863,9 +6861,7 @@ MonoBehaviour:
   ScrollSpeed_y: 0.3
   MinDistFromCenterForAutoScroll: {x: 0.2, y: 0.2}
   UseSkimProofing: 1
-  SkimProofUpdateSpeed: 8
-  contentSizeFitter: {fileID: 1852894737}
-  aspectRatioFitter: {fileID: 0}
+  SkimProofUpdateSpeed: 5
   CustomStartPos: {x: 0, y: 0}
 --- !u!114 &1380263302
 MonoBehaviour:
@@ -9993,7 +9989,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitPanning: 1
-  handZoomEnabledOnStartup: 0
   RectTransfToNavigate: {fileID: 1465011397}
   RefToViewPort: {fileID: 240345431}
   AutoGazeScrollIsActive: 1
@@ -10002,8 +9997,6 @@ MonoBehaviour:
   MinDistFromCenterForAutoScroll: {x: 0.2, y: 0.2}
   UseSkimProofing: 1
   SkimProofUpdateSpeed: 5
-  contentSizeFitter: {fileID: 0}
-  aspectRatioFitter: {fileID: 0}
   CustomStartPos: {x: 0, y: 0}
 --- !u!114 &2086128682
 MonoBehaviour:
@@ -10076,7 +10069,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitPanning: 1
-  handZoomEnabledOnStartup: 0
   RectTransfToNavigate: {fileID: 1465011397}
   RefToViewPort: {fileID: 0}
   AutoGazeScrollIsActive: 1
@@ -10094,3 +10086,4 @@ MonoBehaviour:
     id: 9
     description: Manipulate Action
     axisConstraint: 0
+  Zoom_GestureEnabledOnStartup: 0

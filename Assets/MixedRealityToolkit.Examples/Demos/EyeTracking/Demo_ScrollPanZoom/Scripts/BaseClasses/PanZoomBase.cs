@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private Vector3 navPos = Vector3.zero;
         private bool isFocused = false;
         internal bool isZooming = false;
-        public bool handZoomEnabledOnStartup = false;
+        internal bool ZoomGestureEnabledOnStartup = false;
         private bool handZoomEnabled = false;
 
         protected Vector3 originalRatio;
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             // Init children
             Initialize();
-            handZoomEnabled = handZoomEnabledOnStartup;
+            handZoomEnabled = ZoomGestureEnabledOnStartup;
             Initialize();
 
             // Init eye tracking target

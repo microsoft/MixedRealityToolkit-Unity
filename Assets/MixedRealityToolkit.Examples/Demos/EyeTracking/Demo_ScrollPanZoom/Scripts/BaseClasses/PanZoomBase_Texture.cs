@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
         }
 
+        [Tooltip("Underlying aspect ratio of the loaded texture to correctly determine scaling.")]
         [SerializeField]
         private float DefaultAspectRatio = 1.0f;
 

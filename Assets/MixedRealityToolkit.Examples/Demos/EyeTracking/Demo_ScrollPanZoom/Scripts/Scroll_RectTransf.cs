@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
@@ -50,13 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         // To allow to keep the speed values that users can assign consistent, let's internally convert the values.
         private float convertSpeedToUVSpace = -200.0f;
 
+        [Tooltip("Custom anchor start position.")]
         [SerializeField]
-        private ContentSizeFitter contentSizeFitter;
-
-        [SerializeField]
-        private AspectRatioFitter aspectRatioFitter;
-
-        private Vector2 lastUpdatedScrollExtent = new Vector2(-1, -1);
         public Vector2 CustomStartPos;
 
         protected override void Start()

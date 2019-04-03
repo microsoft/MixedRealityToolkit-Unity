@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
@@ -10,7 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// This script allows to scroll a texture both horizontally and vertically.
     /// </summary>
-    [RequireComponent(typeof(EyeTrackingTarget))]
     public class PanZoom_Texture : PanZoomBase_Texture
     {
         [Tooltip("Referenced renderer of the texture to be navigated.")]
@@ -41,6 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [Tooltip("Type of hand gesture to use to zoom in/out.")]
         [SerializeField]
         private MixedRealityInputAction Zoom_Gesture = MixedRealityInputAction.None;
+
+        [Tooltip("Enable or disable hand gestures for zooming on startup.")]
+        [SerializeField]
+        private bool Zoom_GestureEnabledOnStartup = false;
 
         // Pan
         [Tooltip("Ability to scroll using your eye gaze without any additional input (e.g., air tap or button presses).")]
@@ -78,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             ZoomMinScale = Zoom_MinScale;
             ZoomMaxScale = Zoom_MaxScale;
             ZoomGesture = Zoom_Gesture;
+            ZoomGestureEnabledOnStartup = Zoom_GestureEnabledOnStartup;
             timeInSecondsToZoom = Zoom_TimeInSecToZoom;
 
             AutoGazePanIsActive = Pan_AutoScrollIsActive;

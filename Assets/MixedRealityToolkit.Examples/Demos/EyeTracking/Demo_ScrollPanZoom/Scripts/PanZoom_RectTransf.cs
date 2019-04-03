@@ -70,6 +70,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         private MixedRealityInputAction Zoom_Gesture = MixedRealityInputAction.None;
 
+        [Tooltip("Enable or disable hand gestures for zooming on startup.")]
+        [SerializeField]
+        private bool Zoom_GestureEnabledOnStartup = false;
+
         // The base PanAndZoom class can also be used with UV textures for which the dimensions are different to a RectTransform.
         // To allow to keep the speed values that users can assign consistent, let's internally convert the values.
         private float convertSpeedToUVSpace = -200.0f;
@@ -96,6 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             ZoomMinScale = Zoom_MinScale;
             ZoomMaxScale = Zoom_MaxScale;
             ZoomGesture = Zoom_Gesture;
+            ZoomGestureEnabledOnStartup = Zoom_GestureEnabledOnStartup;
             timeInSecondsToZoom = Zoom_TimeInSecToZoom;
 
             base.Start();
