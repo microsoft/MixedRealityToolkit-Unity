@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Utilities
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// The BoundingBoxHelper class contains functions for getting geometric info from the non-axis-aligned 

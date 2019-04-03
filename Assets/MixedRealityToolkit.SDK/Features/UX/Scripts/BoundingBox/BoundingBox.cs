@@ -8,7 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
 
-namespace Microsoft.MixedReality.Toolkit.Utilities
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class BoundingBox : BaseFocusHandler,
         IMixedRealityPointerHandler,
