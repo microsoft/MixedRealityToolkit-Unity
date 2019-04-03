@@ -113,7 +113,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
             try
             {
+#if WINDOWS_UWP
                 if (!UnityEngine.Windows.File.Exists(filename))
+#else
+                if (!System.IO.File.Exists(filename))
+#endif
                 {
                     txt_LoadingUpdate.text += "Error: Playback log file does not exist! ->>   " + filename + "   <<";
                     Log(("Error: Playback log file does not exist! ->" + filename + "<"));
@@ -271,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
 #if UNITY_EDITOR
                 Load();
-#else
+#elif WINDOWS_UWP
                 txt_LoadingUpdate.text = "[Load.2] " + FileName;
                 bool result = AsyncHelpers.RunSync<bool>(() => UWP_Load());
                 txt_LoadingUpdate.text = "[Load.2] Done. ";
