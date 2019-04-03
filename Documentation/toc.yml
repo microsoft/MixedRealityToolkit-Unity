@@ -1,8 +1,6 @@
-﻿- name: About MRTK
+- name: About MRTK
   items:
-  - name: MRTK-SDK
-    href: ../MRTK-SDK.md
-  - name: MRTK-vNext
+  - name: MRTK v2
     href: ../MRTK-vNext.md
   - name: Mixed Reality Services
     href: ../External/Documentation/MixedRealityServices.md
@@ -63,8 +61,11 @@
         href: README_Tooltip.md  
       - name: Solvers
         href: README_Solver.md     
-    - name: Spatial Mapping
-      href: TODO.md
+    - name: Spatial Awareness
+      href: SpatialAwareness/SpatialAwarenessGettingStarted.md
+      items:
+      - name: Configuring the Spatial Awareness Mesh Observer
+        href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
     - name: In-Editor Input Simulation
       href: TODO.md
     - name: Performance Diagnostic Tool
@@ -98,8 +99,6 @@
     href: DevDocGuide.md
 - name: Planning
   items:
-  - name: MRTK-WorkRoadmap
-    href: ../MRTK-WorkRoadmap.md
   - name: Roadmap
     href: ../Roadmap.md
 - name: Notice
