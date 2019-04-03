@@ -4,7 +4,7 @@
 
 MRTK is a Microsoft Driven opensource project. 
 
-MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity. Latest Release of MRTK (V2) supports HoloLens/HoloLens 2, WMR, and OpenVR platform. Start your project with MRTK, and 
+MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity. Latest Release of MRTK (V2) supports HoloLens/HoloLens 2, WMR, and OpenVR platform.
 
 # What's MRTK-Unity good for 
  
