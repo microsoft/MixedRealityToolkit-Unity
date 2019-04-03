@@ -64,7 +64,7 @@ Specifies whether or not the mesh observer will recalculate the normals of the m
 
 ## Level of Detail Settings
 
-<!-- ![Mesh Observer Level of Detail Settings](../../External/ReadMeImages/MeshObserverLevelOfDetailSettings.png) -->
+![Mesh Observer Level of Detail Settings](../../External/ReadMeImages/SpatialAwareness/MeshObserverLevelOfDetailSettings.png)
 
 ### Level of Detail
 
@@ -84,7 +84,7 @@ When using the custom [Level of Detail](#level-of-detail), specifies the request
 
 ## Display Settings
 
-<!-- ![Mesh Observer Display Settings](../../External/ReadMeImages/MeshObserverDisplaySettings.png) -->
+![Mesh Observer Display Settings](../../External/ReadMeImages/SpatialAwareness/MeshObserverDisplaySettings.png)
 
 *Mesh Observer Display Settings*
 
