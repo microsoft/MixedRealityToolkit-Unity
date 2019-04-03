@@ -1034,7 +1034,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             };
 
         /// <inheritdoc />
-        void RaiseFloatInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, float inputValue)
+        public void RaiseFloatInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, float inputValue)
         {
             inputAction = ProcessRules(inputAction, inputValue);
 
@@ -1046,7 +1046,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        void RaiseFloatInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, float inputValue)
+        public void RaiseFloatInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, float inputValue)
         {
             inputAction = ProcessRules(inputAction, inputValue);
 
