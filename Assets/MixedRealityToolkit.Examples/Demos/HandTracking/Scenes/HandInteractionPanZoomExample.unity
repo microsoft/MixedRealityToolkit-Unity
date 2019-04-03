@@ -218,18 +218,18 @@ MonoBehaviour:
   focusEnabled: 1
   isEnabled: 1
   enableZoom: 1
-  panEventReceivers:
-  - {fileID: 663059241}
   lockHorizontal: 0
   lockVertical: 0
   wrapTexture: 1
   velocityActive: 1
-  velocityDamping: {x: 0.999, y: 0.999}
-  debugText: {fileID: 471121398}
+  velocityDampingX: 80
+  velocityDampingY: 80
+  panZoomSmoothing: 57.4
+  panEventReceivers:
+  - {fileID: 663059241}
   reticle: {fileID: 228203322}
   leftPoint: {fileID: 1036401408}
   rightPoint: {fileID: 870499135}
-  panZoomSmoothing: 57.4
 --- !u!64 &80106497
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -322,7 +322,7 @@ MonoBehaviour:
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 1, y: 1}
-  collider: {fileID: 80106497}
+  touchableCollider: {fileID: 80106497}
 --- !u!65 &80106502
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -512,7 +512,7 @@ MonoBehaviour:
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 1, y: 1}
-  collider: {fileID: 321658867}
+  touchableCollider: {fileID: 321658867}
 --- !u!114 &321658865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,18 +528,17 @@ MonoBehaviour:
   focusEnabled: 1
   isEnabled: 1
   enableZoom: 0
-  panEventReceivers:
-  - {fileID: 663059241}
   lockHorizontal: 0
   lockVertical: 0
   wrapTexture: 1
   velocityActive: 1
-  velocityDamping: {x: 0.999, y: 0.999}
-  debugText: {fileID: 883521361}
+  velocityDampingX: 90
+  velocityDampingY: 90
+  panZoomSmoothing: 95.2
+  panEventReceivers: []
   reticle: {fileID: 228203322}
   leftPoint: {fileID: 1036401408}
   rightPoint: {fileID: 870499135}
-  panZoomSmoothing: 95.2
 --- !u!65 &321658866
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -758,7 +757,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 497356534}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.098, y: 0.19, z: 2.579}
+  m_LocalPosition: {x: 0.098, y: 0.19, z: 3.381}
   m_LocalScale: {x: 0.4815, y: 0.4815, z: 0.4815}
   m_Children:
   - {fileID: 80106500}
@@ -1343,6 +1342,7 @@ MonoBehaviour:
   gazeTransform: {fileID: 0}
   minHeadVelocityThreshold: 0.5
   maxHeadVelocityThreshold: 2
+  preferEyeTracking: 0
 --- !u!114 &1140877734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1355,6 +1355,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a21b486d0bb44444b1418aaa38b44de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!114 &1140877735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1475,7 +1482,7 @@ MonoBehaviour:
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 1, y: 1}
-  collider: {fileID: 1564430535}
+  touchableCollider: {fileID: 1564430535}
 --- !u!114 &1564430533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1491,17 +1498,17 @@ MonoBehaviour:
   focusEnabled: 1
   isEnabled: 1
   enableZoom: 1
-  panEventReceivers: []
   lockHorizontal: 0
   lockVertical: 0
   wrapTexture: 1
   velocityActive: 1
-  velocityDamping: {x: 0.9, y: 0.9}
-  debugText: {fileID: 649754907}
+  velocityDampingX: 90
+  velocityDampingY: 90
+  panZoomSmoothing: 92.6
+  panEventReceivers: []
   reticle: {fileID: 228203322}
   leftPoint: {fileID: 1036401408}
   rightPoint: {fileID: 870499135}
-  panZoomSmoothing: 92.6
 --- !u!65 &1564430534
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1629,7 +1636,7 @@ MonoBehaviour:
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 1, y: 1}
-  collider: {fileID: 2129217976}
+  touchableCollider: {fileID: 2129217976}
 --- !u!114 &2129217974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1645,18 +1652,17 @@ MonoBehaviour:
   focusEnabled: 1
   isEnabled: 1
   enableZoom: 1
-  panEventReceivers:
-  - {fileID: 663059241}
   lockHorizontal: 0
   lockVertical: 0
   wrapTexture: 1
   velocityActive: 1
-  velocityDamping: {x: 0.999, y: 0.999}
-  debugText: {fileID: 577178231}
+  velocityDampingX: 90
+  velocityDampingY: 90
+  panZoomSmoothing: 0
+  panEventReceivers: []
   reticle: {fileID: 228203322}
   leftPoint: {fileID: 1036401408}
   rightPoint: {fileID: 870499135}
-  panZoomSmoothing: 0
 --- !u!65 &2129217975
 BoxCollider:
   m_ObjectHideFlags: 0
