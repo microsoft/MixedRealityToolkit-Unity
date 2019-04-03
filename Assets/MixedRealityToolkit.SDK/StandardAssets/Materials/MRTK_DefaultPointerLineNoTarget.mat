@@ -9,8 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MRTK_DefaultPointerLineNoTarget
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT_USES_HOVER_COLOR _EMISSION _INSTANCED_COLOR
-    _SPECULAR_HIGHLIGHTS _VERTEX_COLORS
+  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT_USES_HOVER_COLOR _EMISSION _SPECULAR_HIGHLIGHTS
+    _VERTEX_COLORS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -116,7 +116,7 @@ Material:
     - _HoverLightOpaque: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 4
-    - _InstancedColor: 1
+    - _InstancedColor: 0
     - _InvFade: 1
     - _Iridescence: 0
     - _IridescenceAngle: -0.78
