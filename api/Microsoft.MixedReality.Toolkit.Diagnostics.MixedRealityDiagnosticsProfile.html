@@ -106,14 +106,14 @@ public class MixedRealityDiagnosticsProfile : BaseMixedRealityProfile</code></pr
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_FrameRateDuration_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.FrameRateDuration*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_FrameRateDuration" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.FrameRateDuration">FrameRateDuration</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_FrameSampleRate_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.FrameSampleRate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_FrameSampleRate" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.FrameSampleRate">FrameSampleRate</h4>
   <div class="markdown level1 summary"><p>The amount of time, in seconds, to collect frames for frame rate calculation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float FrameRateDuration { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float FrameSampleRate { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -178,6 +178,110 @@ public class MixedRealityDiagnosticsProfile : BaseMixedRealityProfile</code></pr
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_WindowAnchor_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.WindowAnchor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_WindowAnchor" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.WindowAnchor">WindowAnchor</h4>
+  <div class="markdown level1 summary"><p>What part of the view port to anchor the window to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextAnchor WindowAnchor { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TextAnchor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_WindowFollowSpeed_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.WindowFollowSpeed*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_WindowFollowSpeed" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.WindowFollowSpeed">WindowFollowSpeed</h4>
+  <div class="markdown level1 summary"><p>How quickly to interpolate the window towards its target position and rotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float WindowFollowSpeed { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_WindowOffset_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.WindowOffset*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_WindowOffset" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.WindowOffset">WindowOffset</h4>
+  <div class="markdown level1 summary"><p>The offset from the view port center applied based on the window anchor selection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 WindowOffset { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_WindowScale_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.WindowScale*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_WindowScale" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.WindowScale">WindowScale</h4>
+  <div class="markdown level1 summary"><p>Use to scale the window size up or down, can simulate a zooming effect.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float WindowScale { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
         <td></td>
       </tr>
     </tbody>
