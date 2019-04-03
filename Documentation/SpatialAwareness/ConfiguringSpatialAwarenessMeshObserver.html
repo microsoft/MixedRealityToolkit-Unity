@@ -114,11 +114,11 @@
 <li>Sphere</li>
 </ul>
 <h4 id="axis-aligned-cube">Axis Aligned Cube</h4>
-<p>An axis aligned cube volume is a rectangular shape that stays aligned with the axes of the world coordinate system, as determened at application startup.</p>
+<p>An axis aligned cube volume is a rectangular shape that stays aligned with the axes of the world coordinate system, as determined at application startup.</p>
 <h4 id="user-aligned-cube">User Aligned Cube</h4>
 <p>A user aligned cube volume is a rectangular shape that rotates to align with the users local coordinate system.</p>
 <h3 id="observation-extents">Observation Extents</h3>
-<p>The observation extents define the distance from the observation point that meshes will be observed. When the <a href="#observer-shape">Observer Shape</a> is set to Sphere, the X value of the extents will be used as the radius of the sphere.</p>
+<p>The observation extents define the distance from the observation point that meshes will be observed. When the <a href="#observer-shape">Observer Shape</a> is set to sphere, the X value of the extents will be used as the radius of the sphere.</p>
 <h2 id="physics-settings">Physics Settings</h2>
 <p><img src="../../External/ReadMeImages/SpatialAwareness/MeshObserverPhysicsSettings.png" alt="Mesh Observer Physics Settings"></p>
 <h3 id="physics-layer">Physics Layer</h3>
@@ -126,19 +126,19 @@
 <h4 id="recalculate-normals">Recalculate Normals</h4>
 <p>Specifies whether or not the mesh observer will recalculate the normals of the mesh following observation. This setting is available to ensure applications receive meshes that contain valid normals data on platforms that do not return them with meshes.</p>
 <h2 id="level-of-detail-settings">Level of Detail Settings</h2>
-<p><img src="../../External/ReadMeImages/MeshObserverLevelOfDetailSettings.png" alt="Mesh Observer Level of Detail Settings"></p>
+<p><img src="../../External/ReadMeImages/SpatialAwareness/MeshObserverLevelOfDetailSettings.png" alt="Mesh Observer Level of Detail Settings"></p>
 <h3 id="level-of-detail">Level of Detail</h3>
 <p>Specifies the level of detail (LOD) of the spatial mesh data. Currently defined values are Coarse, Fine and Custom.</p>
-<p>The Coarse LOD generally place a smaller impact on application performance and are an excellent choice for navigation and plane finding.</p>
-<p>The Fine LOD generally exact a higher performance impact on application performance and are a great option for occlusion meshes.</p>
-<p>The Custom LOD require the application to specify the <a href="#triangles-per-cubic-meter">Triangles / Cubic Meter</a> value and allows applications to tune the accuracy vs. performance impact of the spatial mesh observer.</p>
+<p>The Coarse LOD generally places a smaller impact on application performance and are an excellent choice for navigation and plane finding.</p>
+<p>The Fine LOD generally exacts a higher performance impact on application performance and are a great option for occlusion meshes.</p>
+<p>The Custom LOD requires the application to specify the <a href="#triangles-per-cubic-meter">Triangles / Cubic Meter</a> value and allows applications to tune the accuracy vs. performance impact of the spatial mesh observer.</p>
 <blockquote>
-<p>Note: It is not guaranteed that all Triangles/Cubic Meter values are honored by all platforms. Experimentation and profiling is highlu recommended when using a custom LOD.</p>
+<p>Note: It is not guaranteed that all Triangles/Cubic Meter values are honored by all platforms. Experimentation and profiling is highly recommended when using a custom LOD.</p>
 </blockquote>
 <h3 id="triangles-per-cubic-meter">Triangles per Cubic Meter</h3>
-<p>When using the Custom <a href="#level-of-detail">Level of Detail</a>, specifies the requested value for the triangle density for the spatial mesh.</p>
+<p>When using the custom <a href="#level-of-detail">Level of Detail</a>, specifies the requested value for the triangle density for the spatial mesh.</p>
 <h2 id="display-settings">Display Settings</h2>
-<p><img src="../../External/ReadMeImages/MeshObserverDisplaySettings.png" alt="Mesh Observer Display Settings"></p>
+<p><img src="../../External/ReadMeImages/SpatialAwareness/MeshObserverDisplaySettings.png" alt="Mesh Observer Display Settings"></p>
 <p><em>Mesh Observer Display Settings</em></p>
 <h3 id="display-option">Display Option</h3>
 <p>Specifies how spatial meshes are to be displayed by the observer. Supported values are None, Visible and Occlusion. Setting Visible or Occlusion instructs the observer to select the appropriate material. Specifying None causes the observer to not render the mesh.</p>
@@ -159,7 +159,7 @@
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver API documentation</a></li>
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html">IMixedRealitySpatialAwarenessMeshObserver API documentation</a></li>
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.html">BaseSpatialObserver API documentation</a></li>
-<li><a href="SpatialAwarenessSystemGettingStarted.md">Spatial Awareness System</a></li>
+<li><a href="SpatialAwarenessGettingStarted.html">Spatial Awareness System</a></li>
 <li><a href="../TODO.html">Using Spatial Awareness in an Application</a></li>
 </ul>
 </article>
