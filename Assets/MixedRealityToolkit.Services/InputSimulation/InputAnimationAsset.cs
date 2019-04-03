@@ -50,25 +50,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </inheritdoc>
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            if (useInputRecording && Application.isPlaying)
+            if (Application.isPlaying)
             {
-                var playable = ScriptPlayable<InputRecordingBehaviour>.Create(graph);
-                var behaviour = playable.GetBehaviour();
-                behaviour.Asset = this;
-                behaviour.Settings = RecordingSettings;
+                if (useInputRecording)
+                {
+                    var playable = ScriptPlayable<InputRecordingBehaviour>.Create(graph);
+                    var behaviour = playable.GetBehaviour();
+                    behaviour.Asset = this;
+                    behaviour.Settings = RecordingSettings;
 
-                // Only create recording playable once
-                useInputRecording = false;
+                    // Only create recording playable once
+                    useInputRecording = false;
 
-                return playable;
+                    return playable;
+                }
+                else if (InputAnimation.keyframeCount > 0)
+                {
+                    var playable = ScriptPlayable<InputPlaybackBehaviour>.Create(graph);
+                    var behaviour = playable.GetBehaviour();
+                    behaviour.InputAnimation = InputAnimation;
+                    return playable;
+                }
             }
-            else
-            {
-                var playable = ScriptPlayable<InputPlaybackBehaviour>.Create(graph);
-                var behaviour = playable.GetBehaviour();
-                behaviour.InputAnimation = InputAnimation;
-                return playable;
-            }
+            return Playable.Null;
         }
 
         public void EnableInputRecording()
