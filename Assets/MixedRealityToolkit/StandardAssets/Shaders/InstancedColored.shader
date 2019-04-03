@@ -16,7 +16,7 @@ Shader "Hidden/Instanced-Colored"
         Pass
         {
             Name "Main"
-            Tags{ "RenderType" = "Opaque" "PerformanceChecks" = "False" }
+            Tags{ "RenderType" = "Opaque" }
             ZWrite[_ZWrite]
             ZTest[_ZTest]
             Cull[_Cull]

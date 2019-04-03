@@ -34,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         public bool ShowProfiler => showProfiler;
 
         [SerializeField]
+        [FormerlySerializedAs("frameRateDuration")]
         [Tooltip("The amount of time, in seconds, to collect frames for frame rate calculation.")]
         private float frameSampleRate = 0.1f;
 

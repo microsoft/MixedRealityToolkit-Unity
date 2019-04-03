@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             set { isVisible = value; }
         }
 
-        [SerializeField, Range(0.0f, 1.0f), Tooltip("The amount of time, in seconds, to collect frames for frame rate calculation.")]
+        [SerializeField, Tooltip("The amount of time, in seconds, to collect frames for frame rate calculation.")]
         private float frameSampleRate = 0.1f;
 
         public float FrameSampleRate
@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private Quaternion windowVerticalRotation;
         private Quaternion windowVerticalRotationInverse;
 
-        private Matrix4x4[] frameInfoMatricies;
+        private Matrix4x4[] frameInfoMatrices;
         private Vector4[] frameInfoColors;
         private MaterialPropertyBlock frameInfoPropertyBlock;
         private int colorID;
@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 }
                 else
                 {
-                    Debug.LogWarning("A shader supporting instancing could not be found for the VisualProfiler, falling back to traditional rendering.");
+                    Debug.LogWarning("A shader supporting instancing could not be found for the VisualProfiler, falling back to traditional rendering. This may impact performance.");
                 }
             }
 
@@ -297,15 +297,15 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 if (defaultInstancedMaterial != null)
                 {
                     frameInfoPropertyBlock.SetMatrix(parentMatrixID, parentLocalToWorldMatrix);
-                    Graphics.DrawMeshInstanced(quadMesh, 0, defaultInstancedMaterial, frameInfoMatricies, frameInfoMatricies.Length, frameInfoPropertyBlock, UnityEngine.Rendering.ShadowCastingMode.Off, false);
+                    Graphics.DrawMeshInstanced(quadMesh, 0, defaultInstancedMaterial, frameInfoMatrices, frameInfoMatrices.Length, frameInfoPropertyBlock, UnityEngine.Rendering.ShadowCastingMode.Off, false);
                 }
                 else
                 {
                     // If a instanced material is not available, fall back to non-instanced rendering.
-                    for (int i  = 0; i < frameInfoMatricies.Length; ++i)
+                    for (int i  = 0; i < frameInfoMatrices.Length; ++i)
                     {
                         frameInfoPropertyBlock.SetColor(colorID, frameInfoColors[i]);
-                        Graphics.DrawMesh(quadMesh, parentLocalToWorldMatrix * frameInfoMatricies[i], defaultMaterial, 0, null, 0, frameInfoPropertyBlock, false, false, false);
+                        Graphics.DrawMesh(quadMesh, parentLocalToWorldMatrix * frameInfoMatrices[i], defaultMaterial, 0, null, 0, frameInfoPropertyBlock, false, false, false);
                     }
                 }
             }
@@ -417,14 +417,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 gpuFrameRateText = CreateText("GPUFrameRateText", new Vector3(0.495f, 0.5f, 0.0f), window.transform, TextAnchor.UpperRight, textMaterial, Color.white, string.Empty);
                 gpuFrameRateText.gameObject.SetActive(false);
 
-                frameInfoMatricies = new Matrix4x4[frameRange];
+                frameInfoMatrices = new Matrix4x4[frameRange];
                 frameInfoColors = new Vector4[frameRange];
                 Vector3 scale = new Vector3(1.0f / frameRange, 0.2f, 1.0f);
                 Vector3 position = new Vector3(0.5f - (scale.x * 0.5f), 0.15f, 0.0f);
 
                 for (int i = 0; i < frameRange; ++i)
                 {
-                    frameInfoMatricies[i] = Matrix4x4.TRS(position, Quaternion.identity, new Vector3(scale.x * 0.8f, scale.y, scale.z));
+                    frameInfoMatrices[i] = Matrix4x4.TRS(position, Quaternion.identity, new Vector3(scale.x * 0.8f, scale.y, scale.z));
                     position.x -= scale.x;
                     frameInfoColors[i] = targetFrameRateColor;
                 }
@@ -556,6 +556,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private static void MemoryUsageToString(char[] stringBuffer, int displayedDecimalDigits, TextMesh textMesh, string prefixString, ulong memoryUsage)
         {
+            // Using a custom number to string method to avoid the overhead, and allocations, of built in string.Format/StringBuilder methods.
+            // We can also make some assumptions since the domain of the input number (memoryUsage) is known.
             float memoryUsageMB = ConvertBytesToMegabytes(memoryUsage);
             int memoryUsageIntegerDigits = (int)memoryUsageMB;
             int memoryUsageFractionalDigits = (int)((memoryUsageMB - memoryUsageIntegerDigits) * Mathf.Pow(10.0f, displayedDecimalDigits));
