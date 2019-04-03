@@ -13,103 +13,103 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     {
         [Tooltip("Referenced renderer of the texture to be navigated.")]
         [SerializeField]
-        private Renderer RendererOfTextureToBeNavigated = null;
+        private Renderer rendererOfTextureToBeNavigated = null;
 
         // Zoom
         [Tooltip("Zoom acceleration defining the steepness of logistic speed function mapping.")]
         [SerializeField]
-        private float Zoom_Acceleration = 10f;
+        private float zoomAcceleration = 10f;
 
         [Tooltip("Maximum zoom speed.")]
         [SerializeField]
-        private float Zoom_SpeedMax = 0.02f;
+        private float zoomSpeedMax = 0.02f;
 
         [Tooltip("Minimum scale of the texture for zoom in - e.g., 0.5f (half the original size)")]
         [SerializeField]
-        private float Zoom_MinScale = 0.1f;
+        private float zoomMinScale = 0.1f;
 
         [Tooltip("Maximum scale of the texture for zoom out - e.g., 1f (the original size) or 2.0f (double the original size).")]
         [SerializeField]
-        private float Zoom_MaxScale = 1.0f;
+        private float zoomMaxScale = 1.0f;
 
         [Tooltip("Timed zoom: Once triggered, a zoom in/out will be performed for the given amount of time in seconds.")]
         [SerializeField]
-        private float Zoom_TimeInSecToZoom = 0.5f;
+        private float zoomTimeInSecToZoom = 0.5f;
 
         [Tooltip("Type of hand gesture to use to zoom in/out.")]
         [SerializeField]
-        private MixedRealityInputAction Zoom_Gesture = MixedRealityInputAction.None;
+        private MixedRealityInputAction zoomGesture = MixedRealityInputAction.None;
 
         [Tooltip("Enable or disable hand gestures for zooming on startup.")]
         [SerializeField]
-        private bool Zoom_GestureEnabledOnStartup = false;
+        private bool zoomGestureEnabledOnStartup = false;
 
         // Pan
         [Tooltip("Ability to scroll using your eye gaze without any additional input (e.g., air tap or button presses).")]
         [SerializeField]
-        private bool Pan_AutoScrollIsActive = true;
+        private bool panAutoScrollIsActive = true;
 
         [Tooltip("Horizontal scroll speed. For example: 0.1f for slow panning. 0.6f for fast panning.")]
         [SerializeField]
-        private float Pan_Speed_x = 0.3f;
+        private float panSpeedHorizontal = 0.3f;
 
         [Tooltip("Vertical scroll speed. For example: 0.1f for slow panning. 0.6f for fast panning.")]
         [SerializeField]
-        private float Pan_Speed_y = 0.3f;
+        private float panSpeedVertical = 0.3f;
 
         [Tooltip("Minimal distance in x and y from center of the target's hit box (0, 0) to scroll. Thus, values must range between 0 (always scroll) and 0.5 (no scroll).")]
         [SerializeField]
-        private Vector2 Pan_MinDistFromCenter = new Vector2(0.2f, 0.2f);
+        private Vector2 panMinDistFromCenter = new Vector2(0.2f, 0.2f);
 
         [Tooltip("Set to true to prevent sudden scrolling when quickly looking around. This may make scrolling feel less responsive though.")]
         [SerializeField]
-        private bool UseSkimProofing = false;
+        private bool useSkimProofing = false;
 
         [Tooltip("The lower the value, the slower the scrolling will speed up after skimming. Recommended value: 5.")]
         [SerializeField]
         [Range(0, 10)]
-        private float SkimProofUpdateSpeed = 5f;
+        private float skimProofUpdateSpeed = 5f;
 
         protected override void Start()
         {
             // Assigning values to base PanZoom class
-            textureRenderer = RendererOfTextureToBeNavigated;
+            textureRenderer = rendererOfTextureToBeNavigated;
 
-            ZoomAcceleration = Zoom_Acceleration;
-            ZoomSpeedMax = Zoom_SpeedMax;
-            ZoomMinScale = Zoom_MinScale;
-            ZoomMaxScale = Zoom_MaxScale;
-            ZoomGesture = Zoom_Gesture;
-            ZoomGestureEnabledOnStartup = Zoom_GestureEnabledOnStartup;
-            timeInSecondsToZoom = Zoom_TimeInSecToZoom;
+            ZoomAcceleration = zoomAcceleration;
+            ZoomSpeedMax = zoomSpeedMax;
+            ZoomMinScale = zoomMinScale;
+            ZoomMaxScale = zoomMaxScale;
+            ZoomGesture = zoomGesture;
+            ZoomGestureEnabledOnStartup = zoomGestureEnabledOnStartup;
+            timeInSecondsToZoom = zoomTimeInSecToZoom;
 
-            AutoGazePanIsActive = Pan_AutoScrollIsActive;
-            PanSpeedLeftRight = Pan_Speed_x;
-            PanSpeedUpDown = Pan_Speed_y;
-            MinDistFromCenterForAutoPan = Pan_MinDistFromCenter;
-            useSkimProof = UseSkimProofing;
+            autoGazePanIsActive = panAutoScrollIsActive;
+            panSpeedLeftRight = panSpeedHorizontal;
+            panSpeedUpDown = panSpeedVertical;
+            minDistFromCenterForAutoPan = panMinDistFromCenter;
+            useSkimProof = useSkimProofing;
 
             base.Start();
         }
 
         protected override void Update()
         {
-            UpdateValues(ref textureRenderer, RendererOfTextureToBeNavigated);
+            UpdateValues(ref textureRenderer, rendererOfTextureToBeNavigated);
 
-            UpdateValues(ref ZoomAcceleration, Zoom_Acceleration);
-            UpdateValues(ref ZoomSpeedMax, Zoom_SpeedMax);
-            UpdateValues(ref ZoomMinScale, Zoom_MinScale);
-            UpdateValues(ref ZoomMaxScale, Zoom_MaxScale);
-            UpdateValues(ref ZoomGesture, Zoom_Gesture);
-            UpdateValues(ref timeInSecondsToZoom, Zoom_TimeInSecToZoom);
+            UpdateValues(ref ZoomAcceleration, zoomAcceleration);
+            UpdateValues(ref ZoomSpeedMax, zoomSpeedMax);
+            UpdateValues(ref ZoomMinScale, zoomMinScale);
+            UpdateValues(ref ZoomMaxScale, zoomMaxScale);
+            UpdateValues(ref ZoomGesture, zoomGesture);
+            UpdateValues(ref timeInSecondsToZoom, zoomTimeInSecToZoom);
 
-            UpdateValues(ref AutoGazePanIsActive, Pan_AutoScrollIsActive);
-            UpdateValues(ref PanSpeedLeftRight, Pan_Speed_x);
-            UpdateValues(ref PanSpeedUpDown, Pan_Speed_y);
-            UpdateValues(ref MinDistFromCenterForAutoPan, Pan_MinDistFromCenter);
-            UpdateValues(ref useSkimProof, UseSkimProofing);
+            UpdateValues(ref autoGazePanIsActive, panAutoScrollIsActive);
+            UpdateValues(ref panSpeedLeftRight, panSpeedHorizontal);
+            UpdateValues(ref panSpeedUpDown, panSpeedVertical);
+            UpdateValues(ref minDistFromCenterForAutoPan, panMinDistFromCenter);
+            UpdateValues(ref useSkimProof, useSkimProofing);
 
-            if (UpdateValues(ref skimproof_UpdateSpeedFromUser, SkimProofUpdateSpeed))
+            if (UpdateValues(ref skimproof_UpdateSpeedFromUser, skimProofUpdateSpeed))
             {
                 SetSkimProofUpdateSpeed(skimproof_UpdateSpeedFromUser);
             }

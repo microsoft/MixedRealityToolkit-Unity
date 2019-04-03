@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         [Tooltip("Underlying aspect ratio of the loaded texture to correctly determine scaling.")]
         [SerializeField]
-        private float DefaultAspectRatio = 1.0f;
+        private float defaultAspectRatio = 1.0f;
 
         private float aspectRatio = -1;
 
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             if (aspectRatio == -1)
             {
-                Initialize(DefaultAspectRatio);
+                Initialize(defaultAspectRatio);
             }
             else
             {
@@ -142,8 +142,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 ZoomInOut(zoomDir * zoomSpeed, cursorPos);
 
                 // Panning across entire target (-0.5, +0.5) to move target of interest towards center while zooming in
-                PanHorizontally(ComputePanSpeed(cursorPos.x, PanSpeedLeftRight, MinDistFromCenterForAutoPan.x));
-                PanVertically(ComputePanSpeed(cursorPos.y, PanSpeedUpDown, MinDistFromCenterForAutoPan.y));
+                PanHorizontally(ComputePanSpeed(cursorPos.x, panSpeedLeftRight, minDistFromCenterForAutoPan.x));
+                PanVertically(ComputePanSpeed(cursorPos.y, panSpeedUpDown, minDistFromCenterForAutoPan.y));
             }
         }
 
