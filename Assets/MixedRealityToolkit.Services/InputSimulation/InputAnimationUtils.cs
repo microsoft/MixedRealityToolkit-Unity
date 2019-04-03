@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public static void RecordKeyframe(InputAnimation animation, ulong frame)
         {
-            var keyframe = new InputKeyframe();
+            var keyframe = new InputKeyframe(new SimulatedHandData(), new SimulatedHandData());
 
             RecordInputHandData(Handedness.Left, keyframe.HandDataLeft);
             RecordInputHandData(Handedness.Right, keyframe.HandDataRight);
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return false;
             }
 
-            var keyframe = new InputKeyframe();
+            var keyframe = new InputKeyframe(new SimulatedHandData(), new SimulatedHandData());
             RecordInputHandData(Handedness.Left, keyframe.HandDataLeft);
             RecordInputHandData(Handedness.Right, keyframe.HandDataRight);
             if (CameraCache.Main)

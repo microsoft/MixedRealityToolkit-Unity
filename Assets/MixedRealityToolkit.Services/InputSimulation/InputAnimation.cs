@@ -199,10 +199,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [System.Serializable]
     public class InputKeyframe
     {
-        public SimulatedHandData HandDataLeft = new SimulatedHandData();
-        public SimulatedHandData HandDataRight = new SimulatedHandData();
+        public SimulatedHandData HandDataLeft = null;
+        public SimulatedHandData HandDataRight = null;
 
         public MixedRealityPose CameraPose = MixedRealityPose.ZeroIdentity;
+
+        public InputKeyframe(SimulatedHandData handDataLeft, SimulatedHandData handDataRight)
+        {
+            this.HandDataLeft = handDataLeft;
+            this.HandDataRight = handDataRight;
+        }
     }
 
     [System.Serializable]
