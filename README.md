@@ -2,7 +2,7 @@
 
 # What is MixedRealityToolkit
 
-MRTK is a Microsoft Driven opensource project. 
+MRTK is a Microsoft Driven open source project. 
 
 MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity. Latest Release of MRTK (V2) supports HoloLens/HoloLens 2, WMR, and OpenVR platform.
 
@@ -75,7 +75,7 @@ Find this readme, other documentation articles and the MRTK api reference on our
 
 Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/).
 
-Ask questions about using MRRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk).
+Ask questions about using MRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk).
 
 Search for solution or file a new issue in [GitHub](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
 
@@ -110,7 +110,7 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 | :--------------------- | :----------------- | :------------------ | :------------------------ |
 | See code examples. Do a coding tutorial. Watch guest lectures.          | Get design guides. Build user interface. Learn interactions and input.     | Get development guides. Learn the technology. Understand the science.       | Join open source projects. Ask questions on forums. Attend events and meetups. |
 
-### Learn more about MRTK Progect 
+### Learn more about MRTK Project 
 You can find our planning material on [our wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki) under Project Management Section. You can always see the items the team is actively working on in the Iteration Plan issue. 
 
 ### How to Contribute
