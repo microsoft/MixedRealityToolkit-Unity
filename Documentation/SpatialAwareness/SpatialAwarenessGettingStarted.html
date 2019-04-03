@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Spatial Awareness | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Spatial Awareness | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="spatial-awareness">Spatial Awareness</h1>
+
+<p>The Spatial Awareness system provides real-world environmental awareness in mixed reality
+applications. When introduced on Microsoft HoloLens, spatial awareness provided a collection
+of meshes, representing the geometry of the environment, which allowed for compelling interactions
+between holograms and the real-world.</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>Adding support for spatial awareness requires two key components of the Mixed Reality Toolkit: the
+spatial awareness system and a supported platform provider.</p>
+<ol>
+<li><a href="enable-spatial-awareness">Enable</a> the spatial awareness system</li>
+<li><a href="register-observers">Register</a> and <a href="configure-observers">configure</a> one or more spatial observers</li>
+<li><a href="build-and-deploy">Build and deploy</a> to a platform that supports spatial awareness</li>
+</ol>
+<h3 id="enable-spatial-awareness">Enable Spatial Awareness</h3>
+<p>The spatial awareness system is managed by the MixedRealityToolkit object (or another
+<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">service registrar</a> component).</p>
+<blockquote>
+<p>The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.</p>
+</blockquote>
+<ol>
+<li>Select the MixedRealityToolkit object in the scene hierarchy.</li>
+</ol>
+<p><img src="../../External/ReadMeImages/MRTK_ConfiguredHierarchy.png" alt="MRTK Configured Scene Hierarchy"></p>
+<ol start="2">
+<li>Navigate the Inspector panel to the Spatial Awareness System section and check Enable</li>
+</ol>
+<p><img src="../../External/ReadMeImages/SpatialAwareness/MRTKConfig_SpatialAwareness.png" alt="Enable Spatial Awareness"></p>
+<ol start="3">
+<li>Select the Spatial Awareness System implementation</li>
+</ol>
+<p><img src="../../External/ReadMeImages/SpatialAwareness/SpatialAwarenessSelectSystemType.png" alt="Select the Spatial Awareness System Implementation"></p>
+<blockquote>
+<p>Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the spatial awareness system pre-configured to use the MixedRealitySpatialAwarenessSystem from the Mixed Reality
+Toolkit Spatial Awareness Service package.</p>
+</blockquote>
+<h3 id="register-observers">Register observers</h3>
+<p>Before the spatial awareness system can provide applications with data about the real-world, at least
+one spatial observer must be registered. Spatial observers are generally platform specific components
+that may vary in the type(s) of data (ex: meshes) provided.</p>
+<ol>
+<li>Open or expand the Spatial Awareness System profile</li>
+</ol>
+<p><img src="../../External/ReadMeImages/SpatialAwareness/SpatialAwarenessProfile.png" alt="Spatial Awareness System Profile"></p>
+<ol start="2">
+<li>Click &quot;Add Spatial Observer&quot;</li>
+<li>Select the Spatial Observer implementation</li>
+</ol>
+<p><img src="../../External/ReadMeImages/SpatialAwareness/SpatialAwarenessSelectObserver.png" alt="Select the Spatial Observer Implementation"></p>
+<blockquote>
+<p>Users of the default profile (DefaultMixedRealitSpatialAwarenessSystemProfile) will have the spatial awareness system pre-configured to use the WindowsMixedRealitySpatialMeshObserver from the Mixed Reality
+Toolkit Windows Mixed Reality Provider package.</p>
+</blockquote>
+<h4 id="configure-observers">Configure observers</h4>
+<p>Once the spatial observer(s) have been registered with the system, they can be configured to provide
+the desired data.</p>
+<blockquote>
+<p>When configuring a spatial observer, many implementations will auto-populate the observer's configuration profile with common default values.</p>
+</blockquote>
+<ol>
+<li>Open or expand the Spatial Observer profile</li>
+</ol>
+<p><img src="../../External/ReadMeImages/SpatialAwareness/SpatialAwarenessMeshObserverProfile.png" alt="Spatial Mesh Observer Profile"></p>
+<ol start="2">
+<li>Configure the desired options</li>
+</ol>
+<p>The illustration in the previous step shows the configuration profile for a spatial mesh observer.
+Please see <a href="ConfiguringSpatialAwarenessMeshObserver.html">Configuring the Spatial Awareness Mesh Observer</a> for more information pertaining to the specific
+settings available to mesh observers. Other observers may have similar settings.</p>
+<h3 id="build-and-deploy">Build and Deploy</h3>
+<p>Once the spatial awareness system is configured with the desired observer(s), the project can be built
+and deployed to the target platform.</p>
+<blockquote>
+<p>Some platforms, including Microsoft HoloLens, provide support for remote execution from within Unity.
+This feature enables rapid development and testing without requring the build and deploy step. Be sure to do final acceptance testing using an built and deployed version of the application, running</p>
+</blockquote>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.html">Spatial Awareness API documentation</a></li>
+<li><a href="ConfiguringSpatialAwarenessMeshObserver.html">Configuring the Spatial Awareness Mesh Observer</a></li>
+<li><a href="../TODO.html">Using Spatial Awareness in an Application</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

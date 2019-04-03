@@ -745,6 +745,36 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.html",
+          "hash": "VHAiNNOg07iU2HfnFGBxIw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html",
+          "hash": "plQXQ7N1OrUqPqaU5wekmA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "Documentation/TODO.md",
       "output": {
@@ -762,7 +792,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "JI29IBMDejTXBnnnDTMy8w=="
+          "hash": "RJ6/N2jGEwu5bjIKkR5MUA=="
         }
       },
       "is_incremental": false,
@@ -1609,6 +1639,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/MRTK_ConfiguredHierarchy.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/MRTK_ConfiguredHierarchy.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "External/ReadMeImages/MRTK_CopyCreateConfigurationOptions.png",
       "output": {
         "resource": {
@@ -2258,6 +2299,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MRTKConfig_SpatialAwareness.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/SpatialAwareness/MRTKConfig_SpatialAwareness.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "External/ReadMeImages/SpatialAwareness/MRTK_SpatialAwareness_Main.png",
       "output": {
         "resource": {
@@ -2269,10 +2321,98 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverDisplaySettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverDisplaySettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverGeneralSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverGeneralSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverLevelOfDetailSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverLevelOfDetailSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverPhysicsSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverPhysicsSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "External/ReadMeImages/SpatialAwareness/MixedRealitySpatialAwarenessEventData.png",
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/SpatialAwareness/MixedRealitySpatialAwarenessEventData.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessMeshObserverProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessMeshObserverProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessSelectObserver.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessSelectObserver.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessSelectSystemType.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessSelectSystemType.png"
         }
       },
       "is_incremental": false,
@@ -12519,7 +12659,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 69,
+          "total_file_count": 71,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
