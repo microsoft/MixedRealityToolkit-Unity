@@ -361,168 +361,15 @@
       "version": ""
     },
     {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/IMixedRealitySpatialAwarenessMeshHandler.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/IMixedRealitySpatialAwarenessMeshHandler.html",
-          "hash": "S1DDyL6KZol+llyoTB3vDA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/IMixedRealitySpatialAwarenessSurfaceFindingHandler.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/IMixedRealitySpatialAwarenessSurfaceFindingHandler.html",
-          "hash": "pGDAYvShDjkkr2XpZSrRjw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/IMixedRealitySpatialAwarenessSystem.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/IMixedRealitySpatialAwarenessSystem.html",
-          "hash": "OtyPv8kn3WdGjAQKYX/ojA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/IMixedRealitySpatialObserver.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/IMixedRealitySpatialObserver.html",
-          "hash": "KPXK7mei5S8t906GTOd41Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessEventData.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessEventData.html",
-          "hash": "TpKttZBjiwEcgM+H/+YBDw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessMeshHandler.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessMeshHandler.html",
-          "hash": "A8+tgZCPzE8ymVlveSCAAg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessPlanarSurfaceHandler.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessPlanarSurfaceHandler.html",
-          "hash": "BfZ2dDWtzx2BfaaK4UWN5Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessProfile.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessProfile.html",
-          "hash": "IcKOa0Yw6mFZMCjgAN0kMA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessProfileInspector.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessProfileInspector.html",
-          "hash": "cAhzQ5Heh9kBxMM4Ri8Z5g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessSystem.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/MixedRealitySpatialAwarenessSystem.html",
-          "hash": "s9aKTsTKeAkYV/o+sm9/1Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/SpatialAwarenessMeshDisplayOptions.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/SpatialAwarenessMeshDisplayOptions.html",
-          "hash": "+Y/St7AvUdxWbtxsZmwTWw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/SpatialAwarenessMeshLevelOfDetail.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/SpatialAwarenessMeshLevelOfDetail.html",
-          "hash": "hxxmAKlqrjBOdbi02hQF5w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/SpatialAwareness/SpatialAwarenessSurfaceTypes.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/SpatialAwareness/SpatialAwarenessSurfaceTypes.html",
-          "hash": "UvjEjUd00+IjT4z21Wiw5w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
+      "log_codes": [
+        "UidNotFound"
+      ],
       "type": "Conceptual",
       "source_relative_path": "Documentation/Architecture/SpatialAwareness/SpatialAwarenessSystemArchitecture.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/SpatialAwareness/SpatialAwarenessSystemArchitecture.html",
-          "hash": "KGehRnt7jIqCofBDOvqnhA=="
+          "hash": "4TBQnfWoUsHyAFayDTtn+Q=="
         }
       },
       "is_incremental": false,
@@ -534,7 +381,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/toc.html",
-          "hash": "JBO2B+10lKLHypH0+KGuEg=="
+          "hash": "MUzSgAZ7w51wSGxBJmmW5g=="
         }
       },
       "is_incremental": false,
@@ -2249,50 +2096,6 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialAwarenessMeshHandler.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialAwarenessMeshHandler.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialAwarenessSurfaceFindingHandler.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialAwarenessSurfaceFindingHandler.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialAwarenessSystem.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialAwarenessSystem.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialObserver.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/IMixedRealitySpatialObserver.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "External/ReadMeImages/SpatialAwareness/MRTKConfig_SpatialAwareness.png",
       "output": {
         "resource": {
@@ -2352,17 +2155,6 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverPhysicsSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MixedRealitySpatialAwarenessEventData.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/MixedRealitySpatialAwarenessEventData.png"
         }
       },
       "is_incremental": false,
@@ -12686,16 +12478,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 58,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 832,
-          "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 71,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

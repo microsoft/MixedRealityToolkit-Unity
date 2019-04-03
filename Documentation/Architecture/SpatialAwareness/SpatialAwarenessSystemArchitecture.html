@@ -83,40 +83,59 @@
 <h1 id="mixed-reality-toolkit-spatial-awareness-system-architecture">Mixed Reality Toolkit Spatial Awareness System Architecture</h1>
 
 <p>The Mixed Reality Spatial Awareness System is intended to abstract the specific implementation details of platforms, such as the Microsoft HoloLens, that provide support for mapping the real-world and providing the data to Mixed Reality experiences.</p>
-<p>Where possible, we are designing for common functionality (ex: identification of planar surfaces) well as access to the lowest level of available data (ex: mesh or point data).</p>
-<p>It is expected that many platforms may not support one or more of the interfaces defined herein. In fact, some may not support spatial awareness at all. On those platforms, the system must gracefully fail and provide the developer with appropriate data (null, empty collections, etc.) in return.</p>
+<p>It is expected that many platforms may not support support one or more spatial awareness features. On those platforms, the system must gracefully fail and provide the developer with appropriate data (null, empty collections, etc.) in return.</p>
 <p>Each interface defined will implement one or more Properties, Methods and/or Events (PMEs) that can be accessed by application code.</p>
 <img src="../../../External/ReadMeImages/SpatialAwareness/SpatialAwarenessSystemArchitecture.png">
-<h2 id="interfaces">Interfaces</h2>
+<h2 id="system">System</h2>
 <ul>
-<li><a href="IMixedRealitySpatialAwarenessSystem.html">IMixedRealitySpatialAwarenessSystem</a></li>
-<li><a href="IMixedRealitySpatialAwarenessMeshHandler.html">IMixedRealitySpatialAwarenessMeshHandler</a></li>
-<li><a href="IMixedRealitySpatialAwarenessSurfaceFindingHandler.html">IMixedRealitySpatialAwarenessSurfaceFindingHandler</a></li>
-<li><a href="IMixedRealitySpatialObserver.html">IMixedRealitySpatialObserver</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.html">IMixedRealitySpatialAwarenessSystem</a></li>
 </ul>
-<h2 id="classes">Classes</h2>
+<h2 id="observers">Observers</h2>
 <ul>
-<li><a href="MixedRealitySpatialAwarenessSystem.html">MixedRealitySpatialAwarenessSystem</a></li>
-<li><a href="MixedRealitySpatialAwarenessMeshHandler.html">MixedRealitySpatialAwarenessMeshHandler</a></li>
-<li><a href="MixedRealitySpatialAwarenessPlanarSurfaceHandler.html">MixedRealitySpatialAwarenessPlanarSurfaceHandler</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html">IMixedRealitySpatialAwarenessMeshObserver</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.html">BaseSpatialObserver</a></li>
+</ul>
+<h2 id="objects">Objects</h2>
+<ul>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObject.html">IMixedRealitySpatialAwarenessObject</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialAwarenessObject.html">BaseSpatialAwarenessObject</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshObject.html">SpatialAwarenessMeshObject</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessPlanarObject.html">SpatialAwarenessPlanarObject</a></li>
 </ul>
 <h2 id="enumerations">Enumerations</h2>
 <ul>
-<li><a href="SpatialAwarenessMeshDisplayOptions.html">SpatialAwarenessMeshDisplayOptions</a></li>
-<li><a href="SpatialAwarenessMeshLevelOfDetail.html">SpatialAwarenessMeshLevelOfDetail</a></li>
-<li><a href="SpatialAwarenessSurfaceTypes.html">SpatialAwarenessSurfaceTypes</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshDisplayOptions.html">SpatialAwarenessMeshDisplayOptions</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshLevelOfDetail.html">SpatialAwarenessMeshLevelOfDetail</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessSurfaceTypes.html">SpatialAwarenessSurfaceTypes</a></li>
 </ul>
-<h2 id="event-data-types">Event Data Types</h2>
+<h2 id="events-and-event-data">Events and Event Data</h2>
 <ul>
-<li><a href="MixedRealitySpatialAwarenessEventData.html">MixedRealitySpatialAwarenessEventData</a></li>
+<li><a href="xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObservationHandler-1">IMixedRealitySpatialAwarenessObservationHandler<t></t></a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessEventData.html">MixedRealitySpatialAwarenessEventData</a></li>
+<li><a href="xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessEventData-1">MixedRealitySpatialAwarenessEventData<t></t></a></li>
 </ul>
-<h2 id="configuration-profile">Configuration Profile</h2>
+<h2 id="profiles">Profiles</h2>
 <ul>
-<li><a href="MixedRealitySpatialAwarenessProfile.html">MixedRealitySpatialAwarenessProfile</a></li>
-<li><a href="MixedRealitySpatialAwarenessProfileInspector.html">MixedRealitySpatialAwarenessProfileInspector</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystemProfile.html">MixedRealitySpatialAwarenessSystemProfile</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialAwarenessObserverProfile.html">BaseSpatialAwarenessObserverProfile</a></li>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile.html">MixedRealitySpatialAwarenessMeshObserverProfile</a></li>
 </ul>
 <h2 id="example-implementation">Example Implementation</h2>
-<p>The Mixed Reality Toolkit's default implementation of the spatial awareness system can be found in the Assets/MixedRealityToolkit/SDK/Features/SpatialAwarenessSystem folder. This implementation can be used as an example of how to build your own spatial awareness system. It is well documented and demonstrates each of the features described in this architecture specification.</p>
+<h3 id="service">Service</h3>
+<p>The default spatial awareness system is a good example for developers looking to create their own implementation or to learn more about how the system works. It is provided as part of the Mixed Reality Toolkit Spatial Awareness service package.</p>
+<p>The latest released code is available on <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/SpatialAwarenessSystem/MixedRealitySpatialAwarenessSystem.cs">GitHub</a>.</p>
+<h4 id="class-documentation">Class Documentation</h4>
+<ul>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.html">MixedRealitySpatialAwarenessSystem</a></li>
+</ul>
+<h3 id="mesh-observer">Mesh Observer</h3>
+<p>The Windows Mixed Reality Spatial Mesh Observer is a great example of a spatial  observer and is included as part of the Mixed Reality Toolkit Windows Mixed Reality provider package.</p>
+<p>The latest released code is available on <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Providers/WindowsMixedReality">GitHub</a>.</p>
+<h4 id="class-documentation-1">Class Documentation</h4>
+<ul>
+<li><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver.html">WindowsMixedRealitySpatialMeshObserver</a></li>
+</ul>
 </article>
           </div>
           
