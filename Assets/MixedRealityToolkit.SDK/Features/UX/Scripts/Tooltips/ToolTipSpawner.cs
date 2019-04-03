@@ -12,7 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Add to any Object to spawn ToolTips on tap or on focus, according to preference
     /// Applies its follow settings to the spawned ToolTip's ToolTipConnector component
     /// </summary>
-    public class ToolTipSpawner : BaseFocusHandler, IMixedRealityInputHandler
+    public class ToolTipSpawner :
+        BaseFocusHandler,
+        IMixedRealityInputHandler,
+        IMixedRealityInputHandler<float>
     {
         private enum SettingsMode
         {
@@ -117,16 +120,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        void IMixedRealityInputHandler.OnInputPressed(InputEventData<float> eventData)
+        void IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)
         {
-            if (eventData.InputData > .95f)
+            if (eventData.InputData > .95f) 
             {
                 HandleTap();
             }
         }
-
-        /// <inheritdoc />
-        void IMixedRealityInputHandler.OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
         /// <inheritdoc />
         void IMixedRealityInputHandler.OnInputDown(InputEventData eventData)

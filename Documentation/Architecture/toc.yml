@@ -1,5 +1,5 @@
 ﻿- name: Spatial Awareness
-  href: SpatialAwareness/toc.yml
+  href: SpatialAwareness/SpatialAwarenessSystemArchitecture.md
 - name: SDK
   href: ../../Assets/MixedRealityToolkit.SDK/toc.yml
 - name: Toolkit

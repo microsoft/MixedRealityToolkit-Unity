@@ -866,12 +866,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             };
 
         /// <inheritdoc />
-        public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
-        {
-            RaisePointerDown(pointer, inputAction, handedness);
-        }
-
-        /// <inheritdoc />
         public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
@@ -894,15 +888,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     var casted = ExecuteEvents.ValidateEventData<MixedRealityPointerEventData>(eventData);
                     handler.OnPointerClicked(casted);
                 };
-
-        /// <inheritdoc />
-        public void RaisePointerClicked(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction, int count)
-        {
-            // Create input event
-            pointerEventData.Initialize(pointer, handedness, inputAction, count);
-
-            HandleClick();
-        }
 
         /// <inheritdoc />
         public void RaisePointerClicked(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, int count, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
@@ -931,12 +916,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var casted = ExecuteEvents.ValidateEventData<MixedRealityPointerEventData>(eventData);
                 handler.OnPointerUp(casted);
             };
-
-        /// <inheritdoc />
-        public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
-        {
-            RaisePointerUp(pointer, inputAction, handedness);
-        }
 
         /// <inheritdoc />
         public void RaisePointerUp(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
