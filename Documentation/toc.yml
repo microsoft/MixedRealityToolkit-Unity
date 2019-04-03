@@ -65,11 +65,15 @@
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
       items:
       - name: Configuring the Spatial Awareness Mesh Observer
-        href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
     - name: In-Editor Input Simulation
       href: TODO.md
-    - name: Performance Diagnostic Tool
-      href: TODO.md
+    - name: Diagnostics System
+      href: Diagnostics/DiagnosticsSystemGettingStarted.md
+      items:
+      - name: Configuring the Diagnostics System
+        href: Diagnostics/ConfiguringDiagnostics.md
+      - name: Using the Visual Profiler
+        href: TODO.md
   - name: Other Features
     href: TODO.md
     items:
