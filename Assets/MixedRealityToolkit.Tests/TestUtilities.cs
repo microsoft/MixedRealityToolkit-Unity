@@ -1,16 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Editor;
-using NUnit.Framework;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Editor;
+using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+#endif
+
+#if WINDOWS_UWP
+using UnityEngine.Assertions;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -99,9 +103,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        public static T GetDefaultMixedRealityProfile<T>() where T : BaseMixedRealityProfile
+        private static T GetDefaultMixedRealityProfile<T>() where T : BaseMixedRealityProfile
         {
+#if UNITY_EDITOR
             return ScriptableObjectExtensions.GetAllInstances<T>().FirstOrDefault(profile => profile.name.Equals($"Default{typeof(T).Name}"));
+#else
+            return ScriptableObject.CreateInstance<T>();
+#endif
         }
     }
 }

@@ -11,8 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsEditor,
-        "Profiles/DefaultMixedRealityInputSimulationProfile.asset", "MixedRealityToolkit.SDK")]
-    public class InputSimulationService : BaseDeviceManager, IMixedRealityExtensionService
+        "Input Simulation Service",
+        "Profiles/DefaultMixedRealityInputSimulationProfile.asset", 
+        "MixedRealityToolkit.SDK")]
+    public class InputSimulationService : BaseInputDeviceManager
     {
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
@@ -35,9 +37,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private long lastHandUpdateTimestamp = 0;
 
-        #region BaseDeviceManager Implementation
+        #region BaseInputDeviceManager Implementation
 
-        public InputSimulationService(IMixedRealityServiceRegistrar registrar, string name, uint priority, BaseMixedRealityProfile profile) : base(registrar, name, priority, profile)
+        public InputSimulationService(
+            IMixedRealityServiceRegistrar registrar, 
+            IMixedRealityInputSystem inputSystem,
+            MixedRealityInputSystemProfile inputSystemProfile,
+            Transform playspace,
+            string name, 
+            uint priority, 
+            BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile)
         {
         }
 
@@ -76,6 +85,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DisableCameraControl();
             }
 
+            if (profile.SimulateEyePosition)
+            {
+                MixedRealityToolkit.InputSystem?.EyeGazeProvider?.UpdateEyeGaze(null, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), System.DateTime.UtcNow);
+            }
+
             switch (profile.HandSimulationMode)
             {
                 case HandSimulationMode.Disabled:
@@ -111,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion BaseDeviceManager Implementation
+        #endregion BaseInputDeviceManager Implementation
 
         /// <summary>
         /// Return the service profile and ensure that the type is correct

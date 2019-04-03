@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         return attr.SupportedControllerType;
                     }
                 }
-                return SupportedControllerType.None;
+                return 0;
             }
         }
 
