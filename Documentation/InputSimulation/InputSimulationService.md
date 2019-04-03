@@ -46,7 +46,7 @@ Press and hold the movement keys (W/A/S/D for forward/left/back/right).
 
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 # Hand Simulation
 
@@ -89,7 +89,7 @@ Hands can be rotated when precise direction is required.
 
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 ## Hand Gestures
 
@@ -118,7 +118,7 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rM0xaHam6wM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rM0xaHam6wM" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 ## Two-Hand Manipulation
 
@@ -134,7 +134,7 @@ For manipulating objects with two hands at the same time the persistent hand mod
 
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 ## GGV Interaction
 
@@ -147,4 +147,4 @@ For manipulating objects with two hands at the same time the persistent hand mod
 
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
