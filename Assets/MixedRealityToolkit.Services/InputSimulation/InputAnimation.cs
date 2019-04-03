@@ -221,7 +221,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Find [low, high] bracket of keyframes
             FindKeyframeInterval(time, out InputKeyframe low, out double lowTime, out InputKeyframe high, out double highTime);
 
-            // TODO interpolate/copy camera pose
             if (low != null && high != null)
             {
                 float blend = (float)((double)(time - lowTime) / (double)(highTime - lowTime));
