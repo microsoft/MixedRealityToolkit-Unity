@@ -51,7 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public StringUnityEvent OnDictationError;
 
-        private bool isRecording = false;
         private IMixedRealityDictationSystem dictationSystem;
 
         /// <summary>
@@ -61,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (dictationSystem != null)
             {
-                isRecording = true;
                 dictationSystem.StartRecording(gameObject, initialSilenceTimeout, autoSilenceTimeout, recordingTime);
             }
         }
@@ -74,7 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (dictationSystem != null)
             {
                 dictationSystem.StopRecording();
-                isRecording = false;
             }
         }
 
