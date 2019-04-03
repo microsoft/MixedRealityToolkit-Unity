@@ -16,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class GazeProvider :
         InputSystemGlobalListener,
         IMixedRealityGazeProvider,
-        IMixedRealityEyeGazeProvider
+        IMixedRealityEyeGazeProvider,
+        IMixedRealityInputHandler
     {
         private const float VelocityThreshold = 0.1f;
 
