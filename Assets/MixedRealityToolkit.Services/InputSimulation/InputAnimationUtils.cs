@@ -12,6 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         public static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
+        private static InputSimulationService inputSimService = null;
+        private static InputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<InputSimulationService>());
+
         public static void RecordKeyframe(InputAnimation animation, ulong frame)
         {
             var keyframe = new InputKeyframe();
@@ -153,12 +156,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public static void ApplyInputAnimation(InputAnimation animation, double time)
         {
-            var inputSimService = MixedRealityToolkit.Instance.GetService<InputSimulationService>();
-            if (inputSimService != null)
+            if (InputSimService != null)
             {
-                inputSimService.UserInputEnabled = false;
+                InputSimService.UserInputEnabled = false;
 
-                animation.Interpolate(time, inputSimService.HandDataLeft, inputSimService.HandDataRight, out MixedRealityPose cameraPose);
+                animation.Interpolate(time, InputSimService.HandDataLeft, InputSimService.HandDataRight, out MixedRealityPose cameraPose);
 
                 if (CameraCache.Main)
                 {
