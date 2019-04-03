@@ -1,20 +1,9 @@
-﻿- name: About MRTK
+- name: About MRTK
   items:
-  - name: MRTK-vNext
+  - name: MRTK v2
     href: ../MRTK-vNext.md
   - name: Mixed Reality Services
     href: ../External/Documentation/MixedRealityServices.md
-- name: Contributing
-  href: ../CONTRIBUTING.md
-  items:
-  - name: Feature Contribution Process
-    href: ../Feature_Contribution_Process.md
-  - name: Coding Guidelines
-    href: ../CodingGuidelines.md
-  - name: Documentation Guide
-    href: ../DocumentationGuide.md
-  - name: Developer Docs Generation
-    href: DevDocGuide.md
 - name: How-tos
   href: ../External/HowTo/README.md
   items:
@@ -43,19 +32,35 @@
         href: TODO.md
       - name: Controllers
         href: TODO.md
-    - name: Recommended Interaction Models
+    - name: Interactions and UX Building Blocks
       href: TODO.md
       items:
-      - name: Gaze + Select
-        href: TODO.md
-      - name: Near Interaction
-        href: TODO.md
-      - name: Far Interaction
-        href: TODO.md
-      - name: ET + Voice
-        href: TODO.md
-    - name: UX Building Blocks
-      href: TODO.md
+      - name: Interactable
+        href: README_Interactable.md
+      - name: Obeject Manipulation 
+        href: README_ManipulationHandler.md      
+      - name: Fintertip Visualization
+        href: README_FingertipVisualization.md      
+      - name: Hand Interaction Example 
+        href: README_HandInteractionExamples.md           
+      - name: App Bar
+        href: README_AppBar.md
+      - name: Bounding Box
+        href: README_BoundingBox.md
+      - name: Button
+        href: README_Button.md
+      - name: Object Collection
+        href: README_ObjectCollection.md      
+      - name: Pointers
+        href: README_Pointers.md
+      - name: Slate
+        href: README_Slate.md       
+      - name: System Keyboard
+        href: README_SystemKeyboard.md     
+      - name: Tooltips
+        href: README_Tooltip.md  
+      - name: Solvers
+        href: README_Solver.md     
     - name: Spatial Awareness
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
       items:
@@ -81,6 +86,17 @@
       href: TODO.md
     - name: Moving your project from HTK to MRTK
       href: TODO.md
+- name: Contributing
+  href: ../CONTRIBUTING.md
+  items:
+  - name: Feature Contribution Process
+    href: ../Feature_Contribution_Process.md
+  - name: Coding Guidelines
+    href: ../CodingGuidelines.md
+  - name: Documentation Guide
+    href: ../DocumentationGuide.md
+  - name: Developer Docs Generation
+    href: DevDocGuide.md
 - name: Planning
   items:
   - name: Roadmap
