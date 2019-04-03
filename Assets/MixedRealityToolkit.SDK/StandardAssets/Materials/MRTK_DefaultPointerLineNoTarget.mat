@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MRTK_DefaultPointerLine
+  m_Name: MRTK_DefaultPointerLineNoTarget
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT_USES_HOVER_COLOR _DISABLE_ALBEDO_MAP
+  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT_USES_HOVER_COLOR _EMISSION _INSTANCED_COLOR
     _SPECULAR_HIGHLIGHTS _VERTEX_COLORS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -50,7 +50,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 8e35f9234c1f48f44b660f8bae903a0f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -92,13 +92,13 @@ Material:
     - _ColorWriteMask: 15
     - _CullMode: 2
     - _CustomMode: 2
-    - _Cutoff: 0.5
+    - _Cutoff: 1
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 0
     - _DstBlend: 10
     - _EdgeSmoothingValue: 0.002
     - _EnableChannelMap: 0
-    - _EnableEmission: 0
+    - _EnableEmission: 1
     - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 0
     - _EnableLocalSpaceTriplanarMapping: 0
@@ -116,7 +116,7 @@ Material:
     - _HoverLightOpaque: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 4
-    - _InstancedColor: 0
+    - _InstancedColor: 1
     - _InvFade: 1
     - _Iridescence: 0
     - _IridescenceAngle: -0.78
