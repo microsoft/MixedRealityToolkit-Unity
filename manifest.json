@@ -4618,6 +4618,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ToggleHandVisualisation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.ToggleHandVisualisation.html",
+          "hash": "d0wU1PIyShBpVFYtSG6Avw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.Utilities.InspectorFields.Inspectors.InspectorFieldsExampleInspector.yml",
       "output": {
         ".html": {
@@ -4646,7 +4658,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "nx21EM68HLpxxIyzak+L2Q=="
+          "hash": "D+0p3pAUFFIwuox0IGjbBA=="
         }
       },
       "is_incremental": false,
@@ -6350,7 +6362,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.html",
-          "hash": "rn8SUOBSNMiM3XG+oZ0pkA=="
+          "hash": "RaCcgTBFsKQ/22Sw5Jf9pQ=="
         }
       },
       "is_incremental": false,
@@ -12434,7 +12446,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "27M9cJLQj+tUbhJ6Say/UQ=="
+          "hash": "yyo73mov/RJAm2/woUu2tg=="
         }
       },
       "is_incremental": false,
@@ -12495,7 +12507,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 828,
+          "total_file_count": 829,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
