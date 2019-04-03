@@ -13,9 +13,9 @@ Mouse Device Manager | Mouse
 OpenVR Device Manager | Generic OpenVR, Vive Wand, Vive Knuckles, Oculus Touch, Oculus Remote, Windows Mixed Reality OpenVR
 Unity Joystick Manager | Generic Joystick
 Unity Touch Device Manager | Unity Touch Controller
-Windows Dictation Input Provider | *
+Windows Dictation Input Provider | *None* *
 Windows Mixed Reality Device Manager | WMR Articulated Hand, WMR Controller, WMR GGV Hand
-Windows Speech Input Provider | *
+Windows Speech Input Provider | *None* *
 
 \* Dictation and Speech providers don't create any controllers, they raise their own specialized input events directly.
 

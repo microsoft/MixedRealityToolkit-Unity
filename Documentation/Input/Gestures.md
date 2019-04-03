@@ -15,6 +15,8 @@ Both of these input sources use the _Gesture Settings_ profile to translate Unit
 
 <img src="../../External/ReadMeImages/Input/GestureProfile.png" style="max-width:100%;">
 
+## Gesture Events
+
 Gesture events are received by implementing one of the gesture handler interfaces: [`IMixedRealityGestureHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler)  and [`IMixedRealityGestureHandler<TYPE>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler`1) (see table of [event handlers](InputEvents.md)).
 When implementing the generic version, the *OnGestureCompleted* and *OnGestureUpdated* events can receive typed data of the following types:
 - ```Vector2```
