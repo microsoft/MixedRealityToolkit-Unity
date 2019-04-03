@@ -26,6 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <summary>
         /// The amount of time, in seconds, to collect frames for frame rate calculation.
         /// </summary>
-        float FrameRateDuration { get; }
+        float FrameSampleRate { get; }
     }
 }
