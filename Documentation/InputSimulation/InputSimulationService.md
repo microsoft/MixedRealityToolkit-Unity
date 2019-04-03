@@ -46,9 +46,7 @@ Press and hold the movement keys (W/A/S/D for forward/left/back/right).
 
 ---
 
-<video width="600" controls="controls">
-  <source type="video/mp4" src="../../External/Documentation/Videos/MRTK_InputSimulation_CameraControl.mp4"></source>
-</video>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 # Hand Simulation
 
@@ -91,9 +89,7 @@ Hands can be rotated when precise direction is required.
 
 ---
 
-<video width="600" controls="controls">
-  <source type="video/mp4" src="../../External/Documentation/Videos/MRTK_InputSimulation_HandMovement.mp4"></source>
-</video>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 ## Hand Gestures
 
@@ -122,9 +118,7 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 
 ---
 
-<video width="600" controls="controls">
-  <source type="video/mp4" src="../../External/Documentation/Videos/MRTK_InputSimulation_OneHandManipulation.mp4"></source>
-</video>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rM0xaHam6wM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 ## Two-Hand Manipulation
 
@@ -140,9 +134,7 @@ For manipulating objects with two hands at the same time the persistent hand mod
 
 ---
 
-<video width="600" controls="controls">
-  <source type="video/mp4" src="../../External/Documentation/Videos/MRTK_InputSimulation_TwoHandManipulation.mp4"></source>
-</video>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 ## GGV Interaction
 
@@ -155,6 +147,4 @@ For manipulating objects with two hands at the same time the persistent hand mod
 
 ---
 
-<video width="600" controls="controls">
-  <source type="video/mp4" src="../../External/Documentation/Videos/MRTK_InputSimulation_GGVManipulation.mp4"></source>
-</video>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
