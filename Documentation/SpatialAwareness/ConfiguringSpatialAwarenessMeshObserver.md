@@ -40,7 +40,7 @@ The observer shape defines the type of volume that the mesh observer will use wh
 
 #### Axis Aligned Cube
 
-An axis aligned cube volume is a rectangular shape that stays aligned with the axes of the world coordinate system, as determened at application startup.
+An axis aligned cube volume is a rectangular shape that stays aligned with the axes of the world coordinate system, as determined at application startup.
 
 #### User Aligned Cube
 
@@ -48,7 +48,7 @@ A user aligned cube volume is a rectangular shape that rotates to align with the
 
 ### Observation Extents
 
-The observation extents define the distance from the observation point that meshes will be observed. When the [Observer Shape](#observer-shape) is set to Sphere, the X value of the extents will be used as the radius of the sphere.
+The observation extents define the distance from the observation point that meshes will be observed. When the [Observer Shape](#observer-shape) is set to sphere, the X value of the extents will be used as the radius of the sphere.
 
 ## Physics Settings
 
@@ -64,27 +64,27 @@ Specifies whether or not the mesh observer will recalculate the normals of the m
 
 ## Level of Detail Settings
 
-![Mesh Observer Level of Detail Settings](../../External/ReadMeImages/MeshObserverLevelOfDetailSettings.png)
+![Mesh Observer Level of Detail Settings](../../External/ReadMeImages/SpatialAwareness/MeshObserverLevelOfDetailSettings.png)
 
 ### Level of Detail
 
 Specifies the level of detail (LOD) of the spatial mesh data. Currently defined values are Coarse, Fine and Custom.
 
-The Coarse LOD generally place a smaller impact on application performance and are an excellent choice for navigation and plane finding.
+The Coarse LOD generally places a smaller impact on application performance and are an excellent choice for navigation and plane finding.
 
-The Fine LOD generally exact a higher performance impact on application performance and are a great option for occlusion meshes.
+The Fine LOD generally exacts a higher performance impact on application performance and are a great option for occlusion meshes.
 
-The Custom LOD require the application to specify the [Triangles / Cubic Meter](#triangles-per-cubic-meter) value and allows applications to tune the accuracy vs. performance impact of the spatial mesh observer.
+The Custom LOD requires the application to specify the [Triangles / Cubic Meter](#triangles-per-cubic-meter) value and allows applications to tune the accuracy vs. performance impact of the spatial mesh observer.
 
-> Note: It is not guaranteed that all Triangles/Cubic Meter values are honored by all platforms. Experimentation and profiling is highlu recommended when using a custom LOD. 
+> Note: It is not guaranteed that all Triangles/Cubic Meter values are honored by all platforms. Experimentation and profiling is highly recommended when using a custom LOD. 
 
 ### Triangles per Cubic Meter
 
-When using the Custom [Level of Detail](#level-of-detail), specifies the requested value for the triangle density for the spatial mesh.
+When using the custom [Level of Detail](#level-of-detail), specifies the requested value for the triangle density for the spatial mesh.
 
 ## Display Settings
 
-![Mesh Observer Display Settings](../../External/ReadMeImages/MeshObserverDisplaySettings.png)
+![Mesh Observer Display Settings](../../External/ReadMeImages/SpatialAwareness/MeshObserverDisplaySettings.png)
 
 *Mesh Observer Display Settings*
 
@@ -110,5 +110,5 @@ Indicates the material to be used to cause the spatial mesh to occlude holograms
 - [IMixedRealitySpatialAwarenessObserver API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver)
 - [IMixedRealitySpatialAwarenessMeshObserver API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver)
 - [BaseSpatialObserver API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver)
-- [Spatial Awareness System](SpatialAwarenessSystemGettingStarted.md)
+- [Spatial Awareness System](SpatialAwarenessGettingStarted.md)
 - [Using Spatial Awareness in an Application](../TODO.md)

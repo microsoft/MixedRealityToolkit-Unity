@@ -10,9 +10,9 @@ between holograms and the real-world.
 Adding support for spatial awareness requires two key components of the Mixed Reality Toolkit: the 
 spatial awareness system and a supported platform provider.
 
-1. [Enable](enable-spatial-awareness) the spatial awareness system
-2. [Register](register-observers) and [configure](configure-observers) one or more spatial observers
-3. [Build and deploy](build-and-deploy) to a platform that supports spatial awareness
+1. [Enable](#enable-spatial-awareness) the spatial awareness system
+2. [Register](#register-observers) and [configure](#configure-observers) one or more spatial observers
+3. [Build and deploy](#build-and-deploy) to a platform that supports spatial awareness
 
 ### Enable Spatial Awareness
 
@@ -77,7 +77,7 @@ Once the spatial awareness system is configured with the desired observer(s), th
 and deployed to the target platform.
 
 > Some platforms, including Microsoft HoloLens, provide support for remote execution from within Unity. 
-This feature enables rapid development and testing without requring the build and deploy step. Be sure to do final acceptance testing using an built and deployed version of the application, running 
+This feature enables rapid development and testing without requiring the build and deploy step. Be sure to do final acceptance testing using an built and deployed version of the application, running 
 
 
 ## See Also
