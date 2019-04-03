@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public static string keyboardText = "";
         public TextMesh debugMessage;
 
+#if UNITY_WSA
         private void Update()
         {
             if (keyboard != null)
@@ -28,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 }
             }
         }
+#endif
 
         public void OpenSystemKeyboard()
         {
