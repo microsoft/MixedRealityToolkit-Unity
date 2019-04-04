@@ -26,11 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float epsilonCameraRotation = Mathf.Deg2Rad * 2.0f;
     }
 
-    // [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Input Test Asset", fileName = "InputAnimationAsset", order = 100)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Input Test Asset", fileName = "InputAnimationAsset", order = 100)]
     public class InputAnimationAsset : PlayableAsset
     {
         /// </inheritdoc>
-        public override double duration => (InputAnimation != null) ? Time.fixedUnscaledDeltaTime * InputAnimation.keyframeCount : 0.0;
+        public override double duration => (InputAnimation != null && InputAnimation.keyframeCount > 0) ? InputAnimation.GetTime(InputAnimation.keyframeCount - 1) : 0.0;
 
         /// <summary>
         /// Settings for behaviour of the playable during play mode.

@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public int keyframeCount => keyframes.Count;
 
-        public double GetFrame(int index)
+        public double GetTime(int index)
         {
             return keyframes[index].time;
         }
