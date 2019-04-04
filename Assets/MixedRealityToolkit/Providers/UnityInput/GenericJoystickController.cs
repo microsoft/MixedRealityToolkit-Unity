@@ -103,20 +103,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
-            else
-            {
-                if (interactionMapping.BoolData)
-                {
-                    MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                }
-            }
         }
 
         /// <summary>
         /// Update an Interaction Float data type from a SingleAxis (float) input 
         /// </summary>
         /// <remarks>
-        /// Raises an Input System "Pressed" event when the float data changes
+        /// Raises a Float Input Changed event when the float data changes
         /// </remarks>
         /// <param name="interactionMapping"></param>
         protected void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping)
@@ -150,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     if (interactionMapping.Changed)
                     {
                         // Raise input system Event if it enabled
-                        MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
+                        MixedRealityToolkit.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
                     }
                     return;
                 default:
@@ -169,13 +162,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 else
                 {
                     MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                }
-            }
-            else
-            {
-                if (interactionMapping.BoolData)
-                {
-                    MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, singleAxisValue);
                 }
             }
         }

@@ -13,7 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This class provides Gaze as an Input Source so users can interact with objects using their head.
     /// </summary>
     [DisallowMultipleComponent]
-    public class GazeProvider : InputSystemGlobalListener, IMixedRealityGazeProvider, IMixedRealityEyeGazeProvider, IMixedRealityInputHandler
+    public class GazeProvider :
+        InputSystemGlobalListener,
+        IMixedRealityGazeProvider,
+        IMixedRealityEyeGazeProvider,
+        IMixedRealityInputHandler
     {
         private const float VelocityThreshold = 0.1f;
 
@@ -257,6 +261,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            public override void OnPreCurrentPointerTargetChange()
+            {
+            }
+
             /// <inheritdoc />
             public override Vector3 Position
             {
@@ -429,12 +437,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
-
-        [Obsolete]
-        public void OnInputPressed(InputEventData<float> eventData) { }
-
-        [Obsolete]
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
         #endregion IMixedRealityInputHandler Implementation
 

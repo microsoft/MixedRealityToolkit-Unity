@@ -37,3 +37,8 @@
 	background-color: #000000; 
 	color: white;
 }
+
+.center {
+  display: block;
+  margin: auto;
+}
