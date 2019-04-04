@@ -18,7 +18,7 @@ Related profiles:
 * Mixed Reality Input Action Rules Profile
 * Mixed Reality Pointer Profile
 
-Gaze Provider settings are modified on the Main Camera object in the scene.
+[Gaze Provider](xref:Microsoft.MixedReality.Toolkit.Input.GazeProvider) settings are modified on the Main Camera object in the scene.
 
 Platform support components (e.g., Windows Mixed Reality Device Manager) must be added to their corresponding service's data providers.
 
@@ -65,7 +65,7 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| Setup                     | Add a DictationInputManager to your scene. | Dictation support requires service (e.g., Windows Dictation Input Manager) to be added to the Mixed Reality Registered Services Profile. |
+| Setup                     | Add a DictationInputManager to your scene. | Dictation support requires service (e.g., Windows Dictation Input Manager) to be added to the Input System's data providers. |
 | Event handlers            | `IDictationHandler` | `IMixedRealityDictationHandler`[`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) |
 
 ## Spatial Awareness / Mapping
@@ -74,7 +74,7 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| Setup                     | Add the SpatialMapping prefab to the scene. | Enable the Spatial Awareness System in the Configuration Profile and add a spatial observer (e.g., Windows Mixed Reality Spatial Mesh Observer) to the Registered Services Profile. |
+| Setup                     | Add the SpatialMapping prefab to the scene. | Enable the Spatial Awareness System in the Configuration Profile and add a spatial observer (e.g., Windows Mixed Reality Spatial Mesh Observer) to the Spatial Awareness System's data providers. |
 | Configuration             | Configure the scene instance in the inspector. | Configure the settings on each spatial observer's profile. |
 
 ### Planes
@@ -101,8 +101,8 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| Setup                     | Sharing service: Add Sharing prefab to the scene. UNet: Use SharingWithUNET example. | In-progress in GitHub feature branch (feature/mrtk_sharing) |
-| Configuration             | Configure the scene instances in the inspector. | In-progress in GitHub feature branch (feature/mrtk_sharing) |
+| Setup                     | Sharing service: Add Sharing prefab to the scene. UNet: Use SharingWithUNET example. | In-progress |
+| Configuration             | Configure the scene instances in the inspector. | In-progress |
 
 ## Solvers
 
