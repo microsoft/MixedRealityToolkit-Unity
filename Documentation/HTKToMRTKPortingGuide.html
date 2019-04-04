@@ -1,0 +1,522 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Porting Guide | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Porting Guide | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="porting-guide">Porting Guide</h1>
+
+<h2 id="controller-and-hand-input">Controller and hand input</h2>
+<h3 id="setup-and-configuration">Setup and configuration</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Type</td>
+<td>Specific events for buttons, with input type info when relevant.</td>
+<td>Action / Gesture based input, passed along via events.</td>
+</tr>
+<tr>
+<td>Setup</td>
+<td>Place the InputManager in the scene.</td>
+<td>Enable the input system in the Configuration Profile and specify a concrete input system type.</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td>Configured in the Inspector, on each individual script in the scene.</td>
+<td>Configured via the Mixed Reality Input System Profile and its related profile, listed below.</td>
+</tr>
+</tbody>
+</table>
+<p>Related profiles:</p>
+<ul>
+<li>Mixed Reality Controller Mapping Profile</li>
+<li>Mixed Reality Controller Visualization Profile</li>
+<li>Mixed Reality Gestures Profile</li>
+<li>Mixed Reality Input Actions Profile</li>
+<li>Mixed Reality Input Action Rules Profile</li>
+<li>Mixed Reality Pointer Profile</li>
+</ul>
+<p><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.GazeProvider.html">Gaze Provider</a> settings are modified on the Main Camera object in the scene.</p>
+<p>Platform support components (e.g., Windows Mixed Reality Device Manager) must be added to their corresponding service's data providers.</p>
+<h3 id="interface-and-event-mappings">Interface and event mappings</h3>
+<p>Some events no longer have unique events and now contain a MixedRealityInputAction. These actions are specified in the Input Actions profile and mapped to specific controllers and platforms in the Controller Mapping profile. Events like <code>OnInputDown</code> should now check the MixedRealityInputAction type.</p>
+<table>
+<thead>
+<tr>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+<th>Action Mapping</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IControllerInputHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html"><code>IMixedRealityInputHandler&lt;Vector2&gt;</code></a></td>
+<td>Mapped to the touchpad or thumbstick</td>
+</tr>
+<tr>
+<td><code>IControllerTouchpadHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.html"><code>IMixedRealityInputHandler</code></a></td>
+<td>Mapped to the touchpad</td>
+</tr>
+<tr>
+<td><code>IFocusable</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html"><code>IMixedRealityFocusHandler</code></a></td>
+<td></td>
+</tr>
+<tr>
+<td><code>IGamePadHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html"><code>IMixedRealitySourceStateHandler</code></a></td>
+<td></td>
+</tr>
+<tr>
+<td><code>IHoldHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler.html"><code>IMixedRealityGestureHandler</code></a></td>
+<td>Mapped to hold in the Gestures Profile</td>
+</tr>
+<tr>
+<td><code>IInputClickHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html"><code>IMixedRealityPointerHandler</code></a></td>
+<td></td>
+</tr>
+<tr>
+<td><code>IInputHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.html"><code>IMixedRealityInputHandler</code></a></td>
+<td>Mapped to the controller’s buttons or hand tap</td>
+</tr>
+<tr>
+<td><code>IManipulationHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler-1.html"><code>IMixedRealityGestureHandler&lt;Vector3&gt;</code></a></td>
+<td>Mapped to manipulation in the Gestures Profile</td>
+</tr>
+<tr>
+<td><code>INavigationHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler-1.html"><code>IMixedRealityGestureHandler&lt;Vector3&gt;</code></a></td>
+<td>Mapped to navigation in the Gestures Profile</td>
+</tr>
+<tr>
+<td><code>IPointerSpecificFocusable</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html"><code>IMixedRealityFocusChangedHandler</code></a></td>
+<td></td>
+</tr>
+<tr>
+<td><code>ISelectHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html"><code>IMixedRealityInputHandler&lt;float&gt;</code></a></td>
+<td>Mapped to trigger position</td>
+</tr>
+<tr>
+<td><code>ISourcePositionHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html"><code>IMixedRealityInputHandler&lt;Vector3&gt;</code></a> or <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html"><code>IMixedRealityInputHandler&lt;MixedRealityPose&gt;</code></a></td>
+<td>Mapped to pointer position or grip position</td>
+</tr>
+<tr>
+<td><code>ISourceRotationHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html"><code>IMixedRealityInputHandler&lt;Quaternion&gt;</code></a> or <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html"><code>IMixedRealityInputHandler&lt;MixedRealityPose&gt;</code></a></td>
+<td>Mapped to pointer position or grip position</td>
+</tr>
+<tr>
+<td><code>ISourceStateHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html"><code>IMixedRealitySourceStateHandler</code></a></td>
+<td></td>
+</tr>
+<tr>
+<td><code>IXboxControllerHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.html"><code>IMixedRealityInputHandler</code></a> and <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html"><code>IMixedRealityInputHandler&lt;Vector2&gt;</code></a></td>
+<td>Mapped to the various controller buttons and thumbsticks</td>
+</tr>
+</tbody>
+</table>
+<h2 id="camera">Camera</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup</td>
+<td>Delete MainCamera, add MixedRealityCameraParent / MixedRealityCamera / HoloLensCamera prefab to scene <strong>or</strong> use Mixed Reality Toolkit &gt; Configure &gt; Apply Mixed Reality Scene Settings menu item.</td>
+<td>MainCamera parented under MixedRealityPlayspace via Mixed Reality Toolkit &gt; Add to Scene and Configure...</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td>Camera settings configuration performed on prefab instance.</td>
+<td>Camera settings configured in the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.html">Mixed Reality Camera Profile</a>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="speech">Speech</h2>
+<h3 id="keyword-recognition">Keyword Recognition</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup</td>
+<td>Add a SpeechInputSource to your scene.</td>
+<td>Keyword service (e.g., Windows Speech Input Manager) must be added to the input system's data providers.</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td>Recognized keywords are configured in the SpeechInputSource’s inspector.</td>
+<td>Keywords are configured in the <a href="Input/Speech.html">Mixed Reality Speech Commands Profile</a>.</td>
+</tr>
+<tr>
+<td>Event handlers</td>
+<td><code>ISpeechHandler</code></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html"><code>IMixedRealitySpeechHandler</code></a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="dictation">Dictation</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup</td>
+<td>Add a DictationInputManager to your scene.</td>
+<td>Dictation support requires service (e.g., Windows Dictation Input Manager) to be added to the Input System's data providers.</td>
+</tr>
+<tr>
+<td>Event handlers</td>
+<td><code>IDictationHandler</code></td>
+<td><code>IMixedRealityDictationHandler</code><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html"><code>IMixedRealitySpeechHandler</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="spatial-awareness--mapping">Spatial Awareness / Mapping</h2>
+<h3 id="mesh">Mesh</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup</td>
+<td>Add the SpatialMapping prefab to the scene.</td>
+<td>Enable the Spatial Awareness System in the Configuration Profile and add a spatial observer (e.g., Windows Mixed Reality Spatial Mesh Observer) to the Spatial Awareness System's data providers.</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td>Configure the scene instance in the inspector.</td>
+<td>Configure the settings on each spatial observer's profile.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="planes">Planes</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup</td>
+<td>Use the <code>SurfaceMeshesToPlanes</code> script.</td>
+<td>Not yet implemented.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="spatial-understanding">Spatial Understanding</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup</td>
+<td>Add the SpatialUnderstanding prefab to the scene.</td>
+<td>Not yet implemented.</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td>Configure the scene instance in the inspector.</td>
+<td>Not yet implemented.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="boundary">Boundary</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup</td>
+<td>Add the <code>BoundaryManager</code> script to the scene.</td>
+<td>Enable the Boundary System in the Configuration Profile.</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td>Configure the scene instance in the inspector.</td>
+<td>Configure the settings in the Boundary Visualization profile.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sharing">Sharing</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup</td>
+<td>Sharing service: Add Sharing prefab to the scene. UNet: Use SharingWithUNET example.</td>
+<td>In-progress</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td>Configure the scene instances in the inspector.</td>
+<td>In-progress</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ux">UX</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Button</td>
+<td><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md">Interactable Objects</a></td>
+<td><a href="/Documentation/README_Button.md">Button</a></td>
+</tr>
+<tr>
+<td>Interactable</td>
+<td><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md">Interactable Objects</a></td>
+<td><a href="/Documentation/README_Interactable.md">Interactable</a></td>
+</tr>
+<tr>
+<td>Bounding Box</td>
+<td><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_BoundingBoxGizmoExample.md">Bounding Box</a></td>
+<td><a href="/Documentation/README_BoundingBox.md">Bounding Box</a></td>
+</tr>
+<tr>
+<td>App Bar</td>
+<td><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_BoundingBoxGizmoExample.md">App Bar</a></td>
+<td><a href="/Documentation/README_AppBar.md">App Bar</a></td>
+</tr>
+<tr>
+<td>One Hand Manipulation (Grb and Move)</td>
+<td><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit/Input/Scripts/Utilities/Interactions/HandDraggable.cs">HandDraggable</a></td>
+<td><a href="/Documentation/README_ManipulationHandler.md">Manipulation Handler</a></td>
+</tr>
+<tr>
+<td>Two Hand Manipulation (Grab/Move/Rotate/Scale)</td>
+<td><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit/Input/Scripts/Utilities/Interactions/TwoHandManipulatable.cs">TwoHandManipulatable</a></td>
+<td><a href="/Documentation/README_ManipulationHandler.md">Manipulation Handler</a></td>
+</tr>
+<tr>
+<td>Keyboard</td>
+<td><a href="">Keyboard prefab</a></td>
+<td><a href="/Documentation/README_SystemKeyboard.md">System Keyboard</a></td>
+</tr>
+<tr>
+<td>Tooltip</td>
+<td><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_TooltipExample.md">Tooltip</a></td>
+<td><a href="/Documentation/README_Tooltip.md">Tooltip</a></td>
+</tr>
+<tr>
+<td>Object Collection</td>
+<td><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_ObjectCollection.md">Object Collection</a></td>
+<td><a href="/Documentation/README_ObjectCollection.md">Object Collection</a></td>
+</tr>
+<tr>
+<td>Solver</td>
+<td><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/Utilities/Readme/README_SolverSystem.md">Solver</a></td>
+<td><a href="/Documentation/README_Solver.md">Solver</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="utilities">Utilities</h2>
+<p>Some Utilities have been reconciled as duplicates with the Solver system. Please file an issue if any of your needed scripts are missing.</p>
+<table>
+<thead>
+<tr>
+<th>HTK 2017</th>
+<th>MRTK v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Billboard</td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView.html"><code>RadialView</code></a> <a href="/Documentation/README_Solver.md">Solver</a></td>
+</tr>
+<tr>
+<td>Tagalong</td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView.html"><code>RadialView</code></a> or <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital.html"><code>Orbital</code></a> <a href="/Documentation/README_Solver.md">Solver</a></td>
+</tr>
+<tr>
+<td>FixedAngularSize</td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.html"><code>ConstantViewSize</code></a> <a href="/Documentation/README_Solver.md">Solver</a></td>
+</tr>
+<tr>
+<td>FpsDisplay</td>
+<td><a href="Diagnostics/DiagnosticsSystemGettingStarted.html">Diagnostics System</a> (in Configuration Profile)</td>
+</tr>
+<tr>
+<td>NearFade</td>
+<td>Built-in to MixedRealityStandard.shader</td>
+</tr>
+</tbody>
+</table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/HTKToMRTKPortingGuide.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
