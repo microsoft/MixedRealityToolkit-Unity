@@ -4,7 +4,7 @@ The Boundary system provides support for visualizing Virtual Reality boundary co
 mixed reality applications. Boundaries define the area in which users can move around 
 while wearing a VR headset.
 
-Boundaries are an important component of a mixed reality experince to help users avoid unseen 
+Boundaries are an important component of a mixed reality experience to help users avoid unseen 
 obstacles while wearing a VR headset.
 
 Many Virtual Reality platforms provide automatic display, for example a white outline 
