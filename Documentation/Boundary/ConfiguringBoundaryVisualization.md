@@ -108,5 +108,5 @@ The layer on which the boundary walls should be set. The default value is the Ig
 
 ## See Also
 
-- [Boundary System](BoundaryGettingStarted.md)
+- [Boundary System](BoundarySystemGettingStarted.md)
 - [Using Boundaries in an Application](../TODO.md)
