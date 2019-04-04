@@ -12,11 +12,13 @@
     items:
     - name: Downloading MRTK
       href: DownloadingTheMRTK.md
+    - name: Upgrading from the HoloToolkit (HTK)
+      href: HTKToMRTKPortingGuide.md
   - name: Core Features
     href: TODO.md
     items:
     - name: Packages
-      href: TODO.md
+      href: Packaging/MRTK_Packages.md
     - name: Service Provider
       href: MixedRealityConfigurationGuide.md
     - name: Boundary System
