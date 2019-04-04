@@ -104,9 +104,19 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 | Setup                     | Sharing service: Add Sharing prefab to the scene. UNet: Use SharingWithUNET example. | In-progress |
 | Configuration             | Configure the scene instances in the inspector. | In-progress |
 
-## Solvers
+## UX
+|                           | HTK 2017 |  MRTK v2  |
+|---------------------------|----------|-----------|
+| Button                     | [Interactable Objects](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md) | [Button](/Documentation/README_Button.md) |
+| Bounding Box             | [Bounding Box](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_BoundingBoxGizmoExample.md) | [Bounding Box](/Documentation/README_BoundingBox.md) |
+| App Bar             | [Bounding Box](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_BoundingBoxGizmoExample.md) | [App Bar](/Documentation/README_AppBar.md) |
+| One Hand Manipulation (Grb and Move)   | [HandDraggable](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit/Input/Scripts/Utilities/Interactions/HandDraggable.cs) | [Manipulation Handler](/Documentation/README_ManipulationHandler.md) |
+| Two Hand Manipulation (Grab/Move/Rotate/Scale)             | [TwoHandManipulatable](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit/Input/Scripts/Utilities/Interactions/TwoHandManipulatable.cs) | [Manipulation Handler](/Documentation/README_ManipulationHandler.md) |
+| Keyboard             | [Keyboard prefab]() | [System Keyboard](/Documentation/README_SystemKeyboard.md) |
+| Tooltip             | [Tooltip](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_TooltipExample.md) | [Tooltip](/Documentation/README_Tooltip.md) |
+| Object Collection             | [Object Collection](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_ObjectCollection.md) | [Object Collection](/Documentation/README_ObjectCollection.md) |
+| Solver             | [Solver](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/Utilities/Readme/README_SolverSystem.md) | [Solver](/Documentation/README_Solver.md) |
 
-Solvers are configured and should behave the same way as the HoloToolkit.
 
 ## Utilities
 
@@ -114,14 +124,9 @@ Some Utilities have been reconciled as duplicates with the Solver system. Please
 
 | HTK 2017 |  MRTK v2  |
 |----------|-----------|
-| Billboard | [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView) |
-| Tagalong | [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView) or [`Orbital`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital) |
-| FixedAngularSize | [`ConstantViewSize`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize) |
+| Billboard | [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView) [Solver](/Documentation/README_Solver.md) |
+| Tagalong | [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView) or [`Orbital`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital) [Solver](/Documentation/README_Solver.md) |
+| FixedAngularSize | [`ConstantViewSize`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize) [Solver](/Documentation/README_Solver.md) |
 | FpsDisplay | [Diagnostics System](Diagnostics/DiagnosticsSystemGettingStarted.md) (in Configuration Profile) |
 | NearFade | Built-in to MixedRealityStandard.shader |
 
-## UX
-
-### Object Collection
-
-Object collections are configured and should behave the same way as the HoloToolkit.
