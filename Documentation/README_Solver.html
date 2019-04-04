@@ -105,7 +105,7 @@
 <ul>
 <li>Add the desired behavior to an object. <strong>SolverHandler</strong> will be added automatically. You can mix and match, their order will change how the object behaves at runtime.</li>
 <li><strong>SolverHandler</strong> has two fields for setting the reference object. You can choose a tracked object (such as the user camera or L/R motion controllers), or instead use the <strong>TransformTarget</strong> field which overrides any set tracked object. This enables you to have solvers reference any scene object. Yes, that means objects can have tag alongs and cast surface magnetism as well as tracked objects. Very handy.</li>
-<li>Surface magnatism scripts rely on a <em>LayerMask</em> for raycasting. As a recommendation, create a custom <em>LayerMask</em> (the example uses <em>Surface</em>). Note that using <em>default</em> or <em>everything</em> will result in UI components or cursors contributing to the solver. This can produce weird and unexpected behavior. Objects lurching toward you etc...</li>
+<li>Surface magnetism scripts rely on a <em>LayerMask</em> for raycasting. As a recommendation, create a custom <em>LayerMask</em> (the example uses <em>Surface</em>). Note that using <em>default</em> or <em>everything</em> will result in UI components or cursors contributing to the solver. This can produce weird and unexpected behavior. Objects lurching toward you etc...</li>
 </ul>
 <img src="/External/ReadMeImages/Solver/MRTK_Solver_Orbital.png" width="450">
 <p>Example of using Orbital solver in the <a href="README_Slate.html">Slate</a> prefab.</p>
@@ -116,7 +116,7 @@
 </ul>
 <h2 id="known-issues">Known Issues</h2>
 <ul>
-<li>Sometimes solvers behave differently than one may expect based on the order in which they're executed. Previous solvers can change or even neutralize the behavior of earlier sovlers. Try re-arranging their execution order if the settings on a particular solver aren't having the desired effect.</li>
+<li>Sometimes solvers behave differently than one may expect based on the order in which they're executed. Previous solvers can change or even neutralize the behavior of earlier solvers. Try re-arranging their execution order if the settings on a particular solver aren't having the desired effect.</li>
 </ul>
 </article>
           </div>

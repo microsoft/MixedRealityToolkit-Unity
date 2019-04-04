@@ -132,7 +132,7 @@ More examples can also be found in the HandInteractionExamples scene.</p>
 <img src="/External/ReadMeImages/Interactable/Theme.png" width="450">
 <p>Example of a Color Theme</p>
 <p>The best way to save a profile of a button, with all the themes and targets setup, is to create a prefab of your button.
-<em>Note: Themes that effect mesh objects (Color or Shader Themes) are able to detect the shader properties in the material assigned to the target object. A drop down list of shader properties will define how the values of the theme are applied and is a conveience of this ability. Conflicts can arrise if the same theme is used on objects that do not share the same material shader setting. Best practice is to create a seperate theme for objects with different shaders; this is not an issue when using the same Color Theme on a text object and a mesh object, because all the shader properties are ignored on text objects.</em></p>
+<em>Note: Themes that effect mesh objects (Color or Shader Themes) are able to detect the shader properties in the material assigned to the target object. A drop down list of shader properties will define how the values of the theme are applied and is a convenience of this ability. Conflicts can arise if the same theme is used on objects that do not share the same material shader setting. Best practice is to create a separate theme for objects with different shaders; this is not an issue when using the same Color Theme on a text object and a mesh object, because all the shader properties are ignored on text objects.</em></p>
 <h3 id="creating-toggles">Creating Toggles</h3>
 <p>Toggle or multi-step buttons can be created in the Profile using the Dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the Dimensions value is increased, slots for additional themes are provided for each item in the Profile. This allows for a Normal Theme and a Toggled Theme to be used depending if the Interactable is toggled or not. </p>
 <img src="/External/ReadMeImages/Interactable/Profile_toggle.png" width="450">
@@ -157,7 +157,7 @@ Search Scope provides a preferred path to search for an Interactable if one is n
 <p>Interactable States provides two major roles.</p>
 <ul>
 <li>Establish a list of states that we care about. This list will be displayed in the themes and can also be referenced by the events.</li>
-<li>Controls how different interaction phases are ranked into states. For instance, a press state is also in a focused state, but the InteractableStates class will define it is a press state based on the ranking preferences setup in the State scriptableObject.</li>
+<li>Controls how different interaction phases are ranked into states. For instance, a press state is also in a focused state, but the InteractableStates class will define it is a press state based on the ranking preferences setup in the State ScriptableObject.</li>
 </ul>
 <img src="/External/ReadMeImages/Interactable/StatesScriptableObject.png" width="450">
 <p>The InteractableStates State Model will handle any state list with a layered ranking system, starting with the most isolated state and ending with the state that could contain all other states.</p>
@@ -253,7 +253,7 @@ Though there is a definite state that is defined with state.CurrentState(), the 
             bool isDefault = state.GetState(InteractableStates.InteractableStateEnum.Default).Value &gt; 0;
             bool hasGesture = state.GetState(InteractableStates.InteractableStateEnum.Gesture).Value &gt; 0;
             bool hasGestureMax = state.GetState(InteractableStates.InteractableStateEnum.GestureMax).Value &gt; 0;
-            bool hasCollistion = state.GetState(InteractableStates.InteractableStateEnum.Collision).Value &gt; 0;
+            bool hasCollision = state.GetState(InteractableStates.InteractableStateEnum.Collision).Value &gt; 0;
             bool hasPhysicalTouch = state.GetState(InteractableStates.InteractableStateEnum.PhysicalTouch).Value &gt; 0;
             bool hasCustom = state.GetState(InteractableStates.InteractableStateEnum.Custom).Value &gt; 0;
             or:
