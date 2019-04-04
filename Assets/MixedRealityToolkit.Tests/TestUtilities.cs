@@ -5,6 +5,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Playables;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
@@ -51,24 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             cameraObject.tag = "MainCamera";
         }
 
-        public static IEnumerator LoadTestSceneAsync(string sceneName)
-        {
-            var loadSceneOp = SceneManager.LoadSceneAsync(sceneName);
-            loadSceneOp.allowSceneActivation = true;
-            while (!loadSceneOp.isDone)
-            {
-                yield return null;
-            }
-            testScene = SceneManager.GetActiveScene();
-
-            // Tests
-            Assert.IsTrue(testScene.IsValid());
-            Assert.IsTrue(testScene.isLoaded);
-            Assert.IsTrue(MixedRealityToolkit.IsInitialized);
-            Assert.IsNotNull(MixedRealityToolkit.Instance);
-            Assert.IsTrue(MixedRealityToolkit.Instance.HasActiveProfile);
-        }
-
         public static void InitializeMixedRealityToolkit()
         {
             MixedRealityToolkit.ConfirmInitialized();
@@ -106,6 +89,44 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #else
             return ScriptableObject.CreateInstance<T>();
 #endif
+        }
+
+        public static IEnumerator LoadTestSceneAsync(string sceneName)
+        {
+            var loadSceneOp = SceneManager.LoadSceneAsync(sceneName);
+            loadSceneOp.allowSceneActivation = true;
+            while (!loadSceneOp.isDone)
+            {
+                yield return null;
+            }
+            testScene = SceneManager.GetActiveScene();
+
+            // Tests
+            Assert.IsTrue(testScene.IsValid());
+            Assert.IsTrue(testScene.isLoaded);
+            Assert.IsTrue(MixedRealityToolkit.IsInitialized);
+            Assert.IsNotNull(MixedRealityToolkit.Instance);
+            Assert.IsTrue(MixedRealityToolkit.Instance.HasActiveProfile);
+        }
+
+        public static IEnumerator RunPlayableGraphAsync(PlayableDirector director = null)
+        {
+            if (!director)
+            {
+                director = Object.FindObjectOfType<PlayableDirector>();
+            }
+            if (!director)
+            {
+                yield break;
+            }
+
+            director.Play();
+
+            var graph = director.playableGraph;
+            while (graph.IsPlaying())
+            {
+                yield return null;
+            }
         }
     }
 }

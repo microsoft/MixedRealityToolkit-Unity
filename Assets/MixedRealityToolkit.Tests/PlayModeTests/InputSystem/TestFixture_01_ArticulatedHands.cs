@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.TestTools;
 using System.Collections;
 
@@ -75,41 +74,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
                 yield return new WaitForFixedUpdate();
             }
 
-            var mrtk = MixedRealityToolkit.Instance;
-            var director = mrtk.gameObject.GetComponent<PlayableDirector>();
-            if (!director)
+            var playOp = TestUtilities.RunPlayableGraphAsync();
+            while (playOp.MoveNext())
             {
-                yield break;
-            }
+                // INSERT TEST CONDITIONS HERE
 
-            director.Play();
-
-            var graph = director.playableGraph;
-            while (graph.IsPlaying())
-            {
                 yield return new WaitForFixedUpdate();
             }
-
-            // while (!graph.IsDone())
-            // {
-            //     yield return new WaitForFixedUpdate();
-            // }
-
-            // var sequence = Resources.Load<InputAnimation>("InputAnimation");
-            // int startFrame = Time.frameCount;
-            // int lastFrame = startFrame + sequence.InputCurve.GetFrame(sequence.InputCurve.keyframeCount - 1);
-
-            // var stopwatch = new System.Diagnostics.Stopwatch();
-            // stopwatch.Start();
-            // while (Time.frameCount < lastFrame)
-            // {
-            //     var frame = Time.frameCount - startFrame;
-
-            //     InputAnimationUtils.ApplyInputAnimation(sequence, frame);
-
-            //     yield return new WaitForFixedUpdate();
-            // }
-            // stopwatch.Stop();
         }
 
         [TearDown]
