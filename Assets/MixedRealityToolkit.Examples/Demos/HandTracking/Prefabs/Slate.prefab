@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 7779420038095343090}
   - component: {fileID: 7779420038095343085}
   - component: {fileID: 7779420038095343089}
-  - component: {fileID: 7505582399050348638}
+  - component: {fileID: 6478522880476602763}
   m_Layer: 0
   m_Name: ContentQuad
   m_TagString: Untagged
@@ -444,7 +444,7 @@ MonoBehaviour:
   touchableSurface: 0
   bounds: {x: 1, y: 0.99999946}
   touchableCollider: {fileID: 7779420038095343090}
---- !u!114 &7505582399050348638
+--- !u!114 &6478522880476602763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -453,20 +453,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 7779420038095343086}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 719d5ec15dc67ac45bc3ed3b137abb06, type: 3}
+  m_Script: {fileID: 11500000, guid: ef1a57c42d928dc49b7c947623b2b2ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   focusEnabled: 1
-  touchType: 0
-  panEventReceivers: []
+  isEnabled: 1
+  enableZoom: 1
   lockHorizontal: 1
   lockVertical: 0
   wrapTexture: 1
   velocityActive: 1
-  velocityDamping: {x: 0.9, y: 0.9}
-  springActive: 0
-  isEnabled: 1
-  touchVisual: {fileID: 0}
+  velocityDampingX: 0.9
+  velocityDampingY: 0.9
+  panZoomSmoothing: 80
+  panEventReceivers: []
+  reticle: {fileID: 0}
+  leftPoint: {fileID: 0}
+  rightPoint: {fileID: 0}
 --- !u!1 &7779420038487776842
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,6 +1099,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pressable Button (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 316800721, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
+      propertyPath: minPressDepth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316800721, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
+      propertyPath: withdrawActivationAmount
+      value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 316800721, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
+      propertyPath: buttonSizeRelativeToCollider
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 937783102, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: m_havePropertiesChanged
       value: 0
@@ -1214,18 +1229,6 @@ PrefabInstance:
         type: 3}
       propertyPath: localCenter.z
       value: -0.008
-      objectReference: {fileID: 0}
-    - target: {fileID: 316800721, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
-      propertyPath: minPressDepth
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 316800721, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
-      propertyPath: withdrawActivationAmount
-      value: 0.0001
-      objectReference: {fileID: 0}
-    - target: {fileID: 316800721, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
-      propertyPath: buttonSizeRelativeToCollider
-      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2951882602880698967, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
