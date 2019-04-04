@@ -35,9 +35,9 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 
 ## Events and Event Data
 
-- [IMixedRealitySpatialAwarenessObservationHandler<T>](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObservationHandler-1)
+- [IMixedRealitySpatialAwarenessObservationHandler<T>](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObservationHandler`1)
 - [MixedRealitySpatialAwarenessEventData](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessEventData)
-- [MixedRealitySpatialAwarenessEventData<T>](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessEventData-1)
+- [MixedRealitySpatialAwarenessEventData<T>](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessEventData`1)
 
 ## Profiles
 

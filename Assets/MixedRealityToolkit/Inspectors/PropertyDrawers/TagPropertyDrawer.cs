@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// public string FindTag;
     /// </code>
     /// </example>
-    /// <seealso cref="UnityEditor.PropertyDrawer" />
     [CustomPropertyDrawer(typeof(TagPropertyAttribute))]
     public class TagPropertyDrawer : PropertyDrawer
     {

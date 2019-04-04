@@ -20,17 +20,29 @@
     - name: Service Provider
       href: MixedRealityConfigurationGuide.md
     - name: Input
-      href: TODO.md
+      href: Input/Overview.md
       items:
+      - name: Input Providers
+        href: Input/InputProviders.md
+      - name: Input Events
+        href: Input/InputEvents.md
+      - name: Input Actions
+        href: Input/InputActions.md
+      - name: Controllers
+        href: Input/Controllers.md
+      - name: Pointers
+        href: Input/Pointers.md
+      - name: Gestures
+        href: Input/Gestures.md
+      - name: Speech
+        href: Input/Speech.md
+      - name: Dictation
+        href: Input/Dictation.md
       - name: Hands
-        href: TODO.md
-      - name: Voice
-        href: TODO.md
+        href: InputSystem/HandTracking.md
       - name: Eye
         href: TODO.md
       - name: Gaze
-        href: TODO.md
-      - name: Controllers
         href: TODO.md
     - name: Interactions and UX Building Blocks
       href: TODO.md
@@ -65,11 +77,15 @@
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
       items:
       - name: Configuring the Spatial Awareness Mesh Observer
-        href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
     - name: In-Editor Input Simulation
-      href: TODO.md
-    - name: Performance Diagnostic Tool
-      href: TODO.md
+      href: InputSimulation/InputSimulationService.md
+    - name: Diagnostics System
+      href: Diagnostics/DiagnosticsSystemGettingStarted.md
+      items:
+      - name: Configuring the Diagnostics System
+        href: Diagnostics/ConfiguringDiagnostics.md
+      - name: Using the Visual Profiler
+        href: TODO.md
   - name: Other Features
     href: TODO.md
     items:
