@@ -81,6 +81,8 @@ A typical input animation test is shown below. It loads a scene by name and then
 The `RunPlayableGraphAsync` function looks for the first _PlayableDirector_ component in the scene. If there are multiple timelines in the scene they can be disambiguated by passing an explicit PlayableDirector.
 
 ```csharp
+public class TestFixture_01_MyInputTest
+{
   [UnityTest]
   public IEnumerator Test01_MyInputTest()
   {
@@ -98,6 +100,19 @@ The `RunPlayableGraphAsync` function looks for the first _PlayableDirector_ comp
       yield return new WaitForFixedUpdate();
     }
   }
+}
+```
+
+Tests can be run in the Unity editor directly from the _Test Runner_ window (_Window > General > Test Runner_)
+
+<a target="_blank" href="../../External/Documentation/Images/MRTK_InputTestRecording_TestRunner.png">
+  <img src="../../External/Documentation/Images/MRTK_InputTestRecording_TestRunner.png" title="Hand Tracking Profile" width="50%" class="center" />
+</a>
+
+Alternatively they can be executed from the command line (_replace paths as needed!_):
+
+```bash
+"C:\Program Files\Unity\Editor\Unity.exe" -runTests -testPlatform playmode -projectPath "D:\mrtk" -batchmode -logFile "D:\mrtk_tests.log" -editorTestsResultFile "D:\mrtk_test_results.xml"
 ```
 
 # Define test conditions
