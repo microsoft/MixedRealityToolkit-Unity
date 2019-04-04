@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
@@ -71,11 +70,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             // Assigning values to base PanZoom class
             textureRenderer = rendererOfTextureToBeNavigated;
 
-            ZoomAcceleration = zoomAcceleration;
-            ZoomSpeedMax = zoomSpeedMax;
-            ZoomMinScale = zoomMinScale;
-            ZoomMaxScale = zoomMaxScale;
-            ZoomGestureEnabledOnStartup = zoomGestureEnabledOnStartup;
+            base.zoomAcceleration = zoomAcceleration;
+            base.zoomSpeedMax = zoomSpeedMax;
+            base.zoomMinScale = zoomMinScale;
+            base.zoomMaxScale = zoomMaxScale;
+            base.zoomGestureEnabledOnStartup = zoomGestureEnabledOnStartup;
             timeInSecondsToZoom = zoomTimeInSecToZoom;
 
             autoGazePanIsActive = panAutoScrollIsActive;
@@ -91,10 +90,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             UpdateValues(ref textureRenderer, rendererOfTextureToBeNavigated);
 
-            UpdateValues(ref ZoomAcceleration, zoomAcceleration);
-            UpdateValues(ref ZoomSpeedMax, zoomSpeedMax);
-            UpdateValues(ref ZoomMinScale, zoomMinScale);
-            UpdateValues(ref ZoomMaxScale, zoomMaxScale);
+            UpdateValues(ref base.zoomAcceleration, zoomAcceleration);
+            UpdateValues(ref base.zoomSpeedMax, zoomSpeedMax);
+            UpdateValues(ref base.zoomMinScale, zoomMinScale);
+            UpdateValues(ref base.zoomMaxScale, zoomMaxScale);
             UpdateValues(ref timeInSecondsToZoom, zoomTimeInSecToZoom);
 
             UpdateValues(ref autoGazePanIsActive, panAutoScrollIsActive);
