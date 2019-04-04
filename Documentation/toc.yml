@@ -81,7 +81,7 @@
     href: TODO.md
     items:
     - name: Performance
-      href: Performance/GettingStarted.md
+      href: Performance/PerfGettingStarted.md
     - name: Shared Experiences
       href: TODO.md
     - name: Moving your project from HTK to MRTK
