@@ -450,7 +450,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "6P+8BkFh0XCcN6m+tiiSYQ=="
+          "hash": "GUmH3CekaDgQlm/b7qPDbg=="
         }
       },
       "is_incremental": false,
@@ -5222,7 +5222,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html",
-          "hash": "UA4VwK0Kj7F6vCD+SnYfZA=="
+          "hash": "P9BzIEc1au4kR9d36lJy0g=="
         }
       },
       "is_incremental": false,
@@ -5307,30 +5307,6 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DictationEventData.html",
           "hash": "1m7rZ9Pe992AFKYOzc4M4w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.DictationHandler.StringUnityEvent.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DictationHandler.StringUnityEvent.html",
-          "hash": "tvtSiDojlRskJF3kBRejjA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.DictationHandler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DictationHandler.html",
-          "hash": "obm/JkjaXKibiFhjlqLF1Q=="
         }
       },
       "is_incremental": false,
@@ -7322,7 +7298,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "OG1eLubq6SCKXEuQ3+HoXw=="
+          "hash": "+s9cICuGAQfghBK6uonk6w=="
         }
       },
       "is_incremental": false,
@@ -12794,7 +12770,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "fDsT0yMTQ3dfRMLn3Kp9Vw=="
+          "hash": "uUTUHNmAiXYVkpJoG+BA3g=="
         }
       },
       "is_incremental": false,
@@ -12853,16 +12829,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 840,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 63,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 842,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
