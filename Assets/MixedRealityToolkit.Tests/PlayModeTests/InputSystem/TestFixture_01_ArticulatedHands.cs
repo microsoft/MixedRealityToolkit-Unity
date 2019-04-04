@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.TestTools;
 using System.Collections;
 
@@ -68,20 +69,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [UnityTest]
         public IEnumerator Test02_TestControllerSequence()
         {
-            var initOp = TestUtilities.InitializeMixedRealityToolkitScene(true);
-            while (initOp.MoveNext())
+            var loadOp = TestUtilities.LoadTestSceneAsync("TestInputSystemGGV");
+            while (loadOp.MoveNext())
             {
                 yield return new WaitForFixedUpdate();
             }
 
-            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-            playspace.transform.position = new Vector3(1.0f, 1.5f, -2.0f);
-            playspace.transform.LookAt(Vector3.zero);
+            var mrtk = MixedRealityToolkit.Instance;
+            var director = mrtk.gameObject.GetComponent<PlayableDirector>();
+            if (!director)
+            {
+                yield break;
+            }
 
-            var inputSimService = MixedRealityToolkit.Instance.GetService<InputSimulationService>();
-            // Disable keyboard and mouse input
-            inputSimService.UserInputEnabled = false;
-            inputSimService.Update();
+            director.Play();
+
+            var graph = director.playableGraph;
+            while (graph.IsPlaying())
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            // while (!graph.IsDone())
+            // {
+            //     yield return new WaitForFixedUpdate();
+            // }
 
             // var sequence = Resources.Load<InputAnimation>("InputAnimation");
             // int startFrame = Time.frameCount;
