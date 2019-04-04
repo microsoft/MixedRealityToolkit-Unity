@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     OnSourceDetected(inputSource);
                 }
 
-                MixedRealityToolkit.InputSystem?.Register(gameObject);
+                MixedRealityToolkit.InputSystem.Register(gameObject);
             }
         }
 
@@ -75,6 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (MixedRealityToolkit.InputSystem != null)
             {
+                MixedRealityToolkit.InputSystem.Unregister(gameObject);
+
                 foreach (IMixedRealityInputSource inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
                 {
                     OnSourceLost(inputSource);
@@ -82,8 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // Process once more to handle pointer removals.
                 Process();
-
-                MixedRealityToolkit.InputSystem.Unregister(gameObject);
             }
 
             RaycastCamera = null;
