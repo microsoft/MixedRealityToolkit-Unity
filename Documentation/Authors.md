@@ -15,6 +15,7 @@ The Mixed Reality Toolkit v2 is authored by:
 - Alexees
 - andreiborodin
 - Cameron-Micka
+- chbecker
 - chrisfromwork
 - cre8ivepark
 - danielhofmann-ms
@@ -34,6 +35,7 @@ The Mixed Reality Toolkit v2 is authored by:
 - Nakda
 - Nick K.
 - Norbert Nemec
+- paco-ms
 - phosphoer
 - radicalad
 - Railboy
