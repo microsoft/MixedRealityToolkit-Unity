@@ -70,10 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [Range(0, 10)]
         private float skimProofUpdateSpeed = 5f;
 
-        // The base PanAndZoom class can also be used with UV textures for which the dimensions are different to a RectTransform.
-        // To allow to keep the speed values that users can assign consistent, let's internally convert the values.
-        private float convertSpeedToUVSpace = -200.0f;
-
         protected override void Start()
         {
             // Assigning values to base PanZoom class
