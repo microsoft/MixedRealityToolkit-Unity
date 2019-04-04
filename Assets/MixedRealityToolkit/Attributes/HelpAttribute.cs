@@ -8,7 +8,6 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// A PropertyAttribute for showing a collapsable Help section.
     /// </summary>
-    /// <seealso cref="UnityEngine.PropertyAttribute" />
     [AttributeUsage(AttributeTargets.Field|AttributeTargets.Property, AllowMultiple = false)]
     public class HelpAttribute : PropertyAttribute
     {
