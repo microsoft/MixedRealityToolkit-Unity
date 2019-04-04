@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Input Simulation Service | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Input Simulation Service | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="input-simulation-service">Input Simulation Service</h1>
+
+<p>The Input Simulation Service emulates the behaviour of devices and platforms that may not be available in the Unity editor. Examples include:</p>
+<ul>
+<li>Hololens or VR device head tracking</li>
+<li>Hololens hand gestures</li>
+<li>Hololens 2 articulated hand tracking</li>
+</ul>
+<p>Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.</p>
+<h2 id="enabling-the-input-simulation-service">Enabling the Input Simulation Service</h2>
+<p>Input simulation is enabled by default in MRTK.</p>
+<p>Input simulation is an optional <a href="../../External/Documentation/MixedRealityServices.html">Mixed Reality service</a>. It can be added as a data provider in the <a href="../TODO.html">Input System profile</a>.</p>
+<ul>
+<li><p><strong>Type</strong> must be <em>Microsoft.MixedReality.Toolkit.Input &gt; InputSimulationService</em>.</p>
+</li>
+<li><p><strong>Platform(s)</strong> should always be <em>Windows Editor</em> since the service depends on keyboard and mouse input.</p>
+</li>
+<li><p><strong>Profile</strong> has all settings for input simulation.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Warning</strong>: Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type <em>Input Simulation</em> or it will not work!</th>
+</tr>
+</thead>
+</table>
+</li>
+</ul>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_InputSystemDataProviders.png">
+  <img src="../../External/Documentation/Images/MRTK_InputSimulation_InputSystemDataProviders.png" title="Full Hand Mesh" width="80%" class="center">
+</a>
+<p>Open the linked profile to access settings for input simulation.</p>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_InputSimulationProfile.png">
+  <img src="../../External/Documentation/Images/MRTK_InputSimulation_InputSimulationProfile.png" title="Full Hand Mesh" width="80%" class="center">
+</a>
+<h1 id="camera-control">Camera Control</h1>
+<p>Head movement can be emulated by the Input Simulation Service.</p>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_CameraControlSettings.png">
+  <img src="../../External/Documentation/Images/MRTK_InputSimulation_CameraControlSettings.png" title="Full Hand Mesh" width="80%" class="center">
+</a>
+<h2 id="rotating-the-camera">Rotating the camera</h2>
+<ol>
+<li><p>Hover over the viewport editor window.</p>
+<p><em>You may need to click the window to give it input focus if button presses don't work.</em></p>
+</li>
+<li><p>Press and hold the <strong>Mouse Look Button</strong> (default: Right mouse button).</p>
+</li>
+<li><p>Move the mouse in the viewport window to rotate the camera.</p>
+</li>
+</ol>
+<h2 id="moving-the-camera">Moving the camera</h2>
+<p>Press and hold the movement keys (W/A/S/D for forward/left/back/right).</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<h1 id="hand-simulation">Hand Simulation</h1>
+<p>The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabable objects.</p>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_HandSimulationMode.png">
+  <img src="../../External/Documentation/Images/MRTK_InputSimulation_HandSimulationMode.png" title="Full Hand Mesh" width="80%" class="center">
+</a>
+<p>The <strong>Hand Simulation Mode</strong> switches between two distinct input models.</p>
+<ul>
+<li><p><em>Articulated Hands</em>: Simulates a fully articulated hand device with joint position data.</p>
+<p>Emulates Hololens 2 interaction model.</p>
+<p>Interactions that are based on precise positioning of the hand or use touching can be simulated in this mode.</p>
+</li>
+<li><p><em>Gestures</em>: Simulates a simplified hand model with air tap and basic gestures.</p>
+<p>Emulates <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/gestures">Hololens interaction model</a>.</p>
+<p>Focus is controlled using the Gaze pointer. The <em>Air Tap</em> gesture is used to interact with buttons.</p>
+</li>
+</ul>
+<h2 id="controlling-hand-movement">Controlling hand movement</h2>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_HandControlSettings.png">
+  <img src="../../External/Documentation/Images/MRTK_InputSimulation_HandControlSettings.png" title="Full Hand Mesh" width="80%" class="center">
+</a>
+<p>Press and hold the <em>Left/Right Hand Manipulation Key</em> (default: Left Shift/Space for left/right respectively) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Mouse movement will move the hand in the view plane.</p>
+<p>Once the manipulation key is released the hands will disappear after a short <em>Hand Hide Timeout</em>. To toggle hands on permanently, press the <em>Toggle Left/Right Hand Key</em> (default: T/Y for left/right respectively). Press the toggle key again to hide the hands again.</p>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_HandPlacementSettings.png">
+  <img src="../../External/Documentation/Images/MRTK_InputSimulation_HandPlacementSettings.png" title="Full Hand Mesh" width="80%" class="center">
+</a>
+<p>Hands can be moved further or closer to the camera using the <em>mouse wheel</em>.</p>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_HandRotationSettings.png">
+  <img src="../../External/Documentation/Images/MRTK_InputSimulation_HandRotationSettings.png" title="Full Hand Mesh" width="80%" class="center">
+</a>
+<p>Hands can be rotated when precise direction is required.</p>
+<ul>
+<li>Yaw rotates around the Y axis (default: E/Q keys for clockwise/counter-clockwise rotation)</li>
+<li>Pitch rotates around the X axis (default: F/R keys for clockwise/counter-clockwise rotation)</li>
+<li>Roll rotates around the Z axis (default: X/Z keys for clockwise/counter-clockwise rotation)</li>
+</ul>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<h2 id="hand-gestures">Hand Gestures</h2>
+<p>Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.</p>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_HandGestureSettings.png">
+  <img src="../../External/Documentation/Images/MRTK_InputSimulation_HandGestureSettings.png" title="Full Hand Mesh" width="80%" class="center">
+</a>
+<ol>
+<li><p>First enable hand control using the manipulation keys (Left Shift/Space)</p>
+<p>Alternatively toggle the hands on/off using the toggle keys (T/Y).</p>
+</li>
+<li><p>While manipulating, press and hold a mouse button to perform a hand gesture.</p>
+</li>
+</ol>
+<p>Each of the mouse buttons can be mapped to transform the hand shape into a different gesture using the <em>Left/Middle/Right Mouse Hand Gesture</em> settings. The <em>Default Hand Gesture</em> is the shape of the hand when no button is pressed.</p>
+<table>
+<thead>
+<tr>
+<th>Note: The <em>Pinch</em> gesture is the only gesture that performs the &quot;Select&quot; action at this point.</th>
+</tr>
+</thead>
+</table>
+<h2 id="one-hand-manipulation">One-Hand Manipulation</h2>
+<ol>
+<li>Press and hold hand control key (Space/Left Shift)</li>
+<li>Point at object</li>
+<li>Hold mouse button to pinch</li>
+<li>Use mouse to move the object</li>
+<li>Release mouse button to stop interaction</li>
+</ol>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rM0xaHam6wM" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<h2 id="two-hand-manipulation">Two-Hand Manipulation</h2>
+<p>For manipulating objects with two hands at the same time the persistent hand mode is recommended.</p>
+<ol>
+<li>Toggle on both hands by pressing the toggle keys (T/Y).</li>
+<li>Manipulate one hand at a time:</li>
+<li>Hold <em>Space</em> to control the right hand</li>
+<li>Move the hand to where you want to grab the object</li>
+<li>Press mouse button to activate the <em>Pinch</em> gesture. In persistent mode the gesture will remain active when you release the mouse button.</li>
+<li>Repeat the process with the other hand, grabbing the same object in a second spot.</li>
+<li>Now that both hands are grabbing the same object, you can move either of them to perform two-handed manipulation.</li>
+</ol>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<h2 id="ggv-interaction">GGV Interaction</h2>
+<ol>
+<li>Enable GGV simulation by switching <strong>Hand Simulation Mode</strong> to <em>Gestures</em> in the <a href="#enabling-the-input-simulation-service">Input Simulation Profile</a></li>
+</ol>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_InputSimulation_SwitchToGGV.png">
+  <img src="../../External/Documentation/Images/MRTK_InputSimulation_SwitchToGGV.png" title="Full Hand Mesh" width="80%" class="center">
+</a>
+<ol start="2">
+<li>Rotate the camera to point the gaze cursor at the interactable object (right mouse button)</li>
+<li>Hold <em>Space</em> to control the right hand</li>
+<li>Click and hold <em>left mouse button</em> to interact</li>
+<li>Rotate the camera again to manipulate the object</li>
+</ol>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/InputSimulation/InputSimulationService.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
