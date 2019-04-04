@@ -46,7 +46,7 @@ As a platform built on Unity, all the other performance recommendations for buil
 
 This recommendation is called out in 
 [other](https://docs.microsoft.com/en-us/windows/mixed-reality/performance-recommendations-for-immersive-headset-apps)
-resources, but is worth repeating here because enabling this is crucial for performant MRTK apps.
+resources, but is worth repeating here because enabling this is crucial for performant mixed reality applications.
 For more information on what Single Pass Instanced Rendering is, check out the Unity docs on 
 [Single Pass Stereo rendering](https://docs.unity3d.com/Manual/SinglePassStereoRendering.html)
 and [Single Pass instanced rendering](https://docs.unity3d.com/Manual/SinglePassInstancing.html).
