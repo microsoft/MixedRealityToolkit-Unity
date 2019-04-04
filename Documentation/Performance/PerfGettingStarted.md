@@ -3,7 +3,7 @@
 ## Getting Started
 
 If you are new to Unity performance analysis, there are some great resources that Unity provides that
-walks you through the general thought process of how to conduct a performance analysis, along with common
+walk you through the general thought process of how to conduct a performance analysis, along with common
 pitfalls and recommendations. As other resources will say, there is no magic solution for performance issues
 – every situation is unique – and digging into performance issues involves an iterative process where you
 typically identify a problematic scenario, measure the problem (using some sort of profiling tool),
