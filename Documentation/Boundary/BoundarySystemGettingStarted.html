@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Boundary System | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Boundary System | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="boundary-system">Boundary System</h1>
+
+<p>The Boundary system provides support for visualizing Virtual Reality boundary components in
+mixed reality applications. Boundaries define the area in which users can move around
+while wearing a VR headset.</p>
+<p>Boundaries are an important component of a mixed reality experience to help users avoid unseen
+obstacles while wearing a VR headset.</p>
+<p>Many Virtual Reality platforms provide an automatic display, for example a white outline
+superimposed on the virtual world as the user or their controller nears the boundary. The
+Mixed Reality Toolkit's boundary system extends this feature to enable the display of an
+outline of the tracked area, a floor plane and other features that can be used to provide
+additional information to users.</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>Adding support for boundaries requires two key components of the Mixed Reality Toolkit: the
+boundary system and a Virtual Reality platform configured with a boundary.</p>
+<ol>
+<li><a href="#enable-boundary-system">Enable</a> the boundary system</li>
+<li><a href="#configure-boundary-visualization">Configure</a> the boundary visualization</li>
+<li><a href="#build-and-deploy">Build and deploy</a> to a VR platform with a configured boundary</li>
+</ol>
+<h2 id="enable-boundary-system">Enable Boundary System</h2>
+<p>The boundary system is managed by the MixedRealityToolkit object (or another
+<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">service registrar</a> component).</p>
+<blockquote>
+<p>The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.</p>
+</blockquote>
+<ol>
+<li>Select the MixedRealityToolkit object in the scene hierarchy.</li>
+</ol>
+<p><img src="../../External/ReadMeImages/MRTK_ConfiguredHierarchy.png" alt="MRTK Configured Scene Hierarchy"></p>
+<ol start="2">
+<li>Navigate the Inspector panel to the Boundary System section and check Enable</li>
+</ol>
+<p><img src="../../External/ReadMeImages/Boundary/MRTKConfig_Boundary.png" alt="Enable the Boundary System"></p>
+<ol start="3">
+<li>Select the Boundary System implementation</li>
+</ol>
+<p><img src="../../External/ReadMeImages/Boundary/BoundarySelectSystemType.png" alt="Select the Boundarys System Implementation"></p>
+<blockquote>
+<p>Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the boundary system pre-configured to use the MixedRealityBoundarySystem from the Mixed Reality
+Toolkit Boundary System Service package.</p>
+</blockquote>
+<h2 id="configure-boundary-visualization">Configure Boundary Visualization</h2>
+<p>The boundary system uses a configuration profile to specify which boundary components are to be displayed and to configure their appearance. Please see <a href="ConfiguringBoundaryVisualization.html">Configuring the Boundary Visualization</a> for more information pertaining to the available visualization options.</p>
+<p><img src="../../External/ReadMeImages/Boundary/BoundaryVisualizationProfile.png" alt="Boundary Visualization Options"></p>
+<blockquote>
+<p>Users of the default profile (DefaultMixedRealitBoundarySystemProfile) will have the boundary system pre-configured to display a floor plane, the play area and the tracked area.</p>
+</blockquote>
+<h2 id="build-and-deploy">Build and Deploy</h2>
+<p>Once the boundary system is configured with the desired visualization options, the project can be built deployed to the target platform.</p>
+<blockquote>
+<p>Using Play Mode, in Unity, enables in editor visualization of the configured boundary. This feature enables rapid development and testing without requiring the build and deploy step. Be sure to do final acceptance testing using an built and deployed version of the application, running on the target hardware and platform.</p>
+</blockquote>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Boundary.html">Boundary API documentation</a></li>
+<li><a href="ConfiguringBoundaryVisualization.html">Configuring the Boundary Visualization</a></li>
+<li><a href="../TODO.html">Using Boundaries in an Application</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Boundary/BoundarySystemGettingStarted.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

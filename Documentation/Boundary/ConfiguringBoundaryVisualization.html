@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Configuring the Boundary Visualization | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Configuring the Boundary Visualization | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="configuring-the-boundary-visualization">Configuring the Boundary Visualization</h1>
+
+<p>The Boundary Visualization Profile provides options for configuring:</p>
+<ul>
+<li><a href="#general-settings">General Settings</a></li>
+<li><a href="#floor-settings">Floor Settings</a></li>
+<li><a href="#play-area-settings">Play Area Settings</a></li>
+<li><a href="#tracked-area-settings">Tracked Area Settings</a></li>
+<li><a href="#boundary-wall-settings">Boundary Wall Settings</a></li>
+<li><a href="#boundary-ceiling-settings">Boundary Ceiling Settings</a></li>
+</ul>
+<p>Boundary visualizations are attached to the Mixed Reality Playspace object in the scene and teleport with the user.</p>
+<h2 id="general-settings">General Settings</h2>
+<p><img src="../../External/ReadMeImages/Boundary/BoundaryVisualizationGeneralSettings.png" alt="Boundary Visualization General Settings"></p>
+<h3 id="boundary-height">Boundary Height</h3>
+<p>The boundary height indicates the distance above the floor plane at which the boundary ceiling should be rendered. The default value is 3 meters.</p>
+<h2 id="floor-settings">Floor Settings</h2>
+<p><img src="../../External/ReadMeImages/Boundary/BoundaryVisualizationFloorSettings.png" alt="Boundary Visualization Floor Settings"></p>
+<h3 id="show">Show</h3>
+<p>Indicates whether or not a floor plane is to be created and added to the scene. The default value is true.</p>
+<h3 id="material">Material</h3>
+<p>Indicates the material that should be used when creating the floor plane.</p>
+<h3 id="scale">Scale</h3>
+<p>Indicates the size, in meters, of the floor plane to be created. The default scale is a 3 meter x 3 meter square.</p>
+<h3 id="physics-layer">Physics Layer</h3>
+<p>The layer on which the floor plane should be set. The default value is the Default layer.</p>
+<h2 id="play-area-settings">Play Area Settings</h2>
+<p><img src="../../External/ReadMeImages/Boundary/BoundaryVisualizationPlayAreaSettings.png" alt="Boundary Visualization Play Area Settings"></p>
+<h3 id="show-1">Show</h3>
+<p>Indicates whether or not a play area rectangle is be created and added to the scene. The default value is true.</p>
+<h3 id="material-1">Material</h3>
+<p>Indicates the material that should be used when creating the play area object.</p>
+<h3 id="physics-layer-1">Physics Layer</h3>
+<p>The layer on which the play area should be set. The default value is the Ignore Raycast layer.</p>
+<h2 id="tracked-area-settings">Tracked Area Settings</h2>
+<p><img src="../../External/ReadMeImages/Boundary/BoundaryVisualizationTrackedAreaSettings.png" alt="Boundary Visualization Tracked Area Settings"></p>
+<h3 id="show-2">Show</h3>
+<p>Indicates whether or not the outline of the tracked area is be created and added to the scene. The default value is true.</p>
+<h3 id="material-2">Material</h3>
+<p>Indicates the material that should be used when creating the tracked area outline.</p>
+<h3 id="physics-layer-2">Physics Layer</h3>
+<p>The layer on which the tracked area should be sets. The default value is the Ignore Raycast layer.</p>
+<h2 id="boundary-wall-settings">Boundary Wall Settings</h2>
+<p><img src="../../External/ReadMeImages/Boundary/BoundaryVisualizationWallSettings.png" alt="Boundary Visualization Boundary Wall Settings"></p>
+<h3 id="show-3">Show</h3>
+<p>Indicates whether or not boundary wall planes are to be created and added to the scene. The default value is false.</p>
+<h3 id="material-3">Material</h3>
+<p>Indicates the material that should be used when creating the boundary wall planes.</p>
+<h3 id="physics-layer-3">Physics Layer</h3>
+<p>The layer on which the boundary walls should be set. The default value is the Ignore Raycast layer.</p>
+<blockquote>
+<p>Setting the boundary wall component to a physics layer other than Ignore Raycast may prevent users from interacting with objects within the scene.</p>
+</blockquote>
+<h2 id="boundary-ceiling-settings">Boundary Ceiling Settings</h2>
+<p><img src="../../External/ReadMeImages/Boundary/BoundaryVisualizationCeilingSettings.png" alt="Boundary Visualization Boundary Ceiling Settings"></p>
+<h3 id="show-4">Show</h3>
+<p>Indicates whether or not a boundary ceiling plane is to be created and added to the scene. The default value is false.</p>
+<h3 id="material-4">Material</h3>
+<p>Indicates the material that should be used when creating the boundary ceiling plane.</p>
+<h3 id="physics-layer-4">Physics Layer</h3>
+<p>The layer on which the boundary walls should be set. The default value is the Ignore Raycast layer.</p>
+<blockquote>
+<p>Setting the boundary ceiling component to a physics layer other than Ignore Raycast may prevent users from interacting with objects within the scene.</p>
+</blockquote>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="BoundarySystemGettingStarted.html">Boundary System</a></li>
+<li><a href="../TODO.html">Using Boundaries in an Application</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Boundary/ConfiguringBoundaryVisualization.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

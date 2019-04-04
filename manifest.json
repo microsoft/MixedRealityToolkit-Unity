@@ -386,6 +386,30 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Boundary/BoundarySystemGettingStarted.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Boundary/BoundarySystemGettingStarted.html",
+          "hash": "2g4hU9QyLO1XKwwvjezHWw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Boundary/ConfiguringBoundaryVisualization.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Boundary/ConfiguringBoundaryVisualization.html",
+          "hash": "2Rrprxj6qzK/rPo7cMCGMw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/DevDocGuide.md",
       "output": {
         ".html": {
@@ -786,7 +810,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html",
-          "hash": "jTFylq59wx7uy7cVVb57bA=="
+          "hash": "5He2kUwCe9v1DgI0kt7zOw=="
         }
       },
       "is_incremental": false,
@@ -810,7 +834,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "GBgf1Ilwcb7MTPwSzu1PvQ=="
+          "hash": "SGdjc5MH8riHUOtDK6BfYQ=="
         }
       },
       "is_incremental": false,
@@ -1023,6 +1047,105 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Setup2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Boundary/BoundarySelectSystemType.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Boundary/BoundarySelectSystemType.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationCeilingSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationCeilingSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationFloorSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationFloorSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationGeneralSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationGeneralSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationPlayAreaSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationPlayAreaSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationTrackedAreaSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationTrackedAreaSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationWallSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationWallSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Boundary/MRTKConfig_Boundary.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Boundary/MRTKConfig_Boundary.png"
         }
       },
       "is_incremental": false,
@@ -7393,18 +7516,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.TouchingState.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.TouchingState.html",
-          "hash": "dP6zsm2N8F8RRBWdbOqTcw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController.yml",
       "output": {
         ".html": {
@@ -7541,7 +7652,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "OG1eLubq6SCKXEuQ3+HoXw=="
+          "hash": "t5noKZsMvx+5cd++pPCU9w=="
         }
       },
       "is_incremental": false,
@@ -13013,7 +13124,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "fDsT0yMTQ3dfRMLn3Kp9Vw=="
+          "hash": "zLH6MTBqoha/20beklS+qQ=="
         }
       },
       "is_incremental": false,
@@ -13065,28 +13176,28 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 842,
+          "total_file_count": 841,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 73,
+          "total_file_count": 75,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
