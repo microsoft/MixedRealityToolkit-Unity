@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                 if (Interactions[0].Changed)
                 {
-                    MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, Interactions[0].MixedRealityInputAction, TouchData.deltaPosition);
+                    MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[0].MixedRealityInputAction, TouchData.deltaPosition);
                 }
 
                 lastPose.Position = InputSource.Pointers[0].BaseCursor.Position;
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                 if (Interactions[1].Changed)
                 {
-                    MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, Interactions[1].MixedRealityInputAction, lastPose);
+                    MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[1].MixedRealityInputAction, lastPose);
                 }
 
                 if (!isManipulating)
