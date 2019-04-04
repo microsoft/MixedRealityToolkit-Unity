@@ -450,7 +450,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "GUmH3CekaDgQlm/b7qPDbg=="
+          "hash": "6P+8BkFh0XCcN6m+tiiSYQ=="
         }
       },
       "is_incremental": false,
@@ -5222,7 +5222,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html",
-          "hash": "P9BzIEc1au4kR9d36lJy0g=="
+          "hash": "UA4VwK0Kj7F6vCD+SnYfZA=="
         }
       },
       "is_incremental": false,
@@ -5307,6 +5307,30 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DictationEventData.html",
           "hash": "1m7rZ9Pe992AFKYOzc4M4w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.DictationHandler.StringUnityEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DictationHandler.StringUnityEvent.html",
+          "hash": "tvtSiDojlRskJF3kBRejjA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.DictationHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DictationHandler.html",
+          "hash": "obm/JkjaXKibiFhjlqLF1Q=="
         }
       },
       "is_incremental": false,
@@ -7298,7 +7322,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "+s9cICuGAQfghBK6uonk6w=="
+          "hash": "OG1eLubq6SCKXEuQ3+HoXw=="
         }
       },
       "is_incremental": false,
@@ -12770,7 +12794,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "uUTUHNmAiXYVkpJoG+BA3g=="
+          "hash": "fDsT0yMTQ3dfRMLn3Kp9Vw=="
         }
       },
       "is_incremental": false,
@@ -12822,10 +12846,11 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 840,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -12834,16 +12859,15 @@
           "total_file_count": 63,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 842,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
