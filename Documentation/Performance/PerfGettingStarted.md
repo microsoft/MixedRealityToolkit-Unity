@@ -12,7 +12,7 @@ until performance is within desired bounds.
 
 ### [Introduction to Unity performance optimization for beginners](https://www.youtube.com/watch?v=1e5WY2qf600)
 
-For people completely new to performance optimization, this is a great video to watch
+For people completely new to performance optimization, this is a great video to watch.
 
 ### [Unity performance optimization tutorials](https://unity3d.com/learn/tutorials/topics/performance-optimization)
 
