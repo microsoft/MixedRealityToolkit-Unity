@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Performance | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Performance | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="performance">Performance</h1>
+
+<h2 id="getting-started">Getting Started</h2>
+<p>If you are new to Unity performance analysis, there are some great resources that Unity provides that
+walk you through the general thought process of how to conduct a performance analysis, along with common
+pitfalls and recommendations. As other resources will say, there is no magic solution for performance issues
+– every situation is unique – and digging into performance issues involves an iterative process where you
+typically identify a problematic scenario, measure the problem (using some sort of profiling tool),
+dig into the hotspots (using that profiling tool), test out a fix to that hotspot, and then repeat
+until performance is within desired bounds.</p>
+<p><strong><a href="https://www.youtube.com/watch?v=1e5WY2qf600">Introduction to Unity performance optimization for beginners</a></strong></p>
+<p>For people completely new to performance optimization, this is a great video to watch.</p>
+<p><strong><a href="https://unity3d.com/learn/tutorials/topics/performance-optimization">Unity performance optimization tutorials</a></strong></p>
+<p>These tutorials introduce the Unity performance diagnostic tools and then share some
+common issues and pitfalls that people new to (and experienced with!) Unity can encounter.</p>
+<p><strong><a href="https://docs.unity3d.com/2019.1/Documentation/Manual/BestPracticeUnderstandingPerformanceInUnity.html">Unity optimization best practices</a></strong></p>
+<p>Additional in-depth best practices that can apply to Unity in general.</p>
+<p><strong><a href="https://docs.unity3d.com/uploads/ExpertGuides/Analyzing_your_game_performance_using_Event_Tracing_for_Windows.pdf">Event Tracing for Windows Unity Guide</a></strong></p>
+<p>This guide goes into using a more advanced method for diving into performance issues using <a href="https://docs.unity3d.com/uploads/ExpertGuides/Analyzing_your_game_performance_using_Event_Tracing_for_Windows.pdf">Windows
+Performance Analyzer</a>
+tools. Note that the guide doesn’t include how to take traces from a HoloLens device, which can be done by using the
+<a href="https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal">HoloLens device portal</a>.
+The rest of the guide, however, is helpful in setting up symbols when diving into the CPU view, along with a concrete set of things
+that you can first try as you explore the WPA tools.</p>
+<h3 id="other-resources">Other Resources</h3>
+<p>As a platform built on Unity, all the other performance recommendations for building mixed reality experiences are relevant here:</p>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/windows/mixed-reality/performance-recommendations-for-unity">Performance recommendations for Unity</a></li>
+<li><a href="https://docs.microsoft.com/en-us/windows/mixed-reality/performance-recommendations-for-immersive-headset-apps">Performance recommendations for immersive headset apps</a></li>
+<li><a href="https://docs.microsoft.com/en-us/windows/mixed-reality/performance-recommendations-for-hololens-apps">Performance recommendations for HoloLens apps</a></li>
+</ul>
+<h2 id="common-considerations">Common Considerations</h2>
+<h3 id="use-single-pass-instanced-rendering">Use Single Pass Instanced Rendering</h3>
+<p>This recommendation is called out in
+<a href="https://docs.microsoft.com/en-us/windows/mixed-reality/performance-recommendations-for-immersive-headset-apps">other</a>
+resources, but is worth repeating here because enabling this is crucial for performant mixed reality applications.
+For more information on what Single Pass Instanced Rendering is, check out the Unity docs on
+<a href="https://docs.unity3d.com/Manual/SinglePassStereoRendering.html">Single Pass Stereo rendering</a>
+and <a href="https://docs.unity3d.com/Manual/SinglePassInstancing.html">Single Pass instanced rendering</a>.</p>
+<p>This <a href="https://docs.unity3d.com/Manual/SinglePassStereoRenderingHoloLens.html">Unity doc</a> describes how
+to turn on Single Pass Instanced Rendering. To give some context, it’s been observed in some cases that
+turning on this option has saved ~5ms per frame (and when there is a budget of 16.6ms per frame in order
+to achieve 60 FPS, this is clearly a massive improvement).</p>
+<p>Note that in order to enable this rendering option, it's possible that you may need to update your shaders
+to support single pass instanced rendering. See the “Adding Single Pass Stereo rendering support to
+Shaders” section of this <a href="https://docs.unity3d.com/Manual/SinglePassStereoRendering.html">resource</a>
+for more details. All the built-in MRTK shaders already support single pass instanced rendering.
+Other packages may not (for example, Text Mesh Pro shaders).</p>
+<h2 id="visual-profiler">Visual Profiler</h2>
+<p>The MRTK provides a Visual Profiler, which provides information about the current FPS and memory usage.</p>
+<p>It is useful as a tool to identify overall areas for further investigation (for example, if you notice that
+looking at specific parts of your experience cause memory to spike or FPS to tank, it can be helpful to
+identify that overall part of your app to dig further into). However, it is recommended to turn the
+profiler off when doing deeper dives in performance (when you already know what areas aren’t performant),
+as the profiler itself adds overhead to the scene. Ultimately when your app ships, it won’t have this
+profiler turned on.</p>
+<p>The recommended path is to have the visual profiler on during general development to get an overall
+sense of performance, and then once particular areas of interest have been identified for further
+deep dives (using the Unity profiler, for example), the visual profiler should then be turned off
+during those deep dives.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Performance/PerfGettingStarted.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

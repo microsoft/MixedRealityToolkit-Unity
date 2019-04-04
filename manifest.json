@@ -602,6 +602,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Performance/PerfGettingStarted.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Performance/PerfGettingStarted.html",
+          "hash": "jQuOJkvtf4Qd6FyopJO+CQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/README_AppBar.md",
       "output": {
         ".html": {
@@ -798,7 +810,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "ch/zkIbeqCjc9/UDWROxWw=="
+          "hash": "GBgf1Ilwcb7MTPwSzu1PvQ=="
         }
       },
       "is_incremental": false,
@@ -13060,16 +13072,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 72,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 842,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 73,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
