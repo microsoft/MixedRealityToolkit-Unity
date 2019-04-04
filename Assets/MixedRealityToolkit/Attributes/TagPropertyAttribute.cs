@@ -8,7 +8,6 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// A PropertyAttribute for Unity tags (a string field).
     /// </summary>
-    /// <seealso cref="UnityEngine.PropertyAttribute" />
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class TagPropertyAttribute : PropertyAttribute
     {
