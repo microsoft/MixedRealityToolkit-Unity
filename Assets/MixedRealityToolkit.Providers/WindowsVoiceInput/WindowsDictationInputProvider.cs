@@ -79,6 +79,22 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         private readonly WaitUntil waitUntilDictationRecognizerHasStarted = new WaitUntil(() => dictationRecognizer.Status != SpeechSystemStatus.Stopped);
         private readonly WaitUntil waitUntilDictationRecognizerHasStopped = new WaitUntil(() => dictationRecognizer.Status != SpeechSystemStatus.Running);
 
+#if UNITY_EDITOR
+        /// <inheritdoc />
+        public override void Initialize()
+        {
+            if (!UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
+            {
+                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, true);
+            }
+
+            if (!UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.InternetClient))
+            {
+                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.InternetClient, true);
+            }
+        }
+#endif // UNITY_EDITOR
+
         /// <inheritdoc />
         public override void Enable()
         {
@@ -151,6 +167,18 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public override void Destroy()
         {
+#if UNITY_EDITOR
+            if (UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
+            {
+                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, false);
+            }
+
+            if (UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.InternetClient))
+            {
+                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.InternetClient, false);
+            }
+#endif // UNITY_EDITOR
+
             if (Application.isPlaying)
             {
                 dictationRecognizer?.Dispose();

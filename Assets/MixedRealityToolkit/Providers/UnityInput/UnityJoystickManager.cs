@@ -198,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return 0;
             }
 
-            if (joystickName.StartsWith("Xbox"))
+            if (joystickName.Contains("Xbox"))
             {
                 return SupportedControllerType.Xbox;
             }
