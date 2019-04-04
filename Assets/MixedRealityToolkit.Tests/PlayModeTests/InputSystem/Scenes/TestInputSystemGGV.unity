@@ -9178,7 +9178,6 @@ GameObject:
   - component: {fileID: 1087739259}
   - component: {fileID: 1087739258}
   - component: {fileID: 1087739257}
-  - component: {fileID: 1087739262}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -9235,6 +9234,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a21b486d0bb44444b1418aaa38b44de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!114 &1087739259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9300,25 +9306,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &1087739262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1087739255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!1 &1131124965
 GameObject:
   m_ObjectHideFlags: 0
@@ -12717,7 +12704,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHandMeshVisible: 0
-  isHandJointVisible: 1
+  isHandJointVisible: 0
 --- !u!1 &1478918843
 GameObject:
   m_ObjectHideFlags: 0
@@ -16168,7 +16155,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: cefc00a7ef5b00044b54c34e9a67d706, type: 2}
-  m_InitialState: 0
+  m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
