@@ -68,7 +68,7 @@ The toc file in the root of the project defines entries in the top navigation ba
 toc.yml files can be used for structuring and there can be any amount of those files. For more info about defining entries for toc.yml check the [docfx documentation entry on toc](https://dotnet.github.io/docfx/tutorial/intro_toc.html).
 
 ## Resource files
-There are some files like images, videos or pdfs that the documentation can refer to but are not converted by docfx. For those files there's a resource section in the docfx.json. Files in that section will only be copied over without performing any conversion on them.
+There are some files like images, videos or PDFs that the documentation can refer to but are not converted by docfx. For those files there's a resource section in the docfx.json. Files in that section will only be copied over without performing any conversion on them.
 
 Currently there's a definition for the following resource types:
 

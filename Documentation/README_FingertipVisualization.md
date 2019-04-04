@@ -12,7 +12,7 @@ By default the fingertip visualization will work in any Unity scene that is conf
         - PokePointer
             - FingerCursor
 
-At a high level the fingertip visualization works by using a proximity light to project a colored gradient on any nearby surfaces that accept proximity lights. The finger cursor then looks for any nearby interactible surfaces, which are determined by parent IMixedRealityNearPointer(s), to align the finger ring with a surface as the finger moves towards a surface. As a finger approaches a surface the finger ring is also dynamically animated using the round corner properties of the MixedRealityStandard shader.
+At a high level the fingertip visualization works by using a proximity light to project a colored gradient on any nearby surfaces that accept proximity lights. The finger cursor then looks for any nearby interactable surfaces, which are determined by parent IMixedRealityNearPointer(s), to align the finger ring with a surface as the finger moves towards a surface. As a finger approaches a surface the finger ring is also dynamically animated using the round corner properties of the MixedRealityStandard shader.
 
 ### Example Scene ###
 

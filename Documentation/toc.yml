@@ -2,6 +2,8 @@
   items:
   - name: MRTK v2
     href: ../MRTK-vNext.md
+  - name: Authors
+    href: Authors.md
   - name: Mixed Reality Services
     href: ../External/Documentation/MixedRealityServices.md
 - name: How-tos
@@ -12,34 +14,49 @@
     items:
     - name: Downloading MRTK
       href: DownloadingTheMRTK.md
+    - name: Upgrading from the HoloToolkit (HTK)
+      href: HTKToMRTKPortingGuide.md
   - name: Core Features
-    href: TODO.md
     items:
     - name: Packages
-      href: TODO.md
+      href: Packaging/MRTK_Packages.md
     - name: Service Provider
       href: MixedRealityConfigurationGuide.md
-    - name: Input
-      href: TODO.md
+    - name: Boundary System
+      href: Boundary/BoundarySystemGettingStarted.md
       items:
+      - name: Configuring the Boundary Visualization
+        href: Boundary/ConfiguringBoundaryVisualization.md
+    - name: Input
+      href: Input/Overview.md
+      items:
+      - name: Input Providers
+        href: Input/InputProviders.md
+      - name: Input Events
+        href: Input/InputEvents.md
+      - name: Input Actions
+        href: Input/InputActions.md
+      - name: Controllers
+        href: Input/Controllers.md
+      - name: Pointers
+        href: Input/Pointers.md
+      - name: Gestures
+        href: Input/Gestures.md
+      - name: Speech
+        href: Input/Speech.md
+      - name: Dictation
+        href: Input/Dictation.md
       - name: Hands
-        href: TODO.md
-      - name: Voice
-        href: TODO.md
+        href: InputSystem/HandTracking.md
       - name: Eye
         href: TODO.md
-      - name: Gaze
-        href: TODO.md
-      - name: Controllers
-        href: TODO.md
     - name: Interactions and UX Building Blocks
-      href: TODO.md
       items:
       - name: Interactable
         href: README_Interactable.md
-      - name: Obeject Manipulation 
+      - name: Object Manipulation 
         href: README_ManipulationHandler.md      
-      - name: Fintertip Visualization
+      - name: Fingertip Visualization
         href: README_FingertipVisualization.md      
       - name: Hand Interaction Example 
         href: README_HandInteractionExamples.md           
@@ -65,27 +82,29 @@
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
       items:
       - name: Configuring the Spatial Awareness Mesh Observer
-        href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
     - name: In-Editor Input Simulation
-      href: TODO.md
-    - name: Performance Diagnostic Tool
-      href: TODO.md
+      href: InputSimulation/InputSimulationService.md
+    - name: Diagnostics System
+      href: Diagnostics/DiagnosticsSystemGettingStarted.md
+      items:
+      - name: Configuring the Diagnostics System
+        href: Diagnostics/ConfiguringDiagnostics.md
+      - name: Using the Visual Profiler
+        href: TODO.md
   - name: Other Features
-    href: TODO.md
     items:
     - name: QR Tracking
       href: TODO.md
     - name: Spatial Audio
       href: TODO.md
   - name: Advanced topics
-    href: TODO.md
     items:
     - name: Performance
-      href: TODO.md
+      href: Performance/PerfGettingStarted.md
     - name: Shared Experiences
       href: TODO.md
     - name: Moving your project from HTK to MRTK
-      href: TODO.md
+      href: HTKToMRTKPortingGuide.md
 - name: Contributing
   href: ../CONTRIBUTING.md
   items:
