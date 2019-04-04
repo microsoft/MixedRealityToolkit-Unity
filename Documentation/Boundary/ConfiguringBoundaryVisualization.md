@@ -72,7 +72,7 @@ The layer on which the tracked area should be sets. The default value is the Ign
 
 ## Boundary Wall Settings
 
-![Boundary Visualization Boundary Wall Settings](../../External/ReadMeImages/Boundary/BoundaryVisualizationWalllSettings.png)
+![Boundary Visualization Boundary Wall Settings](../../External/ReadMeImages/Boundary/BoundaryVisualizationWallSettings.png)
 
 ### Show
 
