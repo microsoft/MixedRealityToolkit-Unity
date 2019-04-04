@@ -49,24 +49,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Zoom acceleration defining the steepness of logistic speed function mapping.
         /// </summary>
-        internal float zoomAcceleration = 10f;
+        internal float ZoomAcceleration = 10f;
 
         /// <summary>
         ///  Maximum zoom speed. 
         /// </summary>
         [Tooltip("Maximum speed when zooming.")]
-        internal float zoomSpeedMax = 0.02f;
+        internal float ZoomSpeedMax = 0.02f;
 
         /// <summary>
         ///  Minimum scale of the texture for zoom in - e.g., 0.5f (half the original size).
         /// </summary>
-        internal float zoomMinScale = 0.1f;
+        internal float ZoomMinScale = 0.1f;
 
         /// <summary>
         ///  Maximum scale of the texture for zoom out - e.g., 1f (the original size) or 2.0f 
         ///  (double the original size).
         /// </summary>
-        internal float zoomMaxScale = 1.0f;
+        internal float ZoomMaxScale = 1.0f;
 
         /// <summary>
         /// Size of the GameObject's collider when being looked at.
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private Vector3 navPos = Vector3.zero;
         private bool isFocused = false;
         internal bool isZooming = false;
-        internal bool zoomGestureEnabledOnStartup = false;
+        internal bool ZoomGestureEnabledOnStartup = false;
         private bool handZoomEnabled = false;
 
         protected Vector3 originalRatio;
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             // Init children
             Initialize();
-            handZoomEnabled = zoomGestureEnabledOnStartup;
+            handZoomEnabled = ZoomGestureEnabledOnStartup;
             Initialize();
 
             // Init eye tracking target
@@ -434,8 +434,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             if (zoomDir != 0)
             {
                 // Following a logistic function; -0.5 because dynamicZoom [0,1];
-                zoomSpeed = zoomSpeedMax / (1 + Mathf.Pow(2.71828f, -zoomAcceleration * (dynamicZoom - 0.5f))) * Time.deltaTime;
-                zoomSpeed = Mathf.Clamp(zoomSpeed, 0, zoomSpeedMax);
+                zoomSpeed = ZoomSpeedMax / (1 + Mathf.Pow(2.71828f, -ZoomAcceleration * (dynamicZoom - 0.5f))) * Time.deltaTime;
+                zoomSpeed = Mathf.Clamp(zoomSpeed, 0, ZoomSpeedMax);
 
                 // Zoom in: Zoom toward zoom pivot + corrective pan motions
                 if (zoomDir < 0)
@@ -453,23 +453,23 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         protected Vector2 LimitScaling(Vector2 newScale)
         {
             // Clamp 2D scale vector to specified min and max values.
-            if (newScale.x <= zoomMinScale)
+            if (newScale.x <= ZoomMinScale)
             {
-                newScale = new Vector2(zoomMinScale, (zoomMinScale / originalRatio.x) * originalRatio.y);
+                newScale = new Vector2(ZoomMinScale, (ZoomMinScale / originalRatio.x) * originalRatio.y);
             }
-            else if (newScale.x >= zoomMaxScale)
+            else if (newScale.x >= ZoomMaxScale)
             {
-                newScale = new Vector2(zoomMaxScale, (zoomMaxScale / originalRatio.x) * originalRatio.y);
+                newScale = new Vector2(ZoomMaxScale, (ZoomMaxScale / originalRatio.x) * originalRatio.y);
             }
 
             // Same for the y dimension
-            if (newScale.y <= zoomMinScale)
+            if (newScale.y <= ZoomMinScale)
             {
-                newScale = new Vector2((zoomMinScale / originalRatio.y) * originalRatio.x, zoomMinScale);
+                newScale = new Vector2((ZoomMinScale / originalRatio.y) * originalRatio.x, ZoomMinScale);
             }
-            else if (newScale.y >= zoomMaxScale)
+            else if (newScale.y >= ZoomMaxScale)
             {
-                newScale = new Vector2((zoomMaxScale / originalRatio.y) * originalRatio.x, zoomMaxScale);
+                newScale = new Vector2((ZoomMaxScale / originalRatio.y) * originalRatio.x, ZoomMaxScale);
             }
 
             return newScale;

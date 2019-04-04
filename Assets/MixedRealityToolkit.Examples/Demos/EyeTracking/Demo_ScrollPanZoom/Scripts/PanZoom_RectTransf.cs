@@ -78,11 +78,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             // Assigning values to base PanZoom class
             // Zoom
-            base.zoomAcceleration = zoomAcceleration;
-            base.zoomSpeedMax = zoomSpeedMax;
-            base.zoomMinScale = zoomMinScale;
-            base.zoomMaxScale = zoomMaxScale;
-            base.zoomGestureEnabledOnStartup = zoomGestureEnabledOnStartup;
+            ZoomAcceleration = zoomAcceleration;
+            ZoomSpeedMax = zoomSpeedMax;
+            ZoomMinScale = zoomMinScale;
+            ZoomMaxScale = zoomMaxScale;
+            ZoomGestureEnabledOnStartup = zoomGestureEnabledOnStartup;
             timeInSecondsToZoom = zoomTimeInSecToZoom;
 
             // Pan
@@ -105,10 +105,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         protected override void Update()
         {
             UpdateValues(ref navRectTransf, rectTransfToNavigate);
-            UpdateValues(ref base.zoomAcceleration, zoomAcceleration);
-            UpdateValues(ref base.zoomSpeedMax, zoomSpeedMax);
-            UpdateValues(ref base.zoomMinScale, zoomMinScale);
-            UpdateValues(ref base.zoomMaxScale, zoomMaxScale);
+            UpdateValues(ref ZoomAcceleration, zoomAcceleration);
+            UpdateValues(ref ZoomSpeedMax, zoomSpeedMax);
+            UpdateValues(ref ZoomMinScale, zoomMinScale);
+            UpdateValues(ref ZoomMaxScale, zoomMaxScale);
             UpdateValues(ref timeInSecondsToZoom, zoomTimeInSecToZoom);
 
             UpdateValues(ref autoGazePanIsActive, panAutoScrollIsActive);

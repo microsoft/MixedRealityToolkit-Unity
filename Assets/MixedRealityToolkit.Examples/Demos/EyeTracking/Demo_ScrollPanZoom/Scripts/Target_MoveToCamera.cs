@@ -49,6 +49,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         protected override void OnEyeFocusStop()
         {
+            if (isInNearFocusMode && (!inTransition))
+            {
+                OnSelect();
+            }
         }
 
         public void OnSelect()
