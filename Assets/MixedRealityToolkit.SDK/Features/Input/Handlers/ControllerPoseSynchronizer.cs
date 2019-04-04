@@ -159,14 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual void OnInputDown(InputEventData eventData) { }
 
         /// <inheritdoc />
-        [Obsolete("Use ControllerPoseSynchronizer.OnInputChanged(InputEventData<float> eventData)")]
-        public virtual void OnInputPressed(InputEventData<float> eventData) { }
-
-        /// <inheritdoc />
         public virtual void OnInputChanged(InputEventData<float> eventData) { }
-
-        [Obsolete("Use ControllerPoseSynchronizer.OnInputChanged(InputEventData<Vector2> eventData)")]
-        public virtual void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
         /// <inheritdoc />
         public virtual void OnInputChanged(InputEventData<Vector2> eventData) { }
@@ -218,18 +211,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion  IMixedRealityInputHandler Implementation
-
-        #region IMixedRealitySpatialInputHandler Implementation
-
-        [Obsolete("Use ControllerPoseSynchronizer.OnInputChanged(InputEventData<Vector3> eventData)")]
-        public virtual void OnPositionChanged(InputEventData<Vector3> eventData) { }
-
-        [Obsolete("Use ControllerPoseSynchronizer.OnInputChanged(InputEventData<Quaternion> eventData)")]
-        public virtual void OnRotationChanged(InputEventData<Quaternion> eventData) { }
-
-        [Obsolete("Use ControllerPoseSynchronizer.OnInputChanged(InputEventData<MixedRealityPose> eventData)")]
-        public virtual void OnPoseInputChanged(InputEventData<MixedRealityPose> eventData) { }
-
-        #endregion IMixedRealitySpatialInputHandler Implementation 
     }
 }

@@ -196,12 +196,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [Obsolete("Use IMixedRealityInputHandler<float>.OnInputChanged instead.")]
-        void IMixedRealityInputHandler.OnInputPressed(InputEventData<float> eventData)
-        {
-            Debug.LogWarning("Obsolete. Use IMixedRealityInputHandler<float>.OnInputChanged instead.");
-        }
-
         /// <inheritdoc />
         void IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)
         {
@@ -209,13 +203,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 FloatInputChanged(eventData.selectedObject, eventData);
             }
-        }
-
-        /// <inheritdoc />
-        [Obsolete("Use IMixedRealityInputHandler<Vector2>.OnInputChanged instead.")]
-        void IMixedRealityInputHandler.OnPositionInputChanged(InputEventData<Vector2> eventData)
-        {
-            Debug.LogWarning("Obsolete. Use IMixedRealityInputHandler<Vector2>.OnInputChanged instead.");
         }
 
         /// <inheritdoc />

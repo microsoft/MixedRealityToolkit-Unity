@@ -29,7 +29,7 @@ For other controllers like HoloLens 2 articulated hands, the rotation matches th
 ### GGV Pointer
 GGV stands for "Gaze, Gesture, Voice"<sup>[2](https://docs.microsoft.com/en-us/windows/mixed-reality/gaze)</sup>. The GGV pointer's position and direction is driven by the head's position and rotation. The pointer is used to provide input that matches the HoloLens V1 input style of head gaze + airtap<sup>[3](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures)</sup>.
 
-In the pointer profile you can see that the V1 Hololens input system is provided for you via the mapping of "GGVHand" (V1 HoloLens hand) to the GGVPointer. 
+In the pointer profile you can see that the V1 HoloLens input system is provided for you via the mapping of "GGVHand" (V1 HoloLens hand) to the GGVPointer. 
 
 <img src="/External/ReadMeImages/Pointers/MRTK_GGVPointer_HL1.jpg" width="600">
 

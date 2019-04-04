@@ -1,4 +1,5 @@
 # Spatial Awareness
+![Spatial Awareness](/External/ReadMeImages/SpatialAwareness/MRTK_SpatialAwareness_Main.png)
 
 The Spatial Awareness system provides real-world environmental awareness in mixed reality 
 applications. When introduced on Microsoft HoloLens, spatial awareness provided a collection 
@@ -77,7 +78,9 @@ Once the spatial awareness system is configured with the desired observer(s), th
 and deployed to the target platform.
 
 > Some platforms, including Microsoft HoloLens, provide support for remote execution from within Unity. 
-This feature enables rapid development and testing without requiring the build and deploy step. Be sure to do final acceptance testing using an built and deployed version of the application, running 
+This feature enables rapid development and testing without requiring the build and deploy step. Be sure 
+to do final acceptance testing using a built and deployed version of the application, running on the target 
+hardware and platform.
 
 
 ## See Also

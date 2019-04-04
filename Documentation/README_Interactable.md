@@ -69,7 +69,7 @@ Example of the Default Theme.
 Example of a Color Theme
 
 The best way to save a profile of a button, with all the themes and targets setup, is to create a prefab of your button.
-_Note: Themes that effect mesh objects (Color or Shader Themes) are able to detect the shader properties in the material assigned to the target object. A drop down list of shader properties will define how the values of the theme are applied and is a conveience of this ability. Conflicts can arrise if the same theme is used on objects that do not share the same material shader setting. Best practice is to create a seperate theme for objects with different shaders; this is not an issue when using the same Color Theme on a text object and a mesh object, because all the shader properties are ignored on text objects._
+_Note: Themes that effect mesh objects (Color or Shader Themes) are able to detect the shader properties in the material assigned to the target object. A drop down list of shader properties will define how the values of the theme are applied and is a convenience of this ability. Conflicts can arise if the same theme is used on objects that do not share the same material shader setting. Best practice is to create a separate theme for objects with different shaders; this is not an issue when using the same Color Theme on a text object and a mesh object, because all the shader properties are ignored on text objects._
 
 ### Creating Toggles
 Toggle or multi-step buttons can be created in the Profile using the Dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the Dimensions value is increased, slots for additional themes are provided for each item in the Profile. This allows for a Normal Theme and a Toggled Theme to be used depending if the Interactable is toggled or not. 
@@ -116,7 +116,7 @@ States are a list of terms that can be used to define interactions phases, like 
 
 Interactable States provides two major roles.
 - Establish a list of states that we care about. This list will be displayed in the themes and can also be referenced by the events.
-- Controls how different interaction phases are ranked into states. For instance, a press state is also in a focused state, but the InteractableStates class will define it is a press state based on the ranking preferences setup in the State scriptableObject.
+- Controls how different interaction phases are ranked into states. For instance, a press state is also in a focused state, but the InteractableStates class will define it is a press state based on the ranking preferences setup in the State ScriptableObject.
 
 <img src="/External/ReadMeImages/Interactable/StatesScriptableObject.png" width="450">
 
@@ -232,7 +232,7 @@ public override void OnUpdate(InteractableStates state, Interactable source)
             bool isDefault = state.GetState(InteractableStates.InteractableStateEnum.Default).Value > 0;
             bool hasGesture = state.GetState(InteractableStates.InteractableStateEnum.Gesture).Value > 0;
             bool hasGestureMax = state.GetState(InteractableStates.InteractableStateEnum.GestureMax).Value > 0;
-            bool hasCollistion = state.GetState(InteractableStates.InteractableStateEnum.Collision).Value > 0;
+            bool hasCollision = state.GetState(InteractableStates.InteractableStateEnum.Collision).Value > 0;
             bool hasPhysicalTouch = state.GetState(InteractableStates.InteractableStateEnum.PhysicalTouch).Value > 0;
             bool hasCustom = state.GetState(InteractableStates.InteractableStateEnum.Custom).Value > 0;
             or:

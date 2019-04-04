@@ -30,7 +30,7 @@ MRTK is a Microsoft Driven open source project. MRTK-Unity...
 
 - Input System
 - Articulated Hands + Gestures (HoloLens 2)
-- Eye Tracking (HoloLens2)
+- Eye Tracking (HoloLens 2)
 - Voice Commanding
 - Gaze + Select (HoloLens)
 - Controller Visualization
@@ -44,25 +44,26 @@ MRTK is a Microsoft Driven open source project. MRTK-Unity...
 1. [Download MRTK](Documentation/DownloadingTheMRTK.md)
 2. Follow this [Getting Started Guide](Documentation/GettingStartedWithTheMRTK.md)
 3. Check out [Mixed Reality Toolkit configuration guide](Documentation/MixedRealityConfigurationGuide.md)
+4. Check out building blocks and example scenes(see the table below)
 
 ### More documentation
 Find this readme, other documentation articles and the MRTK api reference on our [MRTK Dev Portal on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/). 
 
 # Building blocks for UI and Interactions
-|  [![Button](/External/ReadMeImages/Button/MRTK_Button_Main.png)](/Documentation/README_Button.md) [Button](/Documentation/README_Button.md) | [![Bounding Box](/External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png)](/Documentation/README_BoundingBox.md) [Bounding Box](/Documentation/README_BoundingBox.md) | [![Manipulation Handler](/External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png)](/Documentation/README_ManipulationHandler.md) [Manipulation Handler](/Documentation/README_ManipulationHandler.md) |
+|  [![Button](External/ReadMeImages/Button/MRTK_Button_Main.png)](Documentation/README_Button.md) [Button](Documentation/README_Button.md) | [![Bounding Box](External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png)](Documentation/README_BoundingBox.md) [Bounding Box](Documentation/README_BoundingBox.md) | [![Manipulation Handler](External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png)](Documentation/README_ManipulationHandler.md) [Manipulation Handler](Documentation/README_ManipulationHandler.md) |
 |:--- | :--- | :--- |
-| A button control which supports various input methods including HoloLens2's articulated hand | Standard UI for manipulating objects in 3D space | Script for manipulating objects with one or two hands |
-|  [![Slate](/External/ReadMeImages/Slate/MRTK_Slate_Main.png)](/Documentation/README_Slate.md) [Slate](/Documentation/README_Slate.md) | [![System Keyboard](/External/ReadMeImages/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](/Documentation/README_SystemKeyboard.md) [System Keyboard](/Documentation/README_SystemKeyboard.md) | [![Interactable](/External/ReadMeImages/Interactable/InteractableExamples.png)](/Documentation/README_Interactable.md) [Interactable](/Documentation/README_Interactable.md) |
+| A button control which supports various input methods including HoloLens 2's articulated hand | Standard UI for manipulating objects in 3D space | Script for manipulating objects with one or two hands |
+|  [![Slate](External/ReadMeImages/Slate/MRTK_Slate_Main.png)](Documentation/README_Slate.md) [Slate](Documentation/README_Slate.md) | [![System Keyboard](External/ReadMeImages/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](Documentation/README_SystemKeyboard.md) [System Keyboard](Documentation/README_SystemKeyboard.md) | [![Interactable](External/ReadMeImages/Interactable/InteractableExamples.png)](Documentation/README_Interactable.md) [Interactable](Documentation/README_Interactable.md) |
 | 2D style plane which supports scrolling with articulated hand input | Example script of using the system keyboard in Unity  | A script for making objects interactable with visual states and theme support |
-|  [![Solver](/External/ReadMeImages/Solver/MRTK_Solver_Main.png)](/Documentation/README_Solver.md) [Solver](/Documentation/README_Solver.md) | [![Object Collection](/External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Main.png)](/Documentation/README_ObjectCollection.md) [Object Collection](/Documentation/README_ObjectCollection.md) | [![Tooltip](/External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png)](/Documentation/README_Tooltip.md) [Tooltip](/Documentation/README_Tooltip.md) |
+|  [![Solver](External/ReadMeImages/Solver/MRTK_Solver_Main.png)](Documentation/README_Solver.md) [Solver](Documentation/README_Solver.md) | [![Object Collection](External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Main.png)](Documentation/README_ObjectCollection.md) [Object Collection](Documentation/README_ObjectCollection.md) | [![Tooltip](External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png)](Documentation/README_Tooltip.md) [Tooltip](Documentation/README_Tooltip.md) |
 | Various object positioning behaviors such as tag-along, body-lock, constant view size and surface magnetism | Script for lay out an array of objects in a three-dimensional shape | Annotation UI with flexible anchor/pivot system which can be used for labeling motion controllers and object. |
-|  [![App Bar](/External/ReadMeImages/AppBar/MRTK_AppBar_Main.png)](/Documentation/README_AppBar.md) [App Bar](/Documentation/README_AppBar.md) | [![Pointers](/External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)](/Documentation/README_Pointers.md) [Pointers](/Documentation/README_Pointers.md) | [![Fingertip Visualization](/External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png)](/Documentation/README_FingertipVisualization.md) [Fingertip Visualization](/Documentation/README_FingertipVisualization.md) |
+|  [![App Bar](External/ReadMeImages/AppBar/MRTK_AppBar_Main.png)](Documentation/README_AppBar.md) [App Bar](Documentation/README_AppBar.md) | [![Pointers](External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)](Documentation/README_Pointers.md) [Pointers](Documentation/README_Pointers.md) | [![Fingertip Visualization](External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png)](Documentation/README_FingertipVisualization.md) [Fingertip Visualization](Documentation/README_FingertipVisualization.md) |
 | UI for Bounding Box's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
 
 # Example Scene
-You can find various types of interactions and UI controls in [this example scene](/Documentation/README_HandInteractionExamples.md).
+You can find various types of interactions and UI controls in [this example scene](Documentation/README_HandInteractionExamples.md).
 
-[![Button](/External/ReadMeImages/MRTK_Examples.png)](/Documentation/README_HandInteractionExamples.md)
+[![Button](External/ReadMeImages/MRTK_Examples.png)](Documentation/README_HandInteractionExamples.md)
 
 # Engage with the Community
 
@@ -86,7 +87,7 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 | :--------------------- | :----------------- | :------------------ | :------------------------ |
 | See code examples. Do a coding tutorial. Watch guest lectures.          | Get design guides. Build user interface. Learn interactions and input.     | Get development guides. Learn the technology. Understand the science.       | Join open source projects. Ask questions on forums. Attend events and meetups. |
 
-### Learn more about MRTK Progect 
+### Learn more about MRTK Project 
 You can find our planning material on [our wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki) under Project Management Section. You can always see the items the team is actively working on in the Iteration Plan issue. 
 
 ### How to Contribute
