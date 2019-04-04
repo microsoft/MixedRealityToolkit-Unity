@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="touchedObject">This is a the global position of the HandTrackingInputSource that created the EventData</param>
         public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, Handedness sourceHandedness, Vector3 touchPoint)
         {
-            Initialize(inputSource, MixedRealityInputAction.None, touchPoint);
+            Initialize(inputSource, Handedness.None, MixedRealityInputAction.None, touchPoint);
             Controller = controller;
         }
     }
