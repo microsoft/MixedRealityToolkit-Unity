@@ -458,6 +458,114 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/Controllers.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/Controllers.html",
+          "hash": "of9+LX6QRDcRT6cY7n263A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/Dictation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/Dictation.html",
+          "hash": "ikGj8qwPMuuCfD22TsCPjg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/Gestures.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/Gestures.html",
+          "hash": "LoEfswa/HqiXmTNWM6YLRA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/InputActions.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/InputActions.html",
+          "hash": "jpWgalqoqcUXaPY1IL2j1w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/InputEvents.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/InputEvents.html",
+          "hash": "xl65hlkmdO4lvwpQLo37xA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/InputProviders.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/InputProviders.html",
+          "hash": "lQNHq247plTdY5wPLezwIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/Overview.html",
+          "hash": "P/n3M9x5tGRVVPxxBvrwkQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/Pointers.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/Pointers.html",
+          "hash": "vhSnsdzK6SnBpxh/s7qifA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/Speech.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/Speech.html",
+          "hash": "H5W5NUVRIU/WTO1yzxkRsA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/InputSimulation/InputSimulationService.md",
       "output": {
         ".html": {
@@ -690,7 +798,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "fSCn7xUL6DP8+TmscpoCEA=="
+          "hash": "ch/zkIbeqCjc9/UDWROxWw=="
         }
       },
       "is_incremental": false,
@@ -1398,6 +1506,105 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Unity.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Input/ControllerInputMapping.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Input/ControllerInputMapping.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Input/Diagrams.vsdx",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Input/Diagrams.vsdx"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Input/DictationDataProvider.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Input/DictationDataProvider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Input/EventFlow.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Input/EventFlow.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Input/GestureProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Input/GestureProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Input/InputActions.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Input/InputActions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Input/PointerProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Input/PointerProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Input/RegisteredServiceProviders.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Input/RegisteredServiceProviders.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Input/SpeechCommands.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Input/SpeechCommands.PNG"
         }
       },
       "is_incremental": false,
@@ -12856,7 +13063,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 63,
+          "total_file_count": 72,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

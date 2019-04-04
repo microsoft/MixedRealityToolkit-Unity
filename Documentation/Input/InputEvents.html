@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Input Events | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Input Events | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="input-events">Input Events</h1>
+
+<p>At the script level you consume input events by implementing one of the event handler interfaces:</p>
+<table>
+<thead>
+<tr>
+<th>Handler</th>
+<th>Events</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html"><code>IMixedRealitySourceStateHandler</code></a></td>
+<td>Source Detected / Lost</td>
+<td>Raised when an input source is detected/lost, like when an articulated hand is detected or lost track of.</td>
+</tr>
+<tr>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourcePoseHandler.html"><code>IMixedRealitySourcePoseHandler</code></a></td>
+<td>Source Pose Changed</td>
+<td>Raised on source pose changes. The source pose represents the general pose of the input source. Specific poses, like the grip or pointer pose in a six DOF controller, can be obtained via <code>IMixedRealityInputHandler&lt;MixedRealityPose&gt;</code>.</td>
+</tr>
+<tr>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.html"><code>IMixedRealityInputHandler</code></a></td>
+<td>Input Down / Up</td>
+<td>Raised on changes to binary inputs like buttons.</td>
+</tr>
+<tr>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html"><code>IMixedRealityInputHandler&lt;T&gt;</code></a></td>
+<td>Input Changed</td>
+<td>Raised on changes to inputs of the given type. <strong>T</strong> can take the following values: <code>float</code> (e.g. analog trigger), <code>Vector2</code> (e.g. gamepad thumbstick), <code>Vector3</code> (e.g. position-only tracked device), <code>Quaternion</code> (e.g. orientation-only tracked device) and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html"><code>MixedRealityPose</code></a> (e.g. fully tracked device).</td>
+</tr>
+<tr>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html"><code>IMixedRealitySpeechHandler</code></a></td>
+<td>Speech Keyword Recognized</td>
+<td>Raised on recognition of one of the keywords configured in the <em>Speech Commands Profile</em>.</td>
+</tr>
+<tr>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationHandler.html"><code>IMixedRealityDictationHandler</code></a></td>
+<td>Dictation Hypothesis / Result / Complete / Error</td>
+<td>Raised by dictation systems to report the results of a dictation session.</td>
+</tr>
+<tr>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler.html"><code>IMixedRealityGestureHandler</code></a></td>
+<td>Gesture Started / Updated / Completed / Canceled</td>
+<td>Raised on gesture detection.</td>
+</tr>
+<tr>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler-1.html"><code>IMixedRealityGestureHandler&lt;T&gt;</code></a></td>
+<td>Gesture Updated / Completed</td>
+<td>Raised on detection of gestures containing additional data of the given type. See <a href="Gestures.html#gesture-events"><strong>Gesture Events</strong></a> for details on possible values for <strong>T</strong>.</td>
+</tr>
+<tr>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler.html"><code>IMixedRealityHandJointHandler</code></a></td>
+<td>Hand Joints Updated</td>
+<td>Raised by articulated hand controllers when hand joints are updated.</td>
+</tr>
+<tr>
+<td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler.html"><code>IMixedRealityHandMeshHandler</code></a></td>
+<td>Hand Mesh Updated</td>
+<td>Raised by articulated hand controllers when a hand mesh is updated.</td>
+</tr>
+</tbody>
+</table>
+<p>By default a script will receive events only while in focus by a pointer. To receive events while out of focus, register the script's game object as a global listener via <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html"><code>MixedRealityToolkit.InputSystem.Register</code></a> or derive the script from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html"><code>InputSystemGlobalListener</code></a>.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Input/InputEvents.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

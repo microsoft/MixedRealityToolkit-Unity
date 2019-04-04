@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Gestures | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Gestures | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="gestures">Gestures</h1>
+
+<p>Gestures are input events based on human hands. There are two types of devices that raise gesture input events in MRTK:</p>
+<ul>
+<li><p>Windows Mixed Reality devices such as Hololens. This describes pinching motions (&quot;Air Tap&quot;) and tap-and-hold gestures.</p>
+<p>For more information on Hololens gestures see the <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/gestures">Windows Mixed Reality Gestures documentation</a>.</p>
+<p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager.html"><code>WindowsMixedRealityDeviceManager</code></a> wraps the <a href="https://docs.unity3d.com/ScriptReference/XR.WSA.Input.GestureRecognizer.html">Unity XR.WSA.Input.GestureRecognizer</a> to consume Unity's gesture events from Hololens devices.</p>
+</li>
+<li><p>Touch screen devices.</p>
+<p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.UnityInput.html"><code>UnityTouchController</code></a> wraps the <a href="https://docs.unity3d.com/ScriptReference/Touch.html">Unity Touch class</a> that supports physical touch screens.</p>
+</li>
+</ul>
+<p>Both of these input sources use the <em>Gesture Settings</em> profile to translate Unity's Touch and Gesture events respectively into MRTK's <a href="InputActions.html">Input Actions</a>. This profile can be found under the <em>Input System Settings</em> profile.</p>
+<img src="../../External/ReadMeImages/Input/GestureProfile.png" style="max-width:100%;">
+<h2 id="gesture-events">Gesture Events</h2>
+<p>Gesture events are received by implementing one of the gesture handler interfaces: <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler.html"><code>IMixedRealityGestureHandler</code></a>  and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler-1.html"><code>IMixedRealityGestureHandler&lt;TYPE&gt;</code></a> (see table of <a href="InputEvents.html">event handlers</a>).
+When implementing the generic version, the <em>OnGestureCompleted</em> and <em>OnGestureUpdated</em> events can receive typed data of the following types:</p>
+<ul>
+<li><code>Vector2</code> - 2D position gesture. Produced by touch screens to inform of their <a href="https://docs.unity3d.com/ScriptReference/Touch-deltaPosition.html"><code>deltaPosition</code></a>.</li>
+<li><code>Vector3</code> - 3D position gesture. Produced by HoloLens to inform of:
+<ul>
+<li><a href="https://docs.unity3d.com/ScriptReference/XR.WSA.Input.ManipulationUpdatedEventArgs-cumulativeDelta.html"><code>cumulativeDelta</code></a> of a manipulation event</li>
+<li><a href="https://docs.unity3d.com/ScriptReference/XR.WSA.Input.NavigationUpdatedEventArgs-normalizedOffset.html"><code>normalizedOffset</code></a> of a navigation event</li>
+</ul>
+</li>
+<li><code>Quaternion</code> - 3D rotation gesture. Available to custom input sources but not currently produced by any of the existing ones.</li>
+<li><code>MixedRealityPose</code> - Combined 3D position/rotation gesture. Available to custom input sources but not currently produced by any of the existing ones.</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Input/Gestures.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
