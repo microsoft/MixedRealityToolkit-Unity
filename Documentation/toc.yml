@@ -2,6 +2,8 @@
   items:
   - name: MRTK v2
     href: ../MRTK-vNext.md
+  - name: Authors
+    href: Authors.md
   - name: Mixed Reality Services
     href: ../External/Documentation/MixedRealityServices.md
 - name: How-tos
@@ -18,7 +20,7 @@
     href: TODO.md
     items:
     - name: Packages
-      href: TODO.md
+      href: Packaging/MRTK_Packages.md
     - name: Service Provider
       href: MixedRealityConfigurationGuide.md
     - name: Boundary System
