@@ -438,7 +438,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/ConfiguringDiagnostics.html",
-          "hash": "9r5ATSUD01w6jzovTf1A7A=="
+          "hash": "lgxgkzsQzfmtq/9Wgsr7VQ=="
         }
       },
       "is_incremental": false,
@@ -450,7 +450,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html",
-          "hash": "l0qjEOSGtpcIozevUwrEZw=="
+          "hash": "E9k57Tb3iY2TMlHeH/M7FA=="
         }
       },
       "is_incremental": false,
@@ -462,7 +462,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/UsingVisualProfiler.html",
-          "hash": "2gYJlTDldP6MLOk1w2COdA=="
+          "hash": "deyyz1/uT0l6nQeLK0dUdw=="
         }
       },
       "is_incremental": false,
@@ -870,7 +870,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "ZeFSrF0IecLykNGzPG2DDg=="
+          "hash": "JcXHvXyJFOyxsofJLtCD5w=="
         }
       },
       "is_incremental": false,
@@ -1534,6 +1534,39 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/Diagnostics/MRTKConfig_Diagnostics.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Diagnostics/VisualProfiler.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Diagnostics/VisualProfiler.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Diagnostics/VisualProfilerMemory.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Diagnostics/VisualProfilerMemory.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Diagnostics/VisualProfilerMissedFrames.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Diagnostics/VisualProfilerMissedFrames.png"
         }
       },
       "is_incremental": false,
@@ -13270,17 +13303,17 @@
           "total_file_count": 78,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 842,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 842,
           "skipped_file_count": 0
         }
       }

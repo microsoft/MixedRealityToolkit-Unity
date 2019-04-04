@@ -82,7 +82,56 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="using-the-visual-profiler">Using the Visual Profiler</h1>
 
-<p>&lt;&lt; &gt;&gt;</p>
+<p>The VisualProfiler provides an easy to use, in application view of a mixed reality application's performance. The profiler is supported on all Mixed Reality Toolkit platforms, including:</p>
+<ul>
+<li>Microsoft HoloLens</li>
+<li>Microsoft HoloLens 2</li>
+<li>Windows Mixed Reality Immersive headsets</li>
+<li>OpenVR</li>
+</ul>
+<p>While developing an application, be sure to focus on multiple parts of the scene as the Visual Profiler displays data relative to the current view.</p>
+<blockquote>
+<p>Focus attention on portions of the scene with complex objects, particle effects or activity. These and other factors often contribute to reduction in application performance and a less than ideal user experience.</p>
+</blockquote>
+<h2 id="visual-profiler-interface">Visual Profiler Interface</h2>
+<p><img src="../../External/ReadMeImages/Diagnostics/VisualProfiler.png" alt="Visual Profiler Interface"></p>
+<p>The Visual Profiler interface includes the following components:</p>
+<ul>
+<li><a href="#frame-rate">Frame Rate</a></li>
+<li><a href="#frame-time">Frame Time</a></li>
+<li><a href="#frame-graph">Frame Graph</a></li>
+<li><a href="#memory-utilization">Memory Utilization</a></li>
+</ul>
+<h3 id="frame-rate">Frame Rate</h3>
+<p>In the upper left corner of the interface is the frame rate, measured in frames per second. For the best user experience and comfort, this value should be as high as possible.</p>
+<p>The specific platform and hardware configuration will play a significant role in the maximum achievable frame rate. Some common target values include:</p>
+<ul>
+<li>Microsoft HoloLens: 60</li>
+<li>Windows Mixed Reality Ultra: 90</li>
+</ul>
+<h3 id="frame-time">Frame Time</h3>
+<p>To the right of the frame rate is the frame time, in milliseconds, spent on the CPU. To achieve the target frame rates mentioned previously, an application can spend the following amount of time per frame:</p>
+<ul>
+<li>60 fps: 16.6 ms</li>
+<li>90 fps: 11.1 ms</li>
+</ul>
+<blockquote>
+<p>GPU time is planned to be added in a future release.</p>
+</blockquote>
+<h3 id="frame-graph">Frame Graph</h3>
+<p>The frame graph provides a graphical display of the application frame rate history.</p>
+<p><img src="../../External/ReadMeImages/Diagnostics/VisualProfilerMissedFrames.png" alt="Visual Profiler Frame Graph"></p>
+<blockquote>
+<p>When using the application, look for missed frames. Missed frames indicate the application is not hitting its target frame rate and may need optimization work.</p>
+</blockquote>
+<h3 id="memory-utilization">Memory Utilization</h3>
+<p>The memory utilization display allows for easy understanding of how the current view is impacting an application's memory consumption.</p>
+<p><img src="../../External/ReadMeImages/Diagnostics/VisualProfilerMemory.png" alt="Visual Profiler Frame Graph"></p>
+<blockquote>
+<p>When using application, look for total memory usage. Key indicators include: nearing the memory limit and rapid changes in usage.</p>
+</blockquote>
+<h2 id="customizing-the-visual-profiler">Customizing the Visual Profiler</h2>
+<p>The Visual Profiler's appearance and behavior are customizable via the diagnostics system profile. Please see <a href="ConfiguringDiagnostics.html">Configuring the Diagnostics System</a> for more information.</p>
 <h2 id="see-also">See Also</h2>
 <ul>
 <li><a href="DiagnosticsSystemGettingStarted.html">Diagnostics System</a></li>
