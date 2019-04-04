@@ -229,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (controllerModel == null)
             {
-                Debug.LogError("Unable to locate controller model");
+                // no controller model available
                 return false;
             }
 
