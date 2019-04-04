@@ -54,9 +54,9 @@
       items:
       - name: Interactable
         href: README_Interactable.md
-      - name: Obeject Manipulation 
+      - name: Object Manipulation 
         href: README_ManipulationHandler.md      
-      - name: Fintertip Visualization
+      - name: Fingertip Visualization
         href: README_FingertipVisualization.md      
       - name: Hand Interaction Example 
         href: README_HandInteractionExamples.md           
