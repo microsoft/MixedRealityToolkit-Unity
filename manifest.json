@@ -8485,6 +8485,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.html",
+          "hash": "wWwGV20dacG9oY4tzmhCow=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.BoundingBoxHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.BoundingBoxHelper.html",
+          "hash": "WzwdHHHPR6i3cRzlCAohPA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ButtonBackgroundSize.yml",
       "output": {
         ".html": {
@@ -9737,7 +9761,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "qvVSK9u3Vc8kxdFjgEAp7Q=="
+          "hash": "XfZfijwV64lpOc0c28+H7g=="
         }
       },
       "is_incremental": false,
@@ -9882,30 +9906,6 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.BezierInertia.html",
           "hash": "292bY9Bf+ySvTGZNBy+jRw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.BoundingBox.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.BoundingBox.html",
-          "hash": "TmtDirxJn5g0+34MyvrC/g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.BoundingBoxHelper.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.BoundingBoxHelper.html",
-          "hash": "uHSIjMYxMsRZUa5YgO3CRg=="
         }
       },
       "is_incremental": false,
@@ -12017,7 +12017,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.html",
-          "hash": "yQPQIyyZF+WJc44AVpj7Ng=="
+          "hash": "bB2+3DS7F8oiGztUJneKew=="
         }
       },
       "is_incremental": false,
@@ -12557,7 +12557,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "r4v2GwOXytjC7oVdQ95+aw=="
+          "hash": "uUTUHNmAiXYVkpJoG+BA3g=="
         }
       },
       "is_incremental": false,
@@ -12622,17 +12622,17 @@
           "total_file_count": 59,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 840,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 840,
           "skipped_file_count": 0
         }
       }
