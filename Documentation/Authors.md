@@ -37,6 +37,7 @@ The Mixed Reality Toolkit v2 is authored by:
 - Norbert Nemec
 - paco-ms
 - phosphoer
+- provencher
 - radicalad
 - Railboy
 - ryzngard
