@@ -638,6 +638,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Packaging/MRTK_Packages.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Packaging/MRTK_Packages.html",
+          "hash": "TEQZXwx1Ahtlohx59TOd0g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Performance/PerfGettingStarted.md",
       "output": {
         ".html": {
@@ -846,7 +858,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "ZsExy2eXvaHf6vytVxhy6Q=="
+          "hash": "v9MBE2+qnKgAJiRNNTVrIw=="
         }
       },
       "is_incremental": false,
@@ -2511,6 +2523,39 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/OpenXR-HLA.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Packaging/MRTKExperimental.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Packaging/MRTKExperimental.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Packaging/MRTKExtensions.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Packaging/MRTKExtensions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Packaging/MRTKFoundation.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Packaging/MRTKFoundation.png"
         }
       },
       "is_incremental": false,
@@ -13210,7 +13255,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 76,
+          "total_file_count": 77,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 842,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -13218,12 +13269,6 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 842,
           "skipped_file_count": 0
         }
       }

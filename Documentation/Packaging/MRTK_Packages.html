@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Mixed Reality Toolkit Packages | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Mixed Reality Toolkit Packages | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="mixed-reality-toolkit-packages">Mixed Reality Toolkit Packages</h1>
+
+<p>The Mixed Reality Toolkit (MRTK) is a collection of packages that enable cross platform Mixed Reality application development by providing support for Mixed Reality hardware and platforms in a componentized manner.</p>
+<p>There are three categories of MRTK packages:</p>
+<ul>
+<li><a href="#foundation-packages">Foundation</a></li>
+<li><a href="#extension-packages">Extension</a></li>
+<li><a href="#experimental-packages">Experimental</a></li>
+</ul>
+<h2 id="foundation-packages">Foundation Packages</h2>
+<p>The Mixed Reality Toolkit Foundation is the set of packages that enable your application to leverage common functionality across Mixed Reality Platforms. These packages are released and supported by Microsoft from source code in the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release">mrtk_release</a> branch on GitHub.</p>
+<p><img src="../../External/ReadMeImages/Packaging/MRTKFoundation.png" alt="MRTK Foundation Packages"></p>
+<p>The MRTK Foundation is comprised of:</p>
+<ul>
+<li><a href="#core-package">Core Package</a></li>
+<li><a href="#platform-providers">Platform Providers</a></li>
+<li><a href="#system-services">System Services</a></li>
+<li><a href="#feature-assets">Feature Assets</a></li>
+</ul>
+<p>The following sections describe the types of packages in each category.</p>
+<h3 id="core-package">Core Package</h3>
+<p>The core package is a <em>required</em> component and is taken as a dependency by all MRTK foundation packages.</p>
+<p>The MRTK Core package includes:</p>
+<ul>
+<li><a href="#common-types">Common interfaces, classes and data types</a></li>
+<li><a href="#mixedrealitytoolkit-scene-component">MixedRealityToolkit scene component</a></li>
+<li><a href="#mrtk-standard-shader">MRTK Standard Shader</a></li>
+<li><a href="#unity-input-provider">Unity Input Provider</a></li>
+<li><a href="#package-management">Package Management</a></li>
+</ul>
+<h4 id="common-types">Common types</h4>
+<p>The Mixed Reality Toolkit Core package contains the definitions for all of the common interfaces, classes and data types that are used by all other components. It is highly recommended that applications access MRTK components exclusively through the defined interfaces to enable the highest level of compatibility across platforms.</p>
+<h4 id="mixedrealitytoolkit-scene-component">MixedRealityToolkit scene component</h4>
+<p>The MixedRealityToolkit scene component is the single, centralized resource manager for the Mixed Reality Toolkit. This component loads and manages the lifespan of the platform and service modules and provides resources for the systems to access their configuration settings.</p>
+<h4 id="mrtk-standard-shader">MRTK Standard Shader</h4>
+<p>The MRTK Standard Shader provides the basis for virtually all of the materials provided by the MRTK. This shader is extremely flexible and optimized for the variety of platforms on which MRTK is supported. It is <em>highly</em> recommended that your application's materials use the MRTK standard shader for optimal performance.</p>
+<h4 id="unity-input-provider">Unity Input Provider</h4>
+<p>The Unity Input Provider provides access to common input devices such as game controllers, touch screens and a 3D spatial mouse.</p>
+<h4 id="package-management">Package Management</h4>
+<p><em>Coming soon</em></p>
+<p>The Mixed Reality Toolkit Core package provides support for discovering and managing the optional foundation, extension and experimental MRTK packages.</p>
+<h3 id="platform-providers">Platform Providers</h3>
+<p>The MRTK Platform Provider packages are the components that enable the Mixed Reality Toolkit to target Mixed Reality hardware and platform functionality.</p>
+<p>Supported platforms include:</p>
+<ul>
+<li><a href="#windows-mixed-reality">Windows Mixed Reality</a></li>
+<li><a href="#openvr">OpenVR</a></li>
+<li><a href="#windows-voice">Windows Voice</a></li>
+</ul>
+<h4 id="windows-mixed-reality">Windows Mixed Reality</h4>
+<p>The Windows Mixed Reality package provides support for Microsoft HoloLens, HoloLens 2 and Windows Mixed Reality Immersive devices. The package contains full platform support, including:</p>
+<ul>
+<li>Articulated Hands</li>
+<li>Eye Tracking</li>
+<li>Gaze targeting</li>
+<li>Gestures</li>
+<li>Spatial Mapping</li>
+<li>Windows Mixed Reality Motion controllers</li>
+</ul>
+<h4 id="openvr">OpenVR</h4>
+<p>The OpenVR package provides hardware and platform support for devices using the OpenVR platform.</p>
+<h4 id="windows-voice">Windows Voice</h4>
+<p>The Windows Voice package provides support for keyword recognition and dictation functionality on Microsoft Windows 10 devices.</p>
+<h3 id="system-services">System Services</h3>
+<p>Core platform services are provided in system service packages. These packages contain the Mixed Reality Toolkit's default implementations of the system service interfaces, defined in the <a href="#core-package">core</a> package.</p>
+<p>The MRTK foundation includes the following system services:</p>
+<ul>
+<li><a href="#boundary-system">Boundary System</a></li>
+<li><a href="#diagnostic-system">Diagnostic System</a></li>
+<li><a href="#input-system">Input System</a></li>
+<li><a href="#spatial-awareness-system">Spatial Awareness System</a></li>
+<li><a href="#teleport-system">Teleport System</a></li>
+</ul>
+<h4 id="boundary-system">Boundary System</h4>
+<p>The MRTK Boundary System provides data about the to virtual reality playspace. On systems for which the user has configured the boundary, the system can provide a floor plane, rectangular playspace, tracked area, and more.</p>
+<h4 id="diagnostic-system">Diagnostic System</h4>
+<p>The MRTK Diagnostic System provides real-time performance data within your application experience. At a glace, you will be able to view frame rate, processor time and other key performance metrics as you use your application.</p>
+<h4 id="input-system">Input System</h4>
+<p>The MRTK Input Systems enables applications to access input in a cross platform manner by specifying user actions and assigning those actions to the most appropriate buttons and axes on target controllers.</p>
+<h4 id="spatial-awareness-system">Spatial Awareness System</h4>
+<p>The MRTK Spatial Awareness System enables access to real-world environmental data from devices such as the Microsoft HoloLens.</p>
+<h4 id="teleport-system">Teleport System</h4>
+<p>The MRTK Teleport System provides virtual reality locomotion support.</p>
+<h3 id="feature-assets">Feature Assets</h3>
+<p>Feature Assets are collections of related functionality delivered as Unity assets and scripts. Some of these features include:</p>
+<ul>
+<li>User Interface Controls</li>
+<li>Standard Assets</li>
+<li>more</li>
+</ul>
+<h2 id="extension-packages">Extension Packages</h2>
+<p>MRTK Extension packages are a collection of packages written by Microsoft and the Community that extend and enhance the functionality of the Mixed Reality Toolkit. Extension authors will state any required dependencies, mark the package as compatible with the Mixed Reality Toolkit and provide licensing and support statements.</p>
+<p>Extension packages may provide new features and new platform support. Over time, extensions may, with the assistance and approval of the authors, be migrated into the MRTK Foundation at which time they will be released and supported by Microsoft.</p>
+<p><img src="../../External/ReadMeImages/Packaging/MRTKExtensions.png" alt="MRTK Extension Package"></p>
+<h2 id="experimental-packages">Experimental Packages</h2>
+<p>Experimental packages provide the ability to flight prototype features, pre-releases and exciting new ideas. The goal of most experimental packages is to try something new and to gauge customer interest. Many, though not all, experimental packages will be re-released as extensions once the prototyping and testing phase completes.</p>
+<p><img src="../../External/ReadMeImages/Packaging/MRTKExperimental.png" alt="MRTK Experimental Packages"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The Mixed Reality Toolkit packages and package management system are designed to enable a clean and simple method for you to additively build features into your experiences without requiring unnecessary components to be included into the project.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../DownloadingTheMRTK.html">Downloading MRTK</a></li>
+<li><a href="../GettingStartedWithTheMRTK.html">Getting Started</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Packaging/MRTK_Packages.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
