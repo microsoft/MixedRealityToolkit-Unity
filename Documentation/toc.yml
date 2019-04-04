@@ -12,6 +12,8 @@
     items:
     - name: Downloading MRTK
       href: DownloadingTheMRTK.md
+    - name: Upgrading from the HoloToolkit (HTK)
+      href: HTKToMRTKPortingGuide.md
   - name: Core Features
     href: TODO.md
     items:
