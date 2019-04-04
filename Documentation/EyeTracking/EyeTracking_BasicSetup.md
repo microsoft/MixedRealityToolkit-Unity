@@ -35,14 +35,14 @@ You can simply select _DefaultMixedRealityToolkitConfigurationProfile_ and then 
 
 ### Enabling Eye Tracking in the GazeProvider
 In HoloLens v1, head gaze was used as primary pointing technique. 
-While head gaze is still available via the _GazeProvider_ in MRTK which is attached to your [Camera](href: https://docs.unity3d.com/ScriptReference/Camera.html), you can check to use eye gaze instead by ticking the _'Prefer Eye Tracking'_ checkbox as shown in the screenshot below.
+While head gaze is still available via the _GazeProvider_ in MRTK which is attached to your [Camera](href:https://docs.unity3d.com/ScriptReference/Camera.html), you can check to use eye gaze instead by ticking the _'Prefer Eye Tracking'_ checkbox as shown in the screenshot below.
 
 ![MRTK](/External/ReadMeImages/EyeTracking/mrtk_setup_eyes_gazeprovider.png)
 
 
 ### Simulating Eye Tracking in the Unity Editor
 You can simulate Eye Tracking input in the Unity Editor to ensure that events are correctly triggered before deploying the app to your HoloLens 2.
-The eye gaze signal is simulated by simply using the [Camera](href:https://docs.unity3d.com/ScriptReference/Camera.html)'s location as eye gaze origin and the [Camera](href:https://docs.unity3d.com/ScriptReference/Camera.html)'s forward vector as eye gaze direction.
+The eye gaze signal is simulated by simply using the camera's location as eye gaze origin and the camera's forward vector as eye gaze direction.
 While this is great for inital testing, please note that it is not a good imitation for rapid eye movements. 
 For this, it is better to ensure frequent tests of your eye-based interactions on the HoloLens 2.
 
