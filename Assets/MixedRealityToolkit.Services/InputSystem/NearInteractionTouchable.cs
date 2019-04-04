@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -93,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public static IReadOnlyCollection<NearInteractionTouchable> Instances { get { return instances.AsReadOnly(); } }
         private static readonly List<NearInteractionTouchable> instances = new List<NearInteractionTouchable>();
 
-        public bool ColliderEnabled { get { return !usesCollider || collider.enabled; } }
+        public bool ColliderEnabled { get { return !usesCollider || touchableCollider.enabled; } }
 
         /// <summary>
         /// Local space forward direction
@@ -146,7 +147,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The collider used by this touchable.
         /// </summary>
         [SerializeField]
-        private new Collider collider;
+        [FormerlySerializedAs("collider")]
+        private Collider touchableCollider;
 
         protected void OnEnable()
         {
@@ -193,8 +195,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            collider = GetComponent<Collider>();
-            usesCollider = collider != null;
+            touchableCollider = GetComponent<Collider>();
+            usesCollider = touchableCollider != null;
 
             localForward = localForward.normalized;
             localUp = localUp.normalized;

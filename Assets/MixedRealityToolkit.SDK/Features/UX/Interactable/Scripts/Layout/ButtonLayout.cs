@@ -14,15 +14,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [ExecuteInEditMode]
     public class ButtonLayout : MonoBehaviour
     {
+        /// <summary>
+        /// Where to set this object's center point in relation to the Anchor's center point.
+        /// </summary>
         [Tooltip("Where to set this object's center point in relation to the Anchor's center point")]
         public Vector3 Alignment;
 
+        /// <summary>
+        /// A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size.
+        /// </summary>
         [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]
         public float BasePixelSize = 2048;
 
+        /// <summary>
+        /// The transform this object should be linked and aligned to.
+        /// </summary>
         [Tooltip("The transform this object should be linked and aligned to")]
         public Transform Anchor;
 
+        /// <summary>
+        /// Offset this object's position based on the same pixel based size ratio.
+        /// </summary>
         [Tooltip("Offset this object's position based on the same pixel based size ratio")]
         public Vector3 AnchorOffset;
 

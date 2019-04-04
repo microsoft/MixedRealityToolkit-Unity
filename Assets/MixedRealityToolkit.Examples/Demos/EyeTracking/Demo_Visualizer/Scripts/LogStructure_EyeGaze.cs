@@ -21,7 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 "SessionType",
                 // Timestamp
                 "dt in ms",
-                //-------------------------------
                 // Cam / Head tracking
                 "HeadOrigin.x",
                 "HeadOrigin.y",
@@ -29,13 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 "HeadDir.x",
                 "HeadDir.y",
                 "HeadDir.z",
-                // Raw eye gaze tracking 
-                //"RawEyeOrigin.x",
-                //"RawEyeOrigin.y",
-                //"RawEyeOrigin.z",
-                //"RawEyeDir.x",
-                //"RawEyeDir.y",
-                //"RawEyeDir.z",
                 // Smoothed eye gaze tracking 
                 "EyeOrigin.x",
                 "EyeOrigin.y",
@@ -60,11 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
 
             object[] data = new object[]
-            {
-                // UserId          // WILL BE AUTOMATICALLY ASSIGNED
-                // SessionType     // WILL BE AUTOMATICALLY ASSIGNED
-                // Timestamp       // WILL BE AUTOMATICALLY ASSIGNED
-              
+            { 
                 //-------------------------------
                 // Cam / Head tracking
                 CameraCache.Main.transform.position.x,
@@ -73,9 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 0,
                 0,
                 0,
-
-                // Raw eye gaze tracking 
-                // TODO
 
                 // Smoothed eye gaze signal 
                 EyeTrackingProvider.IsEyeGazeValid ? EyeTrackingProvider.GazeOrigin.x : 0,

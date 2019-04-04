@@ -129,13 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                             MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
                         }
                     }
-                    else
-                    {
-                        if (Interactions[i].BoolData)
-                        {
-                            MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
-                        }
-                    }
                 }
             }
         }

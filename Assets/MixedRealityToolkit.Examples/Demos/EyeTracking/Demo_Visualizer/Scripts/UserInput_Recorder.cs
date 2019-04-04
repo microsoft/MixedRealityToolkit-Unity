@@ -3,26 +3,30 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
     public class UserInput_Recorder : CustomInputLogger
     {
         public string FilenameToUse = "\\test\folder\\";
-        public LogStructure logStructure;
+
+        [SerializeField]
+        private LogStructure logStructure = null;
+
         private bool automaticLogging = true;
 
         #region Singleton
-        private static UserInput_Recorder _Instance;
+        private static UserInput_Recorder instance;
         public static UserInput_Recorder Instance
         {
             get
             {
-                if (_Instance == null)
+                if (instance == null)
                 {
-                    _Instance = FindObjectOfType<UserInput_Recorder>();
+                    instance = FindObjectOfType<UserInput_Recorder>();
                 }
-                return _Instance;
+                return instance;
             }
         }
         #endregion      

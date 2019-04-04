@@ -3,6 +3,9 @@
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// Information associated with a particular manipulation event.
+    /// </summary>
     public class ManipulationEventData
     {
         public bool IsNearInteraction {get; set; }

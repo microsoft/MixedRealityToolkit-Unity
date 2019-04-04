@@ -736,32 +736,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnInputPressed(InputEventData<float> eventData)
         {
-            /* MRTK Public Update ***************************/
-            // ignore
-
-            /* MRTK Internal Update ***************************
-            if (!CanInteract() || true)
-            {
-                return;
-            }
-
-            if (StateManager != null)
-            {
-                if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
-                {
-                    StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
-                    IncreaseDimensionIndex();
-                    OnClick.Invoke();
-                }
-                else if (eventData != null && ShouldListen(eventData.MixedRealityInputAction))
-                {
-                    StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
-                    IncreaseDimensionIndex();
-                    OnClick.Invoke();
-                    eventData.Use();
-                }
-            }
-            */
         }
 
         public void OnPositionInputChanged(InputEventData<Vector2> eventData)
@@ -1009,7 +983,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="eventData"></param>
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
-            /* Internal Update (fe07a7aa Add support for localization speech commands) */
             if (eventData.Command.Keyword == VoiceCommand && (!RequiresFocus || HasFocus) && Enabled)
             {
                 StartGlobalVisual(true);
@@ -1018,16 +991,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 eventData.Use();
             }
 
-            /* MRTK Public Update ***************************
-            if (Enabled && ShouldListen(eventData.MixedRealityInputAction))
-            {
-                StartGlobalVisual(true);                
-                IncreaseDimensionIndex();
-                SendVoiceCommands(eventData.RecognizedText, 0, 1);
-                SendOnClick(null);
-                eventData.Use();
-            }    
-            *****************************************************/
+            // TODO(https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/3767): Need to merge this
+            // work below with the code above.
+            // if (Enabled && ShouldListen(eventData.MixedRealityInputAction))
+            // {
+            //     StartGlobalVisual(true);                
+            //     IncreaseDimensionIndex();
+            //     SendVoiceCommands(eventData.RecognizedText, 0, 1);
+            //     SendOnClick(null);
+            //     eventData.Use();
+            // }
         }
 
         /// <summary>
