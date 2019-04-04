@@ -17,7 +17,7 @@ To get started with the Mixed Reality Toolkit you will need:
 
 There is not a direct upgrade path from the HoloToolkit to the new Mixed Reality Toolkit due to the rebuilt framework.  However, it is possible to import the MRTK into your HoloToolkit project and start work migrating your implementation if you wish.
 
-> The Mixed Reality Team will release a guide in the future on the key differences between HTK and MRTK project implementations.
+* [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
 
 Our recommendation is that if you have an existing HTK project, then it is best to continue with the HTK as it is still a robust and feature rich platform for building HoloLens projects.
 
