@@ -2,8 +2,8 @@
 
 The Input Simulation Service emulates the behaviour of devices and platforms that may not be available in the Unity editor. Examples include:
 * Hololens or VR device head tracking
-* Hololens version 1 hand gestures
-* Hololens version 2 articulated hand tracking
+* Hololens hand gestures
+* Hololens 2 articulated hand tracking
 
 Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.
 
@@ -66,13 +66,13 @@ The __Hand Simulation Mode__ switches between two distinct input models.
 
 * _Articulated Hands_: Simulates a fully articulated hand device with joint position data.
 
-   Emulates Hololens version 2 interaction model.
+   Emulates Hololens 2 interaction model.
 
    Interactions that are based precise positioning of the hand or use touching can be simulated in this mode.
 
 * _Gestures_: Simulates a simplified hand model with air tap and basic gestures.
 
-   Emulates [Hololens version 1 interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
+   Emulates [Hololens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
 
    Focus is controlled using the Gaze pointer. The _Air Tap_ gesture is used to interact with buttons.
 
