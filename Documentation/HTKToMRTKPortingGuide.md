@@ -20,7 +20,7 @@ Related profiles:
 
 Gaze Provider settings are modified on the Main Camera object in the scene.
 
-Platform support components (e.g., Windows Mixed Reality Device Manager) must be added to the Mixed Reality Registered Services Profile.
+Platform support components (e.g., Windows Mixed Reality Device Manager) must be added to their corresponding service's data providers.
 
 ### Interface and event mappings
 
@@ -49,7 +49,7 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | Setup                     | Delete MainCamera, add MixedRealityCameraParent / MixedRealityCamera / HoloLensCamera prefab to scene **or** use Mixed Reality Toolkit > Configure > Apply Mixed Reality Scene Settings menu item. | MainCamera parented under MixedRealityPlayspace via Mixed Reality Toolkit > Add to Scene and Configure... |
-| Configuration             | Camera settings configuration performed on prefab instance. | Camera settings configured in Mixed Reality Camera Profile. |
+| Configuration             | Camera settings configuration performed on prefab instance. | Camera settings configured in the [Mixed Reality Camera Profile](xref:Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile). |
 
 ## Speech
 
@@ -57,16 +57,16 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| Setup                     | Add a SpeechInputSource to your scene. | Keyword service (e.g., Windows Speech Input Manager) must be added to the Mixed Reality Registered Services Profile. |
-| Configuration             | Recognized keywords are configured in the SpeechInputSource’s inspector. | Keywords are configured in the Mixed Reality Speech Commands Profile. |
-| Event handlers            | `ISpeechHandler` | `IMixedRealitySpeechHandler` |
+| Setup                     | Add a SpeechInputSource to your scene. | Keyword service (e.g., Windows Speech Input Manager) must be added to the input system's data providers. |
+| Configuration             | Recognized keywords are configured in the SpeechInputSource’s inspector. | Keywords are configured in the [Mixed Reality Speech Commands Profile](Input/Speech.md). |
+| Event handlers            | `ISpeechHandler` | [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) |
 
 ### Dictation
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | Setup                     | Add a DictationInputManager to your scene. | Dictation support requires service (e.g., Windows Dictation Input Manager) to be added to the Mixed Reality Registered Services Profile. |
-| Event handlers            | `IDictationHandler` | `IMixedRealityDictationHandler` |
+| Event handlers            | `IDictationHandler` | `IMixedRealityDictationHandler`[`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) |
 
 ## Spatial Awareness / Mapping
 
@@ -114,11 +114,11 @@ Some Utilities have been reconciled as duplicates with the Solver system. Please
 
 | HTK 2017 |  MRTK v2  |
 |----------|-----------|
-| Billboard.cs | RadialView.cs |
-| Tagalong.cs | RadialView.cs or Orbital.cs |
-| FixedAngularSize.cs | ConstantViewSize.cs |
-| FpsDisplay.cs | Diagnostics System (in Configuration Profile) |
-| NearFade.cs | Built-in to MixedRealityStandard.shader |
+| Billboard | [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView) |
+| Tagalong | [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView) or [`Orbital`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital) |
+| FixedAngularSize | [`ConstantViewSize`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize) |
+| FpsDisplay | [Diagnostics System](Diagnostics/DiagnosticsSystemGettingStarted.md) (in Configuration Profile) |
+| NearFade | Built-in to MixedRealityStandard.shader |
 
 ## UX
 
