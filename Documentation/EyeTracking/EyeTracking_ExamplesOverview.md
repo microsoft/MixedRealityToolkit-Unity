@@ -7,7 +7,7 @@ The demos also include an example for eye-gaze-directed scroll, pan and zoom of 
 Finally, an example is provided for recording and visualizing the user's visual attention on a 2D slate.
 
 
-## Overview of our Eye Tracking Input Tutorials
+## Overview of MRTK Eye Tracking Samples
 
 [**Eye-Supported Target Selection**](/Documentation/EyeTracking/EyeTracking_TargetSelection.md)
 
@@ -34,22 +34,23 @@ In addition, we added an example for hands-free rotation of 3D holograms by maki
 
 [**Eye-Supported Positioning**](/Documentation/EyeTracking/EyeTracking_Positioning.md)
 
-In this tutorial, we showcase a popular input scenario called “Put that there” based on research work from Bolt in the early 1980s. 
+In this tutorial, we extend an input scenario called [Put that there](href:https://youtu.be/CbIn8p4_4CQ) dating back to research from the MIT Media Lab in the early 1980's with eye, hand and voice input.
 The idea is simple: Benefit from your eyes for fast target selection and positioning. 
-If refinement is required, use additional input from your hands, voice or controllers. 
+Simply look at a hologram and say _'put this'_, look over where you want to place it and say _'there!'_. 
+For more precisely positionig your hologram, you can use additional input from your hands, voice or controllers. 
 
-**Summary**: Positioning holograms using Eyes+Voice & Eyes+Hands (*drag-and-drop*). Eye-supported sliders using Eyes+Hands. 
+**Summary**: Positioning holograms using Eyes, Voice and Hand input (*drag-and-drop*). Eye-supported sliders using Eyes+Hands. 
 
 <br>
 
 
 [**Visualization of Visual Attention**](/Documentation/EyeTracking/EyeTracking_Visualization.md)
 
-Information about where users looked at is an immensely powerful tool to assess work streams and improve search patterns. 
+Information about where users look at is an immensely powerful tool to assess usability of a design and to identify problems in efficivent work streams. 
 In this tutorial, we discuss different eye tracking visualizations and how they fit different needs. 
-We provide you with examples for logging and loading eye tracking data and examples for how to visualize them. 
+We provide basic examples for logging and loading Eye Tracking data and examples for how to visualize them. 
 
-**Summary**: Two-dimensional attention map (heatmaps) on slates. Recording & Replaying Eye Tracking data.
+**Summary**: Two-dimensional attention map (heatmaps) on slates. Recording & replaying Eye Tracking data.
 
 ---
 [Back to "Eye Tracking in the MixedRealityToolkit"](/Documentation/EyeTracking/EyeTracking_Main.md)
