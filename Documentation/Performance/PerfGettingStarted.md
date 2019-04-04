@@ -10,20 +10,20 @@ typically identify a problematic scenario, measure the problem (using some sort 
 dig into the hotspots (using that profiling tool), test out a fix to that hotspot, and then repeat
 until performance is within desired bounds.
 
-### [Introduction to Unity performance optimization for beginners](https://www.youtube.com/watch?v=1e5WY2qf600)
+**[Introduction to Unity performance optimization for beginners](https://www.youtube.com/watch?v=1e5WY2qf600)**
 
 For people completely new to performance optimization, this is a great video to watch.
 
-### [Unity performance optimization tutorials](https://unity3d.com/learn/tutorials/topics/performance-optimization)
+**[Unity performance optimization tutorials](https://unity3d.com/learn/tutorials/topics/performance-optimization)**
 
 These tutorials introduce the Unity performance diagnostic tools and then share some
 common issues and pitfalls that people new to (and experienced with!) Unity can encounter.
 
-### [Unity optimization best practices](https://docs.unity3d.com/2019.1/Documentation/Manual/BestPracticeUnderstandingPerformanceInUnity.html)
+**[Unity optimization best practices](https://docs.unity3d.com/2019.1/Documentation/Manual/BestPracticeUnderstandingPerformanceInUnity.html)**
 
 Additional in-depth best practices that can apply to Unity in general. 
 
-### [Event Tracing for Windows Unity Guide](https://docs.unity3d.com/uploads/ExpertGuides/Analyzing_your_game_performance_using_Event_Tracing_for_Windows.pdf)
+**[Event Tracing for Windows Unity Guide](https://docs.unity3d.com/uploads/ExpertGuides/Analyzing_your_game_performance_using_Event_Tracing_for_Windows.pdf)**
 
 This guide goes into using a more advanced method for diving into performance issues using [Windows
 Performance Analyzer](https://docs.unity3d.com/uploads/ExpertGuides/Analyzing_your_game_performance_using_Event_Tracing_for_Windows.pdf)
