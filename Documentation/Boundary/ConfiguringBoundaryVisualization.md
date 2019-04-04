@@ -3,7 +3,7 @@
 The Boundary Visualization Profile provides options for configuring:
 
 - [General Settings](#general-settings)
-- [Floor Settings](#floor-settngs)
+- [Floor Settings](#floor-settings)
 - [Play Area Settings](#play-area-settings)
 - [Tracked Area Settings](#tracked-area-settings)
 - [Boundary Wall Settings](#boundary-wall-settings)
