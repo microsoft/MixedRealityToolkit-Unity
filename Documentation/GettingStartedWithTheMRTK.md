@@ -21,7 +21,7 @@ There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit
 > The Mixed Reality Team will release a guide in the future on the key differences between HTK and MRTK project implementations.
 
 
-## Starting your new MR project
+## Starting your new MRTK v2 project
 
 We have done an incredible amount of work to ensure the new project experience is as streamlined as possible.  To this end, we endeavoured to get you up and running as fast as possible.
 
