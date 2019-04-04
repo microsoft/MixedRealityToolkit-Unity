@@ -7,7 +7,7 @@ while wearing a VR headset.
 Boundaries are an important component of a mixed reality experience to help users avoid unseen 
 obstacles while wearing a VR headset.
 
-Many Virtual Reality platforms provide automatic display, for example a white outline 
+Many Virtual Reality platforms provide an automatic display, for example a white outline 
 superimposed on the virtual world as the user or their controller nears the boundary. The
 Mixed Reality Toolkit's boundary system extends this feature to enable the diplay of an 
 outline of the tracked area, a floor plane and other features that can be used to provide
