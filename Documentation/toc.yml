@@ -2,6 +2,8 @@
   items:
   - name: MRTK v2
     href: ../MRTK-vNext.md
+  - name: Authors
+    href: Authors.md
   - name: Mixed Reality Services
     href: ../External/Documentation/MixedRealityServices.md
 - name: How-tos
