@@ -19,18 +19,35 @@
       href: TODO.md
     - name: Service Provider
       href: MixedRealityConfigurationGuide.md
-    - name: Input
-      href: TODO.md
+    - name: Boundary System
+      href: Boundary/BoundarySystemGettingStarted.md
       items:
+      - name: Configuring the Boundary Visualization
+        href: Boundary/ConfiguringBoundaryVisualization.md
+    - name: Input
+      href: Input/Overview.md
+      items:
+      - name: Input Providers
+        href: Input/InputProviders.md
+      - name: Input Events
+        href: Input/InputEvents.md
+      - name: Input Actions
+        href: Input/InputActions.md
+      - name: Controllers
+        href: Input/Controllers.md
+      - name: Pointers
+        href: Input/Pointers.md
+      - name: Gestures
+        href: Input/Gestures.md
+      - name: Speech
+        href: Input/Speech.md
+      - name: Dictation
+        href: Input/Dictation.md
       - name: Hands
         href: InputSystem/HandTracking.md
-      - name: Voice
-        href: TODO.md
       - name: Eye
         href: TODO.md
       - name: Gaze
-        href: TODO.md
-      - name: Controllers
         href: TODO.md
     - name: Interactions and UX Building Blocks
       href: TODO.md
@@ -66,7 +83,7 @@
       items:
       - name: Configuring the Spatial Awareness Mesh Observer
     - name: In-Editor Input Simulation
-      href: TODO.md
+      href: InputSimulation/InputSimulationService.md
     - name: Diagnostics System
       href: Diagnostics/DiagnosticsSystemGettingStarted.md
       items:
@@ -85,7 +102,7 @@
     href: TODO.md
     items:
     - name: Performance
-      href: TODO.md
+      href: Performance/PerfGettingStarted.md
     - name: Shared Experiences
       href: TODO.md
     - name: Moving your project from HTK to MRTK
