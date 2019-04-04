@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Hand Tracking Profile | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Hand Tracking Profile | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="hand-tracking-profile">Hand Tracking Profile</h1>
+
+<p>The <em>Hand Tracking profile</em> is found under the <em>Input System profile</em>. It contains settings for customizing hand representation.</p>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_Core_Input_Hands_HandTrackingProfile.png">
+  <img src="../../External/Documentation/Images/MRTK_Core_Input_Hands_HandTrackingProfile.png" title="Hand Tracking Profile" width="50%" class="center">
+</a>
+<h2 id="joint-prefabs">Joint Prefabs</h2>
+<p>Joint prefabs are visualized using simple prefabs. The <em>Palm</em> and <em>Index Finger</em> joints are of special importance and have their own prefab, while all other joints share the same prefab.</p>
+<p>By default the hand joint prefabs are simple geometric primitives. These can be replaced if desired. If no prefab is specified at all, empty <a href="href:https://docs.unity3d.com/ScriptReference/GameObject.html">GameObjects</a> are created instead.</p>
+<table>
+<thead>
+<tr>
+<th>Warning: Avoid using complex scripts or expensive rendering in joint prefabs, since joint objects are transformed on every frame and can have significant performance cost!</th>
+</tr>
+</thead>
+</table>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png">
+  <img src="../../External/Documentation/Images/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png" title="Hand Joint Visualizers" width="50%" class="center">
+</a>
+<h2 id="hand-mesh-prefab">Hand Mesh Prefab</h2>
+<p>The hand mesh is used if fully defined mesh data is provided by the hand tracking device. The mesh renderable in the prefab is replaced by data from the device, so a dummy mesh such as a cube is sufficient. The material of the prefab is used for the hand mesh.</p>
+<a target="_blank" href="../../External/Documentation/Images/MRTK_Core_Input_Hands_ArticulatedHandMesh.png">
+  <img src="../../External/Documentation/Images/MRTK_Core_Input_Hands_ArticulatedHandMesh.png" title="Full Hand Mesh" width="50%" class="center">
+</a>
+<p>Hand mesh display can have a noticeable performance impact, for this reason it can be disabled entirely using the <em>Enable Hand Mesh Updates</em> option.</p>
+<h1 id="scripting">Scripting</h1>
+<p>Position and rotation can be requested from the input system for each individual hand joint as a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html">MixedRealityPose</a>.</p>
+<p>Alternatively we also have access to <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObjects</a> that follow the joints. This can be useful if another GameObject should track a joint continuously.</p>
+<table>
+<thead>
+<tr>
+<th>Note: Joint object are destroyed when hand tracking is lost! Make sure that any scripts using the joint object handle the <code>null</code> case gracefully to avoid errors!</th>
+</tr>
+</thead>
+</table>
+<p>Available joints are listed in the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.TrackedHandJoint.html">TrackedHandJoint</a> enum.</p>
+<h2 id="accessing-a-given-hand-controller">Accessing a given Hand Controller</h2>
+<p>A specific hand controller is often available, e.g. when handling input events. In this case the joint data can be requested directly from the device, using the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> interface.</p>
+<h3 id="polling-joint-pose-from-controller">Polling Joint Pose from Controller</h3>
+<!-- [TryGetJoint](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.TryGetJoint(TrackedHandJoint, MixedRealityPose)) -->
+<p>The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityHand_TryGetJoint_">TryGetJoint</a> function returns <code>false</code> if the requested joint is not available for some reason. In that case the resulting pose will be <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html#Microsoft_MixedReality_Toolkit_Utilities_MixedRealityPose_ZeroIdentity">MixedRealityPose.ZeroIdentity</a>.</p>
+<pre><code class="lang-csharp">public void OnSourceDetected(SourceStateEventData eventData)
+{
+  var hand = eventData.Controller as IMixedRealityHand;
+  if (hand != null)
+  {
+    if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose jointPose)
+    {
+      // ...
+    }
+  }
+}
+</code></pre>
+<h3 id="joint-transform-from-hand-visualizer">Joint Transform from Hand Visualizer</h3>
+<p>Joint objects can be requested from the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityController_Visualizer">controller visualizer</a>.</p>
+<pre><code class="lang-csharp">public void OnSourceDetected(SourceStateEventData eventData)
+{
+  var handVisualizer = eventData.Controller.Visualizer as IMixedRealityHandVisualizer;
+  if (handVisualizer != null)
+  {
+    if (handVisualizer.TryGetJointTransform(TrackedHandJoint.IndexTip, out Transform jointTransform)
+    {
+      // ...
+    }
+  }
+}
+</code></pre>
+<h2 id="simplified-joint-data-access">Simplified joint data access</h2>
+<p>If no specific controller is given then utility classes are provided for convenient access to hand joint data. These functions request joint data from the first available hand device currently tracked.</p>
+<h3 id="polling-joint-pose-from-handjointutils">Polling Joint Pose from HandJointUtils</h3>
+<p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.HandJointUtils.html">HandJointUtils</a> is a static class that queries the first active hand device.</p>
+<pre><code class="lang-csharp">  if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out MixedRealityPose pose))
+  {
+    // ...
+  }
+</code></pre>
+<h3 id="joint-transform-from-hand-joint-service">Joint Transform from Hand Joint Service</h3>
+<p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointService.html">IMixedRealityHandJointService</a> keeps a persistent set of <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObjects</a> for tracking joints.</p>
+<pre><code class="lang-csharp">  var handJointService = MixedRealityToolkit.Instance.GetService&lt;IMixedRealityHandJointService&gt;();
+  if (handJointService != null)
+  {
+    Transform jointTransform = handJointService.RequestJointTransform(TrackedHandJoint.IndexTip, Handedness.Right);
+    // ...
+  }
+}
+</code></pre>
+<h2 id="hand-tracking-events">Hand Tracking Events</h2>
+<p>The input system provides events as well, if polling data from controllers directly is not desirable.</p>
+<h3 id="joint-events">Joint Events</h3>
+<p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler.html">IMixedRealityHandJointHandler</a> handles updates of joint positions.</p>
+<pre><code class="lang-csharp">public class MyHandJointEventHandler : IMixedRealityHandJointHandler
+{
+  public Handedness myHandedness;
+
+  void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData&lt;IDictionary&lt;TrackedHandJoint, MixedRealityPose&gt;&gt; eventData)
+  {
+    if (eventData.Handedness == myHandedness)
+    {
+      if (eventData.InputData.TryGetValue(TrackedHandJoint.IndexTip, out MixedRealityPose pose))
+      {
+        // ...
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="mesh-events">Mesh Events</h3>
+<p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler.html">IMixedRealityHandMeshHandler</a> handles changes of the articulated hand mesh.</p>
+<p>Note that hand meshes are not enabled by default.</p>
+<pre><code class="lang-csharp">public class MyHandMeshEventHandler : IMixedRealityHandMeshHandler
+{
+  public Handedness myHandedness;
+  public Mesh myMesh;
+
+  public void OnHandMeshUpdated(InputEventData&lt;HandMeshInfo&gt; eventData)
+  {
+    if (eventData.Handedness == myHandedness)
+    {
+      myMesh.vertices = eventData.InputData.vertices;
+      myMesh.normals = eventData.InputData.normals;
+      myMesh.triangles = eventData.InputData.triangles;
+
+      if (eventData.InputData.uvs != null &amp;&amp; eventData.InputData.uvs.Length &gt; 0)
+      {
+          myMesh.uv = eventData.InputData.uvs;
+      }
+
+      // ...
+    }
+  }
+}
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/InputSystem/HandTracking.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

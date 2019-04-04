@@ -387,6 +387,50 @@ If no colliders attached, returns a bounds of center and extents 0</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_TransformExtensions_GetDepth_" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.GetDepth*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_TransformExtensions_GetDepth_Transform_" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.GetDepth(Transform)">GetDepth(Transform)</h4>
+  <div class="markdown level1 summary"><p>Gets the hierarchical depth of the Transform from its root. Returns -1 if the transform is the root.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int GetDepth(this Transform t)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">t</span></td>
+        <td><p>The transform to get the depth for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_TransformExtensions_GetFullPath_" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.GetFullPath*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_TransformExtensions_GetFullPath_Transform_System_String_System_String_" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.GetFullPath(Transform,System.String,System.String)">GetFullPath(Transform, String, String)</h4>
   <div class="markdown level1 summary"><p>An extension method that will get you the full path to an object.</p>
@@ -444,6 +488,57 @@ If no colliders attached, returns a bounds of center and extents 0</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_TransformExtensions_InverseTransformSize_" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.InverseTransformSize*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_TransformExtensions_InverseTransformSize_Transform_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.InverseTransformSize(Transform,Vector3)">InverseTransformSize(Transform, Vector3)</h4>
+  <div class="markdown level1 summary"><p>Transforms the size from world to local.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 InverseTransformSize(this Transform transform, Vector3 worldSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">transform</span></td>
+        <td><p>The transform.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">worldSize</span></td>
+        <td><p>The world size</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>World size.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_TransformExtensions_IsParentOrChildOf_" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.IsParentOrChildOf*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_TransformExtensions_IsParentOrChildOf_Transform_Transform_" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.IsParentOrChildOf(Transform,Transform)">IsParentOrChildOf(Transform, Transform)</h4>
   <div class="markdown level1 summary"><p>Checks if the provided transforms are child/parent related.</p>
@@ -487,6 +582,114 @@ If no colliders attached, returns a bounds of center and extents 0</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><p>True if either transform is the parent of the other or if they are the same</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_TransformExtensions_TransformSize_" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.TransformSize*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_TransformExtensions_TransformSize_Transform_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.TransformSize(Transform,Vector3)">TransformSize(Transform, Vector3)</h4>
+  <div class="markdown level1 summary"><p>Transforms the size from local to world.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 TransformSize(this Transform transform, Vector3 localSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">transform</span></td>
+        <td><p>The transform.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">localSize</span></td>
+        <td><p>The local size.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><p>World size.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_TransformExtensions_TryGetDepth_" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.TryGetDepth*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_TransformExtensions_TryGetDepth_Transform_Transform_System_Int32__" data-uid="Microsoft.MixedReality.Toolkit.TransformExtensions.TryGetDepth(Transform,Transform,System.Int32@)">TryGetDepth(Transform, Transform, ref Int32)</h4>
+  <div class="markdown level1 summary"><p>Trys to get the hierarchical depth of the Transform from the specified parent. This method is recursive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGetDepth(Transform target, Transform parent, ref int depth)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>The transfrom to get the depth for</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">parent</span></td>
+        <td><p>The starting transform to look for the target transform in</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">depth</span></td>
+        <td><p>The depth of the target transform</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>'true' if the depth could be retrieved, or 'false' because the transform is a root transform.</p>
 </td>
       </tr>
     </tbody>
