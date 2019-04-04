@@ -58,23 +58,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.ActivateModule();
 
-            RaycastCamera = MixedRealityToolkit.InputSystem?.FocusProvider.UIRaycastCamera;
+            if (MixedRealityToolkit.InputSystem != null)
+            {
+                RaycastCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
 
-            MixedRealityToolkit.InputSystem?.Register(gameObject);
+                foreach (IMixedRealityInputSource inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
+                {
+                    OnSourceDetected(inputSource);
+                }
+
+                MixedRealityToolkit.InputSystem?.Register(gameObject);
+            }
         }
 
         public override void DeactivateModule()
         {
-            MixedRealityToolkit.InputSystem?.Unregister(gameObject);
+            if (MixedRealityToolkit.InputSystem != null)
+            {
+                foreach (IMixedRealityInputSource inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
+                {
+                    OnSourceLost(inputSource);
+                }
+
+                // Process once more to handle pointer removals.
+                Process();
+
+                MixedRealityToolkit.InputSystem.Unregister(gameObject);
+            }
 
             RaycastCamera = null;
 
             base.DeactivateModule();
-        }
-
-        public override bool ShouldActivateModule()
-        {
-            return pointerDataToUpdate.Count > 0 || pointerDataToRemove.Count > 0 || base.ShouldActivateModule();
         }
 
         /// <summary>
@@ -248,7 +262,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
-            var inputSource = eventData.InputSource;
+            OnSourceDetected(eventData.InputSource);
+        }
+
+        void OnSourceDetected(IMixedRealityInputSource inputSource)
+        {
             for (int i = 0; i < inputSource.Pointers.Length; i++)
             {
                 var pointer = inputSource.Pointers[i];
@@ -263,8 +281,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            var inputSource = eventData.InputSource;
-            for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
+            OnSourceLost(eventData.InputSource);
+        }
+
+        void OnSourceLost(IMixedRealityInputSource inputSource)
+        {
+            for (int i = 0; i < inputSource.Pointers.Length; i++)
             {
                 var pointer = inputSource.Pointers[i];
                 if (pointer.InputSourceParent == inputSource)
