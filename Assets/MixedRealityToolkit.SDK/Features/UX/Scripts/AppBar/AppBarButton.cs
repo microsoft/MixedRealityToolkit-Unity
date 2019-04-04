@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public int DisplayOrder { get { return displayOrder; } }
 
-        public bool Visible { get { return visible; } }
+        public bool Visible { get { return gameObject.activeSelf; } }
 
         [SerializeField]
         private PressableButton button = null;
@@ -34,8 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private AppBar.ButtonTypeEnum buttonType = AppBar.ButtonTypeEnum.Custom;
         [SerializeField]
         private int displayOrder;
-        [SerializeField]
-        private bool visible;
 
         private AppBar parentToolBar;
         private Vector3 targetPosition;
@@ -81,18 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         primaryLabels[i].text = buttonText;
 
                     seeItSayItLabel.text = "Say \"" + buttonText + "\"";
-
-                    // TODO use property blocks once Interactable no longer uses instanced materials
-                    /*if (iconPropertyBlock == null)
-                        iconPropertyBlock = new MaterialPropertyBlock();
-
-                    if (icon.HasPropertyBlock())
-                    {
-                        icon.GetPropertyBlock(iconPropertyBlock);
-                    }
-                    iconPropertyBlock.SetTexture("_MainTex", buttonIcon);
-                    icon.SetPropertyBlock(iconPropertyBlock);*/
-
                     icon.material.mainTexture = buttonIcon;
                     break;
             }
@@ -100,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateButton()
         {
-            transform.localPosition = Vector3.Lerp(transform.localPosition, visible ? targetPosition : Vector3.zero, Time.deltaTime * changeSpeed);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, Visible ? targetPosition : Vector3.zero, Time.deltaTime * changeSpeed);
         }
 
         public void SetTargetPosition(Vector3 targetPosition)
@@ -110,11 +96,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void SetVisible(bool visible)
         {
-            this.visible = visible;
-
+            gameObject.SetActive(visible);
             // Use the interactable theme to make button invisible
             button.enabled = visible;
             interactable.Enabled = visible;
+
         }
     }
 }
