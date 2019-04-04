@@ -34,12 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             profile = target as BaseMixedRealityProfile;
         }
 
-        [Obsolete("Use MixedRealityInspectorUtility.CheckMixedRealityConfigured instead")]
-        public static bool CheckMixedRealityConfigured(bool flag = true)
-        {
-            return false;
-        }
-
         /// <summary>
         /// Renders a <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/>.
         /// </summary>
