@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Diagnostic System | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Diagnostic System | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="diagnostic-system">Diagnostic System</h1>
+
+<p>The Mixed Reality Toolkit Diagnostics System provides diagnostic tools that run within the
+application to enable analysis of application issues.</p>
+<p>The first release of the diagnostics system contains the Visual Profiler to allow for analyzing
+performance issues while using the application.</p>
+<h2 id="getting-started">Getting Started</h2>
+<blockquote>
+<p>It is <strong><em>highly</em></strong> recommended that the diagnostics system be enabled throughout the entire product
+development cycle and disabled as the last change prior to building and releasing the final version.</p>
+</blockquote>
+<ol>
+<li><a href="#enable-diagnostics">Enable</a> the diagnostic system</li>
+<li><a href="#configure-diagnostic-options">Configure</a> diagnostic options</li>
+<li><a href="#build-and-deploy">Build and deploy</a></li>
+</ol>
+<h3 id="enable-diagnostics">Enable Diagnostics</h3>
+<p>The diagnostics system is managed by the MixedRealityToolkit object (or another
+<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">service registrar</a> component).</p>
+<blockquote>
+<p>The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.</p>
+</blockquote>
+<ol>
+<li>Select the MixedRealityToolkit object in the scene hierarchy.</li>
+</ol>
+<p><img src="../../External/ReadMeImages/MRTK_ConfiguredHierarchy.png" alt="MRTK Configured Scene Hierarchy"></p>
+<ol start="2">
+<li>Navigate the Inspector panel to the Diagnostics System section and check Enable</li>
+</ol>
+<p><img src="../../External/ReadMeImages/Diagnostics/MRTKConfig_Diagnostics.png" alt="Enable the Diagnostics System"></p>
+<ol start="3">
+<li>Select the Diagnostics System implementation</li>
+</ol>
+<p><img src="../../External/ReadMeImages/Diagnostics/DiagnosticsSelectSystemType.png" alt="Select the Diagnostics System Implementation"></p>
+<blockquote>
+<p>Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the
+diagnostics system pre-configured to use the MixedRealityDiagnosticsSystem object.</p>
+</blockquote>
+<h3 id="configure-diagnostic-options">Configure Diagnostic Options</h3>
+<p>The diagnostics system uses a configuration profile to specify which components are to be displayed
+and to configure their settings. Please see <a href="ConfiguringDiagnostics.html">Configuring the Diagnostics System</a>
+for more information pertaining to the available component settings.</p>
+<p><img src="../../External/ReadMeImages/Diagnostics/DiagnosticsProfile.png" alt="Diagnostics Options"></p>
+<h3 id="build-and-deploy">Build and Deploy</h3>
+<p>Once the diagnostic system is configured with the desired options, the project can be built
+and deployed to the target platform.</p>
+<blockquote>
+<p>While it is possible to use Unity's Play Mode while developing applications without requiring the build
+and deploy steps, it is important to evaluate the diagnostics system results using a compiled application
+running on the target hardware and platform. Performance diagnostics, such as the Visual Profiler, may not
+accurately reflect actual application performance when run from within the editor.</p>
+</blockquote>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Diagnostics.html">Diagnostics API documentation</a></li>
+<li><a href="ConfiguringDiagnostics.html">Configuring the Diagnostics System</a></li>
+<li><a href="../TODO.html">Using the Visual Profiler</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

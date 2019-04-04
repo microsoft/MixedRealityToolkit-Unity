@@ -398,6 +398,42 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Diagnostics/ConfiguringDiagnostics.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Diagnostics/ConfiguringDiagnostics.html",
+          "hash": "9r5ATSUD01w6jzovTf1A7A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Diagnostics/DiagnosticsSystemGettingStarted.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html",
+          "hash": "l0qjEOSGtpcIozevUwrEZw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Diagnostics/UsingVisualProfiler.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Diagnostics/UsingVisualProfiler.html",
+          "hash": "2gYJlTDldP6MLOk1w2COdA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/DownloadingTheMRTK.md",
       "output": {
         ".html": {
@@ -642,7 +678,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "+/bufu55wsouw+v9pvPemg=="
+          "hash": "e2Pmb2pcXQEbhaOu0oibTw=="
         }
       },
       "is_incremental": false,
@@ -1042,6 +1078,61 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/ControllerVisualizer/ControllerVisualizerInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsGeneralSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsGeneralSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsProfilerSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsProfilerSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsSelectSystemType.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsSelectSystemType.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Diagnostics/MRTKConfig_Diagnostics.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Diagnostics/MRTKConfig_Diagnostics.png"
         }
       },
       "is_incremental": false,
@@ -12609,16 +12700,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 840,
-          "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 59,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -12628,11 +12720,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ConceptualDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 62,
           "skipped_file_count": 0
         }
       }
