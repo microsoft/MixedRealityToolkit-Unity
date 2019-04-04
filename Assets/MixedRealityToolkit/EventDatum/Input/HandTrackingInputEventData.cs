@@ -22,15 +22,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// This function is called to fill the HandTrackingIntputEventData object with information
         /// </summary>
-        /// <param name="inputSource">This is a reference to the HandTrackingInputSource that created the EventData</param>
-        /// <param name="controller">This is a reference to the IMixedRealityController that created the EventData</param>
-        /// <param name="grabbing">This is a the state (grabbing or not grabbing) of the HandTrackingInputSource that created the EventData</param>
-        /// <param name="pressing">This is a the state (pressing or not pressing) of the HandTrackingInputSource that created the EventData</param>
-        /// <param name="actionPoint">This is a the global position grabbed by the HandTrackingInputSource that created the EventData</param>
-        /// <param name="touchedObject">This is a the global position of the HandTrackingInputSource that created the EventData</param>
+        /// <param name="inputSource">Reference to the HandTrackingInputSource that created the EventData</param>
+        /// <param name="controller">Reference to the IMixedRealityController that created the EventData</param>
+        /// <param name="sourceHandedness">Handedness of the HandTrackingInputSource that created the EventData</param>
+        /// <param name="touchPoint">Global position of the HandTrackingInputSource that created the EventData</param>
         public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, Handedness sourceHandedness, Vector3 touchPoint)
         {
-            Initialize(inputSource, MixedRealityInputAction.None, touchPoint);
+            Initialize(inputSource, sourceHandedness, MixedRealityInputAction.None, touchPoint);
             Controller = controller;
         }
     }
