@@ -19,49 +19,24 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 
             GUI.enabled = isGUIEnabled && Application.isPlaying;
 
-            if (asset.recordingClip)
+            if (asset.IsRecording)
             {
                 if (GUILayout.Button("Stop Recording"))
                 {
-                    asset.
+                    asset.StopRecording();
+
                     EditorUtility.SetDirty(asset);
                 }
             }
             else
             {
-
+                if (GUILayout.Button("Start Recording"))
+                {
+                    asset.StartRecording();
+                }
             }
 
             GUI.enabled = isGUIEnabled;
-
-
-            // // show "Clear Input Animation"
-            // {
-            //     GUI.enabled = isGUIEnabled && hasKeyframes;
-
-            //     if (GUILayout.Button("Clear Input Animation"))
-            //     {
-            //         Undo.RecordObject(asset, "Cleared input test keyframes");
-            //         asset.InputAnimation.ClearKeyframes();
-            //         EditorUtility.SetDirty(asset);
-            //     }
-
-            //     GUI.enabled = isGUIEnabled;
-            // }
-            // // show "Record New Input Animation"
-            // {
-            //     if (GUILayout.Button("Record New Input Animation"))
-            //     {
-            //         Undo.RecordObject(asset, "Recording input test keyframes");
-            //         asset.InputAnimation.ClearKeyframes();
-            //         EditorUtility.SetDirty(asset);
-
-            //         asset.EnableInputRecording();
-            //         EditorApplication.isPlaying = true;
-            //     }
-            // }
-
-            // GUI.enabled = isGUIEnabled;
         }
     }
 }

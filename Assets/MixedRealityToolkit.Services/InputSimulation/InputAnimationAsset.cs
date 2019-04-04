@@ -10,22 +10,6 @@ using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    /// <summary>
-    /// Settings for behaviour of the playable during play mode.
-    /// </summary>
-    [System.Serializable]
-    public class InputAnimationRecordingSettings
-    {
-        /// Minimum time between keyframes.
-        public float epsilonTime = 0.1f;
-        /// Minimum movement of hand joints to record a keyframe.
-        public float epsilonJointPositions = 0.01f;
-        /// Minimum movement of the camera to record a keyframe.
-        public float epsilonCameraPosition = 0.05f;
-        /// Minimum rotation angle of the camera to record a keyframe.
-        public float epsilonCameraRotation = Mathf.Deg2Rad * 2.0f;
-    }
-
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Input Animation Asset", fileName = "InputAnimationAsset", order = 100)]
     public class InputAnimationAsset : ScriptableObject, IPlayableAsset
     {
@@ -35,51 +19,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public IEnumerable<PlayableBinding> outputs => null;
 
         /// <summary>
-        /// Settings for behaviour of the playable during play mode.
-        /// </summary>
-        public InputAnimationRecordingSettings RecordingSettings;
-
-        /// <summary>
         /// Controller input animation data.
         /// </summary>
         [SerializeField]
         private InputAnimation inputAnimation = new InputAnimation();
-        public InputAnimation InputAnimation => inputAnimation;
-
-        /// Use input recording behavior when playable is created.
-        private bool useInputRecording = false;
+        public InputAnimation InputAnimation
+        {
+            get { return inputAnimation; }
+            set { inputAnimation = value; }
+        }
 
         /// </inheritdoc>
         public Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
             if (Application.isPlaying)
             {
-                if (useInputRecording)
-                {
-                    var playable = ScriptPlayable<InputRecordingBehaviour>.Create(graph);
-                    var behaviour = playable.GetBehaviour();
-                    behaviour.Asset = this;
-                    behaviour.Settings = RecordingSettings;
-
-                    // Only create recording playable once
-                    useInputRecording = false;
-
-                    return playable;
-                }
-                else if (InputAnimation.keyframeCount > 0)
-                {
-                    var playable = ScriptPlayable<InputPlaybackBehaviour>.Create(graph);
-                    var behaviour = playable.GetBehaviour();
-                    behaviour.InputAnimation = InputAnimation;
-                    return playable;
-                }
+                var playable = ScriptPlayable<InputPlaybackBehaviour>.Create(graph);
+                var behaviour = playable.GetBehaviour();
+                behaviour.InputAnimation = InputAnimation;
+                return playable;
             }
             return Playable.Null;
-        }
-
-        public void EnableInputRecording()
-        {
-            useInputRecording = true;
         }
     }
 }
