@@ -9,10 +9,9 @@ The MRTK solves this by providing a common logical platform to build your dream,
 
 To get started with the Mixed Reality Toolkit you will need:
 
-* [Unity 2018.2.13f1 +](https://unity3d.com/get-unity/download/archive)
+* [Unity 2018.3+](https://unity3d.com/get-unity/download/archive)
 * [Latest MRTK release (Beta)](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 * [Windows SDK 18362+](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK)
-* A dream
 
 ## Upgrading from the HoloToolkit (HTK)
 
