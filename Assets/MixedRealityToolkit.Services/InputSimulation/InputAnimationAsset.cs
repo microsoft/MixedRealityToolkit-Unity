@@ -26,11 +26,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float epsilonCameraRotation = Mathf.Deg2Rad * 2.0f;
     }
 
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Input Test Asset", fileName = "InputAnimationAsset", order = 100)]
-    public class InputAnimationAsset : PlayableAsset
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Input Animation Asset", fileName = "InputAnimationAsset", order = 100)]
+    public class InputAnimationAsset : ScriptableObject, IPlayableAsset
     {
         /// </inheritdoc>
-        public override double duration => (InputAnimation != null && InputAnimation.keyframeCount > 0) ? InputAnimation.GetTime(InputAnimation.keyframeCount - 1) : 0.0;
+        public double duration => (InputAnimation != null && InputAnimation.keyframeCount > 0) ? InputAnimation.GetTime(InputAnimation.keyframeCount - 1) : 0.0;
+
+        public IEnumerable<PlayableBinding> outputs => null;
 
         /// <summary>
         /// Settings for behaviour of the playable during play mode.
@@ -48,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool useInputRecording = false;
 
         /// </inheritdoc>
-        public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
+        public Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
             if (Application.isPlaying)
             {
