@@ -410,8 +410,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.99999946, z: 0.52428865}
-  m_Center: {x: -0.000000034743024, y: -0.00000047640293, z: 0.21497777}
+  m_Size: {x: 1, y: 0.99999946, z: 0.6223597}
+  m_Center: {x: -0.00000003580839, y: -0.00000047640293, z: 0.16594146}
 --- !u!114 &7779420038095343085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,7 +439,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   localForward: {x: 0, y: 0, z: 1}
   localUp: {x: 0, y: 1, z: 0}
-  localCenter: {x: -0.000000034743024, y: -0.00000047640293, z: 0.4771221}
+  localCenter: {x: -0.00000003580839, y: -0.00000047640293, z: 0.4771213}
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 1, y: 0.99999946}
