@@ -17,7 +17,6 @@
     - name: Upgrading from the HoloToolkit (HTK)
       href: HTKToMRTKPortingGuide.md
   - name: Core Features
-    href: TODO.md
     items:
     - name: Packages
       href: Packaging/MRTK_Packages.md
@@ -51,10 +50,7 @@
         href: InputSystem/HandTracking.md
       - name: Eye
         href: TODO.md
-      - name: Gaze
-        href: TODO.md
     - name: Interactions and UX Building Blocks
-      href: TODO.md
       items:
       - name: Interactable
         href: README_Interactable.md
@@ -96,21 +92,19 @@
       - name: Using the Visual Profiler
         href: TODO.md
   - name: Other Features
-    href: TODO.md
     items:
     - name: QR Tracking
       href: TODO.md
     - name: Spatial Audio
       href: TODO.md
   - name: Advanced topics
-    href: TODO.md
     items:
     - name: Performance
       href: Performance/PerfGettingStarted.md
     - name: Shared Experiences
       href: TODO.md
     - name: Moving your project from HTK to MRTK
-      href: TODO.md
+      href: HTKToMRTKPortingGuide.md
 - name: Contributing
   href: ../CONTRIBUTING.md
   items:
