@@ -12703,8 +12703,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210487fc9a02cd049bdd702b7cb8b977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isHandMeshVisible: 0
-  isHandJointVisible: 0
+  isHandMeshVisible: 1
+  isHandJointVisible: 1
 --- !u!1 &1478918843
 GameObject:
   m_ObjectHideFlags: 0
@@ -17810,10 +17810,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoffeeCup
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.896
-      objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.209
@@ -17870,6 +17866,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d5334c45caee46be937b095a1e977dc6, type: 2}
+    - target: {fileID: 400000, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.896
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
 --- !u!4 &2045373141 stripped
