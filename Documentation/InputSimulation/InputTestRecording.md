@@ -78,6 +78,8 @@ Make sure that the scene is included in the build settings, otherwise the PlayMo
 
 A typical input animation test is shown below. It loads a scene by name and then runs for the full duration of the timeline.
 
+The `RunPlayableGraphAsync` function looks for the first _PlayableDirector_ component in the scene. If there are multiple timelines in the scene they can be disambiguated by passing an explicit PlayableDirector.
+
 ```csharp
   [UnityTest]
   public IEnumerator Test01_MyInputTest()
@@ -94,30 +96,6 @@ A typical input animation test is shown below. It loads a scene by name and then
       // INSERT TEST CONDITIONS HERE
 
       yield return new WaitForFixedUpdate();
-    }
-  }
-```
-
-The `RunPlayableGraphAsync` function looks for the first _PlayableDirector_ component in the scene. If there are multiple timelines in the scene they can be disambiguated by passing an explicit PlayableDirector:
-
-```csharp
-  public static IEnumerator RunPlayableGraphAsync(PlayableDirector director = null)
-  {
-    if (!director)
-    {
-      director = Object.FindObjectOfType<PlayableDirector>();
-    }
-    if (!director)
-    {
-      yield break;
-    }
-
-    director.Play();
-
-    var graph = director.playableGraph;
-    while (graph.IsPlaying())
-    {
-      yield return null;
     }
   }
 ```
