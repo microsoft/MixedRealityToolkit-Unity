@@ -1,6 +1,6 @@
 # Configuring the Spatial Awareness Mesh Observer
 
-The spatial swareness mesh observer profile provides options for configuring:
+The spatial awareness mesh observer profile provides options for configuring:
 - [General Settings](#general-settings)
 - [Physics Settings](#physics-settings)
 - [Level of Detail Settings](#level-of-detail-settings)

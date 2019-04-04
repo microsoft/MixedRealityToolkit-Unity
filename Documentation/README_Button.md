@@ -22,7 +22,7 @@ In the idle state, the button's front plate is not visible. As a finger approach
 
 <img src="/External/ReadMeImages/Button/MRTK_Button_InteractionStates.png" width="600">
 
-The subtle pulse effect is triggerd by the `PressableButton.` The `PressableButton` looks for `ProximityLight(s)` that live on the currently interacting pointer. If any `ProximityLight(s)` are found, the ProximityLight.Pulse method is called which automatically animates shader parameters to display a pulse.
+The subtle pulse effect is triggered by the `PressableButton.` The `PressableButton` looks for `ProximityLight(s)` that live on the currently interacting pointer. If any `ProximityLight(s)` are found, the ProximityLight.Pulse method is called which automatically animates shader parameters to display a pulse.
 
 ## Property Inspector of PressableButton 
 ![Button](/External/ReadMeImages/Button/MRTK_Button_Structure.png)

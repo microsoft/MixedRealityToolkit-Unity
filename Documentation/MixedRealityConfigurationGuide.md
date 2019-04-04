@@ -173,7 +173,7 @@ The diagnostics profile provides several simple systems to monitor whilst the pr
 
 One of the more advanced areas of the Mixed Reality Toolkit is its [service locator pattern](https://en.wikipedia.org/wiki/Service_locator_pattern) implementation which allows the registering of any "Service" with the framework. This allows the framework to be both extended with new features / systems easily but also allows for projects to take advantage of these capabilities to register their own runtime components.
 
-> You can read more about the underlying framework and it's implementation in [Stephen Hodgson's article on the Mixed Reality Framework](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2)
+> You can read more about the underlying framework and its implementation in [Stephen Hodgson's article on the Mixed Reality Framework](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2)
 
 Any registered service still gets the full advantage of all of the Unity events, without the overhead and cost of implementing a MonoBehaviour or clunky singleton patterns.  This allows for pure C# components with no scene overhead for running both foreground and background processes, e.g. spawning systems, runtime gamelogic, or practically anything else.
 
@@ -253,7 +253,7 @@ There's an additional helper button to quickly jump to the Gaze Provider to over
 
 ## Gestures Configuration
 
-Gestures are a system specific implementation allowing you to assign Input Actions to the various "Gesture" input methods provided by various SDK's (e.g. HoloLens).
+Gestures are a system specific implementation allowing you to assign Input Actions to the various "Gesture" input methods provided by various SDKs (e.g. HoloLens).
 
 > Note, the current implementation is for the HoloLens only and will be enhanced for other systems as they are added to the Toolkit in the future (no dates yet).
 
