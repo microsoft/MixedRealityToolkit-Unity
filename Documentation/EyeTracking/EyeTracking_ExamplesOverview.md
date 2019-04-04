@@ -51,10 +51,5 @@ We provide you with examples for logging and loading eye tracking data and examp
 
 **Summary**: Two-dimensional attention map (heatmaps) on slates. Recording & Replaying Eye Tracking data.
 
-
-## To show or not to show an Eye Cursor?
-For your HoloLens 2 apps, we recommend to *not* show an eye cursor, as this has shown to easily distract users and break the magic for instinctively having a system react to your intentions.
-However, in some situations having the option to turn on an eye cursor is very helpful for identfying why the system is not reacting as expected. 
-
 ---
 [Back to "Eye Tracking in the MixedRealityToolkit"](/Documentation/EyeTracking/EyeTracking_Main.md)
