@@ -269,6 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                     serializedObject.ApplyModifiedProperties();
                                     System.Type type = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[i].ComponentType.Type;
                                     ApplyDataProviderConfiguration(type, providerName, configurationProfile, runtimePlatform);
+                                    break;
                                 }
 
                                 EditorGUI.BeginChangeCheck();

@@ -8,14 +8,26 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
     public class UserInput_Recorder_Feedback : MonoBehaviour
     {
-        public TextMesh statusText;
-        public float maxShowDurationInSeconds = 2f;
+        [SerializeField]
+        private TextMesh statusText = null;
 
-        public AudioClip audio_StartRecording;
-        public AudioClip audio_StopRecording;
-        public AudioClip audio_StartPlayback;
-        public AudioClip audio_PausePlayback;
-        public AudioClip audio_LoadRecordedData;
+        [SerializeField]
+        private float maxShowDurationInSeconds = 2f;
+
+        [SerializeField]
+        private AudioClip audio_StartRecording = null;
+
+        [SerializeField]
+        private AudioClip audio_StopRecording = null;
+
+        [SerializeField]
+        private AudioClip audio_StartPlayback = null;
+
+        [SerializeField]
+        private AudioClip audio_PausePlayback = null;
+
+        [SerializeField]
+        private AudioClip audio_LoadRecordedData = null;
         
         private void PlayAudio(AudioClip audio)
         {

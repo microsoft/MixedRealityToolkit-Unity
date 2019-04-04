@@ -24,9 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         public InputPointerVisualizer _HeadGazeVisualizer;
 
         [SerializeField]
-        private DrawOnTexture[] heatmapRefs = null; //TODO: How to have one heatmap handler?
+        private DrawOnTexture[] heatmapRefs = null;
 
-        private StreamReader sReader;
+        private StreamReader streamReader;
         private List<string> loggedLines;
 
 #if WINDOWS_UWP
@@ -113,7 +113,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
             try
             {
+#if WINDOWS_UWP
                 if (!UnityEngine.Windows.File.Exists(filename))
+#else
+                if (!System.IO.File.Exists(filename))
+#endif
                 {
                     txt_LoadingUpdate.text += "Error: Playback log file does not exist! ->>   " + filename + "   <<";
                     Log(("Error: Playback log file does not exist! ->" + filename + "<"));
@@ -129,7 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                     // Read and display lines from the file until the end of the file is reached.
                     while ((line = sr.ReadLine()) != null)
                     {
-                        //TODO trigger events?
                         loggedLines.Add(line);
                     }
                     txt_LoadingUpdate.text = "Finished loading log file. Lines: " + loggedLines.Count;
@@ -181,17 +184,28 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 #endregion
 
 #region Available player actions
-        public async void Load()
+        public void Load()
         {
 #if UNITY_EDITOR
-            txt_LoadingUpdate.text = "Load: " + FileName;
-            LoadNewFile(FileName);
-#else
-            txt_LoadingUpdate.text = "[Load.1] " + FileName;
-            //bool result = AsyncHelpers.RunSync<bool>(() => UWP_Load());
-            await UWP_Load();
+            LoadInEditor();
+#elif WINDOWS_UWP
+            LoadInUWP();
 #endif
         }
+
+        private void LoadInEditor()
+        {
+            txt_LoadingUpdate.text = "Load: " + FileName;
+            LoadNewFile(FileName);
+        }
+
+#if WINDOWS_UWP
+        private async void LoadInUWP()
+        {
+            txt_LoadingUpdate.text = "[Load.1] " + FileName;
+            await UWP_Load();
+        }
+#endif
 
         private string FileName
         {
@@ -259,21 +273,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             {
                 visualizer.gameObject.SetActive(true);
 
-                //if (!DataIsLoaded)
-                // Let's make sure we load the latest
 #if UNITY_EDITOR
                 Load();
-#else
-            txt_LoadingUpdate.text = "[Load.2] " + FileName;
-            bool result = AsyncHelpers.RunSync<bool>(() => UWP_Load());
-            txt_LoadingUpdate.text = "[Load.2] Done. ";
-
+#elif WINDOWS_UWP
+                txt_LoadingUpdate.text = "[Load.2] " + FileName;
+                bool result = AsyncHelpers.RunSync<bool>(() => UWP_Load());
+                txt_LoadingUpdate.text = "[Load.2] Done. ";
 #endif
                 txt_LoadingUpdate.text = "Loading done. Visualize data...";
 
                 // Let's unpause the visualizer to make updates
                 visualizer.UnpauseApp();
-                
 
                 // Let's make sure that the visualizer will show all data at once
                 visualizer.AmountOfSamples = loggedLines.Count;
@@ -313,11 +323,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         private void LoadingStatus_Hide()
         {
-            //if (txt_LoadingUpdate != null)
-            //{
-            //    if (txt_LoadingUpdate.gameObject.activeSelf)
-            //        txt_LoadingUpdate.gameObject.SetActive(false);
-            //}
         }
 
         private void LoadingStatus_Show()
@@ -448,7 +453,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         private void UpdateHeadGazeSignal(string[] split, InputPointerVisualizer vizz)
         {
-            //ToDo
         }
 
         private void UpdateTargetingSignal(string ox, string oy, string oz, string dirx, string diry, string dirz, Ray cursorRay, InputPointerVisualizer vizz)
@@ -500,7 +504,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
                 // Let's unpause the visualizer to make updates
                 // Show only a certain amount of data at once 
-                //TODO: instead of amount, distinguish by time window
                 if (_EyeGazeVisualizer != null)
                 {
                     _EyeGazeVisualizer.UnpauseApp();

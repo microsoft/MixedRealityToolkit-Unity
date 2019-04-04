@@ -16,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty palmPrefab;
         private SerializedProperty fingertipPrefab;
         private SerializedProperty handMeshPrefab;
-        private SerializedProperty enableHandMeshUpdates;
+        private SerializedProperty enableHandMeshVisualization;
+        private SerializedProperty enableHandJointVisualization;
 
         protected override void OnEnable()
         {
@@ -28,7 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             fingertipPrefab = serializedObject.FindProperty("fingertipPrefab");
             palmPrefab = serializedObject.FindProperty("palmPrefab");
             handMeshPrefab = serializedObject.FindProperty("handMeshPrefab");
-            enableHandMeshUpdates = serializedObject.FindProperty("enableHandMeshUpdates");
+            enableHandMeshVisualization = serializedObject.FindProperty("enableHandMeshVisualization");
+            enableHandJointVisualization = serializedObject.FindProperty("enableHandJointVisualization");
         }
 
         public override void OnInspectorGUI()
@@ -55,7 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.PropertyField(palmPrefab);
             EditorGUILayout.PropertyField(fingertipPrefab);
             EditorGUILayout.PropertyField(handMeshPrefab);
-            EditorGUILayout.PropertyField(enableHandMeshUpdates);
+            EditorGUILayout.PropertyField(enableHandMeshVisualization);
+            EditorGUILayout.PropertyField(enableHandJointVisualization);
 
             serializedObject.ApplyModifiedProperties();
         }

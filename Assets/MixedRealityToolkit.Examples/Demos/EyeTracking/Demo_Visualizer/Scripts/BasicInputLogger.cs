@@ -22,7 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             Debug.Log("New user name: " + name);
         }
 
-        //[LEAPConsoleMethod("Set session name (e.g., Session00, Session01)")]
         public void SetSessionDescr(string descr)
         {
             sessionDescr = descr;
@@ -30,7 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         }
 
         public string UserName = "tester";
-        public string sessionDescr = "Session00";
+
+        [SerializeField]
+        protected string sessionDescr = "Session00";
+
         public string LogDirectory
         {
             get
@@ -43,9 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         public abstract string GetHeader();
 
 #if WINDOWS_UWP
-            private StorageFile logFile;
-            private StorageFolder logRootFolder = KnownFolders.MusicLibrary;
-            private StorageFolder sessionFolder;
+        private StorageFile logFile;
+        private StorageFolder logRootFolder = KnownFolders.MusicLibrary;
+        private StorageFolder sessionFolder;
 #endif
 
         internal bool isLogging = false;

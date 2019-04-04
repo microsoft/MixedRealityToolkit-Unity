@@ -139,26 +139,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// This function gets an array of all active hand positions
         /// </summary>
-        /// <returns>array of Vector3</returns>
-        [Obsolete]
-        public Vector3[] GetHandPositions()
-        {
-            List<Vector3> positions = new List<Vector3>();
-
-            foreach (uint key in positionAvailableMap.Keys)
-            {
-                if (positionAvailableMap[key] == true)
-                {
-                    positions.Add(handPositionMap[key]);
-                }
-            }
-
-            return positions.ToArray();
-        }
-
-        /// <summary>
-        /// This function gets an array of all active hand positions
-        /// </summary>
         /// <returns>enumerable of Vector3</returns>
         public IEnumerable<Vector3> GetAllHandPositions()
         {

@@ -66,9 +66,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private float previewPlacemDistThresh = 0.05f;
 
         [Header("Constrained Movement")]
-        public bool freezeX = false;
-        public bool freezeY = false;
-        public bool freezeZ = false;
+        [SerializeField]
+        private bool freezeX = false;
+
+        [SerializeField]
+        private bool freezeY = false;
+
+        [SerializeField]
+        private bool freezeZ = false;
 
         public Vector2 LocalMinMax_X = new Vector2(float.NegativeInfinity, float.PositiveInfinity);
         public Vector2 LocalMinMax_Y = new Vector2(float.NegativeInfinity, float.PositiveInfinity);
@@ -108,12 +113,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         #endregion
 
         #region Private variables
-        private GameObject pPreviewGameObj;
+        private GameObject previewGameObject;
         private bool onlyEyeWarpOnRelease = true; // Only warp the currently grabbed target to the current look at location once the user releases the pinch gesture.        
 
         private float originalTransparency = -1;
-        private bool original_UseGravity = false;
-        private float original_Drag = 1;
+        private bool originalUseGravity = false;
+        private float originalDrag = 1;
 
         private bool onlyTransitionToPlausibleDestinations = true;
         private Vector3? plausibleLocation;
@@ -127,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private Vector3 handPos_absolute;
         private Vector3 handPos_relative;
         private Vector3 initialHandPos;
-        private static bool hand_isPinching = false;
+        private static bool handIsPinching = false;
         private Handedness currEngagedHand = Handedness.None;
         private bool objIsGrabbed = false;
 
@@ -199,19 +204,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                             // Update preview position
                             if (placePreviewAtHitPoint)
                             {
-                                pPreviewGameObj.transform.position = plausibleLocation.Value; // EyeInputManager.Instance.HitPosition;
+                                previewGameObject.transform.position = plausibleLocation.Value; // EyeInputManager.Instance.HitPosition;
                             }
                             else
                             {
                                 if (PlacementSurface == PlacementSurfaces.Horizontal)
                                 {
-                                    pPreviewGameObj.transform.position = plausibleLocation.Value + pPreviewGameObj.transform.localScale.y * new Vector3(0, 1, 0) / 2;  //EyeInputManager.Instance.HitPosition + pPreviewGameObj.transform.localScale.y * new Vector3(0, 1, 0);
+                                    previewGameObject.transform.position = plausibleLocation.Value + previewGameObject.transform.localScale.y * new Vector3(0, 1, 0) / 2;  //EyeInputManager.Instance.HitPosition + pPreviewGameObj.transform.localScale.y * new Vector3(0, 1, 0);
                                 }
                                 else
                                 {
-                                    pPreviewGameObj.transform.position = plausibleLocation.Value; //EyeInputManager.Instance.HitPosition;
+                                    previewGameObject.transform.position = plausibleLocation.Value; //EyeInputManager.Instance.HitPosition;
                                 }
-                                prevPreviewPos = pPreviewGameObj.transform.position;
+                                prevPreviewPos = previewGameObject.transform.position;
                             }
                         }
                         else
@@ -265,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     handPos_relative = new Vector3(oldHandPos.x - pose.Position.x, oldHandPos.y - pose.Position.y, oldHandPos.z - pose.Position.z);
                     handPos_absolute = pose.Position;
 
-                    if (hand_isPinching)
+                    if (handIsPinching)
                     {
                         RelativeMoveUpdate(handPos_relative);
                     }
@@ -342,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             if ((handInputEnabled) && (!isManipulatingUsing_Hands) && (!isManipulatingUsing_Voice))
             {
                 isManipulatingUsing_Hands = true;
-                hand_isPinching = true;
+                handIsPinching = true;
                 handPos_relative = Vector3.zero;
                 handPos_absolute = Vector3.zero;
                 DragAndDrop_Start();
@@ -358,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             if (isManipulatingUsing_Hands)
             {
                 isManipulatingUsing_Hands = false;
-                hand_isPinching = false;
+                handIsPinching = false;
                 handPos_relative = Vector3.zero;
                 DragAndDrop_Finish();
                 MixedRealityToolkit.InputSystem.PopModalInputHandler();
@@ -414,13 +419,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
 
             // Check if the target is still hit by the eye gaze cursor
-            if (EyeTrackingProvider.GazeTarget == pPreviewGameObj)
+            if (EyeTrackingProvider.GazeTarget == previewGameObject)
             {
                 return false;
             }
 
             // Check whether the user is still looking within the proximity of the target
-            float distanceBetweenTargetAndCurrHitPos = Angle_ToCurrHitTarget(pPreviewGameObj);
+            float distanceBetweenTargetAndCurrHitPos = Angle_ToCurrHitTarget(previewGameObject);
             if (distanceBetweenTargetAndCurrHitPos > minLookAwayDistToEnableEyeWarp)
             {
                 return true;
@@ -477,15 +482,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void ActivatePreview()
         {
-            if (pPreviewGameObj == null)
+            if (previewGameObject == null)
             {
-                pPreviewGameObj = Instantiate(gameObject);
-                pPreviewGameObj.GetComponent<Collider>().enabled = false;
-                EyeTrackingDemoUtils.GameObject_ChangeTransparency(pPreviewGameObj, transparency_preview);
+                previewGameObject = Instantiate(gameObject);
+                previewGameObject.GetComponent<Collider>().enabled = false;
+                EyeTrackingDemoUtils.GameObject_ChangeTransparency(previewGameObject, transparency_preview);
                 placePreviewAtHitPoint = false;
             }
 
-            pPreviewGameObj.SetActive(true);
+            previewGameObject.SetActive(true);
         }
 
         /// <summary>
@@ -493,11 +498,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void DeactivatePreview()
         {
-            if (pPreviewGameObj != null)
+            if (previewGameObject != null)
             {
-                pPreviewGameObj.SetActive(false);
-                Destroy(pPreviewGameObj);
-                pPreviewGameObj = null;
+                previewGameObject.SetActive(false);
+                Destroy(previewGameObject);
+                previewGameObject = null;
             }
         }
 
@@ -521,8 +526,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 Rigidbody rbody = GetComponent<Rigidbody>();
                 if (rbody != null)
                 {
-                    original_UseGravity = rbody.useGravity;
-                    original_Drag = rbody.drag;
+                    originalUseGravity = rbody.useGravity;
+                    originalDrag = rbody.drag;
 
                     rbody.useGravity = false;
                     rbody.drag = float.PositiveInfinity;
@@ -560,8 +565,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 Rigidbody rbody = GetComponent<Rigidbody>();
                 if (rbody != null)
                 {
-                    rbody.useGravity = original_UseGravity;
-                    rbody.drag = original_Drag;
+                    rbody.useGravity = originalUseGravity;
+                    rbody.drag = originalDrag;
                 }
 
                 if (useAsSlider)
@@ -766,7 +771,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private bool ShouldObjBeWarped(float deltaHand, float distTargetAndHitPos, bool headIsInMotion)
         {
-            if ((manualTargetManip && (pPreviewGameObj != null) && (pPreviewGameObj.activeSelf)) ||
+            if ((manualTargetManip && (previewGameObject != null) && (previewGameObject.activeSelf)) ||
                 ((!onlyEyeWarpOnRelease) &&
               // If manipulated via hands, head and eyes:
               (deltaHand > deltaHandMovemThresh) &&                // 1. Check that *hand* moved sufficiently to indicate the user's intent to move the target

@@ -7,12 +7,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
     public class UserInput_Recorder_UIController : MonoBehaviour
     {
-        public GameObject btn_StartRecording;
-        public GameObject btn_StopRecording;
-        public GameObject btn_StartPlayback_Inactive;
-        public GameObject btn_StartPlayback;
-        public GameObject btn_PausePlayback;
-        public GameObject btn_LoadRecordedData;
+        [SerializeField]
+        private GameObject btn_StartRecording = null;
+
+        [SerializeField]
+        private GameObject btn_StopRecording = null;
+
+        [SerializeField]
+        private GameObject btn_StartPlayback_Inactive = null;
+
+        [SerializeField]
+        private GameObject btn_StartPlayback = null;
+
+        [SerializeField]
+        private GameObject btn_PausePlayback = null;
 
         public void Start()
         {

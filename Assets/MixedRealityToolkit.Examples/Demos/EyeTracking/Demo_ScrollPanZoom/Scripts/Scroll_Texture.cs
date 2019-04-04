@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             PanSpeedLeftRight = ScrollSpeed_x;
             MinDistFromCenterForAutoPan = MinDistFromCenterForAutoScroll;
             customColliderSizeOnLookAt = OnLookAt_ColliderSize;
-            renderer = TextureRendererToBeScrolled;
+            textureRenderer = TextureRendererToBeScrolled;
             useSkimProof = UseSkimProofing;
 
             base.Start();
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             UpdateValues(ref MinDistFromCenterForAutoPan, MinDistFromCenterForAutoScroll);
             UpdateValues(ref MinDistFromCenterForAutoPan, MinDistFromCenterForAutoScroll);
             UpdateValues(ref customColliderSizeOnLookAt, OnLookAt_ColliderSize);
-            UpdateValues(ref renderer, TextureRendererToBeScrolled);
+            UpdateValues(ref textureRenderer, TextureRendererToBeScrolled);
             UpdateValues(ref useSkimProof, UseSkimProofing);
 
             if (UpdateValues(ref skimproof_UpdateSpeedFromUser, SkimProofUpdateSpeed))
@@ -79,6 +79,5 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
             base.Update();
         }
-
     }
 }

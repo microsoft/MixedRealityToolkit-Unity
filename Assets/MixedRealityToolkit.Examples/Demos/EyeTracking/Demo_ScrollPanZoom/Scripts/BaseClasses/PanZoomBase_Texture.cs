@@ -11,17 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// </summary>
     public class PanZoomBase_Texture : PanZoomBase
     {
-        internal new Renderer renderer = null;
+        protected Renderer textureRenderer = null;
 
-        private const string c_DefaultTextureShaderProperty = "_MainTex";
-        private int textureTargetID = Shader.PropertyToID(c_DefaultTextureShaderProperty);
-        private string textureShaderProperty = c_DefaultTextureShaderProperty;
+        private const string DefaultTextureShaderProperty = "_MainTex";
+        private int textureTargetID = Shader.PropertyToID(DefaultTextureShaderProperty);
+        private string textureShaderProperty = DefaultTextureShaderProperty;
         public string TextureShaderProperty
         {
-            get
-            {
-                return textureShaderProperty;
-            }
+            get { return textureShaderProperty; }
             set
             {
                 textureShaderProperty = value;
@@ -31,12 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         [SerializeField]
         private float DefaultAspectRatio = 1.0f;
+
         private float aspectRatio = -1;
 
-        private bool IsValid
-        {
-            get { return ((renderer != null) && (renderer.enabled)); }
-        }
+        private bool IsValid => (textureRenderer != null) && textureRenderer.enabled;
 
         public override void Initialize()
         {
@@ -58,13 +53,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                 //# Compute and set new scale  
                 ZoomStop();
-                scale = new Vector2(renderer.transform.localScale.x / aspectRatio, 1f);
-                renderer.materials[0].SetTextureScale(textureTargetID, scale);
+                scale = new Vector2(textureRenderer.transform.localScale.x / aspectRatio, 1f);
+                textureRenderer.materials[0].SetTextureScale(textureTargetID, scale);
 
                 //# Update new values for original ratio
                 originalRatio = new Vector3(scale.x, scale.y);
 
-                BoxCollider bcoll = renderer.gameObject.GetComponent<BoxCollider>();
+                BoxCollider bcoll = textureRenderer.gameObject.GetComponent<BoxCollider>();
                 if (bcoll != null)
                 {
                     origColliderSize = bcoll.size;
@@ -129,8 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 }
 
                 // Assign new values
-                renderer.materials[0].SetTextureOffset(textureTargetID, offset); // Pan
-                renderer.materials[0].SetTextureScale(textureTargetID, scale); // Zoom                 
+                textureRenderer.materials[0].SetTextureOffset(textureTargetID, offset); // Pan
+                textureRenderer.materials[0].SetTextureScale(textureTargetID, scale); // Zoom                 
             }
         }
 
@@ -173,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
             // Update the offset based on the scale diff and the zoom pivot.
             offsetRate_Zoom = (oldScale - newScale) * pivot;
-            
+
             // Update the texture's scale to the computed value.
             scale = newScale;
         }

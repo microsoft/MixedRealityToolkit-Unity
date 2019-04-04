@@ -11,15 +11,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     public class Target_MoveToCamera : BaseEyeFocusHandler
     {
         public static Target_MoveToCamera currentlyFocusedTarget;
+
         public MonoBehaviour[] ActivateBehaviorsWhenInFront;
 
         public float DistanceToCamera = 6f;
-        public float speed = 1f;
-        public bool isEnabled = false;
 
-        public float minDistToStopTransition = 1f;
-        public float minIncr = 0.01f;
-        public bool setToAutoRotateIfFocused = true;
+        [SerializeField]
+        private float speed = 1f;
+
+        [SerializeField]
+        private bool isEnabled = false;
+
+        [SerializeField]
+        private float minDistToStopTransition = 1f;
+
+        [SerializeField]
+        private bool setToAutoRotateIfFocused = true;
 
         private Vector3 originalPosition;
         private bool inTransition = false;

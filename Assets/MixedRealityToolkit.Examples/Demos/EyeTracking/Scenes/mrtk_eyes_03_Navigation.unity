@@ -1363,7 +1363,6 @@ MonoBehaviour:
   speed: 3
   isEnabled: 1
   minDistToStopTransition: 0.1
-  minIncr: 0.01
   setToAutoRotateIfFocused: 1
 --- !u!114 &90523958
 MonoBehaviour:
@@ -9579,7 +9578,6 @@ MonoBehaviour:
   speed: 3
   isEnabled: 1
   minDistToStopTransition: 0.1
-  minIncr: 0.01
   setToAutoRotateIfFocused: 1
 --- !u!114 &1882516435
 MonoBehaviour:
