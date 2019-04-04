@@ -28,28 +28,27 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 
 | HTK 2017 |  MRTK v2  | Action Mapping |
 |----------|-----------|----------------|
-| IControllerInputHandler | IMixedRealityInputHandler<Vector2> | Mapped to the touchpad or thumbstick |
-| IControllerTouchpadHandler | IMixedRealityInputHandler | Mapped to the touchpad |
-| IFocusable | IMixedRealityFocusHandler | |
-| IGamePadHandler | IMixedRealitySourceStateHandler | |
-| IHoldHandler | IMixedRealityGestureHandler | Mapped to hold in the Gestures Profile |
-| IHoldHandler | IMixedRealityGestureHandler | |
-| IInputClickHandler | IMixedRealityPointerHandler has a click |
-| IInputHandler | IMixedRealityInputHandler | Mapped to the controller’s buttons or hand tap |
-| IManipulationHandler | IMixedRealityGestureHandler<Vector3> | Mapped to manipulation in the Gestures Profile |
-| INavigationHandler | IMixedRealityGestureHandler<Vector3> | Mapped to navigation in the Gestures Profile |
-| IPointerSpecificFocusable | IMixedRealityFocusChangedHandler | |
-| ISelectHandler | IMixedRealityInputHandler<float> | Mapped to trigger position |
-| ISourcePositionHandler | IMixedRealityInputHandler<Vector3> or IMixedRealityInputHandler<MixedRealityPose> | Mapped to pointer position or grip position |
-| ISourceRotationHandler | IMixedRealityInputHandler<Quaternion> or IMixedRealityInputHandler<MixedRealityPose> | Mapped to pointer position or grip position |
-| ISourceStateHandler | IMixedRealitySourceStateHandler | |
-| IXboxControllerHandler | IMixedRealityInputHandler and IMixedRealityInputHandler<Vector2> | Mapped to the various controller buttons and thumbsticks |
+| `IControllerInputHandler` | [`IMixedRealityInputHandler<Vector2>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) | Mapped to the touchpad or thumbstick |
+| `IControllerTouchpadHandler` | [`IMixedRealityInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler) | Mapped to the touchpad |
+| `IFocusable` | [`IMixedRealityFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler) | |
+| `IGamePadHandler` | [`IMixedRealitySourceStateHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler) | |
+| `IHoldHandler` | [`IMixedRealityGestureHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler) | Mapped to hold in the Gestures Profile |
+| `IInputClickHandler` | [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler) |
+| `IInputHandler` | [`IMixedRealityInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler) | Mapped to the controller’s buttons or hand tap |
+| `IManipulationHandler` | [`IMixedRealityGestureHandler<Vector3>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler`1) | Mapped to manipulation in the Gestures Profile |
+| `INavigationHandler` | [`IMixedRealityGestureHandler<Vector3>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler`1) | Mapped to navigation in the Gestures Profile |
+| `IPointerSpecificFocusable` | [`IMixedRealityFocusChangedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler) | |
+| `ISelectHandler` | [`IMixedRealityInputHandler<float>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) | Mapped to trigger position |
+| `ISourcePositionHandler` | [`IMixedRealityInputHandler<Vector3>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) or [`IMixedRealityInputHandler<MixedRealityPose>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) | Mapped to pointer position or grip position |
+| `ISourceRotationHandler` | [`IMixedRealityInputHandler<Quaternion>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) or [`IMixedRealityInputHandler<MixedRealityPose>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) | Mapped to pointer position or grip position |
+| `ISourceStateHandler` | [`IMixedRealitySourceStateHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler) | |
+| `IXboxControllerHandler` | [`IMixedRealityInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler) and [`IMixedRealityInputHandler<Vector2>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) | Mapped to the various controller buttons and thumbsticks |
 
 ## Camera
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| Setup                     | Delete MainCamera, add MixedRealityCameraParent / MixedRealityCamera / HoloLensCamera prefab to scene **or** use Mixed Reality Toolkit > Configure > Apply Mixed Reality Scene Settings menu item. | MainCamera parented under MixedRealityPlayspace via Mixed Reality Toolkit > Configure. |
+| Setup                     | Delete MainCamera, add MixedRealityCameraParent / MixedRealityCamera / HoloLensCamera prefab to scene **or** use Mixed Reality Toolkit > Configure > Apply Mixed Reality Scene Settings menu item. | MainCamera parented under MixedRealityPlayspace via Mixed Reality Toolkit > Add to Scene and Configure... |
 | Configuration             | Camera settings configuration performed on prefab instance. | Camera settings configured in Mixed Reality Camera Profile. |
 
 ## Speech
@@ -60,14 +59,14 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 |---------------------------|----------|-----------|
 | Setup                     | Add a SpeechInputSource to your scene. | Keyword service (e.g., Windows Speech Input Manager) must be added to the Mixed Reality Registered Services Profile. |
 | Configuration             | Recognized keywords are configured in the SpeechInputSource’s inspector. | Keywords are configured in the Mixed Reality Speech Commands Profile. |
-| Event handlers            | ISpeechHandler | IMixedRealitySpeechHandler |
+| Event handlers            | `ISpeechHandler` | `IMixedRealitySpeechHandler` |
 
 ### Dictation
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | Setup                     | Add a DictationInputManager to your scene. | Dictation support requires service (e.g., Windows Dictation Input Manager) to be added to the Mixed Reality Registered Services Profile. |
-| Event handlers            | IDictationHandler | IMixedRealityDictationHandler |
+| Event handlers            | `IDictationHandler` | `IMixedRealityDictationHandler` |
 
 ## Spatial Awareness / Mapping
 
@@ -82,7 +81,7 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| Setup                     | Use the SurfaceMeshesToPlanes script. | Not yet implemented. |
+| Setup                     | Use the `SurfaceMeshesToPlanes` script. | Not yet implemented. |
 
 ### Spatial Understanding
 
@@ -95,7 +94,7 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| Setup                     | Add the BoundaryManager script to the scene. | Enable the Boundary System in the Configuration Profile. |
+| Setup                     | Add the `BoundaryManager` script to the scene. | Enable the Boundary System in the Configuration Profile. |
 | Configuration             | Configure the scene instance in the inspector. | Configure the settings in the Boundary Visualization profile. |
 
 ## Sharing
