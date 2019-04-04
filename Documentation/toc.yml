@@ -19,6 +19,11 @@
       href: TODO.md
     - name: Service Provider
       href: MixedRealityConfigurationGuide.md
+    - name: Boundary System
+      href: Boundary/BoundarySystemGettingStarted.md
+      items:
+      - name: Configuring the Boundary Visualization
+        href: Boundary/ConfiguringBoundaryVisualization.md
     - name: Input
       href: Input/Overview.md
       items:
