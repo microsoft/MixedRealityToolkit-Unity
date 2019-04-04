@@ -68,4 +68,58 @@
 
 # Create a test using the recorded input animation
 
+Create a test script in `Assets\MixedRealityToolkit.Tests\PlayModeTests`. The PlayModeTests assembly supports playmode tests, which can be stepped over multiple frames.
+
+Make sure that the scene is included in the build settings, otherwise the PlayMode tests won't be able to load it.
+
+<a target="_blank" href="../../External/Documentation/Images/MRTK_InputTestRecording_BuildSettingsTestScene.png">
+  <img src="../../External/Documentation/Images/MRTK_InputTestRecording_BuildSettingsTestScene.png" title="Hand Tracking Profile" width="50%" class="center" />
+</a>
+
+A typical input animation test is shown below. It loads a scene by name and then runs for the full duration of the timeline.
+
+```csharp
+  [UnityTest]
+  public IEnumerator Test01_MyInputTest()
+  {
+    var loadOp = TestUtilities.LoadTestSceneAsync("MyInputTestScene");
+    while (loadOp.MoveNext())
+    {
+      yield return new WaitForFixedUpdate();
+    }
+
+    var playOp = TestUtilities.RunPlayableGraphAsync();
+    while (playOp.MoveNext())
+    {
+      // INSERT TEST CONDITIONS HERE
+
+      yield return new WaitForFixedUpdate();
+    }
+  }
+```
+
+The `RunPlayableGraphAsync` function looks for the first _PlayableDirector_ component in the scene. If there are multiple timelines in the scene they can be disambiguated by passing an explicit PlayableDirector:
+
+```csharp
+  public static IEnumerator RunPlayableGraphAsync(PlayableDirector director = null)
+  {
+    if (!director)
+    {
+      director = Object.FindObjectOfType<PlayableDirector>();
+    }
+    if (!director)
+    {
+      yield break;
+    }
+
+    director.Play();
+
+    var graph = director.playableGraph;
+    while (graph.IsPlaying())
+    {
+      yield return null;
+    }
+  }
+```
+
 # Define test conditions
