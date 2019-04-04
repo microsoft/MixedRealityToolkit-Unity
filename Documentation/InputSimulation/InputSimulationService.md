@@ -50,8 +50,6 @@ Head movement can be emulated by the Input Simulation Service.
 
 Press and hold the movement keys (W/A/S/D for forward/left/back/right).
 
----
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 # Hand Simulation
@@ -68,7 +66,7 @@ The __Hand Simulation Mode__ switches between two distinct input models.
 
    Emulates Hololens 2 interaction model.
 
-   Interactions that are based precise positioning of the hand or use touching can be simulated in this mode.
+   Interactions that are based on precise positioning of the hand or use touching can be simulated in this mode.
 
 * _Gestures_: Simulates a simplified hand model with air tap and basic gestures.
 
@@ -101,8 +99,6 @@ Hands can be rotated when precise direction is required.
 * Pitch rotates around the X axis (default: F/R keys for clockwise/counter-clockwise rotation)
 * Roll rotates around the Z axis (default: X/Z keys for clockwise/counter-clockwise rotation)
 
----
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 ## Hand Gestures
@@ -132,8 +128,6 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 4. Use mouse to move the object
 5. Release mouse button to stop interaction
 
----
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rM0xaHam6wM" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 ## Two-Hand Manipulation
@@ -147,8 +141,6 @@ For manipulating objects with two hands at the same time the persistent hand mod
   3. Press mouse button to activate the _Pinch_ gesture. In persistent mode the gesture will remain active when you release the mouse button.
 3. Repeat the process with the other hand, grabbing the same object in a second spot.
 4. Now that both hands are grabbing the same object, you can move either of them to perform two-handed manipulation.
-
----
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
@@ -164,7 +156,5 @@ For manipulating objects with two hands at the same time the persistent hand mod
 3. Hold _Space_ to control the right hand
 4. Click and hold _left mouse button_ to interact
 5. Rotate the camera again to manipulate the object
-
----
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
