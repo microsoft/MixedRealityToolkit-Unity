@@ -30,13 +30,13 @@ The core package is a _required_ component and is taken as a dependency by all M
 
 The MRTK Core package includes:
 
-- [Common interfaces, classes and data types](#common-interfaces-clases-and-data-types)
+- [Common interfaces, classes and data types](#common-types)
 - [MixedRealityToolkit scene component](#mixedrealitytoolkit-scene-component)
 - [MRTK Standard Shader](#mrtk-standard-shader)
 - [Unity Input Provider](#unity-input-provider)
 - [Package Management](#package-management)
 
-#### Common interfaces, classes and data types
+#### Common types
 
 The Mixed Reality Toolkit Core package contains the definitions for all of the common interfaces, classes and data types that are used by all other components. It is highly recommended that applications access MRTK components exclusively through the defined interfaces to enable the highest level of compatibility across platforms.
 
