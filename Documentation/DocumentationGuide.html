@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Documentation guidelines | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Documentation guidelines | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<img src="../External/ReadMeImages/MRTK_Logo_Rev.png">
+<h1 id="documentation-guidelines">Documentation guidelines</h1>
+<p>This document outlines the documentation guidelines and standards for the Mixed Reality Toolkit (MRTK). It's purpose is to get you started quickly by giving an introduction about the technical aspects that you need to know, to point out common pitfalls and to describe the writing style that you should try to follow.</p>
+<p>The page itself is supposed to serve as an example, therefore it uses the intended style and the most common markup features of the documentation.</p>
+<p>Herein you will find some general style advice as well as the standards for the following forms of the MRTK documentation:</p>
+<ul>
+<li><a href="#source-documentation">Source</a></li>
+<li><a href="#how-to-documentation">How-to</a></li>
+<li><a href="#design-documentation">Design</a></li>
+<li><a href="#performance-notes">Performance notes</a></li>
+<li><a href="#breaking-changes">Breaking changes</a></li>
+</ul>
+<hr>
+<h2 id="functionality-and-markup">Functionality and markup</h2>
+<p>This section describes frequently needed features. To see how they work, look at the source code of the page.</p>
+<ol>
+<li>Numbered lists
+<ol>
+<li>Nested numbered lists with at least 3 leading blank spaces</li>
+<li>The actual number in code is irrelevant; parsing will take care of setting the correct item number.</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>Bullet point lists
+<ul>
+<li>Nested bullet point lists</li>
+</ul>
+</li>
+<li>Text in <strong>bold</strong> with **double asterisk**</li>
+<li><em>italic</em> <em>text</em> with _underscore_ or *single asterisk*</li>
+<li>Text <code>highlighted as code</code> within a sentence `using backquotes`</li>
+<li>Links to docs pages <a href="DocumentationGuide.html">MRTK documentation guidelines</a></li>
+<li>Links to <a href="#style">anchors within a page</a>; anchors are formed by replacing spaces with dashes, and converting to lowercase</li>
+</ul>
+<p>For code samples we use the blocks with three backticks ``` and specify <em>csharp</em> as the language for syntax highlighting:</p>
+<pre><code class="lang-csharp">int SampleFunction(int i)
+{
+   return i + 42;
+}
+</code></pre>
+<p>When mentioning code within a sentence <code>use a single backtick</code>.</p>
+<h3 id="todo-comments">TODO comments</h3>
+<p>To mark areas in the documentation that need to be revisited later again, please use the following comment style, to make it easy to find those places again:</p>
+<p>&lt;!-- TODO: add more details --&gt;</p>
+<p>Also consider adding pages with TODOs to the <a href="DocsToDo.html">documentation TODO list</a>.</p>
+<h2 id="page-layout">Page layout</h2>
+<h3 id="introduction">Introduction</h3>
+<p>The part right after the main chapter title should serve as a short introduction what the chapter is about. Do not make this too long, instead add sub headlines. These allow to link to sections and can be saved as bookmarks.</p>
+<h3 id="main-body">Main body</h3>
+<p>Use two-level and three-level headlines to structure the rest.</p>
+<p><strong>Mini Sections</strong></p>
+<p>Use a bold line of text for blocks that should stand out. We might replace this by four-level headlines at some point.</p>
+<h3 id="see-also-section">'See also' section</h3>
+<p>Most pages should end with a chapter called <em>See also</em>. This chapter is simply a bullet pointed list of links to pages related to this topic. These links may also appear within the page text where appropriate, but this is not required. Similarly, the page text may contain links to pages that are not related to the main topic, these should not be included in the <em>See also</em> list. See <a href="#see-also">this page's ''See also'' chapter</a> as an example for the choice of links.</p>
+<h2 id="table-of-contents-toc">Table of Contents (TOC)</h2>
+<p>Toc files are used for generating the navigation bars in the MRTK github.io documentation.
+Whenever you're adding a new file to the documentation make sure that there's an entry for that file in one of the toc.yml files of the documentation folder. Only articles listed in the toc files will show up in the navigation of the developer docs.
+There can be a toc file for every subfolder in the documentation folder which can be linked into any existing toc file to add it as a subsection to the corresponding part of the navigation.</p>
+<h2 id="style">Style</h2>
+<h3 id="writing-style">Writing style</h3>
+<p>General rule of thumb: Try to <strong>sound professional</strong>. That usually means to avoid a 'conversational tone'. Also try to avoid hyperbole and sensationalism.</p>
+<ol>
+<li>Don't try to be (overly) funny.</li>
+<li>Never write 'I'</li>
+<li>Avoid 'we'. This can usually be rephrased easily, sometimes you can use 'MRTK' instead. Example: &quot;we support this feature&quot; -&gt; &quot;MRTK supports this feature&quot; or &quot;the following features are supported ...&quot;.</li>
+<li>Similarly, try to avoid 'you'. Example: &quot;With this simple change your shader becomes configurable!&quot; -&gt; &quot;Shaders can be made configurable with little effort.&quot;</li>
+<li>Do not use 'sloppy phrases'.</li>
+<li>Avoid sounding overly excited, we do not need to sell anything.</li>
+<li>Similarly, avoid being overly dramatic. Exclamation marks are rarely needed.</li>
+</ol>
+<h3 id="capitalization">Capitalization</h3>
+<ul>
+<li>Use <strong>Sentence case for headlines</strong>. Ie. capitalize the first letter and names, but nothing else.</li>
+<li>Use regular English for everything else. That means <strong>do not capitalize arbitrary words</strong>, even if they hold a special meaning in that context. Prefer <em>italic text</em>, if you really want to highlight certain words, <a href="#emphasis-and-highlighting">see below</a>.</li>
+<li>When a link is embedded in a sentence (which is the preferred method), the standard chapter name always uses capital letters, thus breaking the rule of no arbitrary capitalization inside text. Therefore use a custom link name to fix the capitalization. As an example, here is a link to the <a href="README_BoundingBox.html">bounding box</a> documentation.</li>
+<li>Do capitalize names, such as <em>Unity</em>.</li>
+<li>Do NOT capitalize &quot;editor&quot; when writing <em>Unity editor</em>.</li>
+</ul>
+<h3 id="emphasis-and-highlighting">Emphasis and highlighting</h3>
+<p>There are two ways to emphasize or highlight words, making them bold or making them italic. The effect of bold text is that <strong>bold text sticks out</strong> and therefore can easily be noticed while skimming a piece of text or even just scrolling over a page. Bold is great to highlight phrases that people should remember. However, <strong>use bold text rarely</strong>, because it is generally distracting.</p>
+<p>Often one wants to either 'group' something that belongs logically together or highlight a specific term, because it has a special meaning. Such things do not need to stand out of the overall text. Use italic text as a <em>lightweight method</em> to highlight something.</p>
+<p>Similarly, when a filename, a path or a menu-entry is mentioned in text, prefer to make it italic to logically group it, without being distracting.</p>
+<p>In general, try to <strong>avoid unnecessary text highlighting</strong>. Special terms can be highlighted once to make the reader aware, do not repeat such highlighting throughout the text, when it serves no purpose anymore and only distracts.</p>
+<h3 id="mentioning-menu-entries">Mentioning menu entries</h3>
+<p>When mentioning a menu entry that a user should click, the current convention is:</p>
+<p><em>Project &gt; Files &gt; Create &gt; Leaf</em></p>
+<h3 id="links">Links</h3>
+<p>Insert as many useful links to other pages as possible, but each link only once. Assume a reader clicks on every link in your page, and think about how annoying it would be, if the same page opens 20 times.</p>
+<p>Prefer links embedded in a sentence:</p>
+<ul>
+<li>BAD: Guidelines are useful. See <a href="DocumentationGuide.html">this chapter</a> for details.</li>
+<li>GOOD: <a href="DocumentationGuide.html">Guidelines</a> are useful.</li>
+</ul>
+<p>Avoid external links, they can become outdated or contain copyrighted content.</p>
+<p>When you add a link, consider whether it should also be listed in the <a href="#see-also">See also</a> section. Similarly, check whether a link to your new page should be added to the linked-to page.</p>
+<h3 id="images--screenshots">Images / screenshots</h3>
+<p><strong>Use screenshots sparingly.</strong> Maintaining images in documentation is a lot of work, small UI changes can make a lot of screenshots outdated. The following rules will reduce maintenance effort:</p>
+<ol>
+<li>Do not use screenshots for things that can be described in text. Especially, <strong>never screenshot a property grid</strong> for the sole purpose of showing property names and values.</li>
+<li>Do not include things in a screenshot that are irrelevant to what is shown. For instance, when a rendering effect is shown, make a screenshot of the viewport, but exclude any UI around it. When you have to show some UI, try to move windows around such that only that important part is in the image.</li>
+<li>When you do screenshot UI, only show the important parts. For example, when talking about buttons in a toolbar, you can make a small image that shows the important toolbar buttons, but exclude everything around it.</li>
+<li>Only use images that are easy to reproduce. That means do not paint markers or highlights into screenshots. First, there are no consistent rules how these should look, anyway. Second, reproducing such a screenshot is additional effort. Instead, describe the important parts in text. There are exceptions to this rule, but they are rare.</li>
+<li>Obviously, it is much more effort to recreate an animated GIF. If you make one, expect to be responsible to recreate it for the rest of your life, or expect people to throw it out, if they don't want to spend that time.</li>
+<li>Keep the number of images in an article low. Often a good method is to make one overall screenshot of some tool, that shows everything, and then describe the rest in text. This makes it easy to replace the screenshot when necessary.</li>
+</ol>
+<p>Some other aspects:</p>
+<ul>
+<li>Default image width is 500 pixels, as this displays well on most monitors. Try not to deviate too much from it. 800 pixels width should be the maximum.</li>
+<li>Use PNGs for screenshots of UI.</li>
+<li>Use PNGs or JPGs for 3D viewport screenshots. Prefer quality over compression ratio.</li>
+</ul>
+<h3 id="list-of-component-properties">List of component properties</h3>
+<p>When documenting a list of properties, use bold text to highlight the property name, then line breaks and regular text to describe them. Do not use sub-chapters or bullet point lists.</p>
+<p>Also, don't forget to finish all sentences with a period.</p>
+<h2 id="when-you-are-finished-with-a-page">When you are finished with a page</h2>
+<p>First off, it is ok for a 'finished' page to contain <a href="#todo-comments">TODO comments</a>. However, once you stop working on a page, please do the following:</p>
+<ol>
+<li>Make sure you followed the guidelines in this document.</li>
+<li>Browse the document structure and see if your new document could be mentioned under the <a href="#see-also">See also</a> section of other pages.</li>
+<li>If available, have someone with knowledge of the topic proof-read the page for technical correctness.</li>
+<li>Have someone proof-read your page for style and formatting. This can be someone unfamiliar with the topic, which is also a good idea to get feedback about how understandable the documentation is.</li>
+</ol>
+<h2 id="source-documentation">Source documentation</h2>
+<p>API documentation will be generated automatically from the MRTK source files. To facilitate this, source files are required to contain the following:</p>
+<ul>
+<li><a href="#class-struct-enum-summary-blocks">Class, struct, enum summary blocks</a></li>
+<li><a href="#property-method-event-summary-blocks">Property, method, event summary blocks</a></li>
+<li><a href="#feature-introduction-version-and-dependencies">Feature introduction version and dependencies</a></li>
+<li><a href="#serialized-fields">Serialized fields</a></li>
+<li><a href="#enumeration-values">Enumeration values</a></li>
+</ul>
+<p>In addition to the above, the code should be well commented to allow for maintenance, bug fixes and ease of customization.</p>
+<h3 id="class-struct-enum-summary-blocks">Class, struct, enum summary blocks</h3>
+<p>If a class, struct or enum is being added to the MRTK, it's purpose must be described. This is to take the form of a summary block above the class.</p>
+<pre><code>    /// &lt;summary&gt;
+    /// AudioOccluder implements IAudioInfluencer to provide an occlusion effect.
+    /// &lt;/summary&gt;
+</code></pre>
+<p>If there are any class level dependencies, they should be documented in a remarks block, immediately below the summary.</p>
+<pre><code>    /// &lt;remarks&gt;
+    /// Ensure that all sound emitting objects have an attached AudioInfluencerController. 
+    /// Failing to do so will result in the desired effect not being applied to the sound.
+    /// &lt;/remarks&gt;
+</code></pre>
+<p>Pull Requests submitted without summaries for classes, strutures or enums will not be approved.</p>
+<h3 id="property-method-event-summary-blocks">Property, method, event summary blocks</h3>
+<p>Properties, methods and events (PMEs) as well as fields are to be documented with summary blocks, regardless of code visibility (public, private, protected and internal). The documentation generation tool is responsible for filtering out and publishing only the public and protected features.</p>
+<p>NOTE: A summary block is <strong>not</strong> required for Unity methods (ex: Awake, Start, Update).</p>
+<p>PME documentation is <strong>required</strong> for a pull request to be approved.</p>
+<p>As part of a PME summary block, the meaning and purpose of parameters and returned data is required.</p>
+<pre><code>        /// &lt;summary&gt;
+        /// Sets the cached native cutoff frequency of the attached low pass filter.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;frequency&quot;&gt;The new low pass filter cutoff frequency.&lt;/param&gt;
+        /// &lt;returns&gt;The new cutoff frequency value.&lt;/returns&gt;
+
+</code></pre>
+<h3 id="feature-introduction-version-and-dependencies">Feature introduction version and dependencies</h3>
+<p>As part of the API summary documentation, information regarding the MRTK version in which the feature was introduced and any dependencies should be documented in a remarks block.</p>
+<p>Dependencies should include extension and/or platform dependencies.</p>
+<pre><code>    /// &lt;remarks&gt;
+    /// Introduced in MRTK version: 2018.06.0
+    /// Minimum Unity version: 2018.0.0f1
+    /// Minimum Operating System: Windows 10.0.11111.0
+    /// Requires installation of: ImaginarySDK v2.1
+    /// &lt;/remarks&gt;
+</code></pre>
+<h3 id="serialized-fields">Serialized fields</h3>
+<p>It is a good practice to use Unity's tooltip attribute to provide runtime documentation for a script's fields in the inspector.</p>
+<p>So that configuration options are included in the API documentation, scripts are required to include <em>at least</em> the tooltip contents in a summary block.</p>
+<pre><code>        /// &lt;summary&gt;
+        /// The quality level of the simulated audio source (ex: AM radio).
+        /// &lt;/summary&gt;
+        [Tooltip(&quot;The quality level of the simulated audio source.&quot;)]
+</code></pre>
+<h3 id="enumeration-values">Enumeration values</h3>
+<p>When defining and enumeration, code must also document the meaning of the enum values using a summary block. Remarks blocks can optionally be used to provide additional details to enhance understanding.</p>
+<pre><code>        /// &lt;summary&gt;
+        /// Full range of human hearing.
+        /// &lt;/summary&gt;
+        /// &lt;remarks&gt;
+        /// The frequency range used is a bit wider than that of human
+        /// hearing. It closely resembles the range used for audio CDs.
+        /// &lt;/remarks&gt;
+</code></pre>
+<h2 id="how-to-documentation">How-to documentation</h2>
+<p>Many users of the Mixed Reality Toolkit may not need to use the API documentation. These users will take advantage of our pre-made, reusable prefabs and scripts to create their experiences.</p>
+<p>Each feature area will contain one or more markdown (.md) files that describe at a fairly high level, what is provided. Depending on the size and/or complexity of a given feature area, there may be a need for additional files, up to one per feature provided.</p>
+<p>When a feature is added (or the usage is changed), overview documentation must be provided.</p>
+<p>As part of this documentation, how-to sections, including illustrations, should be provided to assist customers new to a feature or concept in getting started.</p>
+<h2 id="design-documentation">Design documentation</h2>
+<p>Mixed Reality provides an opportunity to create entirely new worlds. Part of this is likely to involve the creation of custom assets for use with the MRTK. To make this as friction free as possible for customers, components should provide design documentation describing any formatting or other requirements for art assets.</p>
+<p>Some examples where design documentation can be helpful:</p>
+<ul>
+<li>Cursor models</li>
+<li>Spatial mapping visualizations</li>
+<li>Sound effect files</li>
+</ul>
+<p>This type of documentation is <strong>strongly</strong> recommended, and <strong>may</strong> be requested as part of a pull request review.</p>
+<p>This may or may not be different from the design recommendation on the <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/design">MS Developer site</a></p>
+<h2 id="performance-notes">Performance notes</h2>
+<p>Some important features come at a performance cost. Often this code will very depending how they are configured.</p>
+<p>For example:</p>
+<pre><code>When using the spatial mapping component, the performance impact will increase with the level of detail requested. It is recommended to use the least detail possible for your experience.
+</code></pre>
+<p>Performance notes are recommended for CPU and/or GPU heavy components and <strong>may</strong> be requested as part of a pull request review. Any applicable performance notes are to be included in API <strong>and</strong> overiew documentation.</p>
+<h2 id="breaking-changes">Breaking changes</h2>
+<p>Breaking changes documentation is to consist of a top level <a href="../BreakingChanges.html">file</a> which links to each feature area's individual BreakingChanges.md.</p>
+<p>The feature area BreakingChanges.md files are to contain the list of all known breaking changes for a given release <strong>as well as</strong> the history of breaking changes from past releases.</p>
+<p>For example:</p>
+<pre><code>Spatial sound breaking changes
+
+2018.07.2
+* Spatialization of the imaginary effect is now required.
+* Management of randomized AudioClip files requires an entropy value in the manager node.
+
+2018.07.1
+No known breaking changes
+
+2018.07.0
+...
+</code></pre>
+<p>The information contained within the feature level BreakingChanges.md files will be aggregated to the release notes for each new MRTK release.</p>
+<p>Any breaking changes that are part of a change <strong>must</strong> be documented as part of a Pull Request.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="DevDocGuide.html">Documentation portal generation guide</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/DocumentationGuide.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
