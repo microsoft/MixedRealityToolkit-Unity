@@ -48,8 +48,8 @@
         href: Input/Dictation.md
       - name: Hands
         href: InputSystem/HandTracking.md
-      - name: Eye
-        href: TODO.md
+      - name: Eyes
+        href: EyeTracking/EyeTracking_Main.md
     - name: Interactions and UX Building Blocks
       items:
       - name: Interactable
@@ -60,6 +60,8 @@
         href: README_FingertipVisualization.md      
       - name: Hand Interaction Example 
         href: README_HandInteractionExamples.md           
+      - name: Eye Tracking Interaction Example
+        href: EyeTracking/EyeTracking_ExamplesOverview.md   
       - name: App Bar
         href: README_AppBar.md
       - name: Bounding Box
@@ -112,9 +114,9 @@
     href: ../Feature_Contribution_Process.md
   - name: Coding Guidelines
     href: ../CodingGuidelines.md
-  - name: Documentation Guide
-    href: ../DocumentationGuide.md
-  - name: Developer Docs Generation
+  - name: Documentation guide
+    href: DocumentationGuide.md
+  - name: Developer portal generation with DocFX
     href: DevDocGuide.md
 - name: Planning
   items:
