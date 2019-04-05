@@ -1,12 +1,11 @@
-![MRTK](/External/ReadMeImages/EyeTracking/MRTK_ET_Positioning.png =750x450)
+![MRTK](/External/ReadMeImages/EyeTracking/mrtk_et_positioning.png )
 
 # Eye-Supported Target Positioning in MRTK
 
-// --- TODO ---
+<!-- TODO: Add content -->
 
 
-
-![MRTK](/External/ReadMeImages/EyeTracking/MRTK_ET_Positioning_Slider.png =500x250)
+![MRTK](/External/ReadMeImages/EyeTracking/mrtk_et_positioning_slider.png)
 
 
 ---
