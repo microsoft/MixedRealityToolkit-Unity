@@ -22,7 +22,7 @@
       href: Packaging/MRTK_Packages.md
       items:
       - name: Mixed Reality Toolkit Componentization
-      href: Packaging/MRTK_Modularization.md
+        href: Packaging/MRTK_Modularization.md
     - name: Service Provider
       href: MixedRealityConfigurationGuide.md
     - name: Boundary System
