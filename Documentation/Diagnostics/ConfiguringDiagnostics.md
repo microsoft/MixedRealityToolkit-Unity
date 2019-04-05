@@ -46,4 +46,4 @@ The speed at which to move the profiler window to maintain visibility within the
 ## See Also
 
 - [Diagnostics System](DiagnosticsSystemGettingStarted.md)
-- [Using the Visual Profiler](../TODO.md)
+- [Using the Visual Profiler](UsingVisualProfiler.md)

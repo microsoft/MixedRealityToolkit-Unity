@@ -90,7 +90,7 @@
       - name: Configuring the Diagnostics System
         href: Diagnostics/ConfiguringDiagnostics.md
       - name: Using the Visual Profiler
-        href: TODO.md
+        href: Diagnostics/UsingVisualProfiler.md
   - name: Other Features
     items:
     - name: QR Tracking
