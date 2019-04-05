@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.Teleport;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using UnityEngine;
@@ -13,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
     [DisallowMultipleComponent]
-    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealityTeleportHandler
+    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer
     {
         [SerializeField]
         private GameObject cursorPrefab = null;
@@ -30,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Source transform for raycast origin - leave null to use default transform")]
-        private Transform raycastOrigin = null;
+        protected Transform raycastOrigin = null;
 
         [SerializeField]
         [Tooltip("The hold action that will enable the raise the input event for this pointer.")]
@@ -38,11 +37,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The action that will enable the raise the input event for this pointer.")]
-        private MixedRealityInputAction pointerAction = MixedRealityInputAction.None;
+        protected MixedRealityInputAction pointerAction = MixedRealityInputAction.None;
 
         [SerializeField]
         [Tooltip("Does the interaction require hold?")]
         private bool requiresHoldAction = false;
+
+        [SerializeField]
+        [Tooltip("Does the interaction require the action to occur at least once first?")]
+        private bool requiresActionBeforeEnabling = true;
 
         /// <summary>
         /// True if select is pressed right now
@@ -55,15 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected bool HasSelectPressedOnce = false;
 
         protected bool IsHoldPressed = false;
-
-        protected bool IsTeleportRequestActive = false;
-
-        private bool lateRegisterTeleport = true;
-
-        /// <summary>
-        /// The forward direction of the targeting ray
-        /// </summary>
-        public virtual Vector3 PointerDirection => raycastOrigin != null ? raycastOrigin.forward : transform.forward;
 
         /// <summary>
         /// Set a new cursor for this <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>
@@ -98,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (BaseCursor != null)
                 {
-                    BaseCursor.DefaultCursorDistance = PointerExtent;
+                    BaseCursor.DefaultCursorDistance = DefaultPointerExtent;
                     BaseCursor.Pointer = this;
                     BaseCursor.SetVisibilityOnSourceDetected = setCursorVisibilityOnSourceDetected;
 
@@ -120,32 +114,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnEnable();
 
-            if (MixedRealityToolkit.IsTeleportSystemEnabled && MixedRealityToolkit.TeleportSystem != null && !lateRegisterTeleport)
+            // Disable renderers so that they don't display before having been processed (which manifests as a flash at the origin).
+            var renderers = GetComponentsInChildren<Renderer>();
+            if (renderers != null)
             {
-                MixedRealityToolkit.TeleportSystem.Register(gameObject);
+                foreach (var renderer in renderers)
+                {
+                    renderer.enabled = false;
+                }
             }
         }
 
         protected override async void Start()
         {
             base.Start();
-
-            if (lateRegisterTeleport && MixedRealityToolkit.IsTeleportSystemEnabled)
-            {
-                if (MixedRealityToolkit.TeleportSystem == null)
-                {
-                    await new WaitUntil(() => MixedRealityToolkit.TeleportSystem != null);
-
-                    // We've been destroyed during the await.
-                    if (this == null)
-                    {
-                        return;
-                    }
-                }
-
-                lateRegisterTeleport = false;
-                MixedRealityToolkit.TeleportSystem.Register(gameObject);
-            }
 
             if (MixedRealityToolkit.InputSystem == null)
             {
@@ -158,13 +140,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
+            // The pointer's input source was lost during the await.
+            if (Controller == null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             SetCursor();
         }
 
         protected override void OnDisable()
         {
+            if (IsSelectPressed && MixedRealityToolkit.InputSystem != null)
+            {
+                MixedRealityToolkit.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
+            }
+
             base.OnDisable();
-            MixedRealityToolkit.TeleportSystem?.Unregister(gameObject);
 
             IsHoldPressed = false;
             IsSelectPressed = false;
@@ -183,8 +176,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 base.Controller = value;
-                pointerName = gameObject.name;
-                InputSourceParent = base.Controller.InputSource;
+
+                if (base.Controller != null && this != null)
+                {
+                    pointerName = gameObject.name;
+                    InputSourceParent = base.Controller.InputSource;
+                }
             }
         }
 
@@ -213,7 +210,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 pointerName = value;
-                gameObject.name = value;
+                if (this != null)
+                {
+                    gameObject.name = value;
+                }
             }
         }
 
@@ -227,14 +227,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public ICursorModifier CursorModifier { get; set; }
 
         /// <inheritdoc />
-        public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
-
-        /// <inheritdoc />
         public virtual bool IsInteractionEnabled
         {
             get
             {
-                if (IsTeleportRequestActive)
+                if (IsFocusLocked)
+                {
+                    return true;
+                }
+
+                if (!IsActive)
                 {
                     return false;
                 }
@@ -249,9 +251,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return true;
                 }
 
-                return HasSelectPressedOnce;
+                return HasSelectPressedOnce || !requiresActionBeforeEnabling;
             }
         }
+
+        public virtual bool IsActive { get; set; }
+
 
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
@@ -277,7 +282,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 return pointerExtent;
             }
-            set { pointerExtent = value; }
+            set
+            {
+                pointerExtent = value;
+                overrideGlobalPointerExtent = false;
+            }
+        }
+
+        [SerializeField]
+        private float defaultPointerExtent = 10f;
+
+        /// <summary>
+        /// The length of the pointer when nothing is hit.
+        /// </summary>
+        public float DefaultPointerExtent
+        {
+            get { return Mathf.Min(defaultPointerExtent, PointerExtent); }
+            set { defaultPointerExtent = value; }
         }
 
         /// <inheritdoc />
@@ -292,68 +313,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IPointerResult Result { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Ray stabilizer used when calculating position of pointer end point.
+        /// </summary>
         public IBaseRayStabilizer RayStabilizer { get; set; }
 
         /// <inheritdoc />
-        public RaycastMode RaycastMode { get; set; } = RaycastMode.Simple;
-
-        /// <inheritdoc />
-        public float SphereCastRadius { get; set; } = 0.1f;
+        public virtual SceneQueryType SceneQueryType { get; set; } = SceneQueryType.SimpleRaycast;
 
         [SerializeField]
-        [Range(0f, 360f)]
-        [Tooltip("The Y orientation of the pointer - used for rotation and navigation")]
-        private float pointerOrientation = 0f;
+        [Tooltip("The radius to use when SceneQueryType is set to Sphere or SphereColliders.")]
+        private float sphereCastRadius = 0.1f;
 
         /// <inheritdoc />
-        public virtual float PointerOrientation
+        public float SphereCastRadius
         {
-            get
-            {
-                return pointerOrientation + (raycastOrigin != null ? raycastOrigin.eulerAngles.y : transform.eulerAngles.y);
-            }
-            set
-            {
-                pointerOrientation = value < 0
-                    ? Mathf.Clamp(value, -360f, 0f)
-                    : Mathf.Clamp(value, 0f, 360f);
-            }
+            get { return sphereCastRadius; }
+            set { sphereCastRadius = value; }
         }
 
         /// <inheritdoc />
-        public virtual void OnPreRaycast() { }
+        public virtual Vector3 Position => raycastOrigin != null ? raycastOrigin.position : transform.position;
 
         /// <inheritdoc />
-        public virtual void OnPostRaycast() { }
+        public virtual Quaternion Rotation => raycastOrigin != null ? raycastOrigin.rotation : transform.rotation;
 
         /// <inheritdoc />
-        public virtual bool TryGetPointerPosition(out Vector3 position)
-        {
-            position = raycastOrigin != null ? raycastOrigin.position : transform.position;
-            return true;
-        }
+        public virtual void OnPreSceneQuery() { }
 
         /// <inheritdoc />
-        public virtual bool TryGetPointingRay(out Ray pointingRay)
-        {
-            Vector3 pointerPosition;
-            TryGetPointerPosition(out pointerPosition);
-            pointingRay = pointerRay;
-            pointingRay.origin = pointerPosition;
-            pointingRay.direction = PointerDirection;
-            return true;
-        }
+        public virtual void OnPostSceneQuery() { }
 
-        private readonly Ray pointerRay = new Ray();
+        ///  <inheritdoc />
+        public virtual void OnPreCurrentPointerTargetChange() { }
 
-        /// <inheritdoc />
-        public virtual bool TryGetPointerRotation(out Quaternion rotation)
-        {
-            Vector3 pointerRotation = raycastOrigin != null ? raycastOrigin.eulerAngles : transform.eulerAngles;
-            rotation = Quaternion.Euler(pointerRotation.x, PointerOrientation, pointerRotation.z);
-            return true;
-        }
+        #endregion IMixedRealityPointer Implementation
 
         #region IEquality Implementation
 
@@ -365,7 +359,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         bool IEqualityComparer.Equals(object left, object right)
         {
-            return left.Equals(right);
+            return left != null && left.Equals(right);
         }
 
         /// <inheritdoc />
@@ -403,7 +397,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion IEquality Implementation
 
-        #endregion IMixedRealityPointer Implementation
+        #region IMixedRealitySourcePoseHandler Implementation
+
+        /// <inheritdoc />
+        public override void OnSourceLost(SourceStateEventData eventData)
+        {
+            base.OnSourceLost(eventData);
+
+            if (eventData.SourceId == InputSourceParent.SourceId)
+            {
+                if (requiresHoldAction)
+                {
+                    IsHoldPressed = false;
+                }
+
+                if (IsSelectPressed)
+                {
+                    MixedRealityToolkit.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
+                }
+
+                IsSelectPressed = false;
+            }
+        }
+
+        #endregion IMixedRealitySourcePoseHandler Implementation
 
         #region IMixedRealityInputHandler Implementation
 
@@ -422,6 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (eventData.MixedRealityInputAction == pointerAction)
                 {
                     IsSelectPressed = false;
+
                     MixedRealityToolkit.InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
                     MixedRealityToolkit.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
                 }
@@ -444,47 +462,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     IsSelectPressed = true;
                     HasSelectPressedOnce = true;
-                    MixedRealityToolkit.InputSystem.RaisePointerDown(this, pointerAction, Handedness);
+
+                    if (IsInteractionEnabled)
+                    {
+                        MixedRealityToolkit.InputSystem.RaisePointerDown(this, pointerAction, Handedness);
+                    }
                 }
             }
         }
 
         #endregion  IMixedRealityInputHandler Implementation
-
-        #region IMixedRealityTeleportHandler Implementation
-
-        /// <inheritdoc />
-        public virtual void OnTeleportRequest(TeleportEventData eventData)
-        {
-            // Only turn off pointers that aren't making the request.
-            IsTeleportRequestActive = true;
-            BaseCursor?.SetVisibility(false);
-        }
-
-        /// <inheritdoc />
-        public virtual void OnTeleportStarted(TeleportEventData eventData)
-        {
-            // Turn off all pointers while we teleport.
-            IsTeleportRequestActive = true;
-            BaseCursor?.SetVisibility(false);
-        }
-
-        /// <inheritdoc />
-        public virtual void OnTeleportCompleted(TeleportEventData eventData)
-        {
-            // Turn all our pointers back on.
-            IsTeleportRequestActive = false;
-            BaseCursor?.SetVisibility(true);
-        }
-
-        /// <inheritdoc />
-        public virtual void OnTeleportCanceled(TeleportEventData eventData)
-        {
-            // Turn all our pointers back on.
-            IsTeleportRequestActive = false;
-            BaseCursor?.SetVisibility(true);
-        }
-
-        #endregion IMixedRealityTeleportHandler Implementation
     }
 }

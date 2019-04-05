@@ -256,14 +256,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <inheritdoc />
         protected override float GetUnClampedWorldLengthInternal()
         {
-            // Crude approximation
-            // TODO optimize
             float distance = 0f;
             Vector3 last = GetPoint(0f);
 
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < BaseMixedRealityLineDataProvider.UnclampedWorldLengthSearchSteps; i++)
             {
-                Vector3 current = GetPoint((float)i / 10);
+                Vector3 current = GetPoint((float)i / BaseMixedRealityLineDataProvider.UnclampedWorldLengthSearchSteps);
                 distance += Vector3.Distance(last, current);
             }
 

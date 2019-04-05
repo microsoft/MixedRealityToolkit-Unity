@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IMixedRealityInputSource InputSource { get; }
 
-        public IMixedRealityControllerVisualizer Visualizer { get; private set; }
+        public IMixedRealityControllerVisualizer Visualizer { get; protected set; }
 
         /// <inheritdoc />
         public bool IsPositionAvailable { get; protected set; }
@@ -76,20 +76,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public MixedRealityInteractionMapping[] Interactions { get; private set; } = null;
 
+        public Vector3 AngularVelocity { get; protected set; }
+
+        public Vector3 Velocity { get; protected set; }
+
+        public virtual bool IsInPointingPose
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         #endregion IMixedRealityController Implementation
 
         /// <summary>
         /// Setups up the configuration based on the Mixed Reality Controller Mapping Profile.
         /// </summary>
         /// <param name="controllerType"></param>
-        public bool SetupConfiguration(Type controllerType)
+        public bool SetupConfiguration(Type controllerType, InputSourceType inputSourceType = InputSourceType.Controller)
         {
             if (IsControllerMappingEnabled())
             {
                 if (GetControllerVisualizationProfile() != null &&
                     GetControllerVisualizationProfile().RenderMotionControllers)
                 {
-                    TryRenderControllerModel(controllerType);
+                    TryRenderControllerModel(controllerType, inputSourceType);
                 }
 
                 // We can only enable controller profiles if mappings exist.
@@ -163,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Interactions = mappings;
         }
 
-        protected virtual bool TryRenderControllerModel(Type controllerType)
+        protected virtual bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
             GameObject controllerModel = null;
 
@@ -176,6 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // If a specific controller template wants to override the global model, assign that instead.
             if (IsControllerMappingEnabled() &&
                 GetControllerVisualizationProfile() != null &&
+                inputSourceType == InputSourceType.Controller &&
                 !(GetControllerVisualizationProfile().GetUseDefaultModelsOverride(controllerType, ControllerHandedness)))
             {
                 controllerModel = GetControllerVisualizationProfile().GetControllerModelOverride(controllerType, ControllerHandedness);
@@ -185,29 +198,46 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (controllerModel == null &&
                 GetControllerVisualizationProfile() != null)
             {
-                if (ControllerHandedness == Handedness.Left &&
-                    GetControllerVisualizationProfile().GlobalLeftHandModel != null)
+                if (inputSourceType == InputSourceType.Controller)
                 {
-                    controllerModel = GetControllerVisualizationProfile().GlobalLeftHandModel;
+                    if (ControllerHandedness == Handedness.Left &&
+                        GetControllerVisualizationProfile().GlobalLeftHandModel != null)
+                    {
+                        controllerModel = GetControllerVisualizationProfile().GlobalLeftHandModel;
+                    }
+                    else if (ControllerHandedness == Handedness.Right &&
+                        GetControllerVisualizationProfile().GlobalRightHandModel != null)
+                    {
+                        controllerModel = GetControllerVisualizationProfile().GlobalRightHandModel;
+                    }
                 }
-                else if (ControllerHandedness == Handedness.Right &&
-                    GetControllerVisualizationProfile().GlobalRightHandModel != null)
+            
+                else if (inputSourceType == InputSourceType.Hand)
                 {
-                    controllerModel = GetControllerVisualizationProfile().GlobalRightHandModel;
+                    if (ControllerHandedness == Handedness.Left &&
+                        GetControllerVisualizationProfile().GlobalLeftHandVisualizer != null)
+                    {
+                        controllerModel = GetControllerVisualizationProfile().GlobalLeftHandVisualizer;
+                    }
+                    else if (ControllerHandedness == Handedness.Right &&
+                        GetControllerVisualizationProfile().GlobalRightHandVisualizer != null)
+                    {
+                        controllerModel = GetControllerVisualizationProfile().GlobalRightHandVisualizer;
+                    }
                 }
             }
 
             if (controllerModel == null)
             {
-                Debug.LogError("No controller model available. Failed to add controller game object to scene");
+                // no controller model available
                 return false;
             }
 
             // If we've got a controller model prefab, then create it and place it in the scene.
             var playspace = GetPlayspace();
             var controllerObject = (playspace != null) ?
-                    UnityEngine.Object.Instantiate(controllerModel, playspace) :
-                    UnityEngine.Object.Instantiate(controllerModel);
+            UnityEngine.Object.Instantiate(controllerModel, playspace) :
+            UnityEngine.Object.Instantiate(controllerModel);
 
             return TryAddControllerModelToSceneHierarchy(controllerObject);
         }

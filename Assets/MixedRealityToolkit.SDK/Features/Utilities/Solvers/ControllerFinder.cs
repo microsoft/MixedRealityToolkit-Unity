@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
@@ -53,7 +54,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             if (eventData.Controller?.ControllerHandedness == handedness)
             {
-                AddControllerTransform(eventData.Controller);
+                if (eventData.Controller is IMixedRealityHand)
+                {
+
+                }
+                else
+                {
+                    AddControllerTransform(eventData.Controller);
+                }
             }
         }
 
@@ -96,7 +104,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <param name="newController">The new controller to be tracked.</param>
         protected virtual void AddControllerTransform(IMixedRealityController newController)
         {
-            if (newController.ControllerHandedness == handedness && newController.Visualizer != null && newController.Visualizer.GameObjectProxy.transform != null && !newController.Visualizer.GameObjectProxy.transform.Equals(ControllerTransform))
+            if (newController == null || 
+                newController.Visualizer == null || 
+                newController.Visualizer.GameObjectProxy == null ||
+                newController.Visualizer.GameObjectProxy.transform == null)
+            {
+                return;
+            }
+
+            if (newController.ControllerHandedness == handedness &&
+                !newController.Visualizer.GameObjectProxy.transform.Equals(ControllerTransform))
             {
                 ControllerTransform = newController.Visualizer.GameObjectProxy.transform;
 

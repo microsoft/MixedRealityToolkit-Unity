@@ -21,11 +21,16 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             if (!(eventData.Pointer is TeleportPointer)) { return; }
 
+            IMixedRealityTeleportPointer teleportPointer = eventData.Pointer as IMixedRealityTeleportPointer;
+
+            if (teleportPointer == null)
+                return;
+
             if (eventData.NewFocusedObject == gameObject)
             {
-                eventData.Pointer.TeleportHotSpot = this;
+                teleportPointer.TeleportHotSpot = this;
 
-                if (eventData.Pointer.IsInteractionEnabled)
+                if (teleportPointer.IsInteractionEnabled)
                 {
                     MixedRealityToolkit.TeleportSystem?.RaiseTeleportCanceled(eventData.Pointer, this);
                     MixedRealityToolkit.TeleportSystem?.RaiseTeleportRequest(eventData.Pointer, this);
@@ -33,9 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
             else if (eventData.OldFocusedObject == gameObject)
             {
-                eventData.Pointer.TeleportHotSpot = null;
+                teleportPointer.TeleportHotSpot = null;
 
-                if (eventData.Pointer.IsInteractionEnabled)
+                if (teleportPointer.IsInteractionEnabled)
                 {
                     MixedRealityToolkit.TeleportSystem?.RaiseTeleportCanceled(eventData.Pointer, this);
                 }

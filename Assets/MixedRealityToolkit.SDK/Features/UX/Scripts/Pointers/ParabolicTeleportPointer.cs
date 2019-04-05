@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
-        public override void OnPreRaycast()
+        public override void OnPreSceneQuery()
         {
             parabolicLineData.LineTransform.rotation = Quaternion.identity;
             parabolicLineData.Direction = transform.forward;
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             parabolicLineData.Velocity = velocity;
             parabolicLineData.DistanceMultiplier = distance;
-            base.OnPreRaycast();
+            base.OnPreSceneQuery();
         }
 
         #endregion IMixedRealityPointer Implementation

@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// The last updated source state reading for this Windows Mixed Reality Controller.
         /// </summary>
-        public InteractionSourceState LastSourceStateReading { get; private set; }
+        public InteractionSourceState LastSourceStateReading { get; protected set; }
 
         private Vector3 currentControllerPosition = Vector3.zero;
         private Quaternion currentControllerRotation = Quaternion.identity;
@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
         private bool controllerModelInitialized = false;
-        private bool failedToObtainControllerModel = false;
+        private bool isControllerModelLoaded = false;
 
         #region Update data functions
 
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Update the controller data from the provided platform state
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        public void UpdateController(InteractionSourceState interactionSourceState)
+        public virtual void UpdateController(InteractionSourceState interactionSourceState)
         {
             if (!Enabled) { return; }
 
@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Update the "Controller" input from the device
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        private void UpdateControllerData(InteractionSourceState interactionSourceState)
+        protected virtual void UpdateControllerData(InteractionSourceState interactionSourceState)
         {
             var lastState = TrackingState;
             var sourceKind = interactionSourceState.source.kind;
@@ -224,13 +224,27 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdatePointerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
+        protected void UpdatePointerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
-            interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
+            if (interactionSourceState.source.supportsPointing)
+            {
+                interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
+                interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
 
-            currentPointerPose.Position = currentPointerPosition;
-            currentPointerPose.Rotation = currentPointerRotation;
+                // We want the controller to follow the Playspace, so fold in the playspace transform here to 
+                // put the controller pose into world space.
+                var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+                if (playspace != null)
+                {
+                    currentPointerPose.Position = playspace.TransformPoint(currentPointerPosition);
+                    currentPointerPose.Rotation = playspace.rotation * currentPointerRotation;
+                }
+                else
+                {
+                    currentPointerPose.Position = currentPointerPosition;
+                    currentPointerPose.Rotation = currentPointerRotation;
+                }
+            }
 
             // Update the interaction data source
             interactionMapping.PoseData = currentPointerPose;
@@ -248,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateGripData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateGripData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.AxisType)
             {
@@ -398,7 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateTriggerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateTriggerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -410,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     if (interactionMapping.Changed)
                     {
                         // Raise input system Event if it enabled
-                        if (interactionSourceState.grasped)
+                        if (interactionMapping.BoolData)
                         {
                             MixedRealityToolkit.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
@@ -419,41 +433,17 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                             MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
-
                     break;
                 case DeviceInputType.Select:
                     {
-                        bool selectPressed = interactionSourceState.selectPressed;
-
-                        // BEGIN WORKAROUND: Unity issue #1033526
-                        // See https://issuetracker.unity3d.com/issues/hololens-interactionsourcestate-dot-selectpressed-is-false-when-air-tap-and-hold
-                        // Bug was discovered May 2018 and still exists as of today Feb 2019 in version 2018.3.4f1, timeline for fix is unknown
-                        // The bug only affects the development workflow via Holographic Remoting or Simulation
-                        if (interactionSourceState.source.kind == InteractionSourceKind.Hand)
-                        {
-                            Debug.Assert(!(UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected
-                                           && interactionSourceState.selectPressed),
-                                         "Unity issue #1033526 seems to have been resolved. Please remove this ugly workaround!");
-
-                            // This workaround is safe as long as all these assumptions hold:
-                            Debug.Assert(!interactionSourceState.source.supportsGrasp);
-                            Debug.Assert(!interactionSourceState.source.supportsMenu);
-                            Debug.Assert(!interactionSourceState.source.supportsPointing);
-                            Debug.Assert(!interactionSourceState.source.supportsThumbstick);
-                            Debug.Assert(!interactionSourceState.source.supportsTouchpad);
-
-                            selectPressed = interactionSourceState.anyPressed;
-                        }
-                        // END WORKAROUND: Unity issue #1033526
-
                         // Update the interaction data source
-                        interactionMapping.BoolData = selectPressed;
+                        interactionMapping.BoolData = interactionSourceState.selectPressed;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
                             // Raise input system Event if it enabled
-                            if (selectPressed)
+                            if (interactionSourceState.selectPressed)
                             {
                                 MixedRealityToolkit.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                             }
@@ -473,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         if (interactionMapping.Changed)
                         {
                             // Raise input system Event if it enabled
-                            MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
+                            MixedRealityToolkit.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
                         }
                         break;
                     }
@@ -547,18 +537,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #region Controller model functions
 
-        protected override bool TryRenderControllerModel(Type controllerType)
+        protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
             // Intercept this call if we are using the default driver provided models.
             // Note: Obtaining models from the driver will require access to the InteractionSource.
             // It's unclear whether the interaction source will be available during setup, so we attempt to create
             // the controller model on an input update
-            if (failedToObtainControllerModel ||
+            if (!isControllerModelLoaded ||
                 GetControllerVisualizationProfile() == null ||
                 !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
                 controllerModelInitialized = true;
-                return base.TryRenderControllerModel(controllerType);
+                return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
 
             return false;
@@ -617,11 +607,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
             }
 
-            if (gltfGameObject == null)
+
+            isControllerModelLoaded = (gltfGameObject != null);
+            if (!isControllerModelLoaded)
             {
                 Debug.LogWarning("Failed to create controller model from driver, defaulting to BaseController behavior");
-                failedToObtainControllerModel = true;
-                TryRenderControllerModel(GetType());
+                TryRenderControllerModel(GetType(), InputSourceType.Controller);
             }
         }
 

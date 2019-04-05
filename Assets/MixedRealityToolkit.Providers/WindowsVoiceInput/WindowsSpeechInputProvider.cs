@@ -13,8 +13,11 @@ using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
-    [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor)]
-    public class WindowsSpeechInputProvider : BaseDeviceManager, IMixedRealitySpeechSystem
+    [MixedRealityDataProvider(
+        typeof(IMixedRealityInputSystem),
+        SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
+        "Windows Speech Input")]
+    public class WindowsSpeechInputProvider : BaseInputDeviceManager, IMixedRealitySpeechSystem
     {
         /// <summary>
         /// Constructor.
@@ -25,9 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsSpeechInputProvider(
             IMixedRealityServiceRegistrar registrar,
-            string name = null,
-            uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile) { }
+            IMixedRealityInputSystem inputSystem,
+            MixedRealityInputSystemProfile inputSystemProfile,
+            Transform playspace,
+            string name = null, 
+            uint priority = DefaultPriority, 
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
@@ -53,25 +59,44 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             get { return keywordRecognizer != null && keywordRecognizer.IsRunning; }
         }
 
+#if UNITY_EDITOR
+        /// <inheritdoc />
+        public override void Initialize()
+        {
+            if (!UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
+            {
+                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, true);
+            }
+        }
+#endif // UNITY_EDITOR
+
         /// <inheritdoc />
         public override void Enable()
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
+            
+            if (InputSystemProfile == null) { return; }
 
-            InputSource = MixedRealityToolkit.InputSystem?.RequestNewGenericInputSource("Windows Speech Input Source");
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
+            InputSource = inputSystem?.RequestNewGenericInputSource("Windows Speech Input Source", sourceType: InputSourceType.Voice);
 
             var newKeywords = new string[Commands.Length];
 
             for (int i = 0; i < Commands.Length; i++)
             {
-                newKeywords[i] = Commands[i].Keyword;
+                newKeywords[i] = Commands[i].LocalizedKeyword;
             }
 
-            RecognitionConfidenceLevel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
-            keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
-            keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+            RecognitionConfidenceLevel = InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
+            if (keywordRecognizer == null)
+            {
+                keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
+                keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+            }
+
+            if (InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
             {
                 StartRecognition();
             }
@@ -86,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 {
                     if (UInput.GetKeyDown(Commands[i].KeyCode))
                     {
-                        OnPhraseRecognized((ConfidenceLevel)RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.UtcNow, Commands[i].Keyword);
+                        OnPhraseRecognized((ConfidenceLevel)RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.UtcNow, Commands[i].LocalizedKeyword);
                     }
                 }
             }
@@ -102,6 +127,17 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 keywordRecognizer.Dispose();
             }
         }
+
+#if UNITY_EDITOR
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            if (UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
+            {
+                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, false);
+            }
+        }
+#endif // UNITY_EDITOR
 
         /// <inheritdoc />
         public void StartRecognition()
@@ -128,11 +164,13 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
         private void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, string text)
         {
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
             for (int i = 0; i < Commands?.Length; i++)
             {
-                if (Commands[i].Keyword == text)
+                if (Commands[i].LocalizedKeyword == text)
                 {
-                    MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(InputSource, Commands[i].Action, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, text);
+                    inputSystem?.RaiseSpeechCommandRecognized(InputSource, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, Commands[i]);
                     break;
                 }
             }

@@ -71,11 +71,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
+        [Tooltip("Whether or not to show the cursor when using eye gaze.")]
+        private bool showCursorWithEyeGaze = false;
+
+        /// <summary>
+        /// Whether or not to show the cursor when using eye gaze.
+        /// </summary>
+        public bool ShowCursorWithEyeGaze => showCursorWithEyeGaze;
+
+        [SerializeField]
+        [Tooltip("The Pointer options for this profile.")]
         private PointerOption[] pointerOptions = new PointerOption[0];
 
         /// <summary>
         /// The Pointer options for this profile.
         /// </summary>
         public PointerOption[] PointerOptions => pointerOptions;
+
+        [SerializeField]
+        [Implements(typeof(IMixedRealityPointerMediator), TypeGrouping.ByNamespaceFlat)]
+        [Tooltip("The concrete Pointer Mediator component to use. This is a component that mediates all pointers in system, disabling / enabling them based on the state of other pointers.")]
+        private SystemType pointerMediator = null;
+
+        /// <summary>
+        /// The concrete Pointer Mediator component to use.
+        /// This is a component that mediates all pointers in system, disabling / enabling them based on the state of other pointers.
+        /// </summary>
+        public SystemType PointerMediator
+        {
+            get { return pointerMediator; }
+        }
     }
 }
