@@ -1,4 +1,4 @@
-# Developer Documentation Guide
+# Developer portal generation guide
 
 MRTK uses [docfx](https://dotnet.github.io/docfx/index.html) to generate html documentation out of triple slash comments in code and .md files in the MRTK repository. Docfx documentation generation is automatically triggered by CI (soon) on completed PRs in the mrtk_development branch.
 The current state of the developer documentation can be found on the [MRTK github.io page](https://microsoft.github.io/MixedRealityToolkit-Unity/)
@@ -129,6 +129,7 @@ The versioning system can also be used for showing doc versions from other dev b
   * External crefs - As long as there's no xref service available (and listed in the docfx build file) crefs to external libraries won't work. If you still want to link to a specific external symbol that doesn't have xref service but an online api documentation you can use a href instead. Example: linking to EditorPrefs of Unity: <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>
 
 ## See also
-* [DocFX](https://dotnet.github.io/docfx/index.html)
+* [MRTK documentation guide](DocumentationGuide.md)
 * [MRTK developer documentation on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/)
+* [DocFX](https://dotnet.github.io/docfx/index.html)
 
