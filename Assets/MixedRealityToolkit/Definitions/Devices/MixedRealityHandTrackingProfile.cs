@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -47,7 +48,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("If true and the hand mesh is available, try to access the hand mesh from the system. Note: this could reduce performance")]
-        private bool enableHandMeshUpdates = false;
-        public bool EnableHandMeshUpdates => enableHandMeshUpdates;
+        [FormerlySerializedAs("enableHandMeshUpdates")]
+        private bool enableHandMeshVisualization = false;
+        public bool EnableHandMeshVisualization
+        {
+            get
+            {
+                return enableHandMeshVisualization;
+            }
+
+            set
+            {
+                enableHandMeshVisualization = value;
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Renders the hand joints. Note: this could reduce performance")]
+        private bool enableHandJointVisualization = false;
+        public bool EnableHandJointVisualization
+        {
+            get
+            {
+                return enableHandJointVisualization;
+            }
+
+            set
+            {
+                enableHandJointVisualization = value;
+            }
+        }
+
+        
     }
 }

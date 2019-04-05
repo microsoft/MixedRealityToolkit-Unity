@@ -169,6 +169,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
         }
 
+        public void OnPreCurrentPointerTargetChange()
+        {
+        }
+
         /// <inheritdoc />
         public virtual Vector3 Position
         {

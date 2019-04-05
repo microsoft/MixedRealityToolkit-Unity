@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using Windows.Perception;
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
@@ -220,6 +221,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             base.UpdateControllerData(interactionSourceState);
 
 #if WINDOWS_UWP
+            // The articulated hand support is only present in the 18361 version and beyond Windows
+            // SDK (which contains the V8 drop of the Universal API Contract). In particular,
+            // the HandPose related APIs are only present on this version and above.
+            if (!WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            {
+                return;
+            }
+
             PerceptionTimestamp perceptionTimestamp = PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now);
             IReadOnlyList<SpatialInteractionSourceState> sources = spatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);
             foreach (SpatialInteractionSourceState sourceState in sources)
@@ -228,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     HandPose handPose = sourceState.TryGetHandPose();
 
-                    if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile.EnableHandMeshUpdates)
+                    if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.HandTrackingProfile.EnableHandMeshVisualization)
                     {
                         // Accessing the hand mesh data involves copying quite a bit of data, so only do it if application requests it.
                         if (handMeshObserver == null && !hasRequestedHandMeshObserver)
@@ -298,6 +307,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                             }
                         }
                     }
+                    else
+                    {
+                        // if hand mesh visualization is disabled make sure to destroy our hand mesh observer if it has already been created
+                        if (handMeshObserver != null)
+                        {
+                            // notify that hand mesh has been updated (cleared)
+                            HandMeshInfo handMeshInfo = new HandMeshInfo();
+                            MixedRealityToolkit.InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
+                            hasRequestedHandMeshObserver = false;
+                            handMeshObserver = null;
+                        }
+                    }
 
                     if (handPose != null && handPose.TryGetJoints(WindowsMixedRealityUtilities.SpatialCoordinateSystem, jointIndices, jointPoses))
                     {
@@ -355,7 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #endif // WINDOWS_UWP
         }
 
-#endregion Update data functions
+        #endregion Update data functions
 
 #if WINDOWS_UWP
         private static readonly HandJointKind[] jointIndices = new HandJointKind[]
@@ -435,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-            #region Protected InputSource Helpers
+        #region Protected InputSource Helpers
 
         // Velocity internal states
         private float deltaTimeStart;
@@ -444,7 +465,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private readonly int velocityUpdateInterval = 9;
         private int frameOn = 0;
 
-            #region Gesture Definitions
+        #region Gesture Definitions
 
         protected void UpdateVelocity()
         {
@@ -481,11 +502,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             currentIndexPose.Position = (unityJointPositions[(int)HandJointKind.IndexTip] + skinOffsetFromBone);
         }
 
-            #endregion Gesture Definitions
+        #endregion Gesture Definitions
 
-            #endregion Private InputSource Helpers
+        #endregion Private InputSource Helpers
 
 #endif // WINDOWS_UWP
 #endif // UNITY_WSA
-        }
     }
+}

@@ -22,16 +22,6 @@ namespace Microsoft.MixedReality.Toolkit
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Toolkit Configuration Profile", fileName = "MixedRealityToolkitConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
     public class MixedRealityToolkitConfigurationProfile : BaseMixedRealityProfile
     {
-        #region Service Registry properties
-
-        /// <summary>
-        /// Dictionary list of active Systems used by the Mixed Reality Toolkit at runtime
-        /// </summary>
-        [Obsolete("Use MixedRealityToolkit.ActiveSystems instead")]
-        public Dictionary<Type, IMixedRealityService> ActiveServices { get; } = new Dictionary<Type, IMixedRealityService>();
-
-        #endregion Service Registry properties
-
         #region Mixed Reality Toolkit configurable properties
 
         [SerializeField]

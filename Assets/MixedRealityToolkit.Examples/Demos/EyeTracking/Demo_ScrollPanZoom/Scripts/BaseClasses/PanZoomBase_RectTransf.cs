@@ -56,8 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             ZoomInOut_RectTransform(zoomDir * zoomSpeed, cursorPos);
 
             // Panning across entire target (-0.5, +0.5) to move target of interest towards center while zooming in
-            PanHorizontally(ComputePanSpeed(cursorPos.x, PanSpeedLeftRight, MinDistFromCenterForAutoPan.x));
-            PanVertically(ComputePanSpeed(cursorPos.y, PanSpeedUpDown, MinDistFromCenterForAutoPan.y));
+            PanHorizontally(ComputePanSpeed(cursorPos.x, panSpeedLeftRight, minDistFromCenterForAutoPan.x));
+            PanVertically(ComputePanSpeed(cursorPos.y, panSpeedUpDown, minDistFromCenterForAutoPan.y));
         }
 
         public override void ZoomOut()

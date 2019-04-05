@@ -25,7 +25,7 @@ When **UpdateLinkedTransform** is *true*, the solver will calculate position & o
 ## How do I add a solver to my scene?
 - Add the desired behavior to an object. **SolverHandler** will be added automatically. You can mix and match, their order will change how the object behaves at runtime.
 - **SolverHandler** has two fields for setting the reference object. You can choose a tracked object (such as the user camera or L/R motion controllers), or instead use the **TransformTarget** field which overrides any set tracked object. This enables you to have solvers reference any scene object. Yes, that means objects can have tag alongs and cast surface magnetism as well as tracked objects. Very handy.
-- Surface magnatism scripts rely on a *LayerMask* for raycasting. As a recommendation, create a custom *LayerMask* (the example uses *Surface*). Note that using *default* or *everything* will result in UI components or cursors contributing to the solver. This can produce weird and unexpected behavior. Objects lurching toward you etc...
+- Surface magnetism scripts rely on a *LayerMask* for raycasting. As a recommendation, create a custom *LayerMask* (the example uses *Surface*). Note that using *default* or *everything* will result in UI components or cursors contributing to the solver. This can produce weird and unexpected behavior. Objects lurching toward you etc...
 
 <img src="/External/ReadMeImages/Solver/MRTK_Solver_Orbital.png" width="450">
 
@@ -37,4 +37,4 @@ Example of using Orbital solver in the [Slate](README_Slate.md) prefab.
 
 
 ## Known Issues
-- Sometimes solvers behave differently than one may expect based on the order in which they're executed. Previous solvers can change or even neutralize the behavior of earlier sovlers. Try re-arranging their execution order if the settings on a particular solver aren't having the desired effect.
+- Sometimes solvers behave differently than one may expect based on the order in which they're executed. Previous solvers can change or even neutralize the behavior of earlier solvers. Try re-arranging their execution order if the settings on a particular solver aren't having the desired effect.

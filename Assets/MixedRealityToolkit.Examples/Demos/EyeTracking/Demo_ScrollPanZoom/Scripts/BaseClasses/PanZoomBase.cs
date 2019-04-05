@@ -27,23 +27,23 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// Ability to pan using your eye gaze without any additional input (e.g., air tap or 
         /// button presses).  
         /// </summary>
-        internal bool AutoGazePanIsActive = true;
+        internal bool autoGazePanIsActive = true;
 
         /// <summary>
         ///  Horizontal panning speed. For example: 0.1f for slow panning. 0.6f for fast panning.
         /// </summary>
-        internal float PanSpeedLeftRight; // Comment: This could be improved by using panning step sizes depending on the zoom level. 
+        internal float panSpeedLeftRight; // Comment: This could be improved by using panning step sizes depending on the zoom level. 
 
         /// <summary>
         /// Vertical panning speed. For example: 0.1f for slow panning. 0.6f for fast panning.  
         /// </summary>
-        internal float PanSpeedUpDown;
+        internal float panSpeedUpDown;
 
         /// <summary>
         /// Minimal distance in x and y from center of the target (0, 0) to trigger panning. Thus, 
         /// values must range between 0 (always panning) and 0.5 (no panning).
         /// </summary>
-        internal Vector2 MinDistFromCenterForAutoPan = new Vector2(0.2f, 0.2f);
+        internal Vector2 minDistFromCenterForAutoPan = new Vector2(0.2f, 0.2f);
 
         // ZOOM
         /// <summary>
@@ -67,11 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         ///  (double the original size).
         /// </summary>
         internal float ZoomMaxScale = 1.0f;
-
-        /// <summary>
-        /// Type of hand gesture to use for zooming
-        /// </summary>
-        internal MixedRealityInputAction ZoomGesture;
 
         /// <summary>
         /// Size of the GameObject's collider when being looked at.
@@ -121,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private Vector3 navPos = Vector3.zero;
         private bool isFocused = false;
         internal bool isZooming = false;
-        public bool handZoomEnabledOnStartup = false;
+        internal bool ZoomGestureEnabledOnStartup = false;
         private bool handZoomEnabled = false;
 
         protected Vector3 originalRatio;
@@ -145,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             // Init children
             Initialize();
-            handZoomEnabled = handZoomEnabledOnStartup;
+            handZoomEnabled = ZoomGestureEnabledOnStartup;
             Initialize();
 
             // Init eye tracking target
@@ -176,8 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public void AutoPan()
         {
-            PanHorizontally(ComputePanSpeed(cursorPos.x, PanSpeedLeftRight, MinDistFromCenterForAutoPan.x));
-            PanVertically(ComputePanSpeed(cursorPos.y, PanSpeedUpDown, MinDistFromCenterForAutoPan.y));
+            PanHorizontally(ComputePanSpeed(cursorPos.x, panSpeedLeftRight, minDistFromCenterForAutoPan.x));
+            PanVertically(ComputePanSpeed(cursorPos.y, panSpeedUpDown, minDistFromCenterForAutoPan.y));
         }
 
         /// <summary>
@@ -379,7 +374,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void AutomaticGazePanning()
         {
-            if (AutoGazePanIsActive)
+            if (autoGazePanIsActive)
             {
                 AutoPan();
             }
