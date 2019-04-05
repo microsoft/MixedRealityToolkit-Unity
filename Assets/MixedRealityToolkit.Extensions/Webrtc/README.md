@@ -52,34 +52,29 @@ To build the native plugins, we'll leverage the [webrtc-uwp](https://github.com/
 <details>
 <summary> Windows build commands </summary>
 
-To build the code, we'll first need the webrtc-uwp-sdk repository, and it's prerequisites. We'll also need to apply our patch that enables support for il2cpp (until it is merged). The detailed instructions can be found [in the webrtc-uwp docs](https://github.com/webrtc-uwp/webrtc-uwp-sdk/tree/James/20190225-m71-docs), and the exact commands that worked at the time of writing can be found below.
+To build the code, we'll first need the webrtc-uwp-sdk repository, and it's prerequisites. We'll also need to apply our changes that enable support for il2cpp. The detailed instructions can be found [in the webrtc-uwp docs](https://github.com/webrtc-uwp/webrtc-uwp-sdk/tree/James/20190225-m71-docs), and the exact commands that worked at the time of writing can be found below.
 
 ```
 git clone --recursive https://github.com/webrtc-uwp/webrtc-uwp-sdk.git
-git checkout releases/m71
-git submodule update
+git checkout cse/m71-ks
+
 #
-# apply https://github.com/webrtc-uwp/webrtc/pull/11 on top of releases/m71
+# build (UWP)
+# binary location: webrtc\windows\solutions\Build\Output\Examples.UnityPlugin
 #
-cd webrtc\xplatform\webrtc
-git remote add bengreenier git@github.com:bengreenier/webrtc.git
-git fetch bengreenier
-git merge 67bc888e66
-#
-# apply https://github.com/webrtc-uwp/webrtc-windows/pull/48 on top of releases/m71
-#
-cd ..\..\windows
-git remote add bengreenier git@github.com:bengreenier/webrtc-windows.git
-git fetch bengreenier
-git merge 7f1fdda64
+start webrtc\windows\solutions\WebRtc.Universal.sln 
+# <Build Examples.UnityPlugin from vs>
+
 #
 # build (win32)
+# binary location: webrtc\xplatform\webrtc\out\webrtc_unity_plugin_win_*
 #
-cd ..\..\
 set GYP_MSVS_VERSION=2017
 python scripts\run.py -a prepare build -u webrtc_unity_plugin -p win -x x64 -c release --clang
 ```
 
-Note that to build for `winuwp` we use `WebRtc.Universal.sln` and Visual Studio, as documented [here](https://github.com/webrtc-uwp/webrtc-uwp-sdk/tree/James/20190225-m71-docs#building-the-sdk). Instead of building the `PeerConnectionClient.WebRtc` project, we build `Examples.UnityPlugin`.
+Both binaries will be named `webrtc_unity_plugin` in their respective binary locations.
+
+Note that more detailed steps to build for `winuwp` using `WebRtc.Universal.sln` and Visual Studio, are documented [here](https://github.com/webrtc-uwp/webrtc-uwp-sdk/tree/James/20190225-m71-docs#building-the-sdk). Instead of building the `PeerConnectionClient.WebRtc` project, we build `Examples.UnityPlugin`.
 
 </details>
