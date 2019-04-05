@@ -6,7 +6,7 @@ The `BoundingBox` script provides basic functionality for transforming objects i
 For more information please see [App Bar and Bounding Box](https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box) on Windows Dev Center.
 
 ### How to use Bounding Box ###
-You can enable Bounding Box by simply assigning the `BoundingBox` script to any GameObject.
+You can enable Bounding Box by simply assigning the `BoundingBox` script to any GameObject. Assign the object with Box Collider to 'Bounds Override' field in the Inspector.
 
 ![Bounding Box](../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Assign.png)
 
@@ -22,7 +22,7 @@ You can find bounding box examples in the *HandInteractionExamples.unity* scene:
 This specifies which object will get transformed by the bounding box manipulation. If no object is set, the bounding box defaults to the owner object.
 
 #### Bounds Override ####
-Allows to alternatively set a box collider from another object for bounds computation.
+Set a box collider from the object for bounds computation.
 
 #### Activation Behavior #### 
 There are several options to activate the bounding box interface.
