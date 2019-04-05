@@ -1,9 +1,8 @@
-![MRTK](/External/ReadMeImages/EyeTracking/MRTK_ET_Heatmaps.png =750x450)
+![MRTK](/External/ReadMeImages/EyeTracking/mrtk_et_heatmaps.png)
 
 # Visualizing Eye Tracking Data in MRTK
 
-// --- TODO ---
-
+<!-- TODO: Add content -->
 
 ---
 [Back to "Eye Tracking in the MixedRealityToolkit"](/Documentation/EyeTracking/EyeTracking_Main.md)
