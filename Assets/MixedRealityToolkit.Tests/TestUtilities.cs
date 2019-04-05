@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             director.Play();
 
             var graph = director.playableGraph;
-            while (graph.IsPlaying())
+            while (graph.IsValid() && graph.IsPlaying())
             {
                 yield return null;
             }
