@@ -124,7 +124,7 @@ component. This component includes support for configuring MRTK systems and data
 and manages component lifespans and core behaviors (ex: when to update).
 
 All systems are represented in the core configuration inspector, regardless of whether or not they are present or
-enabled in the project. Please see the [Mixed Reality Configuration Guide](../MixedRealityConfiguratonGuide.md) for more
+enabled in the project. Please see the [Mixed Reality Configuration Guide](../MixedRealityConfigurationGuide.md) for more
 information. 
 
 #### Individual Service Components
