@@ -1,5 +1,5 @@
 # App Bar
-![App Bar](/External/ReadMeImages/AppBar/MRTK_AppBar_Main.png)
+![App Bar](../External/ReadMeImages/AppBar/MRTK_AppBar_Main.png)
 
 App Bar is a UI component used with Bounding Box. Using the 'Adjust' button, you can turn on/off the Bounding Box interface for manipulating object.
 

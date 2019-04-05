@@ -1,5 +1,5 @@
 # Solver
-![Solver](/External/ReadMeImages/Solver/MRTK_Solver_Main.png)
+![Solver](../External/ReadMeImages/Solver/MRTK_Solver_Main.png)
 
 At this time, there is no easy, reliable way to specify the update order for Unity components. This can make it difficult to implement deterministic compound transformations. The solver system addresses this issue.
 

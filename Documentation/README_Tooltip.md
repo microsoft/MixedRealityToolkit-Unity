@@ -1,5 +1,5 @@
 # Tooltip
-![Tooltip](/External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png)
+![Tooltip](../External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png)
 This example scene demonstrates an implementation of the ToolTip user interface element. Tooltips are usually used to convey a hint or extra information upon closer inspection of an object. ToolTip can be used to explain button inputs on the motion controllers or to label objects in the physical environment.
 
 ## Demo Video
