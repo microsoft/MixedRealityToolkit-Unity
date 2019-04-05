@@ -47,7 +47,7 @@ To get started, simply follow these steps
 4. Make **small and frequent** commits that include tests which could be a unity scene showing usage of your feature.
 5. Make sure that all the tests continue to pass.
 6. Follow the [Coding Guidelines](CodingGuidelines.md).
-7. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](DocumentationGuide.md).
+7. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](Documentation/DocumentationGuide.md).
 8. Ensure the code works as intended on all [platforms](#supported-platforms).
     - For Windows UWP projects, your code must be [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; Store -> Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
 9. Update the [documentation](#contributing) with additional information as needed.

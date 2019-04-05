@@ -114,9 +114,9 @@
     href: ../Feature_Contribution_Process.md
   - name: Coding Guidelines
     href: ../CodingGuidelines.md
-  - name: Documentation Guide
-    href: ../DocumentationGuide.md
-  - name: Developer Docs Generation
+  - name: Documentation guide
+    href: DocumentationGuide.md
+  - name: Developer portal generation with DocFX
     href: DevDocGuide.md
 - name: Planning
   items:
