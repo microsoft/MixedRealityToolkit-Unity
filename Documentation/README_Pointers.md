@@ -64,7 +64,7 @@ When configuring your _Near Interaction Touchable_, make sure to configure the _
 Other parameters:
 
 - eventsToReceive - if set to Touch, the object will receive _OnTouchDown_ _OnTouchUpdate_ and _OnTouchUp_ events. If set to pointer, the object will receive _OnPointerDown_ and _OnPointerUp_ events.
-- touchableSurface - use this to help compute the bounds of the surface. Bounds will automatically adjust to the attached BoxCollider, UnityUI element, or can be set manually by adjusting _bounds_
+- touchableSurface - use this to help compute the bounds of the surface. Bounds will automatically adjust to the attached BoxCollider, UnityUI element, or can be set manually by adjusting _bounds_.
 
 
 
