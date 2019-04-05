@@ -47,8 +47,8 @@
         href: Input/Dictation.md
       - name: Hands
         href: InputSystem/HandTracking.md
-      - name: Eye
-        href: TODO.md
+      - name: Eyes
+        href: EyeTracking/EyeTracking_Main.md
       - name: Gaze
         href: TODO.md
     - name: Interactions and UX Building Blocks
@@ -62,6 +62,8 @@
         href: README_FingertipVisualization.md      
       - name: Hand Interaction Example 
         href: README_HandInteractionExamples.md           
+      - name: Eye Tracking Interaction Example
+        href: EyeTracking/EyeTracking_ExamplesOverview.md   
       - name: App Bar
         href: README_AppBar.md
       - name: Bounding Box
