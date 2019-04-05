@@ -1,17 +1,16 @@
-![MRTK](/External/ReadMeImages/EyeTracking/MRTK_ET_Navigation.png)
+![MRTK](/External/ReadMeImages/EyeTracking/mrtk_et_navigation.png)
 
 # Eye-Supported Navigation in MRTK
 
-Imagine you’re reading information on a slate and when you reach the end of the displayed text, the text automatically scrolls up 
+Imagine you are reading information on a slate and when you reach the end of the displayed text, the text automatically scrolls up 
 to reveal more content. 
 Or you can fluently zoom in where you are looking at. 
 The map also automatically adjusts the content to keep the things of interest within your field of view.  
 Another interesting application is the hands-free observation of 3D holograms by automatically bringing the parts of the hologram that you are looking at to the front.
 These are some of the examples that are described on this page in context of eye-supported navigation. 
 
-The following descriptions assume that you're already familiar with how to set up your MRTK Unity scene for Eye Tracking (see 
-[Basic MRTK Setup to use Eye Tracking](/Documentation/EyeTracking/EyeTracking_BasicSetup.md))
-) and with the basics of accessing Eye Tracking data in Unity including the 
+The following descriptions assume that you are already familiar with how to 
+[set up Eye Tracking in your MRTK scene](/Documentation/EyeTracking/EyeTracking_BasicSetup.md) and with the basics of accessing Eye Tracking data in Unity including the 
 [EyeTrackingTarget](/Documentation/EyeTracking/EyeTracking_TargetSelection.md#use-eye-gaze-specific-eyetrackingtarget) 
 component.
 The examples discussed in the following are all part of the 
