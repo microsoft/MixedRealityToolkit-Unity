@@ -19,20 +19,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 
             GUI.enabled = isGUIEnabled && Application.isPlaying;
 
-            if (asset.IsRecording)
-            {
-                if (GUILayout.Button("Stop Recording"))
-                {
-                    asset.StopRecording();
+            bool wasRecording = asset.IsRecording;
+            bool record;
+            record = GUILayout.Toggle(wasRecording, wasRecording ? "Stop Recording" : "Start Recording", "Button");
 
-                    EditorUtility.SetDirty(asset);
-                }
-            }
-            else
+            if (record != wasRecording)
             {
-                if (GUILayout.Button("Start Recording"))
+                if (record)
                 {
                     asset.StartRecording();
+                }
+                else
+                {
+                    asset.StopRecording();
+                    EditorUtility.SetDirty(asset);
                 }
             }
 
