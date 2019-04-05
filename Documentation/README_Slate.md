@@ -1,5 +1,5 @@
 # Slate
-![Slate](/External/ReadMeImages/Slate/MRTK_Slate_Main.png)
+![Slate](../External/ReadMeImages/Slate/MRTK_Slate_Main.png)
 
 Thin window style control for the 2D content with grabbable title bar and 'Follow Me' and 'Close' buttons. You can scroll 2D content with articulated hand.
 

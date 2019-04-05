@@ -1,10 +1,10 @@
 # Interactable
-![Interactable](/External/ReadMeImages/Interactable/InteractableExamples.png)
+![Interactable](../External/ReadMeImages/Interactable/InteractableExamples.png)
 
 ## How to use Interactable
 Add the Interactable Component to a GameObject
 
-![Interactable](/External/ReadMeImages/Interactable/InteractableInspector_basicSteps.png)
+![Interactable](../External/ReadMeImages/Interactable/InteractableInspector_basicSteps.png)
 
 1. A Collider must exist on the GameObject with the Interactable or the child of the Interactable for it to receive input.
 2. Use the OnClick event to make something happen.

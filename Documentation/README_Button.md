@@ -1,5 +1,5 @@
 # Button #
-![Button](/External/ReadMeImages/Button/MRTK_Button_Main.png)
+![Button](../External/ReadMeImages/Button/MRTK_Button_Main.png)
 The button supports all available input methods including articulated hand input for the near interactions and gaze + air-tap for the far interactions. You can also use voice command to trigger the button.
 
 ## How to use the Pressable Button prefab
@@ -25,7 +25,7 @@ In the idle state, the button's front plate is not visible. As a finger approach
 The subtle pulse effect is triggered by the `PressableButton.` The `PressableButton` looks for `ProximityLight(s)` that live on the currently interacting pointer. If any `ProximityLight(s)` are found, the ProximityLight.Pulse method is called which automatically animates shader parameters to display a pulse.
 
 ## Property Inspector of PressableButton 
-![Button](/External/ReadMeImages/Button/MRTK_Button_Structure.png)
+![Button](../External/ReadMeImages/Button/MRTK_Button_Structure.png)
 
 The Pressable Button prefab is consists of the following elements:
 
@@ -48,7 +48,7 @@ Unity `Audio Source` for the audio feedback clips
 Required to make any object touchable with articulated hand input.
 
 ### Prefab Layout
-![Button](/External/ReadMeImages/Button/MRTK_Button_Layout.png)
+![Button](../External/ReadMeImages/Button/MRTK_Button_Layout.png)
 
 The *ButtonContent* object contains front plate, text label and icon. The *FrontPlate* responds to the proximity of the index fingertip using the *Button_Box* shader. It shows glowing borders, proximity light, and a pulse effect on touch. The text label is made with TextMesh Pro. *SeeItSayItLabel*'s visibility is controlled by [`Interactable`](README_Interactable.md)'s theme.
 

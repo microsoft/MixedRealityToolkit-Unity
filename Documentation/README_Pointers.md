@@ -1,5 +1,5 @@
 # Pointers
-![Pointer](/External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)
+![Pointer](../External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)
 
 A pointer is something attached to a controller that gives focus and dispatches inputs to the game object it is pointing to <sup>[1](https://github.com/luis-valverde-ms/MixedRealityToolkit-Unity/blob/feature/input_docs/Documentation/Input/InputSystem.md)</sup>.
 
@@ -9,7 +9,7 @@ Pointers are instantiated automatically at runtime when a new controller is dete
 
 MRTK provides a set of pointer prefabs in _Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers_. You can use your own prefabs as long as they contain one of the pointer scripts in _Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers_ or any other script implementing `IMixedRealityPointer`.
 
-![Pointer Profile](/External/ReadMeImages/Pointers/MRTK_PointerProfile.jpg)
+![Pointer Profile](../External/ReadMeImages/Pointers/MRTK_PointerProfile.jpg)
 
 ## MRTK Pointer Prefabs
 
@@ -59,7 +59,7 @@ Poke pointer is for near interactions, specifically for touching objects via the
 
 
 ### Mouse pointer
-![Mouse Pointer](/External/ReadMeImages/Pointers/MRTK_MousePointer.jpg)
+![Mouse Pointer](../External/ReadMeImages/Pointers/MRTK_MousePointer.jpg)
 
 Mouse pointer is used for interacting with the mouse.
 

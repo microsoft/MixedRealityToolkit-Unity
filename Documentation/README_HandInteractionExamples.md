@@ -1,5 +1,5 @@
 # Hand Interaction Examples scene
-![Hand Interaction Examples](/External/ReadMeImages/MRTK_Examples.png)
+![Hand Interaction Examples](../External/ReadMeImages/MRTK_Examples.png)
 
 In this example scene, you can find various types of interactions and UI controls that supports HoloLens2's articulated hand input.
 You can find the **HandInteractionExamples.unity** scene under **Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes**
@@ -15,20 +15,20 @@ You can find the **HandInteractionExamples.unity** scene under **Assets\MixedRea
 
 ## Pressable Button
 See [Button](README_Button.md) page for the details.
-![Hand Interaction Examples](/External/ReadMeImages/HandInteractionExamples/MRTK_Examples_PressTouch.png)
+![Hand Interaction Examples](../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_PressTouch.png)
 
 ## Bounding Box
 See [Bounding Box](README_BoundingBox.md) page for the details.
-![Hand Interaction Examples](/External/ReadMeImages/HandInteractionExamples/MRTK_Examples_BoundingBox.png)
+![Hand Interaction Examples](../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_BoundingBox.png)
 
 ## Manipulation Handler
 See [Manipulation Handler](README_ManipulationHandler.md) page for the details.
-![Hand Interaction Examples](/External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Manipulation.png)
+![Hand Interaction Examples](../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Manipulation.png)
 
 ## Slate
 See [Slate](README_Slate.md) page for the details.
-![Hand Interaction Examples](/External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Slate.png)
+![Hand Interaction Examples](../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Slate.png)
 
 ## System Keyboard
 See [System Keyboard](README_SystemKeyboard.md) page for the details.
-![Hand Interaction Examples](/External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Keyboard.png)
+![Hand Interaction Examples](../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Keyboard.png)
