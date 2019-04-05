@@ -482,6 +482,114 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/EyeTracking/EyeTracking_BasicSetup.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/EyeTracking/EyeTracking_BasicSetup.html",
+          "hash": "GkDEgEe8uKyNpuAtw/AZfg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/EyeTracking/EyeTracking_Cursor.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/EyeTracking/EyeTracking_Cursor.html",
+          "hash": "9Pojo0Z1akLZhs75YlTMbw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/EyeTracking/EyeTracking_ExamplesOverview.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/EyeTracking/EyeTracking_ExamplesOverview.html",
+          "hash": "NoQtN3wBKFuRkRUam0tA+Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/EyeTracking/EyeTracking_EyeGazeProvider.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/EyeTracking/EyeTracking_EyeGazeProvider.html",
+          "hash": "tKUZx/vuvyY6hYbPZwlvuA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/EyeTracking/EyeTracking_Main.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/EyeTracking/EyeTracking_Main.html",
+          "hash": "sRrQ7zQouIiDEfzudOwZyg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/EyeTracking/EyeTracking_Navigation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/EyeTracking/EyeTracking_Navigation.html",
+          "hash": "lf1KqumI9o5qjI23V8PttQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/EyeTracking/EyeTracking_Positioning.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/EyeTracking/EyeTracking_Positioning.html",
+          "hash": "dG1U+ceEwouZWj65EVPX7Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/EyeTracking/EyeTracking_TargetSelection.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/EyeTracking/EyeTracking_TargetSelection.html",
+          "hash": "YA2wIoK5RmOYiD23PKgHUA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/EyeTracking/EyeTracking_Visualization.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/EyeTracking/EyeTracking_Visualization.html",
+          "hash": "VhK5ij8W20s/It36w3flAg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/GettingStartedWithTheMRTK.md",
       "output": {
         ".html": {
@@ -870,7 +978,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "JcXHvXyJFOyxsofJLtCD5w=="
+          "hash": "JbYnpTNil2XjRgdGqU3CqA=="
         }
       },
       "is_incremental": false,
@@ -1567,6 +1675,226 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/Diagnostics/VisualProfilerMissedFrames.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_compilation.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_compilation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_gazeinput.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_gazeinput.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_heatmaps.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_heatmaps.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_panzoom.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_panzoom.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_rotate.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_rotate.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_scroll.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_scroll.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_navigation.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_navigation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_placeholder.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_placeholder.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_positioning.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_positioning.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_positioning_slider.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_positioning_slider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_targetselect.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_targetselect.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_configprofile.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_configprofile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_configure.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_configure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_dataprovider.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_dataprovider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_gazeprovider.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_gazeprovider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_gazesettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_gazesettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_simulate.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_simulate.png"
         }
       },
       "is_incremental": false,
@@ -3099,7 +3427,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "Z3oW1RzF4NG5n5YGBVDxFw=="
+          "hash": "lNRnljNMASdIwcUdi63k0Q=="
         }
       },
       "is_incremental": false,
@@ -13300,7 +13628,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 78,
+          "total_file_count": 87,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

@@ -1,0 +1,352 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Eye-Supported Navigation in MRTK | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Eye-Supported Navigation in MRTK | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<p><img src="../../External/ReadMeImages/EyeTracking/mrtk_et_navigation.png" alt="MRTK"></p>
+<h1 id="eye-supported-navigation-in-mrtk">Eye-Supported Navigation in MRTK</h1>
+<p>Imagine you are reading information on a slate and when you reach the end of the displayed text, the text automatically scrolls up
+to reveal more content.
+Or you can fluently zoom in where you are looking at.
+The map also automatically adjusts the content to keep the things of interest within your field of view.<br>
+Another interesting application is the hands-free observation of 3D holograms by automatically bringing the parts of the hologram that you are looking at to the front.
+These are some of the examples that are described on this page in context of eye-supported navigation.</p>
+<p>The following descriptions assume that you are already familiar with how to
+<a href="EyeTracking_BasicSetup.html">set up Eye Tracking in your MRTK scene</a> and with the basics of accessing Eye Tracking data in Unity including the
+<a href="EyeTracking_TargetSelection.html#use-eye-gaze-specific-eyetrackingtarget">EyeTrackingTarget</a>
+component.
+The examples discussed in the following are all part of the
+<a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_03_Navigation.unity">mrtk_eyes_03_Navigation.unity</a>
+scene.</p>
+<p><strong>Summary:</strong> Auto scroll of text, eye-gaze-supported pan and zoom of a virtual map, hands-free gaze-directed 3D rotation.</p>
+<h2 id="auto-scroll">Auto Scroll</h2>
+<p>Auto scroll enables the user to scroll through texts without lifting a finger.
+Simply continue reading and the text will automatically scroll up or down depending on where the user is looking.
+You can start off from the example provided in <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_03_Navigation.unity">mrtk_eyes_03_Navigation.unity</a>.
+This example uses a <a href="https://docs.unity3d.com/ScriptReference/TextMesh.html">TextMesh</a> component to allow for flexibly loading and formatting new text.
+To enable auto scroll, simply add the following two scripts to your collider component of the textbox:</p>
+<h3 id="scroll_recttransf">Scroll_RectTransf</h3>
+<p>To scroll through a <a href="https://docs.unity3d.com/ScriptReference/TextMesh.html">TextMesh</a> or more generally speaking a <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a> component you can use the <em>Scroll_RectTransf</em> script.
+If you want to scroll through a texture instead of a <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a>, use <em>Scroll_Texture</em> instead of <em>Scroll_RectTransf</em>.
+In the following, the parameters of <em>Scroll_RectTransf</em> that are available in the Unity Editor are explained in more detail:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameters</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">LimitPanning</td>
+<td style="text-align: left;">If enabled, will stop the scrollable content at its boundary.</td>
+</tr>
+<tr>
+<td style="text-align: left;">RectTransfToNavigate</td>
+<td style="text-align: left;">Reference to the <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a> to scroll in.</td>
+</tr>
+<tr>
+<td style="text-align: left;">RefToViewport</td>
+<td style="text-align: left;">Reference to the parent <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a> of the scrollable content to determine the correct offset and boundary.</td>
+</tr>
+<tr>
+<td style="text-align: left;">AutoGazeScrollIsActive</td>
+<td style="text-align: left;">If enabled, the text will automatically scroll if the user looks at an <em>active region</em> (e.g., the top and bottom part of your scroll panel if the vertical scroll speed is not zero).</td>
+</tr>
+<tr>
+<td style="text-align: left;">ScrollSpeed_x</td>
+<td style="text-align: left;">If set to a value unequal to zero, horizontal scroll will be enabled. Negative values mean a change in scroll direction: Left to right vs. right to left.</td>
+</tr>
+<tr>
+<td style="text-align: left;">ScrollSpeed_y</td>
+<td style="text-align: left;">If set to a value unequal to zero, vertical scroll will be enabled. Negative values mean a change in scroll direction:  Up to down vs. down to up.</td>
+</tr>
+<tr>
+<td style="text-align: left;">MinDistFromCenterForAutoScroll</td>
+<td style="text-align: left;">Normalized minimal distance in x and y from center of the target's hit box (0, 0) to scroll. Thus, values must range between 0 (always scroll) and 0.5 (no scroll).</td>
+</tr>
+<tr>
+<td style="text-align: left;">UseSkimProofing</td>
+<td style="text-align: left;">If enabled, it prevents sudden scroll movements when quickly looking around. This may make scrolling feel less responsive though. It can be tuned with the <em>SkimProofUpdateSpeed</em> value.</td>
+</tr>
+<tr>
+<td style="text-align: left;">SkimProofUpdateSpeed</td>
+<td style="text-align: left;">The lower the value, the slower the scrolling will speed up after skimming. Recommended value: 5.</td>
+</tr>
+</tbody>
+</table>
+<p><img src="../../External/ReadMeImages/EyeTracking/mrtk_et_nav_scroll.jpg" alt="Eye-supported scroll setup in Unity"></p>
+<h3 id="eyetrackingtarget">EyeTrackingTarget</h3>
+<p>Attaching the <em>EyeTrackingTarget</em> component allows for flexibly handle eye-gaze-related events.
+In our scroll sample, we use it to ensure that the text starts scrolling when the user <em>looks</em> at the panel and stops when the user is <em>looking away</em> from it.
+Alternatively you can use the
+<a href="EyeTracking_TargetSelection.html#use-eye-gaze-specific-baseeyefocushandler">BaseEyeFocusHandler</a>
+to handle Eye Tracking events directly in your code to trigger the <em>StartFocusing</em> and <em>StopFocusing</em> methods in <em>Scroll_RectTransf</em>.</p>
+<p><img src="../../External/ReadMeImages/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg" alt="Eye-supported scroll setup in Unity: EyeTrackingTarget"></p>
+<h2 id="gaze-supported-pan-and-zoom">Gaze-supported Pan and Zoom</h2>
+<p>Who hasn't used a virtual map before to search for their home or to explore entirely new places?
+Eye Tracking allows you to directly dive into exactly the parts that you're interested in and once zoomed in, you can smoothly follow the course of a street to explore your neighborhood!
+This is not only useful for exploring geographical maps, but also to checking out details in photographs, data visualizations or even live-streamed medical imagery.
+To use this capability in your app is easy!
+For content rendered to a <a href="https://docs.unity3d.com/ScriptReference/Texture.html">Texture</a> (e.g., a photo, streamed data), simply add the_PanZoom_Texture_ script.
+For a <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a> use <em>PanZoom_RectTransf</em>.
+Extending the <a href="#auto-scroll">Auto Scroll</a> capability, we essentially enable to scroll both vertically and horizontally at the same time and magnify content right around the user's current focus point.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameters</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">LimitPanning</td>
+<td style="text-align: left;">If enabled, will stop the scrollable content at its boundary.</td>
+</tr>
+<tr>
+<td style="text-align: left;">HandZoomEnabledOnStartup</td>
+<td style="text-align: left;">Indicates whether hand gestures are automatically enabled to perform a zoom gesture. You may want to disable it at first to avoid accidentally triggering zoom actions.</td>
+</tr>
+<tr>
+<td style="text-align: left;">RendererOfTextureToBeNavigated</td>
+<td style="text-align: left;">Referenced renderer of the texture to be navigated.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zoom_Acceleration</td>
+<td style="text-align: left;">Zoom acceleration defining the steepness of logistic speed function mapping.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zoom_SpeedMax</td>
+<td style="text-align: left;">Maximum zoom speed.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zoom_MinScale</td>
+<td style="text-align: left;">Minimum scale of the texture for zoom in - e.g., 0.5f (half the original size).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zoom_MaxScale</td>
+<td style="text-align: left;">Maximum scale of the texture for zoom out - e.g., 1f (the original size) or 2.0f (double the original size).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zoom_TimeInSecToZoom</td>
+<td style="text-align: left;">Timed zoom: Once triggered, a zoom in/out will be performed for the given amount of time in seconds.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zoom_Gesture</td>
+<td style="text-align: left;">Type of hand gesture to use to zoom in/out.</td>
+</tr>
+<tr>
+<td style="text-align: left;">---</td>
+<td style="text-align: left;">---</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pan_AutoScrollIsActive</td>
+<td style="text-align: left;">If enabled, the text will automatically scroll if the user looks at an <em>active region</em> (e.g., the top and bottom part of your scroll panel if the vertical scroll speed is not zero).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pan_Speed_x</td>
+<td style="text-align: left;">If set to a value unequal to zero, horizontal scroll will be enabled. Negative values mean a change in scroll direction: Left to right vs. right to left.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pan_Speed_y</td>
+<td style="text-align: left;">If set to a value unequal to zero, vertical scroll will be enabled. Negative values mean a change in scroll direction:  Up to down vs. down to up.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pan_MinDistFromCenter</td>
+<td style="text-align: left;">Normalized minimal distance in x and y from center of the target's hit box (0, 0) to scroll. Thus, values must range between 0 (always scroll) and 0.5 (no scroll).</td>
+</tr>
+<tr>
+<td style="text-align: left;">UseSkimProofing</td>
+<td style="text-align: left;">If enabled, it prevents sudden scroll movements when quickly looking around. This may make scrolling feel less responsive though. It can be tuned with the <em>SkimProofUpdateSpeed</em> value.</td>
+</tr>
+<tr>
+<td style="text-align: left;">SkimProofUpdateSpeed</td>
+<td style="text-align: left;">The lower the value, the slower the scrolling will speed up after skimming. Recommended value: 5.</td>
+</tr>
+</tbody>
+</table>
+<p><img src="../../External/ReadMeImages/EyeTracking/mrtk_et_nav_panzoom.jpg" alt="Eye-supported pan and zoom setup in Unity"></p>
+<h2 id="attention-based-3d-rotation">Attention-based 3D Rotation</h2>
+<p>Imagine looking at a 3D object and the parts you want to see more closely magically turn toward you - as if the system would read your mind and know to turn the item toward you!
+That is the idea for attention-based 3D rotations which enable you to investigate all side of a hologram without lifting a finger.
+To enable this behavior, simply add the <em>OnLookAt_RotateByEyeGaze</em> script to the part of your GameObject with a <a href="https://docs.unity3d.com/ScriptReference/Collider.html">Collider</a> component.
+You can tweak several parameters that are listed below to limit how fast and in which directions the hologram will turn.</p>
+<p>As you can imagine, having this behavior active at all times may quickly become pretty distracting in a crowded scene.
+This is why you may want to start out with this behavior disabled and then enable it quickly using voice commands.
+Alternatively, we added an example in <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_03_Navigation.unity">mrtk_eyes_03_Navigation.unity</a>
+to use <em>Target_MoveToCamera</em> for which you can select a focused target and it flies in front of you - simply say <em>&quot;Come to me&quot;</em>.
+Once in the near mode, the auto rotation mode is automatically enabled.
+In that mode, you can observe it from all sides either simply leaning back and looking at it, walking around it or reaching out to grab and rotate it with your hand!
+When you dismiss the target (look &amp; pinch or say <em>&quot;Send back&quot;</em>), it will return to its original location and will stop reacting to you from afar.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameters</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SpeedX</td>
+<td style="text-align: left;">Horizontal rotation speed.</td>
+</tr>
+<tr>
+<td style="text-align: left;">SpeedY</td>
+<td style="text-align: left;">Vertical rotation speed.</td>
+</tr>
+<tr>
+<td style="text-align: left;">InverseX</td>
+<td style="text-align: left;">To inverse the horizontal rotation direction.</td>
+</tr>
+<tr>
+<td style="text-align: left;">InverseY</td>
+<td style="text-align: left;">To inverse the vertical rotation direction.</td>
+</tr>
+<tr>
+<td style="text-align: left;">RotationThreshInDegrees</td>
+<td style="text-align: left;">If the angle between 'Gaze to Target' and 'Camera to Target' is less than this value, do nothing. This is to prevent small jittery rotations..</td>
+</tr>
+<tr>
+<td style="text-align: left;">MinRotX</td>
+<td style="text-align: left;">Minimum horizontal rotation angle. This is to limit the rotation in different directions.</td>
+</tr>
+<tr>
+<td style="text-align: left;">MaxRotX</td>
+<td style="text-align: left;">Maximum horizontal rotation angle. This is to limit the rotation in different directions.</td>
+</tr>
+<tr>
+<td style="text-align: left;">MinRotY</td>
+<td style="text-align: left;">Minimal vertical rotation angle to limit the rotation around the x axis.</td>
+</tr>
+<tr>
+<td style="text-align: left;">MaxRotY</td>
+<td style="text-align: left;">Maximum vertical rotation angle to limit the rotation around the y axis.</td>
+</tr>
+</tbody>
+</table>
+<p><img src="../../External/ReadMeImages/EyeTracking/mrtk_et_nav_rotate.jpg" alt="Eye-supported 3D rotation setup in Unity"></p>
+<p>In summary, the above scripts should enable you to  get started to use eye gaze for various input navigation tasks such as scrolling texts, zooming and panning textures as well as rotating investigating 3D holograms.</p>
+<h3 id="related-topics">Related Topics</h3>
+<ul>
+<li><a href="EyeTracking_BasicSetup.html">Basic MRTK Setup to use Eye Tracking</a></li>
+<li><a href="EyeTracking_TargetSelection.html">Eye-Supported Target Selection</a></li>
+</ul>
+<hr>
+<p><a href="EyeTracking_Main.html">Back to &quot;Eye Tracking in the MixedRealityToolkit&quot;</a></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/EyeTracking/EyeTracking_Navigation.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

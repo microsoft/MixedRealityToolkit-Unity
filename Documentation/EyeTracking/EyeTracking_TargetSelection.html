@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Eye-Supported Target Selection | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Eye-Supported Target Selection | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<p><img src="../../External/ReadMeImages/EyeTracking/mrtk_et_targetselect.png" alt="MRTK"></p>
+<h1 id="eye-supported-target-selection">Eye-Supported Target Selection</h1>
+<p>This page discusses different options for accessing eye gaze data and eye gaze specific events to select targets in MRTK.
+Eye Tracking allows for fast and effortless target selections using a combination of information about what a user is looking at with additional inputs such as
+<em>hand tracking</em> and <em>voice commands</em>:
+- Look &amp; Pinch (i.e., hold up your hand in front of you and pinch your thumb and index finger together)
+- Look &amp; Say <em>&quot;Select&quot;</em> (default voice command)
+- Look &amp; Say <em>&quot;Explode&quot;</em> or <em>&quot;Pop&quot;</em> (custom voice commands)
+- Look &amp; Bluetooth button</p>
+<h2 id="target-selection">Target Selection</h2>
+<h3 id="use-generic-focus-handler">Use Generic Focus Handler</h3>
+<p>If Eye Tracking is set up correctly (see <a href="EyeTracking_BasicSetup.html">Basic MRTK Setup to use Eye Tracking</a>), enabling users to select
+holograms using their eyes is the same as for any other focus input (e.g., head gaze or hand ray).
+This provides the great advantage of a flexible way to interact with your holograms by defining the main focus type in your MRTK Input Pointer Profile depending
+on your user's needs, while leaving your code untouched.
+For example, this would enable to switch between head or eye gaze without changing a line of code.
+To detect when a hologram is focused at, use the <em>'IMixedRealityFocusHandler'</em> interface that provides you with two interface members: <em>OnFocusEnter</em> and
+<em>OnFocusExit</em>.</p>
+<p>Here is a simple example from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ColorTap.html">ColorTap.cs</a> to change a hologram's
+color when being looked at.</p>
+<pre><code class="lang-csharp">    public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler
+    {
+        void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
+        {
+            material.color = color_OnHover;
+        }
+
+        void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
+        {
+            material.color = color_IdleState;
+        }
+        ...
+    }
+</code></pre>
+<h4 id="selecting-a-focused-hologram">Selecting a Focused Hologram</h4>
+<p>To select focused holograms, we can use Input Event Listeners to confirm a selection.
+For example, you can add the <em>IMixedRealityPointerHandler</em> to react to simple pointer input.
+The <em>IMixedRealityPointerHandler</em> interface requires you to implement the following three interface members:
+<em>OnPointerUp</em>, <em>OnPointerDown</em>, and <em>OnPointerClicked</em>.</p>
+<p>The <em>MixedRealityInputAction</em> is a configurable list of actions that you want to distinguish in your app and can be edited in the
+<em>MRTK Configuration Profile</em> -&gt; <em>Input System Profile</em> -&gt; <em>Input Actions Profile</em>.</p>
+<pre><code class="lang-csharp">   public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
+    {
+        // Allow for editing the type of select action in the Unity Editor.
+        [SerializeField]
+        private MixedRealityInputAction selectAction = MixedRealityInputAction.None; 
+        ...
+      
+        void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+            if (eventData.MixedRealityInputAction == selectAction)
+            {
+                material.color = color_OnHover;
+            }
+        }
+
+        void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+            if (eventData.MixedRealityInputAction == selectAction)
+            {
+                material.color = color_OnSelect;
+            }
+        }
+
+        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
+    }
+</code></pre>
+<h3 id="use-eye-gaze-specific-baseeyefocushandler">Use Eye-Gaze-Specific <em>BaseEyeFocusHandler</em></h3>
+<p>Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus if it is eye gaze.
+Similar to the <em>FocusHandler</em>, the <em>BaseEyeFocusHandler</em> is specific Eye Tracking.</p>
+<p>Here is an example from <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_02_TargetSelection.unity">mrtk_eyes_02_TargetSelection.unity</a>.
+Having the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAt_Rotate.html">OnLookAt_Rotate.cs</a> attached, a GameObject will rotate while being looked at.</p>
+<pre><code class="lang-csharp">    public class OnLookAt_Rotate : BaseEyeFocusHandler
+    {
+        ... 
+
+        protected override void OnEyeFocusStay()
+        {
+            // Update target rotation
+            RotateHitTarget();
+        }
+
+        /// &lt;summary&gt;
+        /// Rotate game object based on specified rotation speed and Euler angles.
+        /// &lt;/summary&gt;
+        private void RotateHitTarget()
+        {
+            transform.eulerAngles = transform.eulerAngles + RotateByEulerAngles * speed;
+        }
+    }
+</code></pre>
+<p>The <em>BaseEyeFocusHandler</em> provides more than only <em>OnEyeFocusStay</em>. Here is an overview of other events:</p>
+<pre><code class="lang-csharp">        /// &lt;summary&gt;
+        /// Triggered once the eye gaze ray *starts* intersecting with this target's collider.
+        /// &lt;/summary&gt;
+        protected virtual void OnEyeFocusStart() { }
+
+        /// &lt;summary&gt;
+        /// Triggered *while* the eye gaze ray is intersecting with this target's collider.
+        /// &lt;/summary&gt;
+        protected virtual void OnEyeFocusStay() { }
+
+        /// &lt;summary&gt;
+        /// Triggered once the eye gaze ray *stops* intersecting with this target's collider.
+        /// &lt;/summary&gt;
+        protected virtual void OnEyeFocusStop() { }
+
+        /// &lt;summary&gt;
+        /// Triggered once the eye gaze ray has intersected with this target's collider for a specified amount of time.
+        /// &lt;/summary&gt;
+        protected virtual void OnEyeFocusDwell() { }
+</code></pre>
+<h3 id="use-eye-gaze-specific-eyetrackingtarget">Use Eye-Gaze-Specific EyeTrackingTarget</h3>
+<p>While handling focus events in code is great, another way is to handle this from within the Unity Editor.
+For this purpose, you can simply attach the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html">EyeTrackingTarget</a> script to a
+GameObject.</p>
+<p>This has two advantages:</p>
+<ol>
+<li>You can make sure that the hologram is only reacting to the user's eye gaze.</li>
+<li>Several Unity events have already been set up to make it fast and convenient to handle and reuse existing behaviors.</li>
+</ol>
+<h4 id="example-attentive-notifications">Example: Attentive Notifications</h4>
+<p>For example, in <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_02_TargetSelection.unity">mrtk_eyes_02_TargetSelection.unity</a>,
+you can find an example for <em>'smart attentive notifications'</em> that react to your eye gaze.
+These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility.
+While the user is reading the notification, the information keeps getting displayed crisp and clear.
+After reading it and looking away from the notification, the notification will automatically be dismissed and fades out.
+To achieve all this, we created a few generic behavior scripts that are not specific to Eye Tracking at all such as:</p>
+<ul>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FaceUser.html">FaceUser.cs</a></li>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeSize.html">ChangeSize.cs</a></li>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.BlendOut.html">BlendOut.cs</a></li>
+</ul>
+<p>The advantage of this approach is that the same scripts can be reused by various events.
+For example, a hologram may start facing the user based on a voice commands or after pressing virtual button.
+To trigger these events, you can simply reference the methods that should be executed in the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html">EyeTrackingTarget</a>
+script that is attached to your GameObject.
+For the example of the <em>'smart attentive notifications'</em>, the following happens:</p>
+<ul>
+<li><p><strong>OnLookAtStart()</strong>: The notification starts to...</p>
+<ul>
+<li><em>FaceUser.Engage:</em> ... turn toward the user.</li>
+<li><em>ChangeSize.Engage:</em> ... increase in size <em>(up to a specified maximum scale)</em>.</li>
+<li><em>BlendOut.Engage:</em> ... starts to blend in more <em>(after being at a more subtle idle state)</em>.</li>
+</ul>
+</li>
+<li><p><strong>OnDwell()</strong>: Informs the <em>BlendOut</em> script that the notification has been looked at sufficiently.</p>
+</li>
+<li><p><strong>OnLookAway()</strong>: The notification starts to...</p>
+<ul>
+<li><em>FaceUser.Disengage:</em> ... turn back to its original orientation.</li>
+<li><em>ChangeSize.Disengage:</em> ... decrease back to its original size.</li>
+<li><em>BlendOut.Disengage:</em> ... starts to blend out - If <em>OnDwell()</em> was triggered, blend out completely and destroy, otherwise back to its idle state.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Design Consideration:</strong>
+The key to an enjoyable experience here is to carefully tune the speed of any of these behaviors to avoid causing discomfort by reacting to the user’s eye gaze too quickly all the time.
+Otherwise this can quickly feel extremely overwhelming.</p>
+<img src="../../External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg" width="750" alt="MRTK">
+<h4 id="example-multimodal-gaze-supported-target-selection">Example: Multimodal Gaze-Supported Target Selection</h4>
+<p>One event provided by the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html">EyeTrackingTarget</a>, yet not used by the
+<em>'Attentive Notifications'</em> is the <em>OnSelected()</em> event.
+Using the <em>EyeTrackingTarget</em>, you can specify what triggers the selection which will invoke the <em>OnSelected()</em> event.
+For example, the screenshot below is from
+<a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_02_TargetSelection.unity">mrtk_eyes_02_TargetSelection.unity</a>.
+It shows how the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html">EyeTrackingTarget</a>
+is set up for one of the gems that explodes when you select it.</p>
+<img src="../../External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget.jpg" width="750" alt="MRTK">
+<p>The <em>OnSelected()</em> event triggers the method <em>'TargetSelected'</em> in the
+<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehavior_DestroyOnSelect.html">HitBehavior_DestroyOnSelect</a>
+script attached to the gem GameObject.
+The interesting part is <em>how</em> the selection is triggered.
+The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html">EyeTrackingTarget</a>
+allows for quickly assigning different ways to invoke a selection:</p>
+<ul>
+<li><p><em>Pinch gesture</em>: Setting the 'Select Action' to 'Select' uses the default hand gesture to trigger the selection. This means that the user can simply raise their hand and pinch their thumb and index finger together to confirm the selection.</p>
+</li>
+<li><p>Say <em>&quot;Select&quot;</em>: Use the default voice command <em>&quot;Select&quot;</em> for selecting a hologram.</p>
+</li>
+<li><p>Say <em>&quot;Explode&quot;</em> or <em>&quot;Pop&quot;</em>: To use custom voice commands, you need to follow two steps:</p>
+<ol>
+<li><p>Set up a custom action such as <em>&quot;DestroyTarget&quot;</em></p>
+<ul>
+<li>Navigate to <em>'Input System Profile'</em> -&gt; <em>'Input Actions Profile'</em></li>
+<li>Add new action</li>
+</ul>
+</li>
+<li><p>Set up the voice commands that trigger this action such as <em>&quot;Explode&quot;</em> or <em>&quot;Pop&quot;</em></p>
+<ul>
+<li>Navigate to <em>'Input System Profile'</em> -&gt; <em>'Speech Commands Profile'</em></li>
+<li>Add new speech command and associate the action you just created</li>
+<li>Assign a <em>'KeyCode'</em> to allow for triggering the action via a button press
+<br></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<p>This should get you started in accessing Eye Tracking data in your MRTK Unity app!</p>
+<hr>
+<p><a href="EyeTracking_Main.html">Back to &quot;Eye Tracking in the MixedRealityToolkit&quot;</a></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/EyeTracking/EyeTracking_TargetSelection.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
