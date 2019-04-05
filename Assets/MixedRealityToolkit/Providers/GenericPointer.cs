@@ -87,6 +87,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
 
+        /// <inheritdoc />
+        public bool IsTargetPositionLockedOnFocusLock { get; set; }
+
         /// <summary>
         /// The pointer's maximum extent when raycasting.
         /// </summary>
