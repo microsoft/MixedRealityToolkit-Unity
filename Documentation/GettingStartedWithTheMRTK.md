@@ -47,6 +47,8 @@ Accept all the content and continue.
 
 > The MRTK also provides a [separate "Examples" asset](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases), which currently contains demonstration scenes for current MRTK features.  In the future this will also contain educational "Example" scenes to aid with learning implementation tricks with the toolkit.
 
+Note that some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources).
+
 ### 3. Accept the Setup prompt (optional)
 ![](../External/ReadMeImages/MRTK_UnitySetupPrompt.png)
 
