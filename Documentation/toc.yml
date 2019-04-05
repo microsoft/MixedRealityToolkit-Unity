@@ -2,6 +2,8 @@
   items:
   - name: MRTK v2
     href: ../MRTK-vNext.md
+  - name: Authors
+    href: Authors.md
   - name: Mixed Reality Services
     href: ../External/Documentation/MixedRealityServices.md
 - name: How-tos
@@ -15,7 +17,6 @@
     - name: Upgrading from the HoloToolkit (HTK)
       href: HTKToMRTKPortingGuide.md
   - name: Core Features
-    href: TODO.md
     items:
     - name: Packages
       href: Packaging/MRTK_Packages.md
@@ -49,10 +50,7 @@
         href: InputSystem/HandTracking.md
       - name: Eyes
         href: EyeTracking/EyeTracking_Main.md
-      - name: Gaze
-        href: TODO.md
     - name: Interactions and UX Building Blocks
-      href: TODO.md
       items:
       - name: Interactable
         href: README_Interactable.md
@@ -94,23 +92,21 @@
       - name: Configuring the Diagnostics System
         href: Diagnostics/ConfiguringDiagnostics.md
       - name: Using the Visual Profiler
-        href: TODO.md
+        href: Diagnostics/UsingVisualProfiler.md
   - name: Other Features
-    href: TODO.md
     items:
     - name: QR Tracking
       href: TODO.md
     - name: Spatial Audio
       href: TODO.md
   - name: Advanced topics
-    href: TODO.md
     items:
     - name: Performance
       href: Performance/PerfGettingStarted.md
     - name: Shared Experiences
       href: TODO.md
     - name: Moving your project from HTK to MRTK
-      href: TODO.md
+      href: HTKToMRTKPortingGuide.md
 - name: Contributing
   href: ../CONTRIBUTING.md
   items:
