@@ -58,6 +58,11 @@ Poke pointer is for near interactions, specifically for touching objects via the
 
 **NOTE:** Only items with _Near Interaction Touchable_ components will respond to the poke pointer.
 
+#### Poke Pointer Properties
+- distBack - how far input point can go behind surface before release event occurs
+- distFront - how far input point needs to be in front of surface before press event occurs
+- debounceThreshold - once touching, the distance back hand needs to be pulled from surface before a touch release occurs.
+
 #### Configuring NearInteractionTouchable
 When configuring your _Near Interaction Touchable_, make sure to configure the _localForward_ parameter to point out of the front of the button or other object you wish to make touchable. Also make sure that the touchable's _bounds_ matches the bounds of your touchable object. 
 
@@ -65,6 +70,8 @@ Other parameters:
 
 - eventsToReceive - if set to Touch, the object will receive _OnTouchDown_ _OnTouchUpdate_ and _OnTouchUp_ events. If set to pointer, the object will receive _OnPointerDown_ and _OnPointerUp_ events.
 - touchableSurface - use this to help compute the bounds of the surface. Bounds will automatically adjust to the attached BoxCollider, UnityUI element, or can be set manually by adjusting _bounds_.
+- visuals - Game Object used to render finger tip visual (the ring on finger, by default)
+- line - optional line to draw from fingertip to the active input surface.
 
 
 
