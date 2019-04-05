@@ -1,6 +1,10 @@
-# To show or not to show an eye gaze cursor
+## To show or not to show an eye gaze cursor
 
-This page covers design guidelines on when and how to use an eye gaze cursor. 
+This page will cover design guidelines on when and how to use an eye gaze cursor. 
+
+_We're currently restructuring and improving the MRTK documentation. 
+This content will be updated soon! 
+If you have any questions regarding this section please post in our MRTK slack channel._
 
 <!-- TODO: Add more infos -- >
 
