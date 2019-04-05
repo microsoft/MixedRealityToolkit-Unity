@@ -1,7 +1,7 @@
 # Pointers
 ![Pointer](../External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)
 
-A pointer is something attached to a controller that gives focus and dispatches inputs to the game object it is pointing to <sup>[1](https://github.com/luis-valverde-ms/MixedRealityToolkit-Unity/blob/feature/input_docs/Documentation/Input/InputSystem.md)</sup>.
+A pointer is something attached to a controller that gives focus and dispatches inputs to the game object it is pointing to. Learn more about the MRTK input system [here](./Input/Overview.md), and a scripting/engineering overview of pointers [here](./Input/Pointers.md).
 
 For a game object to be able to receive focus it must have a collider (so it can be hit by physics raycasts) and belong to one of the layers defined in the Pointer Raycast Layer Masks in the Pointer Profile.
 
@@ -56,14 +56,24 @@ Debug Mode - If true, draw the sphere that is used to query for grabbable object
 
 Poke pointer is for near interactions, specifically for touching objects via the hand / controller.
 
+**NOTE:** Only items with _Near Interaction Touchable_ components will respond to the poke pointer.
+
+#### Configuring NearInteractionTouchable
+When configuring your _Near Interaction Touchable_, make sure to configure the _localForward_ parameter to point out of the front of the button or other object you wish to make touchable. Also make sure that the touchable's _bounds_ matches the bounds of your touchable object. 
+
+Other parameters:
+
+- eventsToReceive - if set to Touch, the object will receive _OnTouchDown_ _OnTouchUpdate_ and _OnTouchUp_ events. If set to pointer, the object will receive _OnPointerDown_ and _OnPointerUp_ events.
+- touchableSurface - use this to help compute the bounds of the surface. Bounds will automatically adjust to the attached BoxCollider, UnityUI element, or can be set manually by adjusting _bounds_
+
 
 
 ### Mouse pointer
 ![Mouse Pointer](../External/ReadMeImages/Pointers/MRTK_MousePointer.jpg)
 
-Mouse pointer is used for interacting with the mouse.
+Mouse pointer is used for interacting with the mouse. This pointer will only be used if the active input is a Mouse. By default, the MRTK Input Profile does not provide a mouse as an input provider, as mouse input is instead used to simulate hand input. You may add a mouse in your MRTK profily by modifying the _Registered Service Providers_ in your MRTK profile.
 
 ### Teleport pointer
 <img src="/External/ReadMeImages/Pointers/MRTK_Pointers_Parabolic.png" width="600">
 
-Teleport pointer is used for teleportation.
+Teleport pointer is used for teleportation. This pointer will only be active when using a controller that supports teleportation (such as a motion controller like in Oculus, Vive, Windows Mixed Reality).
