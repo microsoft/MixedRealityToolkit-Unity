@@ -13,7 +13,7 @@ You can enable Bounding Box by simply assigning the `BoundingBox` script to any
 ### Example Scene ###
 You can find bounding box examples in the *HandInteractionExamples.unity* scene:
 
-<img src="/External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Examples.png" width="550">
+<img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Examples.png" width="550">
 
 ### Inspector Properties ###
 ![Bounding Box](../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Structure.png)
@@ -54,11 +54,11 @@ Bounding Box provides the following events. The example uses these events to pla
 - **Scale Started**
 - **Scale Ended**
 
-<img src="/External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
+<img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
 
 ### Make an object movable with Manipulation Handler ###
 If you want to make the object movable using far interaction, you can combine [`ManipulationHandler.cs`](README_ManipulationHandler.md) with `BoundingBox.cs`. [ManipulationHandler](README_ManipulationHandler.md) supports both one and two-handed interactions. To make [`ManipulationHandler.cs`](README_ManipulationHandler.md) work with near interaction, you should add `NearInteractionGrabbable.cs` too.
 
-<img src="/External/ReadMeImages/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
+<img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
 
 In order for the bounding box edges to be highlighted the same way when moving it using [`ManipulationHandler`](README_ManipulationHandler.md)'s far interaction, it is advised to connect its events for **On Manipulation Started** / **On Manipulation Ended** to `BoundingBox.HighlightWires` / `BoundingBox.UnhighlightWires` respectively, as shown in the screenshot above.
