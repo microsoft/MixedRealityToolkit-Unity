@@ -86,7 +86,7 @@
 <p>The <code>BoundingBox</code> script provides basic functionality for transforming objects in Windows Mixed Reality. Using handles on the corners and edges, you can scale or rotate the object. On HoloLens 2, the bounding box responds to your finger's proximity. It shows visual feedback to help perceive the distance from the object. MRTK's bounding box provides various options which allow you to easily customize the interactions and visuals. </p>
 <p>For more information please see <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box">App Bar and Bounding Box</a> on Windows Dev Center.</p>
 <h3 id="how-to-use-bounding-box">How to use Bounding Box</h3>
-<p>You can enable Bounding Box by simply assigning the <code>BoundingBox</code> script to any GameObject.</p>
+<p>You can enable Bounding Box by simply assigning the <code>BoundingBox</code> script to any GameObject. Assign the object with Box Collider to 'Bounds Override' field in the Inspector.</p>
 <p><img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Assign.png" alt="Bounding Box"></p>
 <h3 id="example-scene">Example Scene</h3>
 <p>You can find bounding box examples in the <em>HandInteractionExamples.unity</em> scene:</p>
@@ -96,7 +96,7 @@
 <h4 id="target-object">Target Object</h4>
 <p>This specifies which object will get transformed by the bounding box manipulation. If no object is set, the bounding box defaults to the owner object.</p>
 <h4 id="bounds-override">Bounds Override</h4>
-<p>Allows to alternatively set a box collider from another object for bounds computation.</p>
+<p>Set a box collider from the object for bounds computation.</p>
 <h4 id="activation-behavior">Activation Behavior</h4>
 <p>There are several options to activate the bounding box interface.</p>
 <ul>
