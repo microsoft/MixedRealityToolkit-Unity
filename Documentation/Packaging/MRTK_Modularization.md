@@ -85,7 +85,7 @@ be reduced by deleting unneeded folders from:
 
 > NOTE: MRTK v2 **_requires_** the contents of the Assets\MixedRealityToolkit folder. 
 
-## Release Candicate 2 Plan
+## Release Candidate 2 Plan
 
 In addition to the [RC1](#release-candidate-1-status) functionality, the RC2 release will include support for:
 
@@ -143,7 +143,7 @@ and instance property which application code could use to directly access serivc
 Some developers have requested the ability to create a custom service locator component. Custom service locators would
 implement the [IMixedRealityServiceRegistrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) interface and manage the lifecycle and core behaviors of active services.
 
-#### Hybrid Architectures
+#### Hybrid Architecture
 
 RC2 is planned to support a hybrid architecture in which developers can combine the previous approaches as needed or
 desired. For example, a developer could start with the [MixedRealityToolkit](xref:Microsoft.MixedReality.Toolkit.MixedRealityToolkit) service locator and add a self-registering
