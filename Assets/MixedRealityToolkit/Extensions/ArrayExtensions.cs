@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// <see cref="Array"/> type method extensions.
@@ -20,6 +20,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         {
             int length = array.Length;
             return ((index % length) + length) % length;
+        }
+
+        /// <summary>
+        /// Checks whether the given array is not null and has at least one entry
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
+        public static bool IsValidArray(this Array array)
+        {
+            return array != null && array.Length > 0;
         }
     }
 }

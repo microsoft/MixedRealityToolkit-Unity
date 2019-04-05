@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     /// <summary>
     /// Implements a movement logic that uses the model of angular rotations along a sphere whose 
@@ -26,10 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="rotationConstraint"></param>
-        public TwoHandMoveLogic(MovementConstraintType _movementConstraint)
+        /// <param name="movementConstraint"></param>
+        public TwoHandMoveLogic(MovementConstraintType movementConstraint)
         {
-            movementConstraint = _movementConstraint;
+            this.movementConstraint = movementConstraint;
         }
 
         /// <summary>
@@ -37,18 +37,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// </summary>
         private Quaternion gazeAngularOffset;
 
-        private const float DistanceScale = 2f;
-        public void Setup(Vector3 startHandPositionMeters, Transform manipulationRoot)
+        private const float NearDistanceScale = 1.0f;
+        private const float FarDistanceScale = 2.0f;
+
+        public void Setup(Vector3 startHandPositionMeters, Vector3 manipulationObjectPosition)
         {
             var newHandPosition = startHandPositionMeters;
 
             // The pivot is just below and in front of the head.
             var pivotPosition = GetHandPivotPosition();
 
-            objRefDistance = Vector3.Distance(manipulationRoot.position, pivotPosition);
+            objRefDistance = Vector3.Distance(manipulationObjectPosition, pivotPosition);
             handRefDistance = Vector3.Distance(newHandPosition, pivotPosition);
 
-            var objDirection = Vector3.Normalize(manipulationRoot.position - pivotPosition);
+            var objDirection = Vector3.Normalize(manipulationObjectPosition - pivotPosition);
             var handDirection = Vector3.Normalize(newHandPosition - pivotPosition);
 
             // We transform the forward vector of the object, the direction of the object, and the direction of the hand
@@ -60,8 +62,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
             gazeAngularOffset = Quaternion.FromToRotation(handDirection, objDirection);
         }
 
-        public Vector3 Update(Vector3 centroid, Vector3 manipulationObjectPosition)
+        public Vector3 Update(Vector3 centroid, bool isNearMode)
         {
+            float distanceScale = isNearMode ? NearDistanceScale : FarDistanceScale;
+
             var newHandPosition = centroid;
             var pivotPosition = GetHandPivotPosition();
 
@@ -75,12 +79,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
 
             var targetDistance = objRefDistance;
 
-            if(movementConstraint != MovementConstraintType.FixDistanceFromHead)
+            if (movementConstraint != MovementConstraintType.FixDistanceFromHead)
             {
                 // Compute how far away the object should be based on the ratio of the current to original hand distance
                 var currentHandDistance = Vector3.Magnitude(newHandPosition - pivotPosition);
                 var distanceRatio = currentHandDistance / handRefDistance;
-                var distanceOffset = distanceRatio > 0 ? (distanceRatio - 1f) * DistanceScale : 0;
+                var distanceOffset = distanceRatio > 0 ? (distanceRatio - 1f) * distanceScale : 0;
                 targetDistance += distanceOffset;
             }
 
@@ -104,5 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
             Vector3 pivot = CameraCache.Main.transform.position + offsetPosition - CameraCache.Main.transform.forward * 0.2f; // a bit lower and behind
             return pivot;
         }
+
     }
 }

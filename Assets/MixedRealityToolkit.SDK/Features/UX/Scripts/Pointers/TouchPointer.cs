@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Touch Pointer Implementation.
@@ -38,51 +36,42 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public Ray TouchRay { get; set; } = default(Ray);
 
         /// <inheritdoc />
-        public override void OnPreRaycast()
+        public override void OnPreSceneQuery()
         {
-            Ray pointingRay;
-            if (TryGetPointingRay(out pointingRay))
+            Rays[0].CopyRay(TouchRay, PointerExtent);
+
+            if (RayStabilizer != null)
             {
-                Rays[0].CopyRay(pointingRay, PointerExtent);
+                RayStabilizer.UpdateStability(Rays[0].Origin, Rays[0].Direction);
+                Rays[0].CopyRay(RayStabilizer.StableRay, PointerExtent);
 
-                if (RayStabilizer != null)
+                if (MixedRealityRaycaster.DebugEnabled)
                 {
-                    RayStabilizer.UpdateStability(Rays[0].Origin, Rays[0].Direction);
-                    Rays[0].CopyRay(RayStabilizer.StableRay, PointerExtent);
-
-                    if (MixedRealityRaycaster.DebugEnabled)
-                    {
-                        Debug.DrawRay(RayStabilizer.StableRay.origin, RayStabilizer.StableRay.direction * PointerExtent, Color.green);
-                    }
+                    Debug.DrawRay(RayStabilizer.StableRay.origin, RayStabilizer.StableRay.direction * PointerExtent, Color.green);
                 }
-                else if (MixedRealityRaycaster.DebugEnabled)
-                {
-                    Debug.DrawRay(pointingRay.origin, pointingRay.direction * PointerExtent, Color.yellow);
-                }
+            }
+            else if (MixedRealityRaycaster.DebugEnabled)
+            {
+                Debug.DrawRay(TouchRay.origin, TouchRay.direction * PointerExtent, Color.yellow);
             }
         }
 
         /// <inheritdoc />
-        public override bool TryGetPointerPosition(out Vector3 position)
+        public override Vector3 Position
         {
-            position = Vector3.zero;
-            if (fingerId < 0) { return false; }
-            position = Result?.Details.Point ?? CameraCache.Main.ScreenPointToRay(UnityEngine.Input.GetTouch(FingerId).position).GetPoint(PointerExtent);
-            return true;
+            get
+            {
+                return TouchRay.origin;
+            }
         }
 
         /// <inheritdoc />
-        public override bool TryGetPointingRay(out Ray pointingRay)
+        public override Quaternion Rotation
         {
-            pointingRay = TouchRay;
-            return true;
-        }
-
-        /// <inheritdoc />
-        public override bool TryGetPointerRotation(out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
-            return false;
+            get
+            {
+                return Quaternion.LookRotation(TouchRay.direction);
+            }
         }
 
         /// <inheritdoc />

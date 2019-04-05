@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Indicates how selectable classes should be collated in drop-down menu.
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 
         /// <summary>
         /// Group classes in the same way as Unity does for its component menu. This
-        /// grouping method must only be used for <see cref="UnityEngine.MonoBehaviour"/> types.
+        /// grouping method must only be used for <see href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.html">MonoBehaviour</see> types.
         /// </summary>
         ByAddComponentMenu,
     }

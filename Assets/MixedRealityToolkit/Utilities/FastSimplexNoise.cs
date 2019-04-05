@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// A conglomeration of open-source simplex libraries in C# with an emphasis on performance
@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
             return x < xi ? xi - 1 : xi;
         }
 
-        public FastSimplexNoise() : this(DateTime.Now.Ticks) { }
+        public FastSimplexNoise() : this(DateTime.UtcNow.Ticks) { }
 
         public FastSimplexNoise(long seed)
         {

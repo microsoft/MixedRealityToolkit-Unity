@@ -1,43 +1,49 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using UInput = UnityEngine.Input;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
+namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
     /// <summary>
     /// Manages Touch devices using unity input system.
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
-        (SupportedPlatforms)(-1))]  // All platforms supported by Unity
-    public class UnityTouchDeviceManager : BaseDeviceManager, IMixedRealityExtensionService
+        (SupportedPlatforms)(-1),  // All platforms supported by Unity
+        "Unity Touch Device Manager")]
+    public class UnityTouchDeviceManager : BaseInputDeviceManager
     {
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="inputSystemProfile">The input system configuration profile.</param>
+        /// <param name="playspace">The <see href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</see> of the playspace object.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public UnityTouchDeviceManager(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile) { }
+        public UnityTouchDeviceManager(
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
+            MixedRealityInputSystemProfile inputSystemProfile,
+            Transform playspace,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
 
         private static readonly Dictionary<int, UnityTouchController> ActiveTouches = new Dictionary<int, UnityTouchController>();
 
         /// <inheritdoc />
         public override void Update()
         {
-            for (var i = 0; i < Input.touches.Length; i++)
+            for (var i = 0; i < UInput.touches.Length; i++)
             {
-                Touch touch = Input.touches[i];
+                Touch touch = UInput.touches[i];
 
                 // Construct a ray from the current touch coordinates
                 Ray ray = CameraCache.Main.ScreenPointToRay(touch.position);
@@ -67,15 +73,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         /// <inheritdoc />
         public override void Disable()
         {
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+            
             foreach (var controller in ActiveTouches)
             {
-                if (controller.Value == null || MixedRealityToolkit.InputSystem == null) { continue; }
+                if (controller.Value == null || inputSystem == null) { continue; }
 
-                foreach (var inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
+                foreach (var inputSource in inputSystem.DetectedInputSources)
                 {
                     if (inputSource.SourceId == controller.Value.InputSource.SourceId)
                     {
-                        MixedRealityToolkit.InputSystem.RaiseSourceLost(controller.Value.InputSource, controller.Value);
+                        inputSystem.RaiseSourceLost(controller.Value.InputSource, controller.Value);
                     }
                 }
             }
@@ -86,14 +94,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         private void AddTouchController(Touch touch, Ray ray)
         {
             UnityTouchController controller;
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
             if (!ActiveTouches.TryGetValue(touch.fingerId, out controller))
             {
                 IMixedRealityInputSource inputSource = null;
 
-                if (MixedRealityToolkit.InputSystem != null)
+                if (inputSystem != null)
                 {
-                    var pointers = RequestPointers(typeof(UnityTouchController), Handedness.Any, true);
-                    inputSource = MixedRealityToolkit.InputSystem.RequestNewGenericInputSource($"Touch {touch.fingerId}", pointers);
+                    var pointers = RequestPointers(SupportedControllerType.TouchScreen, Handedness.Any);
+                    inputSource = inputSystem.RequestNewGenericInputSource($"Touch {touch.fingerId}", pointers);
                 }
 
                 controller = new UnityTouchController(TrackingState.NotApplicable, Handedness.Any, inputSource);
@@ -113,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
                 ActiveTouches.Add(touch.fingerId, controller);
             }
 
-            MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+            inputSystem?.RaiseSourceDetected(controller.InputSource, controller);
             controller.StartTouch();
             UpdateTouchData(touch, ray);
         }
@@ -143,7 +153,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
             }
 
             controller.EndTouch();
-            MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+            inputSystem?.RaiseSourceLost(controller.InputSource, controller);
         }
     }
 }

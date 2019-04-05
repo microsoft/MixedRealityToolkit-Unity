@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Data
+namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     /// <summary>
     /// Used to aid in layout of Controller Input Actions.

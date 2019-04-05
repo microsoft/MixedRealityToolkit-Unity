@@ -1,11 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
-using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
+namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
     /// <summary>
     /// The interface contract that defines the Diagnostics system in the Mixed Reality Toolkit
@@ -22,8 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
         bool ShowDiagnostics { get; set; }
 
         /// <summary>
-        /// Enable / disable the profiler display
+        /// Enable / disable the profiler display.
         /// </summary>
         bool ShowProfiler { get; set; }
+
+        /// <summary>
+        /// The amount of time, in seconds, to collect frames for frame rate calculation.
+        /// </summary>
+        float FrameSampleRate { get; }
     }
 }

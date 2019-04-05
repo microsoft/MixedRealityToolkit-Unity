@@ -1,42 +1,51 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
+namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
     /// <summary>
-    /// The default implementation of the <see cref="IMixedRealityDiagnosticsSystem"/>
+    /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
-    public class MixedRealityDiagnosticsSystem : BaseEventSystem, IMixedRealityDiagnosticsSystem
+    public class MixedRealityDiagnosticsSystem : BaseCoreSystem, IMixedRealityDiagnosticsSystem
     {
+        public MixedRealityDiagnosticsSystem(
+            IMixedRealityServiceRegistrar registrar,
+            MixedRealityDiagnosticsProfile profile,
+            Transform playspace) : base(registrar, profile)
+        {
+            if (playspace == null)
+            {
+                Debug.LogError("The MixedRealityDiagnosticSystem object requires a valid playspace Transform.");
+            }
+            Playspace = playspace;
+        }
+
         /// <summary>
         /// The parent object under which all visualization game objects will be placed.
         /// </summary>
         private GameObject diagnosticVisualizationParent = null;
 
         /// <summary>
-        /// Creates the parent for diagnostic visualizations so that the scene hierarchy does not get overly cluttered.
+        /// Creates the diagnostic visualizations and parents them so that the scene hierarchy does not get overly cluttered.
         /// </summary>
-        /// <returns>
-        /// The <see cref="GameObject"/> to which diagnostic visualizations will be parented.
-        /// </returns>
-        private GameObject CreateDiagnosticVisualizationParent()
+        private void CreateVisualizations()
         {
             diagnosticVisualizationParent = new GameObject("Diagnostics");
-            diagnosticVisualizationParent.transform.parent = MixedRealityToolkit.Instance.MixedRealityPlayspace.transform;
-            diagnosticVisualizationParent.SetActive(MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowDiagnostics);
+            diagnosticVisualizationParent.transform.parent = Playspace.transform;
+            diagnosticVisualizationParent.SetActive(ShowDiagnostics);
 
             // visual profiler settings
             visualProfiler = diagnosticVisualizationParent.AddComponent<MixedRealityToolkitVisualProfiler>();
             visualProfiler.WindowParent = diagnosticVisualizationParent.transform;
-            visualProfiler.IsVisible = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowProfiler;
-
-            return diagnosticVisualizationParent;
+            visualProfiler.IsVisible = ShowProfiler;
+            visualProfiler.FrameSampleRate = FrameSampleRate;
+            visualProfiler.WindowAnchor = WindowAnchor;
+            visualProfiler.WindowOffset = WindowOffset;
+            visualProfiler.WindowScale = WindowScale;
+            visualProfiler.WindowFollowSpeed = WindowFollowSpeed;
         }
 
         private MixedRealityToolkitVisualProfiler visualProfiler = null;
@@ -48,13 +57,21 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         {
             if (!Application.isPlaying) { return; }
 
+            MixedRealityDiagnosticsProfile profile = ConfigurationProfile as MixedRealityDiagnosticsProfile;
+            if (profile == null) { return; }
+
             eventData = new DiagnosticsEventData(EventSystem.current);
 
             // Apply profile settings
-            ShowDiagnostics = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowDiagnostics;
-            ShowProfiler = MixedRealityToolkit.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowProfiler;
+            ShowDiagnostics = profile.ShowDiagnostics;
+            ShowProfiler = profile.ShowProfiler;
+            FrameSampleRate = profile.FrameSampleRate;
+            WindowAnchor = profile.WindowAnchor;
+            WindowOffset = profile.WindowOffset;
+            WindowScale = profile.WindowScale;
+            WindowFollowSpeed = profile.WindowFollowSpeed;
 
-            diagnosticVisualizationParent = CreateDiagnosticVisualizationParent();
+            CreateVisualizations();
         }
 
         /// <inheritdoc />
@@ -62,13 +79,13 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         {
             if (diagnosticVisualizationParent != null)
             {
-                diagnosticVisualizationParent.transform.DetachChildren();
                 if (Application.isEditor)
                 {
                     Object.DestroyImmediate(diagnosticVisualizationParent);
                 }
                 else
                 {
+                    diagnosticVisualizationParent.transform.DetachChildren();
                     Object.Destroy(diagnosticVisualizationParent);
                 }
 
@@ -79,9 +96,15 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
         #endregion IMixedRealityService
 
         #region IMixedRealityDiagnosticsSystem
+        /// <summary>
+        /// The transform of the playspace scene object. We use this transform to parent
+        /// diagnostic visualizations that teleport with the user and to perform calculations
+        /// to ensure proper alignment with the world.
+        /// </summary>
+        private Transform Playspace = null;
 
         private bool showDiagnostics;
-        
+
         public bool ShowDiagnostics
         {
             get { return showDiagnostics; }
@@ -91,7 +114,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
                 if (value != showDiagnostics)
                 {
                     showDiagnostics = value;
-                    diagnosticVisualizationParent?.SetActive(value);
+
+                    if (diagnosticVisualizationParent != null)
+                    {
+                        diagnosticVisualizationParent.SetActive(value);
+                    }
                 }
             }
         }
@@ -114,6 +141,30 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
                     if (visualProfiler != null)
                     {
                         visualProfiler.IsVisible = value;
+                    }
+                }
+            }
+        }
+
+        private float frameSampleRate = 0.1f;
+
+        /// <inheritdoc />
+        public float FrameSampleRate
+        {
+            get
+            {
+                return frameSampleRate;
+            }
+
+            set
+            {
+                if (!Mathf.Approximately(frameSampleRate, value))
+                {
+                    frameSampleRate = value;
+
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.FrameSampleRate = frameSampleRate;
                     }
                 }
             }
@@ -154,5 +205,97 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             };
 
         #endregion IMixedRealityEventSource
+
+        private TextAnchor windowAnchor = TextAnchor.LowerCenter;
+
+        /// <summary>
+        /// What part of the view port to anchor the window to.
+        /// </summary>
+        public TextAnchor WindowAnchor
+        {
+            get { return windowAnchor; }
+
+            set
+            {
+                if (value != windowAnchor)
+                {
+                    windowAnchor = value;
+
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.WindowAnchor = windowAnchor;
+                    }
+                }
+            }
+        }
+
+        private Vector2 windowOffset = new Vector2(0.1f, 0.1f);
+
+        /// <summary>
+        /// The offset from the view port center applied based on the window anchor selection.
+        /// </summary>
+        public Vector2 WindowOffset
+        {
+            get { return windowOffset; }
+
+            set
+            {
+                if (value != windowOffset)
+                {
+                    windowOffset = value;
+
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.WindowOffset = windowOffset;
+                    }
+                }
+            }
+        }
+
+        private float windowScale = 1.0f;
+
+        /// <summary>
+        /// Use to scale the window size up or down, can simulate a zooming effect.
+        /// </summary>
+        public float WindowScale
+        {
+            get { return windowScale; }
+
+            set
+            {
+                if (value != windowScale)
+                {
+                    windowScale = value;
+
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.WindowScale = windowScale;
+                    }
+                }
+            }
+        }
+
+        private float windowFollowSpeed = 5.0f;
+
+        /// <summary>
+        /// How quickly to interpolate the window towards its target position and rotation.
+        /// </summary>
+        public float WindowFollowSpeed
+        {
+            get { return windowFollowSpeed; }
+
+            set
+            {
+                if (value != windowFollowSpeed)
+                {
+                    windowFollowSpeed = value;
+
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.WindowFollowSpeed = windowFollowSpeed;
+                    }
+                }
+            }
+        }
     }
 }

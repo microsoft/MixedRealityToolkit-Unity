@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -14,6 +15,8 @@ MonoBehaviour:
   Name: 
   Settings:
   - Name: InteractableColorTheme
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme,
+      Microsoft.MixedReality.Toolkit.SDK
     Properties:
     - Name: Color
       Type: 2
@@ -105,7 +108,7 @@ MonoBehaviour:
       - Name: _RimColor
         Type: 0
         Range: {x: 0.5, y: 0.5}
-      - Name: _ClippingPlaneBorderColor
+      - Name: _ClippingBorderColor
         Type: 0
         Range: {x: 0.2, y: 0}
       - Name: _HoverColorOverride
@@ -130,7 +133,7 @@ MonoBehaviour:
       - _Color
       - _EmissiveColor
       - _RimColor
-      - _ClippingPlaneBorderColor
+      - _ClippingBorderColor
       - _HoverColorOverride
       - _HoverColorOpaqueOverride
       - _InnerGlowColor
@@ -169,7 +172,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.31764707, g: 0.31764707, b: 0.31764707, a: 1}
+        Color: {r: 0.16078432, g: 0.16078432, b: 0.16078432, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
@@ -184,7 +187,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.31764707, g: 0.31764707, b: 0.31764707, a: 1}
+        Color: {r: 0.16078432, g: 0.16078432, b: 0.16078432, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
@@ -453,7 +456,7 @@ MonoBehaviour:
         Animation: {fileID: 0}
       ShaderName: 
     Easing:
-      Enabled: 1
+      Enabled: 0
       Curve:
         serializedVersion: 2
         m_Curve:

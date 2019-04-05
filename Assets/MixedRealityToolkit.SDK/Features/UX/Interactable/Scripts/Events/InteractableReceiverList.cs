@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// An example of building an Interactable receiver that uses built-in receivers that extend ReceiverBase
@@ -29,11 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// </summary>
         protected virtual void SetupEvents()
         {
-            InteractableEvent.EventLists lists = InteractableEvent.GetEventTypes();
+            InteractableTypesContainer interactableTypes = InteractableEvent.GetEventTypes();
 
             for (int i = 0; i < Events.Count; i++)
             {
-                Events[i].Receiver = InteractableEvent.GetReceiver(Events[i], lists);
+                Events[i].Receiver = InteractableEvent.GetReceiver(Events[i], interactableTypes);
                 Events[i].Receiver.Host = this;
             }
         }

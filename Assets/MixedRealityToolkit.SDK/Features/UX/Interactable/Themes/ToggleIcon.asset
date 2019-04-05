@@ -14,6 +14,8 @@ MonoBehaviour:
   Name: 
   Settings:
   - Name: ScaleOffsetColorTheme
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.ScaleOffsetColorTheme,
+      Microsoft.MixedReality.Toolkit.SDK
     Properties:
     - Name: Scale
       Type: 6
@@ -648,6 +650,8 @@ MonoBehaviour:
       Target: {fileID: 0}
       States: []
   - Name: InteractableActivateTheme
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableActivateTheme,
+      Microsoft.MixedReality.Toolkit.SDK
     Properties:
     - Name: Activate
       Type: 15

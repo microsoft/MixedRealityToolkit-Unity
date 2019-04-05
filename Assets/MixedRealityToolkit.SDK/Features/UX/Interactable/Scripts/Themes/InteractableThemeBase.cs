@@ -1,17 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Base class for themes
     /// </summary>
-    
+
     public abstract class InteractableThemeBase
     {
         public Type[] Types;
@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         public Easing Ease;
         public bool NoEasing;
         public bool Loaded;
+        public string AssemblyQualifiedName;
 
         private bool hasFirstState = false;
 
@@ -45,8 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 prop.ShaderOptions = settings.Properties[i].ShaderOptions;
                 prop.PropId = settings.Properties[i].PropId;
                 prop.Values = settings.Properties[i].Values;
-                
-                
+
+
                 ThemeProperties[i] = prop;
             }
 
@@ -79,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
         public virtual void OnUpdate(int state, bool force = false)
         {
-            if(state != lastState || force)
+            if (state != lastState || force)
             {
                 int themePropCount = ThemeProperties.Count;
                 for (int i = 0; i < themePropCount; i++)
@@ -95,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     else
                     {
                         SetValue(current, state, 1);
-                        if(i >= themePropCount - 1)
+                        if (i >= themePropCount - 1)
                         {
                             hasFirstState = true;
                         }
@@ -105,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
                 lastState = state;
             }
-            else if(Ease.Enabled && Ease.IsPlaying())
+            else if (Ease.Enabled && Ease.IsPlaying())
             {
                 Ease.OnUpdate();
                 int themePropCount = ThemeProperties.Count;

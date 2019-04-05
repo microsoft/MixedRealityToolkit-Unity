@@ -2,10 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Connects a ToolTip to a target
@@ -29,17 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         [SerializeField]
         private ToolTip toolTip;
-
-        private bool IsTooltipValid
-        {
-            get
-            {
-                if (toolTip == null)
-                    toolTip = gameObject.EnsureComponent<ToolTip>();
-
-                return toolTip != null;
-            }
-        }
 
         [SerializeField]
         [Tooltip("The follow style of the tooltip connector")]
@@ -134,8 +122,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         private void OnEnable()
         {
-            if (!IsTooltipValid)
+            toolTip = gameObject.GetComponent<ToolTip>();
+            if (toolTip == null)
             {
+                Debug.LogWarning("This component only works with a ToolTip.");
+                enabled = false;
                 return;
             }
 
@@ -144,11 +135,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         private void UpdatePosition()
         {
-            if (!IsTooltipValid)
-            {
-                return;
-            }
-
             if (target == null)
             {
                 return;

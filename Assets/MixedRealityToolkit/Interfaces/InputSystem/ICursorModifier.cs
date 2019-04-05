@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Interface for cursor modifiers that can modify a <see cref="GameObject"/>'s properties.
+    /// Interface for cursor modifiers that can modify a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>'s properties.
     /// </summary>
     public interface ICursorModifier : IMixedRealityFocusChangedHandler
     {
@@ -18,17 +17,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         Transform HostTransform { get; set; }
 
         /// <summary>
-        /// How much a <see cref="IMixedRealityCursor"/>'s position should be offset from the surface of the <see cref="GameObject"/> when overlapping.
+        /// How much a <see cref="IMixedRealityCursor"/>'s position should be offset from the surface of the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> when overlapping.
         /// </summary>
         Vector3 CursorPositionOffset { get; set; }
 
         /// <summary>
-        /// Should the <see cref="IMixedRealityCursor"/> snap to the <see cref="GameObject"/>'s position?
+        /// Should the <see cref="IMixedRealityCursor"/> snap to the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>'s position?
         /// </summary>
         bool SnapCursorPosition { get; set; }
 
         /// <summary>
-        /// Scale of the <see cref="IMixedRealityCursor"/> when looking at this <see cref="GameObject"/>.
+        /// Scale of the <see cref="IMixedRealityCursor"/> when looking at this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>.
         /// </summary>
         Vector3 CursorScaleOffset { get; set; }
 
@@ -38,17 +37,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         Vector3 CursorNormalOffset { get; set; }
 
         /// <summary>
-        /// If true, the normal from the pointing vector will be used to orient the <see cref="IMixedRealityCursor"/> instead of the targeted <see cref="GameObject"/>'s normal at point of contact.
+        /// If true, the normal from the pointing vector will be used to orient the <see cref="IMixedRealityCursor"/> instead of the targeted <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>'s normal at point of contact.
         /// </summary>
         bool UseGazeBasedNormal { get; set; }
 
         /// <summary>
-        /// Should the <see cref="IMixedRealityCursor"/> be hidden when this <see cref="GameObject"/> is focused?
+        /// Should the <see cref="IMixedRealityCursor"/> be hidden when this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is focused?
         /// </summary>
         bool HideCursorOnFocus { get; set; }
 
         /// <summary>
-        /// <see cref="IMixedRealityCursor"/> animation parameters to set when this <see cref="GameObject"/> is focused. Leave empty for none.
+        /// <see cref="IMixedRealityCursor"/> animation parameters to set when this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is focused. Leave empty for none.
         /// </summary>
         AnimatorParameter[] CursorParameters { get; }
 
@@ -80,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         Vector3 GetModifiedScale(IMixedRealityCursor cursor);
 
         /// <summary>
-        /// Returns the modified <see cref="Transform"/> for the <see cref="IMixedRealityCursor"/> after considering this modifier.
+        /// Returns the modified <see href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</see> for the <see cref="IMixedRealityCursor"/> after considering this modifier.
         /// </summary>
         /// <param name="cursor">Cursor that is being modified.</param>
         /// <param name="position">Modified position.</param>

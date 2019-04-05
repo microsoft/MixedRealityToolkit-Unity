@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     // TODO - currently not used, consider removing maybe?
     /// <summary>

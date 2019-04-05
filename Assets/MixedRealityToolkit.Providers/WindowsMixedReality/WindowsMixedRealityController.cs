@@ -1,20 +1,24 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Providers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
+using System;
 
 #if UNITY_WSA
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
+#if WINDOWS_UWP
+using Windows.Foundation;
+using Windows.Perception;
+using Windows.UI.Input.Spatial;
+using Windows.Storage.Streams;
+#endif
+
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     /// <summary>
     /// A Windows Mixed Reality Controller Instance.
@@ -74,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// <summary>
         /// The last updated source state reading for this Windows Mixed Reality Controller.
         /// </summary>
-        public InteractionSourceState LastSourceStateReading { get; private set; }
+        public InteractionSourceState LastSourceStateReading { get; protected set; }
 
         private Vector3 currentControllerPosition = Vector3.zero;
         private Quaternion currentControllerRotation = Quaternion.identity;
@@ -89,17 +93,21 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         private Quaternion currentGripRotation = Quaternion.identity;
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
+        private bool controllerModelInitialized = false;
+        private bool isControllerModelLoaded = false;
+
         #region Update data functions
 
         /// <summary>
         /// Update the controller data from the provided platform state
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        public void UpdateController(InteractionSourceState interactionSourceState)
+        public virtual void UpdateController(InteractionSourceState interactionSourceState)
         {
             if (!Enabled) { return; }
 
             UpdateControllerData(interactionSourceState);
+            EnsureControllerModel(interactionSourceState);
 
             if (Interactions == null)
             {
@@ -151,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// Update the "Controller" input from the device
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        private void UpdateControllerData(InteractionSourceState interactionSourceState)
+        protected virtual void UpdateControllerData(InteractionSourceState interactionSourceState)
         {
             var lastState = TrackingState;
             var sourceKind = interactionSourceState.source.kind;
@@ -216,13 +224,27 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdatePointerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
+        protected void UpdatePointerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
-            interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
+            if (interactionSourceState.source.supportsPointing)
+            {
+                interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
+                interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
 
-            currentPointerPose.Position = currentPointerPosition;
-            currentPointerPose.Rotation = currentPointerRotation;
+                // We want the controller to follow the Playspace, so fold in the playspace transform here to 
+                // put the controller pose into world space.
+                var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
+                if (playspace != null)
+                {
+                    currentPointerPose.Position = playspace.TransformPoint(currentPointerPosition);
+                    currentPointerPose.Rotation = playspace.rotation * currentPointerRotation;
+                }
+                else
+                {
+                    currentPointerPose.Position = currentPointerPosition;
+                    currentPointerPose.Rotation = currentPointerRotation;
+                }
+            }
 
             // Update the interaction data source
             interactionMapping.PoseData = currentPointerPose;
@@ -240,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateGripData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateGripData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.AxisType)
             {
@@ -249,10 +271,11 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                         interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
                         interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
 
-                        if (MixedRealityToolkit.Instance.MixedRealityPlayspace != null)
+                        var playspace = GetPlayspace();
+                        if (playspace != null)
                         {
-                            currentGripPose.Position = MixedRealityToolkit.Instance.MixedRealityPlayspace.TransformPoint(currentGripPosition);
-                            currentGripPose.Rotation = Quaternion.Euler(MixedRealityToolkit.Instance.MixedRealityPlayspace.TransformDirection(currentGripRotation.eulerAngles));
+                            currentGripPose.Position = playspace.TransformPoint(currentGripPosition);
+                            currentGripPose.Rotation = Quaternion.Euler(playspace.TransformDirection(currentGripRotation.eulerAngles));
                         }
                         else
                         {
@@ -389,7 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateTriggerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateTriggerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -401,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                     if (interactionMapping.Changed)
                     {
                         // Raise input system Event if it enabled
-                        if (interactionSourceState.grasped)
+                        if (interactionMapping.BoolData)
                         {
                             MixedRealityToolkit.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
@@ -410,41 +433,17 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                             MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
-
                     break;
                 case DeviceInputType.Select:
                     {
-                        bool selectPressed = interactionSourceState.selectPressed;
-
-                        // BEGIN WORKAROUND: Unity issue #1033526
-                        // See https://issuetracker.unity3d.com/issues/hololens-interactionsourcestate-dot-selectpressed-is-false-when-air-tap-and-hold
-                        // Bug was discovered May 2018 and still exists as of today Feb 2019 in version 2018.3.4f1, timeline for fix is unknown
-                        // The bug only affects the development workflow via Holographic Remoting or Simulation
-                        if (interactionSourceState.source.kind == InteractionSourceKind.Hand)
-                        {
-                            Debug.Assert(!(UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected
-                                           && interactionSourceState.selectPressed),
-                                         "Unity issue #1033526 seems to have been resolved. Please remove this ugly workaround!");
-
-                            // This workaround is safe as long as all these assumptions hold:
-                            Debug.Assert(!interactionSourceState.source.supportsGrasp);
-                            Debug.Assert(!interactionSourceState.source.supportsMenu);
-                            Debug.Assert(!interactionSourceState.source.supportsPointing);
-                            Debug.Assert(!interactionSourceState.source.supportsThumbstick);
-                            Debug.Assert(!interactionSourceState.source.supportsTouchpad);
-
-                            selectPressed = interactionSourceState.anyPressed;
-                        }
-                        // END WORKAROUND: Unity issue #1033526
-
                         // Update the interaction data source
-                        interactionMapping.BoolData = selectPressed;
+                        interactionMapping.BoolData = interactionSourceState.selectPressed;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
                             // Raise input system Event if it enabled
-                            if (selectPressed)
+                            if (interactionSourceState.selectPressed)
                             {
                                 MixedRealityToolkit.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                             }
@@ -464,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                         if (interactionMapping.Changed)
                         {
                             // Raise input system Event if it enabled
-                            MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
+                            MixedRealityToolkit.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
                         }
                         break;
                     }
@@ -516,7 +515,131 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             }
         }
 
+        /// <summary>
+        /// Ensure that if a controller model was desired that we have attempted initialization
+        /// </summary>
+        /// <param name="interactionSourceState"></param>
+        private void EnsureControllerModel(InteractionSourceState interactionSourceState)
+        {
+            if (controllerModelInitialized ||
+                GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+            {
+                controllerModelInitialized = true;
+                return;
+            }
+
+            controllerModelInitialized = true;
+            CreateControllerModelFromPlatformSDK(interactionSourceState.source.id);
+        }
+
         #endregion Update data functions
+
+        #region Controller model functions
+
+        protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
+        {
+            // Intercept this call if we are using the default driver provided models.
+            // Note: Obtaining models from the driver will require access to the InteractionSource.
+            // It's unclear whether the interaction source will be available during setup, so we attempt to create
+            // the controller model on an input update
+            if (!isControllerModelLoaded ||
+                GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+            {
+                controllerModelInitialized = true;
+                return base.TryRenderControllerModel(controllerType, inputSourceType);
+            }
+
+            return false;
+        }
+
+        private async void CreateControllerModelFromPlatformSDK(uint interactionSourceId)
+        {
+            Debug.Log("Creating controller model from platform sdk");
+            byte[] fileBytes = null;
+
+#if WINDOWS_UWP
+            var controllerModelStream = await TryGetRenderableModelAsync(interactionSourceId);
+            if (controllerModelStream == null ||
+                controllerModelStream.Size == 0)
+            {
+                Debug.LogError("Failed to obtain controller model from driver");
+            }
+            else
+            {
+                fileBytes = new byte[controllerModelStream.Size];
+                using (DataReader reader = new DataReader(controllerModelStream))
+                {
+                    await reader.LoadAsync((uint)controllerModelStream.Size);
+                    reader.ReadBytes(fileBytes);
+                }
+            }
+#endif
+
+            GameObject gltfGameObject = null;
+            if (fileBytes != null)
+            {
+                var gltfObject = GltfUtility.GetGltfObjectFromGlb(fileBytes);
+                gltfGameObject = await gltfObject.ConstructAsync();
+                if (gltfGameObject != null)
+                {
+                    var visualizationProfile = GetControllerVisualizationProfile();
+                    if (visualizationProfile != null)
+                    {
+                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
+                        if (visualizationType != null)
+                        {
+                            gltfGameObject.AddComponent(visualizationType.Type);
+                            TryAddControllerModelToSceneHierarchy(gltfGameObject);
+                        }
+                        else
+                        {
+                            Debug.LogError("Controller visualization type not defined for controller visualization profile");
+                            GameObject.Destroy(gltfGameObject);
+                            gltfGameObject = null;
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to obtain a controller visualization profile");
+                    }
+                }
+            }
+
+
+            isControllerModelLoaded = (gltfGameObject != null);
+            if (!isControllerModelLoaded)
+            {
+                Debug.LogWarning("Failed to create controller model from driver, defaulting to BaseController behavior");
+                TryRenderControllerModel(GetType(), InputSourceType.Controller);
+            }
+        }
+
+#if WINDOWS_UWP
+        private IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(uint interactionSourceId)
+        {
+            IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
+            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+            {
+                var sources = SpatialInteractionManager.GetForCurrentView()?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+                if (sources != null)
+                {
+                    foreach (SpatialInteractionSourceState sourceState in sources)
+                    {
+                        if (sourceState.Source.Id.Equals(interactionSourceId))
+                        {
+                            returnValue = sourceState.Source.Controller.TryGetRenderableModelAsync();
+                        }
+                    }
+                }
+            }, true);
+
+            return returnValue;
+        }
+#endif
+
+        #endregion Controller model functions
 
 #endif // UNITY_WSA
     }

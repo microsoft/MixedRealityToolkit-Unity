@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Scales an object relative the scale of the Anchor Transform
@@ -98,7 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
             transform.localScale = scale;
         }
 
-        // Update is called once per frame
         void Update()
         {
             if (AnchorTransform != null)

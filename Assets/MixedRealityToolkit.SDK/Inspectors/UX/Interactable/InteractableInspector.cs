@@ -1,28 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEditor;
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
+namespace Microsoft.MixedReality.Toolkit.UI
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(Interactable))]
-    public class InteractableInspector : Editor
+    public class InteractableInspector : UnityEditor.Editor
     {
         protected Interactable instance;
         protected List<InteractableEvent> eventList;
@@ -31,16 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         protected string prefKey = "InteractableInspectorProfiles";
         protected bool enabled = false;
 
-        protected string[] eventOptions;
-        protected Type[] eventTypes;
-        protected string[] themeOptions;
-        protected Type[] themeTypes;
+        protected InteractableTypesContainer eventOptions;
+        protected InteractableTypesContainer themeOptions;
         protected string[] shaderOptions;
 
-        protected string[] actionOptions;
+        protected string[] actionOptions = null;
 
         protected static bool ProfilesSetup = false;
-        
+
         // indent tracker
         protected static int indentOnSectionStart = 0;
 
@@ -55,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         {
             instance = (Interactable)target;
             eventList = instance.Events;
-           
+
             profileList = serializedObject.FindProperty("Profiles");
             listSettings = InspectorUIUtility.AdjustListSettings(null, profileList.arraySize);
             showProfiles = EditorPrefs.GetBool(prefKey, showProfiles);
@@ -63,18 +50,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             SetupEventOptions();
             SetupThemeOptions();
 
-            actionOptions = Interactable.GetInputActions();
-
             enabled = true;
         }
-        
+
         protected virtual void RenderBaseInspector()
         {
             base.OnInspectorGUI();
         }
 
-        public override void OnInspectorGUI()
+        /// <remarks>
+        /// There is a check in here that verifies whether or not we can get InputActions, if we can't we show an error help box; otherwise we get them.
+        /// This method is sealed, if you wish to override <see cref="OnInspectorGUI"/>, then override <see cref="RenderCustomInspector"/> method instead.
+        /// </remarks>
+        public sealed override void OnInspectorGUI()
         {
+            if (actionOptions == null && !Interactable.TryGetInputActions(out actionOptions))
+            {
+                EditorGUILayout.HelpBox("Mixed Reality Toolkit is missing, configure it by invoking the 'Mixed Reality Toolkit > Add to Scene and Configure...' menu", MessageType.Error);
+            }
+
             //RenderBaseInspector()
             RenderCustomInspector();
         }
@@ -132,8 +126,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                     for (int i = 0; i < stateLocations.Length; i++)
                     {
                         string path = AssetDatabase.GUIDToAssetPath(stateLocations[i]);
-                        States.States defaultStates = (States.States)AssetDatabase.LoadAssetAtPath(path, typeof(States.States));
-                        if(defaultStates != null)
+                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
+                        if (defaultStates != null)
                         {
                             states.objectReferenceValue = defaultStates;
                             break;
@@ -162,17 +156,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                 serializedObject.ApplyModifiedProperties();
                 return;
             }
-            
+
             //standard Interactable Object UI
             SerializedProperty enabled = serializedObject.FindProperty("Enabled");
             enabled.boolValue = EditorGUILayout.Toggle(new GUIContent("Enabled", "Is this Interactable Enabled?"), enabled.boolValue);
 
             SerializedProperty actionId = serializedObject.FindProperty("InputActionId");
-            
-            int newActionId = EditorGUILayout.Popup("Input Actions", actionId.intValue, actionOptions);
-            if (newActionId != actionId.intValue)
+
+            if (actionOptions == null)
             {
-                actionId.intValue = newActionId;
+                GUI.enabled = false;
+                EditorGUILayout.Popup("Input Actions", 0, new string[] { "Missing Mixed Reality Toolkit" });
+                GUI.enabled = true;
+            }
+            else
+            {
+                int newActionId = EditorGUILayout.Popup("Input Actions", actionId.intValue, actionOptions);
+                if (newActionId != actionId.intValue)
+                {
+                    actionId.intValue = newActionId;
+                }
             }
 
             //selected.enumValueIndex = (int)(MixedRealityInputAction)EditorGUILayout.EnumPopup(new GUIContent("Input Action", "Input source for this Interactable, Default: Select"), (MixedRealityInputAction)selected.enumValueIndex);
@@ -302,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                                 {
                                     string path = AssetDatabase.GUIDToAssetPath(themeLocations[k]);
                                     Theme defaultTheme = (Theme)AssetDatabase.LoadAssetAtPath(path, typeof(Theme));
-                                    if(defaultTheme != null)
+                                    if (defaultTheme != null)
                                     {
                                         theme.objectReferenceValue = defaultTheme;
                                         break;
@@ -316,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                     {
                         SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
                         EditorGUILayout.PropertyField(themeItem, new GUIContent("Theme", "Theme properties for interaction feedback"));
-                        
+
                         // TODO: we need the theme and target in order to figure out what properties to expose in the list
                         // TODO: or do we show them all and show alerts when a theme property is not compatible
                         if (themeItem.objectReferenceValue != null && gameObject.objectReferenceValue)
@@ -325,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                             {
                                 EditorGUILayout.BeginHorizontal();
                                 InspectorUIUtility.DrawWarning("DefaultTheme should not be edited.  ");
-                                bool newTheme = InspectorUIUtility.FlexButton(new GUIContent("Create Theme", "Create a new theme"), new int[] { i, t, 0}, CreateTheme);
+                                bool newTheme = InspectorUIUtility.FlexButton(new GUIContent("Create Theme", "Create a new theme"), new int[] { i, t, 0 }, CreateTheme);
                                 if (newTheme)
                                 {
                                     continue;
@@ -364,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
                                 int[] location = new int[] { i, t, 0 };
 
-                                States.State[] iStates = GetStates();
+                                State[] iStates = GetStates();
 
                                 ThemeInspector.RenderThemeSettings(themeObjSettings, themeObj, themeOptions, gameObject, location, iStates);
 
@@ -401,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                             themeMsg += "above to add visual effects";
 
                             SerializedProperty hadDefault = sItem.FindPropertyRelative("HadDefaultTheme");
-                            
+
                             if (!hadDefault.boolValue && t == 0)
                             {
                                 string[] themeLocations = AssetDatabase.FindAssets("DefaultTheme");
@@ -412,13 +415,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                                     {
                                         string path = AssetDatabase.GUIDToAssetPath(themeLocations[0]);
                                         Theme defaultTheme = (Theme)AssetDatabase.LoadAssetAtPath(path, typeof(Theme));
-                                        if(defaultTheme != null)
+                                        if (defaultTheme != null)
                                         {
                                             themeItem.objectReferenceValue = defaultTheme;
                                             break;
                                         }
                                     }
-                                    
+
                                     if (themeItem.objectReferenceValue != null)
                                     {
                                         hadDefault.boolValue = true;
@@ -497,7 +500,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                 InteractableReceiverListInspector.RenderEventSettings(eventItem, i, eventOptions, ChangeEvent, RemoveEvent);
             }
 
-            if (eventOptions.Length > 1)
+            if (eventOptions.ClassNames.Length > 1)
             {
                 if (GUILayout.Button(new GUIContent("Add Event")))
                 {
@@ -508,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             serializedObject.ApplyModifiedProperties();
         }
 
-        protected virtual States.State[] GetStates()
+        protected virtual State[] GetStates()
         {
             return instance.GetStates();
         }
@@ -543,12 +546,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         /*
          * THEMES
          */
-         
+
         protected void SetupThemeOptions()
         {
-            InteractableProfileItem.ThemeLists lists = InteractableProfileItem.GetThemeTypes();
-            themeOptions = lists.Names.ToArray();
-            themeTypes = lists.Types.ToArray();
+            themeOptions = InteractableProfileItem.GetThemeTypes();
         }
 
         protected virtual void AddThemeProperty(int[] arr, SerializedProperty prop = null)
@@ -567,15 +568,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
             themeObjSettings.InsertArrayElementAtIndex(themeObjSettings.arraySize);
 
-            SerializedProperty settingsItem = themeObjSettings.GetArrayElementAtIndex(themeObjSettings.arraySize-1);
+            SerializedProperty settingsItem = themeObjSettings.GetArrayElementAtIndex(themeObjSettings.arraySize - 1);
             SerializedProperty className = settingsItem.FindPropertyRelative("Name");
-            if (themeObjSettings.arraySize == 1) {
-                
+            SerializedProperty assemblyQualifiedName = settingsItem.FindPropertyRelative("AssemblyQualifiedName");
+            if (themeObjSettings.arraySize == 1)
+            {
                 className.stringValue = "ScaleOffsetColorTheme";
+                assemblyQualifiedName.stringValue = typeof(ScaleOffsetColorTheme).AssemblyQualifiedName;
             }
             else
             {
-                className.stringValue = themeOptions[0];
+                className.stringValue = themeOptions.ClassNames[0];
+                assemblyQualifiedName.stringValue = themeOptions.AssemblyQualifiedNames[0];
             }
 
             SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
@@ -612,7 +616,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         protected virtual SerializedObject ChangeThemeProperty(int index, SerializedObject themeObj, SerializedProperty target, bool isNew = false)
         {
-            
+
             SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
 
             themeObjSettings = ThemeInspector.ChangeThemeProperty(index, themeObjSettings, target, GetStates(), isNew);
@@ -676,24 +680,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             SerializedProperty name = prop.FindPropertyRelative("Name");
             SerializedProperty settings = prop.FindPropertyRelative("Settings");
             SerializedProperty hideEvents = prop.FindPropertyRelative("HideUnityEvents");
+            SerializedProperty assemblyQualifiedName = prop.FindPropertyRelative("AssemblyQualifiedName");
 
             if (!String.IsNullOrEmpty(className.stringValue))
             {
-                InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventTypes[indexArray[1]]);
+                InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventOptions.Types[indexArray[1]]);
                 name.stringValue = data.Name;
                 hideEvents.boolValue = data.HideUnityEvents;
+                assemblyQualifiedName.stringValue = eventOptions.AssemblyQualifiedNames[indexArray[1]];
 
                 InspectorFieldsUtility.PropertySettingsList(settings, data.Fields);
             }
         }
-        
+
         protected void SetupEventOptions()
         {
-            InteractableEvent.EventLists lists = InteractableEvent.GetEventTypes();
-            eventTypes = lists.EventTypes.ToArray();
-            eventOptions = lists.EventNames.ToArray();
+            eventOptions = InteractableEvent.GetEventTypes();
         }
-        
     }
 #endif
 }

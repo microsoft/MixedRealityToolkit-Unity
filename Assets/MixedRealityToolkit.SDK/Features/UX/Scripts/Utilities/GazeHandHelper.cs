@@ -1,17 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// This class must be instantiated by a script that implements the IMixedRealitySourceStateHandler, IMixedRealityInputHandler and IMixedRealityInputHandler<MixedRealityPose> interfaces.
+    /// This class must be instantiated by a script that implements the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler"/>,
+    /// <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler"/> and <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
     /// 
     /// ***It must receive EventData arguments from OnInputDown(), OnInputUp(), OnInputChanged() and OnSourceLost().***
     /// 
@@ -32,8 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         #endregion Private Variables
 
         #region Public Methods
+
         /// <summary>
-        /// This function must be called from the OnInputDown handler in a script implementing the IMixedRealityInputHandler<MixedRealityPose> interface.
+        /// This function must be called from the OnInputDown handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData">The InputEventData argument 'eventData' is passed through to GazeHandHelper</param>
         public void AddSource(InputEventData eventData)
@@ -41,19 +42,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             IMixedRealityInputSource source = eventData.InputSource;
             if (source != null && IsInDictionary(source.SourceId) == false && source.Pointers != null && source.Pointers.Length > 0)
             {
-                if (true == source.Pointers[0].TryGetPointerPosition(out Vector3 gazeTargetHitPosition))
-                {
-                    handSourceMap.Add(source.SourceId, source);
-                    gazePointMap.Add(source.SourceId, gazeTargetHitPosition);
-                    handStartPositionMap.Add(source.SourceId, Vector3.zero);
-                    handPositionMap.Add(source.SourceId, Vector3.zero);
-                    positionAvailableMap.Add(source.SourceId, false);
-                }
+                handSourceMap.Add(source.SourceId, source);
+                gazePointMap.Add(source.SourceId, source.Pointers[0].Position);
+                handStartPositionMap.Add(source.SourceId, Vector3.zero);
+                handPositionMap.Add(source.SourceId, Vector3.zero);
+                positionAvailableMap.Add(source.SourceId, false);
             }
         }
 
         /// <summary>
-        /// This function must be called from the OnInputUp hander in a script implementing the IMixedRealityInputHandler<MixedRealityPose> interface.
+        /// This function must be called from the OnInputUp handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData">he InputEventData argument 'eventData' is passed through to GazeHandHelper</param>
         public void RemoveSource(InputEventData eventData)
@@ -67,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         }
 
         /// <summary>
-        /// This function must be called from the OnSourceLost hander in a script implementing the IMixedRealitySourceStateHandler interface.
+        /// This function must be called from the OnSourceLost handler in a script implementing the IMixedRealitySourceStateHandler interface.
         /// </summary>
         /// <param name="eventData"></param>
         public void RemoveSource(SourceStateEventData eventData)
@@ -81,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         }
 
         /// <summary>
-        /// This function must be called from the OnInputChanged handler in a script implementing the  IMixedRealityInputHandler<MixedRealityPose> interface.
+        /// This function must be called from the OnInputChanged handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData"></param>
         public void UpdateSource(InputEventData<MixedRealityPose> eventData)
@@ -141,26 +139,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         /// <summary>
         /// This function gets an array of all active hand positions
         /// </summary>
-        /// <returns>array of Vector3</returns>
-        [Obsolete]
-        public Vector3[] GetHandPositions()
-        {
-            List<Vector3> positions = new List<Vector3>();
-
-            foreach (uint key in positionAvailableMap.Keys)
-            {
-                if (positionAvailableMap[key] == true)
-                {
-                    positions.Add(handPositionMap[key]);
-                }
-            }
-
-            return positions.ToArray();
-        }
-
-        /// <summary>
-        /// This function gets an array of all active hand positions
-        /// </summary>
         /// <returns>enumerable of Vector3</returns>
         public IEnumerable<Vector3> GetAllHandPositions()
         {
@@ -187,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         }
 
         /// <summary>
-        /// This function retrieves a reference to the Dictionary that maps handpositions to sourceIds.
+        /// This function retrieves a reference to the Dictionary that maps hand positions to sourceIds.
         /// This return value is NOT filtered for whether the hands are active. User should check first
         /// using GetActiveHandCount().
         /// </summary>
@@ -227,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         /// TryGet style function to return HandPosition of a certain sourceId if available.
         /// </summary>
         /// <param name="id">asks for the hand position associated with a certain IMixedRealityInputSource id</param>
-        /// <param name="position">out value that gets filled with a Vector3 representing position</param>
+        /// <param name="handPosition">out value that gets filled with a Vector3 representing position</param>
         /// <returns>true or false- whether the hand existed</returns>
         public bool TryGetHandPosition(uint id, out Vector3 handPosition)
         {
@@ -305,11 +283,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             IMixedRealityInputSource source = handSourceMap[id];
             if (source != null && source.Pointers != null && source.Pointers.Length > 0)
             {
-                if (source.Pointers[0].TryGetPointerPosition(out Vector3 pos) == true)
-                {
-                    position = pos;
-                    return true;
-                }
+                position = source.Pointers[0].Position;
+                return true;
             }
 
             position = Vector3.zero;

@@ -1,16 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(MixedRealityToolkit))]
-    public class MixedRealityToolkitInspector : Editor
+    public class MixedRealityToolkitInspector : UnityEditor.Editor
     {
         private SerializedProperty activeProfile;
         private int currentPickerWindow = -1;
@@ -90,12 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
             if (activeProfile.objectReferenceValue != null)
             {
-                Editor activeProfileEditor = Editor.CreateEditor(activeProfile.objectReferenceValue);
+                UnityEditor.Editor activeProfileEditor = CreateEditor(activeProfile.objectReferenceValue);
                 activeProfileEditor.OnInspectorGUI();
             }
         }
 
-        [MenuItem("Mixed Reality Toolkit/Configure...")]
+        [MenuItem("Mixed Reality Toolkit/Add to Scene and Configure...")]
         public static void CreateMixedRealityToolkitGameObject()
         {
             Selection.activeObject = MixedRealityToolkit.Instance;

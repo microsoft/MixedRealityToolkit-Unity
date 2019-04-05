@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport
+namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     /// <summary>
     /// Describes a Teleportation Event.
@@ -25,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="eventSystem">Typically will be <see cref="EventSystem.current"/></param>
+        /// <param name="eventSystem">Typically will be <see href="https://docs.unity3d.com/ScriptReference/EventSystems.EventSystem-current.html">EventSystem.current</see></param>
         public TeleportEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>

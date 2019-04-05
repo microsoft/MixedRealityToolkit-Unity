@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     [Serializable]
     public struct RayStep
@@ -137,31 +137,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
             Debug.Assert(steps != null);
             Debug.Assert(steps.Length > 0);
 
-            Vector3 point = Vector3.zero;
-            float remainingDistance = distance;
-            int numSteps = steps.Length;
-
-            for (int i = 0; i < numSteps; i++)
-            {
-                if (remainingDistance > numSteps)
-                {
-                    remainingDistance -= numSteps;
-                }
-                else
-                {
-                    point = Vector3.Lerp(steps[i].Origin, steps[i].Terminus, remainingDistance / steps[i].Length);
-                    remainingDistance = 0;
-                    break;
-                }
-            }
-
+            float remainingDistance = 0;
+            RayStep rayStep = GetStepByDistance(steps, distance, ref remainingDistance);
             if (remainingDistance > 0)
             {
-                // If we reach the end and still have distance left, set the point to the terminus of the last step
-                point = steps[numSteps - 1].Terminus;
+                return Vector3.Lerp(rayStep.Origin, rayStep.Terminus, remainingDistance / rayStep.Length);
             }
-
-            return point;
+            else
+            {
+                return rayStep.Terminus;
+            }
         }
 
         /// <summary>
@@ -170,36 +155,33 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
         /// <param name="steps"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public static RayStep GetStepByDistance(RayStep[] steps, float distance)
+        public static RayStep GetStepByDistance(RayStep[] steps, float distance, ref float traveledDistance)
         {
             Debug.Assert(steps != null);
             Debug.Assert(steps.Length > 0);
 
-            RayStep step = new RayStep();
             float remainingDistance = distance;
+
             int numSteps = steps.Length;
+            float stepLength = 0;
 
             for (int i = 0; i < numSteps; i++)
             {
-                if (remainingDistance > steps[i].Length)
+                stepLength = steps[i].Length;
+
+                if (remainingDistance > stepLength)
                 {
-                    remainingDistance -= steps[i].Length;
+                    remainingDistance -= stepLength;
                 }
                 else
                 {
-                    step = steps[i];
-                    remainingDistance = 0;
-                    break;
+                    traveledDistance = remainingDistance;
+                    return steps[i];
                 }
             }
 
-            if (remainingDistance > 0)
-            {
-                // If we reach the end and still have distance left, return the last step
-                step = steps[steps.Length - 1];
-            }
-
-            return step;
+            traveledDistance = remainingDistance;
+            return steps[steps.Length - 1];
         }
 
         /// <summary>
@@ -213,7 +195,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
             Debug.Assert(steps != null);
             Debug.Assert(steps.Length > 0);
 
-            return GetStepByDistance(steps, distance).Direction;
+            float traveledDistance = 0;
+            return GetStepByDistance(steps, distance, ref traveledDistance).Direction;
         }
 
         #endregion

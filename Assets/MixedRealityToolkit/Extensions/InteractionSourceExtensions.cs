@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_WSA
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 
 #if !UNITY_EDITOR
 using System;
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 
 #endif // UNITY_WSA
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
     /// <summary>
     /// Extensions for the InteractionSource class to add haptics and expose the renderable model.

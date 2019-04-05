@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Pointers;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
+namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     [CustomEditor(typeof(BaseControllerPointer))]
     public class BaseControllerPointerInspector : ControllerPoseSynchronizerInspector
@@ -15,10 +13,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         private SerializedProperty setCursorVisibilityOnSourceDetected;
         private SerializedProperty raycastOrigin;
         private SerializedProperty pointerExtent;
+        private SerializedProperty defaultPointerExtent;
         private SerializedProperty activeHoldAction;
         private SerializedProperty pointerAction;
         private SerializedProperty pointerOrientation;
         private SerializedProperty requiresHoldAction;
+        private SerializedProperty requiresActionBeforeEnabling;
 
         private bool basePointerFoldout = true;
 
@@ -27,16 +27,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         protected override void OnEnable()
         {
             base.OnEnable();
-
+            
             cursorPrefab = serializedObject.FindProperty("cursorPrefab");
             disableCursorOnStart = serializedObject.FindProperty("disableCursorOnStart");
             setCursorVisibilityOnSourceDetected = serializedObject.FindProperty("setCursorVisibilityOnSourceDetected");
             raycastOrigin = serializedObject.FindProperty("raycastOrigin");
             pointerExtent = serializedObject.FindProperty("pointerExtent");
+            defaultPointerExtent = serializedObject.FindProperty("defaultPointerExtent");
             activeHoldAction = serializedObject.FindProperty("activeHoldAction");
             pointerAction = serializedObject.FindProperty("pointerAction");
             pointerOrientation = serializedObject.FindProperty("pointerOrientation");
             requiresHoldAction = serializedObject.FindProperty("requiresHoldAction");
+            requiresActionBeforeEnabling = serializedObject.FindProperty("requiresActionBeforeEnabling");
 
             DrawHandednessProperty = false;
         }
@@ -58,7 +60,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
                 EditorGUILayout.PropertyField(setCursorVisibilityOnSourceDetected);
                 EditorGUILayout.PropertyField(raycastOrigin);
                 EditorGUILayout.PropertyField(pointerExtent);
-                EditorGUILayout.PropertyField(pointerOrientation);
+                EditorGUILayout.PropertyField(defaultPointerExtent);
+
+                // Pointer orientation is a field that is present on some pointers (for example, TeleportPointer)
+                // but not on others (for example, BaseControllerPointer).
+                if (pointerOrientation != null)
+                {
+                    EditorGUILayout.PropertyField(pointerOrientation);
+                }
+
                 EditorGUILayout.PropertyField(pointerAction);
 
                 if (DrawBasePointerActions)
@@ -69,6 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
                     {
                         EditorGUILayout.PropertyField(activeHoldAction);
                     }
+
+                    EditorGUILayout.PropertyField(requiresActionBeforeEnabling);
                 }
 
                 EditorGUI.indentLevel--;

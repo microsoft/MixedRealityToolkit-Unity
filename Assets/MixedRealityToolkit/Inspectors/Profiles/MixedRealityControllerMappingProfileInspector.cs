@@ -1,19 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Editor;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     [CustomEditor(typeof(MixedRealityControllerMappingProfile))]
     public class MixedRealityControllerMappingProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
@@ -80,17 +77,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
 
-                if (GUILayout.Button("Back to Configuration Profile"))
-                {
-                    Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile;
-                }
+                DrawBacktrackProfileButton("Back to Configuration Profile", MixedRealityToolkit.Instance.ActiveProfile);
 
                 return;
             }
 
-            if (GUILayout.Button("Back to Input Profile"))
+            if (DrawBacktrackProfileButton("Back to Input Profile", MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile))
             {
-                Selection.activeObject = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
+                return;
             }
 
             EditorGUILayout.Space();
@@ -145,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             using (var outerVerticalScope = new GUILayout.VerticalScope())
             {
                 GUILayout.HorizontalScope horizontalScope = null;
-                
+
                 for (int i = 0; i < thisProfile.MixedRealityControllerMappingProfiles.Length; i++)
                 {
                     MixedRealityControllerMapping controllerMapping = thisProfile.MixedRealityControllerMappingProfiles[i];
@@ -169,7 +163,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                             if (controllerRenderList[j].SupportedControllerType == supportedControllerType &&
                                 controllerRenderList[j].Handedness == handedness)
                             {
-                                thisProfile.MixedRealityControllerMappingProfiles[i].SynchronizeInputActions(controllerRenderList[j].Interactions);
+                                try
+                                {
+                                    thisProfile.MixedRealityControllerMappingProfiles[i].SynchronizeInputActions(controllerRenderList[j].Interactions);
+                                }
+                                catch (ArgumentException e)
+                                {
+                                    Debug.LogError($"Controller mappings between {thisProfile.MixedRealityControllerMappingProfiles[i].Description} and {controllerMapping.Description} do not match. Error message: {e.Message}");
+                                }
                                 serializedObject.ApplyModifiedProperties();
                                 skip = true;
                             }
@@ -228,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                                 {
                                     genericTypeListContent[genericTypeIdx] = new GUIContent("Unknown Controller");
                                 }
-                                
+
                                 genericTypeListIds[genericTypeIdx] = genericTypeIdx;
 
                                 if (controllerType == genericTypes[genericTypeIdx])
@@ -240,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                             currentGenericType = EditorGUILayout.IntPopup(GenericTypeContent, currentGenericType, genericTypeListContent, genericTypeListIds);
                             controllerType = genericTypes[currentGenericType];
-                            
+
                             {
                                 // Handedness dropdown
                                 var attribute = MixedRealityControllerAttribute.Find(controllerType);
@@ -251,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                                     {
                                         handednessProperty.intValue = (int)attribute.SupportedHandedness[0];
                                     }
-                                    
+
                                     if (attribute.SupportedHandedness.Length >= 2)
                                     {
                                         var handednessListContent = new GUIContent[attribute.SupportedHandedness.Length];
@@ -305,7 +306,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                         if (supportedControllerType == SupportedControllerType.WindowsMixedReality &&
                             handedness == Handedness.None)
                         {
-                            controllerTitle = "HoloLens Gestures";
+                            controllerTitle = "HoloLens Voice and Clicker";
                         }
 
                         if (handedness != Handedness.Right)

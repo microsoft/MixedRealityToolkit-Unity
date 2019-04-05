@@ -1,13 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
-using System.Collections;
-using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A base class for detecting hand handling state changes from an Interactable
@@ -17,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
     /// </summary>
     public class ReceiverBaseMonoBehavior : MonoBehaviour, IInteractableHandler
     {
-        public enum SearchScopes { Self, Parent, Children};
+        public enum SearchScopes { Self, Parent, Children };
         public Interactable Interactable;
         public SearchScopes InteractableSearchScope;
         protected State lastState;
@@ -57,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// <param name="interactable"></param>
         public void AddInteractable(Interactable interactable)
         {
-            if(Interactable != null)
+            if (Interactable != null)
             {
                 Interactable.RemoveHandler(this);
             }
@@ -81,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         {
             if (Interactable != null && Interactable.StateManager != null)
             {
-                if(Interactable.StateManager.CurrentState()!= lastState)
+                if (Interactable.StateManager.CurrentState() != lastState)
                 {
                     OnStateChange(Interactable.StateManager, Interactable);
 
@@ -131,23 +128,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
             */
         }
 
-        /// <summary>
-        /// A voice command was called
-        /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="command"></param>
+        /// <inheritdoc />
         public virtual void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1)
         {
             // Voice Command Happened
         }
 
-        /// <summary>
-        /// A click event happened
-        /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="command"></param>
+        /// <inheritdoc />
         public virtual void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
             // Click Happened

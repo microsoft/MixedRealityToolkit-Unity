@@ -1,20 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Lines;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
+using Microsoft.MixedReality.Toolkit.Physics;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Base class that provides data about a line.
     /// </summary>
-    /// <remarks>Data to be consumed by other classes like the <see cref="Renderers.BaseMixedRealityLineRenderer"/></remarks>
+    /// <remarks>Data to be consumed by other classes like the <see cref="BaseMixedRealityLineRenderer"/></remarks>
     [ExecuteAlways] 
     public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
+        protected const int UnclampedWorldLengthSearchSteps = 10;
         private const float MinRotationMagnitude = 0.0001f;
         private const float MinLineStartClamp = 0.0001f;
         private const float MaxLineEndClamp = 0.9999f;
@@ -198,6 +198,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         }
 
         [SerializeField]
+        [Tooltip("Enables / disables all distorters used by line")]
+        private bool distortionEnabled = true;
+
+        /// <summary>
+        /// Enabled / disables all distorters used by line.
+        /// </summary>
+        public bool DistortionEnabled
+        {
+            get { return distortionEnabled; }
+            set { distortionEnabled = value; }
+        }
+
+        [SerializeField]
         [Tooltip("NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line")]
         private DistortionMode distortionMode = DistortionMode.NormalizedLength;
 
@@ -303,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
             distorters.Sort();
         }
 
-        protected virtual void Update()
+        protected virtual void LateUpdate()
         {
             UpdateMatrix();
         }
@@ -537,7 +550,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
             }
         }
 
-        private void UpdateMatrix()
+        public void UpdateMatrix()
         {
             switch (transformMode)
             {
@@ -607,7 +620,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
 
         private Vector3 DistortPoint(Vector3 point, float normalizedLength)
         {
-            if (distorters.Count == 0)
+            if (!distortionEnabled || distorters.Count == 0)
                 return point;
 
             float strength = uniformDistortionStrength;

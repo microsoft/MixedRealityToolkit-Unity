@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for Unity's Bounds struct
@@ -131,6 +131,46 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         }
 
         /// <summary>
+        /// Gets all the corner points of the bounds in local space
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="positions"></param>
+        /// <param name="bounds"></param>
+        /// <remarks>
+        /// Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
+        /// corners array.
+        /// </remarks>
+        public static void GetCornerPositions(this Bounds bounds, ref Vector3[] positions)
+        {
+            // Calculate the local points to transform.
+            Vector3 center = bounds.center;
+            Vector3 extents = bounds.extents;
+            float leftEdge = center.x - extents.x;
+            float rightEdge = center.x + extents.x;
+            float bottomEdge = center.y - extents.y;
+            float topEdge = center.y + extents.y;
+            float frontEdge = center.z - extents.z;
+            float backEdge = center.z + extents.z;
+
+            // Allocate the array if needed.
+            const int numPoints = 8;
+            if (positions == null || positions.Length != numPoints)
+            {
+                positions = new Vector3[numPoints];
+            }
+
+            // Transform all the local points to world space.
+            positions[LBF] = new Vector3(leftEdge, bottomEdge, frontEdge);
+            positions[LBB] = new Vector3(leftEdge, bottomEdge, backEdge);
+            positions[LTF] = new Vector3(leftEdge, topEdge, frontEdge);
+            positions[LTB] = new Vector3(leftEdge, topEdge, backEdge);
+            positions[RBF] = new Vector3(rightEdge, bottomEdge, frontEdge);
+            positions[RBB] = new Vector3(rightEdge, bottomEdge, backEdge);
+            positions[RTF] = new Vector3(rightEdge, topEdge, frontEdge);
+            positions[RTB] = new Vector3(rightEdge, topEdge, backEdge);
+        }
+
+        /// <summary>
         /// Gets all the corner points from Renderer's Bounds
         /// </summary>
         /// <param name="bounds"></param>
@@ -185,6 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// Gets all the corner points and mid points from Renderer's Bounds
         /// </summary>
         /// <param name="bounds"></param>
+        /// <param name="transform"></param>
         /// <param name="positions"></param>
         public static void GetCornerAndMidPointPositions(this Bounds bounds, Transform transform, ref Vector3[] positions)
         {
@@ -235,7 +276,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// Gets all the corner points and mid points from Renderer's Bounds, ignoring the z axis
         /// </summary>
         /// <param name="bounds"></param>
+        /// <param name="transform"></param>
         /// <param name="positions"></param>
+        /// <param name="flattenAxis"></param>
         public static void GetCornerAndMidPointPositions2D(this Bounds bounds, Transform transform, ref Vector3[] positions, Axis flattenAxis)
         {
             // Calculate the local points to transform.
@@ -466,6 +509,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Returns the screen space corner points of the specified 'Bounds' instance.
         /// </summary>
+        /// <param name="bounds"></param>
         /// <param name="camera">
         /// The camera used for rendering to the screen. This is needed to perform the
         /// transformation to screen space.

@@ -1,0 +1,7 @@
+- name: Guides
+  href: Documentation/
+  homepage: Documentation/GettingStartedWithTheMRTK.md
+- name: API Documentation
+  href: obj/api/
+- name: Architecture
+  href: Documentation/Architecture/

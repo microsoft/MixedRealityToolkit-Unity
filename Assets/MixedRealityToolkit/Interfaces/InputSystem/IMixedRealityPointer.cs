@@ -1,15 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Physics;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Interface for handling pointers.
@@ -47,14 +43,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         ICursorModifier CursorModifier { get; set; }
 
         /// <summary>
-        /// The currently active teleport hotspot.
-        /// </summary>
-        IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
-
-        /// <summary>
-        /// Has the conditions for the interaction been satisfied to enable the interaction?
+        /// Is the pointer active and have the conditions for the interaction been satisfied to enable the interaction?
         /// </summary>
         bool IsInteractionEnabled { get; }
+
+        /// <summary>
+        /// Controls whether the pointer dispatches input..
+        /// </summary>
+        bool IsActive { get; set; }
 
         /// <summary>
         /// Is the focus for this pointer currently locked?
@@ -62,19 +58,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         bool IsFocusLocked { get; set; }
 
         /// <summary>
-        /// The pointer's maximum extent when raycasting.
-        /// </summary>
-        float PointerExtent { get; set; }
-
-        /// <summary>
-        /// The raycast rays.
+        /// The scene query rays.
         /// </summary>
         RayStep[] Rays { get; }
 
         /// <summary>
-        /// The physics layers to use when raycasting.
+        /// The physics layers to use when performing scene queries.
         /// </summary>
-        /// <remarks>If set, will override the <see cref="IMixedRealityInputSystem"/>'s default raycasting layer mask array.
+        /// <remarks>If set, will override the <see cref="IMixedRealityInputSystem"/>'s default scene query layer mask array.
         /// </remarks>
         /// <example>
         /// Allow the pointer to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)
@@ -92,62 +83,43 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         IMixedRealityFocusHandler FocusTarget { get; set; }
 
         /// <summary>
-        /// The physics raycast pointer result.
+        /// The scene query pointer result.
         /// </summary>
         IPointerResult Result { get; set; }
 
         /// <summary>
-        /// Ray stabilizer used when calculating position of pointer end point.
+        /// The type of physics scene query to use.
         /// </summary>
-        IBaseRayStabilizer RayStabilizer { get; set; }
+        SceneQueryType SceneQueryType { get; set; }
 
         /// <summary>
-        /// The physics raycast mode to use.
-        /// </summary>
-        RaycastMode RaycastMode { get; set; }
-
-        /// <summary>
-        /// The radius to use when <see cref="RaycastMode"/> is set to Sphere.
+        /// The radius to use when <see cref="SceneQueryType"/> is set to Sphere or SphereColliders.
         /// </summary>
         float SphereCastRadius { get; set; }
 
         /// <summary>
-        /// The Y orientation of the pointer - used for touchpad rotation and navigation
+        /// Pointer position.
         /// </summary>
-        float PointerOrientation { get; }
+        Vector3 Position { get; }
 
         /// <summary>
-        /// Called before all rays have casted.
+        /// Pointer rotation.
         /// </summary>
-        void OnPreRaycast();
+        Quaternion Rotation { get; }
 
         /// <summary>
-        /// Called after all rays have casted.
+        /// Called before performing the scene query.
         /// </summary>
-        void OnPostRaycast();
+        void OnPreSceneQuery();
 
         /// <summary>
-        /// Returns the position of the input source, if available.
-        /// Not all input sources support positional information, and those that do may not always have it available.
+        /// Called after performing the scene query.
         /// </summary>
-        /// <param name="position">Out parameter filled with the position if available, otherwise <see cref="Vector3.zero"/>.</param>
-        /// <returns>True if a position was retrieved, false if not.</returns>
-        bool TryGetPointerPosition(out Vector3 position);
+        void OnPostSceneQuery();
 
         /// <summary>
-        /// Returns the pointing ray of the input source, if available.
-        /// Not all input sources support pointing information, and those that do may not always have it available.
+        /// Called during the scene query just before the current pointer target changes.
         /// </summary>
-        /// <param name="pointingRay">Out parameter filled with the pointing ray if available.</param>
-        /// <returns>True if a pointing ray was retrieved, false if not.</returns>
-        bool TryGetPointingRay(out Ray pointingRay);
-
-        /// <summary>
-        /// Returns the rotation of the input source, if available.
-        /// Not all input sources support rotation information, and those that do may not always have it available.
-        /// </summary>
-        /// <param name="rotation">Out parameter filled with the rotation if available, otherwise <see cref="Quaternion.identity"/>.</param>
-        /// <returns>True if an rotation was retrieved, false if not.</returns>
-        bool TryGetPointerRotation(out Quaternion rotation);
+        void OnPreCurrentPointerTargetChange();
     }
 }

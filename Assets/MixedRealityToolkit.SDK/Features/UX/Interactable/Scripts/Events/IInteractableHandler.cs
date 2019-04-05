@@ -1,14 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Input;
 
-
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public interface IInteractableHandler
     {
@@ -20,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// <param name="state"></param>
         /// <param name="source"></param>
         /// <param name="command"></param>
+        /// <param name="index"></param>
+        /// <param name="length"></param>
         void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1);
 
         /// <summary>
@@ -27,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// </summary>
         /// <param name="state"></param>
         /// <param name="source"></param>
+        /// <param name="pointer"></param>
         void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null);
     }
 }

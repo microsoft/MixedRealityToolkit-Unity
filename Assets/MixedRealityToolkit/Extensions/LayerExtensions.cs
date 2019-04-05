@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for Unity's LayerMask struct
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         }
 
         /// <summary>
-        /// Transform layer id to <see cref="LayerMask"/>
+        /// Transform layer id to <see href="https://docs.unity3d.com/ScriptReference/LayerMask.html">LayerMask</see>
         /// </summary>
         /// <param name="layerId"></param>
         /// <returns></returns>
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// Gets a valid layer id using the layer name.
         /// </summary>
         /// <param name="cache">The cached layer id.</param>
-        /// <param name="layerName">The name of the layer to look for if the <see cref="cache"/> is unset.</param>
+        /// <param name="layerName">The name of the layer to look for if the cache is unset.</param>
         /// <returns>The layer id.</returns>
         public static int GetLayerId(ref int cache, string layerName)
         {

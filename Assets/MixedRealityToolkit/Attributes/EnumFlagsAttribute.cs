@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Attributes
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// From https://answers.unity.com/questions/486694/default-editor-enum-as-flags-.html

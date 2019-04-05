@@ -1,18 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Component that can be added to any <see cref="GameObject"/> with a <see cref="Collider"/> to Modifies either the <see cref="IMixedRealityCursor"/> reacts when focused by a <see cref="IMixedRealityPointer"/>.
+    /// Component that can be added to any <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> with a <see href="https://docs.unity3d.com/ScriptReference/Collider.html">Collider</see> to Modifies either the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityCursor"/> reacts when focused by a <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>.
     /// </summary>
     public class CursorModifier : MonoBehaviour, ICursorModifier
     {

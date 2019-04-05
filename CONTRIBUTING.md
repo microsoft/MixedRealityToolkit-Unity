@@ -2,9 +2,9 @@
 
 The Mixed Reality Toolkit (MRTK) welcomes contributions from the community. Whether it is for a minor change like fixing typos and small bug fixes, or a new feature or component.
 
-For larger submissions, we have drafted contribution guidelines to ensure a smooth process and a good quality of code and documentation, so please be sure to review the  [Feature Contribution guidelines / Process](./Feature_Contribution_Process.md).
+For larger submissions, we have drafted contribution guidelines to ensure a smooth process and a good quality of code and documentation, so please be sure to review the  [Feature Contribution guidelines / Process](Feature_Contribution_Process.md).
 
-All changes be they small or large, need to adhere to the [MRTK Coding Standards](/CodingGuidelines.md), so please ensure you are familiar with these while developing to avoid delays when the change is being reviewed.
+All changes be they small or large, need to adhere to the [MRTK Coding Standards](CodingGuidelines.md), so please ensure you are familiar with these while developing to avoid delays when the change is being reviewed.
 
 If you have any questions, please reach out on the [HoloLens forums](https://forums.hololens.com/) or the [HoloDevelopers slack](https://holodevelopers.slack.com/). You can easily be granted access to the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
 
@@ -29,7 +29,7 @@ To ensure a smooth process when contributing new fixes or features, it's key tha
 
 Start by [opening a proposal](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose) describing the change you want to make and how your proposed implementation, or simply the issue you are facing. This will enable us have a brief discussion about the proposal and, hopefully, identify some potential pitfalls before any work is started.
 
-If you're proposing a completely new feature (or a new platform support) please follow the [Feature Contribution Process](./Feature_Contribution_Process.md).
+If you're proposing a completely new feature (or a new platform support) please follow the [Feature Contribution Process](Feature_Contribution_Process.md).
 
 >Note:  If you wish to work on something that already exists on our backlog, you can use that work item as your proposal. Be sure to also comment on the task notifying maintainers that you're working towards completing it.
 
@@ -46,11 +46,11 @@ To get started, simply follow these steps
 3. Instructions for getting the project building and running the tests are in the [README](README.md). 
 4. Make **small and frequent** commits that include tests which could be a unity scene showing usage of your feature.
 5. Make sure that all the tests continue to pass.
-6. Follow the [Coding Guidelines](/CodingGuidelines.md).
-7. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](/DocumentationGuide.md).
+6. Follow the [Coding Guidelines](CodingGuidelines.md).
+7. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](Documentation/DocumentationGuide.md).
 8. Ensure the code works as intended on all [platforms](#supported-platforms).
     - For Windows UWP projects, your code must be [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; Store -> Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
-9. Update the [documentation](#update-documentation) with additional information as needed.
+9. Update the [documentation](#contributing) with additional information as needed.
 
 
 
@@ -72,7 +72,7 @@ When you are ready:
 
 The project maintainers will review your changes. We aim to review all changes within three business days.
 Please address any review comments, push to your topic branch, and post a comment letting us know that there's new stuff to review.
-> All PR's submitted to the project will also be vetted according to the [MRTK coding standards guide](./CodingGuidelines.md), so please review these before submitting your PR to ensure a smooth process.
+> All PR's submitted to the project will also be vetted according to the [MRTK coding standards guide](CodingGuidelines.md), so please review these before submitting your PR to ensure a smooth process.
 
 # Merge
 

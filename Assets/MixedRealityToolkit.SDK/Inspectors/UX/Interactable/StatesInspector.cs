@@ -1,30 +1,24 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
+namespace Microsoft.MixedReality.Toolkit.UI
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(States))]
-    public class StatesInspector : Editor
+    public class StatesInspector : UnityEditor.Editor
     {
         protected States instance;
         protected SerializedProperty stateList;
 
-        // list of InteractableStates
-        protected Type[] stateTypes;
-
-        // list of State names
-        protected string[] stateOptions;
-
-
+        // List of interactable states.
+        protected InteractableTypesContainer stateOptions;
+        
         // indent tracker
         protected static int indentOnSectionStart = 0;
 
@@ -47,15 +41,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
 
             // get the list of options and InteractableStates
             stateOptions = instance.StateOptions;
-            stateTypes = instance.StateTypes;
             
             SerializedProperty stateLogicName = serializedObject.FindProperty("StateLogicName");
-            int option = States.ReverseLookup(stateLogicName.stringValue, stateOptions);
+            SerializedProperty assemblyQualifiedName  = serializedObject.FindProperty("AssemblyQualifiedName");
+            int option = States.ReverseLookup(stateLogicName.stringValue, stateOptions.ClassNames);
 
-            int newLogic = EditorGUILayout.Popup("State Model", option, stateOptions);
+            int newLogic = EditorGUILayout.Popup("State Model", option, stateOptions.ClassNames);
             if (option != newLogic)
             {
-                stateLogicName.stringValue = stateOptions[newLogic];
+                stateLogicName.stringValue = stateOptions.ClassNames[newLogic];
+                assemblyQualifiedName.stringValue = stateOptions.AssemblyQualifiedNames[newLogic];
             }
 
             int bitCount = 0;

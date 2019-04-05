@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Audio;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityPhysics = UnityEngine.Physics;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
+namespace Microsoft.MixedReality.Toolkit.Audio
 {
     /// <summary>
-    /// Class which supports components implementing <see cref="IAudioInfluencer"/> being used with audio sources.
+    /// Class which supports components implementing <see cref="Microsoft.MixedReality.Toolkit.Audio.IAudioInfluencer"/> being used with audio sources.
     /// </summary>
     /// <remarks>
-    /// AudioInfluencerController requires an <see cref="AudioSource"/> component. If one is not attached, it will be added automatically.
+    /// AudioInfluencerController requires an <see href="https://docs.unity3d.com/ScriptReference/AudioSource.html">AudioSource</see> component. If one is not attached, it will be added automatically.
     /// Each sound playing game object needs to have an AudioInfluencerController attached in order to have it's audio influenced.
     /// </remarks>
     [RequireComponent(typeof(AudioSource))]
@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
 
         private void Update() 
         {
-            DateTime now = DateTime.Now;
+            DateTime now = DateTime.UtcNow;
 
             // Audio influences are not updated every frame.
             if ((UpdateInterval * 1000.0f) <= (now - lastUpdate).TotalMilliseconds)
@@ -235,11 +235,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             Vector3 direction = (gameObject.transform.position - cameraTransform.position).normalized;
             float distance = Vector3.Distance(cameraTransform.position, gameObject.transform.position);
 
-            int count = Physics.RaycastNonAlloc(cameraTransform.position,
+            int count = UnityPhysics.RaycastNonAlloc(cameraTransform.position,
                                                 direction,
                                                 hits,
                                                 distance,
-                                                Physics.DefaultRaycastLayers,
+                                                UnityPhysics.DefaultRaycastLayers,
                                                 QueryTriggerInteraction.Ignore);
             
             for (int i = 0; i < count; i++)

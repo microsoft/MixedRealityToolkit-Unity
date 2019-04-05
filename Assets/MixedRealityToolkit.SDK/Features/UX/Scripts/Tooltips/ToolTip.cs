@@ -2,18 +2,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
-using System;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Class for Tooltip object
     /// Creates a floating tooltip that is attached to an object and moves to stay in view as object rotates with respect to the view.
     /// </summary>
-    [RequireComponent(typeof(ToolTipConnector))]
     [ExecuteAlways]
     public class ToolTip : MonoBehaviour
     {
@@ -26,15 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         public bool ShowBackground
         {
-            get
-            {
-                return showBackground;
-            }
-            set
-            {
-                showBackground = value;
-                GetComponent<ToolTipBackgroundMesh>().IsVisible = value;
-            }
+            get { return showBackground; }
+            set { showBackground = value; }
         }
 
         [SerializeField]
@@ -64,33 +56,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         public bool ShowConnector
         {
-            get
-            {
-                return showConnector;
-            }
-            set
-            {
-                showConnector = value;
-            }
+            get { return showConnector; }
+            set { showConnector = value; }
         }
 
         [SerializeField]
         [Tooltip("Display the state of the tooltip.")]
-        private DisplayMode tipState;
+        private DisplayMode tipState = DisplayMode.On;
 
         /// <summary>
         /// The display the state of the tooltip.
         /// </summary>
         public DisplayMode TipState
         {
-            get
-            {
-                return tipState;
-            }
-            set
-            {
-                tipState = value;
-            }
+            get { return tipState; }
+            set { tipState = value; }
         }
 
         [SerializeField]
@@ -102,14 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         public DisplayMode GroupTipState
         {
-            set
-            {
-                groupTipState = value;
-            }
-            get
-            {
-                return groupTipState;
-            }
+            set { groupTipState = value; }
+            get { return groupTipState; }
         }
 
         [SerializeField]
@@ -121,14 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         public DisplayMode MasterTipState
         {
-            set
-            {
-                masterTipState = value;
-            }
-            get
-            {
-                return masterTipState;
-            }
+            set { masterTipState = value; }
+            get { return masterTipState; }
         }
 
         [SerializeField]
@@ -139,14 +107,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         public GameObject Anchor
         {
-            get
-            {
-                return anchor;
-            }
-            set
-            {
-                anchor = value;
-            }
+            get { return anchor; }
+            set { anchor = value; }
         }
 
         [Tooltip("Pivot point that text will rotate around as well as the point where the Line will be rendered to.")]
@@ -184,10 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                     RefreshLocalContent();                   
                 }
             }
-            get
-            {
-                return toolTipText;
-            }
+            get { return toolTipText; }
         }
 
         [SerializeField]
@@ -213,10 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         public float ContentScale
         {
-            get
-            {
-                return contentScale;
-            }
+            get { return contentScale; }
             set
             {
                 contentScale = value;
@@ -245,6 +201,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             }
         }
 
+        /// <summary>
+        /// point where ToolTip is attached
+        /// </summary>
+        public Vector3 AttachPointPosition
+        {
+            get { return attachPointPosition; }
+            set
+            {
+                // apply the difference to the offset
+                attachPointOffset = value - contentParent.transform.TransformPoint(localAttachPoint);
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Added as an offset to the pivot position. Modifying AttachPointPosition directly changes this value.")]
+        private Vector3 attachPointOffset;
+
         [SerializeField]
         [Tooltip("The line connecting the anchor to the pivot. If present, this component will be updated automatically.\n\nRecommended: SimpleLine, Spline, and ParabolaConstrainted")]
         private BaseMixedRealityLineDataProvider toolTipLine;
@@ -256,12 +229,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         public Vector2 LocalContentSize => localContentSize;
 
+        private Vector3 pivotPosition;
+        private Vector3 attachPointPosition;
+        private Vector3 anchorPosition;
         private Vector3 localAttachPoint;
-        private Vector3 attachPointOffset;
         private Vector3[] localAttachPointPositions;
         private List<IToolTipBackground> backgrounds = new List<IToolTipBackground>();
         private List<IToolTipHighlight> highlights = new List<IToolTipHighlight>();
-        private TextMesh cachedLabelText;
+        private TextMeshPro cachedLabelText;
         private int prevTextLength = -1;
         private int prevTextHash = -1;
 
@@ -270,36 +245,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         public Vector3 PivotPosition
         {
-            get
-            {
-                return pivot.transform.position;
-            }
+            get { return pivotPosition; }
             set
             {
+                pivotPosition = value;
                 pivot.transform.position = value;
-            }
-        }
-
-        /// <summary>
-        /// point where ToolTip is attached
-        /// </summary>
-        public Vector3 AttachPointPosition
-        {
-            get
-            {
-                return contentParent.transform.TransformPoint(localAttachPoint) + attachPointOffset;
-            }
-            set
-            {
-                // apply the difference to the offset
-                attachPointOffset = value - contentParent.transform.TransformPoint(localAttachPoint);
             }
         }
 
         /// <summary>
         /// point where ToolTip connector is attached
         /// </summary>
-        public Vector3 AnchorPosition => anchor.transform.position;
+        public Vector3 AnchorPosition
+        {
+            get { return anchorPosition; }
+            set { anchor.transform.position = value; }
+        }
 
         /// <summary>
         /// Transform of object to which ToolTip is attached
@@ -375,16 +336,28 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             }
         }
 
+        protected virtual void OnValidate()
+        {
+            ValidateHeirarchy();
+
+            label.EnsureComponent<TextMeshPro>();
+            gameObject.EnsureComponent<ToolTipConnector>();
+        }
+
         /// <summary>
         /// virtual functions
         /// </summary>
         protected virtual void OnEnable()
         {
+            ValidateHeirarchy();
+
             // Get our line if it exists
             if (toolTipLine == null)
-            {
                 toolTipLine = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
-            }
+
+            // Make sure the tool tip text isn't empty
+            if (string.IsNullOrEmpty(toolTipText))
+                toolTipText = " ";
 
             backgrounds.Clear();
             foreach (IToolTipBackground background in GetComponents(typeof(IToolTipBackground)))
@@ -408,6 +381,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
         protected virtual void Update()
         {
+            // Cache our pivot / anchor / attach point positions
+            pivotPosition = pivot.transform.position;
+            anchorPosition = anchor.transform.position;
+            attachPointPosition = contentParent.transform.TransformPoint(localAttachPoint) + attachPointOffset;
+
             // Enable / disable our line if it exists
             if (toolTipLine != null)
             {
@@ -453,17 +431,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                 prevTextLength = currentTextLength;
 
                 if (cachedLabelText == null)
-                    cachedLabelText = label.GetComponent<TextMesh>();
+                    cachedLabelText = label.GetComponent<TextMeshPro>();
 
                 if (cachedLabelText != null && !string.IsNullOrEmpty(toolTipText))
                 {
                     cachedLabelText.fontSize = fontSize;
                     cachedLabelText.text = toolTipText.Trim();
-                    cachedLabelText.lineSpacing = 1;
-                    cachedLabelText.anchor = TextAnchor.MiddleCenter;
+                    // Force text mesh to use center alignment
+                    cachedLabelText.alignment = TextAlignmentOptions.CenterGeoAligned;
+                    // Update text so we get an accurate scale
+                    cachedLabelText.ForceMeshUpdate();
                     // Get the world scale of the text
                     // Convert that to local scale using the content parent
-                    Vector3 localScale = GetTextMeshLocalScale(cachedLabelText);
+                    Vector3 localScale = Vector3.Scale(cachedLabelText.transform.lossyScale / contentScale, cachedLabelText.textBounds.size);
                     localContentSize.x = localScale.x + backgroundPadding.x;
                     localContentSize.y = localScale.y + backgroundPadding.y;
                 }
@@ -588,6 +568,71 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             localScale.y = textMesh.transform.worldToLocalMatrix.MultiplyVector(rendererScale).y * transformScale.y;
 
             return localScale;
+        }
+
+        private void ValidateHeirarchy()
+        {
+            // Generate default objects if we haven't set up our tooltip yet
+            if (anchor == null)
+            {
+                Transform anchorTransform = transform.Find("Anchor");
+                if (anchorTransform == null)
+                {
+                    anchorTransform = new GameObject("Anchor").transform;
+                    anchorTransform.SetParent(transform);
+                    anchorTransform.localPosition = Vector3.zero;
+                }
+                anchor = anchorTransform.gameObject;
+            }
+
+            if (anchor.transform.parent != transform)
+                anchor.transform.SetParent(transform);
+
+            if (pivot == null)
+            {
+                Transform pivotTransform = transform.Find("Pivot");
+                if (pivotTransform == null)
+                {
+                    pivotTransform = new GameObject("Pivot").transform;
+                    pivotTransform.SetParent(transform);
+                    pivotTransform.localPosition = Vector3.up;
+                }
+                pivot = pivotTransform.gameObject;
+            }
+
+            if (pivot.transform.parent != transform)
+                pivot.transform.SetParent(transform, true);
+
+            if (contentParent == null)
+            {
+                Transform contentParentTransform = pivot.transform.Find("ContentParent");
+                if (contentParentTransform == null)
+                {
+                    contentParentTransform = new GameObject("ContentParent").transform;
+                    contentParentTransform.SetParent(pivot.transform);
+                    contentParentTransform.localPosition = Vector3.zero;
+                }
+                contentParent = contentParentTransform.gameObject;
+            }
+
+            if (contentParent.transform.parent != pivot.transform)
+                contentParent.transform.SetParent(pivot.transform, true);
+
+            if (label == null)
+            {
+                Transform labelTransform = contentParent.transform.Find("Label");
+                if (labelTransform == null)
+                {
+                    labelTransform = new GameObject("Label").transform;
+                    labelTransform.SetParent(contentParent.transform);
+                    labelTransform.localScale = Vector3.one * 0.005f;
+                    labelTransform.localPosition = Vector3.zero;
+                }
+                label = labelTransform.gameObject;
+            }
+
+            if (label.transform.parent != contentParent.transform)
+                label.transform.SetParent(contentParent.transform.parent, true);
         }
     }
 }

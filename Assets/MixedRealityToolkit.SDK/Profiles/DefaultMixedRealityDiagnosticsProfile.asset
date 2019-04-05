@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityDiagnosticsProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  showDiagnostics: 0
+  showDiagnostics: 1
   showProfiler: 1
+  frameRateDuration: 0.1

@@ -1,18 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// list of Interactable states and basic comparison
     /// </summary>
     public class InteractableStates : InteractableStateModel
     {
-        public enum InteractableStateEnum {
+        public enum InteractableStateEnum
+        {
             /// <summary>
             /// Default state, nothing happening
             /// </summary>
@@ -70,6 +68,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
             /// </summary>
             VoiceCommand,
             /// <summary>
+            /// Interactable is currently physically touched
+            /// </summary>
+            PhysicalTouch,
+            /// <summary>
             /// Custom placeholder for anything
             /// </summary>
             Custom
@@ -126,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
 
             currentState = stateList[0];
 
-            for (int i = stateList.Count-1; i > -1; i--)
+            for (int i = stateList.Count - 1; i > -1; i--)
             {
                 if (bit >= stateList[i].Bit)
                 {
@@ -137,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
 
             return currentState;
         }
-        
+
         public override State[] GetStates()
         {
             return stateList.ToArray();
