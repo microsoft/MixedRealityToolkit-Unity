@@ -71,7 +71,7 @@ Other parameters:
 ### Mouse pointer
 ![Mouse Pointer](../External/ReadMeImages/Pointers/MRTK_MousePointer.jpg)
 
-Mouse pointer is used for interacting with the mouse. This pointer will only be used if the active input is a Mouse. By default, the MRTK Input Profile does not provide a mouse as an input provider, as mouse input is instead used to simulate hand input. You may add a mouse in your MRTK profily by modifying the _Registered Service Providers_ in your MRTK profile.
+Mouse pointer is used for interacting with the mouse. This pointer will only be used if the active input is a mouse. By default, the MRTK Profile does not provide a mouse as an input provider, as mouse input is instead used to simulate hand input. You may add a mouse in your MRTK profily by modifying the _Registered Service Providers_ in your MRTK profile.
 
 ### Teleport pointer
 <img src="/External/ReadMeImages/Pointers/MRTK_Pointers_Parabolic.png" width="600">
