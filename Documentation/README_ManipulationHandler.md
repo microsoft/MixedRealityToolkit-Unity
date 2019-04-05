@@ -47,7 +47,7 @@ Specifies how the object will behave when it is being grabbed with one hand/cont
 ### One Hand Rotation Mode Options
 * Maintain original rotation - does not rotate object as it is being moved
 * Maintain rotation to user - maintains the object's original rotation to the user
-* Gravity aligned maintain rotation to user - maintain's object's original rotation to user, but makes the object vertical. Useful for bounding boxes.
+* Gravity aligned maintain rotation to user - maintains object's original rotation to user, but makes the object vertical. Useful for bounding boxes.
 * Face user - ensures object always faces the user. Useful for slates/panels.
 * Face away from user - ensures object always faces away from user. Useful for slates/panels that are configured backwards.
 * Rotate about object center - Only works for articulated hands/controllers. Rotate object using rotation of the hand/controller, but about the object center point. Useful for inspecting at a distance.

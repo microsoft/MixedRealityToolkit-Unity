@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 switch (EditorUserBuildSettings.activeBuildTarget)
                 {
                     case BuildTarget.WSAPlayer:
-                        success = await UwpPlayerBuildTools.BuildPlayer(new UwpBuildInfo(true) { BuildAppx = true });
+                        success = await UwpPlayerBuildTools.BuildPlayer(new UwpBuildInfo(true));
                         break;
                     default:
                         var buildInfo = new BuildInfo(true) as IBuildInfo;

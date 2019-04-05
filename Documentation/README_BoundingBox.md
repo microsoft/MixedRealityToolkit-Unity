@@ -61,4 +61,4 @@ If you want to make the object movable using far interaction, you can combine [`
 
 <img src="/External/ReadMeImages/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
 
-In order for the bounding box edges to be highlighted the same way when moving it using [`ManipulationHandler`](README_ManipulationHandler.md)'s far interaction, it is advised to connect its events for **On Manipulation Started** / **On Manipulation Ended** to `BoundingBox.HightlightWires` / `BoundingBox.UnhighlightWires` respectively, as shown in the screenshot above.
+In order for the bounding box edges to be highlighted the same way when moving it using [`ManipulationHandler`](README_ManipulationHandler.md)'s far interaction, it is advised to connect its events for **On Manipulation Started** / **On Manipulation Ended** to `BoundingBox.HighlightWires` / `BoundingBox.UnhighlightWires` respectively, as shown in the screenshot above.

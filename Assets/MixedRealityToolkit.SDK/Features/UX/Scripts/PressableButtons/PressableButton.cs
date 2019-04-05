@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [RequireComponent(typeof(BoxCollider))]
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
     {
+        const string InitialMarkerTransformName = "Initial Marker";
+        
         [SerializeField]
         [Tooltip("The object that is being pushed.")]
         private GameObject movingButtonVisuals = null;
@@ -40,6 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Speed of the object movement on release.")]
         private float returnRate = 25.0f;
 
+        [Header("Position markers")]
+        [Tooltip("Used to mark where button movement begins. If null, it will be automatically generated.")]
+        [SerializeField]
+        private Transform initialTransform;
+
         [Header("Events")]
         public UnityEvent TouchBegin;
         public UnityEvent TouchEnd;
@@ -54,10 +61,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float currentPushDistance = 0.0f;
 
         private List<Vector3> touchPoints = new List<Vector3>();
-        private Transform initialTransform;
-        private BoxCollider boxCollider;
 
+        [Header("Button State")]
+        [ReadOnly]
+        [SerializeField]
         private bool isTouching = false;
+
+        [ReadOnly]
+        [SerializeField]
         private bool isPressing = false;
 
         ///<summary>
@@ -108,22 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion
 
-        private void Awake()
-        {
-            boxCollider = gameObject.EnsureComponent<BoxCollider>();
-        }
-
-        private void OnEnable()
-        {
-            boxCollider.enabled = true;
-        }
-
-        private void OnDisable()
-        {
-            IsTouching = false;
-            boxCollider.enabled = false;
-        }
-
         private void Start()
         {
             if (gameObject.layer == 2)
@@ -157,70 +152,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 UpdateMovingVisualsPosition();
             }
-            else
-            {
-                ClearPathMarkers();
-            }
 
             touchPoints.Clear();
-        }
-
-        ///<summary>
-        /// Handles drawing some editor visual elements to give you an idea of the movement and size of the button.
-        ///</summary>
-        void OnDrawGizmos()
-        {
-            var collider = GetComponent<Collider>();
-            if (collider != null)
-            {
-                Vector3 worldPressDirection = WorldSpacePressDirection;
-
-                Vector3 boundsCenter = collider.bounds.center;
-                Vector3 startPoint;
-                if (movingButtonVisuals != null)
-                {
-                    startPoint = movingButtonVisuals.transform.position;
-                }
-                else
-                {
-                    startPoint = transform.position;
-                }
-                float distance;
-                startPoint = ProjectPointToRay(boundsCenter, worldPressDirection, startPoint, out distance);
-
-                Vector3 endPoint = startPoint + worldPressDirection * maxPushDistance;
-                Vector3 pushedPoint = startPoint + worldPressDirection * currentPushDistance;
-
-                Gizmos.color = Color.magenta;
-                Gizmos.DrawLine(startPoint, pushedPoint);
-                Vector3 lastPoint = pushedPoint;
-
-                float releaseDistance = pressDistance - releaseDistanceDelta;
-                if (releaseDistance > currentPushDistance)
-                {
-                    Gizmos.color = Color.yellow;
-                    Vector3 releasePoint = startPoint + worldPressDirection * releaseDistance;
-                    Gizmos.DrawLine(lastPoint, releasePoint);
-                    lastPoint = releasePoint;
-                }
-
-                if (pressDistance > currentPushDistance)
-                {
-                    Gizmos.color = Color.cyan;
-                    Vector3 pressPoint = startPoint + worldPressDirection * pressDistance;
-                    Gizmos.DrawLine(lastPoint, pressPoint);
-                    lastPoint = pressPoint;
-                }
-
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(lastPoint, endPoint);
-
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(endPoint, endPoint + transform.rotation * Vector3.up * collider.bounds.extents.y);
-                Gizmos.DrawLine(endPoint, endPoint - transform.rotation * Vector3.up * collider.bounds.extents.y);
-                Gizmos.DrawLine(endPoint, endPoint + transform.rotation * Vector3.right * collider.bounds.extents.x);
-                Gizmos.DrawLine(endPoint, endPoint - transform.rotation * Vector3.right * collider.bounds.extents.x);
-            }
         }
 
         #region OnTouch
@@ -231,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (initialTransform == null)
             {
-                SetPathMarkers();
+                FindOrCreatePathMarkers();
                 // Make sure to initialize currentPushDistance now to correctly handle back-presses in
                 // HandlePressProgress().
                 currentPushDistance = GetFarthestPushDistanceAlongButtonAxis();
@@ -257,44 +190,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
             touchPoints.Add(eventData.InputData);
-            eventData.Use();
         }
         
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
-            eventData.Use();
         }
         
         #endregion OnTouch
 
         #region private Methods
 
-        private void SetPathMarkers()
+        public void FindOrCreatePathMarkers()
         {
-            GameObject initialMarker = new GameObject("Initial");
-            initialMarker.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
+            Transform sourcePositionTransform = (movingButtonVisuals != null) ? movingButtonVisuals.transform : transform;
 
-            if (movingButtonVisuals != null)
+            // First try to search for our markers
+            if (initialTransform == null)
             {
-                initialMarker.transform.position = movingButtonVisuals.transform.position;
-                initialMarker.transform.parent = movingButtonVisuals.transform.parent;
-            }
-            else
-            {
-                initialMarker.transform.position = transform.position;
-                initialMarker.transform.parent = transform.parent;
+                initialTransform = transform.Find(InitialMarkerTransformName);
             }
 
-            initialTransform = initialMarker.transform;
-        }
-
-        private void ClearPathMarkers()
-        {
-            if (initialTransform != null)
+            // If we don't find them, create them
+            if (initialTransform == null)
             {
-                initialTransform.parent = null;
-                DestroyImmediate(initialTransform.gameObject);
-                initialTransform = null;
+                initialTransform = new GameObject(InitialMarkerTransformName).transform;
+                initialTransform.parent = transform;
+                initialTransform.position = sourcePositionTransform.position;
             }
         }
 
