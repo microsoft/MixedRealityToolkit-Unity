@@ -10,8 +10,8 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [MixedRealityServiceInspectorAttribute(typeof(HandJointService))]
-    public class HandJointServiceInspector : IMixedRealityServiceInspector
+    [MixedRealityServiceInspector(typeof(HandJointService))]
+    public class HandJointServiceInspector : BaseMixedRealityServiceInspector
     {
         private const string ShowHandPreviewInSceneViewKey = "MRTK_HandJointServiceInspector_ShowHandPreviewInSceneViewKey";
         private const string ShowHandJointFoldoutKey = "MRTK_HandJointServiceInspector_ShowHandJointFoldoutKey";
@@ -27,9 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static Dictionary<TrackedHandJoint, string> showHandJointSettingKeys;
 
         //We want hand preview to always be visible
-        public bool AlwaysDrawSceneGUI { get { return true; } }
+        public override bool AlwaysDrawSceneGUI { get { return true; } }
 
-        public void DrawInspectorGUI(object target)
+        public override void DrawInspectorGUI(object target)
         {
             IMixedRealityHandJointService handJointService = (IMixedRealityHandJointService)target;
 
@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        public void DrawSceneGUI(object target, SceneView sceneView)
+        public override void DrawSceneGUI(object target, SceneView sceneView)
         {
             if (!Application.isPlaying)
                 return;
@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             DrawHandPreview(handJointService, Handedness.Right);
         }
 
-        public void DrawGizmos(object target) { }
+        public override void DrawGizmos(object target) { }
 
         public static void DrawHandPreview(IMixedRealityHandJointService handJointService, Handedness handedness)
         {

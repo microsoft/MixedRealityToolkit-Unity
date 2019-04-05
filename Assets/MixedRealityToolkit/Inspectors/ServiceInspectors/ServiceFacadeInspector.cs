@@ -68,68 +68,80 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             if (!initializedServiceInspectorLookup)
                 InitializeServiceInspectorLookup();
 
-            bool drawProfile = false;
-
-            // Draw the base profile stuff
-            if (typeof(BaseExtensionService).IsAssignableFrom(facade.ServiceType))
-            {
-                // If this is an extension service, see if it uses a profile
-                MixedRealityServiceConfiguration[] serviceConfigs = MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile.Configurations;
-                for (int serviceIndex = 0; serviceIndex < serviceConfigs.Length; serviceIndex++)
-                {
-                    MixedRealityServiceConfiguration serviceConfig = serviceConfigs[serviceIndex];
-                    if (serviceConfig.ComponentType.Type.IsAssignableFrom(facade.ServiceType) && serviceConfig.ConfigurationProfile != null)
-                    {
-                        // We found the service that this type uses - draw the profile
-                        SerializedObject serviceConfigObject = new SerializedObject(MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile);
-                        SerializedProperty serviceConfigArray = serviceConfigObject.FindProperty("configurations");
-                        SerializedProperty serviceConfigProp = serviceConfigArray.GetArrayElementAtIndex(serviceIndex);
-                        SerializedProperty serviceProfileProp = serviceConfigProp.FindPropertyRelative("configurationProfile");
-                        BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, facade.ServiceType);
-                        EditorGUILayout.Space();
-                        drawProfile = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                SerializedObject activeProfileObject = new SerializedObject(MixedRealityToolkit.Instance.ActiveProfile);
-                // Would be nice to handle this using some other method
-                // Would be nice to handle this with a lookup instead
-                if (typeof(IMixedRealityInputSystem).IsAssignableFrom(facade.ServiceType))
-                {
-                    SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("inputSystemProfile");
-                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, facade.ServiceType);
-                    drawProfile = true;
-                }
-                else if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(facade.ServiceType))
-                {
-                    SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("boundaryVisualizationProfile");
-                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, facade.ServiceType);
-                    drawProfile = true;
-                }
-                else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(facade.ServiceType))
-                {
-                    SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("diagnosticsSystemProfile");
-                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, facade.ServiceType);
-                    drawProfile = true;
-                }
-            }
+            bool drawProfile = true;
+            bool drawInspector = false;
 
             // Find and draw the custom inspector
             IMixedRealityServiceInspector inspectorInstance;
             if (GetServiceInspectorInstance(facade.Service.GetType(), out inspectorInstance))
             {
-                // If we've implemented a facade inspector, draw it now
+                drawInspector = true;
+                drawProfile = inspectorInstance.DrawProfileField;
+            }
+
+            if (drawProfile)
+            {
+                // Draw the base profile stuff
+                if (typeof(BaseExtensionService).IsAssignableFrom(facade.ServiceType))
+                {
+                    // If this is an extension service, see if it uses a profile
+                    MixedRealityServiceConfiguration[] serviceConfigs = MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile.Configurations;
+                    for (int serviceIndex = 0; serviceIndex < serviceConfigs.Length; serviceIndex++)
+                    {
+                        MixedRealityServiceConfiguration serviceConfig = serviceConfigs[serviceIndex];
+                        if (serviceConfig.ComponentType.Type.IsAssignableFrom(facade.ServiceType) && serviceConfig.ConfigurationProfile != null)
+                        {
+                            // We found the service that this type uses - draw the profile
+                            SerializedObject serviceConfigObject = new SerializedObject(MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile);
+                            SerializedProperty serviceConfigArray = serviceConfigObject.FindProperty("configurations");
+                            SerializedProperty serviceConfigProp = serviceConfigArray.GetArrayElementAtIndex(serviceIndex);
+                            SerializedProperty serviceProfileProp = serviceConfigProp.FindPropertyRelative("configurationProfile");
+                            BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, facade.ServiceType);
+                            EditorGUILayout.Space();
+                            drawProfile = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    SerializedObject activeProfileObject = new SerializedObject(MixedRealityToolkit.Instance.ActiveProfile);
+                    // Would be nice to handle this using some other method
+                    // Would be nice to handle this with a lookup instead
+                    if (typeof(IMixedRealityInputSystem).IsAssignableFrom(facade.ServiceType))
+                    {
+                        SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("inputSystemProfile");
+                        BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, facade.ServiceType);
+                        drawProfile = true;
+                    }
+                    else if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(facade.ServiceType))
+                    {
+                        SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("boundaryVisualizationProfile");
+                        BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, facade.ServiceType);
+                        drawProfile = true;
+                    }
+                    else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(facade.ServiceType))
+                    {
+                        SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("diagnosticsSystemProfile");
+                        BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, facade.ServiceType);
+                        drawProfile = true;
+                    }
+                }
+            }
+
+            if (drawInspector)
+            {
+                // If we have a custom inspector, draw that now
                 inspectorInstance.DrawInspectorGUI(facade.Service);
             }
-            else if (!drawProfile)
+
+            if (!drawProfile & !drawInspector)
             {
                 // If we haven't drawn a profile and we don't have an inspector, draw a label so people aren't confused
                 EditorGUILayout.LabelField("No inspector has been defined for this service type.", EditorStyles.miniLabel);
                 EditorGUILayout.HelpBox("You can define an inspector for this facade by creating a class with a MixedRealityServiceInspector attribute.", MessageType.Info);
             }
+
         }
 
         [DrawGizmo(GizmoType.NonSelected | GizmoType.Selected | GizmoType.Active)]

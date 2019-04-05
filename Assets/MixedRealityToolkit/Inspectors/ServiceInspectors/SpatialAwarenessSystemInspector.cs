@@ -8,8 +8,8 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [MixedRealityServiceInspectorAttribute(typeof(MixedRealitySpatialAwarenessSystem))]
-    public class SpatialAwarenessSystemInspector : IMixedRealityServiceInspector
+    [MixedRealityServiceInspector(typeof(MixedRealitySpatialAwarenessSystem))]
+    public class SpatialAwarenessSystemInspector : BaseMixedRealityServiceInspector
     {
         private const string ShowObserverBoundaryKey = "MRTK_SpatialAwarenessSystemInspector_ShowObserverBoundaryKey";
         private const string ShowObserverOriginKey = "MRTK_SpatialAwarenessSystemInspector_ShowObserverOriginKey";
@@ -22,9 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Color enabledColor = GUI.backgroundColor;
         private static readonly Color disabledColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
 
-        public bool AlwaysDrawSceneGUI { get { return false; } }
+        public override bool AlwaysDrawSceneGUI { get { return false; } }
         
-        public void DrawInspectorGUI(object target)
+        public override void DrawInspectorGUI(object target)
         {
             MixedRealitySpatialAwarenessSystem spatial = (MixedRealitySpatialAwarenessSystem)target;
 
@@ -73,9 +73,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             SessionState.SetBool(ShowObserverOriginKey, ShowObserverOrigin);
         }
 
-        public void DrawSceneGUI(object target, SceneView sceneView) { }
+        public override void DrawSceneGUI(object target, SceneView sceneView) { }
 
-        public void DrawGizmos(object target)
+        public override void DrawGizmos(object target)
         {
             if (!(ShowObserverBoundary || ShowObserverOrigin))
                 return;

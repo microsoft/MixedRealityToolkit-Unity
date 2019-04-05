@@ -13,6 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public interface IMixedRealityServiceInspector
     {
         /// <summary>
+        /// If true, inspector will include a field for the service's profile at the top (if applicable)
+        /// </summary>
+        bool DrawProfileField { get; }
+
+        /// <summary>
         /// If true, DrawSceneGUI will be called even when facade object is not selected.
         /// </summary>
         bool AlwaysDrawSceneGUI { get; }

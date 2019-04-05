@@ -7,15 +7,13 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [MixedRealityServiceInspectorAttribute(typeof(FocusProvider))]
-    public class FocusProviderInspector : IMixedRealityServiceInspector
+    [MixedRealityServiceInspector(typeof(FocusProvider))]
+    public class FocusProviderInspector : BaseMixedRealityServiceInspector
     {
         private static readonly Color enabledColor = GUI.backgroundColor;
         private static readonly Color disabledColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
-
-        public bool AlwaysDrawSceneGUI { get { return false; } }
-
-        public void DrawInspectorGUI(object target)
+        
+        public override void DrawInspectorGUI(object target)
         {
             IMixedRealityFocusProvider focusProvider = (IMixedRealityFocusProvider)target;
 
@@ -63,9 +61,5 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             GUI.color = enabledColor;
         }
-
-        public void DrawSceneGUI(object target, SceneView sceneView) { }
-
-        public void DrawGizmos(object target) { }
     }
 }
