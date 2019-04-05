@@ -13,7 +13,7 @@ In the inspector panel, you will be able to find various options that you can co
 
 
 ## Inspector Properties
-<img src="/External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
+<img src="../External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
 
 ### Host Transform
 Transform that will be dragged. Defaults to the object of the component.

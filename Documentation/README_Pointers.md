@@ -14,7 +14,7 @@ MRTK provides a set of pointer prefabs in _Assets/MixedRealityToolkit.SDK/Featur
 ## MRTK Pointer Prefabs
 
 ### Line Pointer
-<img src="/External/ReadMeImages/Pointers/MRTK_Pointers_Line.png" width="600">
+<img src="../External/ReadMeImages/Pointers/MRTK_Pointers_Line.png" width="600">
 
 
 A line pointer is a ray attached to a controller. The line starts at the controller's base, and its pointing direction matches the pointing direction of the controller. 
@@ -31,16 +31,16 @@ GGV stands for "Gaze, Gesture, Voice"<sup>[2](https://docs.microsoft.com/en-us/w
 
 In the pointer profile you can see that the V1 HoloLens input system is provided for you via the mapping of "GGVHand" (V1 HoloLens hand) to the GGVPointer. 
 
-<img src="/External/ReadMeImages/Pointers/MRTK_GGVPointer_HL1.jpg" width="600">
+<img src="../External/ReadMeImages/Pointers/MRTK_GGVPointer_HL1.jpg" width="600">
 
 You can also simulate the V1 HoloLens GGV behavior on HoloLens 2 by mapping the articulated hand to the GGVPointer.
 
-<img src="/External/ReadMeImages/Pointers/MRTK_GGVPointer_HL2.jpg" width="600">
+<img src="../External/ReadMeImages/Pointers/MRTK_GGVPointer_HL2.jpg" width="600">
 
 
 
 ### Grab Pointer / Sphere Pointer
-<img src="/External/ReadMeImages/Pointers/MRTK_GrabPointer.jpg" width="600">
+<img src="../External/ReadMeImages/Pointers/MRTK_GrabPointer.jpg" width="600">
 
 Grab pointer is used for near interactions, specifically for grabbing items near the hand / controller. 
 
@@ -52,7 +52,7 @@ Debug Mode - If true, draw the sphere that is used to query for grabbable object
 
 
 ### Poke Pointer
-<img src="/External/ReadMeImages/Pointers/MRTK_PokePointer.jpg" width="600">
+<img src="../External/ReadMeImages/Pointers/MRTK_PokePointer.jpg" width="600">
 
 Poke pointer is for near interactions, specifically for touching objects via the hand / controller.
 
@@ -64,6 +64,6 @@ Poke pointer is for near interactions, specifically for touching objects via the
 Mouse pointer is used for interacting with the mouse.
 
 ### Teleport pointer
-<img src="/External/ReadMeImages/Pointers/MRTK_Pointers_Parabolic.png" width="600">
+<img src="../External/ReadMeImages/Pointers/MRTK_Pointers_Parabolic.png" width="600">
 
 Teleport pointer is used for teleportation.
