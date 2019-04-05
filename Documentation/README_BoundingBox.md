@@ -22,7 +22,7 @@ You can find bounding box examples in the *HandInteractionExamples.unity* scene:
 This specifies which object will get transformed by the bounding box manipulation. If no object is set, the bounding box defaults to the owner object.
 
 #### Bounds Override ####
-Allows to alternatively set a box collider from another object for bounds computation.
+Set a box collider from the object for bounds computation.
 
 #### Activation Behavior #### 
 There are several options to activate the bounding box interface.
