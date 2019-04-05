@@ -8,112 +8,52 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MRTK_ArticulatedHandMesh
-  m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _COLOR_MAP_ENABLE__ON _DIRECTIONAL_LIGHT _DISABLE_ALBEDO_MAP
-    _PULSE_ENABLED__ON _RIM_LIGHT _UNITY_TO_SRGB__ON
+  m_Shader: {fileID: 4800000, guid: aca12b5bed90b92448a88757df739294, type: 3}
+  m_ShaderKeywords: USE_ALBEDO_TEXTURE _ALPHABLEND_ON _COLOR_MAP_ENABLE__ON _DIRECTIONAL_LIGHT
+    _DISABLE_ALBEDO_MAP _RIM_LIGHT _UNITY_TO_SRGB__ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: 5000
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _ChannelMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _IridescentSpectrumMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalMap:
+    - _Color_Map_:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AlbedoAlphaMode: 0
-    - _AlbedoAssignedAtRuntime: 0
-    - _BlendOp: 0
-    - _BorderLight: 0
-    - _BorderLightOpaque: 0
-    - _BorderLightOpaqueAlpha: 1
-    - _BorderLightReplacesAlbedo: 0
-    - _BorderLightUsesHoverColor: 0
-    - _BorderMinValue: 0.1
-    - _BorderWidth: 0.1
-    - _ClippingBorder: 0
-    - _ClippingBorderWidth: 0.025
-    - _ClippingBox: 0
-    - _ClippingPlane: 0
-    - _ClippingSphere: 0
-    - _ColorWriteMask: 15
-    - _CullMode: 0
-    - _CustomMode: 2
-    - _Cutoff: 0.5
-    - _DirectionalLight: 1
-    - _DstBlend: 1
-    - _EdgeSmoothingValue: 0.002
-    - _EnableChannelMap: 0
-    - _EnableEmission: 0
-    - _EnableHoverColorOverride: 0
-    - _EnableLocalSpaceTriplanarMapping: 0
-    - _EnableNormalMap: 0
-    - _EnableTriplanarMapping: 0
-    - _EnvironmentColorIntensity: 0.5
-    - _EnvironmentColorThreshold: 1.5
-    - _EnvironmentColoring: 0
-    - _FadeBeginDistance: 0.85
-    - _FadeCompleteDistance: 0.5
-    - _HoverLight: 0
-    - _InnerGlow: 0
-    - _InnerGlowPower: 4
-    - _InstancedColor: 0
-    - _Iridescence: 0
-    - _IridescenceAngle: -0.78
-    - _IridescenceIntensity: 0.5
-    - _IridescenceThreshold: 0.05
-    - _Metallic: 0
-    - _Mode: 4
-    - _NearLightFade: 0
-    - _NearPlaneFade: 0
-    - _NormalMapScale: 1
-    - _ProximityLight: 0
-    - _ProximityLightTwoSided: 0
-    - _Reflections: 0
-    - _Refraction: 0
-    - _RefractiveIndex: 0
-    - _RenderQueueOverride: -1
-    - _RimLight: 1
-    - _RimPower: 3.62
-    - _RoundCornerMargin: 0.01
-    - _RoundCornerRadius: 0.25
-    - _RoundCorners: 0
-    - _Smoothness: 0.5
-    - _SpecularHighlights: 0
-    - _SphericalHarmonics: 0
-    - _SrcBlend: 1
-    - _Stencil: 0
-    - _StencilComparison: 0
-    - _StencilOperation: 0
-    - _StencilReference: 0
-    - _TriplanarMappingBlendSharpness: 4
-    - _VertexColors: 0
-    - _ZTest: 4
-    - _ZWrite: 0
+    - USE_ALBEDO_TEXTURE: 1
+    - _Auto_Pulse_: 0
+    - _Desaturated_Intensity_: 0
+    - _Edge_Width_: 1
+    - _Fill_Start_Time_: 0.5
+    - _Filter_Width_: 1.5
+    - _Flip_V_: 0
+    - _Intensity_: 5
+    - _Line_End_Time_: 0.5
+    - _Max_Hover_: 0.004
+    - _Max_In_Angle_: 0.6
+    - _Max_Out_Angle_: 0.4
+    - _Period_: 2.7
+    - _Pulse_: 0.346
+    - _Pulse_Amplify_Leading_: 0
+    - _Pulse_Color_Width_: 1
+    - _Pulse_Enabled_: 0
+    - _Pulse_Lead_Fuzz_: 0.67
+    - _Pulse_Line_Fuzz_: 0.2
+    - _Pulse_Noise_Frequency_: 777
+    - _Pulse_Outer_Size_: 1.05
+    - _Pulse_Tail_Fuzz_: 0.8
+    - _Pulse_Vary_: 0.075
+    - _Pulse_Width_: 1
+    - _Vary_Color_: 0.7
+    - _Vary_UV_: 0.71
+    - _Wrist_Fade_End_: 0.16
+    - _Wrist_Fade_Start_: 0.1
     m_Colors:
-    - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 0, g: 0.17916177, b: 0.2735849, a: 1}
-    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
-    - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
-    - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
-    - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
-    - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
-    - _RimColor: {r: 0.0032039948, g: 0.5607187, b: 0.6792453, a: 1}
+    - _Fill_Color_: {r: 0.317647, g: 0.317647, b: 0.317647, a: 1}
+    - _Line_Color_: {r: 0.717647, g: 0.717647, b: 0.717647, a: 1}
+    - _Pulse_Origin_: {r: 0.5, g: 0, b: 0, a: 0}
