@@ -6,7 +6,7 @@ The `BoundingBox` script provides basic functionality for transforming objects i
 For more information please see [App Bar and Bounding Box](https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box) on Windows Dev Center.
 
 ### How to use Bounding Box ###
-You can enable Bounding Box by simply assigning the `BoundingBox` script to any GameObject.
+You can enable Bounding Box by simply assigning the `BoundingBox` script to any GameObject. Assign the object with Box Collider to 'Bounds Override' field in the Inspector.
 
 ![Bounding Box](../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Assign.png)
 
