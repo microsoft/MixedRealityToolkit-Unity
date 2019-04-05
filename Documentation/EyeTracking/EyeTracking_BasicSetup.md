@@ -47,7 +47,7 @@ While this is great for inital testing, please note that it is not a good imitat
 For this, it is better to ensure frequent tests of your eye-based interactions on the HoloLens 2.
 
 1. **Enable simulated Eye Tracking**: 
-    - Navigate to your main _'MRTK Configuration Profile'_ -> _'Additional Service Providers'_ -> _'In-Editor Input Simulation'_.
+    - Navigate to your main _'MRTK Configuration Profile'_ -> _'Input System Profile'_ -> _'Data Providers'_ -> _'Input Simulation Service'_.
     - Check the _'Simulate Eye Position'_ checkbox.
 
 ![MRTK](/External/ReadMeImages/EyeTracking/mrtk_setup_eyes_simulate.png)
