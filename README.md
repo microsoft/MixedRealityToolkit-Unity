@@ -64,8 +64,10 @@ Find this readme, other documentation articles and the MRTK api reference on our
 |  [![Eye Tracking: Target Selection](External/ReadMeImages/EyeTracking/mrtk_et_targetselect.png)](Documentation/EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](Documentation/EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](External/ReadMeImages/EyeTracking/mrtk_et_navigation.png)](Documentation/EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](Documentation/EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](External/ReadMeImages/EyeTracking/mrtk_et_heatmaps.png)](Documentation/EyeTracking/EyeTracking_Visualization.md) [Eye Tracking: Heat Map](Documentation/EyeTracking/EyeTracking_Visualization.md) |
 | Use eyes, voice and hand input in combination for quickly selecting holograms across your scene | Learn how to auto scroll text or fluently zoom into focused content based on what you are looking at| Examples for logging, loading and visualizing what users have been looking at in your app |
 
-# Example Scene
-You can find various types of interactions and UI controls in [this example scene](Documentation/README_HandInteractionExamples.md).
+# Example Scenes
+Explore MRTK's various types of interactions and UI controls in [this example scene](Documentation/README_HandInteractionExamples.md).
+
+You can find  other example scenes under [**Assets/MixedRealityToolkit.Examples/Demos**](/Assets/MixedRealityToolkit.Examples/Demos) folder.
 
 [![Example Scene](External/ReadMeImages/MRTK_Examples.png)](Documentation/README_HandInteractionExamples.md)
 
