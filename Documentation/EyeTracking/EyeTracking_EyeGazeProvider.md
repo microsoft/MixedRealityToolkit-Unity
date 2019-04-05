@@ -1,6 +1,6 @@
 # Accessing Eye Tracking Data in your Unity Script
 
-The following assumes that you followed the steps for setting up Eye Tracking in your MRTK scene (see [Basic MRTK Setup to use Eye Tracking](/Documentation/EyeTracking/EyeTracking_BasicSetup.md)).
+The following assumes that you followed the steps for setting up Eye Tracking in your MRTK scene (see [Basic MRTK Setup to use Eye Tracking](EyeTracking_BasicSetup.md)).
 
 To access Eye Tracking data in your MonoBehaviour scripts is easy! Simply use *MixedRealityToolkit.InputSystem.EyeGazeProvider*.
 
@@ -29,8 +29,7 @@ Again, if 'IsEyeGazeValid' is false, this will be based on the user's *head* gaz
 
 ## Examples for using MixedRealityToolkit.InputSystem.EyeGazeProvider
 Here is an example from the 
-[FollowEyeGaze.cs](/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/General/Scripts/FollowEyeGaze.cs) in 
-[/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/General/Scripts/](/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/General/Scripts/):
+[FollowEyeGaze.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze):
 
 - Get the point of a hologram that the user is looking at:
 ```csharp
@@ -51,4 +50,4 @@ MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeDirection.normalized * defau
 
 
 ---
-[Back to "Eye Tracking in the MixedRealityToolkit"](/Documentation/EyeTracking/EyeTracking_Main.md)
+[Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
