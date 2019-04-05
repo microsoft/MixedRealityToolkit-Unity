@@ -6,15 +6,15 @@ This example scene demonstrates an implementation of the ToolTip user interface 
 The [example scene](https://gfycat.com/WarmOblongBilby) demonstrates two ways to display a Tooltip on an object.
 
 ## Script files
-[/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips](/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips)
+[/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips)
 
 ## Prefabs
-[/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips](/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips)
+[/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips)
 
 ## Example Scene
-[/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes](/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes)
+[/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes)
 
-<img src="/External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png" width="600">
+<img src="../External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png" width="600">
 
 In the scene file, you will be able to find various examples of ToolTip. First group on the left demonstrates the static ToolTip examples that are always visible. In the center, you can see the example of using multiple ToolTips on a single object. Each tooltip has different child object as a target object which works as an anchor. The group on the right shows the examples of dynamically spawning ToolTips.
 
@@ -35,5 +35,5 @@ A ToolTip can be dynamically added to an object at runtime as well as pre-set to
 
 
 ## Motion controller Tooltips
-The scene also includes two tooltip groups on the bottom. These ToolTips are layed out to match position of the buttons on the motion controllers. When motion controllers are detected, these ToolTips will be attached automatically to the controllers, using [`AttachToController`](/Assets/MixedRealityToolkit.SDK/Features/Utilities/Solvers/AttachToController.cs) script.
+The scene also includes two tooltip groups on the bottom. These ToolTips are layed out to match position of the buttons on the motion controllers. When motion controllers are detected, these ToolTips will be attached automatically to the controllers, using [`AttachToController`](xref:Microsoft.MixedReality.Toolkit.UI.Utilities.Solvers.AttachToController) script.
 

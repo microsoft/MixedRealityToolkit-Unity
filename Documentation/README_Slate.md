@@ -6,7 +6,7 @@ Thin window style control for the 2D content with grabbable title bar and 'Follo
 ## Structure
 Slate control is composed of these elements.
 
-<img src="/External/ReadMeImages/Slate/MRTK_Slate_Structure.png" width="650">
+<img src="../External/ReadMeImages/Slate/MRTK_Slate_Structure.png" width="650">
 
 - TitleBar
 - Title
@@ -18,20 +18,20 @@ Slate control is composed of these elements.
 
 Slate control contains Bounding Box script for scaling and rotating. For more information on Bounding Box, please see [Bounding Box](README_BoundingBox.md) page.
 
-<img src="/External/ReadMeImages/Slate/MRTK_Slate_Box.png" width="650">
+<img src="../External/ReadMeImages/Slate/MRTK_Slate_Box.png" width="650">
 
-<img src="/External/ReadMeImages/Slate/MRTK_Slate_Scale.png" width="650">
+<img src="../External/ReadMeImages/Slate/MRTK_Slate_Scale.png" width="650">
 
 ## Buttons
 
-<img src="/External/ReadMeImages/Slate/MRTK_Slate_Buttons.png" width="650">
+<img src="../External/ReadMeImages/Slate/MRTK_Slate_Buttons.png" width="650">
 
 - Follow Me: Toggles 'Orbital' solver components to make the Slate object follow the user.
 - Close: Disables the Slate object
 
 ## Scripts
 
-<img src="/External/ReadMeImages/Slate/MRTK_Slate_Scripts.png">
+<img src="../External/ReadMeImages/Slate/MRTK_Slate_Scripts.png">
 
 ### HandInteractionPan.cs
 This script handles articulated hand input for touching and moving the content on the slate's **ContentQuad**

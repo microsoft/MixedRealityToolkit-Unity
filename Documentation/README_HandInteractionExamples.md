@@ -6,11 +6,11 @@ You can find the **HandInteractionExamples.unity** scene under **Assets\MixedRea
 
 *This example scene uses **TextMesh Pro**. Please click **'Import TMP Essentials'** button when you see this prompt. Unity will import TextMesh Pro packages*
 
-<img src="/External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP2.png" width="450">
+<img src="../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP2.png" width="450">
 
 *If you see big text after TextMesh Pro import, please open other Unity scene and open this scene again.*
 
-<img src="/External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP1.png" width="350">
+<img src="../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP1.png" width="350">
 
 
 ## Pressable Button
