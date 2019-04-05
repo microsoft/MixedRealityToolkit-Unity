@@ -1,1 +1,1 @@
-Mixed Reality Toolkit 2.0.0-Beta2
+Mixed Reality Toolkit 2.0.0-RC1

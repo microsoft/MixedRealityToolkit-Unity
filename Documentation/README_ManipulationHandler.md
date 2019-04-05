@@ -1,5 +1,5 @@
 # Manipulation Handler
-![Manipulation Handler](/External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png)
+![Manipulation Handler](../External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png)
 
 The ManipulationHandler script allows for an object to be made movable, scalable, and rotatable using one or two hands. Manipulation can be restricted so that it only allows certain kinds of transformation.
 The script works with various types of inputs including HoloLens 2 articulated hand input, hand-rays, HoloLens gesture input, and immersive headset motion controller input.
@@ -9,11 +9,11 @@ The script works with various types of inputs including HoloLens 2 articulated h
 
 In the inspector panel, you will be able to find various options that you can configure. Make sure to add a Collidable to your object -- the collidable should match the grabbable bounds of the object. To make it respond to near articulated hand input, you need to add the NearInteractionGrabbable.cs script as well. 
 
-![Manipulation Handler](/External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Howto.png)
+![Manipulation Handler](../External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Howto.png)
 
 
 ## Inspector Properties
-<img src="/External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
+<img src="../External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
 
 ### Host Transform
 Transform that will be dragged. Defaults to the object of the component.
@@ -26,7 +26,7 @@ Specifies whether the object can be manipulated using one hand, two hands, or bo
 
 ### Two Handed Manipulation Type
 
-![Manipulation Handler](/External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg)
+![Manipulation Handler](../External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg)
 
 * Scale
 * Rotate
