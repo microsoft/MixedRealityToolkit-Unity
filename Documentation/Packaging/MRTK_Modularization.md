@@ -7,7 +7,7 @@ The following sections describe the status of the componentization work for each
 
 - [Release Candidate 1](#release-candidate-1-status)
 - [Release Candidate 2](#release-candidate-2-plan)
-- [Official Releaee](#official-release-plan)
+- [Official Release](#official-release-plan)
 
 > Some features may, by design, take dependencies on MRTK or other components (ex: Unity Plug-ins). 
 The package management tools will ensure that the correct dependencies are imported when one of these 
