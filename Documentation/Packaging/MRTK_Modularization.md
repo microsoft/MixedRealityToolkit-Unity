@@ -18,7 +18,7 @@ features is selected.
 With the RC1 release of MRTK v2, the majority of the componentization work has been completed. 
 
 - [Minimized dependencies](#minimized-dependencies) between features
-- [Component communication](#component-communication) is performed though interfaces 
+- [Component communication](#component-communication) is performed through interfaces 
 
 Scenarios that are not yet fully supported include:
 - Built-in package discovery and importing
