@@ -15,7 +15,7 @@ features is selected.
 
 ## Release Candidate 1 Status
 
-With the RC1 release of MRTK v2,the majority of the componentization work has been completed. 
+With the RC1 release of MRTK v2, the majority of the componentization work has been completed. 
 
 - [Minimized dependencies](#minimized-dependencies) between features
 - [Component communication](#component-communication) is performed though interfaces 
