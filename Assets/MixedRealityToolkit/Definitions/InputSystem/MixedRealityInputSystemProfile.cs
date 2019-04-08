@@ -42,6 +42,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
+        [Tooltip("Global Input Event System profile for implementing input events independently of focus system")]
+        private MixedRealityGlobalInputEventSystemProfile globalInputEventSystemProfile;
+
+        /// <summary>
+        /// Global Input Event System profile for implementing input events independently of focus system.
+        /// </summary>
+        public MixedRealityGlobalInputEventSystemProfile GlobalInputEventSystemProfile
+        {
+            get { return globalInputEventSystemProfile; }
+            internal set { globalInputEventSystemProfile = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
         private MixedRealityInputActionsProfile inputActionsProfile;
 

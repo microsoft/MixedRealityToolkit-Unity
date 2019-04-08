@@ -54,6 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IMixedRealityFocusProvider FocusProvider => focusProvider ?? (focusProvider = Registrar.GetService<IMixedRealityFocusProvider>());
 
+        private IMixedRealityGlobalInputEventSystem globalInputEventSystem = null;
+
         /// <inheritdoc />
         public IMixedRealityGazeProvider GazeProvider { get; private set; }
 
@@ -139,6 +141,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.LogError("The Input system is missing the required Input System Profile!");
                 return;
+            }
+
+            // Check if global input event system profile is present. This is an optional profile
+            if (profile.GlobalInputEventSystemProfile != null)
+            {
+                globalInputEventSystem = profile.GlobalInputEventSystemProfile;
             }
 
             if (profile.InputActionRulesProfile != null)
@@ -607,6 +615,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DetectedControllers.Add(controller);
             }
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseSourceDetected(source, controller);
+
             FocusProvider?.OnSourceDetected(sourceStateEventData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
@@ -635,6 +646,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DetectedControllers.Remove(controller);
             }
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseSourceLost(source, controller);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             // Events have to be handled before FocusProvider.OnSourceLost since they won't be passed on without a focused object
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
@@ -659,6 +673,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             sourceTrackingEventData.Initialize(source, controller, state);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseSourceTrackingStateChanged(source, controller, state);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceTrackingEventData, OnSourceTrackingChangedEventHandler);
         }
@@ -675,6 +692,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Create input event
             sourceVector2EventData.Initialize(source, controller, position);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseSourcePositionChanged(source, controller, position);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceVector2EventData, OnSourcePoseVector2ChangedEventHandler);
@@ -693,6 +713,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             sourcePositionEventData.Initialize(source, controller, position);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseSourcePositionChanged(source, controller, position);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
         }
@@ -710,6 +733,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             sourceRotationEventData.Initialize(source, controller, rotation);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseSourceRotationChanged(source, controller, rotation);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceRotationEventData, OnSourceRotationChangedEventHandler);
         }
@@ -726,6 +752,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Create input event
             sourcePoseEventData.Initialize(source, controller, position);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseSourcePoseChanged(source, controller, position);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourcePoseEventData, OnSourcePoseChangedEventHandler);
@@ -748,6 +777,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void RaisePreFocusChanged(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaisePreFocusChanged(pointer, oldFocusedObject, newFocusedObject);
 
             // Raise Focus Events on the old and new focused objects.
             if (oldFocusedObject != null)
@@ -788,6 +820,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseFocusChanged(pointer, oldFocusedObject, newFocusedObject);
+
             // Raise Focus Events on the old and new focused objects.
             if (oldFocusedObject != null)
             {
@@ -827,6 +862,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             focusEventData.Initialize(pointer);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseFocusEnter(pointer, focusedObject);
+
             ExecuteEvents.ExecuteHierarchy(focusedObject, focusEventData, OnFocusEnterEventHandler);
         }
 
@@ -841,6 +879,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void RaiseFocusExit(IMixedRealityPointer pointer, GameObject unfocusedObject)
         {
             focusEventData.Initialize(pointer);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseFocusExit(pointer, unfocusedObject);
 
             ExecuteEvents.ExecuteHierarchy(unfocusedObject, focusEventData, OnFocusExitEventHandler);
         }
@@ -871,8 +912,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointer.IsFocusLocked = (pointer.Result?.Details.Object != null);
 
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
-            
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaisePointerDown(pointer, inputAction, handedness, inputSource);
+
             HandlePointerEvent(pointerEventData, OnPointerDownEventHandler);
+
+            if (pointer.Result?.Details.Object != null)
+            {
+                pointer.IsFocusLocked = true;
+            }
         }
 
         #endregion Pointer Down
@@ -891,6 +940,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Create input event
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource, count);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaisePointerClicked(pointer, inputAction, count, handedness, inputSource);
 
             HandleClick();
         }
@@ -918,6 +970,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void RaisePointerUp(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaisePointerUp(pointer, inputAction, handedness, inputSource);
 
             HandlePointerEvent(pointerEventData, OnPointerUpEventHandler);
 
@@ -947,6 +1002,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             inputEventData.Initialize(source, handedness, inputAction);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseOnInputDown(source, handedness, inputAction);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputDownEventHandler);
         }
@@ -969,6 +1027,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Create input event
             inputEventData.Initialize(source, handedness, inputAction);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseOnInputUp(source, handedness, inputAction);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputUpEventHandler);
@@ -993,6 +1054,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             floatInputEventData.Initialize(source, handedness, inputAction, inputValue);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseFloatInputChanged(source, handedness, inputAction, inputValue);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(floatInputEventData, OnFloatInputChanged);
         }
@@ -1016,6 +1080,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             vector2InputEventData.Initialize(source, handedness, inputAction, inputPosition);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaisePositionInputChanged(source, handedness, inputAction, inputPosition);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(vector2InputEventData, OnTwoDoFInputChanged);
         }
@@ -1034,6 +1101,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Create input event
             positionInputEventData.Initialize(source, handedness, inputAction, position);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaisePositionInputChanged(source, handedness, inputAction, position);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(positionInputEventData, OnPositionInputChanged);
@@ -1058,6 +1128,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             rotationInputEventData.Initialize(source, handedness, inputAction, rotation);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseRotationInputChanged(source, handedness, inputAction, rotation);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(positionInputEventData, OnRotationInputChanged);
         }
@@ -1081,6 +1154,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             poseInputEventData.Initialize(source, handedness, inputAction, inputData);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaisePoseInputChanged(source, handedness, inputAction, inputData);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(poseInputEventData, OnPoseInputChanged);
         }
@@ -1103,6 +1179,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, true);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureStarted(controller, action);
+
             HandleEvent(inputEventData, OnGestureStarted);
         }
 
@@ -1118,6 +1198,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, true);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureUpdated(controller, action);
+
             HandleEvent(inputEventData, OnGestureUpdated);
         }
 
@@ -1133,6 +1217,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, inputData);
             vector2InputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureUpdated(controller, action, inputData);
+
             HandleEvent(vector2InputEventData, OnGestureVector2PositionUpdated);
         }
 
@@ -1148,6 +1236,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, inputData);
             positionInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureUpdated(controller, action, inputData);
+
             HandleEvent(positionInputEventData, OnGesturePositionUpdated);
         }
 
@@ -1163,6 +1255,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, inputData);
             rotationInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureUpdated(controller, action, inputData);
+
             HandleEvent(rotationInputEventData, OnGestureRotationUpdated);
         }
 
@@ -1178,6 +1274,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, inputData);
             poseInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureUpdated(controller, action, inputData);
+
             HandleEvent(poseInputEventData, OnGesturePoseUpdated);
         }
 
@@ -1193,6 +1293,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, false);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureCompleted(controller, action);
+
             HandleEvent(inputEventData, OnGestureCompleted);
         }
 
@@ -1208,6 +1312,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, inputData);
             vector2InputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureCompleted(controller, action, inputData);
+
             HandleEvent(vector2InputEventData, OnGestureVector2PositionCompleted);
         }
 
@@ -1223,6 +1331,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, inputData);
             positionInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureCompleted(controller, action, inputData);
+
             HandleEvent(positionInputEventData, OnGesturePositionCompleted);
         }
 
@@ -1238,6 +1350,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, inputData);
             rotationInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureCompleted(controller, action, inputData);
+
             HandleEvent(rotationInputEventData, OnGestureRotationCompleted);
         }
 
@@ -1253,6 +1369,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, inputData);
             poseInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureCompleted(controller, action, inputData);
+
             HandleEvent(poseInputEventData, OnGesturePoseCompleted);
         }
 
@@ -1268,6 +1388,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             action = ProcessRules(action, false);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseGestureCanceled(controller, action);
+
             HandleEvent(inputEventData, OnGestureCanceled);
         }
 
@@ -1287,6 +1411,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Create input event
             speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, command);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseSpeechCommandRecognized(source, confidence, phraseDuration, phraseStartTime, command);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
@@ -1309,6 +1436,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             dictationEventData.Initialize(source, dictationHypothesis, dictationAudioClip);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseDictationHypothesis(source, dictationHypothesis, dictationAudioClip);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationHypothesisEventHandler);
         }
@@ -1325,6 +1455,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Create input event
             dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseDictationResult(source, dictationResult, dictationAudioClip);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationResultEventHandler);
@@ -1343,6 +1476,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseDictationComplete(source, dictationResult, dictationAudioClip);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationCompleteEventHandler);
         }
@@ -1359,6 +1495,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Create input event
             dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseDictationError(source, dictationResult, dictationAudioClip);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationErrorEventHandler);
@@ -1381,6 +1520,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             jointPoseInputEventData.Initialize(source, handedness, MixedRealityInputAction.None, jointPoses);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseHandJointsUpdated(source, handedness, jointPoses);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(jointPoseInputEventData, OnHandJointsUpdatedEventHandler);
         }
@@ -1398,6 +1540,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             handMeshInputEventData.Initialize(source, handedness, MixedRealityInputAction.None, handMeshInfo);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseHandMeshUpdated(source, handedness, handMeshInfo);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(handMeshInputEventData, OnHandMeshUpdatedEventHandler);
         }
@@ -1414,6 +1559,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Create input event
             handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseOnTouchStarted(source, controller, handedness, touchPoint);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(handTrackingInputEventData, OnTouchStartedEventHandler);
@@ -1433,6 +1581,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
 
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseOnTouchCompleted(source, controller, handedness, touchPoint);
+
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(handTrackingInputEventData, OnTouchCompletedEventHandler);
         }
@@ -1450,6 +1601,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Create input event
             handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
+
+            // Route through global input system if one exists
+            globalInputEventSystem?.RaiseOnTouchUpdated(source, controller, handedness, touchPoint);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(handTrackingInputEventData, OnTouchUpdatedEventHandler);

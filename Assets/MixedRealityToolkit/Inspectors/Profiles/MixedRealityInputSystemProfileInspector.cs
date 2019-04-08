@@ -25,6 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static bool showFocusProperties = true;
         private SerializedProperty focusProviderType;
 
+        private static bool showGlobalInputEventSystemProfileProperties = false;
+        private SerializedProperty globalInputEventSystemProfile;
+
         private static bool showPointerProperties = true;
         private SerializedProperty pointerProfile;
 
@@ -59,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             dataProviderConfigurations = serializedObject.FindProperty("dataProviderConfigurations");
             focusProviderType = serializedObject.FindProperty("focusProviderType");
+            globalInputEventSystemProfile = serializedObject.FindProperty("globalInputEventSystemProfile");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
@@ -115,6 +119,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.PropertyField(focusProviderType);
+                }
+            }
+
+            EditorGUILayout.Space();
+            showGlobalInputEventSystemProfileProperties = EditorGUILayout.Foldout(showGlobalInputEventSystemProfileProperties, "Global Input Event System Settings", true);
+            if (showGlobalInputEventSystemProfileProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    changed |= RenderProfile(globalInputEventSystemProfile);
                 }
             }
 
@@ -298,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         }
 
         private void ApplyDataProviderConfiguration(
-            System.Type type, 
+            System.Type type,
             SerializedProperty providerName,
             SerializedProperty configurationProfile,
             SerializedProperty runtimePlatform)
