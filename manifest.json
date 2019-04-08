@@ -10958,11 +10958,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.CameraEventRouter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.CameraEventRouter.html",
+          "hash": "dklfmyUNQvdHKUw5MahsXA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html",
-          "hash": "serwVGY8zQvIvXHJYlznAQ=="
+          "hash": "IbBF/mEbkKClmlPVDsouFA=="
         }
       },
       "is_incremental": false,
@@ -10974,7 +10986,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane.html",
-          "hash": "mmA4XSrVrqbcvidYyoCqoA=="
+          "hash": "aUZAkZHR05XX5fsuzfoQVA=="
         }
       },
       "is_incremental": false,
@@ -10998,7 +11010,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html",
-          "hash": "lSC8uHrF1cKT+d1vzaJMDQ=="
+          "hash": "rXDNT048FEm8PDiSwV7W5A=="
         }
       },
       "is_incremental": false,
@@ -11010,7 +11022,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.html",
-          "hash": "An2nFpa3e1kESDrXH+OUbQ=="
+          "hash": "We4FwNT2zPAaBlFEAeX06g=="
         }
       },
       "is_incremental": false,
@@ -13038,7 +13050,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.html",
-          "hash": "bB2+3DS7F8oiGztUJneKew=="
+          "hash": "na7y+X1/9xCaXhpfBBu/EA=="
         }
       },
       "is_incremental": false,
@@ -13578,7 +13590,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "EyWOZCzGg1nvATcl0Vig9A=="
+          "hash": "Py3Vd+x5OYrwA9SFL9bSRg=="
         }
       },
       "is_incremental": false,
@@ -13630,17 +13642,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 88,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 843,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -13650,10 +13661,11 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 842,
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
