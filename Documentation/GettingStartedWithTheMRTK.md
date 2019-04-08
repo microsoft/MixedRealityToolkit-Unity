@@ -14,18 +14,16 @@ To get started with the Mixed Reality Toolkit you will need:
 * [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 * [Windows SDK 18362+](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK)
 
-## Upgrading from the HoloToolkit (HTK/MRTK v1)
+## Open and run the HandInteractionExample scene
+1. Go to the  [MRTK release page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases).
+2. Under Assets, download both `Microsoft.MixedRealityToolkit.Unity.Examples` .unitypackage and `Microsoft.MixedRealityToolkit.Unity.Foundation`
+3. Create a new Unity project. We used 2018.3.9f1 for this tutorial.
 
-There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework.  However, it is possible to import the MRTK into your HoloToolkit project and start work migrating your implementation if you wish.
+> The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
 
-* [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
+## Add MRTK to a new scene or new project
 
-
-## Starting your new MRTK v2 project
-
-We have done an incredible amount of work to ensure the new project experience is as streamlined as possible.  To this end, we endeavoured to get you up and running as fast as possible.
-
-To get your first project up and running, the steps are as follows:
+If you want to add mrtk to a branch new project or empty scene, the steps are as follows:
 
 ### 1. Create your new project (or start a new scene in your current project)
 
@@ -33,7 +31,6 @@ To get your first project up and running, the steps are as follows:
 
 ### 2. [Import the Mixed Reality Toolkit asset](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 
-> The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
 
 Get the asset and import it in to your Unity project using  "Asset -> Import Package -> Custom Package" from the Unity Editor menu.
 
@@ -97,6 +94,12 @@ You are now ready to start building your Mixed Reality Solution, just start addi
 Switch to other platforms (ensure they have XR enabled in their player settings) and your project will still run as expected without change.
 
 <a name="configuring"/>
+
+## Upgrading from the HoloToolkit (HTK/MRTK v1)
+
+There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework.  However, it is possible to import the MRTK into your HoloToolkit project and start work migrating your implementation if you wish.
+
+* [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
 
 ## Configuring your project
 
