@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             UpdateRenderers();
             ToggleClippingFeature(false);
 
-            if(cameraMethods != null)
+            if (cameraMethods != null)
             {
                 cameraMethods.OnCameraPreRender -= OnCameraPreRender;
             }
