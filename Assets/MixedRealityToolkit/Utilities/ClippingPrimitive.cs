@@ -165,7 +165,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected void LateUpdate()
         {
-            UpdateRenderers();
+            //Deferring the LateUpdate() call to OnCameraPreRender()
+            if (!useOnPreRender)
+            {
+                UpdateRenderers();
+            }
         }
 
         protected void OnCameraPreRender(CameraEventRouter router)
