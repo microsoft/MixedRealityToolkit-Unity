@@ -483,6 +483,11 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void EnsureMixedRealityRequirements()
         {
+            if (MixedRealityPlayspace == null)
+            {
+                Debug.LogError("Failed to generate a MixedRealityPlayspace.");
+            }
+
             // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
             // We'll enforce that here, then tracking can update it to the appropriate position later.
             CameraCache.Main.transform.position = Vector3.zero;
