@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
-            if (!MixedRealityToolkit.ConfirmInitialized())
+            if (!MixedRealityToolkit.IsInitialized)
             {
                 return;
             }
