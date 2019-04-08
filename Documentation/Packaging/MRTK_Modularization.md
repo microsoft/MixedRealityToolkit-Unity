@@ -1,7 +1,7 @@
 # Mixed Reality Toolkit Componentization
 
 One of the great new features of Mixed Reality Toolkit v2 is improved componentization. Wherever possible, 
-individual components are isolated from all but the core layer << >> of the foundation.
+individual components are isolated from all but the core layer of the foundation.
 
 The following sections describe the status of the componentization work for each major milestone:
 
