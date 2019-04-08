@@ -59,5 +59,5 @@ accurately reflect actual application performance when run from within the edito
 
 - [Diagnostics API documentation](xref:Microsoft.MixedReality.Toolkit.Diagnostics)
 - [Configuring the Diagnostics System](ConfiguringDiagnostics.md)
-- [Using the Visual Profiler](../TODO.md)
+- [Using the Visual Profiler](UsingVisualProfiler.md)
 

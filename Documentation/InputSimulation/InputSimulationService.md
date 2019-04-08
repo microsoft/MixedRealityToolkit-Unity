@@ -1,9 +1,9 @@
 # Input Simulation Service
 
 The Input Simulation Service emulates the behaviour of devices and platforms that may not be available in the Unity editor. Examples include:
-* Hololens or VR device head tracking
-* Hololens hand gestures
-* Hololens 2 articulated hand tracking
+* HoloLens or VR device head tracking
+* HoloLens hand gestures
+* HoloLens 2 articulated hand tracking
 
 Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.
 

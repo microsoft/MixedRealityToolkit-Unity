@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                     if (Interactions[i].Changed)
                     {
-                        MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
+                        MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
                     }
                 }
 
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                     if (Interactions[i].Changed)
                     {
-                        MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
+                        MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
                     }
                 }
 
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                     if (Interactions[i].Changed)
                     {
-                        MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
+                        MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
                     }
                 }
 

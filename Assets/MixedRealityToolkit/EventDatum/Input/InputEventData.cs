@@ -23,17 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
         /// <param name="inputSource"></param>
-        /// <param name="inputAction"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction)
-        {
-            BaseInitialize(inputSource, inputAction);
-            Handedness = Handedness.None;
-        }
-
-        /// <summary>
-        /// Used to initialize/reset the event and populate the data.
-        /// </summary>
-        /// <param name="inputSource"></param>
         /// <param name="handedness"></param>
         /// <param name="inputAction"></param>
         public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, MixedRealityInputAction inputAction)
@@ -56,18 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
-
-        /// <summary>
-        /// Used to initialize/reset the event and populate the data.
-        /// </summary>
-        /// <param name="inputSource"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="data"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, T data)
-        {
-            Initialize(inputSource, inputAction);
-            InputData = data;
-        }
 
         /// <summary>
         /// Used to initialize/reset the event and populate the data.

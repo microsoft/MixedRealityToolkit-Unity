@@ -2,14 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
-using Microsoft.MixedReality.Toolkit.Utilities;
-
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -38,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [FormerlySerializedAs("enabled")]
         private bool isEnabled = true;
         public bool Enabled { get => isEnabled; set => isEnabled = value; }
-       
+
         [Header("Behavior")]
         [SerializeField]
         private bool enableZoom = false;
@@ -69,12 +67,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Header("Geometry")]
         [SerializeField]
         [Tooltip("If affordace geometry is desired to emphasize the touch points(leftPoint and rightPoint) and the center point between them (reticle), assign them here.")]
-        private GameObject reticle;
+        private GameObject reticle = null;
         [SerializeField]
-        private GameObject leftPoint;
+        private GameObject leftPoint = null;
         [SerializeField]
-        private GameObject rightPoint;
-      
+        private GameObject rightPoint = null;
+
         #endregion Serialized Fields
 
 
