@@ -1,0 +1,271 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Mixed Reality Toolkit Componentization | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Mixed Reality Toolkit Componentization | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="mixed-reality-toolkit-componentization">Mixed Reality Toolkit Componentization</h1>
+
+<p>One of the great new features of Mixed Reality Toolkit v2 is improved componentization. Wherever possible,
+individual components are isolated from all but the core layer of the foundation.</p>
+<p>The following sections describe the status of the componentization work for each major milestone:</p>
+<ul>
+<li><a href="#release-candidate-1-status">Release Candidate 1</a></li>
+<li><a href="#release-candidate-2-plan">Release Candidate 2</a></li>
+<li><a href="#official-release-plan">Official Release</a></li>
+</ul>
+<h2 id="release-candidate-1-status">Release Candidate 1 Status</h2>
+<p>With the RC1 release of MRTK v2, the majority of the componentization work has been completed.</p>
+<ul>
+<li><a href="#minimized-dependencies">Minimized dependencies</a> between features</li>
+<li><a href="#component-communication">Component communication</a> is performed through interfaces</li>
+</ul>
+<p>Scenarios that are not yet fully supported include:</p>
+<ul>
+<li><p>Built-in package discovery and importing</p>
+<blockquote>
+<p>Release Candidate 2 is planned to include support for discovering and importing MRTK foundational
+packages and extensions via NuGet.</p>
+</blockquote>
+</li>
+<li><p>Application architecture flexibility</p>
+<blockquote>
+<p>Release Candidate 1 contains partial support for utilizing MRTK system services in isolation. It is
+expected that full support will be available in RC2.</p>
+</blockquote>
+</li>
+</ul>
+<p>Developers who desire to reduce the MRTK footprint in their applications, guidance for <a href="#manual-componentization">manual componentization</a>
+is provided.</p>
+<h3 id="minimized-dependencies">Minimized Dependencies</h3>
+<p>MRTK v2 was intentionally developed to be modular and to minimize dependencies between system services
+(ex: spatial awareness).</p>
+<blockquote>
+<p>Due to the nature of some system services (ex: input and teleportation) a small number of dependencies exist.</p>
+</blockquote>
+<p>While it is expected that services will need one or more data provider components, there are no direct links
+between them. The same is true for SDK features (ex: User Interface components).</p>
+<h3 id="component-communication">Component Communication</h3>
+<p>To ensure that there are no direct links between components, MRTK v2 utilizes interfaces to communicate between
+services, data providers and application code. These interfaces are defined in and all communication is routed
+through the Mixed Reality Toolkit core component.</p>
+<p><img src="../../External/ReadMeImages/Packaging/AccessingViaInterfaces.png" alt="Using the spatial awareness system via interfaces"></p>
+<h3 id="manual-componentization">Manual Componentization</h3>
+<p>While automatic support for importing specific MRTK components is not available in RC1, developers can manually
+opt-out of specific functionality.</p>
+<p>There are two workflows that developers can use to manually componentize MRTK v2:</p>
+<ul>
+<li><a href="#uncheck-features">Uncheck features</a> during package import</li>
+<li><a href="#delete-feature-folders">Delete feature folders</a></li>
+</ul>
+<blockquote>
+<p>If a feature is mistakenly omitted or deleted, the package can be re-imported to add the desired functionality.</p>
+</blockquote>
+<h4 id="uncheck-features">Uncheck Features</h4>
+<p>When importing the Microsoft.MixedReality.Toolkit.Unity.Foundation-v2.0.0-RC1.unity package, developers have the
+ability to limit which package contents get added to the project.</p>
+<p>For projects where the required features and/or platforms are well known, unnecessary system services, providers
+and features can be left unchecked to minimize the MRTK footprint.</p>
+<blockquote>
+<p>NOTE: MRTK v2 <strong><em>requires</em></strong> the contents of the Assets\MixedRealityToolkit folder.</p>
+</blockquote>
+<h4 id="delete-feature-folders">Delete Feature Folders</h4>
+<p>After importing the Microsoft.MixedReality.Toolkit.Unity.Foundation-v2.0.0-RC1.unity package, the MRTK footprint can
+be reduced by deleting unneeded folders from:</p>
+<ul>
+<li>MixedRealityToolkit.Services</li>
+<li>MixedRealityToolkit.Providers</li>
+<li>MixedRealityToolkit.SDK\Features</li>
+</ul>
+<blockquote>
+<p>NOTE: MRTK v2 <strong><em>requires</em></strong> the contents of the Assets\MixedRealityToolkit folder.</p>
+</blockquote>
+<h2 id="release-candidate-2-plan">Release Candidate 2 Plan</h2>
+<p>In addition to the <a href="#release-candidate-1-status">RC1</a> functionality, the RC2 release will include support for:</p>
+<ul>
+<li>Package management tools</li>
+<li>Application architecture flexibility</li>
+</ul>
+<h3 id="package-management">Package Management</h3>
+<p>MRTK v2 RC2 is planned to contain support for discovering and importing service, provider, feature and extension
+packages via NuGet.</p>
+<blockquote>
+<p>There is planned to be a Mixed Reality Toolkit menu option, in the Editor, to display user interface that allows
+for filtering based on:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Component category (Foundation, Extension, Experimental)</li>
+<li>Company (ex: Microsoft)</li>
+<li>Feature type tags (ex: Audio)</li>
+<li>Number of downloads</li>
+</ul>
+</blockquote>
+<h3 id="application-architecture">Application Architecture</h3>
+<p>RC2 will have support to enable applications to be built with a variety of architectures, including:</p>
+<ul>
+<li><a href="#mixedrealitytoolkit-service-locator">MixedRealityToolkit service locator</a></li>
+<li><a href="#individual-service-components">Individual services</a></li>
+<li><a href="#custom-service-locator">Custom service locator</a></li>
+<li><a href="#hybrid-architecture">Hybrid architecture</a></li>
+</ul>
+<blockquote>
+<p>When selecting an application architecture, it is important to consider design flexibility and application
+performance. The architectures described here are not expected to be suitable for every application.</p>
+</blockquote>
+<h4 id="mixedrealitytoolkit-service-locator">MixedRealityToolkit Service Locator</h4>
+<p>RC1 enables (and automatically configures) application scenes to use the default <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> service locator
+component. This component includes support for configuring MRTK systems and data providers via configuration inspectors
+and manages component lifespans and core behaviors (ex: when to update).</p>
+<p>All systems are represented in the core configuration inspector, regardless of whether or not they are present or
+enabled in the project. Please see the <a href="../MixedRealityConfigurationGuide.html">Mixed Reality Configuration Guide</a> for more
+information.</p>
+<h4 id="individual-service-components">Individual Service Components</h4>
+<p>Some developers have expressed a desire to include individual service components into the application scene hierarchy.
+To enable this usage, services will either need to be encapsulated in a custom registrar or be self-registering / self-managing.</p>
+<blockquote>
+<p>A self-registering service would implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a> and register itself so that application
+code could discover the service instance via a registry.</p>
+</blockquote>
+<blockquote>
+<p>A self-managing service could be implemented as a singleton object in the scene hierarchy. This object would provide
+and instance property which application code could use to directly access serivce functionality.</p>
+</blockquote>
+<h4 id="custom-service-locator">Custom Service Locator</h4>
+<p>Some developers have requested the ability to create a custom service locator component. Custom service locators would
+implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a> interface and manage the lifecycle and core behaviors of active services.</p>
+<h4 id="hybrid-architecture">Hybrid Architecture</h4>
+<p>RC2 is planned to support a hybrid architecture in which developers can combine the previous approaches as needed or
+desired. For example, a developer could start with the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> service locator and add a self-registering
+service.</p>
+<blockquote>
+<p>When opting for a hybrid architecture, it is important to be mindful of any duplication of work (ex: acquiring
+controller data from multiple components).</p>
+</blockquote>
+<h2 id="official-release-plan">Official Release Plan</h2>
+<p>For the official release of MRTK v2, the componentization work will be complete. The expectation is that developers will be
+empowered to:</p>
+<ol>
+<li>Import the MRTK Core foundation package</li>
+<li>Use the built-in package management tools to discover and import individual components</li>
+<li>Select the desired application architecture</li>
+</ol>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="MRTK_Packages.html">MRTK Packages</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Packaging/MRTK_Modularization.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
