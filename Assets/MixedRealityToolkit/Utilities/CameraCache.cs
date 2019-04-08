@@ -30,7 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     switch (cameras.Length)
                     {
                         case 0:
-                            return null;
+                            Debug.LogWarning("No main camera found. The mixed reality toolkit requires at least one camera in the scene. One will be generated now.");
+                            GameObject mainCameraGo = new GameObject("Main Camera");
+                            mainCameraGo.tag = "MainCamera";
+                            Camera newMainCamera = mainCameraGo.AddComponent<Camera>();
+                            mainCamera = Refresh(newMainCamera);
+                            break;
+
                         case 1:
                             mainCamera = Refresh(cameras[0]);
                             break;
