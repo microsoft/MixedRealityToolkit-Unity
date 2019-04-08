@@ -933,6 +933,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void RaycastGraphics(IMixedRealityPointer pointer, PointerEventData graphicEventData, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
         {
             Debug.Assert(UIRaycastCamera != null, "Missing UIRaycastCamera!");
+			Debug.Assert(UIRaycastCamera.nearClipPlane == 0, "Near plane must be zero for raycast distances to be correct");
 
             RaycastResult raycastResult = default(RaycastResult);
 
@@ -954,17 +955,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (RaycastGraphicsStep(graphicEventData, pointer.Rays[i], prioritizedLayerMasks, out raycastResult))
                 {
-                    float raycastResultDistanceFromOrigin = raycastResult.distance + UIRaycastCamera.nearClipPlane;
                     if (raycastResult.isValid &&
-                        raycastResultDistanceFromOrigin < pointer.Rays[i].Length &&
+                        raycastResult.distance < pointer.Rays[i].Length &&
                         raycastResult.module != null &&
                         raycastResult.module.eventCamera == UIRaycastCamera)
                     {
-                        totalDistance += raycastResultDistanceFromOrigin;
+                        totalDistance += raycastResult.distance;
 
                         newUiRaycastPosition.x = raycastResult.screenPosition.x;
                         newUiRaycastPosition.y = raycastResult.screenPosition.y;
-                        newUiRaycastPosition.z = raycastResultDistanceFromOrigin;
+                        newUiRaycastPosition.z = raycastResult.distance;
 
                         Vector3 worldPos = UIRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
                         Vector3 normal = -raycastResult.gameObject.transform.forward;
