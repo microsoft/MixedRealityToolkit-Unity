@@ -90,6 +90,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
 
+        /// <inheritdoc />
+        public bool IsTargetPositionLockedOnFocusLock { get; set; }
+
         public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
 
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
