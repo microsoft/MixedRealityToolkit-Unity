@@ -107,7 +107,7 @@ for filtering based on:
 
 ### Application Architecture
 
-RC2 will have support completed to enable applications to be built with a variety of architectures, including:
+RC2 will have support to enable applications to be built with a variety of architectures, including:
 
 - [MixedRealityToolkit service locator](#mixedrealitytoolkit-service-locator)
 - [Individual services](#individual-service-components)
