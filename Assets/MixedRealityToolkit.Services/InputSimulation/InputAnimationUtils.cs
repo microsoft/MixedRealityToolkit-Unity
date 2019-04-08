@@ -33,11 +33,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Reject if keyframes exist too close to current time
             animation.FindKeyframeInterval(time, out InputKeyframe low, out double lowTime, out InputKeyframe high, out double highTime);
-            if (low != null && Math.Abs(lowTime - time) <= epsilonFrame)
+
+            // Only allow appending at the end, should not have keyframes after this.
+            if (high != null)
             {
                 return false;
             }
-            if (high != null && Math.Abs(highTime - time) <= epsilonFrame)
+
+            if (low != null && Math.Abs(lowTime - time) <= epsilonFrame)
             {
                 return false;
             }
@@ -52,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Reject if data hasn't changed sufficiently
             bool dataChanged = false;
-            if (low == null && high == null)
+            if (low == null)
             {
                 // First keyframe, always accept
                 dataChanged = true;
@@ -62,12 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 dataChanged |= IsHandDataChanged(low.HandDataLeft, keyframe.HandDataLeft, epsilonJointPositions);
                 dataChanged |= IsHandDataChanged(low.HandDataRight, keyframe.HandDataRight, epsilonJointPositions);
                 dataChanged |= IsCameraDataChanged(low.CameraPose, keyframe.CameraPose, epsilonCameraPosition, epsilonCameraRotation);
-            }
-            if (high != null)
-            {
-                dataChanged |= IsHandDataChanged(high.HandDataLeft, keyframe.HandDataLeft, epsilonJointPositions);
-                dataChanged |= IsHandDataChanged(high.HandDataRight, keyframe.HandDataRight, epsilonJointPositions);
-                dataChanged |= IsCameraDataChanged(high.CameraPose, keyframe.CameraPose, epsilonCameraPosition, epsilonCameraRotation);
             }
 
             if (!dataChanged)
