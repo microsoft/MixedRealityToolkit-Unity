@@ -9,10 +9,6 @@ The following sections describe the status of the componentization work for each
 - [Release Candidate 2](#release-candidate-2-plan)
 - [Official Release](#official-release-plan)
 
-> Some features may, by design, take dependencies on MRTK or other components (ex: Unity Plug-ins). 
-The package management tools will ensure that the correct dependencies are imported when one of these 
-features is selected.
-
 ## Release Candidate 1 Status
 
 With the RC1 release of MRTK v2, the majority of the componentization work has been completed. 
