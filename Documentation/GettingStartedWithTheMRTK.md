@@ -12,7 +12,7 @@ To get started with the Mixed Reality Toolkit you will need:
 * [Visual Studio 2017](http://dev.windows.com/downloads)
 * [Unity 2018.3+](https://unity3d.com/get-unity/download/archive)
 * [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
-* You don't need this to simulate in Unity Editor, but if you want to build your MRTK project as a UWP to run on HoloLens, you will need [Windows SDK 18362+](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK)
+* You don't need this to simulate in Unity Editor, but if you want to build your MRTK project as a UWP to run on HoloLens, you will need [Windows SDK 18362+](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK).
 
 
 ## Get the latest MRTK Unity packages
@@ -21,6 +21,10 @@ To get started with the Mixed Reality Toolkit you will need:
 > The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
 
 ## Open and run the HandInteractionExample scene in editor
+
+[![HandInteractionExample scene](../External/ReadMeImages/MRTK_Examples.png)](README_HandInteractionExamples.md)
+
+The [hand interaction examples scene](README_HandInteractionExamples.md) is a great place to get started with because it shows a wide variety of UX controls and interactions in MRTK. To get started we will import MRTK, open the example scene, and explore the scene in the editor.
 1. Create a new Unity project. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.X release should work.
 
 2. Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
@@ -35,11 +39,11 @@ To get started with the Mixed Reality Toolkit you will need:
 
 8. Select "Import TMP essentials" button. "TMP Essentials" refers to TextMeshPro plugin, which some of the MRTK examples use for improved text rendering.
 
-9. Close the TMPPro dialog. After this you need to reload Unity, so close unity and re-open unity, then open your project and go back to the scene
+9. Close the TMPPro dialog. After this you need to reload Unity, so close unity and re-open unity, then open your project and go back to the scene.
 
-Finally, press the play button to start the scene and explore the scene! You can use simulated hands to interact in editor. Press WASD keys to fly around the scene. Press and hold right mouse to look around. Press and hold space to turn on right hand. Try pressing buttons using either the far hand ray or near interaction by moving the hand. 
+Finally, press the play button to start the scene and explore the scene! You can use simulated hands to interact in editor. Press WASD keys to fly around the scene. Press and hold right mouse to look around. Press and hold space bar to use a simulated hand.
 
-There's quite a bit to explore in this scene, have fun! Learn more about the components in the scene [in the hand interaction examples guide](README_HandInteractionExamples.md). Read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor. 
+There's quite a bit to explore in this scene, have fun! Learn more about the components in the scene [in the hand interaction examples guide](README_HandInteractionExamples.md). You can also read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
 
 Congratulations, you just used your first MRTK scene. Now onto creating your own stuff...
 
@@ -50,9 +54,9 @@ Congratulations, you just used your first MRTK scene. Now onto creating your own
 > *Note* when creating a new project with Unity 2018, Unity gives you several templates to choose from.  Currently the **MRTK does not yet support the Scriptable Render Pipeline**, so the LWSRP, HDSRP and VRSRP projects are not compatible with MRTK projects.
 
 ### 2. Import MRTK Packages
-1. Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
+Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
 
-2. Import the Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage following the same steps as above.
+We also recommend that you import the Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage following the same steps as above.
 
 > The examples package is optional but contains useful demonstration scenes for current MRTK features.
 
@@ -89,9 +93,7 @@ Which contains the following:
 > If you need to move the players start point, then **move the scene content and NOT the camera**!
 
 ### 5. Hit play
-Press the play button to start the scene. Press WASD keys to fly around the scene. Press and hold right mouse to look around. Press and hold space to turn on right hand. Try pressing buttons using either the far hand ray or near interaction by moving the hand. 
-
-You are now ready to start building your Mixed Reality Solution, just start adding content and get building. Here are suggested next steps.
+Press the play button to start the scene. You are now ready to start building your project, just start adding content and get building. Here are suggested next steps.
 
 ## Get building your project
 
@@ -112,12 +114,6 @@ Now your project is up and running, you can start building your Mixed Reality pr
 | Various object positioning behaviors such as tag-along, body-lock, constant view size and surface magnetism | Script for lay out an array of objects in a three-dimensional shape | Annotation UI with flexible anchor/pivot system which can be used for labeling motion controllers and object. |
 |  [![App Bar](../External/ReadMeImages/AppBar/MRTK_AppBar_Main.png)](README_AppBar.md) [App Bar](README_AppBar.md) | [![Pointers](../External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)](README_Pointers.md) [Pointers](README_Pointers.md) | [![Fingertip Visualization](../External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png)](README_FingertipVisualization.md) [Fingertip Visualization](README_FingertipVisualization.md) |
 | UI for Bounding Box's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
-
-## MRTK Example Scene
-You can find various types of interactions and UI controls in the [hand interaction examples scene](README_HandInteractionExamples.md).
-
-[![Button](../External/ReadMeImages/MRTK_Examples.png)](README_HandInteractionExamples.md)
-
 
 # Upgrading from the HoloToolkit (HTK/MRTK v1)
 
