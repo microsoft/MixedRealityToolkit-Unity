@@ -93,12 +93,10 @@ You are now ready to start building your Mixed Reality Solution, just start addi
 
 ## Get building your project
 
-Now your project is up and running, you can start building your Mixed Reality project.  
+Now your project is up and running, you can start building your Mixed Reality project. Here are some suggested next steps:
 
-For more information on the rest of the toolkit, please check the following guides:
-
+* Explore the [hand interaction examples scene](README_HandInteractionExamples.md) if you haven't already. Instructions to get started are above.
 * Learn about the UX controls available in MRTK in [building blocks for UI and interactions](#building-blocks-for-ui-and-interactions).
-* Explore the [hand interaction examples scene](README_HandInteractionExamples.md). Instructions to get started are above.
 * Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
 * Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md)
 
