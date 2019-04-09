@@ -2,7 +2,7 @@
 
 ![](../External/ReadMeImages/MRTK_Logo_Rev.png)
 
-The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR). It provides a common logical platform to build your dream, together with a rich set of services and SDK components for building your project.
+The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR). It provides a common logical platform to build your dream, together with a rich set of services, SDK components, UI controls, and examples.
 
 ## Prerequisites
 
