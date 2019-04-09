@@ -19,7 +19,7 @@ To get started with the Mixed Reality Toolkit you will need:
 2. Under Assets, download both Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage and Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage
 > The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
 
-## Open and run the HandInteractionExample scene in editor
+## Open and run the HandInteractionExamples scene in editor
 
 [![HandInteractionExample scene](../External/ReadMeImages/MRTK_Examples.png)](README_HandInteractionExamples.md)
 
@@ -40,7 +40,7 @@ The [hand interaction examples scene](README_HandInteractionExamples.md) is a gr
 
 9. Close the TMPPro dialog. After this you need to reload Unity, so close unity and re-open unity, then open your project and go back to the scene.
 
-Finally, press the play button to start the scene and explore the scene! You can use simulated hands to interact in editor. Press WASD keys to fly around the scene. Press and hold right mouse to look around. Press and hold space bar to use a simulated hand.
+10. Finally, press the play button to start the scene and explore the scene! You can use simulated hands to interact in editor. Press WASD keys to fly around the scene. Press and hold right mouse to look around. Press and hold space bar to use a simulated hand.
 
 There's quite a bit to explore in this scene, have fun! Learn more about the components in the scene [in the hand interaction examples guide](README_HandInteractionExamples.md). You can also read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
 
@@ -48,11 +48,11 @@ Congratulations, you just used your first MRTK scene. Now onto creating your own
 
 ## Add MRTK to a new scene or new project
 
-### 1. Create a new project, or start a new scene in your current project
+1. Create a new project, or start a new scene in your current project
 
 > *Note* when creating a new project with Unity 2018, Unity gives you several templates to choose from.  Currently the **MRTK does not yet support the Scriptable Render Pipeline**, so the LWSRP, HDSRP and VRSRP projects are not compatible with MRTK projects.
 
-### 2. Import MRTK Packages
+2. Import MRTK Packages
 Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
 
 We also recommend that you import the Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage following the same steps as above.
@@ -61,7 +61,7 @@ We also recommend that you import the Microsoft.MixedRealityToolkit.Unity.Exampl
 
 > Note that some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
 
-### 3. Configure your first Mixed Reality Toolkit scene
+3. Configure your first Mixed Reality Toolkit scene
 
 The toolkit has been designed so that there is just one object that is mandatory in your scene.  This is there to provide the core configuration and runtime for the Mixed Reality Toolkit.
 
