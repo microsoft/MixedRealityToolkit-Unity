@@ -14,11 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         [SerializeField]
         [Tooltip("Minimum time between keyframes")]
-        private float epsilonTime = 0.1f;
+        private float epsilonTime = 0.05f;
         public float EpsilonTime => epsilonTime;
         [SerializeField]
         [Tooltip("Minimum movement of hand joints to record a keyframe")]
-        private float epsilonJointPositions = 0.01f;
+        private float epsilonJointPositions = 0.001f;
         public float EpsilonJointPositions => epsilonJointPositions;
         [SerializeField]
         [Tooltip("Minimum movement of the camera to record a keyframe")]
