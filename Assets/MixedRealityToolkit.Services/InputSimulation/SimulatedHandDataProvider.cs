@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SimulatedHandState HandStateLeft;
         private SimulatedHandState HandStateRight;
 
-        // If true then hands are control by user input
+        // If true then hands are controlled by user input
         private bool isSimulatingLeft = false;
         private bool isSimulatingRight = false;
         // Last frame's mouse position for computing delta
