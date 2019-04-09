@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SimulatedHandState HandStateLeft;
         private SimulatedHandState HandStateRight;
 
-        // If true then hands are control by user input
+        // If true then hands are controlled by user input
         private bool isSimulatingLeft = false;
         private bool isSimulatingRight = false;
         // Last frame's mouse position for computing delta
@@ -182,6 +182,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SimulateUserInput();
 
             bool handDataChanged = false;
+            // TODO: DateTime can be quite imprecise, better use Stopwatch.GetTimestamp
+            // https://stackoverflow.com/questions/2143140/c-sharp-datetime-now-precision
             long timestamp = DateTime.UtcNow.Ticks;
             handDataChanged |= handDataLeft.UpdateWithTimestamp(timestamp, HandStateLeft.IsTracked, HandStateLeft.IsPinching, HandStateLeft.FillCurrentFrame);
             handDataChanged |= handDataRight.UpdateWithTimestamp(timestamp, HandStateRight.IsTracked, HandStateRight.IsPinching, HandStateRight.FillCurrentFrame);
@@ -294,6 +296,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Update tracked state of a hand.
             // If hideTimeout value is null, hands will stay visible after tracking stops.
+            // TODO: DateTime can be quite imprecise, better use Stopwatch.GetTimestamp
+            // https://stackoverflow.com/questions/2143140/c-sharp-datetime-now-precision
             DateTime currentTime = DateTime.UtcNow;
             if (isAlwaysVisible || isSimulating)
             {

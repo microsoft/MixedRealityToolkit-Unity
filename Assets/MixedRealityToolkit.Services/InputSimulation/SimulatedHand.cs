@@ -45,6 +45,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public bool Update(bool isTrackedNew, bool isPinchingNew, HandJointDataGenerator generator)
         {
+            // TODO: DateTime can be quite imprecise, better use Stopwatch.GetTimestamp
+            // https://stackoverflow.com/questions/2143140/c-sharp-datetime-now-precision
             return UpdateWithTimestamp(DateTime.UtcNow.Ticks, isTrackedNew, isPinchingNew, generator);
         }
 
