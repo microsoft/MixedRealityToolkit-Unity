@@ -59,6 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty holdStartDuration;
         private SerializedProperty manipulationStartThreshold;
 
+        private SerializedProperty recordingSettings;
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -112,6 +114,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             rollHandCWKey = serializedObject.FindProperty("rollHandCWKey");
             rollHandCCWKey = serializedObject.FindProperty("rollHandCCWKey");
             handRotationSpeed = serializedObject.FindProperty("handRotationSpeed");
+
+            recordingSettings = serializedObject.FindProperty("recordingSettings");
         }
 
         public override void OnInspectorGUI()
@@ -204,6 +208,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 EditorGUILayout.EndVertical();
                 GUI.enabled = isGUIEnabled;
             }
+
+            EditorGUILayout.PropertyField(recordingSettings, true);
 
             serializedObject.ApplyModifiedProperties();
         }

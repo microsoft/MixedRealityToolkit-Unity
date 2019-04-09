@@ -11,27 +11,11 @@ using System.Linq;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Settings for behaviour of the playable during play mode.
-    /// </summary>
-    [System.Serializable]
-    public class InputAnimationRecordingSettings
-    {
-        /// Minimum time between keyframes.
-        public float epsilonTime = 0.1f;
-        /// Minimum movement of hand joints to record a keyframe.
-        public float epsilonJointPositions = 0.01f;
-        /// Minimum movement of the camera to record a keyframe.
-        public float epsilonCameraPosition = 0.05f;
-        /// Minimum rotation angle of the camera to record a keyframe.
-        public float epsilonCameraRotation = Mathf.Deg2Rad * 2.0f;
-    }
-
-    /// <summary>
     /// Utility component to record an InputAnimation.
     /// </summary>
     internal class InputAnimationRecorder : MonoBehaviour
     {
-        public InputAnimationRecordingSettings settings = null;
+        public InputRecordingSettings settings = null;
 
         public InputAnimation inputAnimation;
 
@@ -49,10 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             InputAnimationUtils.RecordKeyframeFiltered(
                 inputAnimation,
                 currentTime,
-                settings.epsilonTime,
-                settings.epsilonJointPositions,
-                settings.epsilonCameraPosition,
-                settings.epsilonCameraRotation);
+                settings.EpsilonTime,
+                settings.EpsilonJointPositions,
+                settings.EpsilonCameraPosition,
+                settings.EpsilonCameraRotation);
         }
     }
 
@@ -72,11 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return inputAnimation; }
             set { inputAnimation = value; }
         }
-
-        /// <summary>
-        /// Settings for recording new input animation.
-        /// </summary>
-        public InputAnimationRecordingSettings RecordingSettings;
 
         /// <summary>
         /// Input animation clip currently being recorded.
@@ -106,8 +85,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return false;
             }
 
+            var inputSimService = mrtk.GetService<InputSimulationService>();
+            if (inputSimService == null)
+            {
+                return false;
+            }
+
+            var profile = inputSimService.GetInputSimulationProfile();
+            if (!profile)
+            {
+                return false;
+            }
+
             recorder = mrtk.gameObject.AddComponent<InputAnimationRecorder>();
-            recorder.settings = RecordingSettings;
+            recorder.settings = profile.RecordingSettings;
 
             return true;
         }
