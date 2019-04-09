@@ -4,7 +4,7 @@ Dictation allows users to record audio clips and obtain a transcription. To use 
 
 <img src="../../External/ReadMeImages/Input/DictationDataProvider.png" width="80%" class="center">
 
-Once you have a dictation service set up, you can use the [`DictationHandler`](xref:Microsoft.MixedReality.Toolkit.Input.DictationHandler) script to start and stop recording sessions and obtain the trancsription results via UnityEvents.
+Once you have a dictation service set up, you can use the [`DictationHandler`](xref:Microsoft.MixedReality.Toolkit.Input.DictationHandler) script to start and stop recording sessions and obtain the transcription results via UnityEvents.
 
 <img src="../../External/ReadMeImages/Input/DictationHandler.png" width="80%" class="center">
 
