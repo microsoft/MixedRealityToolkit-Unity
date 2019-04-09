@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool IsAlwaysVisibleLeft = false;
         /// <summary>
-        /// If true then the hand is always visible, regardless if simulating.
+        /// If true then the hand is always visible, regardless of simulating.
         /// </summary>
         public bool IsAlwaysVisibleRight = false;
 
