@@ -49,5 +49,5 @@ The Mixed Reality Toolkit v2 is authored by:
 - thalbern
 - wassx
 - witian
-- wiwei
+- wiwei-test
 - Yoyozilla
