@@ -14,37 +14,51 @@ To get started with the Mixed Reality Toolkit you will need:
 * [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 * [Windows SDK 18362+](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK)
 
-## Open and run the HandInteractionExample scene
+## Get the latest MRTK Unity packages
 1. Go to the  [MRTK release page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases).
-2. Under Assets, download both `Microsoft.MixedRealityToolkit.Unity.Examples` .unitypackage and `Microsoft.MixedRealityToolkit.Unity.Foundation`
-3. Create a new Unity project. We used 2018.3.9f1 for this tutorial.
-
+2. Under Assets, download both Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage and Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage
 > The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
+
+## Open and run the HandInteractionExample scene
+1. Create a new Unity project. We used 2018.3.9f1 for this tutorial.
+
+2. Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
+
+3. Import the Microsoft.MixedRealityToolkit.Unity.Examples following the same steps as above.
+
+> The examples package contains demonstration scenes for current MRTK features.
+
+6. Open the HandInteractionExamples scene under `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples`
+7. You will get a prompt asking you to import "TMP Essentials". 
+![TMP Essentials](../External/Documentation/Images/MRTK_GettingStarted_TMPro.png)
+
+8. Select "Import TMP essentials" button. "TMP Essentials" refers to TextMeshPro plugin, which some of the MRTK examples use for improved text rendering.
+
+9. Close the TMPPro dialog. After this you need to reload Unity, so close unity and re-open unity, then open your project and go back to the scene
+
+10. Press the play button to start the scene.
+
+11. Press WASD keys to fly around the scene. Press and hold right mouse to look around.
+
+12. Press and hold space to turn on right hand. Try pressing buttons using either the far hand ray or near interaction by moving the hand. 
+
+13. Read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
+
+Congratulations, you just used your first MRTK scene! Now onto creating your own stuff...
 
 ## Add MRTK to a new scene or new project
 
-If you want to add mrtk to a branch new project or empty scene, the steps are as follows:
-
-### 1. Create your new project (or start a new scene in your current project)
+1. Create a new project, or start a new scene in your current project
 
 > *Note* when creating a new project with Unity 2018, Unity gives you several templates to choose from.  Currently the **MRTK does not yet support the Scriptable Render Pipeline**, so the LWSRP, HDSRP and VRSRP projects are not compatible with MRTK projects.  Please stay tuned to the MRTK GitHub site for future announcements on SRP support.
 
-### 2. [Import the Mixed Reality Toolkit asset](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
+2. Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
 
+3. Import the Microsoft.MixedRealityToolkit.Unity.Examples following the same steps as above.
 
-Get the asset and import it in to your Unity project using  "Asset -> Import Package -> Custom Package" from the Unity Editor menu.
+> The examples package contains demonstration scenes for current MRTK features.
 
-![](../External/ReadMeImages/Unity_ImportAssetOption.png)
-
-Accept all the content and continue.
-
-![](../External/ReadMeImages/MRTK_AssetImportDialog.png)
-
-> The SDK is optional but highly recommended for new users.  Once you have a feel for how the toolkit works, you can remove these safely if you are not using them.
-
-> The MRTK also provides a [separate "Examples" asset](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases), which currently contains demonstration scenes for current MRTK features.  In the future this will also contain educational "Example" scenes to aid with learning implementation tricks with the toolkit.
-
-Note that some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources).
+> Note that some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
 
 ### 3. Accept the Setup prompt (optional)
 ![](../External/ReadMeImages/MRTK_UnitySetupPrompt.png)
