@@ -7,15 +7,15 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 {
-    [CustomEditor(typeof(InputTrackAsset))]
-    public class InputTrackAssetEditor : UnityEditor.Editor
+    [CustomEditor(typeof(InputAnimationAsset))]
+    public class InputAnimationAssetEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
 
             bool isGUIEnabled = GUI.enabled;
-            var asset = target as InputTrackAsset;
+            var asset = target as InputAnimationAsset;
 
             GUI.enabled = isGUIEnabled && Application.isPlaying;
 
