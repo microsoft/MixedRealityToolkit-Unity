@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
     /// <summary>
     /// Creator for making prefab instances
     /// </summary>
-    /// <seealso cref="Longbow.Helpers.IGameObjectCreator" />
+    /// <seealso cref="Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement.GameObjectCreator" />
     public class GenericPrefabInstanceCreator : GameObjectCreator
     {
         /// <summary>

@@ -27,9 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
             var components = obj.GetComponents<MonoBehaviour>();
             foreach (var component in components)
             {
-                if (component is IGameObjectCreatorHandler)
+                if (component is IGameObjectCreatorListener)
                 {
-                    (component as IGameObjectCreatorHandler).PrepareForRecycle();
+                    (component as IGameObjectCreatorListener).PrepareForRecycle();
                 }
             }
         }
@@ -45,9 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
             var components = obj.GetComponents<MonoBehaviour>();
             foreach (var component in components)
             {
-                if (component is IGameObjectCreatorHandler)
+                if (component is IGameObjectCreatorListener)
                 {
-                    (component as IGameObjectCreatorHandler).PrepareForUse();
+                    (component as IGameObjectCreatorListener).PrepareForUse();
                 }
             }
         }

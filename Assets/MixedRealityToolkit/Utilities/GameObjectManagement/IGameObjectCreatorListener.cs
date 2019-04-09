@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
     /// GameObjectPool) can implement in order to handle preparation for
     /// recycling and reuse.
     /// </summary>
-    public interface IGameObjectCreatorHandler
+    public interface IGameObjectCreatorListener
     {
         /// <summary>
         /// Called when the GameObject is about to be recycled by the GameObjectPool. This allows you to potentially free
