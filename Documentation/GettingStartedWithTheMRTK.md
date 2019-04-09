@@ -44,126 +44,59 @@ To get started with the Mixed Reality Toolkit you will need:
 
 13. Read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
 
+14. Explore the scene! Learn more about the components in the scene [here](README_HandInteractionExamples.md).
+
 Congratulations, you just used your first MRTK scene! Now onto creating your own stuff...
 
 ## Add MRTK to a new scene or new project
 
-1. Create a new project, or start a new scene in your current project
+### 1. Create a new project, or start a new scene in your current project
 
 > *Note* when creating a new project with Unity 2018, Unity gives you several templates to choose from.  Currently the **MRTK does not yet support the Scriptable Render Pipeline**, so the LWSRP, HDSRP and VRSRP projects are not compatible with MRTK projects.  Please stay tuned to the MRTK GitHub site for future announcements on SRP support.
 
-2. Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
+### 2. Import MRTK Packages
+1. Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
 
-3. Import the Microsoft.MixedRealityToolkit.Unity.Examples following the same steps as above.
+2. Import the Microsoft.MixedRealityToolkit.Unity.Examples following the same steps as above.
 
-> The examples package contains demonstration scenes for current MRTK features.
+> The examples package is optional but contains useful demonstration scenes for current MRTK features.
 
 > Note that some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
 
-### 3. Accept the Setup prompt (optional)
-![](../External/ReadMeImages/MRTK_UnitySetupPrompt.png)
+### 3. Configure your first Mixed Reality Toolkit scene
 
-Once imported, the MRTK will attempt to setup your project automatically for building Mixed Reality solutions, namely setting:
-
-* Enable XR Settings for your current platform (enabling the XR checkbox)
-> Note, you need to do this for each platform you wish to deploy on
-* Force Text Serialization / Visible Meta files (recommended for Unity projects using source control)
-* Change the Scripting back-end to use IL2CPP (as Unity is deprecating the .NET scripting back-end)
-
-> The only option which is mandatory (and not listed above) is to set Unity to use the .NET 4 scripting runtime by default, as the MRTK uses advanced coding functions only available in .NET4+.  
-> From Unity 2018.3 and above, this will be the default for new Unity Projects.
-
-This prompt will automatically set the above options for you and restart Unity (for the .NET update) ready to start building your MRTK project.
-
-Accepting these options is completely optional (except .NET 4), if you click **Later**, the MRTK will not ask you again and leave you to it.  You can then choose to set these options manually later as you see fit.
-
-### 4. Configure your first Mixed Reality Toolkit scene
-
-The toolkit has been designed so that there is just one object that is mandatory in your scene.  This is there to provide the core configuration and runtime for the Mixed Reality Toolkit (one of the key advantages in the new framework).
+The toolkit has been designed so that there is just one object that is mandatory in your scene.  This is there to provide the core configuration and runtime for the Mixed Reality Toolkit.
 
 Configuring your scene is extremely simple by simply selecting the following from the Editor menu:
 > Mixed Reality Toolkit -> Add to Scene and Configure
 
 ![](../External/ReadMeImages/MRTK_ConfigureScene.png)
 
+You will see a prompt like this:
+
+![](../External/ReadMeImages/MRTK_ConfigureDialog.png)
+
+Click "OK". You will then be prompted to choose an MRTK Configuration profile. Select "DefaultMixedRealityToolkitConfigurationProfile".
+
+![](../External/ReadMeImages/MRTK_SelectConfigurationDialog.png)
+
 Once this completes, you will see the following in your Scene hierarchy:
 
 ![](../External/ReadMeImages/MRTK_SceneSetup.png)
-
-> The MRTK will also select the configured profile, [click here for more details on this configuration screens](#configuring)
 
 Which contains the following:
 
 * Mixed Reality Toolkit - The toolkit itself, providing the central configuration entry point for the entire framework.
 * MixedRealityPlayspace - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.
 * The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDK's
-* UIRaycastCamera added as a child to the Main Camera - To enable seamless UI interactions through the toolkit
 
 > **Note** While working in your scene, **DON'T move the Main Camera** (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
 > If you need to move the players start point, then **move the scene content and NOT the camera**!
 
 ### 5. Hit play
+Press the play button to start the scene. Press WASD keys to fly around the scene. Press and hold right mouse to look around. Press and hold space to turn on right hand. Try pressing buttons using either the far hand ray or near interaction by moving the hand. 
 
-You are now ready to start building your Mixed Reality Solution, just start adding content and get building.
-Switch to other platforms (ensure they have XR enabled in their player settings) and your project will still run as expected without change.
-
-<a name="configuring"/>
-
-## Upgrading from the HoloToolkit (HTK/MRTK v1)
-
-There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework.  However, it is possible to import the MRTK into your HoloToolkit project and start work migrating your implementation if you wish.
-
-* [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
-
-## Configuring your project
-
-The Mixed Reality Toolkit configuration is all centralized on one place and attached to the MixedRealityToolkit object in your active scene.
-
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
-
-Clicking on this profile will show the configuration screens for the Mixed Reality Toolkit:
-
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png)
-
-From here you can navigate to all the configuration profiles for the MRTK, including:
-
-> The "Default" profiles provided by the Mixed Reality Toolkit are locked by default, so when you view these in the inspector they will appear greyed out.  This is to ensure you always have a common default for any project.  We recommend you create your own profiles (see below) when you need to customize the configuration for your project.
-
-* Main Mixed Reality Toolkit Configuration
-* Camera Settings
-* Input System Settings
-* Boundary Visualization Settings
-* Teleporting Settings
-* Spatial Awareness Settings
-* Diagnostics Settings
-* Additional Services Settings
-* Input Actions Settings
-* Input Actions Rules
-* Pointer Configuration
-* Gestures Configuration
-* Speech Commands
-* Controller Mapping Configuration
-* Controller Visualization Settings
-
-As you can see there are lots of options available and more will come available as we progress through the beta.
-
-When you start a new project, we provide a default set of configurations with every option turned on, styled for a fully cross platform project.  These defaults are "Locked" to ensure you always have a common start point for your project and we encourage you to start defining your own settings as your project evolves.  For this we provide options to either:
-
-* Copy the defaults in to a new profile for you to start customizing it for your project
-* Start afresh with a brand-new profile.
-
-![](../External/ReadMeImages/MRTK_CopyCreateConfigurationOptions.png)
-
-When profiles are created by the MRTK, they are then placed in the following folder:
-
-> "Assets\MixedRealityToolkit-Generated\CustomProfiles"
-
-At each step in the configuration, you can choose to remove and create a new profile, or simply copy the existing settings and continue to customize:
-
-![](../External/ReadMeImages/MRTK_CopyProfileOptions.png)
-
-### **[For more information on customizing the Configuration Profiles](MixedRealityConfigurationGuide.md)**
-Please check out the [Mixed Reality Configuration Guide](MixedRealityConfigurationGuide.md)
+You are now ready to start building your Mixed Reality Solution, just start adding content and get building. Here are suggested next steps.
 
 ## Get building your project
 
@@ -171,7 +104,12 @@ Now your project is up and running, you can start building your Mixed Reality pr
 
 For more information on the rest of the toolkit, please check the following guides:
 
-* [Mixed Reality Configuration Guide](MixedRealityConfigurationGuide.md)
+* Explore the [hand interaction examples scene](README_HandInteractionExamples.md). Instructions to get started are above.
+* Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
+* Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md)
+* Learn about the UX controls available in MRTK in [building blocks for UI and interactions](#building-blocks-for-ui-and-interactions).
+
+The following guides are coming soon:
 * [Getting to know the Mixed Reality Toolkit Input System]() (Coming Soon)
 * [Customizing your controllers in the MRTK]() (Coming Soon)
 * [A walkthrough the UX components of the MRTK SDK]() (Coming Soon)
@@ -192,7 +130,15 @@ For more information on the rest of the toolkit, please check the following guid
 |  [![App Bar](../External/ReadMeImages/AppBar/MRTK_AppBar_Main.png)](README_AppBar.md) [App Bar](README_AppBar.md) | [![Pointers](../External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)](README_Pointers.md) [Pointers](README_Pointers.md) | [![Fingertip Visualization](../External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png)](README_FingertipVisualization.md) [Fingertip Visualization](README_FingertipVisualization.md) |
 | UI for Bounding Box's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
 
-## Example Scene
-You can find various types of interactions and UI controls in this example scene.
+## MRTK Example Scene
+You can find various types of interactions and UI controls in the [hand interaction examples scene](README_HandInteractionExamples.md).
 
 [![Button](../External/ReadMeImages/MRTK_Examples.png)](README_HandInteractionExamples.md)
+
+
+# Upgrading from the HoloToolkit (HTK/MRTK v1)
+
+There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework.  However, it is possible to import the MRTK into your HoloToolkit project and start work migrating your implementation if you wish.
+
+* [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
+
