@@ -35,7 +35,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [HideInInspector]
         internal List<T> serializedValues = null;
 
-        public int keyframeCount => keyframes.Count;
+        public int KeyframeCount => keyframes.Count;
+
+        private double duration = 0.0;
+        public double Duration
+        {
+            get { return duration; }
+            set { duration = value; }
+        }
 
         public double GetTime(int index)
         {

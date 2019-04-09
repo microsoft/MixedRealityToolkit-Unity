@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static InputSimulationService inputSimService = null;
         private static InputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<InputSimulationService>());
 
-        public static void RecordKeyframe(InputAnimation animation, ulong frame)
+        public static void RecordKeyframe(InputAnimation animation, double time)
         {
             var keyframe = new InputKeyframe(new SimulatedHandData(), new SimulatedHandData());
 
@@ -26,7 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 keyframe.CameraPose = new MixedRealityPose(CameraCache.Main.transform.position, CameraCache.Main.transform.rotation);
             }
 
-            animation.InsertKeyframe(keyframe, frame);
+            animation.Duration = Math.Max(animation.Duration, time);
+            animation.InsertKeyframe(keyframe, time);
         }
 
         public static bool RecordKeyframeFiltered(InputAnimation animation, double time, float epsilonFrame, float epsilonJointPositions, float epsilonCameraPosition, float epsilonCameraRotation)
@@ -40,40 +41,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return false;
             }
 
-            if (low != null && Math.Abs(lowTime - time) <= epsilonFrame)
-            {
-                return false;
-            }
-
-            var keyframe = new InputKeyframe(new SimulatedHandData(), new SimulatedHandData());
-            RecordInputHandData(Handedness.Left, keyframe.HandDataLeft);
-            RecordInputHandData(Handedness.Right, keyframe.HandDataRight);
-            if (CameraCache.Main)
-            {
-                keyframe.CameraPose = new MixedRealityPose(CameraCache.Main.transform.position, CameraCache.Main.transform.rotation);
-            }
+            animation.Duration = Math.Max(animation.Duration, time);
 
             // Reject if data hasn't changed sufficiently
             bool dataChanged = false;
-            if (low == null)
+            if (low == null || Math.Abs(lowTime - time) > epsilonFrame)
             {
-                // First keyframe, always accept
-                dataChanged = true;
-            }
-            if (low != null)
-            {
-                dataChanged |= IsHandDataChanged(low.HandDataLeft, keyframe.HandDataLeft, epsilonJointPositions);
-                dataChanged |= IsHandDataChanged(low.HandDataRight, keyframe.HandDataRight, epsilonJointPositions);
-                dataChanged |= IsCameraDataChanged(low.CameraPose, keyframe.CameraPose, epsilonCameraPosition, epsilonCameraRotation);
+                var keyframe = new InputKeyframe(new SimulatedHandData(), new SimulatedHandData());
+                RecordInputHandData(Handedness.Left, keyframe.HandDataLeft);
+                RecordInputHandData(Handedness.Right, keyframe.HandDataRight);
+                if (CameraCache.Main)
+                {
+                    keyframe.CameraPose = new MixedRealityPose(CameraCache.Main.transform.position, CameraCache.Main.transform.rotation);
+                }
+
+                if (low == null)
+                {
+                    // First keyframe, always accept
+                    dataChanged = true;
+                }
+                if (low != null)
+                {
+                    dataChanged |= IsHandDataChanged(low.HandDataLeft, keyframe.HandDataLeft, epsilonJointPositions);
+                    dataChanged |= IsHandDataChanged(low.HandDataRight, keyframe.HandDataRight, epsilonJointPositions);
+                    dataChanged |= IsCameraDataChanged(low.CameraPose, keyframe.CameraPose, epsilonCameraPosition, epsilonCameraRotation);
+                }
+
+                if (dataChanged)
+                {
+                    animation.InsertKeyframe(keyframe, time);
+                }
             }
 
-            if (!dataChanged)
-            {
-                return false;
-            }
-
-            animation.InsertKeyframe(keyframe, time);
-            return true;
+            return dataChanged;
         }
 
         private static bool IsHandDataChanged(SimulatedHandData a, SimulatedHandData b, float epsilonJointPositions)

@@ -44,25 +44,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class InputAnimationAsset : PlayableAsset
     {
         /// </inheritdoc>
-        public override double duration => (InputAnimation != null && InputAnimation.keyframeCount > 0) ? InputAnimation.GetTime(InputAnimation.keyframeCount - 1) : 0.0;
+        public override double duration => (InputAnimation != null ? InputAnimation.Duration : 0.0);
 
         /// <summary>
-        /// Controller input animation data.
+        /// Input animation data.
         /// </summary>
         [SerializeField]
         private InputAnimation inputAnimation = new InputAnimation();
-        public InputAnimation InputAnimation
-        {
-            get { return inputAnimation; }
-            set { inputAnimation = value; }
-        }
+        public InputAnimation InputAnimation => inputAnimation;
 
-        /// <summary>
-        /// Input animation clip currently being recorded.
-        /// </summary>
+        /// Utility class that records input animation.
         internal InputAnimationRecorder recorder = null;
 
+        /// <summary>
+        /// True if new input animation is being recorded.
+        /// </summary>
         public bool IsRecording => (recorder != null);
+
+        /// <summary>
+        /// New input animation data that is currently being recorded.
+        /// </summary>
+        public InputAnimation RecordingInputAnimation => (recorder ? recorder.inputAnimation : null);
 
         /// </inheritdoc>
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
