@@ -91,7 +91,7 @@ Which contains the following:
 > **Note** While working in your scene, **DON'T move the Main Camera** (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
 > If you need to move the players start point, then **move the scene content and NOT the camera**!
 
-### 5. Hit play
+5. Hit play
 Press the play button to start the scene. You are now ready to start building your project, just start adding content and get building. Here are suggested next steps.
 
 ## Get building your project
