@@ -2,7 +2,7 @@
 
 ![](../External/ReadMeImages/MRTK_Logo_Rev.png)
 
-The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR). This guide covers how to get MRTK, try out the hand interactions example in editor, how to add MRTK to your Unity project or Unity scene.
+The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR). This guide covers how to get started with MRTK.
 
 ## Prerequisites
 
@@ -17,30 +17,27 @@ To get started with the Mixed Reality Toolkit you will need:
 ## Get the latest MRTK Unity packages
 1. Go to the  [MRTK release page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases).
 2. Under Assets, download both Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage and Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage
-> The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
+> The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will be available via the Unity package manager.
 
 ## Import MRTK packages into your project
-1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type, currently MRTK does not support the other project types. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.X release should work.
+1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. 
 
-2. Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
+> We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.X release should work.
 
-3. Accept the Setup prompt (optional)
+2. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
 
-![](../External/ReadMeImages/MRTK_UnitySetupPrompt.png)
+> After importing the Foundation package, you may see a setup prompt like the following:
+> 
+> ![](../External/ReadMeImages/MRTK_UnitySetupPrompt.png)
+> 
+> MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:
+> * Enable XR Settings for your current platform (enabling the XR checkbox).
+> * Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).
+> * Change the Scripting back-end to use IL2CPP (as Unity is deprecating the .NET scripting back-end).
+>
+> Accepting these options is completely optional. If you click **Later**, MRTK will not ask you again.  You can then set these options manually if you wish.
 
-
-Once imported, the MRTK will attempt to setup your project automatically for building Mixed Reality solutions by doing the following:
-
-* Enable XR Settings for your current platform (enabling the XR checkbox). **Note:** you need to do this for each platform you wish to deploy on
-* Force Text Serialization / Visible Meta files (recommended for Unity projects using source control)
-* Change the Scripting back-end to use IL2CPP (as Unity is deprecating the .NET scripting back-end)
-
-
-Accepting these options is completely optional (except .NET 4), if you click **Later**, the MRTK will not ask you again and leave you to it.  You can then choose to set these options manually later as you see fit.
-
-3. Import Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage following the same steps as above.
-
-> The examples package is optional but contains useful demonstration scenes for current MRTK features.
+3. Import `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` following the same steps as above. The examples package is optional but contains useful demonstration scenes for current MRTK features.
 
 > Note that some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
 
