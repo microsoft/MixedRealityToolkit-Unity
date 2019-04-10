@@ -1308,18 +1308,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
                     latestFrame = frame;
                 }
 
-                int numCallbacks = OnFrameCaptured.GetInvocationList().Length;
-                if (getFrame && OnFrameCaptured != null && numCallbacks > 0)
-                {
-                    /// TODO: add refs
-                    for (int i = 0; i < numCallbacks; ++i)
-                    {
-                        frame.AddRef();
-                    }
-
-                    // callback any registered listeners
-                    OnFrameCaptured?.Invoke(this, frame);
-                }
+                // callback any registered listeners
+                OnFrameCaptured?.Invoke(this, frame);
             }
         }
 
