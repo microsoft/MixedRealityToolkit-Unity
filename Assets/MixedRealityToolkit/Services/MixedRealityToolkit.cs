@@ -744,7 +744,9 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void Awake()
         {
-            if (IsInitialized && instance != this)
+            Debug.Assert(instance != this);
+
+            if (instance != null)
             {
                 if (Application.isEditor)
                 {
@@ -754,21 +756,16 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     Destroy(this);
                 }
-
-                Debug.LogWarning("Trying to instantiate a second instance of the Mixed Reality Toolkit. Additional Instance was destroyed");
-            }
-            else if (!IsInitialized)
-            {
-                InitializeInstance();
             }
             else
             {
-                Debug.LogError("Failed to properly initialize the MixedRealityToolkit");
+                InitializeInstance();
             }
         }
 
         private void OnEnable()
         {
+            Debug.Assert(instance == this);
             EnableAllServices();
         }
 
@@ -784,16 +781,18 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void OnDisable()
         {
-            DisableAllServices();
+            if (instance == this)
+            {
+                DisableAllServices();
+            }
         }
 
         private void OnDestroy()
         {
-            DestroyAllServices();
-            ClearCoreSystemCache();
-
             if (instance == this)
             {
+                DestroyAllServices();
+                ClearCoreSystemCache();
                 instance = null;
                 searchForInstance = true;
             }
