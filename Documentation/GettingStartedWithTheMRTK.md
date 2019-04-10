@@ -16,15 +16,15 @@ To get started with the Mixed Reality Toolkit you will need:
 
 ## Get the latest MRTK Unity packages
 1. Go to the  [MRTK release page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases).
-2. Under Assets, download both Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage and Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage
+2. Under Assets, download both `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` and `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
 > The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will be available via the Unity package manager.
 
-## Import MRTK packages into your project
+## Import MRTK packages into your Unity project
 1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. 
 
 > We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.X release should work.
 
-2. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
+2. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
 
 > After importing the Foundation package, you may see a setup prompt like the following:
 > 
@@ -58,12 +58,14 @@ The [hand interaction examples scene](README_HandInteractionExamples.md) is a gr
 
 9. Close the TMPPro dialog. After this you need to reload the scene, so close and re-open your scene.
 
-10. Finally, press the play button to start and explore the scene! You can use simulated hands to interact in editor. You can:
+10. Press the play button.
+
+Have fun exploring the scene! You can use simulated hands to interact in editor. You can:
 - Press WASD keys to fly / move.
 - Press and hold right mouse to look around.
 - Press and hold space bar to use a simulated hand.
 
-There's quite a bit to explore here! You can learn more about the ux controls here in the scene [in the hand interaction examples guide](README_HandInteractionExamples.md). Also, read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
+There's quite a bit to explore here. You can learn more about the UI controls [in the hand interaction examples guide](README_HandInteractionExamples.md). Also, read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
 
 Congratulations, you just used your first MRTK scene. Now onto creating your own experiences...
 
@@ -74,24 +76,22 @@ Congratulations, you just used your first MRTK scene. Now onto creating your own
 
 2. Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following [the steps above](#import-mrtk-packages-into-your-unity-project).
 
-3. Configure your first Mixed Reality Toolkit scene
-
-The toolkit has been designed so that there is just one object that is mandatory in your scene.  This is there to provide the core configuration and runtime for the Mixed Reality Toolkit.
-
-Configuring your scene is extremely simple by simply selecting the following from the Editor menu:
-> Mixed Reality Toolkit -> Add to Scene and Configure
+3. From the menu bar, select Mixed Reality Toolkit -> Add to Scene and Configure
 
 ![](../External/ReadMeImages/MRTK_ConfigureScene.png)
 
-You will see a prompt like this:
+4. You will see a prompt like this:
 
 ![](../External/ReadMeImages/MRTK_ConfigureDialog.png)
 
-Click "OK". You will then be prompted to choose an MRTK Configuration profile. Select "DefaultMixedRealityToolkitConfigurationProfile".
+Click "OK". 
+
+5. You will then be prompted to choose an MRTK Configuration profile. Double click "DefaultMixedRealityToolkitConfigurationProfile".
 
 ![](../External/ReadMeImages/MRTK_SelectConfigurationDialog.png)
 
-Once this completes, you will see the following in your Scene hierarchy:
+
+You will then see the following in your Scene hierarchy:
 
 ![](../External/ReadMeImages/MRTK_SceneSetup.png)
 
@@ -101,11 +101,13 @@ Which contains the following:
 * MixedRealityPlayspace - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.
 * The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDK's
 
-> **Note** While working in your scene, **DON'T move the Main Camera** (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
+> **Note** While working in your scene, **DO NOT move the Main Camera** (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
 > If you need to move the players start point, then **move the scene content and NOT the camera**!
 
-5. Hit play
-Press the play button to start the scene. You are now ready to start building your project, just start adding content and get building. Here are suggested next steps.
+6. Hit play and test out hand simulation by pressing spacebar.
+
+
+You are now ready to start building your project, just start adding content such as a [PressableButton](README_button.md) prefab, or a cube with a [ManipulationHandler](README_ManipulationHandler.md) component.
 
 ## Next steps
 
