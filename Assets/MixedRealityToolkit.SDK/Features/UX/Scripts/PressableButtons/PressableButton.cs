@@ -42,11 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Speed of the object movement on release.")]
         private float returnRate = 25.0f;
 
-        [Header("Position markers")]
-        [Tooltip("Used to mark where button movement begins. If null, it will be automatically generated.")]
-        [SerializeField]
-        private Transform initialTransform;
-
         [Header("Events")]
         public UnityEvent TouchBegin;
         public UnityEvent TouchEnd;
@@ -70,6 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [ReadOnly]
         [SerializeField]
         private bool isPressing = false;
+
+        private Transform initialTransform;
+
 
         ///<summary>
         /// Represents the state of whether or not a finger is currently touching this button.

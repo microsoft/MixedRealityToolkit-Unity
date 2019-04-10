@@ -10,6 +10,30 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CustomEditor(typeof(PressableButton))]
     public class PressableButtonInspector : UnityEditor.Editor
     {
+        // Struct use to store state of preview
+        // This lets us display accurate info while button is being pressed
+        private struct ButtonInfo
+        {
+            // Convenience fields for box collider info
+            public Bounds touchCageLocalBounds;
+            // Start pos for touch, also the origin of our cage
+            public Vector3 touchStartOrigin;
+            // Start and end pos for moving content
+            public float startPos;
+            public float endPos;
+            // Press, touch and release positions in z axis
+            public float pressDistPos;
+            public float touchStartPos;
+            public float releaseDistPos;
+            // Cage values
+            public float touchCageCenter;
+            public float touchCageSize;
+            // The actual values that the button uses
+            public float maxPushDistance;
+            public float pressDistance;
+            public float releaseDistanceDelta;
+        }
+
         const string EditingEnabledKey = "MRTK_PressableButtonInspector_EditingEnabledKey";
         private static bool EditingEnabled = false;
 
@@ -21,10 +45,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private Transform transform;
         private BoxCollider touchCage;
 
+        private ButtonInfo currentInfo;
+
         private SerializedProperty maxPushDistance;
         private SerializedProperty pressDistance;
         private SerializedProperty releaseDistanceDelta;
         private SerializedProperty movingButtonVisuals;
+        private SerializedProperty isTouching;
+        private SerializedProperty isPressing;
         private SerializedObject boxColliderObject;
         private SerializedProperty boxColliderSize;
         private SerializedProperty boxColliderCenter;
@@ -51,6 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             pressDistance = serializedObject.FindProperty("pressDistance");
             releaseDistanceDelta = serializedObject.FindProperty("releaseDistanceDelta");
             movingButtonVisuals = serializedObject.FindProperty("movingButtonVisuals");
+            isTouching = serializedObject.FindProperty("isTouching");
+            isPressing = serializedObject.FindProperty("isPressing");
 
             boxColliderObject = new SerializedObject(touchCage);
             boxColliderSize = boxColliderObject.FindProperty("m_Size");
@@ -63,115 +93,135 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (Selection.activeObject != button.gameObject)
                 return;
 
-            // Instruct the button to create its path markers
-            button.FindOrCreatePathMarkers();
-            
-            Vector3 touchCageSize = touchCage.size;
-            Vector3 touchCageCenter = touchCage.center;
-            Bounds touchCageLocalBounds = new Bounds(touchCageCenter, touchCageSize);
+            // If the button is being pressed, don't gather new info
+            // Just display the info we already gathered
+            // This lets people view button presses in real-time
+            if (isTouching.boolValue || isPressing.boolValue)
+            {
+                DrawButtonInfo(currentInfo, false);
+            }
+            else
+            {
+                currentInfo = GatherCurrentInfo();
+                DrawButtonInfo(currentInfo, EditingEnabled);
+            }
+        }
+
+        private ButtonInfo GatherCurrentInfo()
+        {
+            ButtonInfo info = new ButtonInfo();
+
+            info.touchCageLocalBounds = new Bounds(touchCage.center, touchCage.size);
             // Get the start pos for touch
-            Vector3 touchStartPos = touchCageLocalBounds.center;
-            touchStartPos.z -= touchCageLocalBounds.extents.z;
+            Vector3 touchStartOrigin = info.touchCageLocalBounds.center;
+            touchStartOrigin.z -= info.touchCageLocalBounds.extents.z;
+            info.touchStartOrigin = touchStartOrigin;
+            info.touchCageCenter = info.touchCageLocalBounds.center.z;
+            info.touchCageSize = info.touchCageLocalBounds.size.z;
 
             Transform buttonContentTransform = transform;
             if (movingButtonVisuals.objectReferenceValue != null)
                 buttonContentTransform = (movingButtonVisuals.objectReferenceValue as GameObject).transform;
 
             // Get the start and end pos for moving content
-            float startPos = buttonContentTransform.localPosition.z;
-            float endPos = buttonContentTransform.localPosition.z;
-            endPos += maxPushDistance.floatValue;
+            info.startPos = buttonContentTransform.localPosition.z;
+            info.endPos = buttonContentTransform.localPosition.z;
+            info.endPos += maxPushDistance.floatValue;
 
-            // This is where we'll store the results of our manipulations
-            float newMaxPushDistance = maxPushDistance.floatValue;
-            float newPressDistance = pressDistance.floatValue;
-            float newReleaseDistanceDelta = releaseDistanceDelta.floatValue;
+            info.maxPushDistance = maxPushDistance.floatValue;
+            info.pressDistance = pressDistance.floatValue;
+            info.releaseDistanceDelta = releaseDistanceDelta.floatValue;
 
-            float newEndPos = endPos;
-            float newPressDistPos = startPos + (newPressDistance / transform.lossyScale.z);
-            float newTouchStartPos = touchStartPos.z;
-            float newReleaseDistPos = newPressDistPos - (newReleaseDistanceDelta / transform.lossyScale.z);
-            float newTouchCageSize = touchCageSize.z;
-            float newTouchCageCenter = touchCageCenter.z;
+            info.pressDistPos = info.startPos + (info.pressDistance / transform.lossyScale.z);
+            info.touchStartPos = info.touchStartOrigin.z;
+            info.releaseDistPos = info.pressDistPos - (info.releaseDistanceDelta / transform.lossyScale.z);
 
-            if (EditingEnabled)
+            return info;
+        }
+
+        private void DrawButtonInfo(ButtonInfo info, bool editingEnabled)
+        {
+            // This is where we'll store our new values to compare against
+            ButtonInfo newInfo = info;
+
+            if (editingEnabled)
             {
                 EditorGUI.BeginChangeCheck();
             }
 
-            float handleSize = Mathf.Max(touchCageSize.x * 0.065f, 0.0025f);
+            float handleSize = Mathf.Max(info.touchCageLocalBounds.size.x * 0.065f, 0.0025f);
 
             // PRESS END
             Handles.color = Color.cyan;
-            DrawPlaneAndHandle(targetEndPlane, touchCageSize * 0.5f, handleSize, ref newEndPos, touchStartPos, "Max move distance");
+            DrawPlaneAndHandle(targetEndPlane, info.touchCageLocalBounds.size * 0.5f, handleSize, ref newInfo.endPos, info.touchStartOrigin, "Max move distance");
 
-            if (EditingEnabled)
+            if (editingEnabled)
             {
                 // Clamp the z value to start position
-                newEndPos = Mathf.Max(startPos, newEndPos);
-                newMaxPushDistance = Mathf.Abs(startPos - newEndPos);
+                newInfo.endPos = Mathf.Max(newInfo.startPos, newInfo.endPos);
+                newInfo.maxPushDistance = Mathf.Abs(newInfo.startPos - newInfo.endPos);
             }
 
             // PRESS DISTANCE
             Handles.color = Color.yellow;
-            DrawPlaneAndHandle(pressDistancePlane, touchCageLocalBounds.size * 0.35f, handleSize, ref newPressDistPos, touchStartPos, "Press event");
+            DrawPlaneAndHandle(pressDistancePlane, info.touchCageLocalBounds.size * 0.35f, handleSize, ref newInfo.pressDistPos, info.touchStartOrigin, "Press event");
 
-            if (EditingEnabled)
+            if (editingEnabled)
             {
                 // Clamp the z values to target start / end
-                newPressDistPos = Mathf.Max(startPos, newPressDistPos);
-                newPressDistPos = Mathf.Min(newEndPos, newPressDistPos);
+                newInfo.pressDistPos = Mathf.Max(newInfo.startPos, newInfo.pressDistPos);
+                newInfo.pressDistPos = Mathf.Min(newInfo.endPos, newInfo.pressDistPos);
                 // Set based on distance from start
                 // Adjust for scaled objects
-                newPressDistance = Mathf.Abs(newPressDistPos - startPos) * transform.lossyScale.z;
+                newInfo.pressDistance = Mathf.Abs(newInfo.pressDistPos - newInfo.startPos) * transform.lossyScale.z;
             }
 
             // RELEASE DISTANCE DELTA
             Handles.color = Color.red;
-            DrawPlaneAndHandle(releasePlane, touchCageLocalBounds.size * 0.3f, handleSize, ref newReleaseDistPos, touchStartPos, "Release event");
+            DrawPlaneAndHandle(releasePlane, info.touchCageLocalBounds.size * 0.3f, handleSize, ref newInfo.releaseDistPos, info.touchStartOrigin, "Release event");
 
-            if (EditingEnabled)
+            if (editingEnabled)
             {
                 // Clamp the z values to press distance
-                newReleaseDistPos = Mathf.Min(newPressDistPos, newReleaseDistPos);
+                newInfo.releaseDistPos = Mathf.Min(newInfo.pressDistPos, newInfo.releaseDistPos);
                 // Set based on distance from press distance
                 // Adjust for scaled objects
-                newReleaseDistanceDelta = Mathf.Abs(newReleaseDistPos - newPressDistPos) * transform.lossyScale.z;
+                newInfo.releaseDistanceDelta = Mathf.Abs(newInfo.releaseDistPos - newInfo.pressDistPos) * transform.lossyScale.z;
             }
 
             // BUTTON CONTENT ORIGIN
             // Don't allow editing of button position
             Handles.color = Color.green;
-            float editStartPos = startPos;
-            DrawPlaneAndHandle(pressStartPlane, touchCageLocalBounds.size * 0.4f, handleSize, ref editStartPos, touchStartPos, "Moving Button Visuals", false);
+            float editStartPos = newInfo.startPos;
+            DrawPlaneAndHandle(pressStartPlane, info.touchCageLocalBounds.size * 0.4f, handleSize, ref editStartPos, info.touchStartOrigin, "Moving Button Visuals", false);
 
             // START POINT
             // Start point doesn't need a display offset because it's based on the touch cage center
             Handles.color = Color.cyan;
-            DrawPlaneAndHandle(targetStartPlane, touchCageLocalBounds.size * 0.5f, handleSize, ref newTouchStartPos, touchStartPos, "Touch event");
+            DrawPlaneAndHandle(targetStartPlane, info.touchCageLocalBounds.size * 0.5f, handleSize, ref newInfo.touchStartPos, info.touchStartOrigin, "Touch event");
 
-            if (EditingEnabled)
+            if (editingEnabled)
             {
                 // The touch event is defined by the collider bounds
                 // If we've moved the start pos, we've moved the bounds
-                float difference = (touchStartPos.z - newTouchStartPos);
+                float difference = (info.touchStartPos - newInfo.touchStartPos);
                 if (Mathf.Abs(difference) > 0)
                 {
-                    newTouchCageCenter -= difference / 2;
-                    newTouchCageSize += difference;
+                    newInfo.touchCageCenter -= difference / 2;
+                    newInfo.touchCageSize += difference;
                 }
             }
 
-            if (EditingEnabled && EditorGUI.EndChangeCheck())
+            if (editingEnabled && EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(target, "Changing push button properties");
 
-                maxPushDistance.floatValue = newMaxPushDistance;
-                pressDistance.floatValue = newPressDistance;
-                releaseDistanceDelta.floatValue = newReleaseDistanceDelta;
+                maxPushDistance.floatValue = newInfo.maxPushDistance;
+                pressDistance.floatValue = newInfo.pressDistance;
+                releaseDistanceDelta.floatValue = newInfo.releaseDistanceDelta;
 
-                boxColliderSize.vector3Value = new Vector3(touchCageSize.x, touchCageSize.y, newTouchCageSize);
-                boxColliderCenter.vector3Value = new Vector3(touchCageCenter.x, touchCageCenter.y, newTouchCageCenter);
+                boxColliderSize.vector3Value = new Vector3(info.touchCageLocalBounds.size.x, info.touchCageLocalBounds.size.y, newInfo.touchCageSize);
+                boxColliderCenter.vector3Value = new Vector3(info.touchCageLocalBounds.center.x, info.touchCageLocalBounds.center.y, newInfo.touchCageCenter);
                 boxColliderObject.ApplyModifiedProperties();
 
                 serializedObject.ApplyModifiedProperties();
@@ -205,6 +255,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (EditingEnabled)
             {
+                Color startColor = Handles.color;
+                Handles.color = drawArrows ? startColor : Color.Lerp(startColor, Color.clear, 0.5f);
                 Vector3 handlePosition = Handles.FreeMoveHandle(plane[1], Quaternion.identity, handleSize, Vector3.zero, Handles.SphereHandleCap);
                 // Draw forward / backward arrows so people know they can drag
                 if (drawArrows)
@@ -215,6 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 // Remove the offset from the handle position
                 handlePosition = transform.InverseTransformPoint(handlePosition);
                 zPosition = handlePosition.z;
+                Handles.color = startColor;
             }
 
         }
