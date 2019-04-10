@@ -2,7 +2,7 @@
 
 ![](../External/ReadMeImages/MRTK_Logo_Rev.png)
 
-The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR). This guide covers how to get started with MRTK.
+The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR).
 
 ## Prerequisites
 
@@ -26,6 +26,8 @@ To get started with the Mixed Reality Toolkit you will need:
 
 2. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
 
+3. Import `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` following the same steps as above. The examples package is optional but contains useful demonstration scenes for current MRTK features.
+
 > After importing the Foundation package, you may see a setup prompt like the following:
 > 
 > ![](../External/ReadMeImages/MRTK_UnitySetupPrompt.png)
@@ -35,12 +37,10 @@ To get started with the Mixed Reality Toolkit you will need:
 > * Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).
 > * Change the Scripting back-end to use IL2CPP (as Unity is deprecating the .NET scripting back-end).
 >
-> Accepting these options is completely optional. If you click **Later**, MRTK will not ask you again.  You can then set these options manually if you wish.
+> Accepting these options is completely optional, but recommended.
 
 
-3. Import `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` following the same steps as above. The examples package is optional but contains useful demonstration scenes for current MRTK features.
-
-> Note that some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
+> Some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
 
 
 ## Open and run the HandInteractionExamples scene in editor
