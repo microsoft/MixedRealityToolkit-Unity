@@ -1,4 +1,4 @@
 # Code Owners testing.
 # This is designed to validate if a single signoff by a code owner is enough
 # to trigger checks to go green, or if everyone is needed
-* @Microsoft/mixed-reality-toolkit-core-team
+*   @keveleigh
