@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Apply camera transform
             for (int i = 0; i < jointCount; i++)
             {
-                jointsOut[i] = Camera.main.transform.TransformDirection(jointsOut[i]);
+                jointsOut[i] = CameraCache.Main.transform.TransformDirection(jointsOut[i]);
             }
 
             for (int i = 0; i < jointCount; i++)
