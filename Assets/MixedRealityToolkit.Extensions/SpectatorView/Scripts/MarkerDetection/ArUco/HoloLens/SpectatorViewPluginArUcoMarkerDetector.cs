@@ -153,6 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 var extrinsics = frame.Extrinsics;
 
                 var dictionary = _api.ProcessImage(imageData, imageWidth, imageHeight, pixelFormat, intrinsics, extrinsics);
+
                 if (_markerObservations != null)
                 {
                     foreach (var markerPair in dictionary)
@@ -180,6 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 }
             }
 #endif
+            frame.Release();
         }
 
         private static Marker CalcAverageMarker(List<Marker> markers)
