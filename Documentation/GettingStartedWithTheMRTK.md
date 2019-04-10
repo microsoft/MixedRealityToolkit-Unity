@@ -118,7 +118,7 @@ Here are some suggested next steps:
 * Add a cube to your scene, then make it movable using the [ManipulationHandler](README_ManipulationHandler.md) component.
 * Learn about the UX controls available in MRTK in [building blocks for UI and interactions](#building-blocks-for-ui-and-interactions).
 * Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
-* Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md)
+* Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md).
 
 ## Building blocks for UI and Interactions
 |  [![Button](../External/ReadMeImages/Button/MRTK_Button_Main.png)](README_Button.md) [Button](README_Button.md) | [![Bounding Box](../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png)](README_BoundingBox.md) [Bounding Box](README_BoundingBox.md) | [![Manipulation Handler](../External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png)](README_ManipulationHandler.md) [Manipulation Handler](README_ManipulationHandler.md) |
