@@ -78,7 +78,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 // If we already have an active window, bail
                 if (activeWindow != null)
+                {
                     return;
+                }
 
                 activeWindow = EditorWindow.GetWindow<NoActiveToolkitWarning>();
                 activeWindow.configurationProfile = configurationProfile;
