@@ -1,8 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
@@ -11,37 +10,38 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
     /// Contains information on camera intrinsic parameters.
     /// Note: This class wraps logic in Windows.Media.Devices.Core.CameraIntrinsics for use in Unity.
     /// </summary>
+    [Serializable]
     public class CameraIntrinsics
     {
         /// <summary>
         /// Gets the focal length of the camera.
         /// </summary>
-        public Vector2 FocalLength { get; private set; }
+        public Vector2 FocalLength;
 
         /// <summary>
         /// Gets the image height of the camera, in pixels.
         /// </summary>
-        public uint ImageHeight { get; private set; }
+        public uint ImageHeight;
 
         /// <summary>
         /// Gets the image width of the camera, in pixels.
         /// </summary>
-        public uint ImageWidth { get; private set; }
+        public uint ImageWidth;
 
         /// <summary>
         /// Gets the principal point of the camera.
         /// </summary>
-        public Vector2 PrincipalPoint { get; private set; }
+        public Vector2 PrincipalPoint;
 
         /// <summary>
         /// Gets the radial distortion coefficient of the camera.
         /// </summary>
-        public Vector3 RadialDistortion { get; private set; }
+        public Vector3 RadialDistortion;
 
         /// <summary>
         /// Gets the tangential distortion coefficient of the camera.
         /// </summary>
-        public Vector2 TangentialDistortion { get; private set; }
+        public Vector2 TangentialDistortion;
 
         /// <summary>
         ///     Gets a matrix that transforms a 3D point to video frame pixel coordinates without
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
         ///     for apps that choose to implement GPU-based distortion compensation instead of
         ///     using UndistortPoint, which uses the CPU to compute the distortion compensation.
         /// </summary>
-        public Matrix4x4 UndistortedProjectionTransform { get; private set; }
+        public Matrix4x4 UndistortedProjectionTransform;
 
         /// <summary>
         /// CameraIntrinsics constructor

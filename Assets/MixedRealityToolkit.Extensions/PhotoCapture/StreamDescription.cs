@@ -2,9 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
 {
@@ -22,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
     /// <summary>
     /// Struct containing information related to a camera's resolution and framerate.
     /// </summary>
+    [Serializable]
     public struct CameraResolution : IEquatable<CameraResolution>
     {
         /// <summary>
