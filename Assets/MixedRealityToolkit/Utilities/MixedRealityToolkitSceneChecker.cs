@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         static MixedRealityToolkitSceneChecker()
         {
+            // Check for a valid MRTK instance when scenes are opened or created.
             EditorSceneManager.sceneOpened += SceneOpened;
             EditorSceneManager.newSceneCreated += NewSceneCreated;
         }
@@ -35,6 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             switch (setup)
             {
+                // Ignore the check when the scene is explicitly empty.
+                // This includes empty scenes in playmode tests.
                 case NewSceneSetup.EmptyScene:
                     break;
 
@@ -46,8 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private static void CheckMixedRealityToolkitScene()
         {
-            // configurationProfile = target as MixedRealityToolkitConfigurationProfile;
-
             // Create The MR Manager if none exists.
             if (!MixedRealityToolkit.IsInitialized)
             {
