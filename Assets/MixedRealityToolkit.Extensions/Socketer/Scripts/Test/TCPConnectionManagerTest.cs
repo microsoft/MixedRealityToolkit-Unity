@@ -12,9 +12,9 @@ using UnityEditor;
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
 {
     /// <summary>
-    /// Helper class for testing socketer <see cref="NetworkConnectionManager"/>
+    /// Helper class for testing socketer <see cref="TCPConnectionManager"/>
     /// </summary>
-    public class NetworkConnectionManagerTest : MonoBehaviour
+    public class TCPConnectionManagerTest : MonoBehaviour
     {
         /// <summary>
         /// Check to run as the server
@@ -44,7 +44,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         [SerializeField]
         protected float timeBetweenBroadcasts = 1.0f;
 
-        private NetworkConnectionManager net;
+        /// <summary>
+        /// TCPConnectionManager to use for networking
+        /// </summary>
+        [Tooltip("TCPConnectionManager to use for networking")]
+        [SerializeField]
+        protected TCPConnectionManager connectionManager;
+
         private float lastBroadcast = 0.0f;
 
         private void OnValidate()
@@ -57,18 +63,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
 
         private void Start()
         {
-            net = new NetworkConnectionManager(TimeSpan.Zero);
-            net.OnConnected += OnNetConnected;
-            net.OnDisconnected += OnNetDisconnected;
-            net.OnReceive += OnNetReceived;
+            connectionManager = new TCPConnectionManager(TimeSpan.Zero);
+            connectionManager.OnConnected += OnNetConnected;
+            connectionManager.OnDisconnected += OnNetDisconnected;
+            connectionManager.OnReceive += OnNetReceived;
 
             if (runAsServer)
             {
-                net.StartListening(serverPort);
+                connectionManager.StartListening(serverPort);
             }
             else
             {
-                net.ConnectTo(serverAddress, serverPort);
+                connectionManager.ConnectTo(serverAddress, serverPort);
             }
         }
 
@@ -76,10 +82,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         {
             if ((Time.time - lastBroadcast) > timeBetweenBroadcasts)
             {
-                if (net.HasConnections)
+                if (connectionManager.HasConnections)
                 {
                     var message = runAsServer ? "Message from server" : "Message from client";
-                    net.Broadcast(Encoding.ASCII.GetBytes(message));
+                    connectionManager.Broadcast(Encoding.ASCII.GetBytes(message));
                 }
                 else
                 {
@@ -90,27 +96,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
                 lastBroadcast = Time.time;
             }
 
-            net.Update();
+            connectionManager.Update();
         }
 
         private void OnDestroy()
         {
-            net.DisconnectAll();
+            connectionManager.DisconnectAll();
         }
 
         private void OnNetConnected(SocketEndpoint obj)
         {
-            Debug.Log($"NetworkConnectionManager Connected:{obj.ToString()}");
+            Debug.Log($"TCPConnectionManager Connected:{obj.ToString()}");
         }
 
         private void OnNetDisconnected(SocketEndpoint obj)
         {
-            Debug.Log($"NetworkConnectionManager Disconnected:{obj.ToString()}");
+            Debug.Log($"TCPConnectionManager Disconnected:{obj.ToString()}");
         }
 
         private void OnNetReceived(IncomingMessage obj)
         {
-            Debug.Log($"NetworkConnectionManager Received:{obj.ToString()}");
+            Debug.Log($"TCPConnectionManager Received:{obj.ToString()}");
         }
     }
 }

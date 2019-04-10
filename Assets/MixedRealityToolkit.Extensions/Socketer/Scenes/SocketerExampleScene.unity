@@ -121,9 +121,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 416969545}
+  - component: {fileID: 416969547}
   - component: {fileID: 416969546}
   m_Layer: 0
-  m_Name: Network Connection Manager Test
+  m_Name: TCP Connection Manager Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,13 +156,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63aaf8645ad813946bbdde22b75732a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runAsRemote: 0
-  remoteIP: 10.89.160.132
-  remotePort: 7777
-  serverIP: 10.124.204.150
+  runAsServer: 0
+  serverAddress: 127.0.0.1
   serverPort: 7778
   timeBetweenBroadcasts: 1
-  lastBroadcast: 0
+  connectionManager: {fileID: 416969547}
+--- !u!114 &416969547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416969544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de2b7859644fbd409cf9c1a2bb52d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1675028837
 GameObject:
   m_ObjectHideFlags: 0

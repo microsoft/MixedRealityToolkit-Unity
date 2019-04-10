@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
     /// <summary>
     /// Helper class for setting up a TCP based network connection
     /// </summary>
-    public class NetworkConnectionManager
+    public class TCPConnectionManager : MonoBehaviour
     {
         /// <summary>
         /// Called when a client or server connection is established.
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         /// </summary>
         public int OutputBytesQueued => SocketerClient.OutputQueueLength;
 
-        public NetworkConnectionManager(TimeSpan timeoutInterval)
+        public TCPConnectionManager(TimeSpan timeoutInterval)
         {
             this.timeoutInterval = timeoutInterval;
         }
