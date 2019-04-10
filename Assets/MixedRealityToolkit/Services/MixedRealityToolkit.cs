@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit
             get
             {
 #if UNITY_EDITOR
-                if (!Application.isPlaying && activeProfile == null)
+                if (!Application.isPlaying && activeProfile == null && Instance != null)
                 {
                     UnityEditor.Selection.activeObject = Instance;
                     UnityEditor.EditorGUIUtility.PingObject(Instance);
