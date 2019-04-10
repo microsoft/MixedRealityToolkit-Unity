@@ -124,7 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     Debug.LogError($"Can't find a compiled version of the script: {pair.Key}; guid: {pair.Value.Guid}");
                 }
             }
-
             ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Output"), remapDictionary);
         }
 
@@ -178,6 +177,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             var tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t.Item1, t.Item2, remapDictionary)));
             Task.WhenAll(tasks).Wait();
+
+            CleanupDirectory(outputDirectory);
         }
 
         private static async Task ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary)
@@ -338,6 +339,60 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 Directory.Delete(tmpDirPath, true);
                 AssetDatabase.Refresh();
+            }
+        }
+
+        private static void CleanupDirectory(string outputPath)
+        {
+            DirectoryInfo outputDirectory = new DirectoryInfo(outputPath);
+            RecursiveFolderCleanup(outputDirectory);
+        }
+
+        private static void RecursiveFolderCleanup(DirectoryInfo folder)
+        {            
+            foreach (DirectoryInfo subFolder in folder.GetDirectories())
+            {
+                RecursiveFolderCleanup(subFolder);               
+            }
+
+            string fileCheck;
+            FileInfo[] fileList = folder.GetFiles("*");
+            DirectoryInfo[] folderList = folder.GetDirectories();
+            foreach (FileInfo file in fileList)
+            {
+                if (file.Extension.Equals(".meta"))
+                {
+                    fileCheck = file.FullName.Remove(file.FullName.Length - 5);
+                    bool foundMatch = false;
+                    foreach (FileInfo checkFile in fileList)
+                    {
+                        if (checkFile.FullName.Equals(fileCheck))
+                        {
+                            foundMatch = true;
+                            break;
+                        }
+                    }
+                    if (!foundMatch)
+                    {
+                        foreach (DirectoryInfo checkFolder in folderList)
+                        {
+                            if (checkFolder.FullName.Equals(fileCheck))
+                            {
+                                foundMatch = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!foundMatch)
+                    {
+                        file.Delete();
+                    }
+                }
+            }
+
+            if (folder.GetDirectories().Length == 0 && folder.GetFiles().Length == 0)
+            {
+                folder.Delete();
             }
         }
     }
