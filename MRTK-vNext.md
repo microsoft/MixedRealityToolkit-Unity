@@ -53,59 +53,7 @@ Following the feedback we’ve received both internally and through current cons
  * All testing components / scripts / prefabs / scenes should only be retained in the dev branch.  The master branch should only contain the “ToolKit” and working examples.  Master is for consumers only.
  * Simulator options need to be provided as another device. This will also form the template for new MR/XR/VR devices / SDKs.
  
-# Reference Material
-
-## Notable components in VRTK
-
-**Pointer** (VRTK Example Basic Pointer)(Pointer with Area Collision)
-
-- Line type (Straight, Bezier)(VRTK Example Bezier Pointer)
-- Tip type (teleport target, sphere, dot, none…)
-- Color
-- Thickness
-- Pointer Interaction, Menu Selection with Pointer (VRTK Example)
-- Grab, Move, Rotate, Scale with Pointer (Shell behavior)
-
-**Teleporting** (VRTK Example)
-
-- Pointer style
-- Transition type
-- Transition fade speed
-- Exclude teleport location (VRTK Example)
-
-**Object Touching / Grabbing** (VRTK Example)
-
-- Object touched event
-- Highlight / Outline on touched
-- InteractableObject: Object grabbable, Highlight on touch
-- Throwing 
-- Grab and Trigger (VRTK Example)
-- Grab and Trigger Multiple (VRTK Example)
-- Grab rotation snapping (VRTK Example)
-- Grab attach mechanics: Fixed Joint / Spring Joint / Track Object (VRTK Example)
-- Grab Force hold object (VRTK Example)
-- Child on Grab: Bow and Arrow (VRTK Example)
-- Controller Ghost or Physical (ghost passes through objects while)
-
-**Menu System** (available in MRDL)
-
-- Radial menu
-- Grid menu
-- Touchpad Axis Control (VRTK Example)
-- Radial touchpad menu (VRTK Example)
-
-**Tooltips** (available in MRDL) 
-
-- Tip
-- Connector
-- Spawner
-- Manager (tutorials, spaces)
-
-**Headset collision fading** (VRTK Example) (James)
-
 # Open XR references
-
-TBC
 
 The new MRTK approach would span across the Application and SDK/Device layers, seeing how OpenXR is a Device to the new architecture.
 
