@@ -618,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "z3cMlk77pA6CS7M3jjVa8A=="
+          "hash": "qpvQXi+V6GMxjuvKsmdwUQ=="
         }
       },
       "is_incremental": false,
@@ -1048,6 +1048,17 @@
       "output": {
         "resource": {
           "relative_path": "External/Documentation/Images/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/Documentation/Images/MRTK_GettingStarted_TMPro.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/Documentation/Images/MRTK_GettingStarted_TMPro.png"
         }
       },
       "is_incremental": false,
@@ -2487,6 +2498,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/MRTK_ConfigureDialog.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/MRTK_ConfigureDialog.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "External/ReadMeImages/MRTK_ConfigureScene.png",
       "output": {
         "resource": {
@@ -2557,6 +2579,17 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/MRTK_SceneSetup.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/MRTK_SelectConfigurationDialog.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/MRTK_SelectConfigurationDialog.png"
         }
       },
       "is_incremental": false,
@@ -3400,6 +3433,83 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-azurespatialanchors.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/mrdevcenter/icon-azurespatialanchors.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-azurespeechservices.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/mrdevcenter/icon-azurespeechservices.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-azurevisionservices.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/mrdevcenter/icon-azurevisionservices.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-design.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/mrdevcenter/icon-design.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-develop.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/mrdevcenter/icon-develop.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-discover.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/mrdevcenter/icon-discover.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-distribute.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/mrdevcenter/icon-distribute.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "External/ReadMeImages/mrt_logo.png",
       "output": {
         "resource": {
@@ -3438,7 +3548,7 @@
       "output": {
         ".html": {
           "relative_path": "MRTK-vNext.html",
-          "hash": "yP6UVNcDP9NMkrSB5ixgcg=="
+          "hash": "Y5vTqm38eHCZw5L0AY54hA=="
         }
       },
       "is_incremental": false,
@@ -3462,7 +3572,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "lNRnljNMASdIwcUdi63k0Q=="
+          "hash": "pzthqTHFsV3jk+chx5SiKg=="
         }
       },
       "is_incremental": false,
@@ -7217,7 +7327,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSimulationService.html",
-          "hash": "haBACroufJqA/s41ooJ5Ow=="
+          "hash": "loL5qK5O8KbZCt8We28g1g=="
         }
       },
       "is_incremental": false,
@@ -7789,11 +7899,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.HandJointDataGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.HandJointDataGenerator.html",
+          "hash": "lLXpoOBuKm5B5OVBGF99Kw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.html",
-          "hash": "b8Q5XumHYKdhsieZ2Bz6tw=="
+          "hash": "EBqZnpsvW22k0i8KkWYy3g=="
         }
       },
       "is_incremental": false,
@@ -7805,7 +7927,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.html",
-          "hash": "om/00ulYuGId4UHzVI3Pdg=="
+          "hash": "2lsy+Zs9rYQCbVpWubZGSw=="
         }
       },
       "is_incremental": false,
@@ -8129,7 +8251,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "t5noKZsMvx+5cd++pPCU9w=="
+          "hash": "icu//OrdkU8NPP/MVMwXiQ=="
         }
       },
       "is_incremental": false,
@@ -10985,7 +11107,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.CameraEventRouter.html",
-          "hash": "dklfmyUNQvdHKUw5MahsXA=="
+          "hash": "tAFnZ+MScCFya8pHBjn+ZQ=="
         }
       },
       "is_incremental": false,
@@ -13613,7 +13735,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Py3Vd+x5OYrwA9SFL9bSRg=="
+          "hash": "YLOYTotVJ8Hbrx3vfdsu0w=="
         }
       },
       "is_incremental": false,
@@ -13668,7 +13790,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 843,
+          "total_file_count": 844,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {

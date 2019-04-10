@@ -86,7 +86,8 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData" class="text-break">Class SimulatedHandData
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Snapshot of simulated hand data.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -121,20 +122,22 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SimulatedHandData</code></pre>
+    <pre><code class="lang-csharp hljs">[Serializable]
+public class SimulatedHandData</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="properties">Properties
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_IsPinching_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.IsPinching*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_IsPinching" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.IsPinching">IsPinching</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsPinching</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsPinching { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -151,14 +154,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_IsTracked_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.IsTracked*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_IsTracked" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.IsTracked">IsTracked</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsTracked</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsTracked { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -175,14 +179,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_Joints_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.Joints*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_Joints" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.Joints">Joints</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vector3[] Joints</code></pre>
+    <pre><code class="lang-csharp hljs">public Vector3[] Joints { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -199,14 +204,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_Timestamp_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.Timestamp*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_Timestamp" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.Timestamp">Timestamp</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public long Timestamp</code></pre>
+    <pre><code class="lang-csharp hljs">public long Timestamp { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -217,6 +223,144 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_Copy_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.Copy*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_Copy_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.Copy(Microsoft.MixedReality.Toolkit.Input.SimulatedHandData)">Copy(SimulatedHandData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Copy(SimulatedHandData other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.html">SimulatedHandData</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_Update_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.Update*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_Update_System_Boolean_System_Boolean_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_HandJointDataGenerator_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.Update(System.Boolean,System.Boolean,Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.HandJointDataGenerator)">Update(Boolean, Boolean, SimulatedHandData.HandJointDataGenerator)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Update(bool isTrackedNew, bool isPinchingNew, SimulatedHandData.HandJointDataGenerator generator)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isTrackedNew</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isPinchingNew</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.HandJointDataGenerator.html">SimulatedHandData.HandJointDataGenerator</a></td>
+        <td><span class="parametername">generator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_UpdateWithTimestamp_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.UpdateWithTimestamp*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_UpdateWithTimestamp_System_Int64_System_Boolean_System_Boolean_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_HandJointDataGenerator_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.UpdateWithTimestamp(System.Int64,System.Boolean,System.Boolean,Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.HandJointDataGenerator)">UpdateWithTimestamp(Int64, Boolean, Boolean, SimulatedHandData.HandJointDataGenerator)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UpdateWithTimestamp(long timestampNew, bool isTrackedNew, bool isPinchingNew, SimulatedHandData.HandJointDataGenerator generator)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">timestampNew</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isTrackedNew</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isPinchingNew</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.HandJointDataGenerator.html">SimulatedHandData.HandJointDataGenerator</a></td>
+        <td><span class="parametername">generator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
