@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
             }
         }
 
-        public void Update()
+        private void Update()
         {
             DateTime utcNow = DateTime.UtcNow;
             if (clientConnection != null)

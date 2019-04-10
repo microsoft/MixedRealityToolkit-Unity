@@ -95,8 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
 
                 lastBroadcast = Time.time;
             }
-
-            connectionManager.Update();
         }
 
         private void OnDestroy()
