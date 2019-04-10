@@ -124,6 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     Debug.LogError($"Can't find a compiled version of the script: {pair.Key}; guid: {pair.Value.Guid}");
                 }
             }
+
             ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Output"), remapDictionary);
         }
 
