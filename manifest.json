@@ -4671,6 +4671,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.SelectRepairedTypeWindow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.SelectRepairedTypeWindow.html",
+          "hash": "Un2Jz2uNtMb5YPkrNrLBEg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfileInspector.yml",
       "output": {
         ".html": {
@@ -4759,7 +4771,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.html",
-          "hash": "P1mu/1dPB2knG6he9syNoA=="
+          "hash": "ozckdF/wE5YyQhLBoSzTSw=="
         }
       },
       "is_incremental": false,
@@ -13735,7 +13747,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "YLOYTotVJ8Hbrx3vfdsu0w=="
+          "hash": "p1xJzu4tw5+IU/ugvledDw=="
         }
       },
       "is_incremental": false,
@@ -13803,7 +13815,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 844,
+          "total_file_count": 845,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
