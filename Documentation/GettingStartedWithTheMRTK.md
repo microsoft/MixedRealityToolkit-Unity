@@ -20,9 +20,7 @@ To get started with the Mixed Reality Toolkit you will need:
 > The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
 
 ## Import MRTK packages into your project
-1. Create a new Unity project, or open an existing project. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.X release should work.
-
-> *Note* when creating a new project with Unity 2018, Unity gives you several templates to choose from.  Currently the **MRTK does not yet support the Scriptable Render Pipeline**, so the LWSRP, HDSRP and VRSRP projects are not compatible with MRTK projects.
+1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type, currently MRTK does not support the other project types. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.X release should work.
 
 2. Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
 
@@ -61,13 +59,16 @@ The [hand interaction examples scene](README_HandInteractionExamples.md) is a gr
 
 8. Select "Import TMP essentials" button. "TMP Essentials" refers to TextMeshPro plugin, which some of the MRTK examples use for improved text rendering.
 
-9. Close the TMPPro dialog. After this you need to reload Unity, so close unity and re-open unity, then open your project and go back to the scene.
+9. Close the TMPPro dialog. After this you need to reload the scene, so close and re-open your scene.
 
-10. Finally, press the play button to start the scene and explore the scene! You can use simulated hands to interact in editor. Press WASD keys to fly around the scene. Press and hold right mouse to look around. Press and hold space bar to use a simulated hand.
+10. Finally, press the play button to start and explore the scene! You can use simulated hands to interact in editor. You can:
+- Press WASD keys to fly / move.
+- Press and hold right mouse to look around.
+- Press and hold space bar to use a simulated hand.
 
-There's quite a bit to explore in this scene, have fun! Learn more about the components in the scene [in the hand interaction examples guide](README_HandInteractionExamples.md). You can also read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
+There's quite a bit to explore here! You can learn more about the ux controls here in the scene [in the hand interaction examples guide](README_HandInteractionExamples.md). Also, read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
 
-Congratulations, you just used your first MRTK scene. Now onto creating your own stuff...
+Congratulations, you just used your first MRTK scene. Now onto creating your own experiences...
 
 
 ## Add MRTK to a new scene or new project
@@ -109,11 +110,10 @@ Which contains the following:
 5. Hit play
 Press the play button to start the scene. You are now ready to start building your project, just start adding content and get building. Here are suggested next steps.
 
-## Get building your project
+## Next steps
 
-Now your project is up and running, you can start building your Mixed Reality project. Here are some suggested next steps:
+Here are some suggested next steps:
 
-* Explore the [hand interaction examples scene](README_HandInteractionExamples.md) if you haven't already. Instructions to get started [are above](#Open-and-run-the-HandInteractionExamples-scene-in-editor).
 * Learn about the UX controls available in MRTK in [building blocks for UI and interactions](#building-blocks-for-ui-and-interactions).
 * Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
 * Create a scene with a pressable button that logs a message (read about [Interactable](README_Interactable.md) to see how to make the button respond both to click and button presses), and a movable cube.
@@ -132,7 +132,5 @@ Now your project is up and running, you can start building your Mixed Reality pr
 
 # Upgrading from the HoloToolkit (HTK/MRTK v1)
 
-There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework.  However, it is possible to import the MRTK into your HoloToolkit project and start work migrating your implementation if you wish.
-
-* [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
+There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information please see the [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
 
