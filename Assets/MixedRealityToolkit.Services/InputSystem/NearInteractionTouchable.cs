@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public static IReadOnlyCollection<NearInteractionTouchable> Instances { get { return instances.AsReadOnly(); } }
         private static readonly List<NearInteractionTouchable> instances = new List<NearInteractionTouchable>();
 
-        public bool ColliderEnabled { get { return !usesCollider || touchableCollider.enabled; } }
+        public bool ColliderEnabled { get { return !usesCollider || touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
 
         /// <summary>
         /// Local space forward direction

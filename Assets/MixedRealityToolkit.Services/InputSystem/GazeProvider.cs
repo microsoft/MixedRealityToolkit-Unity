@@ -13,7 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This class provides Gaze as an Input Source so users can interact with objects using their head.
     /// </summary>
     [DisallowMultipleComponent]
-    public class GazeProvider : InputSystemGlobalListener, IMixedRealityGazeProvider, IMixedRealityEyeGazeProvider, IMixedRealityInputHandler
+    public class GazeProvider :
+        InputSystemGlobalListener,
+        IMixedRealityGazeProvider,
+        IMixedRealityEyeGazeProvider,
+        IMixedRealityInputHandler
     {
         private const float VelocityThreshold = 0.1f;
 
@@ -355,7 +359,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
             // but don't touch the visibility when not active or not flagged.
-            if (setCursorInvisibleWhenFocusLocked && (GazePointer?.IsInteractionEnabled ?? false) && GazePointer?.IsFocusLocked == GazeCursor?.IsVisible)
+            if (setCursorInvisibleWhenFocusLocked && GazePointer != null && 
+                GazePointer.IsInteractionEnabled && GazePointer.IsFocusLocked  == GazeCursor.IsVisible)
             {
                 GazeCursor.SetVisibility(!GazePointer.IsFocusLocked);
             }
@@ -433,12 +438,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
-
-        [Obsolete]
-        public void OnInputPressed(InputEventData<float> eventData) { }
-
-        [Obsolete]
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
         #endregion IMixedRealityInputHandler Implementation
 

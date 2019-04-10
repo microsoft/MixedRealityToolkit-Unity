@@ -463,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         if (interactionMapping.Changed)
                         {
                             // Raise input system Event if it enabled
-                            MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
+                            MixedRealityToolkit.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
                         }
                         break;
                     }
