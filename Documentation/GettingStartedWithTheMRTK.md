@@ -37,6 +37,7 @@ To get started with the Mixed Reality Toolkit you will need:
 >
 > Accepting these options is completely optional. If you click **Later**, MRTK will not ask you again.  You can then set these options manually if you wish.
 
+
 3. Import `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` following the same steps as above. The examples package is optional but contains useful demonstration scenes for current MRTK features.
 
 > Note that some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
@@ -107,7 +108,7 @@ Which contains the following:
 6. Hit play and test out hand simulation by pressing spacebar.
 
 
-You are now ready to start building your project, just start adding content such as a [PressableButton](README_button.md) prefab, or a cube with a [ManipulationHandler](README_ManipulationHandler.md) component.
+You are now ready to start building your project, just start adding content such as a [PressableButton](README_Button.md) prefab, or a cube with a [ManipulationHandler](README_ManipulationHandler.md) component.
 
 ## Next steps
 
