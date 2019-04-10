@@ -557,6 +557,13 @@ namespace Microsoft.MixedReality.Toolkit
                 switch (objects.Length)
                 {
                     case 0:
+#if UNITY_EDITOR
+                        if (!Application.isPlaying && instance == null)
+                        {
+                            Debug.LogWarning("No MRTK instance found in scene");
+                            return null;
+                        }
+#endif
                         Debug.Assert(!newInstanceBeingInitialized, "We shouldn't be initializing another MixedRealityToolkit unless we errored on the previous.");
                         newInstanceBeingInitialized = true;
                         newInstance = new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>();
