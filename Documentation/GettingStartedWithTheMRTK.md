@@ -108,15 +108,16 @@ Which contains the following:
 6. Hit play and test out hand simulation by pressing spacebar.
 
 
-You are now ready to start building your project, just start adding content such as a [PressableButton](README_Button.md) prefab, or a cube with a [ManipulationHandler](README_ManipulationHandler.md) component.
+You are now ready to start building your project!
 
 ## Next steps
 
 Here are some suggested next steps:
 
+* Add a [PressableButton](README_Button.md) to your scene (we recommend using the `PressableButtonPlated` prefab to start)).
+* Add a cube to your scene, then make it movable using the [ManipulationHandler](README_ManipulationHandler.md) component.
 * Learn about the UX controls available in MRTK in [building blocks for UI and interactions](#building-blocks-for-ui-and-interactions).
 * Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
-* Create a scene with a pressable button that logs a message (read about [Interactable](README_Interactable.md) to see how to make the button respond both to click and button presses), and a movable cube.
 * Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md)
 
 ## Building blocks for UI and Interactions
