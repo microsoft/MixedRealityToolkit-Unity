@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4912089897891260336
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8799049236978119711}
+  m_Layer: 0
+  m_Name: Initial Marker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8799049236978119711
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4912089897891260336}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.0000005, y: 1.0000002, z: 1.0000002}
+  m_Children: []
+  m_Father: {fileID: 6066724869436565231}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6069707849138787997
 GameObject:
   m_ObjectHideFlags: 0
@@ -34,6 +64,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1623408358297322333}
+  - {fileID: 8799049236978119711}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 179.99998}
@@ -67,6 +98,7 @@ MonoBehaviour:
   pressDistance: 0.008
   releaseDistanceDelta: 0.001
   returnRate: 10
+  initialTransform: {fileID: 8799049236978119711}
   TouchBegin:
     m_PersistentCalls:
       m_Calls:
@@ -142,6 +174,8 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  isTouching: 0
+  isPressing: 0
 --- !u!114 &1598528672386795578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +194,7 @@ MonoBehaviour:
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 0.004711149, y: 0.024825739}
-  collider: {fileID: 6113324524881885153}
+  touchableCollider: {fileID: 6113324524881885153}
 --- !u!82 &6132438213147574949
 AudioSource:
   m_ObjectHideFlags: 0
