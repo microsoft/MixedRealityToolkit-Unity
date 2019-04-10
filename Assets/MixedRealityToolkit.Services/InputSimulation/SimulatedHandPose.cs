@@ -122,14 +122,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public enum GestureId
         {
+            /// <summary>
+            /// Unspecified hand shape
+            /// </summary>
             None = 0,
+            /// <summary>
+            /// Flat hand with fingers spread out
+            /// </summary>
             Flat,
+            /// <summary>
+            /// Relaxed hand pose
+            /// </summary>
             Open,
+            /// <summary>
+            /// Index finger and Thumb touching, index tip does not move
+            /// </summary>
             Pinch,
+            /// <summary>
+            /// Index finger and Thumb touching, wrist does not move
+            /// </summary>
             PinchSteadyWrist,
+            /// <summary>
+            /// Index finger stretched out
+            /// </summary>
             Poke,
+            /// <summary>
+            /// Grab with whole hand, fist shape
+            /// </summary>
             Grab,
+            /// <summary>
+            /// OK sign
+            /// </summary>
             ThumbsUp,
+            /// <summary>
+            /// Victory sign
+            /// </summary>
             Victory,
         }
 
