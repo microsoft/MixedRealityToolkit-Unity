@@ -2,7 +2,7 @@
 
 ![](../External/ReadMeImages/MRTK_Logo_Rev.png)
 
-The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR). It provides a common logical platform to build your dream, together with a rich set of services, SDK components, UI controls, and examples.
+The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR). This guide covers how to get MRTK, try out the hand interactions example in editor, how to add MRTK to your Unity project or Unity scene.
 
 ## Prerequisites
 
@@ -19,8 +19,8 @@ To get started with the Mixed Reality Toolkit you will need:
 2. Under Assets, download both Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage and Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage
 > The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
 
-## Create a new Unity project and import the MRTK packages
-1. Create a new Unity project. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.X release should work.
+## Import MRTK packages into your project
+1. Create a new Unity project, or open an existing project. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.X release should work.
 
 > *Note* when creating a new project with Unity 2018, Unity gives you several templates to choose from.  Currently the **MRTK does not yet support the Scriptable Render Pipeline**, so the LWSRP, HDSRP and VRSRP projects are not compatible with MRTK projects.
 
