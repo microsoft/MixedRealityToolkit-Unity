@@ -169,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Set hit focus information from a closest-colliders-to pointer check.
             /// </summary>
-            public void Set(GameObject hitObject, in Vector3 hitPointOnObject, in Vector4 hitNormalOnObject, in RayStep ray, int rayStepIndex, float rayDistance)
+            public void Set(GameObject hitObject, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
                 raycastHit = default(RaycastHit);
                 graphicsRaycastResult = default(RaycastResult);
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Set hit focus information from a physics raycast.
             /// </summary>
-            public void Set(in RaycastHit hit, in RayStep ray, int rayStepIndex, float rayDistance)
+            public void Set(RaycastHit hit, RayStep ray, int rayStepIndex, float rayDistance)
             {
                 raycastHit = hit;
                 graphicsRaycastResult = default(RaycastResult);
@@ -203,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Set hit information from a canvas raycast.
             /// </summary>
-            public void Set(in RaycastResult result, in Vector3 hitPointOnObject, in Vector4 hitNormalOnObject, in RayStep ray, int rayStepIndex, float rayDistance)
+            public void Set(RaycastResult result, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
                 raycastHit = default(RaycastHit);
                 graphicsRaycastResult = result;
