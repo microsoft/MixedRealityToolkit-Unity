@@ -19,20 +19,43 @@ To get started with the Mixed Reality Toolkit you will need:
 2. Under Assets, download both Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage and Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage
 > The Mixed Reality Toolkit is available via [multiple delivery mechanisms](DownloadingTheMRTK.md) and in the future will also be available via the Unity package manager once Unity makes that option available.
 
-## Open and run the HandInteractionExamples scene in editor
-
-[![HandInteractionExample scene](../External/ReadMeImages/MRTK_Examples.png)](README_HandInteractionExamples.md)
-
-The [hand interaction examples scene](README_HandInteractionExamples.md) is a great place to get started with because it shows a wide variety of UX controls and interactions in MRTK. To get started we will import MRTK, open the example scene, and explore the scene in the editor.
+## Create a new Unity project and import the MRTK packages
 1. Create a new Unity project. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.X release should work.
+
+> *Note* when creating a new project with Unity 2018, Unity gives you several templates to choose from.  Currently the **MRTK does not yet support the Scriptable Render Pipeline**, so the LWSRP, HDSRP and VRSRP projects are not compatible with MRTK projects.
 
 2. Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
 
+3. Accept the Setup prompt (optional)
+
+![](../External/ReadMeImages/MRTK_UnitySetupPrompt.png)
+
+
+Once imported, the MRTK will attempt to setup your project automatically for building Mixed Reality solutions by doing the following:
+
+* Enable XR Settings for your current platform (enabling the XR checkbox). **Note:** you need to do this for each platform you wish to deploy on
+* Force Text Serialization / Visible Meta files (recommended for Unity projects using source control)
+* Change the Scripting back-end to use IL2CPP (as Unity is deprecating the .NET scripting back-end)
+
+
+Accepting these options is completely optional (except .NET 4), if you click **Later**, the MRTK will not ask you again and leave you to it.  You can then choose to set these options manually later as you see fit.
+
 3. Import Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage following the same steps as above.
 
-6. Open the HandInteractionExamples scene under `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples`
+> The examples package is optional but contains useful demonstration scenes for current MRTK features.
 
-7. You will get a prompt asking you to import "TMP Essentials". 
+> Note that some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
+
+
+## Open and run the HandInteractionExamples scene in editor
+[![HandInteractionExample scene](../External/ReadMeImages/MRTK_Examples.png)](README_HandInteractionExamples.md)
+
+The [hand interaction examples scene](README_HandInteractionExamples.md) is a great place to get started because it shows a wide variety of UX controls and interactions in MRTK. To get started we will import MRTK, open the example scene, and explore the scene in the editor.
+
+1. Create a new Unity project and then import both the **Foundation** and **Examples** unity packages following [the steps above](#import-mrtk-packages-into-your-unity-project).
+2. Open the HandInteractionExamples scene under `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples`
+
+3. You will get a prompt asking you to import "TMP Essentials". 
 
 ![TMP Essentials](../External/Documentation/Images/MRTK_GettingStarted_TMPro.png)
 
@@ -46,20 +69,12 @@ There's quite a bit to explore in this scene, have fun! Learn more about the com
 
 Congratulations, you just used your first MRTK scene. Now onto creating your own stuff...
 
+
 ## Add MRTK to a new scene or new project
 
-1. Create a new project, or start a new scene in your current project
+1. Create a new Unity project, or start a new scene in your current project. 
 
-> *Note* when creating a new project with Unity 2018, Unity gives you several templates to choose from.  Currently the **MRTK does not yet support the Scriptable Render Pipeline**, so the LWSRP, HDSRP and VRSRP projects are not compatible with MRTK projects.
-
-2. Import MRTK Packages
-Import the Microsoft.MixedRealityToolkit.Unity.Foundation package you've downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensuring all items to import are checked, and then selecting "Import".
-
-We also recommend that you import the Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage following the same steps as above.
-
-> The examples package is optional but contains useful demonstration scenes for current MRTK features.
-
-> Note that some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
+2. Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following [the steps above](#import-mrtk-packages-into-your-unity-project).
 
 3. Configure your first Mixed Reality Toolkit scene
 
@@ -98,9 +113,10 @@ Press the play button to start the scene. You are now ready to start building yo
 
 Now your project is up and running, you can start building your Mixed Reality project. Here are some suggested next steps:
 
-* Explore the [hand interaction examples scene](README_HandInteractionExamples.md) if you haven't already. Instructions to get started are above.
+* Explore the [hand interaction examples scene](README_HandInteractionExamples.md) if you haven't already. Instructions to get started [are above](#Open-and-run-the-HandInteractionExamples-scene-in-editor).
 * Learn about the UX controls available in MRTK in [building blocks for UI and interactions](#building-blocks-for-ui-and-interactions).
 * Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
+* Create a scene with a pressable button that logs a message (read about [Interactable](README_Interactable.md) to see how to make the button respond both to click and button presses), and a movable cube.
 * Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md)
 
 ## Building blocks for UI and Interactions
