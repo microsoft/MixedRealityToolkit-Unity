@@ -2,14 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Physics;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
-public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityInputHandler
+public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler
 {
     private enum TouchType
     {
@@ -50,7 +49,6 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
     private Mesh mesh;
     private Vector2 uvOffset = Vector2.zero;
     private Vector2 uvTotalOffset = Vector2.zero;
-    private IMixedRealityInputSource touchingSource;
     private Vector3 touchingInitialPt;
     private Vector3 touchingPoint;
     private Vector2 touchingUV;
@@ -58,14 +56,10 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
     private Vector2 touchingUVOffset;
     private Vector2 touchingUVTotalOffset;
     private List<IMixedRealityHandPanHandler> handlerInterfaces = new List<IMixedRealityHandPanHandler>();
-    private IMixedRealityController currentController = null;
-    private bool TouchActive
-    {
-        get
-        {
-            return touchingPoint != Vector3.zero;
-        }
-    }
+    private IMixedRealityPointer currentPointer = null;
+
+    private bool TouchActive { get => (currentPointer != null); }
+
     #endregion Private Properties
 
     #region MonoBehaviour Handlers
@@ -73,6 +67,7 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
     {
         ValidityCheck();
     }
+
     private void Update()
     {
         if (isEnabled == false)
@@ -80,82 +75,83 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
             return;
         }
 
-        if (currentController != null)
+        touchingPoint = Vector3.zero;
+        if (currentPointer != null)
         {
-            if (touchType == TouchType.IndexFinger)
+            if (false == TryGetPointerPosition(currentPointer, out touchingPoint))
             {
-                if (true == TryGetHandPoint(currentController, TrackedHandJoint.IndexTip, out Vector3 tryHandPoint))
-                {
-                    touchingPoint = SnapFingerToQuad(tryHandPoint);
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else if (touchType == TouchType.HandRay)
-            {
-                if (true == TryGetHandPoint(currentController, TrackedHandJoint.Palm, out Vector3 tryHandPoint))
-                {
-                    touchingPoint = SnapFingerToQuad(tryHandPoint);
-                }
-                else
-                {
-                    return;
-                }
+                return;
             }
 
             MoveTouch();
-
-            if (touchVisual)
-            {
-                touchVisual.transform.position = touchingPoint;
-            }
         }
-        else
+
+        if (touchVisual != null)
         {
-            if (touchVisual)
-            {
-                touchVisual.transform.position = Vector3.zero;
-            }
+            touchVisual.transform.position = touchingPoint;
         }
 
         UpdateIdle();
         UpdateUVMapping();
     }
+
     #endregion MonoBehaviour Handlers
 
-    
     #region Private Methods
-    private bool TryGetHandPoint(IMixedRealityController controller, TrackedHandJoint joint, out Vector3 handPoint)
+
+    private bool TryGetPointerPosition(IMixedRealityPointer pointer, out Vector3 handRayPoint)
     {
-        Vector3 point = Vector3.zero;
-        if (true == HandJointUtils.TryGetJointPose(joint, controller.ControllerHandedness, out MixedRealityPose pose))
+        Vector3 planePoint = transform.TransformPoint(
+            (mesh != null && mesh.vertices.Length > 0) ? mesh.vertices[0] : Vector3.zero);
+        Vector3 planeNormal = transform.forward;
+
+        if (touchType == TouchType.IndexFinger)
         {
-            handPoint = pose.Position;
+            handRayPoint = Vector3.ProjectOnPlane(pointer.Position - planePoint, planeNormal) + pointer.Position;
             return true;
         }
+        else if (touchType == TouchType.HandRay)
+        {
+            if (pointer.Result != null)
+            {
+                Plane plane = new Plane(planeNormal, planePoint);
 
-        handPoint = point;
+                // Compute intersection of ray with quad plane.
+                // The ray may be outside of the object since we disable target position focus locking.
+                foreach (RayStep step in pointer.Rays)
+                {
+                    if (MixedRealityRaycaster.RaycastPlanePhysicsStep(step, plane, out handRayPoint))
+                    {
+                        return true;
+                    }
+                }
+
+                handRayPoint = pointer.Result.Details.Point;
+                return true;
+            }
+        }
+
+        handRayPoint = Vector3.zero;
         return false;
     }
+
     private void ValidityCheck()
     {
-        //check for box collider
+        // check for box collider
         Collider collider = GetComponent<Collider>();
         if (collider == null)
         {
-            Debug.Log("The GameObject that runs this script must have a Collider attached.");
+            Debug.LogWarning("The GameObject that runs this script must have a Collider attached.");
         }
         else
         {
-            this.GetComponent<Renderer>().material.mainTexture.wrapMode = TextureWrapMode.Repeat;
+            GetComponent<Renderer>().material.mainTexture.wrapMode = TextureWrapMode.Repeat;
         }
 
-        //get event targets
+        // get event targets
         foreach (GameObject gameObject in panEventReceivers)
         {
-            if(gameObject != null)
+            if (gameObject != null)
             {
                 IMixedRealityHandPanHandler handler = gameObject.GetComponent<IMixedRealityHandPanHandler>();
                 if (handler != null)
@@ -165,34 +161,19 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
             }
         }
 
-        //precache references
+        // precache references
         meshFilter = gameObject.GetComponent<MeshFilter>();
         if (meshFilter == null)
         {
-            Debug.Log("The GameObject: " + this.gameObject.name + " " + "does not have a Mesh component.");
+            mesh = null;
+            Debug.LogWarning($"The GameObject: '{gameObject.name}' does not have a Mesh component.");
         }
         else
         {
             mesh = meshFilter.mesh;
         }
     }
-    private IMixedRealityHandPanHandler[] GetInterfaces()
-    {
-        List<IMixedRealityHandPanHandler> interfaces = new List<IMixedRealityHandPanHandler>();
-        GameObject[] gameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
 
-        foreach (var gameObject in gameObjects)
-        {
-            IMixedRealityHandPanHandler[] childrenInterfaces = gameObject.GetComponentsInChildren<IMixedRealityHandPanHandler>();
-            foreach (var childInterface in childrenInterfaces)
-            {
-                interfaces.Add(childInterface);
-            }
-        }
-
-        return interfaces.ToArray();
-
-    }
     private void UpdateIdle()
     {
         if (TouchActive == false)
@@ -206,27 +187,29 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
                 if (velocityActive == true)
                 {
                     uvOffset = new Vector2(uvOffset.x * velocityDamping.x, uvOffset.y * velocityDamping.y);
-                    FirePanning(0);
+                    FirePanning();
                 }
 
                 if (springActive == true)
                 {
                     List<Vector2> uvCurrent = new List<Vector2>();
-                    mesh.GetUVs(0, uvCurrent);
+                    GetMeshUVs(uvCurrent);
                     uvOffset = -(uvsTouchStart[0] - uvCurrent[0]) * 0.1f;
-                    FirePanning(0);
+                    FirePanning();
                 }
             }
         }
     }
+
     private void UpdateTouchPoint()
     {
         Vector2 newUV = GetUVFromPoint(touchingPoint);
-        
+
         uvOffset = newUV - touchingUV;
         uvOffset.y = -uvOffset.y;
         touchingUV = newUV;
     }
+
     private void UpdateUVMapping()
     {
         if (velocityActive)
@@ -235,7 +218,7 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
             List<Vector2> uvs = new List<Vector2>();
             List<Vector2> uvsOrig = new List<Vector2>();
 
-            mesh.GetUVs(0, uvs);
+            GetMeshUVs(uvs);
             uvsOrig.AddRange(uvs);
 
             bool oobX = false;
@@ -271,39 +254,51 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
             mesh.uv = uvs.ToArray();
         }
     }
+
+    void GetMeshUVs(List<Vector2> uvs)
+    {
+        if (mesh != null)
+        {
+            mesh.GetUVs(0, uvs);
+        }
+        else
+        {
+            uvs.Clear();
+        }
+    }
+
     private Vector2 GetUVFromPoint(Vector3 point)
     {
         Vector2 uv = GetPlanePoint(point);
         uv = new Vector2(lockHorizontal ? 0.0f : uv.x, lockVertical ? 0.0f : uv.y);
         return uv;
     }
+
     private Vector2 GetPlanePoint(Vector3 point)
     {
+        if (mesh == null)
+        {
+            return Vector2.zero;
+        }
+
         Vector3[] vertices = mesh.vertices;
         Vector3 upperLeft = transform.TransformPoint(vertices[3]);
-        Vector3 upperRight = transform.TransformPoint(vertices[1]);//lower left
+        Vector3 upperRight = transform.TransformPoint(vertices[1]);
         Vector3 lowerLeft = transform.TransformPoint(vertices[0]);
 
         float magVertical = (lowerLeft - upperLeft).magnitude;
         float magHorizontal = (upperRight - upperLeft).magnitude;
 
         float v = Vector3.Dot(point - upperLeft, (lowerLeft - upperLeft) / magVertical);
-        float h = Vector3.Dot(point - upperLeft, (upperRight - upperLeft)/magHorizontal);
+        float h = Vector3.Dot(point - upperLeft, (upperRight - upperLeft) / magHorizontal);
         v /= magVertical;
         h /= magHorizontal;
         return new Vector2(h, v);
     }
-    private Vector3 SnapFingerToQuad(Vector3 pointToSnap)
-    {
-        Vector3 planePoint = this.transform.TransformPoint(mesh.vertices[0]);
-        Vector3 planeNormal = gameObject.transform.forward;
 
-        return Vector3.ProjectOnPlane(pointToSnap - planePoint, planeNormal) + planePoint;
-    }
     private void DisconnectTouch()
     {
-        currentController = null;
-        touchingSource = null;
+        currentPointer = null;
         touchingPoint = Vector3.zero;
         touchingInitialPt = Vector3.zero;
         touchingUV = Vector2.zero;
@@ -311,34 +306,38 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
         touchingUVOffset = Vector2.zero;
         EndTouch();
     }
+
     #endregion Private Methods
 
-    
     #region Internal State Handlers
+
     private void StartTouch()
     {
         UpdateTouchPoint();
-        mesh.GetUVs(0, uvsTouchStart);
-        FirePanStarted(touchingSource.SourceId);
+        GetMeshUVs(uvsTouchStart);
+        FirePanStarted();
     }
+
     private void EndTouch()
     {
         touchingUVTotalOffset += uvOffset;
-        FirePanEnded(0);
+        FirePanEnded();
     }
+
     private void MoveTouch()
     {
         UpdateTouchPoint();
-        FirePanning(touchingSource.SourceId);
+        FirePanning();
     }
+
     #endregion Internal State Handlers
 
-    
     #region Fire Events to Listening Objects
-    private void FirePanStarted(uint id)
+
+    private void FirePanStarted()
     {
         HandPanEventData eventData = new HandPanEventData(EventSystem.current);
-        eventData.Initialize(touchingSource, uvOffset);
+        eventData.Initialize(currentPointer == null ? null : currentPointer.InputSourceParent, uvOffset);
 
         foreach (IMixedRealityHandPanHandler handler in handlerInterfaces)
         {
@@ -348,7 +347,8 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
             }
         }
     }
-    private void FirePanEnded(uint id)
+
+    private void FirePanEnded()
     {
         HandPanEventData eventData = new HandPanEventData(EventSystem.current);
         eventData.Initialize(null, Vector2.zero);
@@ -361,10 +361,11 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
             }
         }
     }
-    private void FirePanning(uint id)
+
+    private void FirePanning()
     {
         HandPanEventData eventData = new HandPanEventData(EventSystem.current);
-        eventData.Initialize(touchingSource, uvOffset);
+        eventData.Initialize(currentPointer == null ? null : currentPointer.InputSourceParent, uvOffset);
 
         foreach (IMixedRealityHandPanHandler handler in handlerInterfaces)
         {
@@ -374,23 +375,22 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
             }
         }
     }
+
     #endregion Fire Events to Listening Objects
 
+    #region IMixedRealityTouchHandler implementation
 
-    #region IMixedRealityHandTrackHandler
-    public void OnTouchStarted(HandTrackingInputEventData eventData)
+    void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
     {
         if (touchType == TouchType.IndexFinger)
         {
-            if (touchingSource == null)
+            if (currentPointer == null)
             {
-                touchingSource = eventData.InputSource;
-                currentController = touchingSource.Pointers[0].Controller;
+                currentPointer = eventData.InputSource.Pointers[0];
 
-                TryGetHandPoint(eventData.Controller, TrackedHandJoint.IndexTip, out Vector3 handPt);
-
-                touchingPoint = SnapFingerToQuad(handPt);
+                TryGetPointerPosition(currentPointer, out touchingPoint);
                 touchingInitialPt = touchingPoint;
+
                 touchingUV = GetUVFromPoint(touchingPoint);
                 touchingInitialUV = touchingUV;
                 touchingUVOffset = touchingUVTotalOffset;
@@ -401,64 +401,73 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
             }
         }
     }
-    public void OnTouchCompleted(HandTrackingInputEventData eventData)
+    void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
     {
         if (touchType == TouchType.IndexFinger)
         {
-            if (touchingSource == eventData.InputSource)
+            if (currentPointer == eventData.InputSource.Pointers[0])
             {
                 DisconnectTouch();
                 eventData.Use();
             }
         }
     }
-    public void OnTouchUpdated(HandTrackingInputEventData eventData) { }
+    void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData) { }
     #endregion IMixedRealityHandTrackHandler
 
-
     #region BaseFocusHandler Methods
-    public override void OnFocusEnter(FocusEventData eventData){}
+
+    public override void OnFocusEnter(FocusEventData eventData) { }
+
     public override void OnFocusExit(FocusEventData eventData)
     {
         DisconnectTouch();
     }
+
     #endregion
 
+    #region IMixedRealityPointerHandler implementation
 
-    #region IMixedRealityInputHandler Methods
-    public void OnInputDown(InputEventData eventData)                          
+    void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
     {
-         if (touchType == TouchType.HandRay)
+        if (touchType == TouchType.HandRay)
         {
-            if (touchingSource == null)
+            if (currentPointer == null)
             {
-                touchingSource = eventData.InputSource;
-                currentController = touchingSource.Pointers[0].Controller;
-                TryGetHandPoint(currentController, TrackedHandJoint.Palm, out touchingPoint);
-                touchingPoint = SnapFingerToQuad(touchingPoint);
+                currentPointer = eventData.InputSource.Pointers[0];
+
+                TryGetPointerPosition(currentPointer, out touchingPoint);
                 touchingInitialPt = touchingPoint;
+
                 touchingUV = GetUVFromPoint(touchingPoint);
                 touchingInitialUV = touchingUV;
                 touchingUVOffset = touchingUVTotalOffset;
 
                 StartTouch();
 
+                // Pointer cursor needs to be able to move on focus lock when panning.
+                currentPointer.IsTargetPositionLockedOnFocusLock = false;
+
                 eventData.Use();
             }
         }
     }
-    public void OnInputUp(InputEventData eventData)
+
+    void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
     {
         if (touchType == TouchType.HandRay)
         {
-            if (touchingSource == eventData.InputSource)
+            if (currentPointer == eventData.Pointer)
             {
                 DisconnectTouch();
                 eventData.Use();
             }
         }
     }
-    public void OnPositionInputChanged(InputEventData<Vector2> eventData){}
-    public void OnInputPressed(InputEventData<float> eventData){}
-    #endregion IMixedRealityInputHandler Methods
+
+    void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
+    {
+    }
+
+    #endregion
 }

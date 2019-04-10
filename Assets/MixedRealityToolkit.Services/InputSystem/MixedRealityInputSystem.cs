@@ -868,14 +868,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
+            pointer.IsFocusLocked = (pointer.Result?.Details.Object != null);
+
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
             
             HandlePointerEvent(pointerEventData, OnPointerDownEventHandler);
-            
-            if (pointer.Result?.Details.Object != null)
-            {
-                pointer.IsFocusLocked = true;
-            }
         }
 
         #endregion Pointer Down
@@ -923,7 +920,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
             HandlePointerEvent(pointerEventData, OnPointerUpEventHandler);
-            
+
             pointer.IsFocusLocked = false;
         }
 

@@ -261,6 +261,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
 
+        /// <inheritdoc />
+        public bool IsTargetPositionLockedOnFocusLock { get; set; }
+
         [SerializeField]
         private bool overrideGlobalPointerExtent = false;
 
