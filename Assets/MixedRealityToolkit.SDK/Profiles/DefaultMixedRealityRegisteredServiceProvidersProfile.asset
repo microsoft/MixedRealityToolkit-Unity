@@ -13,4 +13,12 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityRegisteredServiceProvidersProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  configurations: []
+  configurations:
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Extensions.SceneTransitionService,
+        Assembly-CSharp
+    componentName: Scene Transition Service
+    priority: 10
+    runtimePlatform: 15
+    configurationProfile: {fileID: 11400000, guid: 60243911f6e19f646af14fd779668687,
+      type: 2}
