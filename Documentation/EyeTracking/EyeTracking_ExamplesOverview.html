@@ -89,6 +89,36 @@ This enables users to quickly and effortlessly select and move holograms across 
 The demos also include an example for eye-gaze-directed scroll, pan and zoom of text and images on a slate.
 Finally, an example is provided for recording and visualizing the user's visual attention on a 2D slate.</p>
 <h2 id="overview-of-mrtk-eye-tracking-samples">Overview of MRTK Eye Tracking Samples</h2>
+<h3 id="setting-up-the-mrtk-eye-tracking-samples">Setting up the MRTK Eye Tracking Samples</h3>
+<p>The <a href="/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/">Eye Tracking example package</a> comes with a number of different Unity scenes that are described in more detail below:</p>
+<ul>
+<li><a href="/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/">mrtk_eyes_00_RootScene.unity</a>:
+This is the main (<em>root</em>) scene that has all the core MRTK components included.
+It comes with a graphical scene menu that allows you to easily switch between the different Eye Tracking scenes which will be <a href="href:https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html">loaded additively</a>.
+To try out the Eye Tracking demos in your Unity Player, all you have to do is to load this scene and hit play.
+Make sure that the <em>'OnLoad_StartScene'</em> script is enabled for this so that the root scene knows which additive scene to load first.</li>
+</ul>
+<p><img src="/External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload.png" alt="Example for the OnLoad_StartScene script"></p>
+<ul>
+<li>Individual Eye Tracking sample scenes - See <a href="#demo-scenarios">Demo Scenarios</a> for a description of each:
+<ul>
+<li><a href="/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/">mrtk_eyes_01_BasicSetup.unity</a></li>
+<li><a href="/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/">mrtk_eyes_02_TargetSelection.unity</a></li>
+<li><a href="/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/">mrtk_eyes_03_Navigation.unity</a></li>
+<li><a href="/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/">mrtk_eyes_04_TargetPositioning.unity</a></li>
+<li><a href="/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/">mrtk_eyes_05_Visualizer.unity</a></li>
+</ul>
+</li>
+</ul>
+<p>You may wonder: But how do I quickly change a scene and test it in the Unity Editor?
+No problem!</p>
+<ul>
+<li>Load the <em>root</em> scene</li>
+<li>Disable the <em>'OnLoad_StartScene'</em> script</li>
+<li><em>Drag and drop</em> one of the Eye Tracking test scenes that are described below (or any other scene) into your <em>Hierarchy</em> view.</li>
+</ul>
+<p><img src="/External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload2.png" alt="Example for the OnLoad_StartScene script"></p>
+<h3 id="demo-scenarios">Demo Scenarios</h3>
 <p><a href="EyeTracking_TargetSelection.html"><strong>Eye-Supported Target Selection</strong></a></p>
 <p>This tutorial showcases the ease of accessing eye gaze data to select targets.
 It includes an example for subtle yet powerful feedback to provide confidence to the user that a target is focused while not being overwhelming.

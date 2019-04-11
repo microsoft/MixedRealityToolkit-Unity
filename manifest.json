@@ -522,7 +522,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Cursor.html",
-          "hash": "9Pojo0Z1akLZhs75YlTMbw=="
+          "hash": "aw4wPtIQDrFUToyc5ijJgg=="
         }
       },
       "is_incremental": false,
@@ -534,7 +534,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_ExamplesOverview.html",
-          "hash": "NoQtN3wBKFuRkRUam0tA+Q=="
+          "hash": "RILCTeYgUofLNAZvoPYRLg=="
         }
       },
       "is_incremental": false,
@@ -582,7 +582,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Positioning.html",
-          "hash": "dG1U+ceEwouZWj65EVPX7Q=="
+          "hash": "Oh6shZxL7bLkPWua8O6r1Q=="
         }
       },
       "is_incremental": false,
@@ -606,7 +606,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Visualization.html",
-          "hash": "VhK5ij8W20s/It36w3flAg=="
+          "hash": "EjbQA8NaYmeQGZJ8ZnNEiQ=="
         }
       },
       "is_incremental": false,
@@ -1853,6 +1853,28 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_positioning_slider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload2.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload2.png"
         }
       },
       "is_incremental": false,
@@ -13806,16 +13828,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 845,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 89,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 845,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
