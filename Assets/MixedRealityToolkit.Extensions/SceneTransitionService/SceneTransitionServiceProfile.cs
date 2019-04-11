@@ -8,6 +8,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions
     [CreateAssetMenu(fileName = "SceneTransitionServiceProfile", menuName = "MixedRealityToolkit/SceneTransitionService Configuration Profile")]
     public class SceneTransitionServiceProfile : BaseMixedRealityProfile
     {
-        // Store config data in serialized fields
+        public GameObject ProgressIndicatorPrefab => progressIndicatorPrefab;
+
+        [SerializeField]
+        [Tooltip("The prefab used to show progress. Must include a scipt implementing IProgressIndicator.")]
+        private GameObject progressIndicatorPrefab;
     }
 }
