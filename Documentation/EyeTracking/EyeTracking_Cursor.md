@@ -6,7 +6,6 @@ _We're currently restructuring and improving the MRTK documentation.
 This content will be updated soon! 
 If you have any questions regarding this section please post in our [MRTK slack channel](https://holodevelopers.slack.com/)._
 
-<!-- TODO: Add more infos -- >
 
 ---
 [Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
