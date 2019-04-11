@@ -35,7 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         const string EditingEnabledKey = "MRTK_PressableButtonInspector_EditingEnabledKey";
+        const string VisiblePlanesKey = "MRTK_PressableButtonInspector_VisiblePlanesKey";
         private static bool EditingEnabled = false;
+        private static bool VisiblePlanes = true;
 
         private const float labelMouseOverDistance = 0.025f;
 
@@ -93,6 +95,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (Selection.activeObject != button.gameObject)
                 return;
 
+
+            if (!VisiblePlanes)
+                return;
+
             // If the button is being pressed, don't gather new info
             // Just display the info we already gathered
             // This lets people view button presses in real-time
@@ -148,12 +154,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUI.BeginChangeCheck();
             }
-
-            float handleSize = Mathf.Max(info.touchCageLocalBounds.size.x * 0.065f, 0.0025f);
-
+            
             // PRESS END
             Handles.color = Color.cyan;
-            DrawPlaneAndHandle(targetEndPlane, info.touchCageLocalBounds.size * 0.5f, handleSize, ref newInfo.endPos, info.touchStartOrigin, "Max move distance");
+            DrawPlaneAndHandle(targetEndPlane, info.touchCageLocalBounds.size * 0.5f, ref newInfo.endPos, info.touchStartOrigin, "Max move distance", editingEnabled);
 
             if (editingEnabled)
             {
@@ -164,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // PRESS DISTANCE
             Handles.color = Color.yellow;
-            DrawPlaneAndHandle(pressDistancePlane, info.touchCageLocalBounds.size * 0.35f, handleSize, ref newInfo.pressDistPos, info.touchStartOrigin, "Press event");
+            DrawPlaneAndHandle(pressDistancePlane, info.touchCageLocalBounds.size * 0.35f, ref newInfo.pressDistPos, info.touchStartOrigin, "Press event", editingEnabled);
 
             if (editingEnabled)
             {
@@ -178,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // RELEASE DISTANCE DELTA
             Handles.color = Color.red;
-            DrawPlaneAndHandle(releasePlane, info.touchCageLocalBounds.size * 0.3f, handleSize, ref newInfo.releaseDistPos, info.touchStartOrigin, "Release event");
+            DrawPlaneAndHandle(releasePlane, info.touchCageLocalBounds.size * 0.3f, ref newInfo.releaseDistPos, info.touchStartOrigin, "Release event", editingEnabled);
 
             if (editingEnabled)
             {
@@ -193,12 +197,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Don't allow editing of button position
             Handles.color = Color.green;
             float editStartPos = newInfo.startPos;
-            DrawPlaneAndHandle(pressStartPlane, info.touchCageLocalBounds.size * 0.4f, handleSize, ref editStartPos, info.touchStartOrigin, "Moving Button Visuals", false);
+            DrawPlaneAndHandle(pressStartPlane, info.touchCageLocalBounds.size * 0.4f, ref editStartPos, info.touchStartOrigin, "Moving button visuals", false);
 
             // START POINT
             // Start point doesn't need a display offset because it's based on the touch cage center
             Handles.color = Color.cyan;
-            DrawPlaneAndHandle(targetStartPlane, info.touchCageLocalBounds.size * 0.5f, handleSize, ref newInfo.touchStartPos, info.touchStartOrigin, "Touch event");
+            DrawPlaneAndHandle(targetStartPlane, info.touchCageLocalBounds.size * 0.5f, ref newInfo.touchStartPos, info.touchStartOrigin, "Touch event", editingEnabled);
 
             if (editingEnabled)
             {
@@ -235,11 +239,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Handles.DrawDottedLine(targetStartPlane[3], targetEndPlane[3], 2.5f);
         }
 
-        private void DrawPlaneAndHandle(Vector3[] plane, Vector3 planeSize, float handleSize, ref float zPosition, Vector3 cagePosition, string label, bool drawArrows = true)
+        private void DrawPlaneAndHandle(Vector3[] plane, Vector3 planeSize, ref float zPosition, Vector3 cagePosition, string label, bool editingEnabled)
         {
             cagePosition.z = zPosition;
             MakePlaneFromPoint(plane, cagePosition, planeSize, transform);
-            Handles.DrawSolidRectangleWithOutline(plane, Color.Lerp(Handles.color, Color.clear, 0.65f), Handles.color);
+
+            if (VisiblePlanes)
+            {
+                Handles.DrawSolidRectangleWithOutline(plane, Color.Lerp(Handles.color, Color.clear, 0.65f), Handles.color);
+            }
 
             Vector3 mousePosition = SceneView.currentDrawingSceneView.camera.ScreenToViewportPoint(Event.current.mousePosition);
             mousePosition.y = 1f - mousePosition.y;
@@ -253,41 +261,47 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 SceneView.RepaintAll();
             }
 
-            if (EditingEnabled)
+            float handleSize = HandleUtility.GetHandleSize(plane[0]) * 0.15f;
+
+            Handles.ArrowHandleCap(0, plane[1], Quaternion.LookRotation(transform.forward, Vector3.up), handleSize * 2, EventType.Repaint);
+            Handles.ArrowHandleCap(0, plane[1], Quaternion.LookRotation(-transform.forward, Vector3.up), handleSize * 2, EventType.Repaint);
+
+            // Draw forward / backward arrows so people know they can drag
+            if (editingEnabled)
             {
-                Color startColor = Handles.color;
-                Handles.color = drawArrows ? startColor : Color.Lerp(startColor, Color.clear, 0.5f);
                 Vector3 handlePosition = Handles.FreeMoveHandle(plane[1], Quaternion.identity, handleSize, Vector3.zero, Handles.SphereHandleCap);
-                // Draw forward / backward arrows so people know they can drag
-                if (drawArrows)
-                {
-                    Handles.ArrowHandleCap(0, handlePosition, Quaternion.LookRotation(transform.forward, Vector3.up), handleSize * 2, EventType.Repaint);
-                    Handles.ArrowHandleCap(0, handlePosition, Quaternion.LookRotation(-transform.forward, Vector3.up), handleSize * 2, EventType.Repaint);
-                }
-                // Remove the offset from the handle position
                 handlePosition = transform.InverseTransformPoint(handlePosition);
                 zPosition = handlePosition.z;
-                Handles.color = startColor;
             }
-
         }
 
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
+            EditorGUILayout.Space();
             EditorGUILayout.LabelField("Editor Settings", EditorStyles.boldLabel);
-            EditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
-            EditingEnabled = EditorGUILayout.Toggle("Show Handles", EditingEnabled);
-            SessionState.SetBool(EditingEnabledKey, EditingEnabled);
+            VisiblePlanes = SessionState.GetBool(VisiblePlanesKey, true);
+            VisiblePlanes = EditorGUILayout.Toggle("Show Button Event Planes", VisiblePlanes);
+            SessionState.SetBool(VisiblePlanesKey, VisiblePlanes);
+
+            if (VisiblePlanes)
+            {
+                EditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
+                EditingEnabled = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
+                SessionState.SetBool(EditingEnabledKey, EditingEnabled);
+            }
+
+            EditorUtility.SetDirty(target);
         }
 
         private void DrawLabel(Vector3 origin, Vector3 direction, string content, GUIStyle labelStyle)
         {
             Color colorOnEnter = Handles.color;
 
-            Vector3 handlePos = origin + direction.normalized * HandleUtility.GetHandleSize(origin);
-            Handles.Label(handlePos, content, labelStyle);
+            float handleSize = HandleUtility.GetHandleSize(origin);
+            Vector3 handlePos = origin + direction.normalized * handleSize * 2;
+            Handles.Label(handlePos + (Vector3.up * handleSize * 0.1f), content, labelStyle);
             Handles.color = Color.Lerp(colorOnEnter, Color.clear, 0.25f);
             Handles.DrawDottedLine(origin, handlePos, 5f);
 
