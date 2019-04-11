@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
         "Windows Speech Input")]
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Speech.html")]
     public class WindowsSpeechInputProvider : BaseInputDeviceManager, IMixedRealitySpeechSystem
     {
         /// <summary>

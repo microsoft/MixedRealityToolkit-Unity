@@ -92,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
             if (drawProfile)
             {
+                drawProfile = false;
                 // Draw the base profile stuff
                 if (typeof(BaseExtensionService).IsAssignableFrom(facade.ServiceType))
                 {
@@ -116,6 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 }
                 else
                 {
+                    drawProfile = false;
                     SerializedObject activeProfileObject = new SerializedObject(MixedRealityToolkit.Instance.ActiveProfile);
                     // Would be nice to handle this using some other method
                     // Would be nice to handle this with a lookup instead
