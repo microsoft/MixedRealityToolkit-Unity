@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         private static readonly Color enabledColor = GUI.backgroundColor;
         private static readonly Color disabledColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
-        
+
         public override void DrawInspectorGUI(object target)
         {
             IMixedRealityFocusProvider focusProvider = (IMixedRealityFocusProvider)target;

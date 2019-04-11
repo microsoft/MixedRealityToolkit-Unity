@@ -266,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
         [SerializeField]
         [Tooltip("If true, MRTK will generate components that let you to view the state of running services. These objects will not be generated at runtime.")]
-        private bool useServiceInspectors = true;
+        private bool useServiceInspectors = false;
 
         #endregion Mixed Reality Toolkit configurable properties
     }

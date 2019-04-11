@@ -68,6 +68,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             if (!initializedServiceInspectorLookup)
                 InitializeServiceInspectorLookup();
 
+            // If we have a doc link, put that first
+            DocLinkAttribute docLink = facade.ServiceType.GetCustomAttribute<DocLinkAttribute>();
+            if (docLink != null)
+            {
+                if (GUILayout.Button("Click to view documentation", EditorStyles.miniButton))
+                {
+                    Application.OpenURL(docLink.URL);
+                }
+                EditorGUILayout.Space();
+            }
+
             bool drawProfile = true;
             bool drawInspector = false;
 
@@ -130,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             }
 
             if (drawInspector)
-            {
+            {               
                 // If we have a custom inspector, draw that now
                 inspectorInstance.DrawInspectorGUI(facade.Service);
             }

@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static Vector3 P2;
         private static Vector3 P3;
         private static Vector3 P4;
-
+        
         // When playing, the profile is no longer relevant
         // Show the options below instead
         public override bool DrawProfileField { get { return !Application.isPlaying; } }

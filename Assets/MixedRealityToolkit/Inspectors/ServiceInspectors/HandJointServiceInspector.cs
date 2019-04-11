@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Color disabledColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
         private static Dictionary<TrackedHandJoint, bool> showHandJointSettings;
         private static Dictionary<TrackedHandJoint, string> showHandJointSettingKeys;
-
+        
         //We want hand preview to always be visible
         public override bool AlwaysDrawSceneGUI { get { return true; } }
 
