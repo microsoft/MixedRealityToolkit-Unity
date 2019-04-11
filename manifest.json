@@ -11809,6 +11809,66 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement.GameObjectCreator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement.GameObjectCreator.html",
+          "hash": "RJCZcdsR52HgmKKjWfblHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement.GameObjectPool.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement.GameObjectPool.html",
+          "hash": "FoGsf+skCKFr3ICW33ANmA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement.GenericPrefabInstanceCreator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement.GenericPrefabInstanceCreator.html",
+          "hash": "OYxbqVcO75U3Ff9hkjRS3g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement.IGameObjectCreatorListener.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement.IGameObjectCreatorListener.html",
+          "hash": "gyjzaEZpyGwymKO2B59kHQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement.html",
+          "hash": "nschKdQBwCht5s6JI7/h5A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Gltf.GltfAsset.yml",
       "output": {
         ".html": {
@@ -13769,7 +13829,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "p1xJzu4tw5+IU/ugvledDw=="
+          "hash": "YehRyd7Rbil12rv+rsczBA=="
         }
       },
       "is_incremental": false,
@@ -13830,7 +13890,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 845,
+          "total_file_count": 850,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
