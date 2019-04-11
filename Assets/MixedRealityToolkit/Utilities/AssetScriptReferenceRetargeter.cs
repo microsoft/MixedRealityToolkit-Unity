@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.Compilation;
+using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -179,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t.Item1, t.Item2, remapDictionary)));
             Task.WhenAll(tasks).Wait();
 
-            CleanupDirectory(outputDirectory);
+            PostProcess(outputDirectory);
         }
 
         private static async Task ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary)
@@ -343,10 +345,66 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static void CleanupDirectory(string outputPath)
+        private static void PostProcess(string outputPath)
         {
             DirectoryInfo outputDirectory = new DirectoryInfo(outputPath);
             RecursiveFolderCleanup(outputDirectory);
+            UpdateGuids();
+        }
+
+
+        //While we're cleaning up the folders, keep track of all the dll.meta files that remain, and all the .asmdef files we find.
+        
+
+        private static void UpdateGuids()
+        {
+            int lengthOfPrefix = Application.dataPath.IndexOf("Assets");
+            Dictionary<string, string> asmdefGuids = new Dictionary<string, string>();
+            string[] asmdefFiles = Directory.GetFiles(Application.dataPath, "*.asmdef", SearchOption.AllDirectories);
+
+            foreach (string asmdefFile in asmdefFiles)
+            {
+                string asmdefText = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(asmdefFile.Substring(lengthOfPrefix)).text;
+                string dllName = JsonUtility.FromJson<AssemblyDefinitionStub>(asmdefText).name;
+                string guid = File.ReadAllLines(string.Format("{0}.meta", asmdefFile))[1].Substring(6);
+                asmdefGuids.Add(dllName, guid);
+            }
+
+            foreach (FileInfo dllFile in new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins")).GetFiles("*"))
+            {
+                if (dllFile.Extension.Equals(".meta"))
+                {
+                    StringBuilder guidBuilder = new StringBuilder(32);
+                    string dllFileName = dllFile.Name.Remove(dllFile.Name.Length - 9);
+                    if (asmdefGuids.ContainsKey(dllFileName))
+                    {
+                        string guid = asmdefGuids[dllFileName];
+                        guidBuilder.Clear();
+                        //Add one to each hexit in the guid to make it unique, but also reproducible
+                        foreach (char hexit in guid)
+                        {
+                            switch (hexit)
+                            {
+                                case 'f':
+                                    guidBuilder.Append('0');
+                                    break;
+                                case '9':
+                                    guidBuilder.Append('a');
+                                    break;
+                                default:
+                                    guidBuilder.Append((char)(hexit + 1));
+                                    break;
+                            }
+                        }
+                        guid = guidBuilder.ToString();
+
+                        string[] dllMetaFileText = File.ReadAllLines(dllFile.FullName);
+                        dllMetaFileText[1] = string.Format("guid: {0}", guid);
+                        File.WriteAllLines(dllFile.FullName, dllMetaFileText);
+                        break;
+                    }
+                }
+            }
         }
 
         private static void RecursiveFolderCleanup(DirectoryInfo folder)
@@ -396,6 +454,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 folder.Delete();
             }
         }
+    }
+
+    struct AssemblyDefinitionStub
+    {
+        public string name;
     }
 }
 #endif
