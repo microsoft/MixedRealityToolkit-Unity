@@ -1,5 +1,5 @@
 # Spatial Awareness
-![Spatial Awareness](/External/ReadMeImages/SpatialAwareness/MRTK_SpatialAwareness_Main.png)
+![Spatial Awareness](../../External/ReadMeImages/SpatialAwareness/MRTK_SpatialAwareness_Main.png)
 
 The Spatial Awareness system provides real-world environmental awareness in mixed reality 
 applications. When introduced on Microsoft HoloLens, spatial awareness provided a collection 

@@ -8,6 +8,73 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Snapshot of simulated hand data.
+    /// </summary>
+    [System.Serializable]
+    public class SimulatedHandData
+    {
+        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
+
+        // Timestamp of hand data, as FileTime, e.g. DateTime.UtcNow.ToFileTime()
+        private long timestamp = 0;
+        public long Timestamp => timestamp;
+
+        [SerializeField]
+        private bool isTracked = false;
+        public bool IsTracked => isTracked;
+        [SerializeField]
+        private Vector3[] joints = new Vector3[jointCount];
+        public Vector3[] Joints => joints;
+        [SerializeField]
+        private bool isPinching = false;
+        public bool IsPinching => isPinching;
+
+        public delegate void HandJointDataGenerator(Vector3[] jointPositions);
+
+        public void Copy(SimulatedHandData other)
+        {
+            timestamp = other.timestamp;
+            isTracked = other.isTracked;
+            isPinching = other.isPinching; 
+            for (int i = 0; i < jointCount; ++i)
+            {
+                joints[i] = other.joints[i];
+            }
+        }
+
+        public bool Update(bool isTrackedNew, bool isPinchingNew, HandJointDataGenerator generator)
+        {
+            // TODO: DateTime.UtcNow can be quite imprecise, better use Stopwatch.GetTimestamp
+            // https://stackoverflow.com/questions/2143140/c-sharp-datetime-now-precision
+            return UpdateWithTimestamp(DateTime.UtcNow.Ticks, isTrackedNew, isPinchingNew, generator);
+        }
+
+        public bool UpdateWithTimestamp(long timestampNew, bool isTrackedNew, bool isPinchingNew, HandJointDataGenerator generator)
+        {
+            bool handDataChanged = false;
+
+            if (isTracked != isTrackedNew || isPinching != isPinchingNew)
+            {
+                isTracked = isTrackedNew;
+                isPinching = isPinchingNew;
+                handDataChanged = true;
+            }
+
+            if (timestamp != timestampNew)
+            {
+                timestamp = timestampNew;
+                if (isTracked)
+                {
+                    generator(Joints);
+                    handDataChanged = true;
+                }
+            }
+
+            return handDataChanged;
+        }
+    }
+
     public abstract class SimulatedHand : BaseHand
     {
         public abstract HandSimulationMode SimulationMode { get; }
