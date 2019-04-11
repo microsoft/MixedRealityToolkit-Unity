@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         ///<summary>
         /// Represents the state of whether or not a finger is currently touching this button.
         ///</summary>
-        private bool IsTouching
+        public bool IsTouching
         {
             get
             {

@@ -45,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private PressableButton button;
         private Transform transform;
+        private Transform buttonContentTransform;
         private BoxCollider touchCage;
 
         private ButtonInfo currentInfo;
@@ -53,8 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty pressDistance;
         private SerializedProperty releaseDistanceDelta;
         private SerializedProperty movingButtonVisuals;
-        private SerializedProperty isTouching;
-        private SerializedProperty isPressing;
         private SerializedObject boxColliderObject;
         private SerializedProperty boxColliderSize;
         private SerializedProperty boxColliderCenter;
@@ -69,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             button = (PressableButton)target;
             transform = button.transform;
+
             touchCage = button.GetComponent<BoxCollider>();
 
             if (labelStyle == null)
@@ -81,12 +81,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             pressDistance = serializedObject.FindProperty("pressDistance");
             releaseDistanceDelta = serializedObject.FindProperty("releaseDistanceDelta");
             movingButtonVisuals = serializedObject.FindProperty("movingButtonVisuals");
-            isTouching = serializedObject.FindProperty("isTouching");
-            isPressing = serializedObject.FindProperty("isPressing");
 
             boxColliderObject = new SerializedObject(touchCage);
             boxColliderSize = boxColliderObject.FindProperty("m_Size");
             boxColliderCenter = boxColliderObject.FindProperty("m_Center");
+
+            buttonContentTransform = transform;
+            if (movingButtonVisuals.objectReferenceValue != null)
+                buttonContentTransform = (movingButtonVisuals.objectReferenceValue as GameObject).transform;
         }
 
         private void OnSceneGUI()
@@ -95,14 +97,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (Selection.activeObject != button.gameObject)
                 return;
 
-
             if (!VisiblePlanes)
                 return;
 
             // If the button is being pressed, don't gather new info
             // Just display the info we already gathered
             // This lets people view button presses in real-time
-            if (isTouching.boolValue || isPressing.boolValue)
+            if (button.IsTouching)
             {
                 DrawButtonInfo(currentInfo, false);
             }
@@ -124,15 +125,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             info.touchStartOrigin = touchStartOrigin;
             info.touchCageCenter = info.touchCageLocalBounds.center.z;
             info.touchCageSize = info.touchCageLocalBounds.size.z;
-
-            Transform buttonContentTransform = transform;
-            if (movingButtonVisuals.objectReferenceValue != null)
-                buttonContentTransform = (movingButtonVisuals.objectReferenceValue as GameObject).transform;
-
+            
             // Get the start and end pos for moving content
             info.startPos = buttonContentTransform.localPosition.z;
             info.endPos = buttonContentTransform.localPosition.z;
-            info.endPos += maxPushDistance.floatValue;
+            info.endPos += maxPushDistance.floatValue / transform.lossyScale.z;
 
             info.maxPushDistance = maxPushDistance.floatValue;
             info.pressDistance = pressDistance.floatValue;
@@ -163,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 // Clamp the z value to start position
                 newInfo.endPos = Mathf.Max(newInfo.startPos, newInfo.endPos);
-                newInfo.maxPushDistance = Mathf.Abs(newInfo.startPos - newInfo.endPos);
+                newInfo.maxPushDistance = Mathf.Abs(newInfo.startPos - newInfo.endPos) * transform.lossyScale.z;
             }
 
             // PRESS DISTANCE
