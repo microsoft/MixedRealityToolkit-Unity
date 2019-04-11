@@ -42,6 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
 #if UNITY_WSA
 
+        public const int MaxInteractionSourceState = 1000;
+
         /// <summary>
         /// Dictionary to capture all active controllers detected
         /// </summary>
@@ -50,7 +52,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Cache of the states captured from the Unity InteractionManager for UWP
         /// </summary>
-        InteractionSourceState[] interactionmanagerStates;
+        InteractionSourceState[] interactionmanagerStates = new InteractionSourceState[MaxInteractionSourceState];
+
+        /// <summary>
+        /// The number of states captured most recently
+        /// </summary>
+        private int numInteractionManagerStates;
 
         /// <summary>
         /// The current source state reading for the Unity InteractionManager for UWP
@@ -277,12 +284,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
             InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
 
-            interactionmanagerStates = InteractionManager.GetCurrentReading();
+            numInteractionManagerStates = InteractionManager.GetCurrentReading(interactionmanagerStates);
 
             // Avoids a Unity Editor bug detecting a controller from the previous run during the first frame
 #if !UNITY_EDITOR
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
-            for (var i = 0; i < interactionmanagerStates?.Length; i++)
+            for (var i = 0; i < numInteractionManagerStates; i++)
             {
                 var controller = GetController(interactionmanagerStates[i].source);
 
@@ -307,9 +314,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             base.Update();
 
-            interactionmanagerStates = InteractionManager.GetCurrentReading();
+            numInteractionManagerStates = InteractionManager.GetCurrentReading(interactionmanagerStates);
 
-            for (var i = 0; i < interactionmanagerStates?.Length; i++)
+            for (var i = 0; i < numInteractionManagerStates; i++)
             {
                 // SourceDetected gets raised when a new controller is detected and, if previously present, 
                 // when OnEnable is called. Do not create a new controller here.

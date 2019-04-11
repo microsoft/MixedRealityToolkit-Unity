@@ -159,6 +159,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Last timestamp when hands were tracked
         private long lastSimulatedTimestampLeft = 0;
         private long lastSimulatedTimestampRight = 0;
+        // Cached delegates for hand joint generation
+        private SimulatedHandData.HandJointDataGenerator generatorLeft;
+        private SimulatedHandData.HandJointDataGenerator generatorRight;
 
         public SimulatedHandDataProvider(MixedRealityInputSimulationProfile _profile)
         {
@@ -185,8 +188,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // TODO: DateTime.UtcNow can be quite imprecise, better use Stopwatch.GetTimestamp
             // https://stackoverflow.com/questions/2143140/c-sharp-datetime-now-precision
             long timestamp = DateTime.UtcNow.Ticks;
-            handDataChanged |= handDataLeft.UpdateWithTimestamp(timestamp, HandStateLeft.IsTracked, HandStateLeft.IsPinching, HandStateLeft.FillCurrentFrame);
-            handDataChanged |= handDataRight.UpdateWithTimestamp(timestamp, HandStateRight.IsTracked, HandStateRight.IsPinching, HandStateRight.FillCurrentFrame);
+
+            // Cache the generator delegates so we don't cg alloc every frame
+            if (generatorLeft == null)
+                generatorLeft = HandStateLeft.FillCurrentFrame;
+
+            if (generatorRight == null)
+                generatorRight = HandStateRight.FillCurrentFrame;
+
+            handDataChanged |= handDataLeft.UpdateWithTimestamp(timestamp, HandStateLeft.IsTracked, HandStateLeft.IsPinching, generatorLeft);
+            handDataChanged |= handDataRight.UpdateWithTimestamp(timestamp, HandStateRight.IsTracked, HandStateRight.IsPinching, generatorRight);
 
             return handDataChanged;
         }
