@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     public class CameraEventRouter : MonoBehaviour
     {
         /// <summary>
-        /// A callback to act upon <see cref="MonoBehaviour.OnPreRender()"/> without a script needing to exist on a <see cref="Camera"/> component
+        /// A callback to act upon MonoBehaviour.OnPreRender() without a script needing to exist on a Camera component
         /// </summary>
         public event Action<CameraEventRouter> OnCameraPreRender;
 

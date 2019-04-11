@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,10 +19,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
 
+        public readonly SimulatedHandData HandDataLeft = new SimulatedHandData();
+        public readonly SimulatedHandData HandDataRight = new SimulatedHandData();
+
+        /// <summary>
+        /// If true then keyboard and mouse input are used to simulate hands.
+        /// </summary>
+        public bool UserInputEnabled = true;
+
         /// <summary>
         /// Dictionary to capture all active hands detected
         /// </summary>
         private readonly Dictionary<Handedness, SimulatedHand> trackedHands = new Dictionary<Handedness, SimulatedHand>();
+
+        /// <summary>
+        /// Timestamp of the last hand device update
+        /// </summary>
+        private long lastHandUpdateTimestamp = 0;
 
         #region BaseInputDeviceManager Implementation
 
@@ -83,14 +97,42 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     break;
 
                 case HandSimulationMode.Articulated:
-                    EnableHandSimulation();
-                    handDataProvider.Update();
-                    break;
-
                 case HandSimulationMode.Gestures:
                     EnableHandSimulation();
-                    handDataProvider.Update();
+
+                    if (UserInputEnabled)
+                    {
+                        handDataProvider.UpdateHandData(HandDataLeft, HandDataRight);
+                    }
                     break;
+            }
+        }
+
+        /// <inheritdoc />
+        public override void LateUpdate()
+        {
+            var profile = GetInputSimulationProfile();
+
+            // Apply hand data in LateUpdate to ensure external changes are applied.
+            // HandDataLeft/Right can be modified after the services Update() call.
+            if (profile.HandSimulationMode != HandSimulationMode.Disabled)
+            {
+                DateTime currentTime = DateTime.UtcNow;
+                double msSinceLastHandUpdate = currentTime.Subtract(new DateTime(lastHandUpdateTimestamp)).TotalMilliseconds;
+                // TODO implement custom hand device update frequency here, use 1000/fps instead of 0
+                if (msSinceLastHandUpdate > 0)
+                {
+                    if (HandDataLeft.Timestamp > lastHandUpdateTimestamp)
+                    {
+                        UpdateHandInputSource(Handedness.Left, HandDataLeft);
+                    }
+                    if (HandDataRight.Timestamp > lastHandUpdateTimestamp)
+                    {
+                        UpdateHandInputSource(Handedness.Right, HandDataRight);
+                    }
+
+                    lastHandUpdateTimestamp = currentTime.Ticks;
+                }
             }
         }
 
@@ -130,7 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (handDataProvider == null)
             {
                 handDataProvider = new SimulatedHandDataProvider(GetInputSimulationProfile());
-                handDataProvider.OnHandDataChanged += OnHandDataChanged;
             }
         }
 
@@ -140,15 +181,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (handDataProvider != null)
             {
-                handDataProvider.OnHandDataChanged -= OnHandDataChanged;
                 handDataProvider = null;
             }
-        }
-
-        private void OnHandDataChanged()
-        {
-            UpdateHandInputSource(Handedness.Left, handDataProvider.CurrentFrameLeft);
-            UpdateHandInputSource(Handedness.Right, handDataProvider.CurrentFrameRight);
         }
 
         // Register input sources for hands based on changes of the data provider
