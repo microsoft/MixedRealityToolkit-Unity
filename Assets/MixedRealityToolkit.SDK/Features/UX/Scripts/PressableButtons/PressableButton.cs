@@ -42,6 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Speed of the object movement on release.")]
         private float returnRate = 25.0f;
 
+        [SerializeField]
+        [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
+        private bool enforceFrontPush = true;
+
         [Header("Position markers")]
         [Tooltip("Used to mark where button movement begins. If null, it will be automatically generated.")]
         [SerializeField]
@@ -111,9 +115,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     return -1.0f * nearInteractionTouchable.Forward;
                 }
-
-                Vector3 localSpacePressDirection = new Vector3(0, 0, 1);
-                return transform.TransformDirection(localSpacePressDirection);
+                
+                return transform.forward;
             }
         }
 
@@ -160,19 +163,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             FindOrCreatePathMarkers();
 
-            // Back-Press Detection:
-            // Accept touch only if controller pushed from the front.
-            // Extrapolate to get previous position.
-            Vector3 previousPosition = eventData.InputData - eventData.Controller.Velocity * Time.deltaTime;
-            float previousDistance = GetProjectedDistance(initialTransform.position, WorldSpacePressDirection, previousPosition);
-
-            if (previousDistance > 0.0f)
+            if (enforceFrontPush)
             {
-                return;
+                // Back-Press Detection:
+                // Accept touch only if controller pushed from the front.
+                // Extrapolate to get previous position.
+                Vector3 previousPosition = eventData.InputData - eventData.Controller.Velocity * Time.deltaTime;
+                float previousDistance = GetProjectedDistance(initialTransform.position, WorldSpacePressDirection, previousPosition);
+
+                if (previousDistance > 0.0f)
+                {
+                    return;
+                }
             }
 
             Debug.Assert(!touchPoints.ContainsKey(eventData.Controller));
-            touchPoints[eventData.Controller] = eventData.InputData;
+            touchPoints.Add(eventData.Controller, eventData.InputData);
 
             // Pulse each proximity light on pointer cursors' interacting with this button.
             foreach (var pointer in eventData.InputSource.Pointers)
@@ -254,11 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             foreach (var touchEntry in touchPoints)
             {
                 float testDistance = GetProjectedDistance(initialTransform.position, WorldSpacePressDirection, touchEntry.Value);
-
-                if (testDistance >= farthestDistance)
-                {
-                    farthestDistance = testDistance;
-                }
+                farthestDistance = Mathf.Max(testDistance, farthestDistance);
             }
 
             return Mathf.Clamp(farthestDistance, 0.0f, maxPushDistance);
