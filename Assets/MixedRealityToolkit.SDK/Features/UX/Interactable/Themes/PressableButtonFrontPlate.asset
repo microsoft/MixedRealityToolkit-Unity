@@ -1,0 +1,922 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7e7db9a2688ed540af9819c456ba2e2, type: 3}
+  m_Name: PressableButtonFrontPlate
+  m_EditorClassIdentifier: 
+  Name: 
+  Settings:
+  - Name: InteractableShaderTheme
+    AssemblyQualifiedName:  Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme,
+      Microsoft.MixedReality.Toolkit.SDK
+    Properties:
+    - Name: Shader
+      Type: 3
+      Values:
+      - Name: Default
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 32
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: Focus
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 32
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: Pressed
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 6
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: Disabled
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 32
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      StartValue:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      PropId: 45
+      ShaderOptions:
+      - Name: _AlbedoAlphaMode
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _AlbedoAssignedAtRuntime
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _Cutoff
+        Type: 2
+        Range: {x: 0, y: 1}
+      - Name: _Metallic
+        Type: 2
+        Range: {x: 0, y: 1}
+      - Name: _Smoothness
+        Type: 2
+        Range: {x: 0, y: 1}
+      - Name: _EnableChannelMap
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _EnableNormalMap
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _NormalMapScale
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _EnableEmission
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _EnableTriplanarMapping
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _EnableLocalSpaceTriplanarMapping
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _TriplanarMappingBlendSharpness
+        Type: 2
+        Range: {x: 1, y: 16}
+      - Name: _DirectionalLight
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _SpecularHighlights
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _SphericalHarmonics
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _Reflections
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _Refraction
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _RefractiveIndex
+        Type: 2
+        Range: {x: 0, y: 3}
+      - Name: _RimLight
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _RimPower
+        Type: 2
+        Range: {x: 0, y: 8}
+      - Name: _VertexColors
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _ClippingPlane
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _ClippingSphere
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _ClippingBox
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _ClippingBorder
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _ClippingBorderWidth
+        Type: 2
+        Range: {x: 0.005, y: 1}
+      - Name: _NearPlaneFade
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _NearLightFade
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _FadeBeginDistance
+        Type: 2
+        Range: {x: 0.01, y: 10}
+      - Name: _FadeCompleteDistance
+        Type: 2
+        Range: {x: 0.01, y: 10}
+      - Name: _HoverLight
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _EnableHoverColorOverride
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _ProximityLight
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _RoundCorners
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _RoundCornerRadius
+        Type: 2
+        Range: {x: 0, y: 0.5}
+      - Name: _RoundCornerMargin
+        Type: 2
+        Range: {x: 0, y: 0.5}
+      - Name: _BorderLight
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _BorderLightUsesHoverColor
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _BorderLightReplacesAlbedo
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _BorderLightOpaque
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _BorderWidth
+        Type: 2
+        Range: {x: 0, y: 1}
+      - Name: _BorderMinValue
+        Type: 2
+        Range: {x: 0, y: 1}
+      - Name: _EdgeSmoothingValue
+        Type: 2
+        Range: {x: 0.0001, y: 0.2}
+      - Name: _BorderLightOpaqueAlpha
+        Type: 2
+        Range: {x: 0, y: 1}
+      - Name: _InnerGlow
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _InnerGlowPower
+        Type: 2
+        Range: {x: 2, y: 32}
+      - Name: _Iridescence
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _IridescenceIntensity
+        Type: 2
+        Range: {x: 0, y: 1}
+      - Name: _IridescenceThreshold
+        Type: 2
+        Range: {x: 0, y: 1}
+      - Name: _IridescenceAngle
+        Type: 2
+        Range: {x: -0.78, y: 0.78}
+      - Name: _EnvironmentColoring
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _EnvironmentColorThreshold
+        Type: 2
+        Range: {x: 0, y: 3}
+      - Name: _EnvironmentColorIntensity
+        Type: 2
+        Range: {x: 0, y: 1}
+      - Name: _Mode
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _CustomMode
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _SrcBlend
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _DstBlend
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _BlendOp
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _ZTest
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _ZWrite
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _ColorWriteMask
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _CullMode
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _RenderQueueOverride
+        Type: 2
+        Range: {x: -1, y: 5000}
+      - Name: _InstancedColor
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _Stencil
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _StencilReference
+        Type: 2
+        Range: {x: 0, y: 255}
+      - Name: _StencilComparison
+        Type: 1
+        Range: {x: 0, y: 0}
+      - Name: _StencilOperation
+        Type: 1
+        Range: {x: 0, y: 0}
+      ShaderOptionNames:
+      - _AlbedoAlphaMode
+      - _AlbedoAssignedAtRuntime
+      - _Cutoff
+      - _Metallic
+      - _Smoothness
+      - _EnableChannelMap
+      - _EnableNormalMap
+      - _NormalMapScale
+      - _EnableEmission
+      - _EnableTriplanarMapping
+      - _EnableLocalSpaceTriplanarMapping
+      - _TriplanarMappingBlendSharpness
+      - _DirectionalLight
+      - _SpecularHighlights
+      - _SphericalHarmonics
+      - _Reflections
+      - _Refraction
+      - _RefractiveIndex
+      - _RimLight
+      - _RimPower
+      - _VertexColors
+      - _ClippingPlane
+      - _ClippingSphere
+      - _ClippingBox
+      - _ClippingBorder
+      - _ClippingBorderWidth
+      - _NearPlaneFade
+      - _NearLightFade
+      - _FadeBeginDistance
+      - _FadeCompleteDistance
+      - _HoverLight
+      - _EnableHoverColorOverride
+      - _ProximityLight
+      - _RoundCorners
+      - _RoundCornerRadius
+      - _RoundCornerMargin
+      - _BorderLight
+      - _BorderLightUsesHoverColor
+      - _BorderLightReplacesAlbedo
+      - _BorderLightOpaque
+      - _BorderWidth
+      - _BorderMinValue
+      - _EdgeSmoothingValue
+      - _BorderLightOpaqueAlpha
+      - _InnerGlow
+      - _InnerGlowPower
+      - _Iridescence
+      - _IridescenceIntensity
+      - _IridescenceThreshold
+      - _IridescenceAngle
+      - _EnvironmentColoring
+      - _EnvironmentColorThreshold
+      - _EnvironmentColorIntensity
+      - _Mode
+      - _CustomMode
+      - _SrcBlend
+      - _DstBlend
+      - _BlendOp
+      - _ZTest
+      - _ZWrite
+      - _ColorWriteMask
+      - _CullMode
+      - _RenderQueueOverride
+      - _InstancedColor
+      - _Stencil
+      - _StencilReference
+      - _StencilComparison
+      - _StencilOperation
+      Default:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      ShaderName: Mixed Reality Toolkit/Standard
+    History:
+    - Name: Color
+      Type: 2
+      Values:
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 1, g: 1, b: 1, a: 1}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 1, g: 1, b: 1, a: 1}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 1, g: 1, b: 1, a: 1}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 1, g: 1, b: 1, a: 1}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      StartValue:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      PropId: 0
+      ShaderOptions: []
+      ShaderOptionNames: []
+      Default:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      ShaderName: 
+    - Name: Offset
+      Type: 6
+      Values:
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0.007}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: -0.007}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      StartValue:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      PropId: 0
+      ShaderOptions: []
+      ShaderOptionNames: []
+      Default:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      ShaderName: 
+    - Name: Scale
+      Type: 6
+      Values:
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 1, y: 1, z: 1}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 1, y: 1, z: 1}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 1, y: 1, z: 1}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 1, y: 1, z: 1}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      StartValue:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      PropId: 0
+      ShaderOptions: []
+      ShaderOptionNames: []
+      Default:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      ShaderName: 
+    - Name: Shader
+      Type: 3
+      Values:
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0.15
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0.15
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      StartValue:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      PropId: 40
+      ShaderOptions: []
+      ShaderOptionNames: []
+      Default:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      ShaderName: 
+    - Name: Activate
+      Type: 15
+      Values:
+      - Name: 
+        String: 
+        Bool: 1
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 1
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 1
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: 
+        Bool: 1
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      StartValue:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      PropId: 0
+      ShaderOptions: []
+      ShaderOptionNames: []
+      Default:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      ShaderName: 
+    Easing:
+      Enabled: 1
+      Curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      LerpTime: 0.05
+    NoEasing: 0
+    IsValid: 1
+    ThemeTarget:
+      Properties: []
+      Target: {fileID: 0}
+      States: []
+  CustomSettings: []
+  States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}

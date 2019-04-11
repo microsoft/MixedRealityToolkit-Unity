@@ -28,6 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private static bool showModelProperties = true;
         private SerializedProperty useDefaultModels;
+        private SerializedProperty globalLeftHandedControllerModel;
+        private SerializedProperty globalRightHandedControllerModel;
         private SerializedProperty globalLeftHandModel;
         private SerializedProperty globalRightHandModel;
 
@@ -56,8 +58,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
             defaultControllerVisualizationType = serializedObject.FindProperty("defaultControllerVisualizationType");
             useDefaultModels = serializedObject.FindProperty("useDefaultModels");
-            globalLeftHandModel = serializedObject.FindProperty("globalLeftHandModel");
-            globalRightHandModel = serializedObject.FindProperty("globalRightHandModel");
+            globalLeftHandedControllerModel = serializedObject.FindProperty("globalLeftControllerModel");
+            globalRightHandedControllerModel = serializedObject.FindProperty("globalRightControllerModel");
+            globalLeftHandModel = serializedObject.FindProperty("globalLeftHandVisualizer");
+            globalRightHandModel = serializedObject.FindProperty("globalRightHandVisualizer");
             controllerVisualizationSettings = serializedObject.FindProperty("controllerVisualizationSettings");
         }
 
@@ -111,8 +115,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
             }
 
-            var leftHandModelPrefab = globalLeftHandModel.objectReferenceValue as GameObject;
-            var rightHandModelPrefab = globalRightHandModel.objectReferenceValue as GameObject;
+            var leftHandModelPrefab = globalLeftHandedControllerModel.objectReferenceValue as GameObject;
+            var rightHandModelPrefab = globalRightHandedControllerModel.objectReferenceValue as GameObject;
 
             EditorGUILayout.Space();
             showModelProperties = EditorGUILayout.Foldout(showModelProperties, "Controller Model Settings", true);
@@ -128,20 +132,23 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     }
 
                     EditorGUI.BeginChangeCheck();
-                    leftHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalLeftHandModel.displayName, "Note: If the default model is not found, the fallback is the global left hand model."), leftHandModelPrefab, typeof(GameObject), false) as GameObject;
+                    leftHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalLeftHandedControllerModel.displayName, "Note: If the default model is not found, the fallback is the global left hand model."), leftHandModelPrefab, typeof(GameObject), false) as GameObject;
 
                     if (EditorGUI.EndChangeCheck() && CheckVisualizer(leftHandModelPrefab))
                     {
-                        globalLeftHandModel.objectReferenceValue = leftHandModelPrefab;
+                        globalLeftHandedControllerModel.objectReferenceValue = leftHandModelPrefab;
                     }
 
                     EditorGUI.BeginChangeCheck();
-                    rightHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalRightHandModel.displayName, "Note: If the default model is not found, the fallback is the global right hand model."), rightHandModelPrefab, typeof(GameObject), false) as GameObject;
+                    rightHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalRightHandedControllerModel.displayName, "Note: If the default model is not found, the fallback is the global right hand model."), rightHandModelPrefab, typeof(GameObject), false) as GameObject;
 
                     if (EditorGUI.EndChangeCheck() && CheckVisualizer(rightHandModelPrefab))
                     {
-                        globalRightHandModel.objectReferenceValue = rightHandModelPrefab;
+                        globalRightHandedControllerModel.objectReferenceValue = rightHandModelPrefab;
                     }
+
+                    EditorGUILayout.PropertyField(globalLeftHandModel);
+                    EditorGUILayout.PropertyField(globalRightHandModel);
                 }
             }
 

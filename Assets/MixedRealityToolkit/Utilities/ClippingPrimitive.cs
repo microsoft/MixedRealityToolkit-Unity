@@ -1,4 +1,4 @@
-﻿  // Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
@@ -36,6 +36,39 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { clippingSide = value; }
         }
 
+
+        /// <summary>
+        /// Toggles whether the primitive will use the Camera OnPreRender event 
+        /// </summary>
+        /// <remarks>This is especially helpful if you're trying to clip dynamically created objects that may be added to the scene after LateUpdate such as OnWillRender</remarks>
+        [SerializeField]
+        [Tooltip("Toggles whether the primitive will use the Camera OnPreRender event")]
+        private bool useOnPreRender;
+
+        public bool UseOnPreRender
+        {
+            get { return useOnPreRender; }
+            set
+            {
+                if (cameraMethods == null)
+                {
+                    cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
+                }
+
+                if (value)
+                {
+                    cameraMethods.OnCameraPreRender += OnCameraPreRender;
+                }
+                else
+                {
+                    cameraMethods.OnCameraPreRender -= OnCameraPreRender;
+                }
+
+                useOnPreRender = value;
+            }
+        }
+
+
         protected abstract string Keyword { get; }
         protected abstract string KeywordProperty { get; }
         protected abstract string ClippingSideProperty { get; }
@@ -45,6 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected List<Material> allocatedMaterials = new List<Material>();
 
         private int clippingSideID;
+
+        [SerializeField]
+        [HideInInspector]
+        private CameraEventRouter cameraMethods;
 
         public void AddRenderer(Renderer _renderer)
         {
@@ -93,6 +130,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             UpdateRenderers();
             ToggleClippingFeature(false);
+
+            if (cameraMethods != null)
+            {
+                cameraMethods.OnCameraPreRender -= OnCameraPreRender;
+            }
+        }
+
+        protected void Start()
+        {
+            if (useOnPreRender)
+            {
+                cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
+                cameraMethods.OnCameraPreRender += OnCameraPreRender;
+            }
         }
 
 #if UNITY_EDITOR
@@ -113,6 +164,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 #endif
 
         protected void LateUpdate()
+        {
+            //Deferring the LateUpdate() call to OnCameraPreRender()
+            if (!useOnPreRender)
+            {
+                UpdateRenderers();
+            }
+        }
+
+        protected void OnCameraPreRender(CameraEventRouter router)
         {
             UpdateRenderers();
         }

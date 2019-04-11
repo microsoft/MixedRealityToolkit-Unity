@@ -79,9 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (connectorTarget.objectReferenceValue == null)
             {
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                EditorGUILayout.LabelField("No target set. ToolTip will not use connector component.", EditorStyles.miniLabel);
-                EditorGUILayout.EndVertical();
+                EditorGUILayout.HelpBox("No target set. ToolTip will not use connector component.", MessageType.Info);
                 EditorGUILayout.PropertyField(connectorTarget);
             }
             else

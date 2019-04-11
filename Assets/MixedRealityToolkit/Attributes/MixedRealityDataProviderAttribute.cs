@@ -20,8 +20,9 @@ namespace Microsoft.MixedReality.Toolkit
         public MixedRealityDataProviderAttribute(
             Type serviceInterfaceType,
             SupportedPlatforms runtimePlatforms,
+            string name = "",
             string profilePath = "",
-            string packageFolder = "MixedRealityToolkit") : base(runtimePlatforms, profilePath, packageFolder)
+            string packageFolder = "MixedRealityToolkit") : base(runtimePlatforms, name, profilePath, packageFolder)
         {
             ServiceInterfaceType = serviceInterfaceType;
         }
