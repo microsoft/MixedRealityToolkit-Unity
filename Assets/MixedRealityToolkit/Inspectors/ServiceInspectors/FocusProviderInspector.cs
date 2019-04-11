@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             IMixedRealityFocusProvider focusProvider = (IMixedRealityFocusProvider)target;
 
-            EditorGUILayout.LabelField("Pointers", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Active Pointers", EditorStyles.boldLabel);
 
             int numPointersFound = 0;
             foreach (IMixedRealityPointer pointer in focusProvider.GetPointers<IMixedRealityPointer>())
