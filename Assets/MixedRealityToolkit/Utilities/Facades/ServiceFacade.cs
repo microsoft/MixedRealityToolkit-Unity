@@ -39,7 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             else
             {
                 this.serviceType = service.GetType();
-                name = service.GetType().Name;
+
+                name = serviceType.Name;
                 gameObject.SetActive(true);
 
                 if (!FacadeLookup.ContainsKey(serviceType))

@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             SceneView.onSceneGUIDelegate += DrawSceneGUI;
         }
 
+        private static List<string> dataProviderList = new List<string>();
         private static Dictionary<Type, Type> inspectorTypeLookup = new Dictionary<Type, Type>();
         private static Dictionary<Type, IMixedRealityServiceInspector> inspectorInstanceLookup = new Dictionary<Type, IMixedRealityServiceInspector>();
         private static bool initializedServiceInspectorLookup = false;
@@ -68,10 +69,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             if (!initializedServiceInspectorLookup)
                 InitializeServiceInspectorLookup();
 
+            bool drawDocLink = false;
+            bool drawDataProviders = false;
+            bool drawProfile = true;
+            bool drawInspector = false;
+
             // If we have a doc link, put that first
             DocLinkAttribute docLink = facade.ServiceType.GetCustomAttribute<DocLinkAttribute>();
             if (docLink != null)
             {
+                drawDocLink = true;
                 if (GUILayout.Button("Click to view documentation", EditorStyles.miniButton))
                 {
                     Application.OpenURL(docLink.URL);
@@ -79,8 +86,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 EditorGUILayout.Space();
             }
 
-            bool drawProfile = true;
-            bool drawInspector = false;
+            // If this is a data provider being used by other services, mention that now
+            dataProviderList.Clear();
+            foreach (MixedRealityDataProviderAttribute dataProviderAttribute in facade.ServiceType.GetCustomAttributes(typeof(MixedRealityDataProviderAttribute), true))
+                dataProviderList.Add(dataProviderAttribute.ServiceInterfaceType.Name);
+
+            if (dataProviderList.Count > 0)
+            {
+                drawDataProviders = true;
+                EditorGUILayout.LabelField("This data provider is used by " + String.Join(", ", dataProviderList.ToArray()), EditorStyles.miniLabel);
+                EditorGUILayout.Space();
+            }
 
             // Find and draw the custom inspector
             IMixedRealityServiceInspector inspectorInstance;
@@ -148,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 inspectorInstance.DrawInspectorGUI(facade.Service);
             }
 
-            if (!drawProfile & !drawInspector)
+            if (!drawProfile & !drawInspector & !drawDocLink & !drawDataProviders)
             {
                 // If we haven't drawn a profile and we don't have an inspector, draw a label so people aren't confused
                 EditorGUILayout.LabelField("No inspector has been defined for this service type.", EditorStyles.miniLabel);
