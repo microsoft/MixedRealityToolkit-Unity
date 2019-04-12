@@ -42,7 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
 #if UNITY_WSA
 
-        public const int MaxInteractionSourceState = 1000;
+        /// <summary>
+        /// The max expected sources is two - two controllers and/or two hands.
+        /// We'll set it to 20 just to be certain we can't run out of sources.
+        /// </summary>
+        public const int MaxInteractionSourceStates = 20;
 
         /// <summary>
         /// Dictionary to capture all active controllers detected
@@ -52,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Cache of the states captured from the Unity InteractionManager for UWP
         /// </summary>
-        InteractionSourceState[] interactionmanagerStates = new InteractionSourceState[MaxInteractionSourceState];
+        InteractionSourceState[] interactionmanagerStates = new InteractionSourceState[MaxInteractionSourceStates];
 
         /// <summary>
         /// The number of states captured most recently
