@@ -186,6 +186,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public const string AXIS_27 = "AXIS_27";
 
+        /// <summary>
+        /// Camera look horizontal rotation<para/>
+        /// </summary>
+        public const string LOOK_HORIZONTAL = "LookHorizontal";
+
+        /// <summary>
+        /// Camera look vertical rotation<para/>
+        /// </summary>
+        public const string LOOK_VERTICAL = "LookVertical";
+
         #endregion Constants
 
 #if UNITY_EDITOR
@@ -198,6 +208,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns></returns>
         public static InputManagerAxis[] UnityInputManagerAxes => new[]
         {
+            new InputManagerAxis { Name = LOOK_HORIZONTAL, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 4 },
+            new InputManagerAxis { Name = LOOK_VERTICAL, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 5 },
             new InputManagerAxis { Name = AXIS_1,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1  },
             new InputManagerAxis { Name = AXIS_2,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 2  },
             new InputManagerAxis { Name = AXIS_3,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 3  },
