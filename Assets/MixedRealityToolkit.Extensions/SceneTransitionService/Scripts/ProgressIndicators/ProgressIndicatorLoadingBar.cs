@@ -51,6 +51,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         
         public async Task OpenAsync()
         {
+            gameObject.SetActive(true);
+
             state = ProgressIndicatorState.Opening;
 
             await Task.Yield();
@@ -65,6 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             await Task.Yield();
 
             state = ProgressIndicatorState.Closed;
+
+            gameObject.SetActive(false);
         }
 
         private void Update()

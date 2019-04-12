@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
     /// <summary>
-    /// Basic interface for fading in / out of a color.
+    /// Basic interface for fading in / out a color on a camera.
     /// </summary>
     public interface ICameraFader
     {
@@ -16,6 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
         Task FadeOutAsync(float fadeOutTime, Color color, IEnumerable<Camera> targets);
         Task FadeIn(float fadeInTime);
-        Task FadeOutAsync(float fadeOutTime, Color fadeColor, object fadeTargets, object customTargets);
+
+        /// <summary>
+        /// Used to destroy any assets created.
+        /// May be called in middle of a transition.
+        /// </summary>
+        void OnDestroy();
     }
 }

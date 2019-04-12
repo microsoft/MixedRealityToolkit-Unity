@@ -34,8 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <summary>
         /// If FadeTargets is set to custom, you will need to provide a custom set of cameras for fading using this function PRIOR to calling TransitionToScene.
         /// </summary>
-        /// <param name="customCameras"></param>
-        void SetCustomFadeCameras(IEnumerable<Camera> customCameras);
+        /// <param name="customFadeTargetCameras"></param>
+        void SetCustomFadeTargetCameras(IEnumerable<Camera> customFadeTargetCameras);
 
         /// <summary>
         /// Sets the message on displayed progress indicator.

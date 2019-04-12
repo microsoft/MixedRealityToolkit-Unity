@@ -20,62 +20,67 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         private GameObject progressIndicatorObject;
         private IProgressIndicator progressIndicator;
         private ICameraFader cameraFader;
-        private List<Camera> customCameras = new List<Camera>();
+        private List<Camera> customFadeTargetCameras = new List<Camera>();
 
         public SceneTransitionService(IMixedRealityServiceRegistrar registrar,  string name,  uint priority,  BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) 
 		{
             sceneTransitionServiceProfile = (SceneTransitionServiceProfile)profile;
 		}
 
+        #region public methods
+
         public override void Initialize()
         {
          
         }
-
-        public override void Enable()
-        {
-            CreateProgressIndicator();
-        }
-
+        
         public override void Update()
         {
 
         }
-
-        public override void Disable()
-        {
-            CleanUpProgressIndicator();
-        }
-
+        
         public override void Destroy()
         {
             CleanUpProgressIndicator();
+            CleanUpCameraFader();
         }
 
-        public void SetCustomFadeCameras(IEnumerable<Camera> customCameras)
-        {
-            this.customCameras.AddRange(customCameras);
-        }
+        #endregion
+
+        #region ISceneTransitionService implementation
 
         public async Task TransitionToScene(string sceneName, LoadSceneMode mode = LoadSceneMode.Single, bool awaitConfirmationForTransitionOut = false)
         {
             if (TransitionInProgress)
             {
-                throw new System.Exception("Attempting to transition to scene when transition is already in progress.");
+                throw new Exception("Attempting to transition to scene when transition is already in progress.");
             }
 
             Scene targetScene = SceneManager.GetSceneByName(sceneName);
+            if (!targetScene.IsValid())
+            {
+                throw new Exception("Can't load invalid scene " + sceneName);
+            }
+
+            if (targetScene.isLoaded && mode != LoadSceneMode.Single)
+            {
+                throw new Exception("Attempting to additively load already-loaded scene " + sceneName);
+            }
 
             TransitionInProgress = true;
             AwaitingConfirmation = false;
 
+            CreateProgressIndicator();
+            CreateCameraFader();
+
             if (sceneTransitionServiceProfile.UseFadeColor)
             {
+                List<Camera> fadeTargetCameras = GatherFadeTargetCameras();
                 // Fade out before proceeding
                 await cameraFader.FadeOutAsync(
                     sceneTransitionServiceProfile.FadeOutTime, 
-                    sceneTransitionServiceProfile.FadeColor, 
-                    GatherFadeTargetCameras());
+                    sceneTransitionServiceProfile.FadeColor,
+                    fadeTargetCameras);
             }
 
             if (sceneTransitionServiceProfile.UseProgressIndicator)
@@ -91,8 +96,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 await Task.Yield();
             }
 
+            // Load the scene
+            AsyncOperation sceneLoadOp = SceneManager.LoadSceneAsync(sceneName, mode);
+            sceneLoadOp.allowSceneActivation = true;
+            while (!sceneLoadOp.isDone)
+            {
+                progressIndicator.Progress = sceneLoadOp.progress;
+                await Task.Yield();
+            }
+
             // If the user has requested that we wait before exiting the transition
-            // don't proceed with transition out until we receive confirmation
+            // don't proceed until we receive confirmation
             if (awaitConfirmationForTransitionOut)
             {
                 AwaitingConfirmation = true;
@@ -102,12 +116,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 }
             }
 
+            // If we used the progress indicator, close it
             if (progressIndicator.State != ProgressIndicatorState.Closed)
             {
-                // Deactivate the progress indicator and wait for it to spin down
                 await progressIndicator.CloseAsync();
             }
 
+            // If we used the camera fader to fade out, fade back in
             if (cameraFader.State != CameraFaderState.Clear)
             {
                 // Wait for camera to fade out
@@ -117,6 +132,35 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             // We're done!
             TransitionInProgress = false;
         }
+
+        public void SetCustomFadeTargetCameras(IEnumerable<Camera> customFadeTargetCameras)
+        {
+            this.customFadeTargetCameras.AddRange(customFadeTargetCameras);
+        }
+
+        public void ProceedWithTransition()
+        {
+            if (!TransitionInProgress)
+            {
+                Debug.LogWarning("No transition in progress. This action will have no effect.");
+            }
+
+            AwaitingConfirmation = false;
+        }
+
+        public void SetProgressMessage(string message)
+        {
+            if (!TransitionInProgress)
+            {
+                Debug.LogWarning("No transition in progress. This action will have no effect.");
+            }
+
+            progressIndicator.Message = message;
+        }
+
+        #endregion
+
+        #region private methods
 
         private List<Camera> GatherFadeTargetCameras()
         {
@@ -154,38 +198,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                     break;
 
                 case CameraFaderTargets.Custom:
-                    if (customCameras.Count == 0)
+                    if (customFadeTargetCameras.Count == 0)
                         throw new Exception("Attempting to fade custom target cameras but none were supplied. Use SetCustomFadeCameras prior to calling TransitionToScene.");
 
-                    targetCameras.AddRange(customCameras);
+                    targetCameras.AddRange(customFadeTargetCameras);
                     break;
             }
 
             return targetCameras;
         }
 
-        public void ProceedWithTransition()
-        {
-            if (!TransitionInProgress)
-            {
-                Debug.LogWarning("No transition in progress. This action will have no effect.");
-            }
-
-            AwaitingConfirmation = false;
-        }
-
-        public void SetProgressMessage(string message)
-        {
-            if (!TransitionInProgress)
-            {
-                Debug.LogWarning("No transition in progress. This action will have no effect.");
-            }
-
-            progressIndicator.Message = message;
-        }
-
         private void CreateProgressIndicator()
         {
+            if (progressIndicatorObject != null)
+                return;
+
             // Do service initialization here.
             if (sceneTransitionServiceProfile.ProgressIndicatorPrefab == null)
             {
@@ -204,8 +231,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
             // Ensure progress indicator doesn't get destroyed
             progressIndicatorObject.transform.DontDestroyOnLoad();
-            // Deactivate it immediately
-            progressIndicatorObject.SetActive(false);
         }
 
         private void CleanUpProgressIndicator()
@@ -222,5 +247,29 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 }
             }
         }
+
+        private void CreateCameraFader()
+        {
+            if (cameraFader != null)
+                return;
+
+            cameraFader = (ICameraFader)Activator.CreateInstance(sceneTransitionServiceProfile.CameraFaderType.Type);
+
+            if (cameraFader == null)
+            {
+                throw new Exception("Couldn't create camera fader of type " + sceneTransitionServiceProfile.CameraFaderType.Type);
+            }
+        }
+
+        private void CleanUpCameraFader()
+        {
+            if (cameraFader != null)
+            {
+                cameraFader.OnDestroy();
+                cameraFader = null;
+            }
+        }
+
+        #endregion
     }
 }

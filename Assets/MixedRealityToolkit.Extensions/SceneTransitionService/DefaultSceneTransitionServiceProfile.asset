@@ -13,3 +13,13 @@ MonoBehaviour:
   m_Name: DefaultSceneTransitionServiceProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
+  useProgressIndicator: 1
+  progressIndicatorPrefab: {fileID: 1993071269674472, guid: ee519d5fb10a6db4f84d116e66f872b6,
+    type: 3}
+  useFadeColor: 1
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  fadeOutTime: 1
+  fadeInTime: 0.5
+  fadeTargets: 0
+  cameraFaderType:
+    reference: 
