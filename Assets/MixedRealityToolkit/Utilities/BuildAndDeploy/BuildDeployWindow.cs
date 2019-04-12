@@ -455,7 +455,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (curScriptingBackend == ScriptingImplementation.WinRTDotNET)
             {
-                EditorGUILayout.HelpBox(".NET Scripting backend is depreciated, please use IL2CPP.", MessageType.Warning);
+                EditorGUILayout.HelpBox(".NET Scripting backend is deprecated in Unity 2018 and is removed in Unity 2019.", MessageType.Warning);
             }
 
             var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup("Scripting Backend", (int)curScriptingBackend, scriptingBackendNames, scriptingBackendEnum, GUILayout.Width(HALF_WIDTH));
