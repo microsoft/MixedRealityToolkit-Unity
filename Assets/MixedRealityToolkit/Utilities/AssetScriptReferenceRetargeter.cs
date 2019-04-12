@@ -92,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             try
             {
                 RunRetargetToDLL();
+                //CopyIntermediaryAssemblies(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
                 Debug.Log("Complete.");
             }
             catch (Exception ex)
@@ -109,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
             Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
 
-            Dictionary<string, ClassInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins"));
+            Dictionary<string, ClassInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/Editor"));
             Debug.Log($"Found {compiledClassReferences.Count} compiled class references.");
 
             Dictionary<string, Tuple<string, long>> remapDictionary = new Dictionary<string, Tuple<string, long>>();
@@ -127,7 +128,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
             }
 
-            ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Output"), remapDictionary);
+            ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary);
+            CopyIntermediaryAssemblies(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
         }
 
         private static void ProcessYAMLAssets(string[] allFilePaths, string outputDirectory, Dictionary<string, Tuple<string, long>> remapDictionary)
@@ -352,9 +354,40 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             UpdateGuids();
         }
 
+        private static void CopyIntermediaryAssemblies(string outputPath)
+        {
+            string playerDataCachePath = Application.dataPath.Replace("Assets", "Library/PlayerDataCache");
+            DirectoryInfo playerDataCahce = new DirectoryInfo(playerDataCachePath);
+            DirectoryInfo[] dllStores = playerDataCahce.GetDirectories("*", SearchOption.TopDirectoryOnly);
+            foreach(DirectoryInfo folder in dllStores)
+            {
+                string subfolderName = string.Empty;
+                switch(folder.Name)
+                {
+                    case "Win":
+                        subfolderName = "Standalone/x86";
+                        break;
+                    case "Win64":
+                        subfolderName = "Standalone/x86_64";
+                        break;
+                    case "WindowsStoreApps":
+                        subfolderName = "UAP";
+                        break;
+                }
+                FileInfo[] dlls = folder.GetFiles("*.dll", SearchOption.AllDirectories);
 
-        //While we're cleaning up the folders, keep track of all the dll.meta files that remain, and all the .asmdef files we find.
-        
+                string pluginPath = Path.Combine(outputPath, subfolderName);
+                if (Directory.Exists(pluginPath))
+                {
+                    Directory.Delete(pluginPath);
+                }
+                Directory.CreateDirectory(pluginPath);
+                foreach(FileInfo dll in dlls)
+                {
+                    File.Copy(dll.FullName, Path.Combine(pluginPath, dll.Name), true);
+                }
+            }
+        }
 
         private static void UpdateGuids()
         {
