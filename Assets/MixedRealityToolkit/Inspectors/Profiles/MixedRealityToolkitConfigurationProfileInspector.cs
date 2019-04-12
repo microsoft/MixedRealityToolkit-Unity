@@ -48,8 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static bool showRegisteredServiceProperties = true;
         private SerializedProperty registeredServiceProvidersProfile;
 
-        private MixedRealityToolkitConfigurationProfile configurationProfile;
-
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -91,6 +89,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
+            var configurationProfile = (MixedRealityToolkitConfigurationProfile)target;
+
             serializedObject.Update();
             RenderMixedRealityToolkitLogo();
 
