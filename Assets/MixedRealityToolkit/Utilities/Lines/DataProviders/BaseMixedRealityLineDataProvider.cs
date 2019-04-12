@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [ExecuteAlways] 
     public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
+        protected const int UnclampedWorldLengthSearchSteps = 10;
         private const float MinRotationMagnitude = 0.0001f;
         private const float MinLineStartClamp = 0.0001f;
         private const float MaxLineEndClamp = 0.9999f;
@@ -197,6 +198,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         [SerializeField]
+        [Tooltip("Enables / disables all distorters used by line")]
+        private bool distortionEnabled = true;
+
+        /// <summary>
+        /// Enabled / disables all distorters used by line.
+        /// </summary>
+        public bool DistortionEnabled
+        {
+            get { return distortionEnabled; }
+            set { distortionEnabled = value; }
+        }
+
+        [SerializeField]
         [Tooltip("NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line")]
         private DistortionMode distortionMode = DistortionMode.NormalizedLength;
 
@@ -302,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             distorters.Sort();
         }
 
-        protected virtual void Update()
+        protected virtual void LateUpdate()
         {
             UpdateMatrix();
         }
@@ -606,7 +620,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private Vector3 DistortPoint(Vector3 point, float normalizedLength)
         {
-            if (distorters.Count == 0)
+            if (!distortionEnabled || distorters.Count == 0)
                 return point;
 
             float strength = uniformDistortionStrength;

@@ -81,11 +81,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (idx < 0)
                     {
+                        var newMapping = new MixedRealityControllerMapping(controllerType, handedness);
+                        newMapping.SetDefaultInteractionMapping(overwrite: false);
+
+                        // Re-use existing mapping with the same supported controller type.
+                        foreach (var otherMapping in mixedRealityControllerMappingProfiles)
+                        {
+                            if (otherMapping.SupportedControllerType == newMapping.SupportedControllerType &&
+                                otherMapping.Handedness == newMapping.Handedness)
+                            {
+                                try
+                                {
+                                    newMapping.SynchronizeInputActions(otherMapping.Interactions);
+                                }
+                                catch (ArgumentException e)
+                                {
+                                    Debug.LogError($"Controller mappings between {newMapping.Description} and {otherMapping.Description} do not match. Error message: {e.Message}");
+                                }
+                                break;
+                            }
+                        }
+
                         idx = mixedRealityControllerMappingProfiles.Length;
                         Array.Resize(ref mixedRealityControllerMappingProfiles, idx + 1);
-                        mixedRealityControllerMappingProfiles[idx] = new MixedRealityControllerMapping(controllerType, handedness);
-
-                        mixedRealityControllerMappingProfiles[idx].SetDefaultInteractionMapping(overwrite: false);
+                        mixedRealityControllerMappingProfiles[idx] = newMapping;
                     }
                 }
             }

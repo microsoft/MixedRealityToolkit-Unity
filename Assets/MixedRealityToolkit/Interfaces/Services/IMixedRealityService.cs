@@ -42,6 +42,11 @@ namespace Microsoft.MixedReality.Toolkit
         void Update();
 
         /// <summary>
+        /// Optional LateUpdate function to that is called after Update has been called on all services.
+        /// </summary>
+        void LateUpdate();
+
+        /// <summary>
         /// Optional Disable function to pause the service.
         /// </summary>
         void Disable();

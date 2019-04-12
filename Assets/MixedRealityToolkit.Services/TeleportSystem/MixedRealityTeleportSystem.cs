@@ -265,7 +265,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             var cameraParent = Playspace;
 
             targetRotation = Vector3.zero;
-            targetRotation.y = eventData.Pointer.PointerOrientation;
+            var teleportPointer = eventData.Pointer as IMixedRealityTeleportPointer;
+            if (teleportPointer != null)
+            {
+                targetRotation.y = teleportPointer.PointerOrientation;
+            }
             targetPosition = eventData.Pointer.Result.Details.Point;
 
             if (eventData.HotSpot != null)

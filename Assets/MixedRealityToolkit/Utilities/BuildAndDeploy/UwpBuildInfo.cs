@@ -9,7 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
     {
         public UwpBuildInfo(bool isCommandLine = false) : base(isCommandLine)
         {
-            BuildPlatform = "x86";
         }
 
         /// <inheritdoc />

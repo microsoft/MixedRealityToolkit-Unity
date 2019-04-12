@@ -9,21 +9,19 @@ The MRTK solves this by providing a common logical platform to build your dream,
 
 To get started with the Mixed Reality Toolkit you will need:
 
-* [Unity 2018.2.13f1 +](https://unity3d.com/get-unity/download/archive)
-* [Latest MRTK release (Beta)](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
-* A dream
+* [Visual Studio 2017](http://dev.windows.com/downloads)
+* [Unity 2018.3+](https://unity3d.com/get-unity/download/archive)
+* [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
+* [Windows SDK 18362+](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK)
 
-## Upgrading from the HoloToolkit (HTK)
+## Upgrading from the HoloToolkit (HTK/MRTK v1)
 
-There is not a direct upgrade path from the HoloToolkit to the new Mixed Reality Toolkit due to the rebuilt framework.  However, it is possible to import the MRTK into your HoloToolkit project and start work migrating your implementation if you wish.
+There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework.  However, it is possible to import the MRTK into your HoloToolkit project and start work migrating your implementation if you wish.
 
-> The Mixed Reality Team will release a guide in the future on the key differences between HTK and MRTK project implementations.
+* [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
 
-Our recommendation is that if you have an existing HTK project, then it is best to continue with the HTK as it is still a robust and feature rich platform for building HoloLens projects.
 
-If you are building a new Mixed Reality solution, then we encourage you to join us on the MRTK journey. Some of our key contributors are already building production-ready solutions already utilizing the MRTK and using their experiences to enrich the toolkit moving forward.
-
-## Starting your new project
+## Starting your new MRTK v2 project
 
 We have done an incredible amount of work to ensure the new project experience is as streamlined as possible.  To this end, we endeavoured to get you up and running as fast as possible.
 
@@ -48,6 +46,8 @@ Accept all the content and continue.
 > The SDK is optional but highly recommended for new users.  Once you have a feel for how the toolkit works, you can remove these safely if you are not using them.
 
 > The MRTK also provides a [separate "Examples" asset](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases), which currently contains demonstration scenes for current MRTK features.  In the future this will also contain educational "Example" scenes to aid with learning implementation tricks with the toolkit.
+
+Note that some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources).
 
 ### 3. Accept the Setup prompt (optional)
 ![](../External/ReadMeImages/MRTK_UnitySetupPrompt.png)
@@ -163,3 +163,19 @@ For more information on the rest of the toolkit, please check the following guid
 * [Configuration Profile Usage Guide]() (Coming Soon)
 * [Guide to building Registered Services]() (Coming Soon)
 * [Guide to Pointers documentation]() (Coming Soon)
+
+## Building blocks for UI and Interactions
+|  [![Button](../External/ReadMeImages/Button/MRTK_Button_Main.png)](README_Button.md) [Button](README_Button.md) | [![Bounding Box](../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png)](README_BoundingBox.md) [Bounding Box](README_BoundingBox.md) | [![Manipulation Handler](../External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png)](README_ManipulationHandler.md) [Manipulation Handler](README_ManipulationHandler.md) |
+|:--- | :--- | :--- |
+| A button control which supports various input methods including HoloLens2's articulated hand | Standard UI for manipulating objects in 3D space | Script for manipulating objects with one or two hands |
+|  [![Slate](../External/ReadMeImages/Slate/MRTK_Slate_Main.png)](README_Slate.md) [Slate](README_Slate.md) | [![System Keyboard](../External/ReadMeImages/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](README_SystemKeyboard.md) [System Keyboard](README_SystemKeyboard.md) | [![Interactable](../External/ReadMeImages/Interactable/InteractableExamples.png)](README_Interactable.md) [Interactable](README_Interactable.md) |
+| 2D style plane which supports scrolling with articulated hand input | Example script of using the system keyboard in Unity  | A script for making objects interactable with visual states and theme support |
+|  [![Solver](../External/ReadMeImages/Solver/MRTK_Solver_Main.png)](README_Solver.md) [Solver](README_Solver.md) | [![Object Collection](../External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Main.png)](README_ObjectCollection.md) [Object Collection](README_ObjectCollection.md) | [![Tooltip](../External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png)](README_Tooltip.md) [Tooltip](README_Tooltip.md) |
+| Various object positioning behaviors such as tag-along, body-lock, constant view size and surface magnetism | Script for lay out an array of objects in a three-dimensional shape | Annotation UI with flexible anchor/pivot system which can be used for labeling motion controllers and object. |
+|  [![App Bar](../External/ReadMeImages/AppBar/MRTK_AppBar_Main.png)](README_AppBar.md) [App Bar](README_AppBar.md) | [![Pointers](../External/ReadMeImages/Pointers/MRTK_Pointer_Main.png)](README_Pointers.md) [Pointers](README_Pointers.md) | [![Fingertip Visualization](../External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png)](README_FingertipVisualization.md) [Fingertip Visualization](README_FingertipVisualization.md) |
+| UI for Bounding Box's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
+
+## Example Scene
+You can find various types of interactions and UI controls in this example scene.
+
+[![Button](../External/ReadMeImages/MRTK_Examples.png)](README_HandInteractionExamples.md)

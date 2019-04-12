@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The text that was recognized.
         /// </summary>
-        public string RecognizedText { get; private set; }
+        public SpeechCommands Command { get; private set; }
 
         /// <summary>
         /// A measure of correct recognition certainty.
@@ -35,23 +35,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public SpeechEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-
         /// <summary>
         /// Populates the event with data.
         /// </summary>
         /// <param name="inputSource"></param>
-        /// <param name="inputAction"></param>
         /// <param name="confidence"></param>
         /// <param name="phraseDuration"></param>
         /// <param name="phraseStartTime"></param>
-        /// <param name="recognizedText"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, string recognizedText)
+        /// <param name="command"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SpeechCommands command)
         {
-            BaseInitialize(inputSource, inputAction);
+            BaseInitialize(inputSource, command.Action);
             Confidence = confidence;
             PhraseDuration = phraseDuration;
             PhraseStartTime = phraseStartTime;
-            RecognizedText = recognizedText;
+            Command = command;
         }
     }
 }

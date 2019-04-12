@@ -16,6 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityPointer Pointer { get; set; }
 
         /// <summary>
+        /// Surface distance to place the cursor off of the surface at
+        /// </summary>
+        float SurfaceCursorDistance { get; }
+
+        /// <summary>
         /// The maximum distance the cursor can be with nothing hit
         /// </summary>
         float DefaultCursorDistance { get; set; }
