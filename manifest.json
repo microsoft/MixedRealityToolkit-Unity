@@ -654,7 +654,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Dictation.html",
-          "hash": "ikGj8qwPMuuCfD22TsCPjg=="
+          "hash": "zNnJvz/glwvKvzviHr5UWw=="
         }
       },
       "is_incremental": false,
@@ -2128,6 +2128,28 @@
       "output": {
         "resource": {
           "relative_path": "External/ReadMeImages/Input/DictationDataProvider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Input/DictationDemo.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Input/DictationDemo.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "External/ReadMeImages/Input/DictationHandler.png",
+      "output": {
+        "resource": {
+          "relative_path": "External/ReadMeImages/Input/DictationHandler.png"
         }
       },
       "is_incremental": false,
@@ -13881,16 +13903,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 89,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 850,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 89,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
