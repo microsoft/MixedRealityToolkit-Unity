@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
     /// <summary>

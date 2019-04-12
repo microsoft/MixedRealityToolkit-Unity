@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             if (cameraFader.State != CameraFaderState.Clear)
             {
                 // Wait for camera to fade out
-                await cameraFader.FadeIn(sceneTransitionServiceProfile.FadeInTime);
+                await cameraFader.FadeInAsync(sceneTransitionServiceProfile.FadeInTime);
             }
 
             // We're done!

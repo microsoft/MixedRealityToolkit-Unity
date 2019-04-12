@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         CameraFaderState State { get; }
 
         Task FadeOutAsync(float fadeOutTime, Color color, IEnumerable<Camera> targets);
-        Task FadeIn(float fadeInTime);
+        Task FadeInAsync(float fadeInTime);
 
         /// <summary>
         /// Used to destroy any assets created.
