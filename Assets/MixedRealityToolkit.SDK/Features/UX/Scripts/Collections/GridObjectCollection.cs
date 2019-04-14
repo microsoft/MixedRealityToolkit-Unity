@@ -147,15 +147,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         protected override void LayoutChildren()
         {
+            float startOffsetX;
+            float startOffsetY;
             var nodeGrid = new Vector3[NodeList.Count];
             Vector3 newPos;
 
             // Now lets lay out the grid
             Columns = Mathf.CeilToInt((float)NodeList.Count / rows);
+            startOffsetX = (Columns * 0.5f) * CellWidth;
+            startOffsetY = (rows * 0.5f) * CellHeight;
             HalfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
 
             // First start with a grid then project onto surface
-            ResolveGridLayout(nodeGrid, layout);
+            ResolveGridLayout(nodeGrid, startOffsetX, startOffsetY, layout);
 
             switch (SurfaceType)
             {
@@ -164,6 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     {
                         ObjectCollectionNode node = NodeList[i];
                         newPos = nodeGrid[i];
+                        //Debug.Log(newPos);
                         node.Transform.localPosition = newPos;
                         UpdateNodeFacing(node);
                         NodeList[i] = node;
@@ -220,37 +225,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        protected void ResolveGridLayout(Vector3[] grid, LayoutOrder order)
+        protected void ResolveGridLayout(Vector3[] grid, float offsetX, float offsetY, LayoutOrder order)
         {
             int cellCounter = 0;
-            int iMax, jMax;
+            float iMax;
+            float jMax;
 
-            switch (order)
+            if (order == LayoutOrder.RowThenColumn)
             {
-                case LayoutOrder.RowThenColumn:
-                    iMax = Rows;
-                    jMax = Columns;
-                    break;
-                case LayoutOrder.ColumnThenRow:
-                    iMax = Columns;
-                    jMax = Rows;
-                    break;
-                case LayoutOrder.Vertical:
-                    iMax = 1;
-                    jMax = NodeList.Count;
-                    break;
-                case LayoutOrder.Horizontal:
-                    iMax = NodeList.Count;
-                    jMax = 1;
-                    break;
-                default:
-                    iMax = Mathf.CeilToInt((float)NodeList.Count / rows);
-                    jMax = rows;
-                    break;
+                iMax = Rows;
+                jMax = Columns;
             }
-
-            float startOffsetX = (iMax * 0.5f) * CellWidth;
-            float startOffsetY = (jMax * 0.5f) * CellHeight;
+            else
+            {
+                iMax = Columns;
+                jMax = Rows;
+            }
 
             for (int i = 0; i < iMax; i++)
             {
@@ -258,8 +248,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 {
                     if (cellCounter < NodeList.Count)
                     {
-                        grid[cellCounter].Set((-startOffsetX + (i * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
-                                             (startOffsetY - (j * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
+                        grid[cellCounter].Set(((i * CellWidth) - offsetX + HalfCell.x) + NodeList[cellCounter].Offset.x,
+                                             (-(j * CellHeight) + offsetY - HalfCell.y) + NodeList[cellCounter].Offset.y,
                                              0.0f);
                     }
                     cellCounter++;
