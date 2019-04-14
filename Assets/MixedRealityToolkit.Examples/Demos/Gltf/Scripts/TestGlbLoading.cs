@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
 
         private async void Start()
         {
-            Response response = default;
+            Response response = new Response();
 
             try
             {

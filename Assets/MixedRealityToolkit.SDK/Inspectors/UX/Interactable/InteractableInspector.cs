@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (actionOptions == null && !Interactable.TryGetInputActions(out actionOptions))
             {
-                EditorGUILayout.HelpBox("Mixed Reality Toolkit is missing, configure it by invoking the 'Mixed Reality Toolkit > Configure...' menu", MessageType.Error);
+                EditorGUILayout.HelpBox("Mixed Reality Toolkit is missing, configure it by invoking the 'Mixed Reality Toolkit > Add to Scene and Configure...' menu", MessageType.Error);
             }
 
             //RenderBaseInspector()

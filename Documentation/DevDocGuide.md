@@ -1,4 +1,4 @@
-# Developer Documentation Guide
+# Developer portal generation guide
 
 MRTK uses [docfx](https://dotnet.github.io/docfx/index.html) to generate html documentation out of triple slash comments in code and .md files in the MRTK repository. Docfx documentation generation is automatically triggered by CI (soon) on completed PRs in the mrtk_development branch.
 The current state of the developer documentation can be found on the [MRTK github.io page](https://microsoft.github.io/MixedRealityToolkit-Unity/)
@@ -68,7 +68,7 @@ The toc file in the root of the project defines entries in the top navigation ba
 toc.yml files can be used for structuring and there can be any amount of those files. For more info about defining entries for toc.yml check the [docfx documentation entry on toc](https://dotnet.github.io/docfx/tutorial/intro_toc.html).
 
 ## Resource files
-There are some files like images, videos or pdfs that the documentation can refer to but are not converted by docfx. For those files there's a resource section in the docfx.json. Files in that section will only be copied over without performing any conversion on them.
+There are some files like images, videos or PDFs that the documentation can refer to but are not converted by docfx. For those files there's a resource section in the docfx.json. Files in that section will only be copied over without performing any conversion on them.
 
 Currently there's a definition for the following resource types:
 
@@ -129,6 +129,7 @@ The versioning system can also be used for showing doc versions from other dev b
   * External crefs - As long as there's no xref service available (and listed in the docfx build file) crefs to external libraries won't work. If you still want to link to a specific external symbol that doesn't have xref service but an online api documentation you can use a href instead. Example: linking to EditorPrefs of Unity: <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>
 
 ## See also
-* [DocFX](https://dotnet.github.io/docfx/index.html)
+* [MRTK documentation guide](DocumentationGuide.md)
 * [MRTK developer documentation on github.io](https://microsoft.github.io/MixedRealityToolkit-Unity/)
+* [DocFX](https://dotnet.github.io/docfx/index.html)
 

@@ -66,3 +66,10 @@ Assets/TextMesh Pro/
 Assets/StreamingAssets/GltfModels/
 Assets/StreamingAssets/GltfModels.meta
 Assets/StreamingAssets.meta
+
+/mrtk_log_mostRecentET.csv
+
+# =============== #
+# DocFX Generated #
+# =============== #
+doc/

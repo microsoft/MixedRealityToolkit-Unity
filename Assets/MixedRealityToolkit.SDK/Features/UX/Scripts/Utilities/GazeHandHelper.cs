@@ -42,14 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             IMixedRealityInputSource source = eventData.InputSource;
             if (source != null && IsInDictionary(source.SourceId) == false && source.Pointers != null && source.Pointers.Length > 0)
             {
-                if (source.Pointers[0].TryGetPointerPosition(out Vector3 gazeTargetHitPosition) == true)
-                {
-                    handSourceMap.Add(source.SourceId, source);
-                    gazePointMap.Add(source.SourceId, gazeTargetHitPosition);
-                    handStartPositionMap.Add(source.SourceId, Vector3.zero);
-                    handPositionMap.Add(source.SourceId, Vector3.zero);
-                    positionAvailableMap.Add(source.SourceId, false);
-                }
+                handSourceMap.Add(source.SourceId, source);
+                gazePointMap.Add(source.SourceId, source.Pointers[0].Position);
+                handStartPositionMap.Add(source.SourceId, Vector3.zero);
+                handPositionMap.Add(source.SourceId, Vector3.zero);
+                positionAvailableMap.Add(source.SourceId, false);
             }
         }
 
@@ -137,26 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return centroid;
             }
             return Vector3.zero;
-        }
-
-        /// <summary>
-        /// This function gets an array of all active hand positions
-        /// </summary>
-        /// <returns>array of Vector3</returns>
-        [Obsolete]
-        public Vector3[] GetHandPositions()
-        {
-            List<Vector3> positions = new List<Vector3>();
-
-            foreach (uint key in positionAvailableMap.Keys)
-            {
-                if (positionAvailableMap[key] == true)
-                {
-                    positions.Add(handPositionMap[key]);
-                }
-            }
-
-            return positions.ToArray();
         }
 
         /// <summary>
@@ -306,11 +283,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             IMixedRealityInputSource source = handSourceMap[id];
             if (source != null && source.Pointers != null && source.Pointers.Length > 0)
             {
-                if (source.Pointers[0].TryGetPointerPosition(out Vector3 pos) == true)
-                {
-                    position = pos;
-                    return true;
-                }
+                position = source.Pointers[0].Position;
+                return true;
             }
 
             position = Vector3.zero;

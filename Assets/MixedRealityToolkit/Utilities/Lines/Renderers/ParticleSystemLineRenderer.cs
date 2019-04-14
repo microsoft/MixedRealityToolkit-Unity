@@ -202,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 for (int i = 0; i < LineStepCount; i++)
                 {
-                    float normalizedDistance = (1f / (LineStepCount - 1)) * i;
+                    float normalizedDistance = GetNormalizedPointAlongLine(i);
                     ParticleSystem.Particle particle = mainParticleArray[i];
                     particle.position = LineDataSource.GetPoint(normalizedDistance);
                     particle.startColor = GetColor(normalizedDistance);

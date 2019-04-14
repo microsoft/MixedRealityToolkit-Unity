@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         public string Uri { get; internal set; }
 
         /// <summary>
-        /// The <see cref="GameObject"/> reference for the gltf Object.
+        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> reference for the gltf Object.
         /// </summary>
         public GameObject GameObjectReference { get; internal set; }
 
