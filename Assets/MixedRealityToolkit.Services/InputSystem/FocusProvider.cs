@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using MixedRealityToolkit;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +17,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider
     {
+        private class FocusSet : Dictionary<GameObject, int>
+        {
+            private Dictionary<GameObject, int> pendingOverallFocusSet = new Dictionary<GameObject, int>();
+
+            public bool IncreaseAndReturnFirst(GameObject focuser)
+            {
+                if (!pendingOverallFocusSet.ContainsKey(focuser))
+                {
+                    pendingOverallFocusSet.Add(focuser, 1);
+                    return true;
+                }
+
+                pendingOverallFocusSet[focuser]++;
+                return false;
+            }
+
+            public bool DecreaseAndReturnIfLast(GameObject focuser)
+            {
+                if (!pendingOverallFocusSet.ContainsKey(focuser))
+                    return false;
+
+                pendingOverallFocusSet[focuser]--;
+                if (pendingOverallFocusSet[focuser] == 0)
+                {
+                    pendingOverallFocusSet.Remove(focuser);
+                    return true;
+                }
+                return false;
+            }
+        }
+
         public FocusProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
@@ -25,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         { }
 
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
-        private readonly Dictionary<GameObject, HashSet<PointerData>> pendingOverallFocusSet = new Dictionary<GameObject, HashSet<PointerData>>();
+        private readonly FocusSet pendingOverallFocusSet = new FocusSet();
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
@@ -619,9 +649,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
 
-                if (pendingOverallFocusSet.RemoveUnique(unfocusedObject, pointerData) && !pendingOverallFocusSet.ContainsKey(unfocusedObject))
+                if (pendingOverallFocusSet.DecreaseAndReturnIfLast(unfocusedObject))
                 {
-                // Policy: only raise focus exit if no other pointers are still focusing the object
                     MixedRealityToolkit.InputSystem.RaiseFocusExit(pointer, unfocusedObject);
                 }
 
@@ -1023,16 +1052,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     MixedRealityToolkit.InputSystem.RaisePreFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
 
-                    if (pendingOverallFocusSet.RemoveUnique(pendingUnfocusObject, pointer) && !pendingOverallFocusSet.ContainsKey(pendingUnfocusObject))
+                    if (pendingUnfocusObject != null && pendingOverallFocusSet.DecreaseAndReturnIfLast(pendingUnfocusObject))
                     {
                         MixedRealityToolkit.InputSystem.RaiseFocusExit(currentPointer, pendingUnfocusObject);
-                        Debug.Log($"FocusExit {pendingUnfocusObject.name}");
+                        Debug.Log($"Focus Exit: {pendingUnfocusObject.name}");
                     }
 
-                    if (pendingOverallFocusSet.AddUnique(pendingFocusObject, pointer))
+                    if (pendingFocusObject != null && pendingOverallFocusSet.IncreaseAndReturnFirst(pendingFocusObject))
                     {
                         MixedRealityToolkit.InputSystem.RaiseFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
-                        Debug.Log($"FocusEnter {pendingFocusObject.name}");
+                        Debug.Log($"Focus Enter: {pendingFocusObject.name}");
                     }
                 }
             }
