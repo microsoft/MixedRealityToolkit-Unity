@@ -1026,11 +1026,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (pendingOverallFocusSet.RemoveUnique(pendingUnfocusObject, pointer) && !pendingOverallFocusSet.ContainsKey(pendingUnfocusObject))
                     {
                         MixedRealityToolkit.InputSystem.RaiseFocusExit(currentPointer, pendingUnfocusObject);
+                        Debug.Log($"FocusExit {pendingUnfocusObject.name}");
                     }
 
-                    if (!pendingOverallFocusSet.ContainsKey(pendingFocusObject) && pendingOverallFocusSet.AddUnique(pendingFocusObject, pointer))
+                    if (pendingOverallFocusSet.AddUnique(pendingFocusObject, pointer))
                     {
                         MixedRealityToolkit.InputSystem.RaiseFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
+                        Debug.Log($"FocusEnter {pendingFocusObject.name}");
                     }
                 }
             }
