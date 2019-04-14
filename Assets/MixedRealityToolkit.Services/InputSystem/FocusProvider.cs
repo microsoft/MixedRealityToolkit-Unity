@@ -17,11 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider
     {
-        private class FocusSet : Dictionary<GameObject, int>
+        private class FocusCounter : Dictionary<GameObject, int>
         {
             private Dictionary<GameObject, int> pendingOverallFocusSet = new Dictionary<GameObject, int>();
 
-            public bool IncreaseAndReturnFirst(GameObject focuser)
+            public bool IncreaseAndReturnIfFirst(GameObject focuser)
             {
                 if (!pendingOverallFocusSet.ContainsKey(focuser))
                 {
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         { }
 
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
-        private readonly FocusSet pendingOverallFocusSet = new FocusSet();
+        private readonly FocusCounter pendingOverallFocusSet = new FocusCounter();
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
@@ -1058,7 +1058,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         Debug.Log($"Focus Exit: {pendingUnfocusObject.name}");
                     }
 
-                    if (pendingFocusObject != null && pendingOverallFocusSet.IncreaseAndReturnFirst(pendingFocusObject))
+                    if (pendingFocusObject != null && pendingOverallFocusSet.IncreaseAndReturnIfFirst(pendingFocusObject))
                     {
                         MixedRealityToolkit.InputSystem.RaiseFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
                         Debug.Log($"Focus Enter: {pendingFocusObject.name}");
