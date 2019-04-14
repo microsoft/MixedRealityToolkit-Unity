@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using MixedRealityToolkit;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -618,7 +619,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
 
-                if (pendingOverallFocusSet.RemoveUnique(unfocusedObject, pointer) && !pendingOverallFocusSet.ContainsKey(unfocusedObject))
+                if (pendingOverallFocusSet.RemoveUnique(unfocusedObject, pointerData) && !pendingOverallFocusSet.ContainsKey(unfocusedObject))
                 {
                 // Policy: only raise focus exit if no other pointers are still focusing the object
                     MixedRealityToolkit.InputSystem.RaiseFocusExit(pointer, unfocusedObject);
