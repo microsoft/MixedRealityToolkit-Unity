@@ -1055,13 +1055,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (pendingUnfocusObject != null && pendingOverallFocusSet.DecreaseAndReturnIfLast(pendingUnfocusObject))
                     {
                         MixedRealityToolkit.InputSystem.RaiseFocusExit(currentPointer, pendingUnfocusObject);
-                        Debug.Log($"Focus Exit: {pendingUnfocusObject.name}");
                     }
 
                     if (pendingFocusObject != null && pendingOverallFocusSet.IncreaseAndReturnIfFirst(pendingFocusObject))
                     {
                         MixedRealityToolkit.InputSystem.RaiseFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
-                        Debug.Log($"Focus Enter: {pendingFocusObject.name}");
                     }
                 }
             }
