@@ -23,27 +23,36 @@ MonoBehaviour:
   gazeCursorPrefab: {fileID: 1000012072213228, guid: 5b3e2856904e43c680f84f326861032a,
     type: 3}
   gazeProviderType:
-    reference: Microsoft.MixedReality.Toolkit.Services.InputSystem.GazeProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
+    reference: Microsoft.MixedReality.Toolkit.Input.GazeProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
+  showCursorWithEyeGaze: 0
   pointerOptions:
-  - controllerType:
-      reference: 
+  - controllerType: 1071
     handedness: 7
     pointerPrefab: {fileID: 1247086986094436, guid: d5b94136462644c9873bb3347169ae7e,
       type: 3}
-  - controllerType:
-      reference: 
-    handedness: 3
+  - controllerType: 47
+    handedness: 7
     pointerPrefab: {fileID: 1196247974088106, guid: c4fd3c6fc7ff484eb434775066e7f327,
       type: 3}
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.UnityTouchController,
-        Microsoft.MixedReality.Toolkit
+  - controllerType: 256
     handedness: 7
     pointerPrefab: {fileID: 1247086986094436, guid: 51e60b8742bc47640923ac9e75ea74e9,
       type: 3}
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput.MouseController,
-        Microsoft.MixedReality.Toolkit
+  - controllerType: 512
     handedness: 7
     pointerPrefab: {fileID: 1247086986094436, guid: 31d81f88cf3f71d4b8392ded50df3f05,
       type: 3}
+  - controllerType: 1024
+    handedness: 7
+    pointerPrefab: {fileID: 1507865967819406, guid: 38b548c6a2c270545a383296ad2bc4d5,
+      type: 3}
+  - controllerType: 1024
+    handedness: 7
+    pointerPrefab: {fileID: 1507865967819406, guid: 526b854247016cf47bc5c58e01d82407,
+      type: 3}
+  - controllerType: 2048
+    handedness: 7
+    pointerPrefab: {fileID: 1247086986094436, guid: 039b325c9e8fd0545a0475fd4aa35b10,
+      type: 3}
+  pointerMediator:
+    reference: Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator, Microsoft.MixedReality.Toolkit.SDK

@@ -1,16 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips;
+using Microsoft.MixedReality.Toolkit.UI;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.ToolTips
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [CustomEditor(typeof(ToolTipConnector))]
-    public class ToolTipConnectorInspector : Editor
+    public class ToolTipConnectorInspector : UnityEditor.Editor
     {
         private const string EditorSettingsFoldoutKey = "MRTK_ToolTipConnector_Inspector_EditorSettings";
         private const string DrawManualDirectionHandleKey = "MRTK_ToopTipConnector_Inspector_DrawManualDirectionHandle";
@@ -81,9 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.ToolTips
 
             if (connectorTarget.objectReferenceValue == null)
             {
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                EditorGUILayout.LabelField("No target set. ToolTip will not use connector component.", EditorStyles.miniLabel);
-                EditorGUILayout.EndVertical();
+                EditorGUILayout.HelpBox("No target set. ToolTip will not use connector component.", MessageType.Info);
                 EditorGUILayout.PropertyField(connectorTarget);
             }
             else

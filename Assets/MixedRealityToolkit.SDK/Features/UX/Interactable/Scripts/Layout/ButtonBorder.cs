@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Use a Unity primitive Cube or cylinder as a border segment relative to the scale of the AnchorTransform
+    /// Use a Unity primitive cube or cylinder as a border segment relative to the scale of the AnchorTransform
     /// Use with ButtonSize on the component and the Anchor for consistent results
     /// Works best when using with ButtonSize, but not required - See ButtonSize for more info.
     /// </summary>

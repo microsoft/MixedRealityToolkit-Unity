@@ -3,13 +3,12 @@
 
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
+namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
     public class UwpBuildInfo : BuildInfo
     {
         public UwpBuildInfo(bool isCommandLine = false) : base(isCommandLine)
         {
-            BuildPlatform = "x86";
         }
 
         /// <inheritdoc />

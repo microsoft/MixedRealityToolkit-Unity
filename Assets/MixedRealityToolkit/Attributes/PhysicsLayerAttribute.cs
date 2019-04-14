@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Attributes
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     /// <summary>
     /// Attribute used to make an <see cref="int"/> field render a dropdown generated from the current layers defined in the Tag Manager.

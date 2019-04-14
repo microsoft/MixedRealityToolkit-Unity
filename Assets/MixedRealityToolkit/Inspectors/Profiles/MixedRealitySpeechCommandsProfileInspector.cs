@@ -1,21 +1,21 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(MixedRealitySpeechCommandsProfile))]
     public class MixedRealitySpeechCommandsProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Remove Speech Command");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Speech Command", "Add Speech Command");
-        private static readonly GUIContent KeywordContent = new GUIContent("Keyword", "Spoken word that will trigger the action.");
+        private static readonly GUIContent LocalizationContent = new GUIContent("LocalizationKey", "An optional key to lookup a localized value for keyword");
+        private static readonly GUIContent KeywordContent = new GUIContent("Keyword", "Spoken word that will trigger the action.  Overriden by a localized version if LocalizationKey is specified and found");
         private static readonly GUIContent KeyCodeContent = new GUIContent("KeyCode", "The keyboard key that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a keyboard key is pressed or keyword is recognized.");
 
@@ -117,6 +117,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 list.arraySize += 1;
                 var speechCommand = list.GetArrayElementAtIndex(list.arraySize - 1);
+                var localizationKey = speechCommand.FindPropertyRelative("localizationKey");
+                localizationKey.stringValue = string.Empty;
                 var keyword = speechCommand.FindPropertyRelative("keyword");
                 keyword.stringValue = string.Empty;
                 var keyCode = speechCommand.FindPropertyRelative("keyCode");
@@ -140,6 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             GUILayout.BeginHorizontal();
             var labelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 36f;
+            EditorGUILayout.LabelField(LocalizationContent, GUILayout.ExpandWidth(true));
             EditorGUILayout.LabelField(KeywordContent, GUILayout.ExpandWidth(true));
             EditorGUILayout.LabelField(KeyCodeContent, GUILayout.Width(64f));
             EditorGUILayout.LabelField(ActionContent, GUILayout.Width(64f));
@@ -151,6 +154,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 EditorGUILayout.BeginHorizontal();
                 SerializedProperty speechCommand = list.GetArrayElementAtIndex(i);
+                var localizationKey = speechCommand.FindPropertyRelative("localizationKey");
+                EditorGUILayout.PropertyField(localizationKey, GUIContent.none, GUILayout.ExpandWidth(true));
                 var keyword = speechCommand.FindPropertyRelative("keyword");
                 EditorGUILayout.PropertyField(keyword, GUIContent.none, GUILayout.ExpandWidth(true));
                 var keyCode = speechCommand.FindPropertyRelative("keyCode");

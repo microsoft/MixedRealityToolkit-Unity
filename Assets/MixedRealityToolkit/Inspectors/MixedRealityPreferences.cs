@@ -2,11 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     internal static class MixedRealityPreferences
     {
@@ -64,33 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
         #endregion Ignore startup settings prompt
 
-        #region Show Canvas Utility Prompt
-
-        private static readonly GUIContent CanvasUtilityContent = new GUIContent("Canvas world space utility dialogs", "Enable or disable the dialog popups for the world space canvas settings.\n\nThis setting only applies to the currently running project.");
-        private const string CANVAS_KEY = "EnableCanvasUtilityDialog";
-        private static bool isCanvasUtilityPrefLoaded;
-        private static bool showCanvasUtilityPrompt;
-
-        /// <summary>
-        /// Should the <see cref="Canvas"/> utility dialog show when updating the <see cref="RenderMode"/> settings on that component?
-        /// </summary>
-        public static bool ShowCanvasUtilityPrompt
-        {
-            get
-            {
-                if (!isCanvasUtilityPrefLoaded)
-                {
-                    showCanvasUtilityPrompt = EditorPreferences.Get(CANVAS_KEY, true);
-                    isCanvasUtilityPrefLoaded = true;
-                }
-
-                return showCanvasUtilityPrompt;
-            }
-            set => EditorPreferences.Set(CANVAS_KEY, showCanvasUtilityPrompt = value);
-        }
-
-        #endregion Show Canvas Utility Prompt
-
         [SettingsProvider]
         private static SettingsProvider Preferences()
         {
@@ -132,19 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 }
 
                 EditorGUI.BeginChangeCheck();
-                showCanvasUtilityPrompt = EditorGUILayout.Toggle(CanvasUtilityContent, ShowCanvasUtilityPrompt);
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    ShowCanvasUtilityPrompt = showCanvasUtilityPrompt;
-                }
-
-                if (!ShowCanvasUtilityPrompt)
-                {
-                    EditorGUILayout.HelpBox("Be aware that if a Canvas needs to receive input events it is required to have the CanvasUtility attached or the Focus Provider's UIRaycast Camera assigned to the canvas' camera reference.", MessageType.Warning);
-                }
-
-                EditorGUI.BeginChangeCheck();
                 var scriptLock = EditorGUILayout.Toggle("Is Script Reloading locked?", EditorAssemblyReloadManager.LockReloadAssemblies);
 
                 if (EditorGUI.EndChangeCheck())
@@ -158,4 +118,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             return provider;
         }
     }
+
 }

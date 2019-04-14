@@ -3,12 +3,12 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Services
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// The base service implements <see cref="Interfaces.IMixedRealityService"/> and provides default properties for all services.
+    /// The base service implements <see cref="IMixedRealityService"/> and provides default properties for all services.
     /// </summary>
-    public abstract class BaseService : Interfaces.IMixedRealityService
+    public abstract class BaseService : IMixedRealityService
     {
         public const uint DefaultPriority = 10;
 
@@ -31,6 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Services
 
         /// <inheritdoc />
         public virtual void Update() { }
+
+        /// <inheritdoc />
+        public virtual void LateUpdate() { }
 
         /// <inheritdoc />
         public virtual void Disable() { }

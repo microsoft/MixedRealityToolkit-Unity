@@ -1,22 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Base class for all <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/> Inspectors to inherit from.
+    /// Base class for all <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> Inspectors to inherit from.
     /// </summary>
-    public abstract class BaseMixedRealityProfileInspector : Editor
+    public abstract class BaseMixedRealityProfileInspector : UnityEditor.Editor
     {
         private const string IsCustomProfileProperty = "isCustomProfile";
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
@@ -38,16 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             profile = target as BaseMixedRealityProfile;
         }
 
-        [Obsolete("Use MixedRealityInspectorUtility.CheckMixedRealityConfigured instead")]
-        public static bool CheckMixedRealityConfigured(bool flag = true)
-        {
-            return false;
-        }
-
         /// <summary>
-        /// Renders a <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/>.
+        /// Renders a <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/>.
         /// </summary>
-        /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/> property.</param>
+        /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> property.</param>
         /// <param name="guiContent">The GUIContent for the field.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
         /// <returns>True, if the profile changed.</returns>
@@ -57,9 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         }
 
         /// <summary>
-        /// Renders a <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/>.
+        /// Renders a <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/>.
         /// </summary>
-        /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/> property.</param>
+        /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> property.</param>
         /// <param name="showAddButton">Optional flag to hide the create button.</param>
         /// <returns>True, if the profile changed.</returns>
         protected static bool RenderProfile(SerializedProperty property, bool showAddButton = true, Type serviceType = null)
@@ -97,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             EditorGUILayout.BeginHorizontal();
-           
+
             if (guiContent == null)
             {
                 EditorGUILayout.PropertyField(property);
@@ -135,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     MixedRealityProfileCloneWindow.OpenWindow(profile, renderedProfile, property);
                 }
             }
-            
+
             EditorGUILayout.EndHorizontal();
 
             // Check fields within profile for other nested profiles
@@ -151,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
                     if (showFoldout)
                     {
-                        Editor subProfileEditor = Editor.CreateEditor(property.objectReferenceValue);
+                        UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
 
                         // If this is a default MRTK configuration profile, ask it to render as a sub-profile
                         if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
@@ -181,7 +171,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private static string GetSubProfileDropdownKey(SerializedProperty property)
         {
             if (property.objectReferenceValue == null)
+            {
                 throw new Exception("Can't get sub profile dropdown key for a property that is null.");
+            }
 
             dropdownKeyBuilder.Clear();
             dropdownKeyBuilder.Append("MRTK_SubProfile_ShowDropdown_");

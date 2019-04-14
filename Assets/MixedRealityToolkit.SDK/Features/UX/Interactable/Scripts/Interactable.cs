@@ -1,26 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes;
-using System;
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-using UnityEngine.Windows.Speech;
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Uses input and action data to declare a set of states
@@ -35,7 +22,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
     [System.Serializable]
 
-    public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
+    public class Interactable :
+        MonoBehaviour,
+        IMixedRealityFocusChangedHandler,
+        IMixedRealityFocusHandler,
+        IMixedRealityInputHandler,
+        IMixedRealityPointerHandler,
+        IMixedRealitySpeechHandler,
+        IMixedRealityTouchHandler
     {
         /// <summary>
         /// Setup the input system
@@ -50,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         // is the interactable enabled?
         public bool Enabled = true;
         // a collection of states and basic state logic
-        public States.States States;
+        public States States;
         // the state logic for comparing state
         public InteractableStates StateManager;
         // which action is this interactable listening for
@@ -77,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         /// </summary>
         public bool FocusEnabled { get { return !IsGlobal; } set { IsGlobal = !value; } }
 
-        // list of profiles can match themes with GameObjects
+        // list of profiles can match themes with gameObjects
         public List<InteractableProfileItem> Profiles = new List<InteractableProfileItem>();
         // Base onclick event
         public UnityEvent OnClick;
@@ -90,11 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         protected List<ProfileSettings> runningProfileSettings = new List<ProfileSettings>();
         // directly manipulate a theme value, skip blending
         protected bool forceUpdate = false;
-
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-        protected KeywordRecognizer keywordRecognizer;
-        protected RecognitionConfidenceLevel recognitionConfidenceLevel { get; set; }
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         // basic button states
         public bool HasFocus { get; private set; }
@@ -112,6 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         public bool HasGestureMax { get; private set; }
         public bool HasCollision { get; private set; }
         public bool HasVoiceCommand { get; private set; }
+        public bool HasPhysicalTouch { get; private set; }
         public bool HasCustom { get; private set; }
 
         // internal cached states
@@ -208,8 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             {
                 InputSystem.Register(gameObject);
             }
-
-            SetupVoiceCommand();
         }
 
         private void OnDisable()
@@ -218,8 +206,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             {
                 InputSystem.Unregister(gameObject);
             }
-
-            StopVoiceCommand();
         }
 
         protected virtual void Update()
@@ -321,8 +307,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                         for (int n = 0; n < theme.Settings.Count; n++)
                         {
                             InteractableThemePropertySettings settings = theme.Settings[n];
-
                             settings.Theme = InteractableProfileItem.GetTheme(settings, Profiles[i].Target);
+
                             // add themes to theme list based on dimension
                             if (j == dimensionIndex)
                             {
@@ -468,6 +454,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             UpdateState();
         }
 
+        public virtual void SetPhysicalTouch(bool touch)
+        {
+            HasPhysicalTouch = touch;
+            StateManager.SetStateValue(InteractableStates.InteractableStateEnum.PhysicalTouch, touch ? 1 : 0);
+            UpdateState();
+        }
+
+
+
         /// <summary>
         /// a public way to set state directly
         /// </summary>
@@ -580,6 +575,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
                 SetPress(false);
+                eventData.Use();
             }
         }
 
@@ -598,6 +594,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
                 SetPress(true);
+                eventData.Use();
             }
         }
 
@@ -627,8 +624,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                     SendOnClick(eventData.Pointer);
                     SetVisited(true);
                     StartInputTimer(false);
+                    eventData.Use();
                 }
                 else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
+                {
+                    if (GlobalClickOrder[1] == 0)
+                    {
+                        GlobalClickOrder[0] = 1;
+                    }
+                    IncreaseDimensionIndex();
+                    StartGlobalVisual(false);
+                    SendOnClick(null);
+                    SetVisited(true);
+                    StartInputTimer(false);
+                }
+                else if (eventData == null && HasPhysicalTouch) // handle touch interactions
                 {
                     if (GlobalClickOrder[1] == 0)
                     {
@@ -696,6 +706,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                     IncreaseDimensionIndex();
                     SendOnClick(null);
                     SetVisited(true);
+
+                    eventData.Use();
                 }
             }
         }
@@ -717,13 +729,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
                 {
                     StartInputTimer(true);
                     SetPress(true);
+                    eventData.Use();
                 }
             }
         }
 
         public void OnInputPressed(InputEventData<float> eventData)
         {
-            // ignore
         }
 
         public void OnPositionInputChanged(InputEventData<Vector2> eventData)
@@ -971,90 +983,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
         /// <param name="eventData"></param>
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
-            if (Enabled && ShouldListen(eventData.MixedRealityInputAction))
+            if (eventData.Command.Keyword == VoiceCommand && (!RequiresFocus || HasFocus) && Enabled)
             {
                 StartGlobalVisual(true);
-
                 IncreaseDimensionIndex();
-                SendVoiceCommands(eventData.RecognizedText, 0, 1);
-
-                SendOnClick(null);
+                OnPointerClicked(null);
+                eventData.Use();
             }
+
+            // TODO(https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/3767): Need to merge this
+            // work below with the code above.
+            // if (Enabled && ShouldListen(eventData.MixedRealityInputAction))
+            // {
+            //     StartGlobalVisual(true);                
+            //     IncreaseDimensionIndex();
+            //     SendVoiceCommands(eventData.RecognizedText, 0, 1);
+            //     SendOnClick(null);
+            //     eventData.Use();
+            // }
         }
-
-        /// <summary>
-        /// Setup voice commands from component VoiceCommand input field
-        /// Supports toggles using a comma to separate keywords, no spaces please
-        /// </summary>
-        protected void SetupVoiceCommand()
-        {
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-            if (!string.IsNullOrEmpty(VoiceCommand) && VoiceCommand.Length > 2)
-            {
-                voiceCommands = new string[] { VoiceCommand };
-                if (VoiceCommand.IndexOf(",") > -1)
-                {
-                    voiceCommands = VoiceCommand.Split(',');
-                }
-
-                recognitionConfidenceLevel = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
-
-                if (keywordRecognizer == null)
-                {
-                    keywordRecognizer = new KeywordRecognizer(voiceCommands, (ConfidenceLevel)recognitionConfidenceLevel);
-                    keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
-                    keywordRecognizer.Start();
-                }
-            }
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-        }
-
-        protected void StopVoiceCommand()
-        {
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-            if (keywordRecognizer != null)
-            {
-                if (keywordRecognizer.IsRunning)
-                {
-                    keywordRecognizer.Stop();
-                }
-                keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
-                keywordRecognizer.Dispose();
-                keywordRecognizer = null;
-            }
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-        }
-
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-        /// <summary>
-        /// Local voice commands registered on the interactable Voice Command Field
-        /// </summary>
-        /// <param name="args"></param>
-        protected void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
-        {
-            if (args.text == VoiceCommand && (!RequiresFocus || HasFocus) && CanInteract())
-            {
-
-                if (CanInteract())
-                {
-                    StartGlobalVisual(true);
-
-                    int index = GetVoiceCommandIndex(args.text);
-                    if (voiceCommands.Length < 2 || Dimensions < 2)
-                    {
-                        IncreaseDimensionIndex();
-                    }
-                    else
-                    {
-                        SetDimensionIndex(index);
-                    }
-                    SendVoiceCommands(args.text, index, voiceCommands.Length);
-
-                    SendOnClick(null);
-                }
-            }
-        }
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         /// <summary>
         /// call OnVoinceCommand methods on receivers or IInteractableHandlers
@@ -1101,5 +1048,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         #endregion VoiceCommands
 
+        void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
+        {
+            SetPress(true);
+            eventData.Use();
+        }
+
+        void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
+        {
+            SetPress(false);
+            eventData.Use();
+        }
+
+        void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData) { }
     }
 }

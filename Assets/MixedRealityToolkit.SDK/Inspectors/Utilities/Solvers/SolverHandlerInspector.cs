@@ -1,17 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {
     [CustomEditor(typeof(SolverHandler))]
     [CanEditMultipleObjects]
     public class SolverHandlerInspector : ControllerFinderInspector
     {
         private SerializedProperty trackedObjectProperty;
+        private SerializedProperty trackedHandJointProperty;
         private SerializedProperty transformTargetProperty;
         private SerializedProperty additionalOffsetProperty;
         private SerializedProperty additionalRotationProperty;
@@ -24,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Utilities.Solvers
             base.OnEnable();
 
             trackedObjectProperty = serializedObject.FindProperty("trackedObjectToReference");
+            trackedHandJointProperty = serializedObject.FindProperty("trackedHandJoint");
             transformTargetProperty = serializedObject.FindProperty("transformTarget");
             additionalOffsetProperty = serializedObject.FindProperty("additionalOffset");
             additionalRotationProperty = serializedObject.FindProperty("additionalRotation");
@@ -43,6 +45,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Utilities.Solvers
             {
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(trackedObjectProperty);
+                if (trackedObjectProperty.enumValueIndex == (int)TrackedObjectType.HandJointLeft ||
+                trackedObjectProperty.enumValueIndex == (int)TrackedObjectType.HandJointRight)
+                {
+                    EditorGUILayout.PropertyField(trackedHandJointProperty);
+                }
+                else if (trackedObjectProperty.enumValueIndex == (int)TrackedObjectType.MotionControllerLeft ||
+                    trackedObjectProperty.enumValueIndex == (int)TrackedObjectType.MotionControllerRight)
+                {
+                    // TODO: Add tracked controller element back in. Pending visualization system updates.
+                    // EditorGUILayout.PropertyField(trackedControllerElementProperty);
+                }
+
                 trackedObjectChanged = EditorGUI.EndChangeCheck();
             }
 

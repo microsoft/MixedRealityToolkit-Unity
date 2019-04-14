@@ -1,19 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States
+namespace Microsoft.MixedReality.Toolkit.UI
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(States))]
-    public class StatesInspector : Editor
+    public class StatesInspector : UnityEditor.Editor
     {
         protected States instance;
         protected SerializedProperty stateList;

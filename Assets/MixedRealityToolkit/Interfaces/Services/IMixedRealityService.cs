@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Generic interface for all Mixed Reality Services
@@ -40,6 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces
         /// Optional Update function to perform per-frame updates of the service.
         /// </summary>
         void Update();
+
+        /// <summary>
+        /// Optional LateUpdate function to that is called after Update has been called on all services.
+        /// </summary>
+        void LateUpdate();
 
         /// <summary>
         /// Optional Disable function to pause the service.

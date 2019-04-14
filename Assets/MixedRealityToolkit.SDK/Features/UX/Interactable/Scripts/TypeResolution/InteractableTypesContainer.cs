@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A convenience class that holds arrays of class names, fully qualified assembly names
@@ -26,8 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         /// <summary>
         /// A array of assembly qualified names (for example, 
-        /// "Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes.InteractableActivateTheme, 
-        /// Microsoft.MixedReality.Toolkit.SDK")
+        /// "Microsoft.MixedReality.Toolkit.UI.InteractableActivateTheme, 
+        /// Microsoft.MixedReality.Toolkit.UI")
         /// </summary>
         public string[] AssemblyQualifiedNames { get; private set; }
 

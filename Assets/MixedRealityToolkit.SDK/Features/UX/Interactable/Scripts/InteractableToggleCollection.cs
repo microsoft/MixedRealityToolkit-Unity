@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Iteractable
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A way to control a list of radial type buttons or tabs
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Iteractable
     public class InteractableToggleCollection : MonoBehaviour
     {
         [Tooltip("Interactables that will be managed by this controller")]
-        public Interactable.Interactable[] ToggleList;
+        public Interactable[] ToggleList;
 
         [Tooltip("Currently selected index or default starting index")]
         public int CurrentIndex;

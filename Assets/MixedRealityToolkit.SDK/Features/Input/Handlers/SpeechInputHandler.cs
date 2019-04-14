@@ -1,17 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// This component handles the speech input events raised form the <see cref="Core.Interfaces.InputSystem.IMixedRealityInputSystem"/>.
+    /// This component handles the speech input events raised form the <see cref="IMixedRealityInputSystem"/>.
     /// </summary>
     [DisallowMultipleComponent]
     public class SpeechInputHandler : BaseInputHandler, IMixedRealitySpeechHandler
@@ -64,6 +61,28 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         #endregion MonoBehaviour Implementation
 
+        #region SpeechInputHandler public methods
+        public void AddResponse(string keyword, UnityAction action)
+        {
+            string lowerKeyword = keyword.ToLower();
+            if (!responses.ContainsKey(lowerKeyword))
+            {
+                responses[lowerKeyword] = new UnityEvent();
+            }
+
+            responses[lowerKeyword].AddListener(action);
+        }
+
+        public void RemoveResponse(string keyword, UnityAction action)
+        {
+            string lowerKeyword = keyword.ToLower();
+            if(responses.ContainsKey(lowerKeyword))
+            {
+                responses[lowerKeyword].RemoveListener(action);
+            }
+        }
+        #endregion SpeechInputHandler public methods
+
         #region IMixedRealitySpeechHandler Implementation
 
         void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
@@ -71,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             UnityEvent keywordResponse;
 
             // Check to make sure the recognized keyword exists in the methods dictionary, then invoke the corresponding method.
-            if (enabled && responses.TryGetValue(eventData.RecognizedText.ToLower(), out keywordResponse))
+            if (enabled && responses.TryGetValue(eventData.Command.Keyword.ToLower(), out keywordResponse))
             {
                 keywordResponse.Invoke();
             }

@@ -1,14 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UInput = UnityEngine.Input;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
+namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
     [MixedRealityController(
         SupportedControllerType.GenericUnity,
@@ -88,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
-            var keyButton = Input.GetKey(interactionMapping.KeyCode);
+            var keyButton = UInput.GetKey(interactionMapping.KeyCode);
 
             // Update the interaction data source
             interactionMapping.BoolData = keyButton;
@@ -106,27 +103,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
                     MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
-            else
-            {
-                if (interactionMapping.BoolData)
-                {
-                    MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                }
-            }
         }
 
         /// <summary>
         /// Update an Interaction Float data type from a SingleAxis (float) input 
         /// </summary>
         /// <remarks>
-        /// Raises an Input System "Pressed" event when the float data changes
+        /// Raises a Float Input Changed event when the float data changes
         /// </remarks>
         /// <param name="interactionMapping"></param>
         protected void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping)
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
 
-            var singleAxisValue = Input.GetAxis(interactionMapping.AxisCodeX);
+            var singleAxisValue = UInput.GetAxis(interactionMapping.AxisCodeX);
 
             switch (interactionMapping.InputType)
             {
@@ -153,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
                     if (interactionMapping.Changed)
                     {
                         // Raise input system Event if it enabled
-                        MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
+                        MixedRealityToolkit.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
                     }
                     return;
                 default:
@@ -174,13 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
                     MixedRealityToolkit.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
-            else
-            {
-                if (interactionMapping.BoolData)
-                {
-                    MixedRealityToolkit.InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, singleAxisValue);
-                }
-            }
         }
 
         /// <summary>
@@ -191,8 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
 
-            dualAxisPosition.x = Input.GetAxis(interactionMapping.AxisCodeX);
-            dualAxisPosition.y = Input.GetAxis(interactionMapping.AxisCodeY);
+            dualAxisPosition.x = UInput.GetAxis(interactionMapping.AxisCodeX);
+            dualAxisPosition.y = UInput.GetAxis(interactionMapping.AxisCodeY);
 
             // Update the interaction data source
             interactionMapping.Vector2Data = dualAxisPosition;

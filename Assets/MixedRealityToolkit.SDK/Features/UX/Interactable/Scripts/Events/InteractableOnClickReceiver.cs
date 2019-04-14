@@ -1,15 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A basic receiver for detecting clicks

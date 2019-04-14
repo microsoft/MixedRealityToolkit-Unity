@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     /// <summary>
     /// Contains information about which game object has the focus currently.
@@ -11,6 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
     /// </summary>
     public struct FocusDetails
     {
+        /// <summary>
+        /// Distance along the ray until a hit, or until the end of the ray if no hit
+        /// </summary>
+        public float RayDistance { get; set; }
+
         /// <summary>
         /// The hit point of the raycast.
         /// </summary>
@@ -30,5 +37,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
         /// The last raycast hit info.
         /// </summary>
         public RaycastHit LastRaycastHit { get; set; }
+
+        /// <summary>
+        /// The last raycast hit info for graphic raycast
+        /// </summary>
+        public RaycastResult LastGraphicsRaycastResult { get; set; }
+
+        public Vector3 PointLocalSpace { get; set; }
+        public Vector3 NormalLocalSpace { get; set; }
     }
 }

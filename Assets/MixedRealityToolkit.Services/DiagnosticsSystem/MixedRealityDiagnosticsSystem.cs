@@ -1,18 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
+namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
     /// <summary>
-    /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics.IMixedRealityDiagnosticsSystem"/>
+    /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
     public class MixedRealityDiagnosticsSystem : BaseCoreSystem, IMixedRealityDiagnosticsSystem
     {
@@ -46,6 +41,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             visualProfiler = diagnosticVisualizationParent.AddComponent<MixedRealityToolkitVisualProfiler>();
             visualProfiler.WindowParent = diagnosticVisualizationParent.transform;
             visualProfiler.IsVisible = ShowProfiler;
+            visualProfiler.FrameSampleRate = FrameSampleRate;
+            visualProfiler.WindowAnchor = WindowAnchor;
+            visualProfiler.WindowOffset = WindowOffset;
+            visualProfiler.WindowScale = WindowScale;
+            visualProfiler.WindowFollowSpeed = WindowFollowSpeed;
         }
 
         private MixedRealityToolkitVisualProfiler visualProfiler = null;
@@ -65,6 +65,11 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             // Apply profile settings
             ShowDiagnostics = profile.ShowDiagnostics;
             ShowProfiler = profile.ShowProfiler;
+            FrameSampleRate = profile.FrameSampleRate;
+            WindowAnchor = profile.WindowAnchor;
+            WindowOffset = profile.WindowOffset;
+            WindowScale = profile.WindowScale;
+            WindowFollowSpeed = profile.WindowFollowSpeed;
 
             CreateVisualizations();
         }
@@ -141,26 +146,25 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             }
         }
 
-        private float frameRateDuration = 0.1f;
-        private readonly float minFrameRateDuration = 0.01f;
-        private readonly float maxFrameRateDuration = 1.0f;
+        private float frameSampleRate = 0.1f;
 
         /// <inheritdoc />
-        public float FrameRateDuration
+        public float FrameSampleRate
         {
             get
             {
-                return frameRateDuration;
+                return frameSampleRate;
             }
 
             set
             {
-                if (!Mathf.Approximately(frameRateDuration, value))
+                if (!Mathf.Approximately(frameSampleRate, value))
                 {
-                    frameRateDuration = Mathf.Clamp(value, minFrameRateDuration, maxFrameRateDuration);
+                    frameSampleRate = value;
+
                     if (visualProfiler != null)
                     {
-                        visualProfiler.FrameSampleRate = frameRateDuration;
+                        visualProfiler.FrameSampleRate = frameSampleRate;
                     }
                 }
             }
@@ -201,5 +205,97 @@ namespace Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
             };
 
         #endregion IMixedRealityEventSource
+
+        private TextAnchor windowAnchor = TextAnchor.LowerCenter;
+
+        /// <summary>
+        /// What part of the view port to anchor the window to.
+        /// </summary>
+        public TextAnchor WindowAnchor
+        {
+            get { return windowAnchor; }
+
+            set
+            {
+                if (value != windowAnchor)
+                {
+                    windowAnchor = value;
+
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.WindowAnchor = windowAnchor;
+                    }
+                }
+            }
+        }
+
+        private Vector2 windowOffset = new Vector2(0.1f, 0.1f);
+
+        /// <summary>
+        /// The offset from the view port center applied based on the window anchor selection.
+        /// </summary>
+        public Vector2 WindowOffset
+        {
+            get { return windowOffset; }
+
+            set
+            {
+                if (value != windowOffset)
+                {
+                    windowOffset = value;
+
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.WindowOffset = windowOffset;
+                    }
+                }
+            }
+        }
+
+        private float windowScale = 1.0f;
+
+        /// <summary>
+        /// Use to scale the window size up or down, can simulate a zooming effect.
+        /// </summary>
+        public float WindowScale
+        {
+            get { return windowScale; }
+
+            set
+            {
+                if (value != windowScale)
+                {
+                    windowScale = value;
+
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.WindowScale = windowScale;
+                    }
+                }
+            }
+        }
+
+        private float windowFollowSpeed = 5.0f;
+
+        /// <summary>
+        /// How quickly to interpolate the window towards its target position and rotation.
+        /// </summary>
+        public float WindowFollowSpeed
+        {
+            get { return windowFollowSpeed; }
+
+            set
+            {
+                if (value != windowFollowSpeed)
+                {
+                    windowFollowSpeed = value;
+
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.WindowFollowSpeed = windowFollowSpeed;
+                    }
+                }
+            }
+        }
     }
 }

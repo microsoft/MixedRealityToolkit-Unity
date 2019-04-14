@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Interface to implement for generic gesture input.
@@ -46,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
         /// Gesture Updated Event.
         /// </summary>
         /// <remarks>
-        /// The <see cref="Microsoft.MixedReality.Toolkit.Core.EventDatum.Input.InputEventData{T}.InputData"/> for the associated gesture data.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> for the associated gesture data.
         /// </remarks>
         /// <param name="eventData"></param>
         void OnGestureUpdated(InputEventData<T> eventData);
@@ -55,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
         /// Gesture Completed Event.
         /// </summary>
         /// <remarks>
-        /// The <see cref="Microsoft.MixedReality.Toolkit.Core.EventDatum.Input.InputEventData{T}.InputData"/> for the associated gesture data.
+        /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> for the associated gesture data.
         /// </remarks>
         /// <param name="eventData"></param>
         void OnGestureCompleted(InputEventData<T> eventData);

@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 2c11bf713819a084d8cb4c35db20d042
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: BackBody
     100002: Backpack
@@ -75,6 +75,7 @@ ModelImporter:
     400066: Legs2
     400068: Legs3
     400070: Legs4
+    2100000: BlackWindow
     2300000: BackBody
     2300002: Backpack
     2300004: BottomLeftBody
@@ -173,52 +174,52 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Black
-    second: {fileID: 2100000, guid: 752ea8dd54d61934c9ec6ff6944b210a, type: 2}
+    second: {fileID: 2100000, guid: 71d471797c0e430783230146721c3fcb, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BlackWindow
-    second: {fileID: 2100000, guid: 35260f6bb9758ac46b9ab4e36c76ef0d, type: 2}
+    second: {fileID: 2100000, guid: 0530d90ba2a117e4f95c7a6345e8bb14, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: ClearWindow
-    second: {fileID: 2100000, guid: 1b607b6bb9cc98a498c6f6dee15f294c, type: 2}
+    second: {fileID: 2100000, guid: 9921ca73d1b94b24aba7726b9df6db8c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Default
-    second: {fileID: 2100000, guid: 7ec11ba6765c221499591f5692c4bc18, type: 2}
+    second: {fileID: 2100000, guid: 680505b4b4f3400f9fd3ebb242751819, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Gold
-    second: {fileID: 2100000, guid: c278288142ab34047ad4ff4450d0f640, type: 2}
+    second: {fileID: 2100000, guid: 835cb4a58f172d7478801db95e510f56, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: GreenGas
-    second: {fileID: 2100000, guid: e70925e937e9a22439a20a2f682391e1, type: 2}
+    second: {fileID: 2100000, guid: 00665e2a669d4b0fab1965843b4c914b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: RedLight
-    second: {fileID: 2100000, guid: 5d4f3b74350d8694ca2ef0d14246bd38, type: 2}
+    second: {fileID: 2100000, guid: c4a1b7475a654dd0acaa0cfdfba2e20c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: White
-    second: {fileID: 2100000, guid: 3639569bc17f0cf41a8920605a72dcd8, type: 2}
+    second: {fileID: 2100000, guid: 680505b4b4f3400f9fd3ebb242751819, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: WhiteLight
-    second: {fileID: 2100000, guid: 7af45ca6d440a78459aa7942adb3a9a9, type: 2}
+    second: {fileID: 2100000, guid: cb74390ea57642f8b5ca0aa8f5fb38c1, type: 2}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 1
     materialSearch: 2
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -232,6 +233,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -240,12 +242,13 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
@@ -263,11 +266,16 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 45
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 0
   copyAvatar: 0
   humanDescription:
@@ -282,7 +290,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

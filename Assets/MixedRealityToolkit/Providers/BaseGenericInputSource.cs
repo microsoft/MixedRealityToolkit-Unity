@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using System;
 using System.Collections;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Providers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Base class for input sources that don't inherit from MonoBehaviour.
@@ -20,11 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
         /// </summary>
         /// <param name="name"></param>
         /// <param name="pointers"></param>
-        public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null)
+        public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other)
         {
             SourceId = MixedRealityToolkit.InputSystem.GenerateNewSourceId();
             SourceName = name;
             Pointers = pointers ?? new[] { MixedRealityToolkit.InputSystem.GazeProvider.GazePointer };
+            SourceType = sourceType;
         }
 
         /// <inheritdoc />
@@ -35,6 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Providers
 
         /// <inheritdoc />
         public virtual IMixedRealityPointer[] Pointers { get; }
+
+        /// <inheritdoc />
+        public InputSourceType SourceType { get; set; }
 
         #region IEquality Implementation
 

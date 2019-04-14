@@ -2,13 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
-using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
     /// A set of Inspector fields for setting up properties in a
@@ -26,8 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
         {
             Type myType = target.GetType();
 
-            PropertyInfo[] propInfoList = myType.GetProperties();
-            for (int i = 0; i < propInfoList.Length; i++)
+            List<PropertyInfo> propInfoList = new List<PropertyInfo>(myType.GetProperties());
+            for (int i = 0; i < propInfoList.Count; i++)
             {
                 PropertyInfo propInfo = propInfoList[i];
                 var attrs = (InspectorField[])propInfo.GetCustomAttributes(typeof(InspectorField), false);
@@ -38,8 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
                 }
             }
 
-            FieldInfo[] fieldInfoList = myType.GetFields();
-            for (int i = 0; i < fieldInfoList.Length; i++)
+            List<FieldInfo> fieldInfoList = new List<FieldInfo>(myType.GetFields());
+            for (int i = 0; i < fieldInfoList.Count; i++)
             {
                 FieldInfo fieldInfo = fieldInfoList[i];
                 var attrs = (InspectorField[])fieldInfo.GetCustomAttributes(typeof(InspectorField), false);
@@ -62,8 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
             Type myType = source.GetType();
             List<InspectorPropertySetting> settings = new List<InspectorPropertySetting>();
 
-            PropertyInfo[] propInfoList = myType.GetProperties();
-            for (int i = 0; i < propInfoList.Length; i++)
+            List<PropertyInfo> propInfoList = new List<PropertyInfo>(myType.GetProperties());
+            for (int i = 0; i < propInfoList.Count; i++)
             {
                 PropertyInfo propInfo = propInfoList[i];
                 var attrs = (InspectorField[])propInfo.GetCustomAttributes(typeof(InspectorField), false);
@@ -73,8 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
                 }
             }
 
-            FieldInfo[] fieldInfoList = myType.GetFields();
-            for (int i = 0; i < fieldInfoList.Length; i++)
+            List<FieldInfo> fieldInfoList = new List<FieldInfo>(myType.GetFields());
+            for (int i = 0; i < fieldInfoList.Count; i++)
             {
                 FieldInfo fieldInfo = fieldInfoList[i];
                 var attrs = (InspectorField[])fieldInfo.GetCustomAttributes(typeof(InspectorField), false);

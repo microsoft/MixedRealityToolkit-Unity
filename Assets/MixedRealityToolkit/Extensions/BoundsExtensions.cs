@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for Unity's Bounds struct
@@ -128,6 +128,46 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             positions[RBB] = transform.TransformPoint(rightEdge, bottomEdge, backEdge);
             positions[RTF] = transform.TransformPoint(rightEdge, topEdge, frontEdge);
             positions[RTB] = transform.TransformPoint(rightEdge, topEdge, backEdge);
+        }
+
+        /// <summary>
+        /// Gets all the corner points of the bounds in local space
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="positions"></param>
+        /// <param name="bounds"></param>
+        /// <remarks>
+        /// Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
+        /// corners array.
+        /// </remarks>
+        public static void GetCornerPositions(this Bounds bounds, ref Vector3[] positions)
+        {
+            // Calculate the local points to transform.
+            Vector3 center = bounds.center;
+            Vector3 extents = bounds.extents;
+            float leftEdge = center.x - extents.x;
+            float rightEdge = center.x + extents.x;
+            float bottomEdge = center.y - extents.y;
+            float topEdge = center.y + extents.y;
+            float frontEdge = center.z - extents.z;
+            float backEdge = center.z + extents.z;
+
+            // Allocate the array if needed.
+            const int numPoints = 8;
+            if (positions == null || positions.Length != numPoints)
+            {
+                positions = new Vector3[numPoints];
+            }
+
+            // Transform all the local points to world space.
+            positions[LBF] = new Vector3(leftEdge, bottomEdge, frontEdge);
+            positions[LBB] = new Vector3(leftEdge, bottomEdge, backEdge);
+            positions[LTF] = new Vector3(leftEdge, topEdge, frontEdge);
+            positions[LTB] = new Vector3(leftEdge, topEdge, backEdge);
+            positions[RBF] = new Vector3(rightEdge, bottomEdge, frontEdge);
+            positions[RBB] = new Vector3(rightEdge, bottomEdge, backEdge);
+            positions[RTF] = new Vector3(rightEdge, topEdge, frontEdge);
+            positions[RTB] = new Vector3(rightEdge, topEdge, backEdge);
         }
 
         /// <summary>

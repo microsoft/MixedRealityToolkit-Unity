@@ -36,5 +36,5 @@ MonoBehaviour:
   StateOptions:
   - InteractableStates
   StateLogicName: InteractableStates
-  AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States.InteractableStates,
+  AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableStates,
     Microsoft.MixedReality.Toolkit.SDK

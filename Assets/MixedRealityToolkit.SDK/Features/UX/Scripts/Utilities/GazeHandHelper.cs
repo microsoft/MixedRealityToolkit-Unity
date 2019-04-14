@@ -1,19 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// This class must be instantiated by a script that implements the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealitySourceStateHandler"/>,
-    /// <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealityInputHandler"/> and <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealityInputHandler{T}"/>.
+    /// This class must be instantiated by a script that implements the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler"/>,
+    /// <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler"/> and <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
     /// 
     /// ***It must receive EventData arguments from OnInputDown(), OnInputUp(), OnInputChanged() and OnSourceLost().***
     /// 
@@ -36,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         #region Public Methods
 
         /// <summary>
-        /// This function must be called from the OnInputDown handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealityInputHandler{T}"/>.
+        /// This function must be called from the OnInputDown handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData">The InputEventData argument 'eventData' is passed through to GazeHandHelper</param>
         public void AddSource(InputEventData eventData)
@@ -44,19 +42,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             IMixedRealityInputSource source = eventData.InputSource;
             if (source != null && IsInDictionary(source.SourceId) == false && source.Pointers != null && source.Pointers.Length > 0)
             {
-                if (source.Pointers[0].TryGetPointerPosition(out Vector3 gazeTargetHitPosition) == true)
-                {
-                    handSourceMap.Add(source.SourceId, source);
-                    gazePointMap.Add(source.SourceId, gazeTargetHitPosition);
-                    handStartPositionMap.Add(source.SourceId, Vector3.zero);
-                    handPositionMap.Add(source.SourceId, Vector3.zero);
-                    positionAvailableMap.Add(source.SourceId, false);
-                }
+                handSourceMap.Add(source.SourceId, source);
+                gazePointMap.Add(source.SourceId, source.Pointers[0].Position);
+                handStartPositionMap.Add(source.SourceId, Vector3.zero);
+                handPositionMap.Add(source.SourceId, Vector3.zero);
+                positionAvailableMap.Add(source.SourceId, false);
             }
         }
 
         /// <summary>
-        /// This function must be called from the OnInputUp handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealityInputHandler{T}"/>.
+        /// This function must be called from the OnInputUp handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData">he InputEventData argument 'eventData' is passed through to GazeHandHelper</param>
         public void RemoveSource(InputEventData eventData)
@@ -84,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         }
 
         /// <summary>
-        /// This function must be called from the OnInputChanged handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers.IMixedRealityInputHandler{T}"/>.
+        /// This function must be called from the OnInputChanged handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
         /// </summary>
         /// <param name="eventData"></param>
         public void UpdateSource(InputEventData<MixedRealityPose> eventData)
@@ -139,26 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
                 return centroid;
             }
             return Vector3.zero;
-        }
-
-        /// <summary>
-        /// This function gets an array of all active hand positions
-        /// </summary>
-        /// <returns>array of Vector3</returns>
-        [Obsolete]
-        public Vector3[] GetHandPositions()
-        {
-            List<Vector3> positions = new List<Vector3>();
-
-            foreach (uint key in positionAvailableMap.Keys)
-            {
-                if (positionAvailableMap[key] == true)
-                {
-                    positions.Add(handPositionMap[key]);
-                }
-            }
-
-            return positions.ToArray();
         }
 
         /// <summary>
@@ -308,11 +283,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             IMixedRealityInputSource source = handSourceMap[id];
             if (source != null && source.Pointers != null && source.Pointers.Length > 0)
             {
-                if (source.Pointers[0].TryGetPointerPosition(out Vector3 pos) == true)
-                {
-                    position = pos;
-                    return true;
-                }
+                position = source.Pointers[0].Position;
+                return true;
             }
 
             position = Vector3.zero;

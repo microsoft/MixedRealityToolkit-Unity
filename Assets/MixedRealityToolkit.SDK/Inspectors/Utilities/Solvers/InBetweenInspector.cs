@@ -1,16 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {
     [CustomEditor(typeof(InBetween))]
-    public class InBetweenEditor : Editor
+    public class InBetweenEditor : UnityEditor.Editor
     {
         private SerializedProperty trackedObjectProperty;
+        private SerializedProperty secondTrackedHandJointProperty;
         private SerializedProperty transformTargetProperty;
         private InBetween solverInBetween;
 
@@ -19,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Utilities.Solvers
         private void OnEnable()
         {
             trackedObjectProperty = serializedObject.FindProperty("trackedObjectForSecondTransform");
+            secondTrackedHandJointProperty = serializedObject.FindProperty("secondTrackedHandJoint");
             transformTargetProperty = serializedObject.FindProperty("secondTransformOverride");
 
             solverInBetween = target as InBetween;
@@ -36,6 +38,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Utilities.Solvers
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(trackedObjectProperty);
                 trackedObjectChanged = EditorGUI.EndChangeCheck();
+
+                if (trackedObjectProperty.intValue == (int)TrackedObjectType.HandJointLeft ||
+                trackedObjectProperty.intValue == (int)TrackedObjectType.HandJointRight)
+                {
+                    EditorGUILayout.PropertyField(secondTrackedHandJointProperty);
+                }
             }
 
             EditorGUILayout.PropertyField(transformTargetProperty);

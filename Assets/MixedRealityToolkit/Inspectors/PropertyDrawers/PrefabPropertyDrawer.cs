@@ -1,11 +1,13 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.Attributes;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Custom property drawer for <see cref="Microsoft.MixedReality.Toolkit.Core.Attributes.PrefabAttribute"/> decorated <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> values rendered in the inspector.
+    /// Custom property drawer for <see cref="Microsoft.MixedReality.Toolkit.PrefabAttribute"/> decorated <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> values rendered in the inspector.
     /// </summary>
     [CustomPropertyDrawer(typeof(PrefabAttribute))]
     public class PrefabPropertyDrawer : PropertyDrawer
