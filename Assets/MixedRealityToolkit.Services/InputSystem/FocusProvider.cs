@@ -24,9 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         { }
 
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
-        private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
-        private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
-        private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
+        private readonly Dictionary<GameObject, HashSet<PointerData>> pendingOverallFocusSet = new Dictionary<GameObject, HashSet<PointerData>>();
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private PointerHitResult hitResult3d = new PointerHitResult();
         private PointerHitResult hitResultUi = new PointerHitResult();
@@ -617,15 +615,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (pointerData.CurrentPointerTarget != null)
             {
                 GameObject unfocusedObject = pointerData.CurrentPointerTarget;
-                
-                MixedRealityToolkit.InputSystem.RaisePreFocusChanged(pointer, unfocusedObject, null);
 
-                if (!objectIsStillFocusedByOtherPointer)
-                {
-                    // Policy: only raise focus exit if no other pointers are still focusing the object
-                    MixedRealityToolkit.InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
-                }
                 MixedRealityToolkit.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+
+                if (pendingOverallFocusSet.RemoveUnique(unfocusedObject, pointer) && !pendingOverallFocusSet.ContainsKey(unfocusedObject))
+                {
+                // Policy: only raise focus exit if no other pointers are still focusing the object
+                    MixedRealityToolkit.InputSystem.RaiseFocusExit(pointer, unfocusedObject);
+                }
+
+                MixedRealityToolkit.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
@@ -1023,17 +1022,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     MixedRealityToolkit.InputSystem.RaisePreFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
 
-                    if (pendingUnfocusObject != null)
+                    if (pendingOverallFocusSet.RemoveUnique(pendingUnfocusObject, pointer) && !pendingOverallFocusSet.ContainsKey(pendingUnfocusObject))
                     {
                         MixedRealityToolkit.InputSystem.RaiseFocusExit(currentPointer, pendingUnfocusObject);
                     }
 
-                    if (pendingFocusObject != null)
+                    if (!pendingOverallFocusSet.ContainsKey(pendingFocusObject) && pendingOverallFocusSet.AddUnique(pendingFocusObject, pointer))
                     {
-                        MixedRealityToolkit.InputSystem.RaiseFocusEnter(currentPointer, pendingFocusObject);
+                        MixedRealityToolkit.InputSystem.RaiseFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
                     }
-
-                    MixedRealityToolkit.InputSystem.RaiseFocusChanged(currentPointer, pendingUnfocusObject, pendingFocusObject);
                 }
             }
         }
