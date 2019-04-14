@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
     public class InBetweenEditor : UnityEditor.Editor
     {
         private SerializedProperty trackedObjectProperty;
+        private SerializedProperty secondTrackedHandJointProperty;
         private SerializedProperty transformTargetProperty;
         private InBetween solverInBetween;
 
@@ -19,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         private void OnEnable()
         {
             trackedObjectProperty = serializedObject.FindProperty("trackedObjectForSecondTransform");
+            secondTrackedHandJointProperty = serializedObject.FindProperty("secondTrackedHandJoint");
             transformTargetProperty = serializedObject.FindProperty("secondTransformOverride");
 
             solverInBetween = target as InBetween;
@@ -36,6 +38,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(trackedObjectProperty);
                 trackedObjectChanged = EditorGUI.EndChangeCheck();
+
+                if (trackedObjectProperty.intValue == (int)TrackedObjectType.HandJointLeft ||
+                trackedObjectProperty.intValue == (int)TrackedObjectType.HandJointRight)
+                {
+                    EditorGUILayout.PropertyField(secondTrackedHandJointProperty);
+                }
             }
 
             EditorGUILayout.PropertyField(transformTargetProperty);

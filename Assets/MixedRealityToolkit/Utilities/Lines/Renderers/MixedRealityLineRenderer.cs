@@ -57,6 +57,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 lineMaterial = lineRenderer.sharedMaterial;
             }
 
+            // mafinc - Start the line renderer off disabled (invisible), we'll enable it
+            // when we have enough data for it to render properly.
+            if (lineRenderer != null)
+            {
+                lineRenderer.enabled = false;
+            }
+
             if (lineMaterial == null)
             {
                 Debug.LogError("MixedRealityLineRenderer needs a material.");
@@ -94,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
                 else
                 {
-                    float normalizedDistance = (1f / (LineStepCount - 1)) * i;
+                    float normalizedDistance = GetNormalizedPointAlongLine(i);
                     positions[i] = lineDataSource.GetPoint(normalizedDistance);
                 }
             }

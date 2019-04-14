@@ -26,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
-            
             if (state.GetState(InteractableStates.InteractableStateEnum.Pressed).Value > 0 && !hasDown)
             {
                 hasDown = true;
@@ -37,15 +36,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 hasDown = false;
             }
 
-            Debug.Log(HoldTime);
-
             if (hasDown && clickTimer < HoldTime)
             {
                 clickTimer += Time.deltaTime;
 
                 if (clickTimer >= HoldTime)
                 {
-                    Debug.Log("Hold!!");
                     uEvent.Invoke();
                 }
             }

@@ -17,11 +17,8 @@ namespace Microsoft.MixedReality.Toolkit
         public IMixedRealityEventSource EventSource { get; private set; }
 
         /// <summary>
-        /// The time at which the event occurred.
+        /// The UTC time at which the event occurred.
         /// </summary>
-        /// <remarks>
-        /// The value will be in the device's configured time zone.
-        /// </remarks>
         public DateTime EventTime { get; private set; }
 
         /// <summary>
@@ -37,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit
         protected void BaseInitialize(IMixedRealityEventSource eventSource)
         {
             Reset();
-            EventTime = DateTime.Now;
+            EventTime = DateTime.UtcNow;
             EventSource = eventSource;
         }
     }

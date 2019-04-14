@@ -15,7 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsUniversal,
-        "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset", "MixedRealityToolkit.SDK")]
+        "Windows Mixed Reality Spatial Mesh Observer",
+        "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset", 
+        "MixedRealityToolkit.SDK")]
     public class WindowsMixedRealitySpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver
     {
         /// <summary>

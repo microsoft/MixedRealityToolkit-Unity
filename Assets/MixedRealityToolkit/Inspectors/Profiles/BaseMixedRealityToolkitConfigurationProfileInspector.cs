@@ -9,9 +9,6 @@ using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [Obsolete("Use BaseMixedRealityToolkitConfigurationProfileInspector instead")]
-    public abstract class MixedRealityBaseConfigurationProfileInspector { }
-
     /// <summary>
     /// Base class for all Mixed Reality Toolkit specific <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> inspectors to inherit from.
     /// </summary>
