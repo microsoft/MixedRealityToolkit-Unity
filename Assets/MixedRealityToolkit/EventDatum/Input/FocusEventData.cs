@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Describes an Input Event associated with a specific pointer's focus state change.
     /// </summary>
-    public class FocusEventData : BaseInputEventData
+    public class FocusEventData : BaseEventData
     {
         /// <summary>
         /// The pointer associated with this event.
