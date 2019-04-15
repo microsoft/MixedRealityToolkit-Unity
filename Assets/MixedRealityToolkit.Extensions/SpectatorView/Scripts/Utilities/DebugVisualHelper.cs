@@ -40,19 +40,45 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.U
             if (visual == null)
             {
                 visual = Instantiate(prefab);
+                Debug.Log($"Instantiated prefab for visual:{prefab.name}, position:{position}, rotation:{rotation}");
             }
 
             if (visual != null)
             {
-                SetTransform(visual, position, rotation);
+                SetTransform(visual, position, rotation, Vector3.one);
             }
         }
 
-        protected void SetTransform(GameObject visual, Vector3 position, Quaternion rotation)
+        /// <summary>
+        /// Call to transform or create and transform a GameObject to the provided position and rotation.
+        /// </summary>
+        /// <param name="visual">If null, a new GameObject will be istantiated from the provided prefab. If non-null the provided GameObject's position and rotation will be updated</param>
+        /// <param name="position">Position to apply to the provided GameObject</param>
+        /// <param name="rotation">Rotation to apply to the provided GameObject</param>
+        public void CreateOrUpdateVisual(ref GameObject visual, Vector3 position, Quaternion rotation, Vector3 scale)
+        {
+            if (prefab == null)
+            {
+                Debug.LogError("Prefab not defined. No visual created");
+            }
+
+            if (visual == null)
+            {
+                visual = Instantiate(prefab);
+                Debug.Log($"Instantiated prefab for visual, position:{position}, rotation:{rotation}, scale:{scale}");
+            }
+
+            if (visual != null)
+            {
+                SetTransform(visual, position, rotation, scale);
+            }
+        }
+
+        protected void SetTransform(GameObject visual, Vector3 position, Quaternion rotation, Vector3 scale)
         {
             visual.transform.position = position;
             visual.transform.rotation = rotation;
-            visual.transform.localScale = _scale;
+            visual.transform.localScale = new Vector3(scale.x * _scale.x, scale.y * _scale.y, scale.z * _scale.z);
         }
     }
 }
