@@ -238,13 +238,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 {
                     return true;
                 }
-                else
-                {
-                    Debug.Log("Unable to obtain markerId for QR code: " + qrCode);
-                    markerId = -1;
-                    return false;
-                }
             }
+
+            Debug.Log("Unable to obtain markerId for QR code: " + qrCode);
+            markerId = -1;
+            return false;
         }
     }
 }
