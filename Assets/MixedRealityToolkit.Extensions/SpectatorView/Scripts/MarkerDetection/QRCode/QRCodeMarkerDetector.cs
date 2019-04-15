@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
     /// QR code detector that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection.IVariableSizeMarkerDetector"/>
     /// </summary>
     public class QRCodeMarkerDetector : MonoBehaviour,
-        IVariableSizeMarkerDetector
+        IMarkerDetector
     {
 #if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
         private QRCodesManager _qrCodesManager;
@@ -87,8 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         /// <inheritdoc />
         public bool TryGetMarkerSize(int markerId, out float size)
         {
-            bool found = false;
-            size = 0.0f;
             lock(_cachedMarkers)
             {
                 foreach (var marker in _cachedMarkers)
@@ -96,13 +94,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                     if (marker.Value.MarkerId == markerId)
                     {
                         size = marker.Value.MarkerSize;
-                        found = true;
-                        break;
+                        return true;
                     }
                 }
             }
 
-            return found;
+            size = 0.0f;
+            return false;
         }
 
 #if WINDOWS_UWP && QRCODESTRACKER_BINARY_AVAILABLE
@@ -149,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             lock (_cachedMarkers)
             {
                 if (!_cachedMarkers.ContainsKey(e.Data.Id) &&
-                TryGetMarkerId(e.Data.Code, out markerId))
+                    TryGetMarkerId(e.Data.Code, out markerId))
                 {
                     _cachedMarkers.Add(e.Data.Id, new QRCodeInfo(e.Data.Id, markerId, e.Data.PhysicalSizeMeters));
                     _processMarkers = true;
@@ -165,10 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 {
                     _cachedMarkers.Remove(e.Data.Id);
                     _processMarkers = true;
-                    if (_markerCoordinateSystems.ContainsKey(e.Data.Id))
-                    {
-                        _markerCoordinateSystems.Remove(e.Data.Id);
-                    }
+                    _markerCoordinateSystems.Remove(e.Data.Id);
                 }
             }
         }

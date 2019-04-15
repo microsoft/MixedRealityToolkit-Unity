@@ -36,5 +36,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
         /// </summary>
         /// <param name="size">The physical size (in meters) of markers being detected</param>
         void SetMarkerSize(float size);
+
+        /// <summary>
+        /// Tries to obtain the physical size of a detected marker. Returns true if the marker size is known
+        /// and was determined through detection; otherwise, returns false.
+        /// </summary>
+        /// <param name="markerId">id of detected marker</param>
+        /// <param name="size">The physical size (in meters) of the detected marker</param>
+        /// <returns>True if the size was located</returns>
+        bool TryGetMarkerSize(int markerId, out float size);
     }
 }
