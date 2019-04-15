@@ -2,9 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
 {
@@ -22,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
     /// <summary>
     /// Struct containing information related to a camera's resolution and framerate.
     /// </summary>
+    [Serializable]
     public struct CameraResolution : IEquatable<CameraResolution>
     {
         /// <summary>
@@ -74,27 +72,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
     /// <summary>
     /// Class containing data related to a stream description
     /// </summary>
+    [Serializable]
     public class StreamDescription : IEquatable<StreamDescription>
     {
         /// <summary>
         /// Camera source
         /// </summary>
-        public string SourceName;
+        public string SourceName = String.Empty;
 
         /// <summary>
         /// Camera id
         /// </summary>
-        public string SourceId;
+        public string SourceId = String.Empty;
 
         /// <summary>
         /// Resolution of the camera
         /// </summary>
-        public CameraResolution Resolution;
+        public CameraResolution Resolution = new CameraResolution();
 
         /// <summary>
         /// Camera type
         /// </summary>
-        public CameraType CameraType;
+        public CameraType CameraType = CameraType.Color;
 
         public override bool Equals(object obj)
         {
