@@ -16,32 +16,32 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
         /// <summary>
         /// Gets the focal length of the camera.
         /// </summary>
-        public Vector2 FocalLength;
+        public Vector2 FocalLength = Vector2.one;
 
         /// <summary>
         /// Gets the image height of the camera, in pixels.
         /// </summary>
-        public uint ImageHeight;
+        public uint ImageHeight = 1080;
 
         /// <summary>
         /// Gets the image width of the camera, in pixels.
         /// </summary>
-        public uint ImageWidth;
+        public uint ImageWidth = 1920;
 
         /// <summary>
         /// Gets the principal point of the camera.
         /// </summary>
-        public Vector2 PrincipalPoint;
+        public Vector2 PrincipalPoint = new Vector2(0.5f, 0.5f);
 
         /// <summary>
         /// Gets the radial distortion coefficient of the camera.
         /// </summary>
-        public Vector3 RadialDistortion;
+        public Vector3 RadialDistortion = Vector3.zero;
 
         /// <summary>
         /// Gets the tangential distortion coefficient of the camera.
         /// </summary>
-        public Vector2 TangentialDistortion;
+        public Vector2 TangentialDistortion = Vector2.zero;
 
         /// <summary>
         ///     Gets a matrix that transforms a 3D point to video frame pixel coordinates without
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
         ///     for apps that choose to implement GPU-based distortion compensation instead of
         ///     using UndistortPoint, which uses the CPU to compute the distortion compensation.
         /// </summary>
-        public Matrix4x4 UndistortedProjectionTransform;
+        public Matrix4x4 UndistortedProjectionTransform = Matrix4x4.identity;
 
         /// <summary>
         /// CameraIntrinsics constructor

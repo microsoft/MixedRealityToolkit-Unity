@@ -72,27 +72,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
     /// <summary>
     /// Class containing data related to a stream description
     /// </summary>
+    [Serializable]
     public class StreamDescription : IEquatable<StreamDescription>
     {
         /// <summary>
         /// Camera source
         /// </summary>
-        public string SourceName;
+        public string SourceName = String.Empty;
 
         /// <summary>
         /// Camera id
         /// </summary>
-        public string SourceId;
+        public string SourceId = String.Empty;
 
         /// <summary>
         /// Resolution of the camera
         /// </summary>
-        public CameraResolution Resolution;
+        public CameraResolution Resolution = new CameraResolution();
 
         /// <summary>
         /// Camera type
         /// </summary>
-        public CameraType CameraType;
+        public CameraType CameraType = CameraType.Color;
 
         public override bool Equals(object obj)
         {

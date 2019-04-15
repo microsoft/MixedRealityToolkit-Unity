@@ -15,6 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
         /// <summary>
         /// Camera's view from world matrix
         /// </summary>
-        public Matrix4x4 ViewFromWorld;
+        public Matrix4x4 ViewFromWorld = Matrix4x4.identity;
     }
 }
