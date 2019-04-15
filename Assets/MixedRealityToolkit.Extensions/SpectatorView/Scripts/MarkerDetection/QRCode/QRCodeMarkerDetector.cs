@@ -33,21 +33,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         private QRCodesManager _qrCodesManager;
         private Dictionary<Guid, SpatialCoordinateSystem> _markerCoordinateSystems = new Dictionary<Guid, SpatialCoordinateSystem>();
 #endif
-        private class QRCodeInfo
-        {
-            public Guid QRCodeId;
-            public int MarkerId;
-            public float MarkerSize;
-            public QRCodeInfo(Guid qrCodeId, int markerId, float markerSize)
-            {
-                this.QRCodeId = qrCodeId;
-                this.MarkerId = markerId;
-                this.MarkerSize = markerSize;
-            }
-        }
 
+        private object _contentLock = new object();
         private bool _processMarkers = false;
-        private Dictionary<Guid, QRCodeInfo> _cachedMarkers = new Dictionary<Guid, QRCodeInfo>();
+        private Dictionary<Guid, int> _markerIds = new Dictionary<Guid, int>();
+        private Dictionary<int, float> _markerSizes = new Dictionary<int, float>();
         private Dictionary<int, List<Marker>> _markerObservations = new Dictionary<int, List<Marker>>();
         private readonly string _qrCodeNamePrefix = "sv";
 
@@ -87,15 +77,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         /// <inheritdoc />
         public bool TryGetMarkerSize(int markerId, out float size)
         {
-            lock(_cachedMarkers)
+            lock(_contentLock)
             {
-                foreach (var marker in _cachedMarkers)
+                if (_markerSizes.TryGetValue(markerId, out size))
                 {
-                    if (marker.Value.MarkerId == markerId)
-                    {
-                        size = marker.Value.MarkerSize;
-                        return true;
-                    }
+                    return true;
                 }
             }
 
@@ -129,13 +115,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
 
         private void QRCodeAdded(object sender, QRCodeEventArgs<QRCodesTrackerPlugin.QRCode> e)
         {
-            int markerId;
-            lock (_cachedMarkers)
+            if (TryGetMarkerId(e.Data.Code, out var markerId))
             {
-                if (!_cachedMarkers.ContainsKey(e.Data.Id) &&
-                    TryGetMarkerId(e.Data.Code, out markerId))
+                lock (_contentLock)
                 {
-                    _cachedMarkers.Add(e.Data.Id, new QRCodeInfo(e.Data.Id, markerId, e.Data.PhysicalSizeMeters));
+                    _markerIds.Add(e.Data.Id, markerId);
+                    _markerSizes.Add(markerId, e.Data.PhysicalSizeMeters);
                     _processMarkers = true;
                 }
             }
@@ -143,13 +128,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
 
         private void QRCodeUpdated(object sender, QRCodeEventArgs<QRCodesTrackerPlugin.QRCode> e)
         {
-            int markerId;
-            lock (_cachedMarkers)
+            if (TryGetMarkerId(e.Data.Code, out var markerId))
             {
-                if (!_cachedMarkers.ContainsKey(e.Data.Id) &&
-                    TryGetMarkerId(e.Data.Code, out markerId))
+                lock (_contentLock)
                 {
-                    _cachedMarkers.Add(e.Data.Id, new QRCodeInfo(e.Data.Id, markerId, e.Data.PhysicalSizeMeters));
+                    _markerIds.Add(e.Data.Id, markerId);
+                    _markerSizes.Add(markerId, e.Data.PhysicalSizeMeters);
                     _processMarkers = true;
                 }
             }
@@ -157,22 +141,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
 
         private void QRCodeRemoved(object sender, QRCodeEventArgs<QRCodesTrackerPlugin.QRCode> e)
         {
-            lock(_cachedMarkers)
+            lock (_contentLock)
             {
-                if (_cachedMarkers.ContainsKey(e.Data.Id))
+                if (_markerIds.TryGetValue(e.Data.Id, out var markerId))
                 {
-                    _cachedMarkers.Remove(e.Data.Id);
-                    _processMarkers = true;
-                    _markerCoordinateSystems.Remove(e.Data.Id);
+                    _markerSizes.Remove(markerId);
                 }
+
+                _markerIds.Remove(e.Data.Id);
+                _markerCoordinateSystems.Remove(e.Data.Id);
+                _processMarkers = true;
             }
         }
 
         private void ProcessMarkerUpdates()
         {
-            lock (_cachedMarkers)
+            bool locatedAllMarkers = true;
+            var markerDictionary = new Dictionary<int, Marker>();
+            lock (_contentLock)
             {
-                foreach (var markerPair in _cachedMarkers)
+                foreach (var markerPair in _markerIds)
                 {
                     if (!_markerCoordinateSystems.ContainsKey(markerPair.Key))
                     {
@@ -183,37 +171,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                         }
                     }
                 }
-            }
 
-            bool locatedAllMarkers = true;
-            var markerDictionary = new Dictionary<int, Marker>();
-            foreach (var coordinatePair in _markerCoordinateSystems)
-            {
-                int markerId = -1;
-                lock (_cachedMarkers)
+                foreach (var coordinatePair in _markerCoordinateSystems)
                 {
-                    if (_cachedMarkers.ContainsKey(coordinatePair.Key))
+                    if (!_markerIds.TryGetValue(coordinatePair.Key, out var markerId))
                     {
-                        markerId = _cachedMarkers[coordinatePair.Key].MarkerId;
+                        Debug.Log($"Failed to locate marker:{coordinatePair.Key}, {markerId}");
+                        locatedAllMarkers = false;
+                        continue;
                     }
-                }
 
-                Matrix4x4 location;
-                if (markerId >= 0 &&
-                    _qrCodesManager.TryGetLocationForQRCode(coordinatePair.Key, out location))
-                {
-                    var translation = location.GetColumn(3);
-                    // The obtained QRCode orientation will reflect a positive y axis down the QRCode.
-                    // Spectator view marker detectors should return a positive y axis up the marker,
-                    // so, we rotate the marker orientation 180 degrees around its z axis.
-                    var rotation = Quaternion.LookRotation(location.GetColumn(2), location.GetColumn(1)) * Quaternion.Euler(0, 0, 180);
-                    var marker = new Marker(markerId, translation, rotation);
-                    markerDictionary.Add(markerId, marker);
-                }
-                else
-                {
-                    Debug.Log($"Failed to locate marker:{coordinatePair.Key}, {markerId}");
-                    locatedAllMarkers = false;
+                    if (_qrCodesManager.TryGetLocationForQRCode(coordinatePair.Key, out var location))
+                    {
+                        var translation = location.GetColumn(3);
+                        // The obtained QRCode orientation will reflect a positive y axis down the QRCode.
+                        // Spectator view marker detectors should return a positive y axis up the marker,
+                        // so, we rotate the marker orientation 180 degrees around its z axis.
+                        var rotation = Quaternion.LookRotation(location.GetColumn(2), location.GetColumn(1)) * Quaternion.Euler(0, 0, 180);
+                        var marker = new Marker(markerId, translation, rotation);
+                        markerDictionary.Add(markerId, marker);
+                    }
                 }
             }
 
