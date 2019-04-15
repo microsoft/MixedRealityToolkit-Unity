@@ -234,19 +234,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 qrCode.Trim().StartsWith(_qrCodeNamePrefix))
             {
                 var qrCodeId = qrCode.Trim().Replace(_qrCodeNamePrefix, "");
-                try
+                if (Int32.TryParse(qrCodeId, out markerId))
                 {
-                    markerId = Convert.ToInt32(qrCodeId);
                     return true;
                 }
-                catch
+                else
                 {
+                    Debug.Log("Unable to obtain markerId for QR code: " + qrCode);
                     markerId = -1;
+                    return false;
                 }
             }
-
-            Debug.Log("Unable to obtain markerId for QR code: " + qrCode);
-            return false;
         }
     }
 }
