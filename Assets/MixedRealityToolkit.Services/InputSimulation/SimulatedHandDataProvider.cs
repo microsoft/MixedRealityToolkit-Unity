@@ -189,12 +189,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // https://stackoverflow.com/questions/2143140/c-sharp-datetime-now-precision
             long timestamp = DateTime.UtcNow.Ticks;
 
-            // Cache the generator delegates so we don't cg alloc every frame
+            // Cache the generator delegates so we don't gc alloc every frame
             if (generatorLeft == null)
+            {
                 generatorLeft = HandStateLeft.FillCurrentFrame;
+            }
 
             if (generatorRight == null)
+            {
                 generatorRight = HandStateRight.FillCurrentFrame;
+            }
 
             handDataChanged |= handDataLeft.UpdateWithTimestamp(timestamp, HandStateLeft.IsTracked, HandStateLeft.IsPinching, generatorLeft);
             handDataChanged |= handDataRight.UpdateWithTimestamp(timestamp, HandStateRight.IsTracked, HandStateRight.IsPinching, generatorRight);
