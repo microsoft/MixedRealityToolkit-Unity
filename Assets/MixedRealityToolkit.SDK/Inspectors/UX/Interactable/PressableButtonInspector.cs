@@ -61,9 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (Selection.activeObject != button.gameObject)
                 return;
 
-            // Instruct the button to create its path markers
-            button.FindOrCreatePathMarkers();
-
             Vector3 touchCageSize = touchCage.size;
             Vector3 touchCageCenter = touchCage.center;
             Bounds touchCageLocalBounds = new Bounds(touchCageCenter, touchCageSize);
