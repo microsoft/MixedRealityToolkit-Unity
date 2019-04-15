@@ -13,11 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
     public class TCPConnectionManager : MonoBehaviour
     {
         /// <summary>
-        /// Called when a client or server connection is established.
+        /// Called when a client or server connection is established and the connection manager is using the TCP protocol.
         /// </summary>
         public event Action<SocketEndpoint> OnConnected;
         /// <summary>
-        /// Called when a client or server connection is disconnected
+        /// Called when a client or server connection is disconnected and the connection manager is using the TCP protocol.
         /// </summary>
         public event Action<SocketEndpoint> OnDisconnected;
         /// <summary>
@@ -173,14 +173,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
                 OnDisconnected?.Invoke(connection);
             }
 
-            IncomingMessage resultPack = null;
-            while (inputMessageQueue.TryDequeue(out resultPack))
+            while (inputMessageQueue.TryDequeue(out IncomingMessage resultPack))
             {
                 if (resultPack == null)
                     break;
 
                 OnReceive?.Invoke(resultPack);
-                resultPack = null;
             }
         }
 

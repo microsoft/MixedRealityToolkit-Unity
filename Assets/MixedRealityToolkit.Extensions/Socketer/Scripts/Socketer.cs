@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using UnityEngine;
+
 #if (UNITY_WSA || WINDOWS_UWP) && !UNITY_EDITOR
 #define NETFX_CORE
 #endif
@@ -26,9 +28,6 @@ using System.Threading;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
 {
-#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WSA || UNITY_IOS
-using UnityEngine;
-
     /// <summary>
     /// Sends and receives packets over the network, using the chosen protocol.
     /// </summary>
@@ -91,7 +90,10 @@ using UnityEngine;
         /// <param name="message">Message contents.</param>
         public void SendNetworkMessage(byte[] message)
         {
-            socketer.SendNetworkMessage(message);
+            if (socketer != null)
+            {
+                socketer.SendNetworkMessage(message);
+            }
         }
 
         /// <summary>
@@ -101,7 +103,10 @@ using UnityEngine;
         /// <param name="message">Message contents.</param>
         public void SendNetworkMessage(string message)
         {
-            socketer.SendNetworkMessage(message);
+            if (socketer != null)
+            {
+                socketer.SendNetworkMessage(message);
+            }
         }
 
         private void OnEnable()
@@ -132,12 +137,12 @@ using UnityEngine;
 
         private void Socketer_Connected(SocketerClient sender, int sourceId, string remoteHost)
         {
-            if (Connected != null) Connected(this, sourceId, remoteHost);
+            Connected?.Invoke(this, sourceId, remoteHost);
         }
 
         private void Socketer_Disconnected(SocketerClient sender, int sourceId, string remoteHost)
         {
-            if (Disconnected != null) Disconnected(this, sourceId, remoteHost);
+            Disconnected?.Invoke(this, sourceId, remoteHost);
         }
 
         private void Socketer_Message(SocketerClient sender, MessageEvent e)
@@ -162,12 +167,8 @@ using UnityEngine;
                     e = stateQueue.Dequeue();
                 }
 
-                if (Message != null)
-                {
-                    Message(this, e);
-                }
+                Message?.Invoke(this, e);
             }
         }
     }
-#endif
 }

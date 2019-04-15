@@ -326,28 +326,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
 
         private void TcpClient_Message(object sender, SocketClient.MessageEventArgs e)
         {
-            if (Message != null)
-            {
-                Message(this, new MessageEvent() { SourceHost = Host, Message = e.Data });
-            }
+            Message?.Invoke(this, new MessageEvent() { SourceHost = Host, Message = e.Data });
         }
 
         private void TcpServer_Message(object sender, SocketServer.MessageEventArgs e)
         {
-            if (Message != null)
-            {
-                Message(this, new MessageEvent() { SourceHost = e.RemoteEndpoint.Address.ToString(), Message = e.Data, SourceId = e.SourceId });
-            }
+            Message?.Invoke(this, new MessageEvent() { SourceHost = e.RemoteEndpoint.Address.ToString(), Message = e.Data, SourceId = e.SourceId });
         }
 
         private void UdpListener_Message(byte[] data, string sourceHost)
         {
             if (SuppressUDPHeaders)
             {
-                if (Message != null)
-                {
-                    Message(this, new MessageEvent() { SourceHost = sourceHost, Message = data });
-                }
+                Message?.Invoke(this, new MessageEvent() { SourceHost = sourceHost, Message = data });
             }
             else
             {
@@ -356,10 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
                 byte[] message = new byte[length];
                 Array.Copy(data, 4, message, 0, message.Length);
 
-                if (Message != null)
-                {
-                    Message(this, new MessageEvent() { SourceHost = sourceHost, Message = message });
-                }
+                Message?.Invoke(this, new MessageEvent() { SourceHost = sourceHost, Message = message });
             }
         }
 
@@ -684,11 +672,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
                 bool disconnected = false;
                 if (tcpClient != null)
                 {
-                    //#if NETCOREAPP1_1
-                    //                    tcpClient.Dispose();
-                    //#else
-                    //                    tcpClient.Close();
-                    //#endif
+#if NETCOREAPP1_1
+                    tcpClient.Dispose();
+#else
+                    tcpClient.Close();
+#endif
                     tcpClient = null;
                     disconnected = true;
                 }
