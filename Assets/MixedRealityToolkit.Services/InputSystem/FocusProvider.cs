@@ -19,29 +19,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private class FocusCounter : Dictionary<GameObject, int>
         {
-            private Dictionary<GameObject, int> pendingOverallFocusSet = new Dictionary<GameObject, int>();
-
             public bool IncreaseAndReturnIfFirst(GameObject focuser)
             {
-                if (!pendingOverallFocusSet.ContainsKey(focuser))
+                if (!ContainsKey(focuser))
                 {
-                    pendingOverallFocusSet.Add(focuser, 1);
+                    Add(focuser, 1);
                     return true;
                 }
 
-                pendingOverallFocusSet[focuser]++;
+                this[focuser]++;
                 return false;
             }
 
             public bool DecreaseAndReturnIfLast(GameObject focuser)
             {
-                if (!pendingOverallFocusSet.ContainsKey(focuser))
+                if (!ContainsKey(focuser))
                     return false;
 
-                pendingOverallFocusSet[focuser]--;
-                if (pendingOverallFocusSet[focuser] == 0)
+                this[focuser]--;
+                if (this[focuser] == 0)
                 {
-                    pendingOverallFocusSet.Remove(focuser);
+                    Remove(focuser);
                     return true;
                 }
                 return false;
