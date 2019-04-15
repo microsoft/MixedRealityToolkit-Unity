@@ -17,29 +17,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class FocusProvider : BaseDataProvider, IMixedRealityFocusProvider
     {
-        private class FocusCounter : Dictionary<GameObject, int>
+        private class FocusCounter
         {
+            private Dictionary<GameObject, int> GameObjectIntDictionary = new Dictionary<GameObject, int>();
+
             public bool IncreaseAndReturnIfFirst(GameObject focuser)
             {
-                if (!ContainsKey(focuser))
+                if (!GameObjectIntDictionary.ContainsKey(focuser))
                 {
-                    Add(focuser, 1);
+                    GameObjectIntDictionary.Add(focuser, 1);
                     return true;
                 }
 
-                this[focuser]++;
+                GameObjectIntDictionary[focuser]++;
                 return false;
             }
 
             public bool DecreaseAndReturnIfLast(GameObject focuser)
             {
-                if (!ContainsKey(focuser))
+                if (!GameObjectIntDictionary.ContainsKey(focuser))
                     return false;
 
-                this[focuser]--;
-                if (this[focuser] == 0)
+                GameObjectIntDictionary[focuser]--;
+                if (GameObjectIntDictionary[focuser] == 0)
                 {
-                    Remove(focuser);
+                    GameObjectIntDictionary.Remove(focuser);
                     return true;
                 }
                 return false;
