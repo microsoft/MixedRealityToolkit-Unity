@@ -92,6 +92,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
             _markerSize = size;
         }
 
+        /// <inheritdoc />
+        public bool TryGetMarkerSize(int markerId, out float size)
+        {
+            size = 0.0f;
+            return false;
+        }
+
         private async void SetupCamera()
         {
             Debug.Log("Setting up HoloLensCamera");

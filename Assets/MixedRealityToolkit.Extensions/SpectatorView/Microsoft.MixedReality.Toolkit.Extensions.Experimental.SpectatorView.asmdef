@@ -5,7 +5,8 @@
         "Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture",
         "Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording",
         "Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing",
-        "Unity.XR.ARFoundation"
+        "Unity.XR.ARFoundation",
+        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
