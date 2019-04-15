@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-
 #if (UNITY_WSA || WINDOWS_UWP) && !UNITY_EDITOR
 #define NETFX_CORE
 #endif
@@ -25,6 +23,8 @@ using Windows.Storage.Streams;
 using Windows.Networking.Connectivity;
 using System.Threading;
 #endif
+
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
 {
