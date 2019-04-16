@@ -558,7 +558,7 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     case 0:
 #if UNITY_EDITOR
-                        // Generating a new instance during app shutdown in the editor allows instances to persist into edit mode, which cause unwanted behavior
+                        // Generating a new instance during app shutdown in the editor allows instances to persist into edit mode, which may cause unwanted behavior
                         if (isApplicationQuitting)
                         {
                             Debug.LogWarning("Trying to find instance during application shutdown.");
