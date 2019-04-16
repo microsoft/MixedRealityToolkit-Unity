@@ -53,6 +53,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityEyeGazeProvider EyeGazeProvider { get; }
 
         /// <summary>
+        /// Last pointer to raise a pointer down event. May be useful for choosing a primary pointer in two handed setups.
+        /// </summary>
+        IMixedRealityPointer LastPointerDown { get; }
+
+        /// <summary>
         /// Indicates if input is currently enabled or not.
         /// </summary>
         bool IsInputEnabled { get; }

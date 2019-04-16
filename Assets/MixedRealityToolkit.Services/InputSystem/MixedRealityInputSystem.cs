@@ -60,6 +60,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IMixedRealityEyeGazeProvider EyeGazeProvider { get; private set; }
 
+        /// <inheritdoc />
+        public IMixedRealityPointer LastPointerDown { get; private set; }
+
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
 
@@ -868,6 +871,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
+            LastPointerDown = pointer;
             pointer.IsFocusLocked = (pointer.Result?.Details.Object != null);
 
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
