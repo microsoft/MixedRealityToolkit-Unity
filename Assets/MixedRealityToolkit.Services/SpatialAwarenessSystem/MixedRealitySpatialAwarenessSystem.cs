@@ -12,7 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// </summary>
     public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem
     {
-        public MixedRealitySpatialAwarenessSystem(IMixedRealityServiceRegistrar registrar) : base(registrar, null) // spatial awareness does not yet use a profile
+        public MixedRealitySpatialAwarenessSystem(
+            IMixedRealityServiceRegistrar registrar,
+            MixedRealitySpatialAwarenessSystemProfile profile) : base(registrar, profile)
         {
             if (registrar == null)
             {
@@ -20,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             }
         }
 
-        #region IMixedRealityToolkit Implementation
+        #region IMixedRealityToolkitService Implementation
 
         private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
 
@@ -37,6 +39,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         private void InitializeInternal()
         {
             meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
+
+#if UNITY_EDITOR
+            if (!UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.SpatialPerception))
+            {
+                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.SpatialPerception, true);
+            }
+#endif // UNITY_EDITOR
         }
 
         /// <inheritdoc/>
@@ -44,7 +53,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         {
             base.Disable();
 
-            // Clear the collection of registered observers.
+            if (observers.Count > 0)
+            {
+                // Unregister the spatial observers
+                for (int i = 0; i < observers.Count; i++)
+                {
+                    if (observers[i] != null)
+                    {
+                        Registrar.UnregisterDataProvider<IMixedRealitySpatialAwarenessObserver>(observers[i]);
+                    }
+                }
+            }
             observers.Clear();
         }
 
@@ -53,32 +72,45 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         {
             base.Enable();
 
-            if (observers.Count != 0)
-            {
-                // todo: ensure this is a clean pattern
-                Debug.LogWarning("The spatial awareness system is already enabled.");
-                return;
-            }
+            MixedRealitySpatialAwarenessSystemProfile profile = ConfigurationProfile as MixedRealitySpatialAwarenessSystemProfile;
 
-            // Get the collection of registered observers.
-            IReadOnlyList<IMixedRealitySpatialAwarenessObserver> services = Registrar.GetServices<IMixedRealitySpatialAwarenessObserver>();
-            for (int i = 0; i < services.Count; i++)
+            if ((observers.Count == 0) && (profile != null))
             {
-                observers.Add(services[i] as IMixedRealitySpatialAwarenessObserver);
+                // Register the spatial observers.
+                for (int i = 0; i < profile.ObserverConfigurations.Length; i++)
+                {
+                    MixedRealitySpatialObserverConfiguration configuration = profile.ObserverConfigurations[i];
+                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.ObserverProfile };
+
+                    if (Registrar.RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
+                        configuration.ComponentType.Type,
+                        configuration.RuntimePlatform,
+                        args))
+                    {
+                        observers.Add(Registrar.GetDataProvider<IMixedRealitySpatialAwarenessObserver>(configuration.ComponentName));
+                    }
+                }
             }
         }
 
         /// <inheritdoc/>
         public override void Reset()
         {
-            base.Reset();
-            // todo: base Reset should likely call Disable, then Initialize
-            InitializeInternal();
+            Disable();
+            Initialize();
+            Enable();
         }
 
         /// <inheritdoc/>
         public override void Destroy()
         {
+#if UNITY_EDITOR
+            if (UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.SpatialPerception))
+            {
+                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.SpatialPerception, false);
+            }
+#endif // UNITY_EDITOR
+
             // Cleanup game objects created during execution.
             if (Application.isPlaying)
             {
@@ -99,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             }
         }
 
-        #endregion IMixedRealityToolkit Implementation
+        #endregion IMixedRealityToolkitService Implementation
 
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
@@ -188,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                     return (T)observers[i];
                 }
             }
-            
+
             return default(T);
         }
 

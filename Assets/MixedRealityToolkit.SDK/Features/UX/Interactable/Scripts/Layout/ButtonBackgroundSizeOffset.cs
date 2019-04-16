@@ -96,7 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             transform.localScale = scale;
         }
 
-        // Update is called once per frame
         void Update()
         {
             if (AnchorTransform != null)

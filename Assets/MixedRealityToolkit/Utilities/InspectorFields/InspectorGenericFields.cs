@@ -23,8 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             Type myType = target.GetType();
 
-            PropertyInfo[] propInfoList = myType.GetProperties();
-            for (int i = 0; i < propInfoList.Length; i++)
+            List<PropertyInfo> propInfoList = new List<PropertyInfo>(myType.GetProperties());
+            for (int i = 0; i < propInfoList.Count; i++)
             {
                 PropertyInfo propInfo = propInfoList[i];
                 var attrs = (InspectorField[])propInfo.GetCustomAttributes(typeof(InspectorField), false);
@@ -35,8 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
             }
 
-            FieldInfo[] fieldInfoList = myType.GetFields();
-            for (int i = 0; i < fieldInfoList.Length; i++)
+            List<FieldInfo> fieldInfoList = new List<FieldInfo>(myType.GetFields());
+            for (int i = 0; i < fieldInfoList.Count; i++)
             {
                 FieldInfo fieldInfo = fieldInfoList[i];
                 var attrs = (InspectorField[])fieldInfo.GetCustomAttributes(typeof(InspectorField), false);
@@ -59,8 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             Type myType = source.GetType();
             List<InspectorPropertySetting> settings = new List<InspectorPropertySetting>();
 
-            PropertyInfo[] propInfoList = myType.GetProperties();
-            for (int i = 0; i < propInfoList.Length; i++)
+            List<PropertyInfo> propInfoList = new List<PropertyInfo>(myType.GetProperties());
+            for (int i = 0; i < propInfoList.Count; i++)
             {
                 PropertyInfo propInfo = propInfoList[i];
                 var attrs = (InspectorField[])propInfo.GetCustomAttributes(typeof(InspectorField), false);
@@ -70,8 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
             }
 
-            FieldInfo[] fieldInfoList = myType.GetFields();
-            for (int i = 0; i < fieldInfoList.Length; i++)
+            List<FieldInfo> fieldInfoList = new List<FieldInfo>(myType.GetFields());
+            for (int i = 0; i < fieldInfoList.Count; i++)
             {
                 FieldInfo fieldInfo = fieldInfoList[i];
                 var attrs = (InspectorField[])fieldInfo.GetCustomAttributes(typeof(InspectorField), false);

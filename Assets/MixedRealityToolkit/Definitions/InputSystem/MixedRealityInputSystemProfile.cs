@@ -2,10 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests")]
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.EditModeTests")]
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
@@ -15,6 +18,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [MixedRealityServiceProfile(typeof(IMixedRealityInputSystem))]
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
+        [SerializeField]
+        private MixedRealityInputDataProviderConfiguration[] dataProviderConfigurations = new MixedRealityInputDataProviderConfiguration[0];
+
+        public MixedRealityInputDataProviderConfiguration[] DataProviderConfigurations
+        {
+            get { return dataProviderConfigurations; }
+            internal set { dataProviderConfigurations = value; }
+        }
+
         [SerializeField]
         [Tooltip("The focus provider service concrete type to use when raycasting.")]
         [Implements(typeof(IMixedRealityFocusProvider), TypeGrouping.ByNamespaceFlat)]
@@ -90,6 +102,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySpeechSystem>());
 
         /// <summary>
+        /// The list of cultures where speech recognition is supported
+        /// </summary>
+        private List<CultureInfo> supportedVoiceCultures = new List<CultureInfo>
+        {
+            new CultureInfo("en-US"),
+            new CultureInfo("en-CA"),
+            new CultureInfo("fr-CA"),
+            new CultureInfo("en-GB"),
+            new CultureInfo("en-AU"),
+            new CultureInfo("de-DE"),
+            new CultureInfo("fr-FR"),
+            new CultureInfo("zh-CN"),
+            new CultureInfo("ja-JP"),
+            new CultureInfo("es-ES"),
+            new CultureInfo("it-IT")
+        };
+
+        /// <summary>
+        /// Returns whether speech is supported for the current language or not
+        /// </summary>
+        public bool IsSpeechSupported
+        {
+            get
+            {
+                return supportedVoiceCultures.Contains(CultureInfo.CurrentUICulture);
+            }
+        }
+
+        /// <summary>
         /// Is the speech Commands Enabled?
         /// </summary>
         public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled;
@@ -156,6 +197,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return controllerVisualizationProfile; }
             internal set { controllerVisualizationProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Profile for configuring Hands tracking.")]
+        private MixedRealityHandTrackingProfile handTrackingProfile;
+
+        /// <summary>
+        /// Active profile for hands tracking
+        /// </summary>
+        public MixedRealityHandTrackingProfile HandTrackingProfile
+        {
+            get { return handTrackingProfile; }
+            private set { handTrackingProfile = value; }
         }
     }
 }
