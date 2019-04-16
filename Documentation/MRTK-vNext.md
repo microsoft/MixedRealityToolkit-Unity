@@ -9,7 +9,7 @@ To rearchitect the current Mixed Reality Toolkit to provide:
 
 ## Outline Architecture
 
-![](External/ReadMeImages/MRTK-vNext-HLA.png)
+![](Images/MRTK-vNext-HLA.png)
 <div style="text-align:center"> Figure 1 : Draft High-Level architecture </div>
 
 The internal side of the MRTK, is internal / private, not something a user would need to use / access.  We can debate whether we still allow some of it to be “open” for customization.  But I feel that should be through users creating “extensions” rather than modifying base code.
@@ -57,7 +57,7 @@ Following the feedback we’ve received both internally and through current cons
 
 The new MRTK approach would span across the Application and SDK/Device layers, seeing how OpenXR is a Device to the new architecture.
 
-![](External/ReadMeImages/OpenXR-HLA.jpg)
+![](Images/OpenXR-HLA.jpg)
 <div style="text-align:center">Figure 2 : OpenXR architecture</div>
 
 # Expected Experience reference (starter for 10)

@@ -2,7 +2,7 @@
 
 Pointers are instanced automatically at runtime when a new controller is detected. You can have more than one pointer attached to a controller; for example, with the default pointer profile, WMR controllers get both a line and a parabolic pointer for normal selection and teleportation respectively. Pointers communicate with each other to decide which one is active. The pointers created for each controller are set up in the **Pointer Profile**, under the *Input System Profile*.
 
-<img src="../../External/ReadMeImages/Input/PointerProfile.png" style="max-width:100%;">
+<img src="../../Documentation/Images/Input/PointerProfile.png" style="max-width:100%;">
 
 MRTK provides a set of pointer prefabs in *Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers*. You can use your own prefabs as long as they contain one of the pointer scripts in *Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers* or any other script implementing [`IMixedRealityPointer`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer).
 
