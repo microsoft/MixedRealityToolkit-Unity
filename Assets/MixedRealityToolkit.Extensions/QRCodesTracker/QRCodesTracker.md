@@ -1,0 +1,1 @@
+Note: QRCodesTracker is stubbed out here to enable public facing development work around calibration. Developers should not take dependencies on the code provided in this extension. Long term it will be distributed in some other form outside of the MRTK.

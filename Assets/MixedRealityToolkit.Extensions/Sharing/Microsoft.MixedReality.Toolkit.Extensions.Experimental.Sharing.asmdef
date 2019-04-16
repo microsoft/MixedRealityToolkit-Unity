@@ -1,0 +1,13 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing",
+    "references": [
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
