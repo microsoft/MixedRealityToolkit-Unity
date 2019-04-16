@@ -7,20 +7,21 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 {
+    /// <summary>
+    /// Lightweight MonoBehavior used to represent active services in scene.
+    /// </summary>
     [ExecuteAlways]
     public class ServiceFacade : MonoBehaviour
     {
         public static Dictionary<Type, ServiceFacade> FacadeLookup = new Dictionary<Type, ServiceFacade>();
 
-        private IMixedRealityService service = null;
         public IMixedRealityService Service { get { return service; } }
-
-        private Type serviceType = null;
         public Type ServiceType { get { return serviceType; } }
-
-        private bool destroyed = false;
         public bool Destroyed { get { return destroyed; } }
 
+        private IMixedRealityService service = null;
+        private Type serviceType = null;
+        private bool destroyed = false;
         private Transform facadeParent;
 
         public void SetService(IMixedRealityService service, Transform facadeParent)
@@ -54,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             }
         }
 
-        private void Update()
+        public void CheckIfStillValid()
         {
             if (transform.parent != facadeParent)
             {

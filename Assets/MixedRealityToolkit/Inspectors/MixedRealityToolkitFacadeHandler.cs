@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 {
+    /// <summary>
+    /// Links service facade objects to active services.
+    /// </summary>
     [InitializeOnLoad]
     public static class MixedRealityToolkitFacadeHandler
     {
@@ -88,6 +91,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 {
                     GameObject.DestroyImmediate(childToDelete.gameObject);
                 }
+            }
+
+            // Update all self-registered facades
+            foreach (ServiceFacade facade in ServiceFacade.FacadeLookup.Values)
+            {
+                if (facade == null)
+                {
+                    continue;
+                }
+
+                facade.CheckIfStillValid();
             }
         }
 
