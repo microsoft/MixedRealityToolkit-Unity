@@ -49,10 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Header("Position markers")]
         [Tooltip("Used to mark where button movement begins. If null, it will be automatically generated.")]
 
-        [SerializeField]
-        [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
-        private bool enforceFrontPush = true;
-
         [Header("Events")]
         public UnityEvent TouchBegin;
         public UnityEvent TouchEnd;
@@ -77,17 +73,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private bool isPressing = false;
 
+        private Transform initialTransform;
+
         ///<summary>
         /// Represents the state of whether or not a finger is currently touching this button.
         ///</summary>
-        private bool IsTouching
+        public bool IsTouching
         {
             get
             {
                 return isTouching;
             }
 
-            set
+            private set
             {
                 if (value != isTouching)
                 {
