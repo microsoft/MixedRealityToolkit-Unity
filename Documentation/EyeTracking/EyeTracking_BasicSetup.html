@@ -84,8 +84,7 @@
 
 <p>This page covers how to set up your Unity MRTK scene to use Eye Tracking in your app.
 The following assumes you are starting out with a fresh new scene.
-Alternatively, you can check out our already configured Eye Tracking examples:
-<a href="EyeTracking_ExamplesOverview.html">MRTK Eye Tracking Examples</a>.</p>
+Alternatively, you can check out our already configured <a href="EyeTracking_ExamplesOverview.html">MRTK Eye Tracking Examples</a>.</p>
 <h3 id="setting-up-the-scene">Setting up the scene</h3>
 <p>Set up the <em>MixedRealityToolkit</em> by simply clicking <em>'Mixed Reality Toolkit -&gt; Configure…'</em> in the menu bar.</p>
 <p><img src="../Images/EyeTracking/mrtk_setup_configure.png" alt="MRTK"></p>
@@ -148,13 +147,14 @@ We do recommend to hide the default head gaze cursor that is attached to the MRT
 <p>Building your app with Eye Tracking should be similar to how you would compile other HoloLens 2 MRTK apps.
 The only difference is that the <em>'Gaze Input'</em> capability is unfortunately not yet supported by Unity under 'Player Settings -&gt; Publishing Settings -&gt; Capabilities'.
 To use Eye Tracking on your HoloLens 2 device, you need to manually edit the package manifest that is part of your build Visual Studio project.
-So, follow these steps:</p>
+Follow these steps:</p>
 <ol>
 <li>Build your Unity project as you would normally do for <em>HoloLens 2</em>.</li>
 <li>Open your compiled Visual Studio project and then open the <em>'Package.appxmanifest'</em> in your solution.</li>
 <li>Make sure to tick the <em>'Gaze Input'</em> checkbox under <em>Capabilities</em>.</li>
 </ol>
 <p><img src="../Images/EyeTracking/mrtk_et_gazeinput.jpg" alt="Enabling Gaze Input in Visual Studio"></p>
+<p>If everything is set up correctly, a prompt should pop up asking the user for permission to use Eye Tracking when you start your Unity app on a HoloLens 2 device for the first time.</p>
 <hr>
 <p><a href="EyeTracking_Main.html">Back to &quot;Eye Tracking in the MixedRealityToolkit&quot;</a></p>
 </article>
