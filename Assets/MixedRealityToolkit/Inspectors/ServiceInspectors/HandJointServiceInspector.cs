@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Color disabledColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
         private static Dictionary<TrackedHandJoint, bool> showHandJointSettings;
         private static Dictionary<TrackedHandJoint, string> showHandJointSettingKeys;
-        
+
         //We want hand preview to always be visible
         public override bool AlwaysDrawSceneGUI { get { return true; } }
 
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             bool showHandPreviewInSceneView = EditorGUILayout.Toggle("Show Preview in Scene View", ShowHandPreviewInSceneView);
             if (ShowHandPreviewInSceneView != showHandPreviewInSceneView)
             {
-                SessionState.SetBool(ShowHandPreviewInSceneViewKey, showHandPreviewInSceneView);                
+                SessionState.SetBool(ShowHandPreviewInSceneViewKey, showHandPreviewInSceneView);
             }
 
             ShowHandJointFoldout = SessionState.GetBool(ShowHandJointFoldoutKey, false);
@@ -68,14 +68,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 #region setting buttons
 
-                EditorGUILayout.BeginHorizontal();       
-                
+                EditorGUILayout.BeginHorizontal();
+
                 if (GUILayout.Button("All"))
                 {
                     foreach (TrackedHandJoint joint in Enum.GetValues(typeof(TrackedHandJoint)))
                     {
                         if (joint == TrackedHandJoint.None)
+                        {
                             continue;
+                        }
 
                         SessionState.SetBool(showHandJointSettingKeys[joint], true);
                         showHandJointSettings[joint] = true;
@@ -164,7 +166,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     foreach (TrackedHandJoint joint in Enum.GetValues(typeof(TrackedHandJoint)))
                     {
                         if (joint == TrackedHandJoint.None)
+                        {
                             continue;
+                        }
 
                         SessionState.SetBool(showHandJointSettingKeys[joint], false);
                         showHandJointSettings[joint] = false;
@@ -179,7 +183,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 foreach (TrackedHandJoint joint in Enum.GetValues(typeof(TrackedHandJoint)))
                 {
                     if (joint == TrackedHandJoint.None)
+                    {
                         continue;
+                    }
 
                     bool prevSetting = showHandJointSettings[joint];
                     bool newSetting = EditorGUILayout.Toggle(joint.ToString(), prevSetting);
@@ -195,11 +201,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void DrawSceneGUI(object target, SceneView sceneView)
         {
-            if (!Application.isPlaying)
+            if (!Application.isPlaying || !ShowHandPreviewInSceneView)
+            {
                 return;
-
-            if (!ShowHandPreviewInSceneView)
-                return;
+            }
 
             IMixedRealityHandJointService handJointService = (IMixedRealityHandJointService)target;
 
@@ -212,7 +217,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public static void DrawHandPreview(IMixedRealityHandJointService handJointService, Handedness handedness)
         {
             if (!handJointService.IsHandTracked(handedness))
+            {
                 return;
+            }
 
             GenerateHandJointLookup();
 
@@ -221,12 +228,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             foreach (KeyValuePair<TrackedHandJoint, bool> setting in showHandJointSettings)
             {
                 if (!setting.Value)
+                {
                     continue;
+                }
 
                 Transform jointTransform = handJointService.RequestJointTransform(setting.Key, handedness);
 
                 if (jointTransform == null)
+                {
                     continue;
+                }
 
                 Handles.SphereHandleCap(0, jointTransform.position, jointTransform.rotation, previewJointSize, EventType.Repaint);
             }
@@ -235,7 +246,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static void GenerateHandJointLookup()
         {
             if (showHandJointSettings != null)
+            {
                 return;
+            }
 
             showHandJointSettingKeys = new Dictionary<TrackedHandJoint, string>();
             showHandJointSettings = new Dictionary<TrackedHandJoint, bool>();
@@ -243,7 +256,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             foreach (TrackedHandJoint joint in Enum.GetValues(typeof(TrackedHandJoint)))
             {
                 if (joint == TrackedHandJoint.None)
+                {
                     continue;
+                }
 
                 string key = ShowHandJointKeyPrefix + joint;
                 showHandJointSettingKeys.Add(joint, key);

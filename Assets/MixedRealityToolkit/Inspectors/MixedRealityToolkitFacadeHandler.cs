@@ -22,8 +22,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static void OnPlayModeStateChanged(PlayModeStateChange obj)
         {
-            if (MixedRealityToolkit.Instance == null)
+            if (!MixedRealityToolkit.IsInitialized)
+            {
                 return;
+            }
 
             // When the play state changes just nuke everything and start over
             DestroyAllChildren();
@@ -32,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         private static void UpdateServiceFacades(SceneView sceneView)
         {
             // If we're not using inspectors, destroy them all now
-            if (MixedRealityToolkit.Instance == null || MixedRealityToolkit.Instance.HasActiveProfile && !MixedRealityToolkit.Instance.ActiveProfile.UseServiceInspectors)
+            if (!MixedRealityToolkit.IsInitialized || MixedRealityToolkit.Instance.HasActiveProfile && !MixedRealityToolkit.Instance.ActiveProfile.UseServiceInspectors)
             {
                 DestroyAllChildren();
                 return;
@@ -41,10 +43,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             servicesToSort.Clear();
 
             foreach (IMixedRealityService service in MixedRealityToolkit.Instance.ActiveSystems.Values)
+            {
                 servicesToSort.Add(service);
+            }
 
-            foreach (Tuple<Type,IMixedRealityService> registeredService in MixedRealityToolkit.Instance.RegisteredMixedRealityServices)
+            foreach (Tuple<Type, IMixedRealityService> registeredService in MixedRealityToolkit.Instance.RegisteredMixedRealityServices)
+            {
                 servicesToSort.Add(registeredService.Item2);
+            }
 
             servicesToSort.Sort(
                 delegate (IMixedRealityService s1, IMixedRealityService s2)
@@ -61,12 +67,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 });
 
             for (int i = 0; i < servicesToSort.Count; i++)
+            {
                 CreateFacade(MixedRealityToolkit.Instance.transform, servicesToSort[i], i);
+            }
 
             // Delete any stragglers
             childrenToDelete.Clear();
             for (int i = servicesToSort.Count; i < MixedRealityToolkit.Instance.transform.childCount; i++)
+            {
                 childrenToDelete.Add(MixedRealityToolkit.Instance.transform.GetChild(i));
+            }
 
             foreach (Transform childToDelete in childrenToDelete)
             {
@@ -117,14 +127,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
             childrenToDelete.Clear();
             foreach (Transform child in instanceTransform.transform)
+            {
                 childrenToDelete.Add(child);
+            }
 
             foreach (Transform child in childrenToDelete)
+            {
                 GameObject.DestroyImmediate(child.gameObject);
+            }
 
             childrenToDelete.Clear();
             servicesToSort.Clear();
-
         }
     }
 }

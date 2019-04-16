@@ -29,24 +29,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.Toggle("Interaction Enabled", pointer.IsInteractionEnabled);
                 EditorGUILayout.Toggle("Focus Locked", pointer.IsFocusLocked);
 
-                IMixedRealityFocusHandler focusTarget = pointer.FocusTarget;
-                if (focusTarget == null)
+                IPointerResult pointerResult = pointer.Result;
+                if (pointerResult == null)
                 {
-                    EditorGUILayout.ObjectField("Focus Target", null, typeof(Component), true);
+                    EditorGUILayout.ObjectField("Focus Result", null, typeof(GameObject), true);
                 }
                 else
                 {
-                    EditorGUILayout.Toggle("Has focus target", true);
-
-                    Component focusTargetObject = focusTarget as Component;
-                    if (focusTargetObject != null)
-                    {
-                        EditorGUILayout.ObjectField("Focus Target", focusTargetObject, typeof(Component), true);
-                    }
-                    else
-                    {
-                        EditorGUILayout.LabelField("Focus Target" + focusTarget.GetType().Name);
-                    }
+                    EditorGUILayout.ObjectField("Focus Result", pointerResult.CurrentPointerTarget, typeof(GameObject), true);
                 }
 
                 EditorGUILayout.EndVertical();

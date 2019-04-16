@@ -59,7 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUI.color = enabledColor;
 
             if (observerIndex == 0)
+            {
                 EditorGUILayout.LabelField("(None found)", EditorStyles.miniLabel);
+            }
 
             EditorGUILayout.Space();
 
@@ -78,7 +80,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public override void DrawGizmos(object target)
         {
             if (!(ShowObserverBoundary || ShowObserverOrigin))
+            {
                 return;
+            }
 
             MixedRealitySpatialAwarenessSystem spatial = (MixedRealitySpatialAwarenessSystem)target;
 
@@ -122,7 +126,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private Color GetObserverColor(int observerIndex)
         {
             if (observerIndex >= observerColors.Length)
+            {
                 observerIndex -= observerColors.Length;
+            }
 
             return Color.Lerp(Color.white, observerColors[observerIndex], 0.35f);
         }
