@@ -3,10 +3,5 @@
   items:
   - name: Standard Shader
     href: Demos/StandardShader/README.md
-- name: SDK
-  href: SDK/README.md
-  items:
-  - name: Basic Introduction
-    href: SDK/Example01-BasicIntroduction/README.md
 - name: Standard Assets
   href: StandardAssets/README.md

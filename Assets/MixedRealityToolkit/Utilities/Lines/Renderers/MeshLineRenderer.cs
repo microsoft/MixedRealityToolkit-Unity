@@ -46,9 +46,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         [SerializeField]
         [Tooltip("How many line steps to skip before a mesh is drawn")]
-        [Range(0,10)]
+        [Range(0, 10)]
         private int lineStepSkip = 0;
-        
+
+        [SerializeField]
+        private bool useVertexColors = true;
+
         public string ColorProperty
         {
             get { return colorProperty; }
@@ -114,9 +117,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected override void UpdateLine()
         {
             if (LineDataSource.enabled)
-            {                
+            {
                 meshTransforms.Clear();
                 colorValues.Clear();
+                linePropertyBlock.Clear();
 
                 int skipCount = 0;
 
@@ -136,9 +140,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     meshTransforms.Add(Matrix4x4.TRS(LineDataSource.GetPoint(normalizedDistance), LineDataSource.GetRotation(normalizedDistance), Vector3.one * GetWidth(normalizedDistance)));
                 }
 
-                colorId = Shader.PropertyToID(colorProperty);
-                linePropertyBlock.Clear();
-                linePropertyBlock.SetVectorArray(colorId, colorValues);
+                if (useVertexColors)
+                {
+                    colorId = Shader.PropertyToID(colorProperty);
+                    linePropertyBlock.SetVectorArray(colorId, colorValues);
+                }
+
                 Graphics.DrawMeshInstanced(lineMesh, 0, lineMaterial, meshTransforms, linePropertyBlock);
             }
         }
