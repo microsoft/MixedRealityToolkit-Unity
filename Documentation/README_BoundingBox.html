@@ -82,17 +82,17 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="bounding-box">Bounding Box</h1>
 
-<p><img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png" alt="Bounding Box"></p>
+<p><img src="Images/BoundingBox/MRTK_BoundingBox_Main.png" alt="Bounding Box"></p>
 <p>The <code>BoundingBox</code> script provides basic functionality for transforming objects in Windows Mixed Reality. Using handles on the corners and edges, you can scale or rotate the object. On HoloLens 2, the bounding box responds to your finger's proximity. It shows visual feedback to help perceive the distance from the object. MRTK's bounding box provides various options which allow you to easily customize the interactions and visuals. </p>
 <p>For more information please see <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box">App Bar and Bounding Box</a> on Windows Dev Center.</p>
 <h3 id="how-to-use-bounding-box">How to use Bounding Box</h3>
 <p>You can enable Bounding Box by simply assigning the <code>BoundingBox</code> script to any GameObject. Assign the object with Box Collider to 'Bounds Override' field in the Inspector.</p>
-<p><img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Assign.png" alt="Bounding Box"></p>
+<p><img src="Images/BoundingBox/MRTK_BoundingBox_Assign.png" alt="Bounding Box"></p>
 <h3 id="example-scene">Example Scene</h3>
 <p>You can find bounding box examples in the <em>HandInteractionExamples.unity</em> scene:</p>
-<img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Examples.png" width="550">
+<img src="Images/BoundingBox/MRTK_BoundingBox_Examples.png" width="550">
 <h3 id="inspector-properties">Inspector Properties</h3>
-<p><img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Structure.png" alt="Bounding Box"></p>
+<p><img src="Images/BoundingBox/MRTK_BoundingBox_Structure.png" alt="Bounding Box"></p>
 <h4 id="target-object">Target Object</h4>
 <p>This specifies which object will get transformed by the bounding box manipulation. If no object is set, the bounding box defaults to the owner object.</p>
 <h4 id="bounds-override">Bounds Override</h4>
@@ -122,10 +122,10 @@
 <li><strong>Scale Started</strong></li>
 <li><strong>Scale Ended</strong></li>
 </ul>
-<img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
+<img src="Images/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
 <h3 id="make-an-object-movable-with-manipulation-handler">Make an object movable with Manipulation Handler</h3>
 <p>If you want to make the object movable using far interaction, you can combine <a href="README_ManipulationHandler.html"><code>ManipulationHandler.cs</code></a> with <code>BoundingBox.cs</code>. <a href="README_ManipulationHandler.html">ManipulationHandler</a> supports both one and two-handed interactions. To make <a href="README_ManipulationHandler.html"><code>ManipulationHandler.cs</code></a> work with near interaction, you should add <code>NearInteractionGrabbable.cs</code> too.</p>
-<img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
+<img src="Images/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
 <p>In order for the bounding box edges to be highlighted the same way when moving it using <a href="README_ManipulationHandler.html"><code>ManipulationHandler</code></a>'s far interaction, it is advised to connect its events for <strong>On Manipulation Started</strong> / <strong>On Manipulation Ended</strong> to <code>BoundingBox.HighlightWires</code> / <code>BoundingBox.UnhighlightWires</code> respectively, as shown in the screenshot above.</p>
 </article>
           </div>

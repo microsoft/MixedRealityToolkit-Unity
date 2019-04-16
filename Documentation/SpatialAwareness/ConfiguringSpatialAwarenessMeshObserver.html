@@ -90,7 +90,7 @@
 <li><a href="#display-settings">Display Settings</a></li>
 </ul>
 <h2 id="general-settings">General Settings</h2>
-<p><img src="../../External/ReadMeImages/SpatialAwareness/MeshObserverGeneralSettings.png" alt="Mesh Observer General Settings"></p>
+<p><img src="../Images/SpatialAwareness/MeshObserverGeneralSettings.png" alt="Mesh Observer General Settings"></p>
 <h3 id="startup-behavior">Startup Behavior</h3>
 <p>The startup behavior specifies the behavior of the observer when it is first instantiated. The options are Auto Start and Manual Start. When set to Manual Start, applications will need to call one of the following IMixedRealitySpatialAwarenessSystem methods:</p>
 <ul>
@@ -120,13 +120,13 @@
 <h3 id="observation-extents">Observation Extents</h3>
 <p>The observation extents define the distance from the observation point that meshes will be observed. When the <a href="#observer-shape">Observer Shape</a> is set to sphere, the X value of the extents will be used as the radius of the sphere.</p>
 <h2 id="physics-settings">Physics Settings</h2>
-<p><img src="../../External/ReadMeImages/SpatialAwareness/MeshObserverPhysicsSettings.png" alt="Mesh Observer Physics Settings"></p>
+<p><img src="../Images/SpatialAwareness/MeshObserverPhysicsSettings.png" alt="Mesh Observer Physics Settings"></p>
 <h3 id="physics-layer">Physics Layer</h3>
 <p>The physics layer specifies which layer on which the spatial mesh objects will be placed in order to interact with the Unity Physics and RayCast systems. The Mixed Reality Toolkit reserves layer 31 by default for use by Spatial Awareness observers.</p>
 <h4 id="recalculate-normals">Recalculate Normals</h4>
 <p>Specifies whether or not the mesh observer will recalculate the normals of the mesh following observation. This setting is available to ensure applications receive meshes that contain valid normals data on platforms that do not return them with meshes.</p>
 <h2 id="level-of-detail-settings">Level of Detail Settings</h2>
-<p><img src="../../External/ReadMeImages/SpatialAwareness/MeshObserverLevelOfDetailSettings.png" alt="Mesh Observer Level of Detail Settings"></p>
+<p><img src="../Images/SpatialAwareness/MeshObserverLevelOfDetailSettings.png" alt="Mesh Observer Level of Detail Settings"></p>
 <h3 id="level-of-detail">Level of Detail</h3>
 <p>Specifies the level of detail (LOD) of the spatial mesh data. Currently defined values are Coarse, Fine and Custom.</p>
 <p>The Coarse LOD generally places a smaller impact on application performance and are an excellent choice for navigation and plane finding.</p>
@@ -138,7 +138,7 @@
 <h3 id="triangles-per-cubic-meter">Triangles per Cubic Meter</h3>
 <p>When using the custom <a href="#level-of-detail">Level of Detail</a>, specifies the requested value for the triangle density for the spatial mesh.</p>
 <h2 id="display-settings">Display Settings</h2>
-<p><img src="../../External/ReadMeImages/SpatialAwareness/MeshObserverDisplaySettings.png" alt="Mesh Observer Display Settings"></p>
+<p><img src="../Images/SpatialAwareness/MeshObserverDisplaySettings.png" alt="Mesh Observer Display Settings"></p>
 <p><em>Mesh Observer Display Settings</em></p>
 <h3 id="display-option">Display Option</h3>
 <p>Specifies how spatial meshes are to be displayed by the observer. Supported values are None, Visible and Occlusion. Setting Visible or Occlusion instructs the observer to select the appropriate material. Specifying None causes the observer to not render the mesh.</p>

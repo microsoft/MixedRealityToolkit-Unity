@@ -82,7 +82,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="fingertip-visualization">Fingertip Visualization</h1>
 
-<p><img src="../External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png" alt="Fingertip Visualization"></p>
+<p><img src="Images/Fingertip/MRTK_FingertipVisualization_Main.png" alt="Fingertip Visualization"></p>
 <p>The fingertip affordance helps the user recognize the distance from the target object. The ring shape visual adjusts its size based on the distance from the fingertip to the object. The fingertip visualization is primarily controlled by the <code>FingerCursor</code> prefab (and script) which is spawned as the cursor prefab of the <code>PokePointer</code>. Other components of the visualization include the <code>ProximityLight</code> script, and <code>MixedRealityStandard</code> shader.</p>
 <h3 id="how-to-use-the-fingertip-visualization">How to use the Fingertip Visualization</h3>
 <p>By default the fingertip visualization will work in any Unity scene that is configured to spawn a FingerCursor. Spawning of the FingerCursor occurs in the <code>DefaultMixedRealityToolkitConfigurationProfile</code> under:</p>
@@ -104,16 +104,16 @@
 <p>At a high level the fingertip visualization works by using a proximity light to project a colored gradient on any nearby surfaces that accept proximity lights. The finger cursor then looks for any nearby interactable surfaces, which are determined by parent IMixedRealityNearPointer(s), to align the finger ring with a surface as the finger moves towards a surface. As a finger approaches a surface the finger ring is also dynamically animated using the round corner properties of the MixedRealityStandard shader.</p>
 <h3 id="example-scene">Example Scene</h3>
 <p>You can find fingertip visualization examples in almost any scene that works with articulated hands, but is prominent in the HandInteractionExamples.unity scene.</p>
-<p><img src="../External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_States.png" alt="Fingertip Visualization"></p>
+<p><img src="Images/Fingertip/MRTK_FingertipVisualization_States.png" alt="Fingertip Visualization"></p>
 <h3 id="inspector-properties">Inspector Properties</h3>
 <h4 id="fingercursor">FingerCursor</h4>
-<img src="../External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Finger_Cursor_Inspector.png" width="600">
+<img src="Images/Fingertip/MRTK_FingertipVisualization_Finger_Cursor_Inspector.png" width="600">
 <p>Many of the FingerCursor properties are inherited from the BaseCursor class. Important properties include the far/near surface margins and widths which drive the finger ring animation in the MixedRealityStandard shader. For other properties please hover over the inspector tool tips.</p>
 <h4 id="proximitylight">ProximityLight</h4>
-<p><img src="../External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Proximity_Light_Inspector.png" alt="Fingertip Visualization"></p>
+<p><img src="Images/Fingertip/MRTK_FingertipVisualization_Proximity_Light_Inspector.png" alt="Fingertip Visualization"></p>
 <p>The proximity light settings control how the light looks when near and far from a surface. The center, middle, and outer colors control the gradient look of the light and can be custom tailored for the color palette of your application. Note, the colors are HDR (High Dynamic Range) to allow users to brighten the proximity light to values above one. For other properties please hover over the inspector tool tips.</p>
 <h4 id="mixedrealitystandard-shader">MixedRealityStandard Shader</h4>
-<img src="../External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Mixed_Reality_Standard_Shader_Inspector.png" width="600">
+<img src="Images/Fingertip/MRTK_FingertipVisualization_Mixed_Reality_Standard_Shader_Inspector.png" width="600">
 <p>The MixedRealityStandard shader is used for many effects in the MRTK. The two settings important for fingertip visualization are &quot;Near Fade&quot; and &quot;Proximity Light.&quot; Near Fade allows objects to fade in/out as a camera or light nears them. Make sure to check &quot;Light&quot; to allow proximity lights to drive the fade (rather than the camera). You can reverse the values of &quot;Fade Begin&quot; and &quot;Fade Complete&quot; to reverse a fade. Check &quot;Proximity Light&quot; for any surface you would like the proximity light to brighten. For other properties please hover over the inspector tool tips.</p>
 </article>
           </div>

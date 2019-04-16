@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/BoomBox/README.html",
-          "hash": "IpWafsrUGuzOkiZ6wlGMTg=="
+          "hash": "7YninJixuvqsgoRmDV6fHQ=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Lantern/README.html",
-          "hash": "IkKYa6DWGpxnRg7rm4bvaQ=="
+          "hash": "tUC79p4bKXTyeu+BZ/3Qiw=="
         }
       },
       "is_incremental": false,
@@ -126,7 +126,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Controllers/README.html",
-          "hash": "R4we/wjRPjsUOv527jzO5w=="
+          "hash": "IvZfn+KbeaLel9cmtgDPvw=="
         }
       },
       "is_incremental": false,
@@ -162,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Profiles/MixedRealityControllerConfigurationProfile.html",
-          "hash": "gAezRsRcIv3IoHgv9HpyFg=="
+          "hash": "m3Tdz9JB1IFOrqLh6M0H9Q=="
         }
       },
       "is_incremental": false,
@@ -326,47 +326,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "BreakingChanges.md",
-      "output": {
-        ".html": {
-          "relative_path": "BreakingChanges.html",
-          "hash": "sgPSliXigPhgrc9+3cxUKA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "CONTRIBUTING.md",
-      "output": {
-        ".html": {
-          "relative_path": "CONTRIBUTING.html",
-          "hash": "s5rQrwR2Vq2Xvn2eVHd59g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "CodingGuidelines.md",
-      "output": {
-        ".html": {
-          "relative_path": "CodingGuidelines.html",
-          "hash": "DzIWBqljBrgxHh3m7KwgYQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Documentation/Architecture/SpatialAwareness/SpatialAwarenessSystemArchitecture.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/SpatialAwareness/SpatialAwarenessSystemArchitecture.html",
-          "hash": "1UFu2ob5UsRURBJVkxuN8w=="
+          "hash": "ARfmoKmOBEq+NtxK+D4h5w=="
         }
       },
       "is_incremental": false,
@@ -402,7 +366,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Boundary/BoundarySystemGettingStarted.html",
-          "hash": "2g4hU9QyLO1XKwwvjezHWw=="
+          "hash": "M8s6+fm2d6bQlBYLCQNjJQ=="
         }
       },
       "is_incremental": false,
@@ -414,7 +378,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Boundary/ConfiguringBoundaryVisualization.html",
-          "hash": "2Rrprxj6qzK/rPo7cMCGMw=="
+          "hash": "D83bGfLPgCPkWtwIgovIzw=="
         }
       },
       "is_incremental": false,
@@ -422,11 +386,95 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/DevDocGuide.md",
+      "source_relative_path": "Documentation/Contributing/BreakingChanges.md",
       "output": {
         ".html": {
-          "relative_path": "Documentation/DevDocGuide.html",
-          "hash": "k8/bbrCSdFnoJa1yKfZhog=="
+          "relative_path": "Documentation/Contributing/BreakingChanges.html",
+          "hash": "8vScxDc2vDCrkZdKBsCULQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Contributing/CONTRIBUTING.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Contributing/CONTRIBUTING.html",
+          "hash": "he5Gcd8GzMkksR+i4/dFrA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Contributing/CodingGuidelines.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Contributing/CodingGuidelines.html",
+          "hash": "b4qaaBsarFW7mQcnOwenLQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Contributing/DevDocGuide.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Contributing/DevDocGuide.html",
+          "hash": "ah/Xsxa5nhlpyQjhM2+v6Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Contributing/DocsToDo.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Contributing/DocsToDo.html",
+          "hash": "KOf+kRVB/Lbk69SDgAaTcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Contributing/DocumentationGuide.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Contributing/DocumentationGuide.html",
+          "hash": "dhMQ2XAe48v9dOBNKvWsqA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Contributing/Feature_Contribution_Process.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Contributing/Feature_Contribution_Process.html",
+          "hash": "RoXNt5zeAiJd9yeuLbQA/g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Contributing/Roadmap.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Contributing/Roadmap.html",
+          "hash": "o1zeeSwrD3xLy5BIpbBM6g=="
         }
       },
       "is_incremental": false,
@@ -438,7 +486,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/ConfiguringDiagnostics.html",
-          "hash": "lgxgkzsQzfmtq/9Wgsr7VQ=="
+          "hash": "PHyT8i+NPST9Z9h8FzwvYw=="
         }
       },
       "is_incremental": false,
@@ -450,7 +498,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html",
-          "hash": "E9k57Tb3iY2TMlHeH/M7FA=="
+          "hash": "FnSIIiwj3G+1rYbNWK7RaA=="
         }
       },
       "is_incremental": false,
@@ -462,31 +510,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/UsingVisualProfiler.html",
-          "hash": "deyyz1/uT0l6nQeLK0dUdw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/DocsToDo.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/DocsToDo.html",
-          "hash": "qrJtOVwR0Vci8Pm869WujQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/DocumentationGuide.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/DocumentationGuide.html",
-          "hash": "gC+xy3I4HnZ1UdTWV/OWvw=="
+          "hash": "/E5R0UDggehoMaXMCohMUw=="
         }
       },
       "is_incremental": false,
@@ -498,7 +522,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/DownloadingTheMRTK.html",
-          "hash": "AupVqhSRjepsJcnbDj8wNw=="
+          "hash": "439fI2SCGErVbv0gCTiEVg=="
         }
       },
       "is_incremental": false,
@@ -510,7 +534,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_BasicSetup.html",
-          "hash": "GkDEgEe8uKyNpuAtw/AZfg=="
+          "hash": "gyhaP3QkvCpAz2A2Z5PQeA=="
         }
       },
       "is_incremental": false,
@@ -534,7 +558,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_ExamplesOverview.html",
-          "hash": "RILCTeYgUofLNAZvoPYRLg=="
+          "hash": "D9Keqq2KraJEzyZd8qSTTA=="
         }
       },
       "is_incremental": false,
@@ -558,7 +582,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Main.html",
-          "hash": "sRrQ7zQouIiDEfzudOwZyg=="
+          "hash": "CSWIK4z51/4+Z0xBLBzwmw=="
         }
       },
       "is_incremental": false,
@@ -570,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Navigation.html",
-          "hash": "lf1KqumI9o5qjI23V8PttQ=="
+          "hash": "WXMK69HqhSzum7CRL7TKrw=="
         }
       },
       "is_incremental": false,
@@ -582,7 +606,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Positioning.html",
-          "hash": "Oh6shZxL7bLkPWua8O6r1Q=="
+          "hash": "jy2XM7/oA1eJfhmrjkj7+A=="
         }
       },
       "is_incremental": false,
@@ -594,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_TargetSelection.html",
-          "hash": "YA2wIoK5RmOYiD23PKgHUA=="
+          "hash": "+RHqqeP5GcGdbqT4BaiasA=="
         }
       },
       "is_incremental": false,
@@ -606,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Visualization.html",
-          "hash": "EjbQA8NaYmeQGZJ8ZnNEiQ=="
+          "hash": "zuAi7PxPbUMN3rmnVR4POg=="
         }
       },
       "is_incremental": false,
@@ -618,7 +642,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "fwcuaQHo1psVapnvm6TfAg=="
+          "hash": "Jg4ZHpgIIghgoyN2Z3Mafw=="
         }
       },
       "is_incremental": false,
@@ -637,12 +661,2542 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/AppBar/MRTK_AppBar_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/AppBar/MRTK_AppBar_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/AppBar/MRTK_AppBar_Setup1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/AppBar/MRTK_AppBar_Setup1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/AppBar/MRTK_AppBar_Setup2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/AppBar/MRTK_AppBar_Setup2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Boundary/BoundarySelectSystemType.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Boundary/BoundarySelectSystemType.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Boundary/BoundaryVisualizationCeilingSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Boundary/BoundaryVisualizationCeilingSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Boundary/BoundaryVisualizationFloorSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Boundary/BoundaryVisualizationFloorSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Boundary/BoundaryVisualizationGeneralSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Boundary/BoundaryVisualizationGeneralSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Boundary/BoundaryVisualizationPlayAreaSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Boundary/BoundaryVisualizationPlayAreaSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Boundary/BoundaryVisualizationProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Boundary/BoundaryVisualizationProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Boundary/BoundaryVisualizationTrackedAreaSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Boundary/BoundaryVisualizationTrackedAreaSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Boundary/BoundaryVisualizationWallSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Boundary/BoundaryVisualizationWallSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Boundary/MRTKConfig_Boundary.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Boundary/MRTKConfig_Boundary.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Assign.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Assign.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Events.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Events.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Examples.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Examples.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Structure.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Structure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Custom1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Custom1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Custom2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Custom2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Custom3.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Custom3.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_HowToUse_Interactable.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_HowToUse_Interactable.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_HowTo_Events.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_HowTo_Events.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_HowTo_PressableButton.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_HowTo_PressableButton.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_InteractionStates.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_InteractionStates.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Layout.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Layout.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_SeeItSayIt.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_SeeItSayIt.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Speech1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Speech1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Speech2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Speech2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Speech3.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Speech3.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Structure.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Structure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerConfigurationProfile/01-MixedRealityControllerConfigurationProfileInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerConfigurationProfile/01-MixedRealityControllerConfigurationProfileInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerConfigurationProfile/02-ControllerTemplateDefinition.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerConfigurationProfile/02-ControllerTemplateDefinition.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerConfigurationProfile/03-ControllerTemplate.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerConfigurationProfile/03-ControllerTemplate.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerConfigurationProfile/04-WMRInteractions.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerConfigurationProfile/04-WMRInteractions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerConfigurationProfile/05-OculusTouchInteractions.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerConfigurationProfile/05-OculusTouchInteractions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerConfigurationProfile/06-ViveWandInteractions.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerConfigurationProfile/06-ViveWandInteractions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerVisualizer/ControllerVisualizerInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerVisualizer/ControllerVisualizerInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Diagnostics/DiagnosticsGeneralSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Diagnostics/DiagnosticsGeneralSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Diagnostics/DiagnosticsProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Diagnostics/DiagnosticsProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Diagnostics/DiagnosticsProfilerSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Diagnostics/DiagnosticsProfilerSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Diagnostics/VisualProfiler.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Diagnostics/VisualProfiler.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Diagnostics/VisualProfilerMemory.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Diagnostics/VisualProfilerMemory.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Diagnostics/VisualProfilerMissedFrames.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Diagnostics/VisualProfilerMissedFrames.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_compilation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_compilation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_gazeinput.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_gazeinput.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_heatmaps.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_heatmaps.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_nav_panzoom.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_nav_panzoom.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_nav_rotate.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_nav_rotate.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_nav_scroll.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_nav_scroll.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_navigation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_navigation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_placeholder.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_placeholder.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_positioning.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_positioning.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_positioning_slider.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_positioning_slider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_rootscene_onload.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_rootscene_onload.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_rootscene_onload2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_rootscene_onload2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_et_targetselect.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_et_targetselect.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configprofile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configprofile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configure.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_configure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_dataprovider.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_dataprovider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_gazeprovider.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_gazeprovider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_gazesettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_gazesettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_simulate.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/EyeTracking/mrtk_setup_eyes_simulate.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Fingertip/MRTK_FingertipVisualization_Finger_Cursor_Inspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Fingertip/MRTK_FingertipVisualization_Finger_Cursor_Inspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Fingertip/MRTK_FingertipVisualization_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Fingertip/MRTK_FingertipVisualization_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Fingertip/MRTK_FingertipVisualization_Mixed_Reality_Standard_Shader_Inspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Fingertip/MRTK_FingertipVisualization_Mixed_Reality_Standard_Shader_Inspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Fingertip/MRTK_FingertipVisualization_Proximity_Light_Inspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Fingertip/MRTK_FingertipVisualization_Proximity_Light_Inspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Fingertip/MRTK_FingertipVisualization_States.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Fingertip/MRTK_FingertipVisualization_States.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_BoundingBox.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_BoundingBox.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_Keyboard.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_Keyboard.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_Manipulation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_Manipulation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_PressTouch.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_PressTouch.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_Slate.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_Slate.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_Unity.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandInteractionExamples/MRTK_Examples_Unity.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/ControllerInputMapping.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/ControllerInputMapping.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/Diagrams.vsdx",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/Diagrams.vsdx"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/DictationDataProvider.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/DictationDataProvider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/DictationDemo.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/DictationDemo.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/DictationHandler.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/DictationHandler.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/EventFlow.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/EventFlow.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/GestureProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/GestureProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/InputActions.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/InputActions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/PointerProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/PointerProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/RegisteredServiceProviders.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/RegisteredServiceProviders.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/SpeechCommands.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/SpeechCommands.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_HandTrackingProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_HandTrackingProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandControlSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandControlSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandGestureSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandGestureSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/Buttons.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/Buttons.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/DefaultStates.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/DefaultStates.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/DefaultTheme_button.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/DefaultTheme_button.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/DefaultTheme_values.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/DefaultTheme_values.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/Event_audioClip.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/Event_audioClip.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/Event_hold.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/Event_hold.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/Event_toggle.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/Event_toggle.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/Events.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/Events.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/InputFeatures.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/InputFeatures.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/InputFeatures_short.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/InputFeatures_short.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/InteractableExamples.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/InteractableExamples.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/InteractableInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/InteractableInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/InteractableInspector_basic.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/InteractableInspector_basic.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/InteractableInspector_basicSteps.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/InteractableInspector_basicSteps.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/InteractableReceiver.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/InteractableReceiver.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/Profile_toggle.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/Profile_toggle.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/Profiles_noTarget.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/Profiles_noTarget.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/StatesScriptableObject.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/StatesScriptableObject.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Interactable/Theme.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Interactable/Theme.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK-ControllerDiagram.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK-ControllerDiagram.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK-HeadsetDefinition.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK-HeadsetDefinition.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK-InputActions.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK-InputActions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK-NameSpaceExample.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK-NameSpaceExample.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK-vNext-HLA.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK-vNext-HLA.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK170802_Short_17.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK170802_Short_17.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK170802_Short_18.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK170802_Short_18.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK170802_Short_19.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK170802_Short_19.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK170802_Short_20.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK170802_Short_20.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_AssetImportDialog.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_AssetImportDialog.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_ConfigureDialog.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_ConfigureDialog.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_ConfigureScene.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_ConfigureScene.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_ConfiguredHierarchy.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_ConfiguredHierarchy.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_CopyCreateConfigurationOptions.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_CopyCreateConfigurationOptions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_CopyProfileOptions.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_CopyProfileOptions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Examples.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Examples.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Logo_Rev.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Logo_Rev.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_SceneSetup.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_SceneSetup.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_SelectConfigurationDialog.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_SelectConfigurationDialog.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_UnitySetupPrompt.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_UnitySetupPrompt.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Structure.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Structure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_3DObjects.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_3DObjects.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_ExampleScene1.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_ExampleScene1.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Layout_2DImages.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Layout_2DImages.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Types.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Types.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Unity.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Unity.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/OpenXR-HLA.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/OpenXR-HLA.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Packaging/AccessingViaInterfaces.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Packaging/AccessingViaInterfaces.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Packaging/MRTKExperimental.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Packaging/MRTKExperimental.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Packaging/MRTKExtensions.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Packaging/MRTKExtensions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Packaging/MRTKFoundation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Packaging/MRTKFoundation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Pointers/MRTK_GGVPointer_HL1.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Pointers/MRTK_GGVPointer_HL1.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Pointers/MRTK_GGVPointer_HL2.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Pointers/MRTK_GGVPointer_HL2.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Pointers/MRTK_GrabPointer.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Pointers/MRTK_GrabPointer.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Pointers/MRTK_MousePointer.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Pointers/MRTK_MousePointer.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Pointers/MRTK_PointerProfile.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Pointers/MRTK_PointerProfile.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Pointers/MRTK_Pointer_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Pointers/MRTK_Pointer_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Pointers/MRTK_Pointers_Line.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Pointers/MRTK_Pointers_Line.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Pointers/MRTK_Pointers_Parabolic.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Pointers/MRTK_Pointers_Parabolic.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Pointers/MRTK_PokePointer.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Pointers/MRTK_PokePointer.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Slate/MRTK_Slate_Box.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Slate/MRTK_Slate_Box.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Slate/MRTK_Slate_Buttons.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Slate/MRTK_Slate_Buttons.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Slate/MRTK_Slate_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Slate/MRTK_Slate_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Slate/MRTK_Slate_Scale.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Slate/MRTK_Slate_Scale.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Slate/MRTK_Slate_Scripts.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Slate/MRTK_Slate_Scripts.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Slate/MRTK_Slate_Structure.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Slate/MRTK_Slate_Structure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/MRTK_Solver_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/MRTK_Solver_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/MRTK_Solver_Orbital.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/MRTK_Solver_Orbital.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/MRTK_SpatialAwareness_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/MRTK_SpatialAwareness_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/MeshObserverDisplaySettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/MeshObserverDisplaySettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/MeshObserverGeneralSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/MeshObserverGeneralSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/MeshObserverLevelOfDetailSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/MeshObserverLevelOfDetailSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/MeshObserverPhysicsSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/MeshObserverPhysicsSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessMeshObserverProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessMeshObserverProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessSelectObserver.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessSelectObserver.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessSelectSystemType.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessSelectSystemType.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessSystemArchitecture.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessSystemArchitecture.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tooltip/MRTK_Tooltip_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tooltip/MRTK_Tooltip_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Unity_ImportAssetOption.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Unity_ImportAssetOption.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/favicon.ico"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/gltf/boombox_screenshot.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/gltf/boombox_screenshot.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/gltf/lantern_screenshot.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/gltf/lantern_screenshot.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/icon_academy.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/icon_academy.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/icon_community.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/icon_community.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/icon_design.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/icon_design.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/icon_development.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/icon_development.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/issue_selection_prompt.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/issue_selection_prompt.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/mrdevcenter/icon-azurespatialanchors.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/mrdevcenter/icon-azurespatialanchors.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/mrdevcenter/icon-azurespeechservices.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/mrdevcenter/icon-azurespeechservices.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/mrdevcenter/icon-azurevisionservices.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/mrdevcenter/icon-azurevisionservices.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/mrdevcenter/icon-design.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/mrdevcenter/icon-design.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/mrdevcenter/icon-develop.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/mrdevcenter/icon-develop.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/mrdevcenter/icon-discover.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/mrdevcenter/icon-discover.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/mrdevcenter/icon-distribute.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/mrdevcenter/icon-distribute.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/mrt_logo.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/mrt_logo.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/mrt_logo_icon.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/mrt_logo_icon.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "Documentation/Input/Controllers.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Controllers.html",
-          "hash": "of9+LX6QRDcRT6cY7n263A=="
+          "hash": "A2bZvra7FZ6XQPLAt3klVQ=="
         }
       },
       "is_incremental": false,
@@ -654,7 +3208,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Dictation.html",
-          "hash": "zNnJvz/glwvKvzviHr5UWw=="
+          "hash": "Icw36dm8ghfR0A8Hfqbe1Q=="
         }
       },
       "is_incremental": false,
@@ -666,7 +3220,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Gestures.html",
-          "hash": "LoEfswa/HqiXmTNWM6YLRA=="
+          "hash": "Gfhp56HSPqW2lqfcPfolWg=="
         }
       },
       "is_incremental": false,
@@ -678,7 +3232,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputActions.html",
-          "hash": "jpWgalqoqcUXaPY1IL2j1w=="
+          "hash": "2/QGIPxWy8nJj0dnxwPCJA=="
         }
       },
       "is_incremental": false,
@@ -702,7 +3256,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputProviders.html",
-          "hash": "lQNHq247plTdY5wPLezwIA=="
+          "hash": "tetp64Du/z7v8Iun8KaLNA=="
         }
       },
       "is_incremental": false,
@@ -714,7 +3268,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Overview.html",
-          "hash": "P/n3M9x5tGRVVPxxBvrwkQ=="
+          "hash": "cSI6nuFR1E01kE1NcNRYfQ=="
         }
       },
       "is_incremental": false,
@@ -726,7 +3280,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Pointers.html",
-          "hash": "vhSnsdzK6SnBpxh/s7qifA=="
+          "hash": "cDfYivjIlp/AhhsJ3zEwDQ=="
         }
       },
       "is_incremental": false,
@@ -738,7 +3292,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Speech.html",
-          "hash": "H5W5NUVRIU/WTO1yzxkRsA=="
+          "hash": "5thLBhPgbqLPpWeLFHFaJw=="
         }
       },
       "is_incremental": false,
@@ -750,7 +3304,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputSimulationService.html",
-          "hash": "L9DqLP3cYS1wGXBpOI/bXA=="
+          "hash": "pwb8G8+zoaKCsK6P+WKWdA=="
         }
       },
       "is_incremental": false,
@@ -762,7 +3316,31 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSystem/HandTracking.html",
-          "hash": "WSRVtULcAGdH8hIDbwH8Og=="
+          "hash": "xbSpZtg7dRUeiy0UF1FOsw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Legal/NOTICE.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Legal/NOTICE.html",
+          "hash": "oids7NvayTgpnFn/xxHxYA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/MRTK-vNext.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/MRTK-vNext.html",
+          "hash": "Z5CvH8LiqoysnGzGrxiQxA=="
         }
       },
       "is_incremental": false,
@@ -774,7 +3352,19 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MixedRealityConfigurationGuide.html",
-          "hash": "SBJlj7t57KqDHtXPQT8ZVA=="
+          "hash": "WLd4nv1SDZgubyiY+HgNvQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/MixedRealityServices.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/MixedRealityServices.html",
+          "hash": "q3d34TxnT63Q8elBi2jVzg=="
         }
       },
       "is_incremental": false,
@@ -786,7 +3376,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Packaging/MRTK_Modularization.html",
-          "hash": "xBxJRRbkPgCvSWRI3Qsm2A=="
+          "hash": "DceI8//Ol9zVG5saW5NQMA=="
         }
       },
       "is_incremental": false,
@@ -798,7 +3388,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Packaging/MRTK_Packages.html",
-          "hash": "TEQZXwx1Ahtlohx59TOd0g=="
+          "hash": "YxJOhgm+E63p6zIFGurJaQ=="
         }
       },
       "is_incremental": false,
@@ -822,7 +3412,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_AppBar.html",
-          "hash": "Jv4vrwz9SuuZcifeK0sayg=="
+          "hash": "5wHIFHZ/Pfjqh3IDrkB8gQ=="
         }
       },
       "is_incremental": false,
@@ -834,7 +3424,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_BoundingBox.html",
-          "hash": "Ol/SB27u1rxof0aqznitnA=="
+          "hash": "Dv7J70ngYleOKJ7k/uZdag=="
         }
       },
       "is_incremental": false,
@@ -846,7 +3436,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Button.html",
-          "hash": "pBMQua7lWis+No3cJMcxMQ=="
+          "hash": "7bOPM/qhKbJzmZ/7XsYUkA=="
         }
       },
       "is_incremental": false,
@@ -858,7 +3448,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_FingertipVisualization.html",
-          "hash": "o0GR4732eFHYariehpLQaw=="
+          "hash": "WKXo1ZttT6ZNWI/o7UoQ7w=="
         }
       },
       "is_incremental": false,
@@ -870,7 +3460,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_HandInteractionExamples.html",
-          "hash": "j1pcZZ4ODWjRfR2OIJE8Gw=="
+          "hash": "7JJ3jnGJVXTO+zvhJJG4ZQ=="
         }
       },
       "is_incremental": false,
@@ -882,7 +3472,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Interactable.html",
-          "hash": "cCwzfuGgAfvoyqiQsWY0QA=="
+          "hash": "UgqjDeOu6mDuCgaf26cL/A=="
         }
       },
       "is_incremental": false,
@@ -894,7 +3484,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ManipulationHandler.html",
-          "hash": "FmJV8A7K14Qrb3+YOOS9xw=="
+          "hash": "jLRRevxev1hcGpo2A3Bq0g=="
         }
       },
       "is_incremental": false,
@@ -906,7 +3496,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ObjectCollection.html",
-          "hash": "0aChlQ0FxxiwboZsdt9eHg=="
+          "hash": "bs5zMpI+FI+4VwHCl9vfKA=="
         }
       },
       "is_incremental": false,
@@ -918,7 +3508,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Pointers.html",
-          "hash": "wRwSRQL35EOWwdMcjLbVTg=="
+          "hash": "rYGgIu2OtiZ9lIdjdoHy/A=="
         }
       },
       "is_incremental": false,
@@ -930,7 +3520,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Slate.html",
-          "hash": "LlrJpm2uClQbwO/X/6sPeg=="
+          "hash": "WJzKo4oUU4IHsQ8UV2dSEw=="
         }
       },
       "is_incremental": false,
@@ -942,7 +3532,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Solver.html",
-          "hash": "U7LnLt6Nd0kdBfBJqQO2/Q=="
+          "hash": "eDo0zrUtaOmQ5gI2dU6CbA=="
         }
       },
       "is_incremental": false,
@@ -954,7 +3544,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_SystemKeyboard.html",
-          "hash": "L2O1zcWg8tkZLmBYszYw/A=="
+          "hash": "w39FHFD1/5Yo9v3qn48m7A=="
         }
       },
       "is_incremental": false,
@@ -966,7 +3556,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Tooltip.html",
-          "hash": "JivUsNzXuyMCT1oMrNNRGQ=="
+          "hash": "G8wfJAMjPNH3+YPk8AstUQ=="
         }
       },
       "is_incremental": false,
@@ -978,7 +3568,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.html",
-          "hash": "lmqXNMaLv4tnclVjwzB7Hw=="
+          "hash": "6cpEiDT6V+j+UhbjmxTINg=="
         }
       },
       "is_incremental": false,
@@ -990,7 +3580,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html",
-          "hash": "hPLY6a+3aj2TK1DU2IBgxw=="
+          "hash": "Eo8l4+5j/S7SGi8aWfFVmQ=="
         }
       },
       "is_incremental": false,
@@ -1009,2602 +3599,24 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/howto_migrate.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/howto_migrate.html",
+          "hash": "MJWeOTmplhtaVd0+T+Ioqw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "Toc",
       "source_relative_path": "Documentation/toc.yml",
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "rwCA8laTAP2TSfDZt2xT0w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_Core_Input_Hands_ArticulatedHandMesh.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_Core_Input_Hands_ArticulatedHandMesh.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_Core_Input_Hands_HandTrackingProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_Core_Input_Hands_HandTrackingProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_GettingStarted_TMPro.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_GettingStarted_TMPro.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_InputSimulation_CameraControlSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_InputSimulation_CameraControlSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandControlSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandControlSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandGestureSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandGestureSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandPlacementSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandPlacementSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandRotationSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandRotationSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandSimulationMode.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandSimulationMode.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandSimulationSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_InputSimulation_HandSimulationSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_InputSimulation_InputSimulationProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_InputSimulation_InputSimulationProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_InputSimulation_InputSystemDataProviders.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_InputSimulation_InputSystemDataProviders.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/Documentation/Images/MRTK_InputSimulation_SwitchToGGV.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/Documentation/Images/MRTK_InputSimulation_SwitchToGGV.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "External/Documentation/MixedRealityServices.md",
-      "output": {
-        ".html": {
-          "relative_path": "External/Documentation/MixedRealityServices.html",
-          "hash": "Ha3JGe0SwYEqLbw2aPuR4w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "External/HowTo/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "External/HowTo/README.html",
-          "hash": "PRrrDEl+IuPCcqOE4kzLNA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Setup1.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Setup1.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Setup2.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/AppBar/MRTK_AppBar_Setup2.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Boundary/BoundarySelectSystemType.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Boundary/BoundarySelectSystemType.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationCeilingSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationCeilingSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationFloorSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationFloorSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationGeneralSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationGeneralSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationPlayAreaSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationPlayAreaSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationTrackedAreaSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationTrackedAreaSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationWallSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Boundary/BoundaryVisualizationWallSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Boundary/MRTKConfig_Boundary.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Boundary/MRTKConfig_Boundary.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Assign.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Assign.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Events.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Events.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Examples.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Examples.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Structure.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Structure.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom1.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom1.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom2.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom2.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom3.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Custom3.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_HowToUse_Interactable.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_HowToUse_Interactable.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_HowTo_Events.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_HowTo_Events.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_HowTo_PressableButton.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_HowTo_PressableButton.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_InteractionStates.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_InteractionStates.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Layout.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Layout.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_SeeItSayIt.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_SeeItSayIt.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech1.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech1.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech2.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech2.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech3.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Speech3.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Button/MRTK_Button_Structure.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Button/MRTK_Button_Structure.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ControllerConfigurationProfile/01-MixedRealityControllerConfigurationProfileInspector.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ControllerConfigurationProfile/01-MixedRealityControllerConfigurationProfileInspector.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ControllerConfigurationProfile/02-ControllerTemplateDefinition.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ControllerConfigurationProfile/02-ControllerTemplateDefinition.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ControllerConfigurationProfile/03-ControllerTemplate.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ControllerConfigurationProfile/03-ControllerTemplate.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ControllerConfigurationProfile/04-WMRInteractions.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ControllerConfigurationProfile/04-WMRInteractions.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ControllerConfigurationProfile/05-OculusTouchInteractions.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ControllerConfigurationProfile/05-OculusTouchInteractions.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ControllerConfigurationProfile/06-ViveWandInteractions.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ControllerConfigurationProfile/06-ViveWandInteractions.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ControllerVisualizer/ControllerVisualizerInspector.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ControllerVisualizer/ControllerVisualizerInspector.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsGeneralSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsGeneralSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsProfilerSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsProfilerSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsSelectSystemType.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Diagnostics/DiagnosticsSelectSystemType.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Diagnostics/MRTKConfig_Diagnostics.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Diagnostics/MRTKConfig_Diagnostics.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Diagnostics/VisualProfiler.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Diagnostics/VisualProfiler.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Diagnostics/VisualProfilerMemory.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Diagnostics/VisualProfilerMemory.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Diagnostics/VisualProfilerMissedFrames.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Diagnostics/VisualProfilerMissedFrames.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_compilation.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_compilation.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_gazeinput.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_gazeinput.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_heatmaps.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_heatmaps.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_panzoom.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_panzoom.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_rotate.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_rotate.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_scroll.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_scroll.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_navigation.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_navigation.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_placeholder.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_placeholder.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_positioning.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_positioning.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_positioning_slider.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_positioning_slider.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload2.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload2.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_targetselect.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_et_targetselect.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_configprofile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_configprofile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_configure.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_configure.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_dataprovider.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_dataprovider.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_gazeprovider.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_gazeprovider.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_gazesettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_gazesettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_simulate.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/EyeTracking/mrtk_setup_eyes_simulate.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Finger_Cursor_Inspector.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Finger_Cursor_Inspector.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Mixed_Reality_Standard_Shader_Inspector.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Mixed_Reality_Standard_Shader_Inspector.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Proximity_Light_Inspector.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_Proximity_Light_Inspector.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_States.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Fingertip/MRTK_FingertipVisualization_States.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_BoundingBox.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_BoundingBox.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Keyboard.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Keyboard.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Manipulation.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Manipulation.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_PressTouch.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_PressTouch.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Slate.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Slate.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP1.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP1.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP2.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP2.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Unity.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Unity.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Input/ControllerInputMapping.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Input/ControllerInputMapping.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Input/Diagrams.vsdx",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Input/Diagrams.vsdx"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Input/DictationDataProvider.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Input/DictationDataProvider.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Input/DictationDemo.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Input/DictationDemo.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Input/DictationHandler.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Input/DictationHandler.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Input/EventFlow.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Input/EventFlow.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Input/GestureProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Input/GestureProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Input/InputActions.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Input/InputActions.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Input/PointerProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Input/PointerProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Input/RegisteredServiceProviders.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Input/RegisteredServiceProviders.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Input/SpeechCommands.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Input/SpeechCommands.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/Buttons.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/Buttons.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/DefaultStates.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/DefaultStates.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/DefaultTheme_button.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/DefaultTheme_button.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/DefaultTheme_values.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/DefaultTheme_values.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/Event_audioClip.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/Event_audioClip.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/Event_hold.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/Event_hold.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/Event_toggle.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/Event_toggle.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/Events.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/Events.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/InputFeatures.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/InputFeatures.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/InputFeatures_short.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/InputFeatures_short.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/InteractableExamples.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/InteractableExamples.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/InteractableInspector.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/InteractableInspector.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/InteractableInspector_basic.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/InteractableInspector_basic.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/InteractableInspector_basicSteps.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/InteractableInspector_basicSteps.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/InteractableReceiver.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/InteractableReceiver.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/Profile_toggle.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/Profile_toggle.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/Profiles_noTarget.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/Profiles_noTarget.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/StatesScriptableObject.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/StatesScriptableObject.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Interactable/Theme.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Interactable/Theme.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK-ControllerDiagram.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK-ControllerDiagram.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK-HeadsetDefinition.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK-HeadsetDefinition.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK-InputActions.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK-InputActions.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK-NameSpaceExample.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK-NameSpaceExample.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK-vNext-HLA.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK-vNext-HLA.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK170802_Short_17.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK170802_Short_17.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK170802_Short_18.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK170802_Short_18.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK170802_Short_19.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK170802_Short_19.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK170802_Short_20.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK170802_Short_20.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK_AssetImportDialog.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK_AssetImportDialog.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK_ConfigureDialog.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK_ConfigureDialog.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK_ConfigureScene.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK_ConfigureScene.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK_ConfiguredHierarchy.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK_ConfiguredHierarchy.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK_CopyCreateConfigurationOptions.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK_CopyCreateConfigurationOptions.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK_CopyProfileOptions.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK_CopyProfileOptions.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK_Examples.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK_Examples.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK_Logo_Rev.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK_Logo_Rev.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK_SceneSetup.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK_SceneSetup.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK_SelectConfigurationDialog.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK_SelectConfigurationDialog.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MRTK_UnitySetupPrompt.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MRTK_UnitySetupPrompt.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Howto.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Howto.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Structure.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_Structure.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_3DObjects.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_3DObjects.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_ExampleScene1.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_ExampleScene1.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Layout_2DImages.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Layout_2DImages.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Types.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Types.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Unity.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/ObjectCollection/MRTK_ObjectCollection_Unity.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/OpenXR-HLA.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/OpenXR-HLA.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Packaging/AccessingViaInterfaces.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Packaging/AccessingViaInterfaces.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Packaging/MRTKExperimental.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Packaging/MRTKExperimental.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Packaging/MRTKExtensions.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Packaging/MRTKExtensions.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Packaging/MRTKFoundation.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Packaging/MRTKFoundation.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_GGVPointer_HL1.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Pointers/MRTK_GGVPointer_HL1.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_GGVPointer_HL2.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Pointers/MRTK_GGVPointer_HL2.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_GrabPointer.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Pointers/MRTK_GrabPointer.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_MousePointer.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Pointers/MRTK_MousePointer.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_PointerProfile.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Pointers/MRTK_PointerProfile.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_Pointer_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Pointers/MRTK_Pointer_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_Pointers_Line.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Pointers/MRTK_Pointers_Line.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_Pointers_Parabolic.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Pointers/MRTK_Pointers_Parabolic.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Pointers/MRTK_PokePointer.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Pointers/MRTK_PokePointer.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Box.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Box.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Buttons.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Buttons.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Scale.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Scale.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Scripts.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Scripts.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Structure.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Slate/MRTK_Slate_Structure.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Solver/MRTK_Solver_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Solver/MRTK_Solver_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Solver/MRTK_Solver_Orbital.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Solver/MRTK_Solver_Orbital.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MRTKConfig_SpatialAwareness.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/MRTKConfig_SpatialAwareness.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MRTK_SpatialAwareness_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/MRTK_SpatialAwareness_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverDisplaySettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverDisplaySettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverGeneralSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverGeneralSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverLevelOfDetailSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverLevelOfDetailSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverPhysicsSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/MeshObserverPhysicsSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessMeshObserverProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessMeshObserverProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessSelectObserver.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessSelectObserver.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessSelectSystemType.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessSelectSystemType.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessSystemArchitecture.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SpatialAwareness/SpatialAwarenessSystemArchitecture.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/SystemKeyboard/MRTK_SystemKeyboard_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/SystemKeyboard/MRTK_SystemKeyboard_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/Unity_ImportAssetOption.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/Unity_ImportAssetOption.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/favicon.ico",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/favicon.ico"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/gltf/boombox_screenshot.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/gltf/boombox_screenshot.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/gltf/lantern_screenshot.jpg",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/gltf/lantern_screenshot.jpg"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/icon_academy.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/icon_academy.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/icon_community.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/icon_community.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/icon_design.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/icon_design.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/icon_development.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/icon_development.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/issue_selection_prompt.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/issue_selection_prompt.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-azurespatialanchors.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/mrdevcenter/icon-azurespatialanchors.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-azurespeechservices.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/mrdevcenter/icon-azurespeechservices.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-azurevisionservices.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/mrdevcenter/icon-azurevisionservices.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-design.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/mrdevcenter/icon-design.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-develop.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/mrdevcenter/icon-develop.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-discover.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/mrdevcenter/icon-discover.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/mrdevcenter/icon-distribute.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/mrdevcenter/icon-distribute.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/mrt_logo.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/mrt_logo.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "External/ReadMeImages/mrt_logo_icon.png",
-      "output": {
-        "resource": {
-          "relative_path": "External/ReadMeImages/mrt_logo_icon.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Feature_Contribution_Process.md",
-      "output": {
-        ".html": {
-          "relative_path": "Feature_Contribution_Process.html",
-          "hash": "Us9oXaEV4AfUW1O5Z7Mb2Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "MRTK-vNext.md",
-      "output": {
-        ".html": {
-          "relative_path": "MRTK-vNext.html",
-          "hash": "Y5vTqm38eHCZw5L0AY54hA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "NOTICE.md",
-      "output": {
-        ".html": {
-          "relative_path": "NOTICE.html",
-          "hash": "6TtIFYS9G6ZHqPILf+OCUw=="
+          "hash": "I16KV/EXlZ1T3nXk890vOw=="
         }
       },
       "is_incremental": false,
@@ -3616,19 +3628,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "qTgE6gMgvZnVwR2/J75h1Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Roadmap.md",
-      "output": {
-        ".html": {
-          "relative_path": "Roadmap.html",
-          "hash": "V3OiDLDnguxRfxkpV8LDkA=="
+          "hash": "DsPmtI5m6NxcKE2ITGuYow=="
         }
       },
       "is_incremental": false,

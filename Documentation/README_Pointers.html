@@ -82,15 +82,15 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="pointers">Pointers</h1>
 
-<p><img src="../External/ReadMeImages/Pointers/MRTK_Pointer_Main.png" alt="Pointer"></p>
+<p><img src="Images/Pointers/MRTK_Pointer_Main.png" alt="Pointer"></p>
 <p>A pointer is something attached to a controller that gives focus and dispatches inputs to the game object it is pointing to. Learn more about the MRTK input system <a href="Input/Overview.html">here</a>, and a scripting/engineering overview of pointers <a href="Input/Pointers.html">here</a>.</p>
 <p>For a game object to be able to receive focus it must have a collider (so it can be hit by physics raycasts) and belong to one of the layers defined in the Pointer Raycast Layer Masks in the Pointer Profile.</p>
 <p>Pointers are instantiated automatically at runtime when a new controller is detected. The pointers that are created for each controller type are defined in the <em>Pointer Options</em> in the <em>Pointer Profile</em>. You can have more than one pointer attached to a controller; for example, with the default pointer profile, WMR controllers get both a line and a parabolic pointer for normal selection and teleportation respectively. Pointers communicate with each other to decide which one is active.</p>
 <p>MRTK provides a set of pointer prefabs in <em>Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers</em>. You can use your own prefabs as long as they contain one of the pointer scripts in <em>Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers</em> or any other script implementing <code>IMixedRealityPointer</code>.</p>
-<p><img src="../External/ReadMeImages/Pointers/MRTK_PointerProfile.jpg" alt="Pointer Profile"></p>
+<p><img src="Images/Pointers/MRTK_PointerProfile.jpg" alt="Pointer Profile"></p>
 <h2 id="mrtk-pointer-prefabs">MRTK Pointer Prefabs</h2>
 <h3 id="line-pointer">Line Pointer</h3>
-<img src="../External/ReadMeImages/Pointers/MRTK_Pointers_Line.png" width="600">
+<img src="Images/Pointers/MRTK_Pointers_Line.png" width="600">
 <p>A line pointer is a ray attached to a controller. The line starts at the controller's base, and its pointing direction matches the pointing direction of the controller.</p>
 <p>Line pointers are commonly used when you have two controllers which have a position, and a pointing direction.</p>
 <p>For motion controllers like in Oculus, Vive, Windows Mixed Reality, the rotation will match the rotation of the controller.</p>
@@ -98,18 +98,18 @@
 <h3 id="ggv-pointer">GGV Pointer</h3>
 <p>GGV stands for &quot;Gaze, Gesture, Voice&quot;<sup><a href="https://docs.microsoft.com/en-us/windows/mixed-reality/gaze">2</a></sup>. The GGV pointer's position and direction is driven by the head's position and rotation. The pointer is used to provide input that matches the HoloLens V1 input style of head gaze + airtap<sup><a href="https://docs.microsoft.com/en-us/windows/mixed-reality/gestures">3</a></sup>.</p>
 <p>In the pointer profile you can see that the V1 HoloLens input system is provided for you via the mapping of &quot;GGVHand&quot; (V1 HoloLens hand) to the GGVPointer.</p>
-<img src="../External/ReadMeImages/Pointers/MRTK_GGVPointer_HL1.jpg" width="600">
+<img src="Images/Pointers/MRTK_GGVPointer_HL1.jpg" width="600">
 <p>You can also simulate the V1 HoloLens GGV behavior on HoloLens 2 by mapping the articulated hand to the GGVPointer.</p>
-<img src="../External/ReadMeImages/Pointers/MRTK_GGVPointer_HL2.jpg" width="600">
+<img src="Images/Pointers/MRTK_GGVPointer_HL2.jpg" width="600">
 <h3 id="grab-pointer--sphere-pointer">Grab Pointer / Sphere Pointer</h3>
-<img src="../External/ReadMeImages/Pointers/MRTK_GrabPointer.jpg" width="600">
+<img src="Images/Pointers/MRTK_GrabPointer.jpg" width="600">
 <p>Grab pointer is used for near interactions, specifically for grabbing items near the hand / controller.</p>
 <p><strong>NOTE:</strong> Only items with <em>Near Interaction Grabbable</em> components will respond to the sphere pointer.</p>
 <h4 id="sphere-pointer-properties">Sphere Pointer Properties</h4>
 <p>Sphere Cast Radius - The radius for the sphere used to query for grabbable objects.
 Debug Mode - If true, draw the sphere that is used to query for grabbable objects</p>
 <h3 id="poke-pointer">Poke Pointer</h3>
-<img src="../External/ReadMeImages/Pointers/MRTK_PokePointer.jpg" width="600">
+<img src="Images/Pointers/MRTK_PokePointer.jpg" width="600">
 <p>Poke pointer is for near interactions, specifically for touching objects via the hand / controller.</p>
 <p><strong>NOTE:</strong> Only items with <em>Near Interaction Touchable</em> components will respond to the poke pointer.</p>
 <h4 id="poke-pointer-properties">Poke Pointer Properties</h4>
@@ -128,10 +128,10 @@ Debug Mode - If true, draw the sphere that is used to query for grabbable object
 <li>line - optional line to draw from fingertip to the active input surface.</li>
 </ul>
 <h3 id="mouse-pointer">Mouse pointer</h3>
-<p><img src="../External/ReadMeImages/Pointers/MRTK_MousePointer.jpg" alt="Mouse Pointer"></p>
+<p><img src="Images/Pointers/MRTK_MousePointer.jpg" alt="Mouse Pointer"></p>
 <p>Mouse pointer is used for interacting with the mouse. This pointer will only be used if the active input is a mouse. By default, the MRTK Profile does not provide a mouse as an input provider, as mouse input is instead used to simulate hand input. You may add a mouse in your MRTK profily by modifying the <em>Registered Service Providers</em> in your MRTK profile.</p>
 <h3 id="teleport-pointer">Teleport pointer</h3>
-<img src="../External/ReadMeImages/Pointers/MRTK_Pointers_Parabolic.png" width="600">
+<img src="Images/Pointers/MRTK_Pointers_Parabolic.png" width="600">
 <p>Teleport pointer is used for teleportation. This pointer will only be active when using a controller that supports teleportation (such as a motion controller like in Oculus, Vive, Windows Mixed Reality).</p>
 </article>
           </div>

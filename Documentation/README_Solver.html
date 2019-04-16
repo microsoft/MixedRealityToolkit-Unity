@@ -82,7 +82,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="solver">Solver</h1>
 
-<p><img src="../External/ReadMeImages/Solver/MRTK_Solver_Main.png" alt="Solver"></p>
+<p><img src="Images/Solver/MRTK_Solver_Main.png" alt="Solver"></p>
 <p>At this time, there is no easy, reliable way to specify the update order for Unity components. This can make it difficult to implement deterministic compound transformations. The solver system addresses this issue.</p>
 <p>Building on this, Solvers offer a range of follow behaviors (eg tag-along) which can be safely stacked (eg, tag-along + surface magnetism + momentum).</p>
 <h2 id="basic-architecture">Basic architecture</h2>
@@ -107,7 +107,7 @@
 <li><strong>SolverHandler</strong> has two fields for setting the reference object. You can choose a tracked object (such as the user camera or L/R motion controllers), or instead use the <strong>TransformTarget</strong> field which overrides any set tracked object. This enables you to have solvers reference any scene object. Yes, that means objects can have tag alongs and cast surface magnetism as well as tracked objects. Very handy.</li>
 <li>Surface magnetism scripts rely on a <em>LayerMask</em> for raycasting. As a recommendation, create a custom <em>LayerMask</em> (the example uses <em>Surface</em>). Note that using <em>default</em> or <em>everything</em> will result in UI components or cursors contributing to the solver. This can produce weird and unexpected behavior. Objects lurching toward you etc...</li>
 </ul>
-<img src="../External/ReadMeImages/Solver/MRTK_Solver_Orbital.png" width="450">
+<img src="Images/Solver/MRTK_Solver_Orbital.png" width="450">
 <p>Example of using Orbital solver in the <a href="README_Slate.html">Slate</a> prefab.</p>
 <h2 id="expectations-for-extending-or-adding-to-the-solver-system">Expectations for Extending or Adding to the Solver System</h2>
 <ul>
