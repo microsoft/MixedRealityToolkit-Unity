@@ -8,7 +8,7 @@ The spatial awareness mesh observer profile provides options for configuring:
 
 ## General Settings
 
-![Mesh Observer General Settings](../../External/ReadMeImages/SpatialAwareness/MeshObserverGeneralSettings.png)
+![Mesh Observer General Settings](../../Documentation/Images/SpatialAwareness/MeshObserverGeneralSettings.png)
 
 ### Startup Behavior
 
@@ -52,7 +52,7 @@ The observation extents define the distance from the observation point that mesh
 
 ## Physics Settings
 
-![Mesh Observer Physics Settings](../../External/ReadMeImages/SpatialAwareness/MeshObserverPhysicsSettings.png)
+![Mesh Observer Physics Settings](../../Documentation/Images/SpatialAwareness/MeshObserverPhysicsSettings.png)
 
 ### Physics Layer
 
@@ -64,7 +64,7 @@ Specifies whether or not the mesh observer will recalculate the normals of the m
 
 ## Level of Detail Settings
 
-![Mesh Observer Level of Detail Settings](../../External/ReadMeImages/SpatialAwareness/MeshObserverLevelOfDetailSettings.png)
+![Mesh Observer Level of Detail Settings](../../Documentation/Images/SpatialAwareness/MeshObserverLevelOfDetailSettings.png)
 
 ### Level of Detail
 
@@ -84,7 +84,7 @@ When using the custom [Level of Detail](#level-of-detail), specifies the request
 
 ## Display Settings
 
-![Mesh Observer Display Settings](../../External/ReadMeImages/SpatialAwareness/MeshObserverDisplaySettings.png)
+![Mesh Observer Display Settings](../../Documentation/Images/SpatialAwareness/MeshObserverDisplaySettings.png)
 
 *Mesh Observer Display Settings*
 
