@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const string StandardRoughnessShaderName = "Standard (Roughness setup)";
         private const string StandardSpecularShaderName = "Standard (Specular setup)";
 
-        [MenuItem("Mixed Reality Toolkit/Channel Packer")]
+        [MenuItem("Mixed Reality Toolkit/Utilities/Channel Packer")]
         private static void ShowWindow()
         {
             ChannelPackerWindow window = GetWindow<ChannelPackerWindow>();
