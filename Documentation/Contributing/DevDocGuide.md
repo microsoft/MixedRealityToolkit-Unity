@@ -77,7 +77,7 @@ Currently there's a definition for the following resource types:
 <td><i>ResourceType</i></td> <td><i>Path</i></td>
 </tr>
 <tr>
-<td>Images</td> <td>External/ReadMeImages/</td>
+<td>Images</td> <td>Documentation/Images/</td>
 </tr>
 </table>
 

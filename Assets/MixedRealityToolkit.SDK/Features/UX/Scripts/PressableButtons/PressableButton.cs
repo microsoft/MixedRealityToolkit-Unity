@@ -46,6 +46,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
         private bool enforceFrontPush = true;
 
+        [Header("Position markers")]
+        [Tooltip("Used to mark where button movement begins. If null, it will be automatically generated.")]
+
+        [SerializeField]
+        [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
+        private bool enforceFrontPush = true;
+
         [Header("Events")]
         public UnityEvent TouchBegin;
         public UnityEvent TouchEnd;
@@ -110,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     return -1.0f * nearInteractionTouchable.Forward;
                 }
-
+                
                 return transform.forward;
             }
         }
