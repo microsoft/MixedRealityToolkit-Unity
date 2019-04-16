@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
     {
         const string InitialMarkerTransformName = "Initial Marker";
-        
+
         [SerializeField]
         [Tooltip("The object that is being pushed.")]
         private GameObject movingButtonVisuals = null;
@@ -42,6 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Speed of the object movement on release.")]
         private float returnRate = 25.0f;
 
+        [SerializeField]
+        [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
+        private bool enforceFrontPush = true;
+
         [Header("Events")]
         public UnityEvent TouchBegin;
         public UnityEvent TouchEnd;
@@ -55,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private float currentPushDistance = 0.0f;
 
-        private List<Vector3> touchPoints = new List<Vector3>();
+        private Dictionary<IMixedRealityController, Vector3> touchPoints = new Dictionary<IMixedRealityController, Vector3>();
 
         [Header("Button State")]
         [ReadOnly]
@@ -66,20 +70,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private bool isPressing = false;
 
-        private Transform initialTransform;
-
-
         ///<summary>
         /// Represents the state of whether or not a finger is currently touching this button.
         ///</summary>
-        public bool IsTouching
+        private bool IsTouching
         {
             get
             {
                 return isTouching;
             }
 
-            private set
+            set
             {
                 if (value != isTouching)
                 {
@@ -110,8 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     return -1.0f * nearInteractionTouchable.Forward;
                 }
 
-                Vector3 localSpacePressDirection = new Vector3(0, 0, 1);
-                return transform.TransformDirection(localSpacePressDirection);
+                return transform.forward;
             }
         }
 
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (gameObject.layer == 2)
             {
-                Debug.LogWarning("PhysicalButtonMovement will not work if game object layer is set to 'Ignore Raycast'.");
+                Debug.LogWarning("PressableButton will not work if game object layer is set to 'Ignore Raycast'.");
             }
         }
 
@@ -131,12 +131,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (IsTouching)
             {
-                float previousPushDistance = currentPushDistance;
                 currentPushDistance = GetFarthestPushDistanceAlongButtonAxis();
+
                 UpdateMovingVisualsPosition();
 
                 // Hand Press is only allowed to happen while touching.
-                UpdatePressedState(currentPushDistance, previousPushDistance);
+                UpdatePressedState(currentPushDistance);
             }
             else if (currentPushDistance > 0.0f)
             {
@@ -150,25 +150,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 UpdateMovingVisualsPosition();
             }
-
-            touchPoints.Clear();
         }
 
         #region OnTouch
 
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            touchPoints.Add(eventData.InputData);
+            FindOrCreatePathMarkers();
 
-            if (initialTransform == null)
+            if (enforceFrontPush)
             {
-                FindOrCreatePathMarkers();
-                // Make sure to initialize currentPushDistance now to correctly handle back-presses in
-                // HandlePressProgress().
-                currentPushDistance = GetFarthestPushDistanceAlongButtonAxis();
+                // Back-Press Detection:
+                // Accept touch only if controller pushed from the front.
+                // Extrapolate to get previous position.
+                Vector3 previousPosition = eventData.InputData - eventData.Controller.Velocity * Time.deltaTime;
+                float previousDistance = GetProjectedDistance(initialTransform.position, WorldSpacePressDirection, previousPosition);
+
+                if (previousDistance > 0.0f)
+                {
+                    return;
+                }
             }
 
-            // Pulse each proximity light on pointer cursors's interacting with this button.
+            Debug.Assert(!touchPoints.ContainsKey(eventData.Controller));
+            touchPoints.Add(eventData.Controller, eventData.InputData);
+
+            // Pulse each proximity light on pointer cursors' interacting with this button.
             foreach (var pointer in eventData.InputSource.Pointers)
             {
                 ProximityLight[] proximityLights = pointer.BaseCursor?.GameObjectReference?.GetComponentsInChildren<ProximityLight>();
@@ -187,18 +194,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            touchPoints.Add(eventData.InputData);
+            if (touchPoints.ContainsKey(eventData.Controller))
+            {
+                touchPoints[eventData.Controller] = eventData.InputData;
+
+                eventData.Use();
+            }
         }
-        
+
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+            if (touchPoints.ContainsKey(eventData.Controller))
+            {
+                touchPoints.Remove(eventData.Controller);
+
+                eventData.Use();
+            }
         }
-        
+
         #endregion OnTouch
 
         #region private Methods
 
-        public void FindOrCreatePathMarkers()
+        private void FindOrCreatePathMarkers()
         {
             Transform sourcePositionTransform = (movingButtonVisuals != null) ? movingButtonVisuals.transform : transform;
 
@@ -212,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (initialTransform == null)
             {
                 initialTransform = new GameObject(InitialMarkerTransformName).transform;
-                initialTransform.parent = transform;
+                initialTransform.parent = sourcePositionTransform.parent;
                 initialTransform.position = sourcePositionTransform.position;
             }
         }
@@ -233,22 +251,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Debug.Assert(initialTransform != null);
 
             float farthestDistance = 0.0f;
-            foreach (Vector3 p in touchPoints)
+
+            foreach (var touchEntry in touchPoints)
             {
-                float testDistance = GetProjectedDistance(initialTransform.position, WorldSpacePressDirection, p);
-                farthestDistance = Mathf.Max(farthestDistance, testDistance);
+                float testDistance = GetProjectedDistance(initialTransform.position, WorldSpacePressDirection, touchEntry.Value);
+                farthestDistance = Mathf.Max(testDistance, farthestDistance);
             }
 
             return Mathf.Clamp(farthestDistance, 0.0f, maxPushDistance);
         }
 
-        private void UpdatePressedState(float pushDistance, float previousPushDistance)
+        private void UpdatePressedState(float pushDistance)
         {
             // If we aren't in a press and can't start a simple one.
             if (!isPressing)
             {
                 // Compare to our previous push depth. Use previous push distance to handle back-presses.
-                if (pushDistance >= pressDistance && previousPushDistance < pressDistance)
+                if (pushDistance >= pressDistance)
                 {
                     isPressing = true;
                     ButtonPressed.Invoke();
@@ -258,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             else
             {
                 float releaseDistance = pressDistance - releaseDistanceDelta;
-                if (pushDistance <= releaseDistance && previousPushDistance > releaseDistance)
+                if (pushDistance <= releaseDistance)
                 {
                     isPressing = false;
                     ButtonReleased.Invoke();

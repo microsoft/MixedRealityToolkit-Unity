@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             info.TouchStartOrigin = touchStartOrigin;
             info.TouchCageCenter = info.TouchCageLocalBounds.center.z;
             info.TouchCageSize = info.TouchCageLocalBounds.size.z;
-            
+
             // Get the start and end pos for moving content
             info.StartPos = buttonContentTransform.localPosition.z;
             info.EndPos = buttonContentTransform.localPosition.z;
@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUI.BeginChangeCheck();
             }
-            
+
             // PRESS END
             Handles.color = Color.cyan;
             newInfo.EndPos = DrawPlaneAndHandle(targetEndPlane, info.TouchCageLocalBounds.size * 0.5f, newInfo.EndPos, info.TouchStartOrigin, "Max move distance", editingEnabled);
