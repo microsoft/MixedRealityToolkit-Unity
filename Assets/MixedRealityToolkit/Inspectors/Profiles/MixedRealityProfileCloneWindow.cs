@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void CloneMainProfile()
         {
-            var newChildProfile = CloneProfile(parentProfile, childProfile, childProfileTypeName, childProperty, targetFolder);
+            var newChildProfile = CloneProfile(parentProfile, childProfile, childProfileTypeName, childProperty, targetFolder, childProfileAssetName);
             SerializedObject newChildSerializedObject = new SerializedObject(newChildProfile);
             // First paste all values outright
             PasteProfileValues(parentProfile, childProfile, newChildSerializedObject);
@@ -269,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             cloneWindow.Close();
         }
 
-        private static BaseMixedRealityProfile CloneProfile(BaseMixedRealityProfile parentProfile, BaseMixedRealityProfile profileToClone, string childProfileTypeName, SerializedProperty childProperty, Object targetFolder, string profileName = null)
+        private static BaseMixedRealityProfile CloneProfile(BaseMixedRealityProfile parentProfile, BaseMixedRealityProfile profileToClone, string childProfileTypeName, SerializedProperty childProperty, Object targetFolder, string profileName)
         {
             ScriptableObject instance = CreateInstance(childProfileTypeName);
             instance.name = string.IsNullOrEmpty(profileName) ? childProfileTypeName : profileName;
