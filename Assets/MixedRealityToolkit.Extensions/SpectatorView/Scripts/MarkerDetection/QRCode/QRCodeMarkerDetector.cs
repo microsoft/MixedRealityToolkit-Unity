@@ -4,7 +4,7 @@
 // The process for distributing QRCodesTrackerPlugin.dll is not yet defined. This code will remain unusable
 // to the general public until said distribution story is determiend. However, this file has been added to enable
 // public facing development.
-// #define QRCODESTRACKER_BINARY_AVAILABLE
+#define QRCODESTRACKER_BINARY_AVAILABLE
 
 #if QRCODESTRACKER_BINARY_AVAILABLE
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker;

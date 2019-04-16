@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
 
                 if (request != null &&
-                    lastRequestTimestampText != null  )
+                    lastRequestTimestampText != null)
                 {
                     lastRequestTimestampText.text = $"Last Request Timestamp: {request.timestamp}";
                 }

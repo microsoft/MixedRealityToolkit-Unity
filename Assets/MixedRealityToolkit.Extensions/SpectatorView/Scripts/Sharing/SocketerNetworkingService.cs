@@ -15,6 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         INetworkingService
     {
         /// <summary>
+        /// TCPConnectionManager used for communicating with other devices
+        /// </summary>
+        [Tooltip("TCPConnectionManager used for communicating with other devices")]
+        [SerializeField]
+        protected TCPConnectionManager net = null;
+
+        /// <summary>
         /// IPAddress for the user (HoloLens & HoloLens 2)
         /// </summary>
         [Tooltip("IPAddress for the user (HoloLens & HoloLens 2)")]
@@ -36,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         protected TimeSpan timeoutInterval = TimeSpan.Zero;
 
         private bool runAsUser = false;
-        private TCPConnectionManager net = null;
         private Dictionary<string, string> playerIds = new Dictionary<string, string>();
 
         /// <inheritdoc />

@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Marke
 using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
 using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
 using System.Text;
+using System;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
@@ -57,19 +58,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private readonly float markerPaddingRatio = 34f / (300f - (2f * 34f)); // padding pixels / marker width in pixels
         private Dictionary<int, MarkerCorners> qrCodeMarkerCorners = new Dictionary<int, MarkerCorners>();
         private Dictionary<int, MarkerCorners> arucoMarkerCorners = new Dictionary<int, MarkerCorners>();
-        private HeadsetCalibrationData headsetCalibrationData = new HeadsetCalibrationData();
+        private HeadsetCalibrationData headsetCalibrationData;
 
         public event HeadsetCalibrationDataUpdatedHandler Updated;
         public void UpdateHeadsetCalibrationData()
         {
-            lock (headsetCalibrationData)
-            {
-                headsetCalibrationData.timestamp = Time.time;
-                headsetCalibrationData.headsetData.position = Camera.main.transform.position;
-                headsetCalibrationData.headsetData.rotation = Camera.main.transform.rotation;
-                headsetCalibrationData.markers = new List<MarkerPair>();
-                headsetCalibrationData.imageData = new PVImageData();
-            }
+            Debug.Log("Updating headset calibration data");
+            headsetCalibrationData = new HeadsetCalibrationData();
+            headsetCalibrationData.timestamp = Time.time;
+            headsetCalibrationData.headsetData.position = Camera.main.transform.position;
+            headsetCalibrationData.headsetData.rotation = Camera.main.transform.rotation;
+            headsetCalibrationData.markers = new List<MarkerPair>();
+            headsetCalibrationData.imageData = new PVImageData();
 
             if (sendPVImages)
             {
@@ -219,19 +219,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             Debug.Log("Image obtained from HoloLens PV Camera");
             if (headsetCalibrationData != null)
             {
-                lock (headsetCalibrationData)
-                {
-                    headsetCalibrationData.imageData.pixelFormat = frame.PixelFormat;
-                    headsetCalibrationData.imageData.resolution = frame.Resolution;
-                    headsetCalibrationData.imageData.intrinsics = frame.Intrinsics;
-                    headsetCalibrationData.imageData.extrinsics = frame.Extrinsics;
-                    headsetCalibrationData.imageData.pixelData = frame.PixelData;
-                }
+                headsetCalibrationData.imageData.pixelFormat = frame.PixelFormat;
+                headsetCalibrationData.imageData.resolution = frame.Resolution;
+                headsetCalibrationData.imageData.intrinsics = frame.Intrinsics;
+                headsetCalibrationData.imageData.extrinsics = frame.Extrinsics;
+
+                byte[] data = new byte[frame.PixelData.Length];
+                Buffer.BlockCopy(frame.PixelData, 0, data, 0, frame.PixelData.Length * sizeof(byte));
+                headsetCalibrationData.imageData.pixelData = data;
 
                 SendHeadsetCalibrationDataPayload();
 
                 Debug.Log($"Frame obtained with resolution {frame.Resolution.Width} x {frame.Resolution.Height} and size {frame.PixelData.Length}");
-                frame.Release();
             }
 #endif
         }
@@ -239,10 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private void SendHeadsetCalibrationDataPayload()
         {
             byte[] payload = null;
-            lock(headsetCalibrationData)
-            {
-                payload = Encoding.ASCII.GetBytes(JsonUtility.ToJson(headsetCalibrationData));
-            }
+            payload = Encoding.ASCII.GetBytes(JsonUtility.ToJson(headsetCalibrationData));
 
             Updated?.Invoke(payload);
         }
