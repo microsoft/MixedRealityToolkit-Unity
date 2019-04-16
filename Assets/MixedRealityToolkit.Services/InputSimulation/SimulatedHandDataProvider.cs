@@ -180,6 +180,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             stateRight = new SimulatedHandState(Handedness.Right);
         }
 
+        private bool isAnyHandSimulated = false;
+
         public void Update()
         {
             bool wasLeftVisible = stateLeft.IsVisible;
@@ -213,7 +215,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // Hide cursor if either of the hands is simulated
-            Cursor.visible = !stateLeft.IsSimulated && !stateRight.IsSimulated;
+            // only set this if we have a state change, else we might interfere with some other controllers mouse behavior
+            bool isHandSimulated = stateLeft.IsSimulated || stateRight.IsSimulated;
+            if (isAnyHandSimulated != isHandSimulated)
+            {
+                isAnyHandSimulated = isHandSimulated;
+                Cursor.visible = !isHandSimulated;
+            }
 
             stateLeft.UpdateVisibility(profile.HandHideTimeout);
             stateRight.UpdateVisibility(profile.HandHideTimeout);

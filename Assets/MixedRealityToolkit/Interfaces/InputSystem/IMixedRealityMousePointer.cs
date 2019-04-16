@@ -22,5 +22,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// How long should it take before the mouse cursor is hidden?
         /// </summary>
         float HideTimeout { get; }
+
+        /// <summary>
+        /// Defines the mouse cursor speed. 
+        /// Multiplier that gets applied to the mouse delta before converting to world space.
+        /// </summary>
+        float Speed { get; }
     }
 }
