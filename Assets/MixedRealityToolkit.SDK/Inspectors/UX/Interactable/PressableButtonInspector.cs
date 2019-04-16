@@ -10,28 +10,28 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CustomEditor(typeof(PressableButton))]
     public class PressableButtonInspector : UnityEditor.Editor
     {
-        // Struct use to store state of preview
+        // Struct used to store state of preview
         // This lets us display accurate info while button is being pressed
         private struct ButtonInfo
         {
             // Convenience fields for box collider info
-            public Bounds touchCageLocalBounds;
+            public Bounds TouchCageLocalBounds;
             // Start pos for touch, also the origin of our cage
-            public Vector3 touchStartOrigin;
+            public Vector3 TouchStartOrigin;
             // Start and end pos for moving content
-            public float startPos;
-            public float endPos;
+            public float StartPos;
+            public float EndPos;
             // Press, touch and release positions in z axis
-            public float pressDistPos;
-            public float touchStartPos;
-            public float releaseDistPos;
+            public float PressDistPos;
+            public float TouchStartPos;
+            public float ReleaseDistPos;
             // Cage values
-            public float touchCageCenter;
-            public float touchCageSize;
+            public float TouchCageCenter;
+            public float TouchCageSize;
             // The actual values that the button uses
-            public float maxPushDistance;
-            public float pressDistance;
-            public float releaseDistanceDelta;
+            public float MaxPushDistance;
+            public float PressDistance;
+            public float ReleaseDistanceDelta;
         }
 
         const string EditingEnabledKey = "MRTK_PressableButtonInspector_EditingEnabledKey";
@@ -88,17 +88,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             buttonContentTransform = transform;
             if (movingButtonVisuals.objectReferenceValue != null)
+            {
                 buttonContentTransform = (movingButtonVisuals.objectReferenceValue as GameObject).transform;
+            }
         }
 
         private void OnSceneGUI()
         {
             // Only display on selection
             if (Selection.activeObject != button.gameObject)
+            {
                 return;
+            }
 
             if (!VisiblePlanes)
+            {
                 return;
+            }
 
             // If the button is being pressed, don't gather new info
             // Just display the info we already gathered
@@ -118,26 +124,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             ButtonInfo info = new ButtonInfo();
 
-            info.touchCageLocalBounds = new Bounds(touchCage.center, touchCage.size);
+            info.TouchCageLocalBounds = new Bounds(touchCage.center, touchCage.size);
             // Get the start pos for touch
-            Vector3 touchStartOrigin = info.touchCageLocalBounds.center;
-            touchStartOrigin.z -= info.touchCageLocalBounds.extents.z;
-            info.touchStartOrigin = touchStartOrigin;
-            info.touchCageCenter = info.touchCageLocalBounds.center.z;
-            info.touchCageSize = info.touchCageLocalBounds.size.z;
+            Vector3 touchStartOrigin = info.TouchCageLocalBounds.center;
+            touchStartOrigin.z -= info.TouchCageLocalBounds.extents.z;
+            info.TouchStartOrigin = touchStartOrigin;
+            info.TouchCageCenter = info.TouchCageLocalBounds.center.z;
+            info.TouchCageSize = info.TouchCageLocalBounds.size.z;
             
             // Get the start and end pos for moving content
-            info.startPos = buttonContentTransform.localPosition.z;
-            info.endPos = buttonContentTransform.localPosition.z;
-            info.endPos += maxPushDistance.floatValue / transform.lossyScale.z;
+            info.StartPos = buttonContentTransform.localPosition.z;
+            info.EndPos = buttonContentTransform.localPosition.z;
+            info.EndPos += maxPushDistance.floatValue / transform.lossyScale.z;
 
-            info.maxPushDistance = maxPushDistance.floatValue;
-            info.pressDistance = pressDistance.floatValue;
-            info.releaseDistanceDelta = releaseDistanceDelta.floatValue;
+            info.MaxPushDistance = maxPushDistance.floatValue;
+            info.PressDistance = pressDistance.floatValue;
+            info.ReleaseDistanceDelta = releaseDistanceDelta.floatValue;
 
-            info.pressDistPos = info.startPos + (info.pressDistance / transform.lossyScale.z);
-            info.touchStartPos = info.touchStartOrigin.z;
-            info.releaseDistPos = info.pressDistPos - (info.releaseDistanceDelta / transform.lossyScale.z);
+            info.PressDistPos = info.StartPos + (info.PressDistance / transform.lossyScale.z);
+            info.TouchStartPos = info.TouchStartOrigin.z;
+            info.ReleaseDistPos = info.PressDistPos - (info.ReleaseDistanceDelta / transform.lossyScale.z);
 
             return info;
         }
@@ -154,62 +160,61 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             
             // PRESS END
             Handles.color = Color.cyan;
-            DrawPlaneAndHandle(targetEndPlane, info.touchCageLocalBounds.size * 0.5f, ref newInfo.endPos, info.touchStartOrigin, "Max move distance", editingEnabled);
+            newInfo.EndPos = DrawPlaneAndHandle(targetEndPlane, info.TouchCageLocalBounds.size * 0.5f, newInfo.EndPos, info.TouchStartOrigin, "Max move distance", editingEnabled);
 
             if (editingEnabled)
             {
                 // Clamp the z value to start position
-                newInfo.endPos = Mathf.Max(newInfo.startPos, newInfo.endPos);
-                newInfo.maxPushDistance = Mathf.Abs(newInfo.startPos - newInfo.endPos) * transform.lossyScale.z;
+                newInfo.EndPos = Mathf.Max(newInfo.StartPos, newInfo.EndPos);
+                newInfo.MaxPushDistance = (newInfo.EndPos - newInfo.StartPos) * transform.lossyScale.z;
             }
 
             // PRESS DISTANCE
             Handles.color = Color.yellow;
-            DrawPlaneAndHandle(pressDistancePlane, info.touchCageLocalBounds.size * 0.35f, ref newInfo.pressDistPos, info.touchStartOrigin, "Press event", editingEnabled);
+            newInfo.PressDistPos = DrawPlaneAndHandle(pressDistancePlane, info.TouchCageLocalBounds.size * 0.35f, newInfo.PressDistPos, info.TouchStartOrigin, "Press event", editingEnabled);
 
             if (editingEnabled)
             {
                 // Clamp the z values to target start / end
-                newInfo.pressDistPos = Mathf.Max(newInfo.startPos, newInfo.pressDistPos);
-                newInfo.pressDistPos = Mathf.Min(newInfo.endPos, newInfo.pressDistPos);
+                newInfo.PressDistPos = Mathf.Max(newInfo.StartPos, newInfo.PressDistPos);
+                newInfo.PressDistPos = Mathf.Min(newInfo.EndPos, newInfo.PressDistPos);
                 // Set based on distance from start
                 // Adjust for scaled objects
-                newInfo.pressDistance = Mathf.Abs(newInfo.pressDistPos - newInfo.startPos) * transform.lossyScale.z;
+                newInfo.PressDistance = Mathf.Abs(newInfo.PressDistPos - newInfo.StartPos) * transform.lossyScale.z;
             }
 
             // RELEASE DISTANCE DELTA
             Handles.color = Color.red;
-            DrawPlaneAndHandle(releasePlane, info.touchCageLocalBounds.size * 0.3f, ref newInfo.releaseDistPos, info.touchStartOrigin, "Release event", editingEnabled);
+            newInfo.ReleaseDistPos = DrawPlaneAndHandle(releasePlane, info.TouchCageLocalBounds.size * 0.3f, newInfo.ReleaseDistPos, info.TouchStartOrigin, "Release event", editingEnabled);
 
             if (editingEnabled)
             {
                 // Clamp the z values to press distance
-                newInfo.releaseDistPos = Mathf.Min(newInfo.pressDistPos, newInfo.releaseDistPos);
+                newInfo.ReleaseDistPos = Mathf.Min(newInfo.PressDistPos, newInfo.ReleaseDistPos);
                 // Set based on distance from press distance
                 // Adjust for scaled objects
-                newInfo.releaseDistanceDelta = Mathf.Abs(newInfo.releaseDistPos - newInfo.pressDistPos) * transform.lossyScale.z;
+                newInfo.ReleaseDistanceDelta = (newInfo.PressDistPos - newInfo.ReleaseDistPos) * transform.lossyScale.z;
             }
 
             // BUTTON CONTENT ORIGIN
             // Don't allow editing of button position
             Handles.color = Color.green;
-            float editStartPos = newInfo.startPos;
-            DrawPlaneAndHandle(pressStartPlane, info.touchCageLocalBounds.size * 0.4f, ref editStartPos, info.touchStartOrigin, "Moving button visuals", false);
+            DrawPlaneAndHandle(pressStartPlane, info.TouchCageLocalBounds.size * 0.4f, newInfo.StartPos, info.TouchStartOrigin, "Moving button visuals", false);
 
             // START POINT
             // Start point doesn't need a display offset because it's based on the touch cage center
             Handles.color = Color.cyan;
-            DrawPlaneAndHandle(targetStartPlane, info.touchCageLocalBounds.size * 0.5f, ref newInfo.touchStartPos, info.touchStartOrigin, "Touch event", editingEnabled);
+            newInfo.TouchStartPos = DrawPlaneAndHandle(targetStartPlane, info.TouchCageLocalBounds.size * 0.5f, newInfo.TouchStartPos, info.TouchStartOrigin, "Touch event", editingEnabled);
 
             if (editingEnabled)
             {
                 // The touch event is defined by the collider bounds
                 // If we've moved the start pos, we've moved the bounds
-                float difference = (info.touchStartPos - newInfo.touchStartPos);
+                float difference = (info.TouchStartPos - newInfo.TouchStartPos);
                 if (Mathf.Abs(difference) > 0)
                 {
-                    newInfo.touchCageCenter -= difference / 2;
-                    newInfo.touchCageSize += difference;
+                    newInfo.TouchCageCenter -= difference / 2;
+                    newInfo.TouchCageSize += difference;
                 }
             }
 
@@ -217,12 +222,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 Undo.RecordObject(target, "Changing push button properties");
 
-                maxPushDistance.floatValue = newInfo.maxPushDistance;
-                pressDistance.floatValue = newInfo.pressDistance;
-                releaseDistanceDelta.floatValue = newInfo.releaseDistanceDelta;
+                maxPushDistance.floatValue = newInfo.MaxPushDistance;
+                pressDistance.floatValue = newInfo.PressDistance;
+                releaseDistanceDelta.floatValue = newInfo.ReleaseDistanceDelta;
 
-                boxColliderSize.vector3Value = new Vector3(info.touchCageLocalBounds.size.x, info.touchCageLocalBounds.size.y, newInfo.touchCageSize);
-                boxColliderCenter.vector3Value = new Vector3(info.touchCageLocalBounds.center.x, info.touchCageLocalBounds.center.y, newInfo.touchCageCenter);
+                boxColliderSize.vector3Value = new Vector3(info.TouchCageLocalBounds.size.x, info.TouchCageLocalBounds.size.y, newInfo.TouchCageSize);
+                boxColliderCenter.vector3Value = new Vector3(info.TouchCageLocalBounds.center.x, info.TouchCageLocalBounds.center.y, newInfo.TouchCageCenter);
                 boxColliderObject.ApplyModifiedProperties();
 
                 serializedObject.ApplyModifiedProperties();
@@ -236,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Handles.DrawDottedLine(targetStartPlane[3], targetEndPlane[3], 2.5f);
         }
 
-        private void DrawPlaneAndHandle(Vector3[] plane, Vector3 planeSize, ref float zPosition, Vector3 cagePosition, string label, bool editingEnabled)
+        private float DrawPlaneAndHandle(Vector3[] plane, Vector3 planeSize, float zPosition, Vector3 cagePosition, string label, bool editingEnabled)
         {
             cagePosition.z = zPosition;
             MakePlaneFromPoint(plane, cagePosition, planeSize, transform);
@@ -258,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 SceneView.RepaintAll();
             }
 
-            float handleSize = HandleUtility.GetHandleSize(plane[0]) * 0.15f;
+            float handleSize = HandleUtility.GetHandleSize(plane[1]) * 0.15f;
 
             Handles.ArrowHandleCap(0, plane[1], Quaternion.LookRotation(transform.forward, Vector3.up), handleSize * 2, EventType.Repaint);
             Handles.ArrowHandleCap(0, plane[1], Quaternion.LookRotation(-transform.forward, Vector3.up), handleSize * 2, EventType.Repaint);
@@ -270,6 +275,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 handlePosition = transform.InverseTransformPoint(handlePosition);
                 zPosition = handlePosition.z;
             }
+
+            return zPosition;
         }
 
         public override void OnInspectorGUI()

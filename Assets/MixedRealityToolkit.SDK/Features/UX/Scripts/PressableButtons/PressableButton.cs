@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return isTouching;
             }
 
-            set
+            private set
             {
                 if (value != isTouching)
                 {
