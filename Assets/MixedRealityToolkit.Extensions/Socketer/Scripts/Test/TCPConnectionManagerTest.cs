@@ -52,6 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         protected TCPConnectionManager connectionManager;
 
         private float lastBroadcast = 0.0f;
+        private bool broadcastSent = false;
+        private bool broadcastReceived = false;
 
         private void OnValidate()
         {
@@ -63,7 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
 
         private void Start()
         {
-            connectionManager = new TCPConnectionManager(TimeSpan.Zero);
             connectionManager.OnConnected += OnNetConnected;
             connectionManager.OnDisconnected += OnNetDisconnected;
             connectionManager.OnReceive += OnNetReceived;
@@ -80,18 +81,23 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
 
         private void Update()
         {
-            if ((Time.time - lastBroadcast) > timeBetweenBroadcasts)
+            if (!connectionManager.HasConnections)
             {
-                if (connectionManager.HasConnections)
-                {
-                    var message = runAsServer ? "Message from server" : "Message from client";
-                    connectionManager.Broadcast(Encoding.ASCII.GetBytes(message));
-                }
-                else
-                {
-                    Debug.Log("Message not broadcasted, connection not yet established");
-                }
+                return;
+            }
 
+            if (broadcastSent &&
+                broadcastReceived)
+            {
+                Debug.Log("Broadcasts sent and received, attempting to disconnect");
+                connectionManager.DisconnectAll();
+                Debug.Log("TCPConnectionManager has disconnected");
+            }
+            else if ((Time.time - lastBroadcast) > timeBetweenBroadcasts)
+            {
+                var message = runAsServer ? "Message from server" : "Message from client";
+                connectionManager.Broadcast(Encoding.ASCII.GetBytes(message));
+                broadcastSent = true;
 
                 lastBroadcast = Time.time;
             }
@@ -115,6 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
         private void OnNetReceived(IncomingMessage obj)
         {
             Debug.Log($"TCPConnectionManager Received:{obj.ToString()}");
+            broadcastReceived = true;
         }
     }
 }
