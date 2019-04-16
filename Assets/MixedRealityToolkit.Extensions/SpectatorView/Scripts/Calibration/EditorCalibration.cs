@@ -3,6 +3,7 @@ using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utili
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private INetworkingService networkingService;
 
         private Queue<HeadsetCalibrationData> dataQueue = new Queue<HeadsetCalibrationData>();
-        private float lastRequest = 0;
+        private int nextImageId = 0;
 
         private void OnValidate()
         {
@@ -58,29 +59,29 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             matchMakingService = MatchMakingService as IMatchMakingService;
             matchMakingService.Connect();
+
+            HeadsetCalibrationDataHelper.Initialize(out nextImageId);
         }
 
         private void Update()
         {
-            if ((Time.time - lastRequest) > timeBetweenRequests)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 var request = new HeadsetCalibrationDataRequest();
                 request.timestamp = Time.time;
                 var payload = request.Serialize();
 
-                if(networkingService.SendData(payload, NetworkPriority.Critical))
+                if (networkingService.SendData(payload, NetworkPriority.Critical))
                 {
-                    Debug.Log("Sent calibration request");
+                    Debug.Log($"Sent calibration request {request.timestamp}");
                 }
                 else
                 {
                     Debug.LogWarning("Failed to send calibration request");
                 }
-
-                lastRequest = Time.time;
             }
 
-            while(dataQueue.Count > 0)
+            while (dataQueue.Count > 0)
             {
                 var data = dataQueue.Dequeue();
 
@@ -99,6 +100,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                         lastCalibrationImage.texture = texture;
                         lastCalibrationImage.rectTransform.sizeDelta = new Vector2(texture.width, texture.height);
                     }
+
+                    HeadsetCalibrationDataHelper.SavePVImage(texture, nextImageId);
+                    HeadsetCalibrationDataHelper.SaveMetaInformation(data, nextImageId);
+                    nextImageId++;
                 }
             }
         }
@@ -110,6 +115,72 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (HeadsetCalibrationData.TryDeserialize(payload, out headsetCalibrationData))
             {
                 dataQueue.Enqueue(headsetCalibrationData);
+            }
+        }
+
+        private class HeadsetCalibrationDataHelper
+        {
+            private const string PVCamDirectoryName = "PV";
+            private const string MetadataDirectoryName = "META";
+            private const string RootDirectoryName = "Calibration";
+
+            public static void Initialize(out int nextImageId)
+            {
+                nextImageId = 0;
+#if UNITY_EDITOR
+                string rootFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName);
+                if (Directory.Exists(rootFolder))
+                {
+                    InitializeDirectory(rootFolder, PVCamDirectoryName, "*.png", out nextImageId);
+                    InitializeDirectory(rootFolder, MetadataDirectoryName, "*.json", out nextImageId);
+                }
+                else
+                {
+                    Directory.CreateDirectory(rootFolder);
+                    Directory.CreateDirectory(Path.Combine(rootFolder, PVCamDirectoryName));
+                    Directory.CreateDirectory(Path.Combine(rootFolder, MetadataDirectoryName));
+                }
+#endif
+            }
+
+            private static void InitializeDirectory(string rootFolder, string directoryName, string fileExtensionExpected, out int nextImageId)
+            {
+                nextImageId = 0;
+                string directory = Path.Combine(rootFolder, directoryName);
+                if (Directory.Exists(directory))
+                {
+                    nextImageId = Math.Max(Directory.GetFiles(directory, fileExtensionExpected, SearchOption.TopDirectoryOnly).Length, nextImageId);
+                }
+                else
+                {
+                    Directory.CreateDirectory(directory);
+                }
+            }
+
+            public static void SavePVImage(Texture2D image, int fileID)
+            {
+                SaveImage(PVCamDirectoryName, image, fileID);
+            }
+
+            private static void SaveImage(string directory, Texture2D image, int fileID)
+            {
+#if UNITY_EDITOR
+                string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName, directory, $"{fileID}.png");
+                File.WriteAllBytes(path, image.EncodeToPNG());
+#endif
+            }
+
+            public static void SaveMetaInformation(HeadsetCalibrationData data, int fileID)
+            {
+#if UNITY_EDITOR
+                byte[] temp = data.imageData.pixelData;
+                data.imageData.pixelData = null;
+
+                string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), RootDirectoryName, MetadataDirectoryName, $"{fileID}.json");
+                File.WriteAllBytes(path, data.Serialize());
+
+                data.imageData.pixelData = temp;
+#endif
             }
         }
     }
