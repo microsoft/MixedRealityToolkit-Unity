@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
@@ -34,7 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void OnEnable()
         {
             CheckInitialization();
-
         }
 
         public void OnDestroy()
@@ -79,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void Update()
         {
             bool tetherVisualsEnabled = false;
-            if (pointer.IsFocusLocked)
+            if (pointer.IsFocusLocked && pointer.IsTargetPositionLockedOnFocusLock && pointer.Result != null)
             {
                 NearInteractionGrabbable grabbedObject = GetGrabbedObject();
                 if (grabbedObject != null && grabbedObject.ShowTetherWhenManipulating)

@@ -359,7 +359,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
             // but don't touch the visibility when not active or not flagged.
-            if (setCursorInvisibleWhenFocusLocked && (GazePointer?.IsInteractionEnabled ?? false) && GazePointer?.IsFocusLocked == GazeCursor?.IsVisible)
+            if (setCursorInvisibleWhenFocusLocked && GazePointer != null && 
+                GazePointer.IsInteractionEnabled && GazePointer.IsFocusLocked  == GazeCursor.IsVisible)
             {
                 GazeCursor.SetVisibility(!GazePointer.IsFocusLocked);
             }
