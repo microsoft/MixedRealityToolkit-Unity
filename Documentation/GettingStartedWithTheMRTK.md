@@ -9,7 +9,7 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 To get started with the Mixed Reality Toolkit you will need:
 
 * [Visual Studio 2017](http://dev.windows.com/downloads)
-* [Unity 2018.3+](https://unity3d.com/get-unity/download/archive)
+* [Unity 2018.3.x](https://unity3d.com/get-unity/download/archive)
 * [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 * You don't need this to simulate in Unity Editor or run in VR, but if you want to build your MRTK project as a UWP to run on HoloLens, you will need [Windows SDK 18362+](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK).
 
@@ -22,7 +22,7 @@ To get started with the Mixed Reality Toolkit you will need:
 ## Import MRTK packages into your Unity project
 1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. 
 
-> We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.X release should work.
+> We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.x release should work.
 
 2. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
 
@@ -35,7 +35,6 @@ To get started with the Mixed Reality Toolkit you will need:
 > MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:
 > * Enable XR Settings for your current platform (enabling the XR checkbox).
 > * Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).
-> * Change the Scripting back-end to use IL2CPP (as Unity is deprecating the .NET scripting back-end).
 >
 > Accepting these options is completely optional, but recommended.
 
@@ -91,6 +90,12 @@ Click "OK".
 
 ![](../External/ReadMeImages/MRTK_SelectConfigurationDialog.png)
 
+> **Note**  Note that the other configuration profiles in this picker are from other scenes in the examples 
+package. If you did not install the examples package, you would not have been prompted to 
+choose a specific profile (as the foundation package only contains a single
+MixedRealityToolkitConfigurationProfile - the default one). The other profiles are part of their
+respective example scenes (for example, the HandInteractionAllExampleMixedRealityToolkitConfigurationProfile)
+is part of the [HandInteractionExamples scene](README_HandInteractionExamples.md).
 
 You will then see the following in your Scene hierarchy:
 
