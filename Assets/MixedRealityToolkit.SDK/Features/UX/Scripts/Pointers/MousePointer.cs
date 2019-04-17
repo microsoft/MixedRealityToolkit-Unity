@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // screenspace to ray conversion
             transform.position = CameraCache.Main.transform.position;
 
-            Ray ray = new Ray(transform.position, transform.rotation * Vector3.forward);
+            Ray ray = new Ray(transform.position, transform.forward);
             Rays[0].CopyRay(ray, PointerExtent);
 
             if (MixedRealityRaycaster.DebugEnabled)
