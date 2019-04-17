@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private SerializedProperty hideTimeout;
         private SerializedProperty movementThresholdToUnHide;
         private bool mousePointerFoldout = true;
-        private SerializedProperty speed;
 
         protected override void OnEnable()
         {
@@ -24,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             hideCursorWhenInactive = serializedObject.FindProperty("hideCursorWhenInactive");
             movementThresholdToUnHide = serializedObject.FindProperty("movementThresholdToUnHide");
             hideTimeout = serializedObject.FindProperty("hideTimeout");
-            speed = serializedObject.FindProperty("speed");
         }
 
         public override void OnInspectorGUI()
@@ -46,7 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
 
                 EditorGUI.indentLevel--;
-                EditorGUILayout.PropertyField(speed);
             }
 
             serializedObject.ApplyModifiedProperties();

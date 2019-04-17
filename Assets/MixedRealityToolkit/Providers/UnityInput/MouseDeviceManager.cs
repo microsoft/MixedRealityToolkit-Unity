@@ -47,12 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return;
             }
 
-            if (Controller != null)
-            {
-                // device manager has already been set up
-                return;
-            }
-
 #if UNITY_EDITOR
             if (UnityEditor.EditorWindow.focusedWindow != null)
             {
@@ -117,7 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             if (Controller != null)
             {
                 inputSystem?.RaiseSourceLost(Controller.InputSource, Controller);
-                Controller = null;
             }
         }
     }
