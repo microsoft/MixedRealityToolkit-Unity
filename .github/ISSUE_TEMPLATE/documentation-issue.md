@@ -13,7 +13,7 @@ A clear and concise what the issue
 **Feature Area**
 What's incorrect? What's missing?
 
-**Existing Doc Link**
+## Existing Doc Link
 If this is about something in an existing document, please provide link 
 
 ## Additional context
