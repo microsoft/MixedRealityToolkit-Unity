@@ -45,6 +45,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         float IMixedRealityMousePointer.HideTimeout => hideTimeout;
 
+        [SerializeField]
+        [Range(0.1f, 1f)]
+        [Tooltip("Mouse cursor speed that gets applied to the mouse delta.")]
+        private float speed = 0.25f;
+
+        float IMixedRealityMousePointer.Speed => speed;
+
         #endregion IMixedRealityMousePointer Implementation
 
         #region IMixedRealityPointer Implementation
@@ -53,6 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override bool IsInteractionEnabled => isInteractionEnabled;
 
         private IMixedRealityController controller;
+
+        private Vector3 cachedWorldSpacePosition;
 
         /// <inheritdoc />
         public override IMixedRealityController Controller
@@ -75,14 +84,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
+            // screenspace to ray conversion
             transform.position = CameraCache.Main.transform.position;
 
-            Ray ray = new Ray(Position, Rotation * Vector3.forward);
+            Ray ray = new Ray(transform.position, transform.forward);
             Rays[0].CopyRay(ray, PointerExtent);
 
             if (MixedRealityRaycaster.DebugEnabled)
             {
                 Debug.DrawRay(ray.origin, ray.direction * PointerExtent, Color.green);
+            }
+
+            // ray to worldspace conversion
+            Camera RaycastCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
+            RaycastCamera.transform.position = Rays[0].Origin;
+            RaycastCamera.transform.rotation = Quaternion.LookRotation(Rays[0].Direction);
+
+            // The RayCastCamera is placed so that the current cursor position is in the center of the camera's view space.
+            Vector3 viewportPos = new Vector3(0.5f, 0.5f, 1.0f);
+            cachedWorldSpacePosition = RaycastCamera.ViewportToWorldPoint(viewportPos);
+        }
+
+        public override Vector3 Position
+        {       
+            get
+            {
+                return cachedWorldSpacePosition;
             }
         }
 
@@ -105,6 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 isInteractionEnabled = true;
             }
         }
+       
 
         /// <inheritdoc />
         public override void OnSourceLost(SourceStateEventData eventData)
@@ -114,22 +142,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
                 isInteractionEnabled = false;
-            }
-        }
-
-        /// <inheritdoc />
-        public override void OnSourcePoseChanged(SourcePoseEventData<Vector2> eventData)
-        {
-            if (Controller == null ||
-                eventData.Controller == null ||
-                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
-            {
-                return;
-            }
-
-            if (UseSourcePoseData)
-            {
-                UpdateMousePosition(eventData.SourceData.x, eventData.SourceData.y);
             }
         }
 
@@ -167,8 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
-                if (!UseSourcePoseData &&
-                    PoseAction == eventData.MixedRealityInputAction)
+                if (PoseAction == eventData.MixedRealityInputAction)
                 {
                     UpdateMousePosition(eventData.InputData.x, eventData.InputData.y);
                 }
@@ -218,8 +229,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void UpdateMousePosition(float mouseX, float mouseY)
         {
-            if (Mathf.Abs(mouseX) >= movementThresholdToUnHide ||
-                Mathf.Abs(mouseY) >= movementThresholdToUnHide)
+            float scaledMouseX = mouseX * speed;
+            float scaledMouseY = mouseY * speed;
+            if (Mathf.Abs(scaledMouseX) >= movementThresholdToUnHide ||
+                Mathf.Abs(scaledMouseY) >= movementThresholdToUnHide)
             {
                 if (isDisabled)
                 {
@@ -236,8 +249,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             var newRotation = Vector3.zero;
-            newRotation.x += mouseX;
-            newRotation.y += mouseY;
+            newRotation.x += scaledMouseX;
+            newRotation.y += scaledMouseY;
             transform.Rotate(newRotation, Space.World);
         }
     }

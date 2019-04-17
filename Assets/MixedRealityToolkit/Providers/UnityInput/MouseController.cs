@@ -28,16 +28,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultInteractions { get; } =
         {
-            new MixedRealityInteractionMapping(0, "Spatial Mouse Position", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(1, "Mouse Delta Position", AxisType.DualAxis, DeviceInputType.PointerPosition, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(2, "Mouse Scroll Position", AxisType.DualAxis, DeviceInputType.Scroll, ControllerMappingLibrary.AXIS_3),
-            new MixedRealityInteractionMapping(3, "Left Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse0),
-            new MixedRealityInteractionMapping(4, "Right Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse1),
-            new MixedRealityInteractionMapping(5, "Mouse Button 2", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse2),
-            new MixedRealityInteractionMapping(6, "Mouse Button 3", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse3),
-            new MixedRealityInteractionMapping(7, "Mouse Button 4", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse4),
-            new MixedRealityInteractionMapping(8, "Mouse Button 5", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse5),
-            new MixedRealityInteractionMapping(9, "Mouse Button 6", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse6),
+            new MixedRealityInteractionMapping(0, "Mouse Delta Position", AxisType.DualAxis, DeviceInputType.PointerPosition, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(1, "Mouse Scroll Position", AxisType.DualAxis, DeviceInputType.Scroll, ControllerMappingLibrary.AXIS_3),
+            new MixedRealityInteractionMapping(2, "Left Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse0),
+            new MixedRealityInteractionMapping(3, "Right Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse1),
+            new MixedRealityInteractionMapping(4, "Mouse Button 2", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse2),
+            new MixedRealityInteractionMapping(5, "Mouse Button 3", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse3),
+            new MixedRealityInteractionMapping(6, "Mouse Button 4", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse4),
+            new MixedRealityInteractionMapping(7, "Mouse Button 5", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse5),
+            new MixedRealityInteractionMapping(8, "Mouse Button 6", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.Mouse6),
+            new MixedRealityInteractionMapping(9, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(10, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
         };
 
         /// <inheritdoc />
@@ -47,7 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         }
 
         private MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
-        private Vector2 mouseDelta;
 
         /// <summary>
         /// Update controller.
@@ -65,43 +65,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return;
             }
 
-            if (InputSource.Pointers[0].BaseCursor != null)
-            {
-                controllerPose.Position = InputSource.Pointers[0].BaseCursor.Position;
-                controllerPose.Rotation = InputSource.Pointers[0].BaseCursor.Rotation;
-            }
-
-            mouseDelta.x = -UInput.GetAxis("Mouse Y");
-            mouseDelta.y = UInput.GetAxis("Mouse X");
-            MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, mouseDelta);
-            MixedRealityToolkit.InputSystem?.RaiseSourcePoseChanged(InputSource, this, controllerPose);
-            MixedRealityToolkit.InputSystem?.RaiseSourcePositionChanged(InputSource, this, UInput.mouseScrollDelta);
-
             for (int i = 0; i < Interactions.Length; i++)
             {
-                if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
-                {
-                    Interactions[i].PoseData = controllerPose;
-
-                    if (Interactions[i].Changed)
-                    {
-                        MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
-                    }
-                }
-
+           
                 if (Interactions[i].InputType == DeviceInputType.PointerPosition)
                 {
+                    Vector2 mouseDelta;
+                    mouseDelta.x = -UInput.GetAxis("Mouse Y");
+                    mouseDelta.y = UInput.GetAxis("Mouse X");
                     Interactions[i].Vector2Data = mouseDelta;
-
-                    if (Interactions[i].Changed)
-                    {
-                        MixedRealityToolkit.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
-                    }
-                }
-
-                if (Interactions[i].InputType == DeviceInputType.Scroll)
-                {
-                    Interactions[i].Vector2Data = UInput.mouseScrollDelta;
 
                     if (Interactions[i].Changed)
                     {

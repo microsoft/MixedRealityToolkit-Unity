@@ -68,13 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     message += "- Force Text Serialization\n";
                 }
 
-                var il2Cpp = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) == ScriptingImplementation.IL2CPP;
-
-                if (!il2Cpp)
-                {
-                    message += "- Change the Scripting Backend to use IL2CPP\n";
-                }
-
                 var visibleMetaFiles = EditorSettings.externalVersionControl.Equals("Visible Meta Files");
 
                 if (!visibleMetaFiles)
@@ -89,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 message += "\nWould you like to make this change?";
 
-                if (!forceTextSerialization || !il2Cpp || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
+                if (!forceTextSerialization || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
                 {
                     var choice = EditorUtility.DisplayDialogComplex("Apply Mixed Reality Toolkit Default Settings?", message, "Apply", "Ignore", "Later");
 
@@ -98,7 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         case 0:
                             EditorSettings.serializationMode = SerializationMode.ForceText;
                             EditorSettings.externalVersionControl = "Visible Meta Files";
-                            PlayerSettings.SetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup, ScriptingImplementation.IL2CPP);
                             PlayerSettings.virtualRealitySupported = true;
                             refresh = true;
                             break;

@@ -13,7 +13,7 @@ While developing an application, be sure to focus on multiple parts of the scene
 
 ## Visual Profiler Interface
 
-![Visual Profiler Interface](../../External/ReadMeImages/Diagnostics/VisualProfiler.png)
+![Visual Profiler Interface](../../Documentation/Images/Diagnostics/VisualProfiler.png)
 
 The Visual Profiler interface includes the following components:
 
@@ -44,7 +44,7 @@ To the right of the frame rate is the frame time, in milliseconds, spent on the 
 
 The frame graph provides a graphical display of the application frame rate history.
 
-![Visual Profiler Frame Graph](../../External/ReadMeImages/Diagnostics/VisualProfilerMissedFrames.png)
+![Visual Profiler Frame Graph](../../Documentation/Images/Diagnostics/VisualProfilerMissedFrames.png)
 
 > When using the application, look for missed frames. Missed frames indicate the application is not hitting its target frame rate and may need optimization work.
 
@@ -52,7 +52,7 @@ The frame graph provides a graphical display of the application frame rate histo
 
 The memory utilization display allows for easy understanding of how the current view is impacting an application's memory consumption. 
 
-![Visual Profiler Frame Graph](../../External/ReadMeImages/Diagnostics/VisualProfilerMemory.png)
+![Visual Profiler Frame Graph](../../Documentation/Images/Diagnostics/VisualProfilerMemory.png)
 
 > When using application, look for total memory usage. Key indicators include: nearing the memory limit and rapid changes in usage.
 
