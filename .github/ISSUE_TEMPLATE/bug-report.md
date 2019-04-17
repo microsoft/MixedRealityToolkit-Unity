@@ -30,7 +30,7 @@ If applicable, add screenshots to help explain your problem.
 
 ## Your Setup (please complete the following information)
 
-- Unity Version [e.g. 2018.3]
+- Unity Version [e.g. 2018.3.11f1]
 - MRTK Version [e.g. v2.0]
 
 ## Target Platform (please complete the following information)
