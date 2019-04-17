@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         var newSubProfile = CloneProfile(newChildProfile, subProfileToClone, action.ProfileType.Name, actionProperty, targetFolder, action.CloneName);
                         SerializedObject newSubProfileSerializedObject = new SerializedObject(newSubProfile);
                         // Paste values from existing profile
-                        PasteProfileValues(newChildProfile, newSubProfile, newSubProfileSerializedObject);
+                        PasteProfileValues(newChildProfile, subProfileToClone, newSubProfileSerializedObject);
                         newSubProfileSerializedObject.ApplyModifiedProperties();
                         break;
 
