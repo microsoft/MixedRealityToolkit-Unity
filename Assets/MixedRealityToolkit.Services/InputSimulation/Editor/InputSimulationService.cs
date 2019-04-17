@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsEditor,
         "Input Simulation Service",
-        "Profiles/DefaultMixedRealityInputSimulationProfile.asset", 
+        "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
     public class InputSimulationService : BaseInputDeviceManager
@@ -41,12 +41,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region BaseInputDeviceManager Implementation
 
         public InputSimulationService(
-            IMixedRealityServiceRegistrar registrar, 
+            IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             MixedRealityInputSystemProfile inputSystemProfile,
             Transform playspace,
-            string name, 
-            uint priority, 
+            string name,
+            uint priority,
             BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile)
         {
         }
@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Update()
         {
-            var profile = GetInputSimulationProfile();
+            var profile = InputSimulationProfile;
 
             if (profile.IsCameraControlEnabled)
             {
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void LateUpdate()
         {
-            var profile = GetInputSimulationProfile();
+            var profile = InputSimulationProfile;
 
             // Apply hand data in LateUpdate to ensure external changes are applied.
             // HandDataLeft/Right can be modified after the services Update() call.
@@ -142,21 +142,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Return the service profile and ensure that the type is correct
         /// </summary>
-        public MixedRealityInputSimulationProfile GetInputSimulationProfile()
+        public MixedRealityInputSimulationProfile InputSimulationProfile
         {
-            var profile = ConfigurationProfile as MixedRealityInputSimulationProfile;
-            if (!profile)
-            {
-                Debug.LogError("Profile for Input Simulation Service must be a MixedRealityInputSimulationProfile");
+            get
+                {
+                var profile = ConfigurationProfile as MixedRealityInputSimulationProfile;
+                if (!profile)
+                {
+                    Debug.LogError("Profile for Input Simulation Service must be a MixedRealityInputSimulationProfile");
+                }
+                return profile;
             }
-            return profile;
         }
 
         private void EnableCameraControl()
         {
             if (cameraControl == null)
             {
-                cameraControl = new ManualCameraControl(GetInputSimulationProfile());
+                cameraControl = new ManualCameraControl(InputSimulationProfile);
             }
         }
 
@@ -172,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (handDataProvider == null)
             {
-                handDataProvider = new SimulatedHandDataProvider(GetInputSimulationProfile());
+                handDataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
             }
         }
 
@@ -189,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Register input sources for hands based on changes of the data provider
         private void UpdateHandInputSource(Handedness handedness, SimulatedHandData handData)
         {
-            var profile = GetInputSimulationProfile();
+            var profile = InputSimulationProfile;
 
             if (profile.HandSimulationMode == HandSimulationMode.Disabled)
             {
