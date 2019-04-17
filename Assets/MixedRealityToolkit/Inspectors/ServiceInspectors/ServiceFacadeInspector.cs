@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         Color defaultHeaderColor = (Color)new Color32(194, 194, 194, 255);
 
         const int headerXOffset = 48;
-        const int docLinkWidth = 115;
+        const int docLinkWidth = 175;
+
+        [SerializeField]
+        private Texture2D logoLightTheme = null;
+
+        [SerializeField]
+        private Texture2D logoDarkTheme = null;
+
+        protected virtual void Awake()
+        {
+            string assetPath = $"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/StandardAssets/Textures";
+
+            if (logoLightTheme == null)
+            {
+                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{assetPath}/MRTK_Logo_Black.png", typeof(Texture2D));
+            }
+
+            if (logoDarkTheme == null)
+            {
+                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{assetPath}/MRTK_Logo_White.png", typeof(Texture2D));
+            }
+        }
 
         protected override void OnHeaderGUI()
         {
@@ -54,7 +76,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             if (string.IsNullOrEmpty(header))
                 header = target.ToString();
 
-            EditorGUI.LabelField(labelRect, header, EditorStyles.boldLabel);            
+            EditorGUI.LabelField(labelRect, header, EditorStyles.boldLabel);
+
+            /*GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.Label(EditorGUIUtility.isProSkin ? logoDarkTheme : logoLightTheme, GUILayout.MaxHeight(128f));
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();*/
         }
 
         public override void OnInspectorGUI()
@@ -105,10 +133,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 buttonContent.text = " Documentation";
                 buttonContent.tooltip = docLink.URL;
 
-                if (GUILayout.Button(buttonContent, EditorStyles.toolbarButton, GUILayout.MaxWidth(docLinkWidth)))
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button(buttonContent, GUILayout.MaxWidth(docLinkWidth)))
                 {
                     Application.OpenURL(docLink.URL);
                 }
+
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
                 EditorGUILayout.Space();
                 return true;
             }
