@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void CloneMainProfile()
         {
-            var newChildProfile = CloneProfile(parentProfile, childProfile, childProfileTypeName, childProperty, targetFolder);
+            var newChildProfile = CloneProfile(parentProfile, childProfile, childProfileTypeName, childProperty, targetFolder, childProfileAssetName);
             SerializedObject newChildSerializedObject = new SerializedObject(newChildProfile);
             // First paste all values outright
             PasteProfileValues(parentProfile, childProfile, newChildSerializedObject);
