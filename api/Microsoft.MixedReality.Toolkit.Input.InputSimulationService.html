@@ -98,6 +98,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IInputSimulationService.html">IInputSimulationService</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.html">IMixedRealityInputDeviceManager</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
@@ -176,7 +177,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_InputSimulationService_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class InputSimulationService : BaseInputDeviceManager, IMixedRealityInputDeviceManager, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService, IMixedRealityInputDeviceManager, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -312,6 +313,34 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputSimulationService_InputSimulationProfile_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSimulationService.InputSimulationProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSimulationService_InputSimulationProfile" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSimulationService.InputSimulationProfile">InputSimulationProfile</h4>
+  <div class="markdown level1 summary"><p>Return the service profile and ensure that the type is correct</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MixedRealityInputSimulationProfile InputSimulationProfile { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.html">MixedRealityInputSimulationProfile</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -340,32 +369,6 @@
   </div>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Enable">BaseService.Enable()</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_InputSimulationService_GetInputSimulationProfile_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSimulationService.GetInputSimulationProfile*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSimulationService_GetInputSimulationProfile" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSimulationService.GetInputSimulationProfile">GetInputSimulationProfile()</h4>
-  <div class="markdown level1 summary"><p>Return the service profile and ensure that the type is correct</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MixedRealityInputSimulationProfile GetInputSimulationProfile()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.html">MixedRealityInputSimulationProfile</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_InputSimulationService_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSimulationService.Initialize*"></a>
@@ -407,6 +410,9 @@ This method is called once all services have been registered in the Mixed Realit
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Update">BaseService.Update()</a></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IInputSimulationService.html">IInputSimulationService</a>
+  </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.html">IMixedRealityInputDeviceManager</a>
   </div>
