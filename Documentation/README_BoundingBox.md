@@ -1,5 +1,5 @@
 # Bounding Box #
-![Bounding Box](../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Main.png)
+![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)
 
 The `BoundingBox` script provides basic functionality for transforming objects in Windows Mixed Reality. Using handles on the corners and edges, you can scale or rotate the object. On HoloLens 2, the bounding box responds to your finger's proximity. It shows visual feedback to help perceive the distance from the object. MRTK's bounding box provides various options which allow you to easily customize the interactions and visuals. 
 
@@ -8,15 +8,15 @@ For more information please see [App Bar and Bounding Box](https://docs.microso
 ### How to use Bounding Box ###
 You can enable Bounding Box by simply assigning the `BoundingBox` script to any GameObject. Assign the object with Box Collider to 'Bounds Override' field in the Inspector.
 
-![Bounding Box](../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Assign.png)
+![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Assign.png)
 
 ### Example Scene ###
 You can find bounding box examples in the *HandInteractionExamples.unity* scene:
 
-<img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Examples.png" width="550">
+<img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_Examples.png" width="550">
 
 ### Inspector Properties ###
-![Bounding Box](../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Structure.png)
+![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Structure.png)
 
 #### Target Object ####
 This specifies which object will get transformed by the bounding box manipulation. If no object is set, the bounding box defaults to the owner object.
@@ -54,11 +54,11 @@ Bounding Box provides the following events. The example uses these events to pla
 - **Scale Started**
 - **Scale Ended**
 
-<img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
+<img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
 
 ### Make an object movable with Manipulation Handler ###
 If you want to make the object movable using far interaction, you can combine [`ManipulationHandler.cs`](README_ManipulationHandler.md) with `BoundingBox.cs`. [ManipulationHandler](README_ManipulationHandler.md) supports both one and two-handed interactions. To make [`ManipulationHandler.cs`](README_ManipulationHandler.md) work with near interaction, you should add `NearInteractionGrabbable.cs` too.
 
-<img src="../External/ReadMeImages/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
+<img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
 
 In order for the bounding box edges to be highlighted the same way when moving it using [`ManipulationHandler`](README_ManipulationHandler.md)'s far interaction, it is advised to connect its events for **On Manipulation Started** / **On Manipulation Ended** to `BoundingBox.HighlightWires` / `BoundingBox.UnhighlightWires` respectively, as shown in the screenshot above.

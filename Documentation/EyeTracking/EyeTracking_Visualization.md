@@ -1,4 +1,4 @@
-![MRTK](../../External/ReadMeImages/EyeTracking/mrtk_et_heatmaps.png)
+![MRTK](../../Documentation/Images/EyeTracking/mrtk_et_heatmaps.png)
 
 # Visualizing Eye Tracking Data in MRTK
 

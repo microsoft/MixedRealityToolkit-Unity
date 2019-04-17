@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [SettingsProvider]
         private static SettingsProvider Preferences()
         {
-            var provider = new SettingsProvider("Project/MRTK")
+            var provider = new SettingsProvider("Project/MRTK", SettingsScope.Project)
             {
                 label = "MRTK",
 

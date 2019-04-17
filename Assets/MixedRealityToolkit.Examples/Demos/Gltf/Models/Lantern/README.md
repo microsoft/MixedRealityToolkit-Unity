@@ -1,7 +1,7 @@
 # Lantern
 ## Screenshot
 
-![screenshot](../../../../../../External/ReadMeImages/gltf/lantern_screenshot.jpg)
+![screenshot](../../../../../../Documentation/Images/gltf/lantern_screenshot.jpg)
 
 ## License Information
 

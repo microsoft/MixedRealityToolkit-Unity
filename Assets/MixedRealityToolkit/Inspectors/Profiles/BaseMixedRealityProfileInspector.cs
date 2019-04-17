@@ -3,7 +3,9 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         private const string IsCustomProfileProperty = "isCustomProfile";
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
+        private static readonly String BaseMixedRealityProfileClassName = typeof(BaseMixedRealityProfile).Name;
 
         private static BaseMixedRealityProfile profile;
         private static SerializedObject targetProfile;
@@ -69,41 +72,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // If it isn't, issue a warning.
             if (serviceType != null && oldObject != null)
             {
-                bool profileTypeIsValid = false;
-
-                foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in oldObject.GetType().GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true))
-                {
-                    if (serviceProfileAttribute.ServiceType.IsAssignableFrom(serviceType))
-                    {
-                        profileTypeIsValid = true;
-                        break;
-                    }
-                }
-
-                if (!profileTypeIsValid)
+                if (!IsProfileForService(oldObject.GetType(), serviceType))
                 {
                     EditorGUILayout.HelpBox("This profile is not supported for " + serviceType.Name + ". Using an unsupported service may result in unexpected behavior.", MessageType.Warning);
                 }
             }
 
             EditorGUILayout.BeginHorizontal();
-
-            if (guiContent == null)
-            {
-                EditorGUILayout.PropertyField(property);
-            }
-            else
-            {
-                EditorGUILayout.PropertyField(property, guiContent);
-            }
-
+            RenderProfileField(property, guiContent, GetProfileTypesForService(serviceType));
             if (property.objectReferenceValue == null)
             {
-                if (showAddButton)
+                var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
+                if (showAddButton && IsConcreteProfileType(profileTypeName))
                 {
                     if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton, GUILayout.Width(20f)))
                     {
-                        var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
                         Debug.Assert(profileTypeName != null, "No Type Found");
 
                         ScriptableObject instance = CreateInstance(profileTypeName);
@@ -245,6 +228,94 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Selection.activeObject = null;
             PasteProfileValues();
             Selection.activeObject = newProfile;
+        }
+
+        /// <summary>
+        /// Given a service type, finds all sub-classes of BaseMixedRealityProfile that are
+        /// designed to configure that service.
+        /// </summary>
+        private static IReadOnlyCollection<Type> GetProfileTypesForService(Type serviceType)
+        {
+            if (serviceType == null)
+            {
+                return Array.Empty<Type>();
+            }
+
+            // This is a little inefficient in that it has to enumerate all of the mixed reality
+            // profiles in order to make this enumeration. It would be possible to cache the results
+            // of this, but then it would be necessary to listen to file/asset creation/destruction
+            // events in order to refresh the cache. If this ends up being a perf bottleneck
+            // in inspectors this would be one possible way to alleviate the issue.
+            HashSet<Type> allTypes = new HashSet<Type>();
+            BaseMixedRealityProfile[] allProfiles = ScriptableObjectExtensions.GetAllInstances<BaseMixedRealityProfile>();
+            for (int i = 0; i < allProfiles.Length; i++)
+            {
+                BaseMixedRealityProfile profile = allProfiles[i];
+                if (IsProfileForService(profile.GetType(), serviceType))
+                {
+                    allTypes.Add(profile.GetType());
+                }
+            }
+            return allTypes.ToReadOnlyCollection();
+        }
+
+        /// <summary>
+        /// Returns true if the given profile type is designed to configure the given service.
+        /// </summary>
+        private static bool IsProfileForService(Type profileType, Type serviceType)
+        {
+            foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in profileType.GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true))
+            {
+                if (serviceProfileAttribute.ServiceType.IsAssignableFrom(serviceType))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Renders the profile field, optionally restricting the set of selectable types based on the given
+        /// profileTypes parameter.
+        /// </summary>
+        /// <remarks>
+        /// If profileTypes has a count greater than one, then it won't be possible to use
+        /// EditorGUILayout.ObjectField to restrict the set of profiles to a single type - in this
+        /// case all profiles of BaseMixedRealityProfile will be visible in the picker.
+        /// 
+        /// However in the case where there is just a single profile type for the service, we can improve
+        /// upon the user experience by limiting the set of things that show in the picker by restricting
+        /// the set of profiles listed to only that type.
+        /// </remarks>
+        private static void RenderProfileField(SerializedProperty property, GUIContent guiContent, IReadOnlyCollection<Type> profileTypes)
+        {
+            if (profileTypes.Count == 1)
+            {
+                if (guiContent != null)
+                {
+                    EditorGUILayout.ObjectField(property, profileTypes.Single(), guiContent);
+                }
+                else
+                {
+                    EditorGUILayout.ObjectField(property, profileTypes.Single());
+                }
+            }
+            else
+            {
+                if (guiContent != null)
+                {
+                    EditorGUILayout.ObjectField(property, guiContent);
+                }
+                else
+                {
+                    EditorGUILayout.ObjectField(property);
+                }
+            }
+        }
+
+        private static bool IsConcreteProfileType(String profileTypeName)
+        {
+            return profileTypeName != BaseMixedRealityProfileClassName;
         }
     }
 }

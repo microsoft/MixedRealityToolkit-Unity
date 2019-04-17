@@ -12,7 +12,7 @@ There are three categories of MRTK packages:
 
 The Mixed Reality Toolkit Foundation is the set of packages that enable your application to leverage common functionality across Mixed Reality Platforms. These packages are released and supported by Microsoft from source code in the [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) branch on GitHub.
 
-![MRTK Foundation Packages](../../External/ReadMeImages/Packaging/MRTKFoundation.png)
+![MRTK Foundation Packages](../../Documentation/Images/Packaging/MRTKFoundation.png)
 
 
 The MRTK Foundation is comprised of:
@@ -133,13 +133,13 @@ MRTK Extension packages are a collection of packages written by Microsoft and th
 
 Extension packages may provide new features and new platform support. Over time, extensions may, with the assistance and approval of the authors, be migrated into the MRTK Foundation at which time they will be released and supported by Microsoft.
 
-![MRTK Extension Package](../../External/ReadMeImages/Packaging/MRTKExtensions.png)
+![MRTK Extension Package](../../Documentation/Images/Packaging/MRTKExtensions.png)
 
 ## Experimental Packages
 
 Experimental packages provide the ability to flight prototype features, pre-releases and exciting new ideas. The goal of most experimental packages is to try something new and to gauge customer interest. Many, though not all, experimental packages will be re-released as extensions once the prototyping and testing phase completes.
 
-![MRTK Experimental Packages](../../External/ReadMeImages/Packaging/MRTKExperimental.png)
+![MRTK Experimental Packages](../../Documentation/Images/Packaging/MRTKExperimental.png)
 
 ## Conclusion
 
