@@ -1,9 +1,10 @@
 ---
-name: "Feature Request"
+name: Feature Request
 about: Suggest an idea for the MRTK
 title: ''
 labels: Feature Request
 assignees: ''
+
 ---
 
 ## Describe the problem

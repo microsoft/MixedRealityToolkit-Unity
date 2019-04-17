@@ -1,8 +1,8 @@
 ---
-name: RC1 Bug report
+name: Bug report
 about: Create a bug report to help us improve
 title: ''
-labels: RC1 Bug
+labels: Bug
 assignees: ''
 
 ---
@@ -30,7 +30,7 @@ If applicable, add screenshots to help explain your problem.
 
 ## Your Setup (please complete the following information)
 
-- Unity Version [e.g. 2018.3]
+- Unity Version [e.g. 2018.3.11f1]
 - MRTK Version [e.g. v2.0]
 
 ## Target Platform (please complete the following information)
