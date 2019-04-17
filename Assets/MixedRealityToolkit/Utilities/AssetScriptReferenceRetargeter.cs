@@ -92,7 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             try
             {
                 RunRetargetToDLL();
-                //CopyIntermediaryAssemblies(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
                 Debug.Log("Complete.");
             }
             catch (Exception ex)
@@ -124,12 +123,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 else
                 {
                     // Switch to throwing exception later
-                    Debug.LogError($"Can't find a compiled version of the script: {pair.Key}; guid: {pair.Value.Guid}");
+                    Debug.LogWarning($"Can't find a compiled version of the script: {pair.Key}; guid: {pair.Value.Guid}");
                 }
             }
 
             ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary);
-            CopyIntermediaryAssemblies(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
         }
 
         private static void ProcessYAMLAssets(string[] allFilePaths, string outputDirectory, Dictionary<string, Tuple<string, long>> remapDictionary)
@@ -221,10 +219,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             {
                                 line = $"  m_Script: {{fileID: {tuple.Item2}, guid: {tuple.Item1}, type: 3}}";
                             }
+                            else if (nonClassDictionary.Contains(filePath))
+                            {
+                                Debug.LogErrorFormat("A script without a class ({0}) is being processed.", filePath);
+                            }
                             else
                             {
                                 // Switch to error later
-                                Debug.LogError($"Couldn't find a script remap for {guid}.");
+                                Debug.LogWarning($"Couldn't find a script remap for {guid}.");
                             }
                         }
                         // else this is not a script file reference
@@ -254,6 +256,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
+        private static List<string> nonClassDictionary = new List<string>();
+
         private static Dictionary<string, ClassInformation> ProcessScripts(string[] allFilePaths)
         {
             int lengthOfPrefix = Application.dataPath.IndexOf("Assets");
@@ -274,6 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         }
                         else
                         {
+                            nonClassDictionary.Add(filePath);
                             Debug.LogWarning($"Found script that we can't get type from: {monoScript.name}");
                         }
                     }
@@ -332,6 +337,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             if (!(monoScript is null) && AssetDatabase.TryGetGUIDAndLocalFileIdentifier(monoScript, out string guid, out long fileId))
                             {
                                 Type type = monoScript.GetClass();
+
+                                if (type.Namespace == null || !type.Namespace.Contains("Microsoft.MixedReality.Toolkit"))
+                                {
+                                    Debug.LogErrorFormat("Type {0} is not a member of the Microsoft.MixedReality.Toolkit namespace", type.Name);
+                                }
                                 toReturn.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = guid });
                             }
                         }
@@ -351,11 +361,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             DirectoryInfo outputDirectory = new DirectoryInfo(outputPath);
             RecursiveFolderCleanup(outputDirectory);
-            UpdateGuids();
+            CopyIntermediaryAssemblies(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
+            UpdateMetaFiles();
         }
 
         private static void CopyIntermediaryAssemblies(string outputPath)
         {
+            List<DirectoryInfo> outputDirectories = new List<DirectoryInfo>();
             string playerDataCachePath = Application.dataPath.Replace("Assets", "Library/PlayerDataCache");
             DirectoryInfo playerDataCahce = new DirectoryInfo(playerDataCachePath);
             DirectoryInfo[] dllStores = playerDataCahce.GetDirectories("*", SearchOption.TopDirectoryOnly);
@@ -365,16 +377,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 switch(folder.Name)
                 {
                     case "Win":
-                        subfolderName = "Standalone/x86";
-                        break;
-                    case "Win64":
-                        subfolderName = "Standalone/x86_64";
+                        subfolderName = "Standalone";
                         break;
                     case "WindowsStoreApps":
                         subfolderName = "UAP";
                         break;
+                    default:
+                        continue;
                 }
-                FileInfo[] dlls = folder.GetFiles("*.dll", SearchOption.AllDirectories);
+                FileInfo[] dlls = folder.GetFiles("Microsoft.MixedReality.Toolkit*.dll", SearchOption.AllDirectories);
 
                 string pluginPath = Path.Combine(outputPath, subfolderName);
                 if (Directory.Exists(pluginPath))
@@ -389,10 +400,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static void UpdateGuids()
+        private static void UpdateMetaFiles()
         {
             int lengthOfPrefix = Application.dataPath.IndexOf("Assets");
-            Dictionary<string, string> asmdefGuids = new Dictionary<string, string>();
+            Dictionary<string, string> dllGuids = new Dictionary<string, string>();
             string[] asmdefFiles = Directory.GetFiles(Application.dataPath, "*.asmdef", SearchOption.AllDirectories);
 
             foreach (string asmdefFile in asmdefFiles)
@@ -400,44 +411,105 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 string asmdefText = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(asmdefFile.Substring(lengthOfPrefix)).text;
                 string dllName = JsonUtility.FromJson<AssemblyDefinitionStub>(asmdefText).name;
                 string guid = File.ReadAllLines(string.Format("{0}.meta", asmdefFile))[1].Substring(6);
-                asmdefGuids.Add(dllName, guid);
+                guid = CycleGuidForward(guid);
+                dllGuids.Add(string.Format("{0}.dll", dllName), guid);
             }
 
-            foreach (FileInfo dllFile in new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins")).GetFiles("*"))
+            //Load the sample meta files
+            DirectoryInfo assetDirectory = new DirectoryInfo(Application.dataPath);
+            FileInfo editorMetaFile = assetDirectory.GetFiles("*sampleEditorDllMeta.txt", SearchOption.AllDirectories).FirstOrDefault();
+            if (editorMetaFile == null)
+            {
+                Debug.LogError("Could not find sample editor dll.meta file");
+            }
+            FileInfo uapMetaFile = assetDirectory.GetFiles("*sampleUAPDllMeta.txt", SearchOption.AllDirectories).FirstOrDefault();
+            if (uapMetaFile == null)
+            {
+                Debug.LogError("Could not find sample UAP dll.meta file");
+            }
+            FileInfo standaloneMetaFile = assetDirectory.GetFiles("*sampleStandaloneDllMeta.txt", SearchOption.AllDirectories).FirstOrDefault();
+            if (standaloneMetaFile == null)
+            {
+                Debug.LogError("Could not find sample Standalone dll.meta file");
+            }
+
+            string[] metaFileContent = File.ReadAllLines(editorMetaFile.FullName);
+
+            foreach (FileInfo dllFile in new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins")).GetFiles("*", SearchOption.AllDirectories))
             {
                 if (dllFile.Extension.Equals(".meta"))
                 {
-                    StringBuilder guidBuilder = new StringBuilder(32);
-                    string dllFileName = dllFile.Name.Remove(dllFile.Name.Length - 9);
-                    if (asmdefGuids.ContainsKey(dllFileName))
+                    string dllFileName = dllFile.Name.Remove(dllFile.Name.Length - 5);
+                    if (dllGuids.ContainsKey(dllFileName))
                     {
-                        string guid = asmdefGuids[dllFileName];
-                        guidBuilder.Clear();
-                        //Add one to each hexit in the guid to make it unique, but also reproducible
-                        foreach (char hexit in guid)
-                        {
-                            switch (hexit)
-                            {
-                                case 'f':
-                                    guidBuilder.Append('0');
-                                    break;
-                                case '9':
-                                    guidBuilder.Append('a');
-                                    break;
-                                default:
-                                    guidBuilder.Append((char)(hexit + 1));
-                                    break;
-                            }
-                        }
-                        guid = guidBuilder.ToString();
-
-                        string[] dllMetaFileText = File.ReadAllLines(dllFile.FullName);
-                        dllMetaFileText[1] = string.Format("guid: {0}", guid);
-                        File.WriteAllLines(dllFile.FullName, dllMetaFileText);
-                        break;
+                        metaFileContent[1] = string.Format("guid: {0}", dllGuids[dllFileName]);
+                        File.WriteAllLines(dllFile.FullName, metaFileContent);
                     }
                 }
             }
+
+            DirectoryInfo[] directories = new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins")).GetDirectories("*", SearchOption.AllDirectories);
+            string dllGuid = string.Empty;
+            foreach (DirectoryInfo directory in directories)
+            {
+                if (!directory.Name.Equals("Editor"))
+                {
+                    if (directory.Name.Contains("Standalone") || directory.Parent.Name.Contains("Standalone"))
+                    {
+                        metaFileContent = File.ReadAllLines(standaloneMetaFile.FullName);
+                    }
+                    else if (directory.Name.Contains("UAP") || directory.Parent.Name.Contains("UAP"))
+                    {
+                        metaFileContent = File.ReadAllLines(uapMetaFile.FullName);
+                    }
+
+                    FileInfo[] files = directory.GetFiles("*.dll", SearchOption.TopDirectoryOnly);
+                    string metaFilePath = string.Empty;
+                    foreach (FileInfo file in files)
+                    {
+                        dllGuid = dllGuids[file.Name];
+                        dllGuid = CycleGuidForward(dllGuid);
+                        if (directory.Name.Contains("UAP"))
+                        {
+                            dllGuid = CycleGuidForward(dllGuid);
+                        }
+
+                        if (dllGuids.ContainsKey(file.Name))
+                        {
+                            metaFilePath = string.Format("{0}.meta", file.FullName);
+                            metaFileContent[1] = string.Format("guid: {0}", dllGuid);
+                            if (File.Exists(metaFilePath))
+                            {
+                                File.Delete(metaFilePath);
+                            }
+                            File.WriteAllLines(metaFilePath, metaFileContent);
+                        }
+                    }
+                }                
+            }
+        }
+
+        private static StringBuilder guidBuilder = new StringBuilder(32);
+        private static string CycleGuidForward(string guid)
+        {
+            guidBuilder.Clear();
+            //Add one to each hexit in the guid to make it unique, but also reproducible
+            foreach (char hexit in guid)
+            {
+                switch (hexit)
+                {
+                    case 'f':
+                        guidBuilder.Append('0');
+                        break;
+                    case '9':
+                        guidBuilder.Append('a');
+                        break;
+                    default:
+                        guidBuilder.Append((char)(hexit + 1));
+                        break;
+                }
+            }
+            return guidBuilder.ToString();
         }
 
         private static void RecursiveFolderCleanup(DirectoryInfo folder)
