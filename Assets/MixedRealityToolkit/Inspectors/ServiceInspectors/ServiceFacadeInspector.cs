@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -160,67 +161,80 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         /// <returns></returns>
         private bool DrawProfile(Type serviceType)
         {
-            bool foundAndDrawProfile = false;
 
             IMixedRealityServiceInspector inspectorInstance;
             if (GetServiceInspectorInstance(serviceType, out inspectorInstance))
             {
-                if (inspectorInstance.DrawProfileField)
-                {                 
-                    // Draw the base profile stuff
-                    if (typeof(BaseExtensionService).IsAssignableFrom(serviceType))
+                if (!inspectorInstance.DrawProfileField)
+                {   // We've been instructed to skip drawing a profile by the inspector
+                    return false;
+                }
+            }
+
+            bool foundAndDrewProfile = false;
+
+            // Draw the base profile stuff
+            if (typeof(BaseCoreSystem).IsAssignableFrom(serviceType))
+            {
+                SerializedObject activeProfileObject = new SerializedObject(MixedRealityToolkit.Instance.ActiveProfile);
+                // Would be nice to handle this using some other method
+                // Would be nice to handle this with a lookup instead
+                if (typeof(IMixedRealityInputSystem).IsAssignableFrom(serviceType))
+                {
+                    SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("inputSystemProfile");
+                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
+                    EditorGUILayout.Space();
+                    foundAndDrewProfile = true;
+                }
+                else if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(serviceType))
+                {
+                    SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("boundaryVisualizationProfile");
+                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
+                    EditorGUILayout.Space();
+                    foundAndDrewProfile = true;
+                }
+                else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(serviceType))
+                {
+                    SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("diagnosticsSystemProfile");
+                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
+                    EditorGUILayout.Space();
+                    foundAndDrewProfile = true;
+                }
+                else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(serviceType))
+                {
+                    SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("spatialAwarenessSystemProfile");
+                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
+                    EditorGUILayout.Space();
+                    foundAndDrewProfile = true;
+                }
+            }
+            else if (typeof(BaseExtensionService).IsAssignableFrom(serviceType))
+            {
+                // Make sure the extension service profile isn't null
+                if (MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile != null)
+                {
+                    // If this is an extension service, see if it uses a profile
+                    MixedRealityServiceConfiguration[] serviceConfigs = MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile.Configurations;
+                    for (int serviceIndex = 0; serviceIndex < serviceConfigs.Length; serviceIndex++)
                     {
-                        // Make sure the extension service profile isn't null
-                        if (MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile != null)
+                        MixedRealityServiceConfiguration serviceConfig = serviceConfigs[serviceIndex];
+                        if (serviceConfig.ComponentType.Type.IsAssignableFrom(serviceType) && serviceConfig.ConfigurationProfile != null)
                         {
-                            // If this is an extension service, see if it uses a profile
-                            MixedRealityServiceConfiguration[] serviceConfigs = MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile.Configurations;
-                            for (int serviceIndex = 0; serviceIndex < serviceConfigs.Length; serviceIndex++)
-                            {
-                                MixedRealityServiceConfiguration serviceConfig = serviceConfigs[serviceIndex];
-                                if (serviceConfig.ComponentType.Type.IsAssignableFrom(serviceType) && serviceConfig.ConfigurationProfile != null)
-                                {
-                                    // We found the service that this type uses - draw the profile
-                                    SerializedObject serviceConfigObject = new SerializedObject(MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile);
-                                    SerializedProperty serviceConfigArray = serviceConfigObject.FindProperty("configurations");
-                                    SerializedProperty serviceConfigProp = serviceConfigArray.GetArrayElementAtIndex(serviceIndex);
-                                    SerializedProperty serviceProfileProp = serviceConfigProp.FindPropertyRelative("configurationProfile");
-                                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
-                                    EditorGUILayout.Space();
-                                    foundAndDrawProfile = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        SerializedObject activeProfileObject = new SerializedObject(MixedRealityToolkit.Instance.ActiveProfile);
-                        // Would be nice to handle this using some other method
-                        // Would be nice to handle this with a lookup instead
-                        if (typeof(IMixedRealityInputSystem).IsAssignableFrom(serviceType))
-                        {
-                            SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("inputSystemProfile");
+                            // We found the service that this type uses - draw the profile
+                            SerializedObject serviceConfigObject = new SerializedObject(MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile);
+                            SerializedProperty serviceConfigArray = serviceConfigObject.FindProperty("configurations");
+                            SerializedProperty serviceConfigProp = serviceConfigArray.GetArrayElementAtIndex(serviceIndex);
+                            SerializedProperty serviceProfileProp = serviceConfigProp.FindPropertyRelative("configurationProfile");
                             BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
-                            foundAndDrawProfile = true;
-                        }
-                        else if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(serviceType))
-                        {
-                            SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("boundaryVisualizationProfile");
-                            BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
-                            foundAndDrawProfile = true;
-                        }
-                        else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(serviceType))
-                        {
-                            SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("diagnosticsSystemProfile");
-                            BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
-                            foundAndDrawProfile = true;
+                            EditorGUILayout.Space();
+                            foundAndDrewProfile = true;
+                            break;
                         }
                     }
                 }
             }
 
-            return foundAndDrawProfile;
+            return foundAndDrewProfile;
         }
 
         /// <summary>
