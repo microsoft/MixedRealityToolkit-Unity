@@ -10,7 +10,7 @@ assignees: ''
 ## Describe the Issue
 A clear and concise what the issue
 
-**Feature Area**
+## Feature Area
 What's incorrect? What's missing?
 
 ## Existing Doc Link
