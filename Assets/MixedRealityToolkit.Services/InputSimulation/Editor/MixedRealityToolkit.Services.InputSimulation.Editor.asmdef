@@ -1,10 +1,10 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Services.InputSimulation.Inspectors",
+    "name": "Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Core.Inspectors",
         "Microsoft.MixedReality.Toolkit.Core.Utilities.Editor",
-        "MixedRealityToolkit.Services.InputSimulation.Core"
+        "Microsoft.MixedReality.Toolkit.Services.InputSimulation"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
