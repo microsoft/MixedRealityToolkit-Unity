@@ -16,6 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     [InitializeOnLoad]
     public static class MixedRealityToolkitFiles
     {
+        /// <summary>
+        /// In order to subscribe for a <see cref="OnPostprocessAllAssets(string[], string[], string[], string[])"/> callback, 
+        /// the class declaring the method must derive from AssetPostprocessor. So this class is nested privately as to prevent instnatiation of it.
+        /// </summary>
         private class AssetPostprocessor : UnityEditor.AssetPostprocessor
         {
             public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
