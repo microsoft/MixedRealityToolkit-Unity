@@ -11,7 +11,7 @@ If you have any questions, please reach out on the [HoloLens forums](https://for
 # Submission process
 We provide several paths to enable developers to contribute to the Mixed Reality Toolkit, all starting with [creating a new Issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose)
 
-![](External/ReadMeImages/issue_selection_prompt.png)
+![](../Images/issue_selection_prompt.png)
 
 From here you can either:
 
@@ -43,11 +43,11 @@ To get started, simply follow these steps
 1. Fork the repository. Click on the "Fork" button on the top right of the page and follow the flow.
 2. Create a branch in your fork (off of the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch) to make it easier for you to isolate your fork.
 > for the legacy HoloToolkit use the [htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development) branch
-3. Instructions for getting the project building and running the tests are in the [README](README.md). 
+3. Instructions for getting the project building and running the tests are in the [README](../../README.md). 
 4. Make **small and frequent** commits that include tests which could be a unity scene showing usage of your feature.
 5. Make sure that all the tests continue to pass.
 6. Follow the [Coding Guidelines](CodingGuidelines.md).
-7. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](Documentation/DocumentationGuide.md).
+7. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](DocumentationGuide.md).
 8. Ensure the code works as intended on all [platforms](#supported-platforms).
     - For Windows UWP projects, your code must be [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; Store -> Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
 9. Update the [documentation](#contributing) with additional information as needed.

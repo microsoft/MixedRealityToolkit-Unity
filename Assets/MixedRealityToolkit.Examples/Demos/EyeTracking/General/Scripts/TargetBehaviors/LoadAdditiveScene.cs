@@ -50,18 +50,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             AudioFeedbackPlayer.Instance.PlaySound(audio_OnSelect);
 
             // Let's find out the name of the currently loaded additive scene to unload
-            if ((lastSceneLoaded == "") && (SceneManager.sceneCount > 1))
+            if (SceneManager.sceneCount > 1)
             {
                 lastSceneLoaded = SceneManager.GetSceneAt(1).name;
+
+                Debug.Log($"Last scene name: {lastSceneLoaded}");
+
+                // Let's wait in case we don't want to switch scenes too abruptly 
+                yield return new WaitForSeconds(waitTimeInSecBeforeLoading);
+
+                SceneManager.UnloadSceneAsync(lastSceneLoaded);
             }
-
-            Debug.Log($"Last scene name: {lastSceneLoaded}");
-
-            // Let's wait in case we don't want to switch scenes too abruptly 
-            yield return new WaitForSeconds(waitTimeInSecBeforeLoading);
-
-
-            SceneManager.UnloadSceneAsync(lastSceneLoaded);
 
             Debug.Log($"New scene name: {SceneToBeLoaded}");
             lastSceneLoaded = SceneToBeLoaded;

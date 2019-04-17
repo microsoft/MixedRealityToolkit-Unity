@@ -1,7 +1,7 @@
 # Boom Box
 ## Screenshot
 
-![screenshot](../../../../../../External/ReadMeImages/gltf/boombox_screenshot.jpg)
+![screenshot](../../../../../../Documentation/Images/gltf/boombox_screenshot.jpg)
 
 ## License Information
 
