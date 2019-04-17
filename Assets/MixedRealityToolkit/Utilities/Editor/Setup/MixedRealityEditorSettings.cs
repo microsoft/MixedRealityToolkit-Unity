@@ -24,8 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const string IgnoreKey = "_MixedRealityToolkit_Editor_IgnoreSettingsPrompts";
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
 
-        private static string mixedRealityToolkit_RelativeFolderPath = string.Empty;
-
         [Obsolete("Use the 'MixedRealityToolkitFiles' APIs.")]
         public static string MixedRealityToolkit_AbsoluteFolderPath
         {
@@ -53,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [Obsolete("Use the 'MixedRealityToolkitFiles' APIs.")]
         public static string MixedRealityToolkit_RelativeFolderPath
         {
-            get { return MakePathRelativeToProject(MixedRealityToolkit_AbsoluteFolderPath); }
+            get { return MixedRealityToolkitFiles.GetAssetDatabasePath(MixedRealityToolkit_AbsoluteFolderPath); }
         }
 
         static MixedRealityEditorSettings()
@@ -170,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             string absolutePath;
             if (FindDirectory(directoryPathToSearch, directoryName, out absolutePath))
             {
-                path = MakePathRelativeToProject(absolutePath);
+                path = MixedRealityToolkitFiles.GetAssetDatabasePath(absolutePath);
                 return true;
             }
 
@@ -213,12 +211,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return false;
         }
 
-        internal static string MakePathRelativeToProject(string absolutePath)
-        {
-            return absolutePath.Replace(
-                Application.dataPath + Path.DirectorySeparatorChar,
-                "Assets" + Path.DirectorySeparatorChar);
-        }
+        [Obsolete("Use MixedRealityToolkitFiles.GetAssetDatabasePath instead.")]
+        internal static string MakePathRelativeToProject(string absolutePath) => MixedRealityToolkitFiles.GetAssetDatabasePath(absolutePath);
 
         private static void SetIconTheme()
         {

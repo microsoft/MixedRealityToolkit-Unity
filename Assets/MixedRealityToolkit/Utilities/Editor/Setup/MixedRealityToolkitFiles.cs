@@ -93,6 +93,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static string NormalizeSeparators(string path) => path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
 
+        private static string FormatSeparatorsForUnity(string path) => path.Replace('\\', '/');
+
+        /// <summary>
+        /// Maps an absolute path to be relative to the Project Root path (the Unity folder that contains Assets)
+        /// </summary>
+        /// <param name="absolutePath">The absolute path to the project/</param>
+        /// <returns>The project relative path.</returns>
+        /// <remarks>This doesn't produce paths that contain step out '..' relative paths.</remarks>
+        public static string GetAssetDatabasePath(string absolutePath) => FormatSeparatorsForUnity(absolutePath).Replace(Application.dataPath, "Assets");
+
         /// <summary>
         /// Returns files from all folder instances of the MRTK folder relative path.
         /// </summary>
@@ -110,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 .Select(t => Path.Combine(t, mrtkRelativeFolder))
                 .Where(Directory.Exists)
                 .SelectMany(t => Directory.GetFiles(t))
-                .Select(MixedRealityEditorSettings.MakePathRelativeToProject)
+                .Select(GetAssetDatabasePath)
                 .ToArray();
         }
 
@@ -127,9 +137,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return null;
             }
 
-            return MixedRealityEditorSettings.MakePathRelativeToProject(mrtkFolders
+            string path = mrtkFolders
                 .Select(t => Path.Combine(t, mrtkPathToFile))
-                .FirstOrDefault(t => File.Exists(t)));
+                .FirstOrDefault(t => File.Exists(t));
+
+            return path != null ? GetAssetDatabasePath(path) : null;
         }
     }
 }
