@@ -1,8 +1,8 @@
 ---
-name: RC1 Bug report
+name: Bug report
 about: Create a bug report to help us improve
 title: ''
-labels: RC1 Bug
+labels: ''
 assignees: ''
 
 ---
