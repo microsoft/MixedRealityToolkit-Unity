@@ -89,6 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         }
 
+        /// <summary>
+        /// Draws button linking to documentation.
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
         private bool DrawDocLink(Type serviceType)
         {
             DocLinkAttribute docLink = serviceType.GetCustomAttribute<DocLinkAttribute>();
