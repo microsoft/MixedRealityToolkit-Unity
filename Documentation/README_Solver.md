@@ -22,7 +22,7 @@ The following Solvers provide the building blocks for basic behavior:
 When **UpdateLinkedTransform** is *true*, the solver will calculate position & orientation, but will not apply it. This lets other components use the transform values.
 
 
-## How do I add a solver to my scene?
+## How to add a solver to a scene?
 - Add the desired behavior to an object. **SolverHandler** will be added automatically. You can mix and match, their order will change how the object behaves at runtime.
 - **SolverHandler** has two fields for setting the reference object. You can choose a tracked object (such as the user camera or L/R motion controllers), or instead use the **TransformTarget** field which overrides any set tracked object. This enables you to have solvers reference any scene object. Yes, that means objects can have tag alongs and cast surface magnetism as well as tracked objects. Very handy.
 - Surface magnetism scripts rely on a *LayerMask* for raycasting. As a recommendation, create a custom *LayerMask* (the example uses *Surface*). Note that using *default* or *everything* will result in UI components or cursors contributing to the solver. This can produce weird and unexpected behavior. Objects lurching toward you etc...

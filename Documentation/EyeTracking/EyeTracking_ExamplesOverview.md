@@ -26,8 +26,7 @@ Make sure that the _'OnLoad_StartScene'_ script is enabled for this so that the 
   - [mrtk_eyes_04_TargetPositioning.unity](/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/)
   - [mrtk_eyes_05_Visualizer.unity](/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/)
 
-You may wonder: But how do I quickly change a scene and test it in the Unity Editor?
-No problem! 
+How to quickly change a scene and test it in the Unity Editor?
 - Load the _root_ scene
 - Disable the _'OnLoad_StartScene'_ script
 - _Drag and drop_ one of the Eye Tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view.
