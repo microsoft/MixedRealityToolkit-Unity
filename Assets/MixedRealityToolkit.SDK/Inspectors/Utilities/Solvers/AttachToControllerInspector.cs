@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Inspectors.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.UI.Editor.Solvers
 {
     [CustomEditor(typeof(AttachToController))]
     public class AttachToControllerInspector : ControllerFinderInspector
