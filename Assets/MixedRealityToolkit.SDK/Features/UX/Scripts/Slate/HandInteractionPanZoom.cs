@@ -2,12 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -43,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// This Property sets and gets whether a the pan/zoom behavior is active.
         /// </summary>
         public bool Enabled { get => isEnabled; set => isEnabled = value; }
-       
         [Header("Behavior")]
         [SerializeField]
         private bool enableZoom = false;
