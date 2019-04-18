@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.CSharp;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
@@ -281,7 +282,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (!ServiceName.EndsWith("Service"))
             {
-                errors.Add("Name must end with 'Service' suffix");
+                errors.Add("Name must end with 'Service' suffix.");
+            }
+            
+            if (!CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(ServiceName))
+            {
+                errors.Add("Name must not contain illegal characters.");
             }
 
             return errors.Count == 0;
