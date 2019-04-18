@@ -1,7 +1,7 @@
 
 # Extension Service Creation Wizard
 
-Making the transition from singletons to services can be difficult. This wizard can supplement our other documentation and sample code by enabling devs to create new services with (roughly) the same ease as creating a new Monobehaviour script.
+Making the transition from singletons to services can be difficult. This wizard can supplement our other documentation and sample code by enabling devs to create new services with (roughly) the same ease as creating a new Monobehaviour script. To learn about creating services from scratch, see our [Guide to building Registered Services](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html) (Coming soon).
 
 ### Launching the wizard
 Launch the wizard from the main menu: **MixedRealityToolkit/Utilities/Create Extension Service** - the wizard will then take you through the process of generating your service script, interface and profile class.

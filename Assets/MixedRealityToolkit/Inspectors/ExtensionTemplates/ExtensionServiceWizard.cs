@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Color readOnlyColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
         private static readonly string servicesDocumentationURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html";
         private static readonly Vector2 minWindowSize = new Vector2(500, 0);
+        private const int docLinkWidth = 200;
 
         private ExtensionServiceCreator creator = new ExtensionServiceCreator();
         private List<string> errors = new List<string>();
@@ -92,10 +93,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             EditorGUILayout.Space();
             EditorGUILayout.HelpBox("This wizard will help you set up and register a simple extension service. MRTK Services are similar to traditional Monobehaviour singletons but with more robust access and lifecycle control. Scripts can access services through the MRTK's service provider interface. For more information about services, click the link below.", MessageType.Info);
-            if (GUILayout.Button("Services Documentation", EditorStyles.miniButton))
+
+            GUIContent buttonContent = new GUIContent();
+            buttonContent.image = EditorGUIUtility.IconContent("_Help").image;
+            buttonContent.text = " Services Documentation";
+            buttonContent.tooltip = servicesDocumentationURL;
+
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            if (GUILayout.Button(buttonContent, GUILayout.MaxWidth(docLinkWidth)))
             {
                 Application.OpenURL(servicesDocumentationURL);
             }
+
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            EditorGUILayout.Space();
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Choose a name for your service.", EditorStyles.miniLabel);
