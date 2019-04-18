@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #endregion Private Properties
 
         /// <summary>
-        /// The Reset function sets the pan and zoom back to their starting settings.
+        /// This function sets the pan and zoom back to their starting settings.
         /// </summary>
         public void Reset()
         {
