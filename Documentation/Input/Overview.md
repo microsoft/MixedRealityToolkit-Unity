@@ -13,6 +13,6 @@ Inputs are produced by [**Input Providers**](InputProviders.md). Each provider c
 
 Controllers can have [**Pointers**](Pointers.md) attached to them that query the scene to determine the game object with focus and raise [**Pointer Events**](Pointers.md#pointer-events) on it. As an example, our *line pointer* performs a raycast against the scene using the controller pose to compute the origin and direction of the ray. The pointers created for each controller are set up in the **Pointer Profile**, under the *Input System Profile*.
 
-<img src="../../External/ReadMeImages/Input/EventFlow.png" style="display:block;margin-left:auto;margin-right:auto;">
+<img src="../../Documentation/Images/Input/EventFlow.png" style="display:block;margin-left:auto;margin-right:auto;">
 
 <sup>Event flow. While you can handle input events directly in UI components it is recommended to use pointer events to keep the implementation device-independent.</sup>

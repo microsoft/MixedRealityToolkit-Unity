@@ -1,4 +1,4 @@
-<img src="../External/ReadMeImages/MRTK_Logo_Rev.png">
+<img src="../Images/MRTK_Logo_Rev.png">
 
 # Documentation guidelines
 
@@ -93,7 +93,7 @@ General rule of thumb: Try to **sound professional**. That usually means to avoi
 
 * Use **Sentence case for headlines**. Ie. capitalize the first letter and names, but nothing else.
 * Use regular English for everything else. That means **do not capitalize arbitrary words**, even if they hold a special meaning in that context. Prefer *italic text*, if you really want to highlight certain words, [see below](#emphasis-and-highlighting).
-* When a link is embedded in a sentence (which is the preferred method), the standard chapter name always uses capital letters, thus breaking the rule of no arbitrary capitalization inside text. Therefore use a custom link name to fix the capitalization. As an example, here is a link to the [bounding box](README_BoundingBox.md) documentation.
+* When a link is embedded in a sentence (which is the preferred method), the standard chapter name always uses capital letters, thus breaking the rule of no arbitrary capitalization inside text. Therefore use a custom link name to fix the capitalization. As an example, here is a link to the [bounding box](../README_BoundingBox.md) documentation.
 * Do capitalize names, such as *Unity*.
 * Do NOT capitalize "editor" when writing *Unity editor*.
 
@@ -287,7 +287,7 @@ Performance notes are recommended for CPU and/or GPU heavy components and **may*
 
 ## Breaking changes
 
-Breaking changes documentation is to consist of a top level [file](../BreakingChanges.md) which links to each feature area's individual BreakingChanges.md.
+Breaking changes documentation is to consist of a top level [file](BreakingChanges.md) which links to each feature area's individual BreakingChanges.md.
 
 The feature area BreakingChanges.md files are to contain the list of all known breaking changes for a given release **as well as** the history of breaking changes from past releases.
 
