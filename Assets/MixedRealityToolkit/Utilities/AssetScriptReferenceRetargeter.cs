@@ -372,8 +372,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             UpdateMetaFiles();
         }
 
-
-
         private static void CopyIntermediaryAssemblies(string outputPath)
         {
             List<DirectoryInfo> outputDirectories = new List<DirectoryInfo>();
