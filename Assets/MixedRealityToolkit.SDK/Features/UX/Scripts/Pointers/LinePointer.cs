@@ -143,6 +143,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
+            base.OnPostSceneQuery();
+
             Gradient lineColor = LineColorNoTarget;
 
             if (!IsActive)

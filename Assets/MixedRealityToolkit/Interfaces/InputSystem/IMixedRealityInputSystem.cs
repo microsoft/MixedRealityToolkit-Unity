@@ -228,6 +228,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion Pointer Down
 
+        #region Pointer Updated
+
+        /// <summary>
+        /// Raise the pointer updated event.
+        /// </summary>
+        /// <param name="pointer">The pointer where the event originates.</param>
+        /// <param name="inputAction"></param>
+        /// <param name="handedness"></param>
+        /// <param name="inputSource"></param>
+        void RaisePointerUpdated(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null);
+
+        #endregion Pointer Updated
+
         #region Pointer Click
 
         /// <summary>

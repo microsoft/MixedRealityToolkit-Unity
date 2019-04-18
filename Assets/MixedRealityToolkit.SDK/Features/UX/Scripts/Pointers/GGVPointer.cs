@@ -162,7 +162,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void OnPostSceneQuery()
         {
-
+            if (isSelectPressed && IsInteractionEnabled)
+            {
+                MixedRealityToolkit.InputSystem.RaisePointerUpdated(this, MixedRealityInputAction.None, Controller.ControllerHandedness);
+            }
         }
 
         public void OnPreSceneQuery()

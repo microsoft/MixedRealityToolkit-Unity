@@ -40,6 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
+            if (IsSelectPressed)
+            {
+                MixedRealityToolkit.InputSystem.RaisePointerUpdated(this, MixedRealityInputAction.None, Handedness);
+            }
+
             Gradient lineColor = LineColorNoTarget;
             BaseMixedRealityLineRenderer contextRenderer = null;
 

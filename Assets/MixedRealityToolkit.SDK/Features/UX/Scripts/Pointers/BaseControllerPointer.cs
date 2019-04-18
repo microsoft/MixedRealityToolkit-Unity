@@ -345,7 +345,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual void OnPreSceneQuery() { }
 
         /// <inheritdoc />
-        public virtual void OnPostSceneQuery() { }
+        public virtual void OnPostSceneQuery()
+        {
+            if (IsSelectPressed)
+            {
+                MixedRealityToolkit.InputSystem.RaisePointerUpdated(this, MixedRealityInputAction.None, Handedness);
+            }
+        }
 
         ///  <inheritdoc />
         public virtual void OnPreCurrentPointerTargetChange() { }
