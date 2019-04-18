@@ -18,4 +18,5 @@
 > commands (substituting {PR_ID} with the ID of this pull request):
 >
 > git fetch origin pull/{PR_ID}/head:name_of_local_branch
+>
 > git checkout name_of_local_branch
