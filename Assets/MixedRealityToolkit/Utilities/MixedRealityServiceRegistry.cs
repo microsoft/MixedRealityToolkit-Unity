@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
-            registry.Add(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>(serviceInstance, registrar));
+            services.Add(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>(serviceInstance, registrar));
             return true;
         }
 
