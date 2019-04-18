@@ -67,17 +67,81 @@ namespace Microsoft.MixedReality.Toolkit
         /// </returns>
         public static bool RemoveService<T>(T serviceInstance, IMixedRealityServiceRegistrar registrar) where T : IMixedRealityService
         {
-            T existingService;
-            bool removed = false;
+            return RemoveServiceInternal(typeof(T), serviceInstance, registrar);
+        }
 
-            if (TryGetService<T>(out existingService, serviceInstance.Name))
+        public static bool RemoveService<T>(T serviceInstance)
+        {
+            // todo
+            return false;
+        }
+
+        private static bool RemoveServiceInternal(
+            Type interfaceType,
+            IMixedRealityService serviceInstance,
+            IMixedRealityServiceRegistrar registrar)
+        {
+            // todo
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serviceInstance"></param>
+        /// <param name="registrar"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static bool TryGetService<T>(
+            out T serviceInstance,
+            out IMixedRealityServiceRegistrar registrar,
+            string name = null)
+        {
+            Type interfaceType = typeof(T);
+
+            if (!registry.ContainsKey(interfaceType))
             {
-                // remove service
-                // todo
-                removed = true;
+                serviceInstance = default(T);
+                registrar = null;
+                return false;
             }
 
-            return removed;
+            List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
+            Debug.Assert(services.Count > 0, $"Service registry returned 0 items. AddService appears to have failed for {interfaceType.Name}");
+
+            int registryIndex = -1;
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                // Find the desired service by it's name.
+                for (int i = 0; i < registry.Count; i++)
+                {
+                    if (services[i].Key.Name != name) { continue; }
+
+                    registryIndex = i;
+                    break;
+                }
+
+                if (registryIndex == -1)
+                {
+                    // Failed to find the requested service.
+                    serviceInstance = default(T);
+                    registrar = null;
+                    return false;
+                }
+            }
+            else
+            {
+                // Use the first service found
+                registryIndex = 0;
+            }
+
+            IMixedRealityService tempService = services[registryIndex].Key;
+            Debug.Assert(tempService is T, "The service in the registry does not match the expected type.");
+
+            serviceInstance = (T)tempService;
+            registrar = services[registryIndex].Value;
+            return true;
         }
 
         /// <summary>
@@ -89,48 +153,16 @@ namespace Microsoft.MixedReality.Toolkit
         /// <returns>
         /// True if the requested service is being returned, false otherwise.
         /// </returns>
-        public static bool TryGetService<T>(out T serviceInstance, string name = null) where T : IMixedRealityService
+        public static bool TryGetService<T>(
+            out T serviceInstance,
+            string name = null) where T : IMixedRealityService
         {
-            Type interfaceType = typeof(T);
-            IMixedRealityService service = null;
+            IMixedRealityServiceRegistrar registrar;
 
-            if (registry.ContainsKey(interfaceType))
-            {
-                List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
-                Debug.Assert(services.Count > 0, $"Service registry returned 0 items. AddService appears to have failed for {interfaceType.Name}");
-
-                if (!string.IsNullOrWhiteSpace(name))
-                {
-                    // Find the desired service by it's name.
-                    for (int i = 0; i < registry.Count; i++)
-                    {
-                        if (services[i].Key.Name != name) { continue; }
-
-                        service = services[i].Key;
-                        break;
-                    }
-                }
-                else
-                {
-                    // Use the first service found
-                    service = services[0].Key;
-                }
-            }
-
-            bool found;
-            if (service != null)
-            {
-                Debug.Assert(service is T, "The service in the registry does not match the expected type.");
-                serviceInstance = (T)service;
-                found = true;
-            }
-            else
-            {
-                serviceInstance = default(T);
-                found = false;
-            }
-
-            return found;
+            return TryGetService<T>(
+                out serviceInstance,
+                out registrar,
+                name);
         }
     }
 }
