@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 // Find the facade associated with this service
                 ServiceFacade facade;
                 // If no facade exists for this service type, move on
-                if (!ServiceFacade.FacadeLookup.TryGetValue(inspectorTypePair.Key, out facade) || facade.Destroyed || facade == null)
+                if (!ServiceFacade.FacadeServiceLookup.TryGetValue(inspectorTypePair.Key, out facade) || facade.Destroyed || facade == null)
                 {
                     continue;
                 }

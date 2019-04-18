@@ -13,7 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
     [ExecuteAlways]
     public class ServiceFacade : MonoBehaviour
     {
-        public static Dictionary<Type, ServiceFacade> FacadeLookup = new Dictionary<Type, ServiceFacade>();
+        public static Dictionary<Type, ServiceFacade> FacadeServiceLookup = new Dictionary<Type, ServiceFacade>();
+        public static List<ServiceFacade> ActiveFacadeObjects = new List<ServiceFacade>();
 
         public IMixedRealityService Service { get { return service; } }
         public Type ServiceType { get { return serviceType; } }
@@ -34,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 serviceType = null;
                 name = "(Destroyed)";
                 gameObject.SetActive(false);
-                FacadeLookup.Remove(serviceType);
                 return;
             }
             else
@@ -44,20 +44,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 name = serviceType.Name;
                 gameObject.SetActive(true);
 
-                if (!FacadeLookup.ContainsKey(serviceType))
+                if (!FacadeServiceLookup.ContainsKey(serviceType))
                 {
-                    FacadeLookup.Add(serviceType, this);
+                    FacadeServiceLookup.Add(serviceType, this);
                 }
                 else
                 {
-                    FacadeLookup[serviceType] = this;
+                    FacadeServiceLookup[serviceType] = this;
+                }
+
+                if (!ActiveFacadeObjects.Contains(this))
+                {
+                    ActiveFacadeObjects.Add(this);
                 }
             }
         }
 
         public void CheckIfStillValid()
         {
-            if (transform.parent != facadeParent)
+            if (service == null || transform.parent != facadeParent)
             {
                 if (Application.isPlaying)
                 {
@@ -72,10 +77,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private void OnDestroy()
         {
-            if (FacadeLookup != null && serviceType != null)
-                FacadeLookup.Remove(serviceType);
-
             destroyed = true;
+
+            if (FacadeServiceLookup != null && serviceType != null)
+            {
+                FacadeServiceLookup.Remove(serviceType);
+            }
+
+            ActiveFacadeObjects.Remove(this);
         }
     }
 }

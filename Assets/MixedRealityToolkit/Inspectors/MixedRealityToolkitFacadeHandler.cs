@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             }
 
             // Update all self-registered facades
-            foreach (ServiceFacade facade in ServiceFacade.FacadeLookup.Values)
+            foreach (ServiceFacade facade in ServiceFacade.ActiveFacadeObjects)
             {
                 if (facade == null)
                 {
@@ -143,6 +143,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             foreach (Transform child in instanceTransform.transform)
             {
                 childrenToDelete.Add(child);
+            }
+
+            foreach (ServiceFacade facade in ServiceFacade.ActiveFacadeObjects)
+            {
+                if (!childrenToDelete.Contains(facade.transform))
+                    childrenToDelete.Add(facade.transform);
             }
 
             foreach (Transform child in childrenToDelete)
