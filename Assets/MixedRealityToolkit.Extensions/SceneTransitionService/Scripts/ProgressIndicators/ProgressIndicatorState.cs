@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     {
         Closed,
         Opening,
-        Displaying,
+        Open,
         Closing,
     }
 }

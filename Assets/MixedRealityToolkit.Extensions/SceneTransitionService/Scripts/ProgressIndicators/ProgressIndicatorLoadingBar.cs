@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     {
         const float SmoothProgressSpeed = 0.25f;
 
+        public Transform MainTransform { get { return transform; } }
         public ProgressIndicatorState State { get { return state; } }
         public float Progress { set { targetProgress = value; } }
         public string Message { set { messageText.text = value; } }
@@ -41,6 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         
         private float smoothProgress = 0f;
         private ProgressIndicatorState state = ProgressIndicatorState.Closed;
+        private Vector3 barScale = Vector3.one;
 
         /// <summary>
         /// Target for smooth progress, 0-1. Serialized to test in editor.
@@ -57,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
             await Task.Yield();
 
-            state = ProgressIndicatorState.Displaying;
+            state = ProgressIndicatorState.Open;
         }
 
         public async Task CloseAsync()
@@ -73,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
         private void Update()
         {
-            if (state != ProgressIndicatorState.Displaying)
+            if (state != ProgressIndicatorState.Open)
                 return;
 
             smoothProgress = Mathf.Lerp(smoothProgress, targetProgress, SmoothProgressSpeed);
@@ -81,7 +83,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             if (smoothProgress > 0.99f)
                 smoothProgress = 1f;
 
-            progressBar.localScale = new Vector3(smoothProgress, 1f, 1f);
+            barScale.x = Mathf.Clamp(smoothProgress, 0.01f, 1f);
+            progressBar.localScale = barScale;
 
             progressText.gameObject.SetActive(displayPercentage);
             progressText.text = string.Format(progressStringFormat, smoothProgress);

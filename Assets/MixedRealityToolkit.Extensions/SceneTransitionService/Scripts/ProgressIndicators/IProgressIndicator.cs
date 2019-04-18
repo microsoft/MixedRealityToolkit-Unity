@@ -2,11 +2,18 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
     public interface IProgressIndicator
     {
+        /// <summary>
+        /// The progress indicator's main transform.
+        /// You can use this to attach follow scripts or solvers to the indicator.
+        /// </summary>
+        Transform MainTransform { get; }
+
         /// <summary>
         /// Used to determine whether it's appropriate to use this indicator.
         /// </summary>

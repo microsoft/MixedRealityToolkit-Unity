@@ -22,4 +22,5 @@ MonoBehaviour:
   fadeInTime: 0.5
   fadeTargets: 0
   cameraFaderType:
-    reference: 
+    reference: Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.CameraFaderQuad,
+      Assembly-CSharp

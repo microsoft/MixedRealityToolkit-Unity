@@ -13,16 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     /// </summary>
     public class ProgressIndicatorOrbsRotator : MonoBehaviour, IProgressIndicator
     {
+        public Transform MainTransform { get { return transform; } }
         public ProgressIndicatorState State { get { return state; } }
         public float Progress { set { progress = value; } }
         public string Message { set { messageText.text = value; } }
 
         [SerializeField]
         private GameObject[] orbs = null;
-
-        [SerializeField]
-        private Material orbMaterial = null;
-
+        
         [SerializeField]
         private TextMeshPro messageText = null;
 
@@ -58,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
             await Task.Yield();
 
-            state = ProgressIndicatorState.Displaying;
+            state = ProgressIndicatorState.Open;
         }
 
         public async Task CloseAsync()

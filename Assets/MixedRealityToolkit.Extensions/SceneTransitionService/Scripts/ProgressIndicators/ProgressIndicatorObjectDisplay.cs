@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     /// </summary>
     public class ProgressIndicatorObjectDisplay : MonoBehaviour, IProgressIndicator
     {
+        public Transform MainTransform { get { return transform; } }
         public ProgressIndicatorState State { get { return state; } }
         public float Progress { set { progress = value; } }
         public string Message { set { messageText.text = value; } }
@@ -84,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 await Task.Yield();
             }
 
-            state = ProgressIndicatorState.Displaying;
+            state = ProgressIndicatorState.Open;
         }
 
         public async Task CloseAsync()
@@ -115,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         {
             elapsedTime += Time.unscaledDeltaTime;
 
-            if (state == ProgressIndicatorState.Displaying)
+            if (state == ProgressIndicatorState.Open)
             {
                 // Only scale while we're not opening or closing
                 currentScale = Mathf.Lerp(minScale, maxScale, progress);
