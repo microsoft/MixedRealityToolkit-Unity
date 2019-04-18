@@ -13,3 +13,9 @@
 >
 > If there are specific areas of concern or question feel free to highlight them here so
 > that reviewers can watch out specifically for those issues.
+>
+> As a reviewer, it is possible to check out this change locally by using the following
+> commands (substituting {PR_ID} with the ID of this pull request):
+>
+> git fetch origin pull/{PR_ID}/head:name_of_local_branch
+> git checkout name_of_local_branch
