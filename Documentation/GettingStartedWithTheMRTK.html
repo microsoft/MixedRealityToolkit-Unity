@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Getting started with the Mixed Reality Toolkit | Mixed Reality Toolkit Documentation </title>
+    <title>Getting Started with MRTK | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Getting started with the Mixed Reality Toolkit | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Getting Started with MRTK | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.41.0.0">
     
     <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
@@ -80,7 +80,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="getting-started-with-the-mixed-reality-toolkit">Getting started with the Mixed Reality Toolkit</h1>
+<h1 id="getting-started-with-mrtk">Getting Started with MRTK</h1>
 
 <p><img src="Images/MRTK_Logo_Rev.png" alt=""></p>
 <p>The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR).</p>
@@ -97,23 +97,16 @@
 <li>Go to the  <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases">MRTK release page</a>.</li>
 <li>Under Assets, download both <code>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</code> and <code>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</code></li>
 </ol>
-<blockquote>
 <p>The Mixed Reality Toolkit is available via <a href="DownloadingTheMRTK.html">multiple delivery mechanisms</a> and in the future will be available via the Unity package manager.</p>
-</blockquote>
 <h2 id="import-mrtk-packages-into-your-unity-project">Import MRTK packages into your Unity project</h2>
 <ol>
-<li>Create a new Unity project, or open an existing project. When creating a project, make sure to select &quot;3D&quot; as the template type.</li>
-</ol>
-<blockquote>
-<p>We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.x release should work.</p>
-</blockquote>
-<ol start="2">
+<li><p>Create a new Unity project, or open an existing project. When creating a project, make sure to select &quot;3D&quot; as the template type. We used 2018.3.9f1 for this tutorial, though any Unity 2018.3.x release should work.</p>
+</li>
 <li><p>Import the <code>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</code> you downloaded by going into &quot;Asset -&gt; Import Package -&gt; Custom Package&quot;, selecting the .unitypackage file, ensure all items to import are checked, and then selecting &quot;Import&quot;.</p>
 </li>
 <li><p>Import <code>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</code> following the same steps as above. The examples package is optional but contains useful demonstration scenes for current MRTK features.</p>
 </li>
 </ol>
-<blockquote>
 <p>After importing the Foundation package, you may see a setup prompt like the following:</p>
 <p><img src="Images/MRTK_UnitySetupPrompt.png" alt=""></p>
 <p>MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:</p>
@@ -122,10 +115,7 @@
 <li>Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).</li>
 </ul>
 <p>Accepting these options is completely optional, but recommended.</p>
-</blockquote>
-<blockquote>
 <p>Some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -&gt; TextMeshPro -&gt; Import TMP Essential Resources). <strong>After you import TMP Essentials Resources, you need to restart Unity to see changes</strong>.</p>
-</blockquote>
 <h2 id="open-and-run-the-handinteractionexamples-scene-in-editor">Open and run the HandInteractionExamples scene in editor</h2>
 <p><a href="README_HandInteractionExamples.html"><img src="Images/MRTK_Examples.png" alt="HandInteractionExample scene"></a></p>
 <p>The <a href="README_HandInteractionExamples.html">hand interaction examples scene</a> is a great place to get started because it shows a wide variety of UX controls and interactions in MRTK. To get started we will import MRTK, open the example scene, and explore the scene in the editor.</p>
@@ -174,12 +164,7 @@
 </ol>
 <p><img src="Images/MRTK_SelectConfigurationDialog.png" alt=""></p>
 <blockquote>
-<p><strong>Note</strong>  Note that the other configuration profiles in this picker are from other scenes in the examples
-package. If you did not install the examples package, you would not have been prompted to
-choose a specific profile (as the foundation package only contains a single
-MixedRealityToolkitConfigurationProfile - the default one). The other profiles are part of their
-respective example scenes (for example, the HandInteractionAllExampleMixedRealityToolkitConfigurationProfile)
-is part of the <a href="README_HandInteractionExamples.html">HandInteractionExamples scene</a>.</p>
+<p><strong>NOTE</strong>: Note that the other configuration profiles in this picker are from other scenes in the examples package. If you did not install the examples package, you would not have been prompted to choose a specific profile (as the foundation package only contains a single MixedRealityToolkitConfigurationProfile - the default one). The other profiles are part of their respective example scenes (for example, the HandInteractionAllExampleMixedRealityToolkitConfigurationProfile) is part of the <a href="README_HandInteractionExamples.html">HandInteractionExamples scene</a>.</p>
 </blockquote>
 <p>You will then see the following in your Scene hierarchy:</p>
 <p><img src="Images/MRTK_SceneSetup.png" alt=""></p>
@@ -189,10 +174,8 @@ is part of the <a href="README_HandInteractionExamples.html">HandInteractionExam
 <li>MixedRealityPlayspace - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.</li>
 <li>The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDK's</li>
 </ul>
-<blockquote>
 <p><strong>Note</strong> While working in your scene, <strong>DO NOT move the Main Camera</strong> (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
 If you need to move the players start point, then <strong>move the scene content and NOT the camera</strong>!</p>
-</blockquote>
 <ol start="6">
 <li>Hit play and test out hand simulation by pressing spacebar.</li>
 </ol>
