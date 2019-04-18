@@ -162,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static float timeLastUpdatedBuilds;
 
         private string[] targetIps;
-        private string[] windowsSdkPaths;
+        private List<Version> windowsSdkVersions = new List<Version>();
 
         private Vector2 scrollPosition;
 
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         #region Methods
 
-        [MenuItem("Mixed Reality Toolkit/Build Window", false, 0)]
+        [MenuItem("Mixed Reality Toolkit/Utilities/Build Window", false, 0)]
         public static void OpenWindow()
         {
             // Dock it next to the Scene View.
@@ -195,13 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             titleContent = new GUIContent("Build Window");
             minSize = new Vector2(512, 256);
 
-            windowsSdkPaths = Directory.GetDirectories(@"C:\Program Files (x86)\Windows Kits\10\Lib");
-
-            for (int i = 0; i < windowsSdkPaths.Length; i++)
-            {
-                windowsSdkPaths[i] = windowsSdkPaths[i].Substring(windowsSdkPaths[i].LastIndexOf(@"\", StringComparison.Ordinal) + 1);
-            }
-
+            LoadWindowsSdkPaths();
             UpdateBuilds();
 
             currentConnectionInfoIndex = lastSessionConnectionInfoIndex;
@@ -406,30 +400,24 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             GUILayout.BeginVertical();
 
-            // SDK and MS Build Version(and save setting, if it's changed)
+            // SDK and MS Build Version (and save setting, if it's changed)
             string currentSDKVersion = EditorUserBuildSettings.wsaMinUWPSDK;
 
-            int currentSDKVersionIndex = -1;
-
-            for (var i = 0; i < windowsSdkPaths.Length; i++)
+            Version chosenSDKVersion = null;
+            for (var i = 0; i < windowsSdkVersions.Count; i++)
             {
-                if (string.IsNullOrEmpty(currentSDKVersion))
+                // windowsSdkVersions is sorted in ascending order, so we always take
+                // the highest SDK version that is above our minimum.
+                if (windowsSdkVersions[i] >= UwpBuildDeployPreferences.MIN_SDK_VERSION)
                 {
-                    currentSDKVersionIndex = windowsSdkPaths.Length - 1;
-                }
-                else
-                {
-                    if (windowsSdkPaths[i].Equals(UwpBuildDeployPreferences.MIN_SDK_VERSION))
-                    {
-                        currentSDKVersionIndex = i;
-                    }
+                    chosenSDKVersion = windowsSdkVersions[i];
                 }
             }
 
-            EditorGUILayout.HelpBox($"Minimum Required SDK Version: {currentSDKVersion}", MessageType.Info);
+            EditorGUILayout.HelpBox($"Windows SDK Version: {currentSDKVersion}", MessageType.Info);
 
             // Throw exception if user has no Windows 10 SDK installed
-            if (currentSDKVersionIndex < 0)
+            if (chosenSDKVersion == null)
             {
                 if (IsValidSdkInstalled)
                 {
@@ -444,8 +432,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             IsValidSdkInstalled = true;
 
-            string newSDKVersion = windowsSdkPaths[currentSDKVersionIndex];
-
+            string newSDKVersion = chosenSDKVersion.ToString();
             if (!newSDKVersion.Equals(currentSDKVersion))
             {
                 EditorUserBuildSettings.wsaMinUWPSDK = newSDKVersion;
@@ -455,7 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (curScriptingBackend == ScriptingImplementation.WinRTDotNET)
             {
-                EditorGUILayout.HelpBox(".NET Scripting backend is depreciated, please use IL2CPP.", MessageType.Warning);
+                EditorGUILayout.HelpBox(".NET Scripting backend is deprecated in Unity 2018 and is removed in Unity 2019.", MessageType.Warning);
             }
 
             var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup("Scripting Backend", (int)curScriptingBackend, scriptingBackendNames, scriptingBackendEnum, GUILayout.Width(HALF_WIDTH));
@@ -1242,6 +1229,19 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             Debug.LogError($"Unable to find PackageFamilyName in manifest file ({manifest})");
             return string.Empty;
+        }
+
+        private void LoadWindowsSdkPaths()
+        {
+            var windowsSdkPaths = Directory.GetDirectories(@"C:\Program Files (x86)\Windows Kits\10\Lib");
+            for (int i = 0; i < windowsSdkPaths.Length; i++)
+            {
+                windowsSdkVersions.Add(new Version(windowsSdkPaths[i].Substring(windowsSdkPaths[i].LastIndexOf(@"\", StringComparison.Ordinal) + 1)));
+            }
+
+            // There is no well-defined enumeration of Directory.GetDirectories, so the list
+            // is sorted prior to use later in this class.
+            windowsSdkVersions.Sort();
         }
 
         #endregion Utilities

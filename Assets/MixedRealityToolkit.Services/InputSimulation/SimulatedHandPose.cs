@@ -7,7 +7,6 @@ using System;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-
     public class SimulatedHandPose
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
@@ -48,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Apply camera transform
             for (int i = 0; i < jointCount; i++)
             {
-                jointsOut[i] = Camera.main.transform.TransformDirection(jointsOut[i]);
+                jointsOut[i] = CameraCache.Main.transform.TransformDirection(jointsOut[i]);
             }
 
             for (int i = 0; i < jointCount; i++)
@@ -123,13 +122,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public enum GestureId
         {
+            /// <summary>
+            /// Unspecified hand shape
+            /// </summary>
             None = 0,
+            /// <summary>
+            /// Flat hand with fingers spread out
+            /// </summary>
             Flat,
+            /// <summary>
+            /// Relaxed hand pose
+            /// </summary>
             Open,
+            /// <summary>
+            /// Index finger and Thumb touching, index tip does not move
+            /// </summary>
             Pinch,
+            /// <summary>
+            /// Index finger and Thumb touching, wrist does not move
+            /// </summary>
+            PinchSteadyWrist,
+            /// <summary>
+            /// Index finger stretched out
+            /// </summary>
             Poke,
+            /// <summary>
+            /// Grab with whole hand, fist shape
+            /// </summary>
             Grab,
+            /// <summary>
+            /// OK sign
+            /// </summary>
             ThumbsUp,
+            /// <summary>
+            /// Victory sign
+            /// </summary>
             Victory,
         }
 
@@ -141,6 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 case GestureId.Flat: return HandFlat;
                 case GestureId.Open: return HandOpened;
                 case GestureId.Pinch: return HandPinch;
+                case GestureId.PinchSteadyWrist: return HandPinchSteadyWrist;
                 case GestureId.Poke: return HandPoke;
                 case GestureId.Grab: return HandGrab;
                 case GestureId.ThumbsUp: return HandThumbsUp;
@@ -258,6 +286,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new Vector3(-0.067f,0.012f,0.013f),
             new Vector3(-0.061f,0.031f,0.014f),
             new Vector3(-0.062f,0.046f,0.021f),
+        });
+
+        static private SimulatedHandPose HandPinchSteadyWrist = new SimulatedHandPose(new Vector3[]
+        {
+            new Vector3(0.0f, 0.0f, 0.0f), // None
+            new Vector3(-0.03600f, 0.16500f, 0.06100f), // Wrist
+            new Vector3(-0.03600f, 0.10500f, 0.06100f), // Palm
+            new Vector3(-0.02600f, 0.14500f, 0.06100f), // ThumbMetacarpalJoint
+            new Vector3(-0.00700f, 0.10600f, 0.04500f), // ThumbProximalJoint
+            new Vector3(0.00800f, 0.08000f, 0.03100f), // ThumbDistalJoint
+            new Vector3(0.01300f, 0.06100f, 0.01800f), // ThumbTip
+            new Vector3(-0.03200f, 0.14500f, 0.06100f), // IndexMetacarpal
+            new Vector3(-0.02300f, 0.06200f, 0.05100f), // IndexKnuckle
+            new Vector3(-0.00300f, 0.03800f, 0.02600f), // IndexMiddleJoint
+            new Vector3(0.00400f, 0.04300f, 0.00900f), // IndexDistalJoint
+            new Vector3(0.00600f, 0.05400f, 0.00100f), // IndexTip
+            new Vector3(-0.03600f, 0.14500f, 0.06100f), // MiddleMetacarpal
+            new Vector3(-0.04400f, 0.05800f, 0.04700f), // MiddleKnuckle
+            new Vector3(-0.02000f, 0.05800f, 0.01500f), // MiddleMiddleJoint
+            new Vector3(-0.02200f, 0.08500f, 0.01500f), // MiddleDistalJoint
+            new Vector3(-0.02800f, 0.10200f, 0.02100f), // MiddleTip
+            new Vector3(-0.04200f, 0.14500f, 0.06100f), // RingMetacarpal
+            new Vector3(-0.06500f, 0.06200f, 0.04200f), // RingKnuckle
+            new Vector3(-0.04200f, 0.06300f, 0.01300f), // RingMiddleJoint
+            new Vector3(-0.04000f, 0.09000f, 0.01500f), // RingDistalJoint
+            new Vector3(-0.04400f, 0.10600f, 0.02300f), // RingTip
+            new Vector3(-0.04600f, 0.14500f, 0.06100f), // PinkyMetacarpal
+            new Vector3(-0.08200f, 0.06800f, 0.03500f), // PinkyKnuckle
+            new Vector3(-0.06100f, 0.06600f, 0.01400f), // PinkyMiddleJoint
+            new Vector3(-0.05500f, 0.08500f, 0.01500f), // PinkyDistalJoint
+            new Vector3(-0.05600f, 0.10000f, 0.02200f), // PinkyTip
         });
 
         static private SimulatedHandPose HandPoke = new SimulatedHandPose(new Vector3[]

@@ -24,15 +24,15 @@ The diagnostics system is managed by the MixedRealityToolkit object (or another
 
 1. Select the MixedRealityToolkit object in the scene hierarchy.
 
-![MRTK Configured Scene Hierarchy](../../External/ReadMeImages/MRTK_ConfiguredHierarchy.png)
+![MRTK Configured Scene Hierarchy](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
 2. Navigate the Inspector panel to the Diagnostics System section and check Enable
 
-![Enable the Diagnostics System](../../External/ReadMeImages/Diagnostics/MRTKConfig_Diagnostics.png)
+![Enable the Diagnostics System](../../Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png)
 
 3. Select the Diagnostics System implementation
 
-![Select the Diagnostics System Implementation](../../External/ReadMeImages/Diagnostics/DiagnosticsSelectSystemType.png)
+![Select the Diagnostics System Implementation](../../Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png)
 
 > Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the 
 diagnostics system pre-configured to use the MixedRealityDiagnosticsSystem object.
@@ -43,7 +43,7 @@ The diagnostics system uses a configuration profile to specify which components 
 and to configure their settings. Please see [Configuring the Diagnostics System](ConfiguringDiagnostics.md) 
 for more information pertaining to the available component settings. 
 
-![Diagnostics Options](../../External/ReadMeImages/Diagnostics/DiagnosticsProfile.png) 
+![Diagnostics Options](../../Documentation/Images/Diagnostics/DiagnosticsProfile.png) 
 
 ### Build and Deploy
 
@@ -59,5 +59,5 @@ accurately reflect actual application performance when run from within the edito
 
 - [Diagnostics API documentation](xref:Microsoft.MixedReality.Toolkit.Diagnostics)
 - [Configuring the Diagnostics System](ConfiguringDiagnostics.md)
-- [Using the Visual Profiler](../TODO.md)
+- [Using the Visual Profiler](UsingVisualProfiler.md)
 

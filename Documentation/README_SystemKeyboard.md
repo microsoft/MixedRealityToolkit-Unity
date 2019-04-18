@@ -1,5 +1,5 @@
 # System Keyboard
-![System Keyboard](/External/ReadMeImages/SystemKeyboard/MRTK_SystemKeyboard_Main.png)
+![System Keyboard](../Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)
 
 Inside Unity app, you can invoke the system keyboard. HoloLens2's system keyboard supports direct hand interactions.
 
