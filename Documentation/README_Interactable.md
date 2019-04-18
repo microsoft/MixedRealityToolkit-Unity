@@ -1,10 +1,10 @@
 # Interactable
-![Interactable](/External/ReadMeImages/Interactable/InteractableExamples.png)
+![Interactable](../Documentation/Images/Interactable/InteractableExamples.png)
 
 ## How to use Interactable
 Add the Interactable Component to a GameObject
 
-![Interactable](/External/ReadMeImages/Interactable/InteractableInspector_basicSteps.png)
+![Interactable](../Documentation/Images/Interactable/InteractableInspector_basicSteps.png)
 
 1. A Collider must exist on the GameObject with the Interactable or the child of the Interactable for it to receive input.
 2. Use the OnClick event to make something happen.
@@ -14,7 +14,7 @@ Add the Interactable Component to a GameObject
 ## Input Settings
 The basic features allow for button style interactions, such as pointer focus and clicks, that maps to interaction states to drive themes which are setup through the Interactable profile. Controller or hand focus, down, up and click (both near and far) are handled. Functionality can be extended using external scripts that can set state manually.
 
-<img src="/External/ReadMeImages/Interactable/InputFeatures_short.png" width="450">
+<img src="../Documentation/Images/Interactable/InputFeatures_short.png" width="450">
 
 ### Input Actions
 Select the action, from the input configuration or controller mapping profile, that the Interactable should react to.
@@ -47,24 +47,24 @@ More examples can also be found in the HandInteractionExamples scene.
 
 The profile will define how button content will be linked to and manipulated by themes, based on state changes.
 
-<img src="/External/ReadMeImages/Interactable/Profiles_noTarget.png" width="450">
+<img src="../Documentation/Images/Interactable/Profiles_noTarget.png" width="450">
 
 
 
 Themes work a lot like Materials, they are ScriptableObjects that contain a list of data that will be assigned to an object based on the current state. Like Materials, they can be edited individually in the Project panel or through the Interactable profile. Editing a Theme through an Interactable will update its settings for all other Interactables using that theme. Themes can be extended to control any aspect of a GameObject with a few basic themes provided that can change color, scale, position or an combination of the three.
 
-<img src="/External/ReadMeImages/Interactable/DefaultTheme_button.png" width="450">
+<img src="../Documentation/Images/Interactable/DefaultTheme_button.png" width="450">
 
 
 ### Default Themes
 A default theme will be provided whenever an target object is added to a profile. It is not advised to edit the default theme, like in the case MRTK is updated, the theme could get overridden. A create Theme button is provided whenever the default theme is used to make it easier to create a new themes. 
 
-<img src="/External/ReadMeImages/Interactable/DefaultTheme_values.png" width="450">
+<img src="../Documentation/Images/Interactable/DefaultTheme_values.png" width="450">
 
 
 Example of the Default Theme.
 
-<img src="/External/ReadMeImages/Interactable/Theme.png" width="450">
+<img src="../Documentation/Images/Interactable/Theme.png" width="450">
 
 Example of a Color Theme
 
@@ -74,7 +74,7 @@ _Note: Themes that effect mesh objects (Color or Shader Themes) are able to dete
 ### Creating Toggles
 Toggle or multi-step buttons can be created in the Profile using the Dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the Dimensions value is increased, slots for additional themes are provided for each item in the Profile. This allows for a Normal Theme and a Toggled Theme to be used depending if the Interactable is toggled or not. 
 
-<img src="/External/ReadMeImages/Interactable/Profile_toggle.png" width="450">
+<img src="../Documentation/Images/Interactable/Profile_toggle.png" width="450">
 
 
 With Dimensions being a numeric value, the options for adding themes or steps is endless. An example of a multi-step button with 3 dimensions is one that controls speed. We may only want to have the option for 3 values, Fast (1x), Faster (2x) or Fastest (3x). Using Dimensions we could control the text or texture of the button for each step using 3 different themes. **Developers can assess the DimensionIndex to determine which dimension is currently active.**
@@ -83,28 +83,28 @@ With Dimensions being a numeric value, the options for adding themes or steps is
 ## Events
 You can use Interactable to detect input events other than just OnClick. The Events feature provides a way to enable functionality to extend a button, but not really visual or needed to provide feedback based on state changes.
 
-<img src="/External/ReadMeImages/Interactable/Events.png" width="450">
+<img src="../Documentation/Images/Interactable/Events.png" width="450">
 
 
 
 At the bottom of the Interactable component, click the Add Event button to reveal additional event options. A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor Interactable state changes and define patterns to detect. When a pattern is detected, we can make something happen through the inspector or directly in code.
 
-<img src="/External/ReadMeImages/Interactable/Event_audioClip.png" width="450">
+<img src="../Documentation/Images/Interactable/Event_audioClip.png" width="450">
 
 Example of audio clip to play on click. There is an Audio Theme for playing audio clips for each state change, like focus.
 
-<img src="/External/ReadMeImages/Interactable/Event_toggle.png" width="450">
+<img src="../Documentation/Images/Interactable/Event_toggle.png" width="450">
 
 
 Example of Toggle events
 
-<img src="/External/ReadMeImages/Interactable/Event_hold.png" width="450">
+<img src="../Documentation/Images/Interactable/Event_hold.png" width="450">
 
 Example of a hold event
 
 Events can be placed on an object to monitor a separate Interactable. Use InteractableReceiver for a single event (from the list) or InteractableReceiverList for a list of events similar to the Interactable event list.
 
-<img src="/External/ReadMeImages/Interactable/InteractableReceiver.png" width="450">
+<img src="../Documentation/Images/Interactable/InteractableReceiver.png" width="450">
 
 Example of InteractableReceiver existing on a separate gameObject from the Interactable, referencing the Interactable for event and state updates.
 Search Scope provides a preferred path to search for an Interactable if one is not explicitly assigned.
@@ -112,13 +112,13 @@ Search Scope provides a preferred path to search for an Interactable if one is n
 ## States
 States are a list of terms that can be used to define interactions phases, like press or observed.
 
-<img src="/External/ReadMeImages/Interactable/DefaultStates.png" width="450">
+<img src="../Documentation/Images/Interactable/DefaultStates.png" width="450">
 
 Interactable States provides two major roles.
 - Establish a list of states that we care about. This list will be displayed in the themes and can also be referenced by the events.
 - Controls how different interaction phases are ranked into states. For instance, a press state is also in a focused state, but the InteractableStates class will define it is a press state based on the ranking preferences setup in the State ScriptableObject.
 
-<img src="/External/ReadMeImages/Interactable/StatesScriptableObject.png" width="450">
+<img src="../Documentation/Images/Interactable/StatesScriptableObject.png" width="450">
 
 
 The InteractableStates State Model will handle any state list with a layered ranking system, starting with the most isolated state and ending with the state that could contain all other states.

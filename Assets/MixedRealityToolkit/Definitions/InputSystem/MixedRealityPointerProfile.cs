@@ -71,15 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("Whether or not to show the cursor when using eye gaze.")]
-        private bool showCursorWithEyeGaze = false;
-
-        /// <summary>
-        /// Whether or not to show the cursor when using eye gaze.
-        /// </summary>
-        public bool ShowCursorWithEyeGaze => showCursorWithEyeGaze;
-
-        [SerializeField]
         [Tooltip("The Pointer options for this profile.")]
         private PointerOption[] pointerOptions = new PointerOption[0];
 
