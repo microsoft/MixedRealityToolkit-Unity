@@ -1,5 +1,5 @@
 # Tooltip
-![Tooltip](../External/ReadMeImages/Tooltip/MRTK_Tooltip_Main.png)
+![Tooltip](../Documentation/Images/Tooltip/MRTK_Tooltip_Main.png)
 This example scene demonstrates an implementation of the ToolTip user interface element. Tooltips are usually used to convey a hint or extra information upon closer inspection of an object. ToolTip can be used to explain button inputs on the motion controllers or to label objects in the physical environment.
 
 ## Demo Video
@@ -14,7 +14,7 @@ The [example scene](https://gfycat.com/WarmOblongBilby) demonstrates two ways to
 ## Example Scene
 [/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes)
 
-<img src="../External/ReadMeImages/ManipulationHandler/MRTK_Manipulation_Main.png" width="600">
+<img src="../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png" width="600">
 
 In the scene file, you will be able to find various examples of ToolTip. First group on the left demonstrates the static ToolTip examples that are always visible. In the center, you can see the example of using multiple ToolTips on a single object. Each tooltip has different child object as a target object which works as an anchor. The group on the right shows the examples of dynamically spawning ToolTips.
 
