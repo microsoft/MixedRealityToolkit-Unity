@@ -9,7 +9,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableStates : InteractableStateModel
     {
-        public enum InteractableStateEnum {
+        public enum InteractableStateEnum
+        {
             /// <summary>
             /// Default state, nothing happening
             /// </summary>
@@ -67,6 +68,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             /// </summary>
             VoiceCommand,
             /// <summary>
+            /// Interactable is currently physically touched
+            /// </summary>
+            PhysicalTouch,
+            /// <summary>
             /// Custom placeholder for anything
             /// </summary>
             Custom
@@ -123,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             currentState = stateList[0];
 
-            for (int i = stateList.Count-1; i > -1; i--)
+            for (int i = stateList.Count - 1; i > -1; i--)
             {
                 if (bit >= stateList[i].Bit)
                 {
@@ -134,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return currentState;
         }
-        
+
         public override State[] GetStates()
         {
             return stateList.ToArray();

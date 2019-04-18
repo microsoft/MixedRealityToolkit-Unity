@@ -57,11 +57,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Handedness Handedness => handedness;
 
         [SerializeField]
-        [Tooltip("Use the platform SDK to load the default controller model for this controller.")]
+        [Tooltip("Check to obtain controller models from the platform sdk. If left unchecked, the global models will be used.")]
         private bool useDefaultModel;
 
         /// <summary>
-        /// User the controller model loader provided by the SDK, or provide override models.
+        /// Check to obtain controller models from the platform sdk. If left unchecked, the global models will be used.
         /// </summary>
         public bool UseDefaultModel => useDefaultModel;
 
@@ -73,5 +73,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The controller model prefab to be rendered.
         /// </summary>
         public GameObject OverrideControllerModel => overrideModel;
+
+        [SerializeField]
+        [Tooltip("The concrete Controller Visualizer component to use on the rendered controller model.")]
+        [Implements(typeof(IMixedRealityControllerVisualizer), TypeGrouping.ByNamespaceFlat)]
+        private SystemType controllerVisualizationType;
+
+        /// <summary>
+        /// The concrete Controller Visualizer component to use on the rendered controller model
+        /// </summary>
+        public SystemType ControllerVisualizationType
+        {
+            get => controllerVisualizationType;
+            private set => controllerVisualizationType = value;
+        }
     }
 }

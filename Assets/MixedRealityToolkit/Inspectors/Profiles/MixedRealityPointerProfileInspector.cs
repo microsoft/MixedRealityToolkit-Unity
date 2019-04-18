@@ -27,6 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static bool showGazeProperties = true;
         private SerializedProperty gazeCursorPrefab;
         private SerializedProperty gazeProviderType;
+        private SerializedProperty showCursorWithEyeGaze;
+        private SerializedProperty pointerMediator;
 
         private int currentlySelectedPointerOption = -1;
 
@@ -46,6 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             debugDrawPointingRayColors = serializedObject.FindProperty("debugDrawPointingRayColors");
             gazeCursorPrefab = serializedObject.FindProperty("gazeCursorPrefab");
             gazeProviderType = serializedObject.FindProperty("gazeProviderType");
+            showCursorWithEyeGaze = serializedObject.FindProperty("showCursorWithEyeGaze");
+            pointerMediator = serializedObject.FindProperty("pointerMediator");
 
             pointerOptionList = new ReorderableList(serializedObject, pointerOptions, false, false, true, true)
             {
@@ -87,6 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 {
                     EditorGUILayout.PropertyField(pointingExtent);
                     EditorGUILayout.PropertyField(pointingRaycastLayerMasks, true);
+                    EditorGUILayout.PropertyField(pointerMediator);
 
                     EditorGUILayout.Space();
                     showPointerOptionProperties = EditorGUILayout.Foldout(showPointerOptionProperties, "Pointer Options", true);
@@ -164,14 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private void OnPointerOptionAdded(ReorderableList list)
         {
             pointerOptions.arraySize += 1;
-            var pointerOption = pointerOptions.GetArrayElementAtIndex(pointerOptions.arraySize - 1);
-            var controllerType = pointerOption.FindPropertyRelative("controllerType");
-            var referenceType = controllerType.FindPropertyRelative("reference");
-            referenceType.stringValue = string.Empty;
-            var handedness = pointerOption.FindPropertyRelative("handedness");
-            handedness.enumValueIndex = 0;
-            var prefab = pointerOption.FindPropertyRelative("pointerPrefab");
-            prefab.objectReferenceValue = null;
         }
 
         private void OnPointerOptionRemoved(ReorderableList list)

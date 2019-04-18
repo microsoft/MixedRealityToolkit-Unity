@@ -11,63 +11,6 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eebbca41bb0b40d298ef201735d08616, type: 3}
   m_Name: DefaultMixedRealityRegisteredServiceProvidersProfile
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   isCustomProfile: 0
-  configurations:
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager,
-        Microsoft.MixedReality.Toolkit
-    componentName: Unity Joystick Manager
-    priority: 10
-    runtimePlatform: -1
-    configurationProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRDeviceManager,
-        Microsoft.MixedReality.Toolkit.Providers.OpenVR
-    componentName: Unity Open VR Device Manager
-    priority: 10
-    runtimePlatform: 7
-    configurationProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
-    componentName: Windows Mixed Reality Provider
-    priority: 10
-    runtimePlatform: 8
-    configurationProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
-    componentName: Windows Speech Input Provider
-    priority: 10
-    runtimePlatform: 9
-    configurationProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
-    componentName: Windows Dictation Input Provider
-    priority: 10
-    runtimePlatform: 9
-    configurationProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchDeviceManager,
-        Microsoft.MixedReality.Toolkit
-    componentName: Unity Touch Input Manger
-    priority: 10
-    runtimePlatform: -1
-    configurationProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
-    componentName: Windows Mixed Reality Spatial Mesh Observer
-    priority: 10
-    runtimePlatform: 8
-    configurationProfile: {fileID: 11400000, guid: 8be0bcd2117dd214da41ed98f0def2e3,
-      type: 2}
-  - componentType:
-      reference: MRTK.StateControl.AppState, MRTK.Core
-    componentName: AppStateData
-    priority: 10
-    runtimePlatform: 11
-    configurationProfile: {fileID: 11400000, guid: 2956361ad88915046bf965464c046b0f,
-      type: 2}
+  configurations: []

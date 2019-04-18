@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
 
         private void Update() 
         {
-            DateTime now = DateTime.Now;
+            DateTime now = DateTime.UtcNow;
 
             // Audio influences are not updated every frame.
             if ((UpdateInterval * 1000.0f) <= (now - lastUpdate).TotalMilliseconds)

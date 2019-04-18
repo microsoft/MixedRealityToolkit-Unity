@@ -17,19 +17,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         protected override void LayoutChildren()
         {
-            float startOffsetX;
-            float startOffsetY;
             Vector3[] nodeGrid = new Vector3[NodeList.Count];
             Vector3 newPos;
 
             // Now lets lay out the grid
             Columns = Mathf.CeilToInt((float)NodeList.Count / Rows);
-            startOffsetX = (Columns * 0.5f) * CellWidth;
-            startOffsetY = (Rows * 0.5f) * CellHeight;
             HalfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
 
             // First start with a grid then project onto surface
-            ResolveGridLayout(nodeGrid, startOffsetX, startOffsetY, Layout);
+            ResolveGridLayout(nodeGrid, Layout);
 
             // Get randomized planar mapping
             // Calculate radius of each node while we're here

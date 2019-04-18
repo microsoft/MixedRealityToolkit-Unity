@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// Defines a system, feature, or manager to be registered with as a <see cref="IMixedRealityExtensionService"/> on startup.
     /// </summary>
     [Serializable]
-    public struct MixedRealityServiceConfiguration
+    public struct MixedRealityServiceConfiguration : IMixedRealityServiceConfiguration
     {
         /// <summary>
         /// Constructor.
@@ -39,34 +39,26 @@ namespace Microsoft.MixedReality.Toolkit
         [Implements(typeof(IMixedRealityExtensionService), TypeGrouping.ByNamespaceFlat)]
         private SystemType componentType;
 
-        /// <summary>
-        /// The concrete type for the system, feature or manager.
-        /// </summary>
+        /// <inheritdoc />
         public SystemType ComponentType => componentType;
 
         [SerializeField]
         private string componentName;
 
-        /// <summary>
-        /// The simple, human readable name for the system, feature, or manager.
-        /// </summary>
+        /// <inheritdoc />
         public string ComponentName => componentName;
 
         [SerializeField]
         private uint priority;
 
-        /// <summary>
-        /// The priority this system, feature, or manager will be initialized in.
-        /// </summary>
+        /// <inheritdoc />
         public uint Priority => priority;
 
         [EnumFlags]
         [SerializeField]
         private SupportedPlatforms runtimePlatform;
 
-        /// <summary>
-        /// The runtime platform(s) to run this service.
-        /// </summary>
+        /// <inheritdoc />
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
 
         [SerializeField]

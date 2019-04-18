@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// Constructor.
         /// </summary>
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the observer.</param>
-        /// <param name="spatialAwarenessSystem">The <see cref="IMixedRealitySpatialAwarenessSystem"/> to which the observer is providing data.</param>
+        /// <param name="spatialAwarenessSystem">The <see cref="SpatialAwareness.IMixedRealitySpatialAwarenessSystem"/> to which the observer is providing data.</param>
         /// <param name="name">The friendly name of the data provider.</param>
         /// <param name="priority">The registration priority of the data provider.</param>
         /// <param name="profile">The configuration profile for the data provider.</param>

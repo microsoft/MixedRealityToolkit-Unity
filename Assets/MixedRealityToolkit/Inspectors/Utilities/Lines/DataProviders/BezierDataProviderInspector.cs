@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,19 +9,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     [CustomEditor(typeof(BezierDataProvider))]
     public class BezierDataProviderInspector : BaseLineDataProviderInspector
     {
-        private const float OverlappingPointThreshold = 0.015f;
         private const float HandleSizeModifier = 0.04f;
         private const float PickSizeModifier = 0.06f;
-
-        private static readonly HashSet<int> OverlappingPointIndexes = new HashSet<int>();
-
-        private static readonly Vector2 ControlPointButtonSize = new Vector2(16, 16);
-        private static readonly Vector2 LeftControlPointPositionOffset = Vector2.left * 12;
-        private static readonly Vector2 RightControlPointPositionOffset = Vector2.right * 24;
-
-        private static readonly Vector2 ControlPointButtonHandleOffset = Vector3.up * 24;
-
-        private static readonly GUIContent PositionContent = new GUIContent("Position");
 
         private SerializedProperty controlPoints;
         private SerializedProperty useLocalTangentPoints;
@@ -59,13 +47,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             base.OnSceneGUI();
 
-            // We skip the first point as it should always remain at the GameObject's local origin (Pose.ZeroIdentity)
             for (int i = 0; i < 4; i++)
             {
-                bool isTangentHandle = i % 3 != 0;
-
                 serializedObject.Update();
 
+                bool isTangentHandle = i % 3 != 0;
                 bool isLastPoint = i == 3;
 
                 var controlPointPosition = LineData.GetPoint(i);
@@ -111,41 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 serializedObject.ApplyModifiedProperties();
             }
-        }
-
-        private void DrawControlPointElement(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            bool lastMode = EditorGUIUtility.wideMode;
-            EditorGUIUtility.wideMode = true;
-
-            var lastLabelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = 88f;
-
-            var property = controlPoints.GetArrayElementAtIndex(index);
-            var fieldHeight = EditorGUIUtility.singleLineHeight * 0.5f;
-            var labelRect = new Rect(rect.x - 8f, rect.y + fieldHeight * 2, rect.width, EditorGUIUtility.singleLineHeight);
-            var positionRect = new Rect(rect.x, rect.y + fieldHeight, rect.width, EditorGUIUtility.singleLineHeight);
-            var rotationRect = new Rect(rect.x, rect.y + fieldHeight * 3, rect.width, EditorGUIUtility.singleLineHeight);
-
-            EditorGUI.LabelField(labelRect, $"{index + 1}");
-
-            EditorGUI.indentLevel++;
-
-            GUI.enabled = index != 0;
-
-            EditorGUI.BeginChangeCheck();
-            EditorGUI.PropertyField(positionRect, property.FindPropertyRelative("position"), PositionContent);
-            bool hasPositionChanged = EditorGUI.EndChangeCheck();
-            
-            if (hasPositionChanged)
-            {
-                EditorUtility.SetDirty(target);
-            }
-
-            GUI.enabled = true;
-            EditorGUI.indentLevel--;
-            EditorGUIUtility.wideMode = lastMode;
-            EditorGUIUtility.labelWidth = lastLabelWidth;
         }
     }
 }

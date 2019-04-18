@@ -58,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private SerializedProperty distorters;
         private SerializedProperty distortionMode;
         private SerializedProperty distortionStrength;
+        private SerializedProperty distortionEnabled;
         private SerializedProperty uniformDistortionStrength;
 
         private ReorderableList manualUpVectorList;
@@ -94,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             distorters = serializedObject.FindProperty("distorters");
             distortionMode = serializedObject.FindProperty("distortionMode");
             distortionStrength = serializedObject.FindProperty("distortionStrength");
+            distortionEnabled = serializedObject.FindProperty("distortionEnabled");
             uniformDistortionStrength = serializedObject.FindProperty("uniformDistortionStrength");
 
             manualUpVectorList = new ReorderableList(serializedObject, manualUpVectors, false, true, true, true);
@@ -251,23 +253,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (distortionSettingsFoldout)
             {
-                if (distorters.arraySize > 0)
-                {
-                    EditorGUI.indentLevel++;
-
-                    if (distorters.arraySize > 0)
-                    {
-                        EditorGUILayout.PropertyField(distortionMode);
-                        EditorGUILayout.PropertyField(distortionStrength);
-                        EditorGUILayout.PropertyField(uniformDistortionStrength);
-                    }
-
-                    EditorGUI.indentLevel--;
-                }
-                else
+                if (distorters.arraySize <= 0)
                 {
                     EditorGUILayout.HelpBox("No distorters attached to this line.\nTry adding a distortion component.", MessageType.Info);
                 }
+
+                EditorGUI.indentLevel++;
+
+                EditorGUILayout.PropertyField(distortionEnabled);
+                EditorGUILayout.PropertyField(distortionMode);
+                EditorGUILayout.PropertyField(distortionStrength);
+                EditorGUILayout.PropertyField(uniformDistortionStrength);
+
+                EditorGUI.indentLevel--;
             }
 
             serializedObject.ApplyModifiedProperties();

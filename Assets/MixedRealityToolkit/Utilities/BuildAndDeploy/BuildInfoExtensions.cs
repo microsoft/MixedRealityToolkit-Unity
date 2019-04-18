@@ -119,10 +119,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// Gets the <see cref="BuildTargetGroup"/> for the <see cref="IBuildInfo"/>'s <see cref="BuildTarget"/>
+        /// Gets the <see href="https://docs.unity3d.com/ScriptReference/BuildTargetGroup.html">BuildTargetGroup</see> for the <see cref="IBuildInfo"/>'s <see href="https://docs.unity3d.com/ScriptReference/BuildTarget.html">BuildTarget</see>
         /// </summary>
         /// <param name="buildTarget"></param>
-        /// <returns>The <see cref="BuildTargetGroup"/> for the <see cref="IBuildInfo"/>'s <see cref="BuildTarget"/></returns>
+        /// <returns>The <see href="https://docs.unity3d.com/ScriptReference/BuildTargetGroup.html">BuildTargetGroup</see> for the <see cref="IBuildInfo"/>'s <see href="https://docs.unity3d.com/ScriptReference/BuildTarget.html">BuildTarget</see></returns>
         public static BuildTargetGroup GetGroup(this BuildTarget buildTarget)
         {
             switch (buildTarget)

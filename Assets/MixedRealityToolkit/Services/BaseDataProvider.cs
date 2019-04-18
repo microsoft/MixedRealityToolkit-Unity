@@ -5,12 +5,12 @@
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// The base data provider implements <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider"/> and provides default properties for all data providers.
+    /// The base data provider implements <see cref="IMixedRealityDataProvider"/> and provides default properties for all data providers.
     /// </summary>
     /// <remarks>
-    /// Empty, but reserved for future use, in case additional <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider"/> properties or methods are assigned.
+    /// Empty, but reserved for future use, in case additional <see cref="IMixedRealityDataProvider"/> properties or methods are assigned.
     /// </remarks>
-    public abstract class BaseDataProvider : BaseExtensionService, IMixedRealityDataProvider
+    public abstract class BaseDataProvider : BaseService, IMixedRealityDataProvider
     {
         /// <summary>
         /// Constructor.
@@ -25,14 +25,28 @@ namespace Microsoft.MixedReality.Toolkit
             IMixedRealityService service,
             string name = null, 
             uint priority = DefaultPriority, 
-            BaseMixedRealityProfile profile = null) : base(registrar, name, priority, profile)
+            BaseMixedRealityProfile profile = null) : base()
         {
+            Registrar = registrar;
             Service = service;
+            Name = name;
+            Priority = priority;
+            ConfigurationProfile = profile;
         }
+
+        /// <summary>
+        /// The service registrar instance that registered this service.
+        /// </summary>
+        protected IMixedRealityServiceRegistrar Registrar { get; set; } = null;
 
         /// <summary>
         /// The service instance to which this provider is providing data.
         /// </summary>
         protected IMixedRealityService Service { get; set; } = null;
+
+        /// <summary>
+        /// Configuration Profile
+        /// </summary>
+        protected BaseMixedRealityProfile ConfigurationProfile { get; set; } = null;
     }
 }

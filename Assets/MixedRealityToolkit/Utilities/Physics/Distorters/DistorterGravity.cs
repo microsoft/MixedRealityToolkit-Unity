@@ -94,9 +94,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
         public void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(WorldCenterOfGravity, 0.05f);
-            Gizmos.DrawWireSphere(WorldCenterOfGravity, radius);
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawSphere(WorldCenterOfGravity, 0.01f);
         }
     }
 }
