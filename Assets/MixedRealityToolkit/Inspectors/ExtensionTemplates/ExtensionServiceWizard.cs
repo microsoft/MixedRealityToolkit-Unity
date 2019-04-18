@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private bool registered = false;
         private int numEllipses = 0;
 
-        [MenuItem("Mixed Reality Toolkit/Create Extension Service...", false, 1)]
+        [MenuItem("Mixed Reality Toolkit/Utilities/Create Extension Service", false, 500)]
         private static void CreateExtensionServiceMenuItem()
         {
             if (window != null)
