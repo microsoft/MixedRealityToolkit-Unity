@@ -43,17 +43,23 @@ namespace Microsoft.MixedReality.Toolkit
         /// </returns>
         public static bool AddService<T>(T serviceInstance, IMixedRealityServiceRegistrar registrar) where T : IMixedRealityService
         {
+            Type interfaceType = typeof(T);
             T existingService;
-            bool added = false;
 
-            if (!TryGetService<T>(out existingService, serviceInstance.Name))
+            if (TryGetService<T>(out existingService, serviceInstance.Name))
             {
-                // add service
-                // todo
-                added = true;
+                return false;
             }
 
-            return added;
+            // Ensure we have a place to put our newly registered service.
+            if (!registry.ContainsKey(interfaceType))
+            {
+                registry.Add(interfaceType, new List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>());
+            }
+
+            List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
+            registry.Add(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>(serviceInstance, registrar));
+            return true;
         }
 
         /// <summary>
@@ -70,29 +76,71 @@ namespace Microsoft.MixedReality.Toolkit
             return RemoveServiceInternal(typeof(T), serviceInstance, registrar);
         }
 
-        public static bool RemoveService<T>(T serviceInstance)
+        public static bool RemoveService<T>(T serviceInstance) where T : IMixedRealityService
         {
-            // todo
-            return false;
-        }
+            T tempService;
+            IMixedRealityServiceRegistrar registrar;
 
-        private static bool RemoveServiceInternal(
-            Type interfaceType,
-            IMixedRealityService serviceInstance,
-            IMixedRealityServiceRegistrar registrar)
-        {
-            // todo
-            return false;
+            if (!TryGetService<T>(out tempService, out registrar))
+            {
+                return false;
+            }
+
+            if (!object.ReferenceEquals(serviceInstance, tempService))
+            {
+                return false;
+            }
+
+            return RemoveServiceInternal(typeof(T), serviceInstance, registrar);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="serviceInstance"></param>
-        /// <param name="registrar"></param>
         /// <param name="name"></param>
         /// <returns></returns>
+        public static bool RemoveService<T>(string name) where T : IMixedRealityService
+        {
+            T tempService;            
+            IMixedRealityServiceRegistrar registrar;
+
+            if (!TryGetService<T>(out tempService, out registrar, name))
+            {
+                return false;
+            }
+
+            return RemoveServiceInternal(typeof(T), tempService, registrar);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="serviceInstance"></param>
+        /// <param name="registrar"></param>
+        /// <returns></returns>
+        private static bool RemoveServiceInternal(
+            Type interfaceType,
+            IMixedRealityService serviceInstance,
+            IMixedRealityServiceRegistrar registrar)
+        {
+
+            List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
+
+            return services.Remove(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>(serviceInstance, registrar));
+        }
+
+        /// <summary>
+        /// Gets the instance of the requested service from the registry.
+        /// </summary>
+        /// <typeparam name="T">The interface type of the service being requested.</typeparam>
+        /// <param name="serviceInstance">Output parameter to receive the requested service instance.</param>
+        /// <param name="registrar">Output parameter to receive the registrar that loaded the service instance.</param>
+        /// <param name="name">Optional name of the service.</param>
+        /// <returns>
+        /// True if the requested service is being returned, false otherwise.
+        /// </returns>
         public static bool TryGetService<T>(
             out T serviceInstance,
             out IMixedRealityServiceRegistrar registrar,
@@ -108,7 +156,6 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
-            Debug.Assert(services.Count > 0, $"Service registry returned 0 items. AddService appears to have failed for {interfaceType.Name}");
 
             int registryIndex = -1;
             if (!string.IsNullOrWhiteSpace(name))
@@ -164,5 +211,7 @@ namespace Microsoft.MixedReality.Toolkit
                 out registrar,
                 name);
         }
+
+        // todo: consider adding methods to return all services of a given type, all services registered by a specific registrar, all services with a given name, all of the registered services.
     }
 }
