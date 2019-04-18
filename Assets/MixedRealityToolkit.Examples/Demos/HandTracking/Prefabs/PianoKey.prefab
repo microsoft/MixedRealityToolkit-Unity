@@ -67,6 +67,7 @@ MonoBehaviour:
   pressDistance: 0.008
   releaseDistanceDelta: 0.001
   returnRate: 10
+  enforceFrontPush: 0
   TouchBegin:
     m_PersistentCalls:
       m_Calls:
@@ -142,6 +143,8 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  isTouching: 0
+  isPressing: 0
 --- !u!114 &1598528672386795578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +163,7 @@ MonoBehaviour:
   eventsToReceive: 0
   touchableSurface: 0
   bounds: {x: 0.004711149, y: 0.024825739}
-  collider: {fileID: 6113324524881885153}
+  touchableCollider: {fileID: 6113324524881885153}
 --- !u!82 &6132438213147574949
 AudioSource:
   m_ObjectHideFlags: 0
@@ -343,7 +346,6 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8538809683663889752}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6066724869436565231}

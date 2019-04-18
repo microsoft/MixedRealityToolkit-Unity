@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         "Input Simulation Service",
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset", 
         "MixedRealityToolkit.SDK")]
-    public class InputSimulationService : BaseInputDeviceManager
+    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService
     {
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Update()
         {
-            var profile = GetInputSimulationProfile();
+            var profile = InputSimulationProfile;
 
             if (profile.IsCameraControlEnabled)
             {
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void LateUpdate()
         {
-            var profile = GetInputSimulationProfile();
+            var profile = InputSimulationProfile;
 
             // Apply hand data in LateUpdate to ensure external changes are applied.
             // HandDataLeft/Right can be modified after the services Update() call.
@@ -141,21 +141,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Return the service profile and ensure that the type is correct
         /// </summary>
-        public MixedRealityInputSimulationProfile GetInputSimulationProfile()
+        public MixedRealityInputSimulationProfile InputSimulationProfile
         {
-            var profile = ConfigurationProfile as MixedRealityInputSimulationProfile;
-            if (!profile)
-            {
-                Debug.LogError("Profile for Input Simulation Service must be a MixedRealityInputSimulationProfile");
+            get
+                {
+                var profile = ConfigurationProfile as MixedRealityInputSimulationProfile;
+                if (!profile)
+                {
+                    Debug.LogError("Profile for Input Simulation Service must be a MixedRealityInputSimulationProfile");
+                }
+                return profile;
             }
-            return profile;
         }
 
         private void EnableCameraControl()
         {
             if (cameraControl == null)
             {
-                cameraControl = new ManualCameraControl(GetInputSimulationProfile());
+                cameraControl = new ManualCameraControl(InputSimulationProfile);
             }
         }
 
@@ -171,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (handDataProvider == null)
             {
-                handDataProvider = new SimulatedHandDataProvider(GetInputSimulationProfile());
+                handDataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
             }
         }
 
@@ -188,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Register input sources for hands based on changes of the data provider
         private void UpdateHandInputSource(Handedness handedness, SimulatedHandData handData)
         {
-            var profile = GetInputSimulationProfile();
+            var profile = InputSimulationProfile;
 
             if (profile.HandSimulationMode == HandSimulationMode.Disabled)
             {

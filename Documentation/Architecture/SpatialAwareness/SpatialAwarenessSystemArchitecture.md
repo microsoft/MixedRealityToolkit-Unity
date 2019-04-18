@@ -6,7 +6,7 @@ It is expected that many platforms may not support support one or more spatial a
 
 Each interface defined will implement one or more Properties, Methods and/or Events (PMEs) that can be accessed by application code.
 
-<img src="../../../External/ReadMeImages/SpatialAwareness/SpatialAwarenessSystemArchitecture.png">
+<img src="../../../Documentation/Images/SpatialAwareness/SpatialAwarenessSystemArchitecture.png">
 
 ## System
 

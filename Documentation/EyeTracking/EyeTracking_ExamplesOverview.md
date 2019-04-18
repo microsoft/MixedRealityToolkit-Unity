@@ -17,7 +17,7 @@ It comes with a graphical scene menu that allows you to easily switch between th
 To try out the Eye Tracking demos in your Unity Player, all you have to do is to load this scene and hit play.
 Make sure that the _'OnLoad_StartScene'_ script is enabled for this so that the root scene knows which additive scene to load first.
 
-![Example for the OnLoad_StartScene script](/External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload.png)
+![Example for the OnLoad_StartScene script](/Documentation/Images/EyeTracking/mrtk_et_rootscene_onload.png)
 
 - Individual Eye Tracking sample scenes - See [Demo Scenarios](#demo-scenarios) for a description of each:
   - [mrtk_eyes_01_BasicSetup.unity](/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/)
@@ -32,7 +32,7 @@ No problem!
 - Disable the _'OnLoad_StartScene'_ script
 - _Drag and drop_ one of the Eye Tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view.
 
-![Example for the OnLoad_StartScene script](/External/ReadMeImages/EyeTracking/mrtk_et_rootscene_onload2.png)
+![Example for the OnLoad_StartScene script](/Documentation/Images/EyeTracking/mrtk_et_rootscene_onload2.png)
   
 ### Demo Scenarios
 [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md)
