@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             //test for pan limits
             Vector2 uvDelta = new Vector2(totalUVOffset.x, -totalUVOffset.y);
-            if (unlimitedPan == false)
+            if (!unlimitedPan)
             {
                 bool xLimited = false;
                 bool yLimited = false;
