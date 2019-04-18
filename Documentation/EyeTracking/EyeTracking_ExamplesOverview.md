@@ -38,7 +38,7 @@ How to quickly change a scene and test it in the Unity Editor?
 
 This tutorial showcases the ease of accessing eye gaze data to select targets. 
 It includes an example for subtle yet powerful feedback to provide confidence to the user that a target is focused while not being overwhelming.
-In addition, we showcase a simple example of smart notifications that automatically disappear after being read. 
+In addition, there is a simple example of smart notifications that automatically disappear after being read. 
 
 **Summary**: Fast and effortless target selections using a combination of Eyes, Voice and Hand input.
 
@@ -50,7 +50,7 @@ In addition, we showcase a simple example of smart notifications that automatica
 Imagine you are reading some information on a distant display or your e-reader and when you reach the end of the displayed text, the text automatically scrolls up to reveal more content. 
 Or how about magically zooming directly toward where you were looking at? 
 These are some of the examples showcased in this tutorial about eye-supported navigation.
-In addition, we added an example for hands-free rotation of 3D holograms by making them automatically rotate based on your current focus. 
+In addition, there is an example for hands-free rotation of 3D holograms by making them automatically rotate based on your current focus. 
 
 **Summary**: Scroll, Pan, Zoom, 3D Rotation using a combination of Eyes, Voice and Hand input.
 
@@ -59,7 +59,7 @@ In addition, we added an example for hands-free rotation of 3D holograms by maki
 
 [**Eye-Supported Positioning**](EyeTracking_Positioning.md)
 
-In this tutorial, we extend an input scenario called [Put that there](https://youtu.be/CbIn8p4_4CQ) dating back to research from the MIT Media Lab in the early 1980's with eye, hand and voice input.
+This tutorial shows an input scenario called [Put-That-There](https://youtu.be/CbIn8p4_4CQ) dating back to research from the MIT Media Lab in the early 1980's with eye, hand and voice input.
 The idea is simple: Benefit from your eyes for fast target selection and positioning. 
 Simply look at a hologram and say _'put this'_, look over where you want to place it and say _'there!'_. 
 For more precisely positioning your hologram, you can use additional input from your hands, voice or controllers. 
@@ -72,7 +72,7 @@ For more precisely positioning your hologram, you can use additional input from 
 [**Visualization of Visual Attention**](EyeTracking_Visualization.md)
 
 Information about where users look at is an immensely powerful tool to assess usability of a design and to identify problems in efficient work streams. 
-In this tutorial, we discuss different eye tracking visualizations and how they fit different needs. 
+This tutorial discusses different eye tracking visualizations and how they fit different needs. 
 We provide basic examples for logging and loading Eye Tracking data and examples for how to visualize them. 
 
 **Summary**: Two-dimensional attention map (heatmaps) on slates. Recording & replaying Eye Tracking data.

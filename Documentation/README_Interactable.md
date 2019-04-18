@@ -22,8 +22,8 @@ See the InputProfile or the DefaultMixedRealityInputActionsProfile for more on h
  
 ### Enabled
 Sets the Interactable's enabled state, which will disable some input handling and update the themes to reflect the current state which is disabled.
-This is different from disabling input all together (using Enable Input) This means we have a button that would normally be interactive, but at this moment it is disabled (could be like a submit button waiting for all the required fields to be completed) and has a visual look and feel to denote it's disabled state.
- 
+This is different from disabling input all together (using Enable Input). It means that a specific button that would normally be interactive will be disabled and has a visual look and feel to denote its disabled state. A typical example of this would be a submit button waiting for all the required input fields to be completed.
+ 
 ### IsGlobal
 Focus is not required to detect input actions, default behavior is false.
  
@@ -77,7 +77,7 @@ Toggle or multi-step buttons can be created in the Profile using the Dimensions 
 <img src="../Documentation/Images/Interactable/Profile_toggle.png" width="450">
 
 
-With Dimensions being a numeric value, the options for adding themes or steps is endless. An example of a multi-step button with 3 dimensions is one that controls speed. We may only want to have the option for 3 values, Fast (1x), Faster (2x) or Fastest (3x). Using Dimensions we could control the text or texture of the button for each step using 3 different themes. **Developers can assess the DimensionIndex to determine which dimension is currently active.**
+With Dimensions being a numeric value, the options for adding themes or steps is endless. An example of a multi-step button with 3 dimensions is one that controls speed. We may only want to have the option for 3 values, Fast (1x), Faster (2x) or Fastest (3x). Dimensions are used to control the text or texture of the button for each individual speed setting, using 3 different themes for each of them. **Developers can assess the DimensionIndex to determine which dimension is currently active.**
 
 
 ## Events
@@ -87,7 +87,7 @@ You can use Interactable to detect input events other than just OnClick. The Eve
 
 
 
-At the bottom of the Interactable component, click the Add Event button to reveal additional event options. A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor Interactable state changes and define patterns to detect. When a pattern is detected, we can make something happen through the inspector or directly in code.
+At the bottom of the Interactable component, click the Add Event button to reveal additional event options. A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor Interactable state changes and define patterns to detect. When a pattern is detected, an action can be triggered through the inspector or directly in code.
 
 <img src="../Documentation/Images/Interactable/Event_audioClip.png" width="450">
 
@@ -115,7 +115,7 @@ States are a list of terms that can be used to define interactions phases, like 
 <img src="../Documentation/Images/Interactable/DefaultStates.png" width="450">
 
 Interactable States provides two major roles.
-- Establish a list of states that we care about. This list will be displayed in the themes and can also be referenced by the events.
+- Establish a list of states that are relevant for the Interactable. This list will be displayed in the themes and can also be referenced by the events.
 - Controls how different interaction phases are ranked into states. For instance, a press state is also in a focused state, but the InteractableStates class will define it is a press state based on the ranking preferences setup in the State ScriptableObject.
 
 <img src="../Documentation/Images/Interactable/StatesScriptableObject.png" width="450">
@@ -158,8 +158,8 @@ public NewCustomTheme()
 - Name - the name that will show up in the inspector
 - ThemeProperties - a list of properties that theme will store to be used when the state changes.
 
-Each Theme Property has a name, type (so we know what type of fields we want to display for each state), a set of values for each state and a default value for the fields.
-We can also choose to hide the state fields in the inspector, if the theme does not need them.
+Each Theme Property has a name, type (defining the fields to display for each state), a set of values for each state and a default value for the fields.
+The state fields can also be hidden in the inspector, if the theme does not require them to be visible.
 
 Override Init to run any startup code, that needs references to the Host GameObject.
 
@@ -173,7 +173,7 @@ public override InteractableThemePropertyValue GetProperty(InteractableThemeProp
 ```
 
 GetProperty should grab the current property of the Host. This will be used for animation later.
-Property is provided in case the current value depends on a cached property value. In this case we are grabbing the current scale.
+Property is provided in case the current value depends on a cached property value. In the example below on the current scale.
 
 ```
 public override void SetValue(InteractableThemeProperty property, int index, float percentage)

@@ -10,7 +10,7 @@ Configuration profiles provide reusable blocks of configuration that can be used
 
 > For more details on profile use, please check the [Configuration Profile Usage Guide]() (Coming soon()
 
-In some cases, we also allow you to swap out the underlying system that provides a capability with either your own service or an alternate implementation (e.g. swapping out the speech provider from an OS version to one on Azure)
+In some cases, it might make sense to swap out the underlying system that provides a capability with either a custom developed service or an alternate 3rd party implementation (e.g. swapping out the speech provider from an OS version to one on Azure)
 
 > For more detail on writing your own compatible systems for use in the toolkit, please see the [Guide to building Registered Services]() (Coming soon)
 
@@ -18,7 +18,7 @@ In some cases, we also allow you to swap out the underlying system that provides
 
 The main configuration profile, which is attached to the *MixedRealityToolkit* GameObject in your Scene, provides the main entry point for the Toolkit in your project.
 
-> The Mixed Reality Toolkit "locks" the default configuration screens to ensure you always have a common start point for your project and we encourage you to start defining your own settings as your project evolves.
+> The Mixed Reality Toolkit "locks" the default configuration screens to ensure you always have a common start point for your project and it is encouraged to start defining your own settings as your project evolves.
 
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
 

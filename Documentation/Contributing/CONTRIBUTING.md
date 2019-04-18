@@ -2,7 +2,7 @@
 
 The Mixed Reality Toolkit (MRTK) welcomes contributions from the community. Whether it is for a minor change like fixing typos and small bug fixes, or a new feature or component.
 
-For larger submissions, we have drafted contribution guidelines to ensure a smooth process and a good quality of code and documentation, so please be sure to review the  [Feature Contribution guidelines / Process](Feature_Contribution_Process.md).
+For larger submissions, please refer to the [Feature Contribution guidelines / Process](Feature_Contribution_Process.md) to ensure a smooth process and a good quality of code and documentation.
 
 All changes be they small or large, need to adhere to the [MRTK Coding Standards](CodingGuidelines.md), so please ensure you are familiar with these while developing to avoid delays when the change is being reviewed.
 
