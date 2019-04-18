@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             }
                             else if (nonClassDictionary.ContainsKey(guid))
                             {
-                                Debug.LogErrorFormat("A script without a class ({0}) is being processed.", nonClassDictionary[guid]);
+                                throw new InvalidDataException($"A script without a class ({nonClassDictionary[guid]}) is being processed.");
                             }
                             else
                             {
@@ -377,19 +377,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             List<DirectoryInfo> outputDirectories = new List<DirectoryInfo>();
             string playerDataCachePath = Application.dataPath.Replace("Assets", "Library/PlayerDataCache");
             DirectoryInfo playerDataCahce = new DirectoryInfo(playerDataCachePath);
-            DirectoryInfo[] dllStores = playerDataCahce.GetDirectories("*", SearchOption.TopDirectoryOnly);
-            string subfolderName = string.Empty;
+            
             foreach(KeyValuePair<string, string> sourceToOutputPair in sourceToOutputFolders)
             {
                 DirectoryInfo directory = new DirectoryInfo(Application.dataPath.Replace("Assets", sourceToOutputPair.Key));
                 if (!directory.Exists)
                 {
-                    throw new InvalidDataException($"The source directory {sourceToOutputPair.Key} does not exist.");
+                    throw new InvalidDataException($"The required platform intermediary build directory {sourceToOutputPair.Key} does not exist. Was the build succesful?");
                 }
 
-                subfolderName = sourceToOutputPair.Value;
-
-                string pluginPath = Path.Combine(outputPath, subfolderName);
+                string pluginPath = Path.Combine(outputPath, sourceToOutputPair.Value);
                 if (Directory.Exists(pluginPath))
                 {
                     Directory.Delete(pluginPath);
@@ -424,17 +421,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             FileInfo editorMetaFile = assetDirectory.GetFiles("*sampleEditorDllMeta.txt", SearchOption.AllDirectories).FirstOrDefault();
             if (editorMetaFile == null)
             {
-                Debug.LogError("Could not find sample editor dll.meta file");
+                throw new FileNotFoundException("Could not find sample editor dll.meta file");
             }
             FileInfo uapMetaFile = assetDirectory.GetFiles("*sampleUAPDllMeta.txt", SearchOption.AllDirectories).FirstOrDefault();
             if (uapMetaFile == null)
             {
-                Debug.LogError("Could not find sample UAP dll.meta file");
+                throw new FileNotFoundException("Could not find sample UAP dll.meta file");
             }
             FileInfo standaloneMetaFile = assetDirectory.GetFiles("*sampleStandaloneDllMeta.txt", SearchOption.AllDirectories).FirstOrDefault();
             if (standaloneMetaFile == null)
             {
-                Debug.LogError("Could not find sample Standalone dll.meta file");
+                throw new FileNotFoundException("Could not find sample Standalone dll.meta file");
             }
 
             string[] metaFileContent = File.ReadAllLines(editorMetaFile.FullName);
@@ -486,8 +483,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                         if (dllGuids.ContainsKey(file.Name))
                         {
-                            metaFilePath = string.Format("{0}.meta", file.FullName);
-                            metaFileContent[1] = string.Format("guid: {0}", dllGuid);
+                            metaFilePath = $"{file.FullName}.meta";
+                            metaFileContent[1] = $"guid: {dllGuid}";
                             if (File.Exists(metaFilePath))
                             {
                                 File.Delete(metaFilePath);
@@ -569,11 +566,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 folder.Delete();
             }
         }
-    }
-
-    struct AssemblyDefinitionStub
-    {
-        public string name;
+        private struct AssemblyDefinitionStub
+        {
+            public string name;
+        }
     }
 }
 #endif
