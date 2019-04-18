@@ -81,8 +81,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         private const string YamlPrefix = "%YAML 1.1";
+        
+        private static readonly Dictionary<string, string> sourceToOutputFolders = new Dictionary<string, string>
+        {
+            {"Library/PlayerDataCache/WindowsStoreApps", "UAP" },
+            {"Library/PlayerDataCache/Win", "Standalone" },
+        };
+
         private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".FBX", ".pdf", ".cginc" };
         private static readonly HashSet<string> ExcludedSuffixFromCopy = new HashSet<string>() { ".cs", ".cs.meta" };
+
+        private static Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); //Guid, FileName
 
         private const string ScriptFileIdConstant = "11500000";
 
@@ -219,9 +228,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             {
                                 line = $"  m_Script: {{fileID: {tuple.Item2}, guid: {tuple.Item1}, type: 3}}";
                             }
-                            else if (nonClassDictionary.Contains(filePath))
+                            else if (nonClassDictionary.ContainsKey(guid))
                             {
-                                Debug.LogErrorFormat("A script without a class ({0}) is being processed.", filePath);
+                                Debug.LogErrorFormat("A script without a class ({0}) is being processed.", nonClassDictionary[guid]);
                             }
                             else
                             {
@@ -256,8 +265,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static List<string> nonClassDictionary = new List<string>();
-
         private static Dictionary<string, ClassInformation> ProcessScripts(string[] allFilePaths)
         {
             int lengthOfPrefix = Application.dataPath.IndexOf("Assets");
@@ -278,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         }
                         else
                         {
-                            nonClassDictionary.Add(filePath);
+                            nonClassDictionary.Add(guid, Path.GetFileName(filePath));
                             Debug.LogWarning($"Found script that we can't get type from: {monoScript.name}");
                         }
                     }
@@ -340,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                                 if (type.Namespace == null || !type.Namespace.Contains("Microsoft.MixedReality.Toolkit"))
                                 {
-                                    Debug.LogErrorFormat("Type {0} is not a member of the Microsoft.MixedReality.Toolkit namespace", type.Name);
+                                    throw new InvalidDataException($"Type {type.Name} is not a member of the Microsoft.MixedReality.Toolkit namespace");
                                 }
                                 toReturn.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = guid });
                             }
@@ -365,27 +372,24 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             UpdateMetaFiles();
         }
 
+
+
         private static void CopyIntermediaryAssemblies(string outputPath)
         {
             List<DirectoryInfo> outputDirectories = new List<DirectoryInfo>();
             string playerDataCachePath = Application.dataPath.Replace("Assets", "Library/PlayerDataCache");
             DirectoryInfo playerDataCahce = new DirectoryInfo(playerDataCachePath);
             DirectoryInfo[] dllStores = playerDataCahce.GetDirectories("*", SearchOption.TopDirectoryOnly);
-            foreach(DirectoryInfo folder in dllStores)
+            string subfolderName = string.Empty;
+            foreach(KeyValuePair<string, string> sourceToOutputPair in sourceToOutputFolders)
             {
-                string subfolderName = string.Empty;
-                switch(folder.Name)
+                DirectoryInfo directory = new DirectoryInfo(Application.dataPath.Replace("Assets", sourceToOutputPair.Key));
+                if (!directory.Exists)
                 {
-                    case "Win":
-                        subfolderName = "Standalone";
-                        break;
-                    case "WindowsStoreApps":
-                        subfolderName = "UAP";
-                        break;
-                    default:
-                        continue;
+                    throw new InvalidDataException($"The source directory {sourceToOutputPair.Key} does not exist.");
                 }
-                FileInfo[] dlls = folder.GetFiles("Microsoft.MixedReality.Toolkit*.dll", SearchOption.AllDirectories);
+
+                subfolderName = sourceToOutputPair.Value;
 
                 string pluginPath = Path.Combine(outputPath, subfolderName);
                 if (Directory.Exists(pluginPath))
@@ -393,7 +397,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     Directory.Delete(pluginPath);
                 }
                 Directory.CreateDirectory(pluginPath);
-                foreach(FileInfo dll in dlls)
+
+                FileInfo[] dlls = directory.GetFiles("Microsoft.MixedReality.Toolkit*.dll", SearchOption.AllDirectories);
+                foreach (FileInfo dll in dlls)
                 {
                     File.Copy(dll.FullName, Path.Combine(pluginPath, dll.Name), true);
                 }
@@ -410,9 +416,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 string asmdefText = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(asmdefFile.Substring(lengthOfPrefix)).text;
                 string dllName = JsonUtility.FromJson<AssemblyDefinitionStub>(asmdefText).name;
-                string guid = File.ReadAllLines(string.Format("{0}.meta", asmdefFile))[1].Substring(6);
+                string guid = File.ReadAllLines($"{asmdefFile}.meta")[1].Substring(6);
                 guid = CycleGuidForward(guid);
-                dllGuids.Add(string.Format("{0}.dll", dllName), guid);
+                dllGuids.Add($"{dllName}.dll", guid);
             }
 
             //Load the sample meta files
@@ -450,8 +456,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             DirectoryInfo[] directories = new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins")).GetDirectories("*", SearchOption.AllDirectories);
             string dllGuid = string.Empty;
+            bool isUAP = false;
             foreach (DirectoryInfo directory in directories)
             {
+                isUAP = false;
                 if (!directory.Name.Equals("Editor"))
                 {
                     if (directory.Name.Contains("Standalone") || directory.Parent.Name.Contains("Standalone"))
@@ -461,15 +469,19 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     else if (directory.Name.Contains("UAP") || directory.Parent.Name.Contains("UAP"))
                     {
                         metaFileContent = File.ReadAllLines(uapMetaFile.FullName);
+                        isUAP = true;
                     }
 
                     FileInfo[] files = directory.GetFiles("*.dll", SearchOption.TopDirectoryOnly);
                     string metaFilePath = string.Empty;
                     foreach (FileInfo file in files)
                     {
+                        //Editor is guid + 1
+                        //Standalone is guid + 2
+                        //UAP is guid + 3
                         dllGuid = dllGuids[file.Name];
                         dllGuid = CycleGuidForward(dllGuid);
-                        if (directory.Name.Contains("UAP"))
+                        if (isUAP)
                         {
                             dllGuid = CycleGuidForward(dllGuid);
                         }
