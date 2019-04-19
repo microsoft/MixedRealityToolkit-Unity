@@ -312,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (hitResult.hitObject != null)
                 {
                     focusDetails.PointLocalSpace = hitResult.hitObject.transform.InverseTransformPoint(focusDetails.Point);
-                    focusDetails.NormalLocalSpace = hitResult.hitObject.transform.InverseTransformPoint(focusDetails.Normal);
+                    focusDetails.NormalLocalSpace = hitResult.hitObject.transform.InverseTransformDirection(focusDetails.Normal);
                 }
                 else
                 {
@@ -335,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     focusDetails.Point = focusDetails.Object.transform.TransformPoint(focusDetails.PointLocalSpace);
                     focusDetails.Normal = focusDetails.Object.transform.TransformDirection(focusDetails.NormalLocalSpace);
                     focusDetails.PointLocalSpace = focusDetails.Object.transform.InverseTransformPoint(focusDetails.Point);
-                    focusDetails.NormalLocalSpace = focusDetails.Object.transform.InverseTransformPoint(focusDetails.Normal);
+                    focusDetails.NormalLocalSpace = focusDetails.Object.transform.InverseTransformDirection(focusDetails.Normal);
                 }
 
                 StartPoint = Pointer.Rays[0].Origin;
