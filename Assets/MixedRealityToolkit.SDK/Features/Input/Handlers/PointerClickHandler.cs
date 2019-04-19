@@ -47,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         /// <inheritdoc />

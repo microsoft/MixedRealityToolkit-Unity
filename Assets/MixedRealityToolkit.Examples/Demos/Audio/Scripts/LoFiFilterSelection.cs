@@ -84,6 +84,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         { }
 
+        /// <summary>
+        /// This script does not handle pointer dragged events.
+        /// </summary>
         public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         /// <summary>
