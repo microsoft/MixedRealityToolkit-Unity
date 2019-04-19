@@ -119,25 +119,25 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
             Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
 
-            //Dictionary<string, ClassInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/Editor"));
-            //Debug.Log($"Found {compiledClassReferences.Count} compiled class references.");
+            Dictionary<string, ClassInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/Editor"));
+            Debug.Log($"Found {compiledClassReferences.Count} compiled class references.");
 
-            //Dictionary<string, Tuple<string, long>> remapDictionary = new Dictionary<string, Tuple<string, long>>();
+            Dictionary<string, Tuple<string, long>> remapDictionary = new Dictionary<string, Tuple<string, long>>();
 
-            //foreach (var pair in scriptFilesReferences)
-            //{
-            //    if (compiledClassReferences.TryGetValue(pair.Key, out ClassInformation compiledClassInfo))
-            //    {
-            //        remapDictionary.Add(pair.Value.Guid, new Tuple<string, long>(compiledClassInfo.Guid, compiledClassInfo.FileId));
-            //    }
-            //    else
-            //    {
-            //        // Switch to throwing exception later
-            //        Debug.LogWarning($"Can't find a compiled version of the script: {pair.Key}; guid: {pair.Value.Guid}");
-            //    }
-            //}
+            foreach (var pair in scriptFilesReferences)
+            {
+                if (compiledClassReferences.TryGetValue(pair.Key, out ClassInformation compiledClassInfo))
+                {
+                    remapDictionary.Add(pair.Value.Guid, new Tuple<string, long>(compiledClassInfo.Guid, compiledClassInfo.FileId));
+                }
+                else
+                {
+                    // Switch to throwing exception later
+                    Debug.LogWarning($"Can't find a compiled version of the script: {pair.Key}; guid: {pair.Value.Guid}");
+                }
+            }
 
-            //ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary);
+            ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary);
         }
 
         private static void ProcessYAMLAssets(string[] allFilePaths, string outputDirectory, Dictionary<string, Tuple<string, long>> remapDictionary)
@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t.Item1, t.Item2, remapDictionary)));
             Task.WhenAll(tasks).Wait();
 
-            PostProcess(outputDirectory);
+            //PostProcess(outputDirectory);
         }
 
         private static async Task ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary)
