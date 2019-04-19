@@ -41,7 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
-            for (var i = 0; i < UInput.touches.Length; i++)
+            int touchCount = UInput.touchCount;
+            for (var i = 0; i < touchCount; i++)
             {
                 Touch touch = UInput.touches[i];
 

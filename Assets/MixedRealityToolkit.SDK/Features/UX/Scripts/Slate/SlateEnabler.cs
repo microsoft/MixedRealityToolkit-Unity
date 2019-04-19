@@ -22,6 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             if (panComponent != null)

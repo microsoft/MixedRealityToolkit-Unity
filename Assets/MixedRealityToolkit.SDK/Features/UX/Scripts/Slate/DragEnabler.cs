@@ -25,6 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             if (manipulatorToDisable != null)

@@ -454,17 +454,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
+    void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
+    void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
+    {
+        if (touchType == TouchType.HandRay)
         {
-            if (touchType == TouchType.HandRay)
+            if (currentPointer == eventData.Pointer)
             {
-                if (currentPointer == eventData.Pointer)
-                {
-                    DisconnectTouch();
-                    eventData.Use();
-                }
+                DisconnectTouch();
+                eventData.Use();
             }
         }
+    }
 
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
         {
