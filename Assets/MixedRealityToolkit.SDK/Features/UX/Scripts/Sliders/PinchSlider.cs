@@ -79,6 +79,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return transform.TransformPoint(sliderEndPosition); }
             set { sliderEndPosition = Vector3.Project(transform.InverseTransformPoint(value), GetSliderAxis()); }
         }
+
+        /// <summary>
+        /// Returns the vector from the slider start to end positions
+        /// </summary>
+        public Vector3 SliderTrackDirection
+        {
+            get { return SliderEndPosition - SliderStartPosition; }
+        }
         #endregion
 
         #region Event Handlers
@@ -95,11 +103,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3 startPointerPosition;
         private Vector3 startSliderPosition;
         private IMixedRealityPointer activePointer;
+        private Vector3 sliderThumbOffset = Vector3.zero;
         #endregion
 
         #region Unity methods
         public void Start()
         {
+            if (thumbRoot == null)
+            {
+                throw new Exception($"Slider thumb on gameObject {gameObject.name} is not specified. Did you forget to set it?");
+            }
+
+            var startToThumb = thumbRoot.transform.position - SliderStartPosition;
+            var thumbProjectedOnTrack = SliderStartPosition + Vector3.Project(startToThumb, SliderTrackDirection);
+            sliderThumbOffset = thumbRoot.transform.position - thumbProjectedOnTrack;
+
             UpdateUI();
             OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, false));
         }
@@ -131,8 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateUI()
         {
-            var p0ToP1 = SliderEndPosition - SliderStartPosition;
-            var newSliderPos = SliderStartPosition + p0ToP1 * sliderValue;
+            var newSliderPos = SliderStartPosition + sliderThumbOffset + SliderTrackDirection * sliderValue;
 
             thumbRoot.transform.position = newSliderPos;
         }
@@ -190,10 +207,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (eventData.Pointer == activePointer)
             {
                 var delta = activePointer.Position - startPointerPosition;
-                var p0ToP1 = SliderEndPosition - SliderStartPosition;
-                var handDelta = Vector3.Dot(p0ToP1.normalized, delta);
+                var handDelta = Vector3.Dot(SliderTrackDirection.normalized, delta);
 
-                SliderValue = Mathf.Clamp(startSliderValue + handDelta / p0ToP1.magnitude, 0, 1);
+                SliderValue = Mathf.Clamp(startSliderValue + handDelta / SliderTrackDirection.magnitude, 0, 1);
             }
         }
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
