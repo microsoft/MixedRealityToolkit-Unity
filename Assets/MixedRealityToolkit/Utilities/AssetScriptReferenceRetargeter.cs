@@ -14,60 +14,61 @@ using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
-    internal class ScriptReferenceRetargettingSettings : ScriptableObject
-    {
-        public const string k_MyCustomSettingsPath = "Assets/Editor/MyCustomSettings.asset";
+    // TODO Include settings
+    //internal class ScriptReferenceRetargettingSettings : ScriptableObject
+    //{
+    //    public const string k_MyCustomSettingsPath = "Assets/Editor/MyCustomSettings.asset";
 
-        [SerializeField]
-        private int m_Number;
+    //    [SerializeField]
+    //    private int m_Number;
 
-        [SerializeField]
-        private string m_SomeString;
+    //    [SerializeField]
+    //    private string m_SomeString;
 
-        internal static ScriptReferenceRetargettingSettings GetOrCreateSettings()
-        {
-            var settings = AssetDatabase.LoadAssetAtPath<ScriptReferenceRetargettingSettings>(k_MyCustomSettingsPath);
-            if (settings == null)
-            {
-                settings = CreateInstance<ScriptReferenceRetargettingSettings>();
-                settings.m_Number = 42;
-                settings.m_SomeString = "The answer to the universe";
-                AssetDatabase.CreateAsset(settings, k_MyCustomSettingsPath);
-                AssetDatabase.SaveAssets();
-            }
-            return settings;
-        }
+    //    internal static ScriptReferenceRetargettingSettings GetOrCreateSettings()
+    //    {
+    //        var settings = AssetDatabase.LoadAssetAtPath<ScriptReferenceRetargettingSettings>(k_MyCustomSettingsPath);
+    //        if (settings == null)
+    //        {
+    //            settings = CreateInstance<ScriptReferenceRetargettingSettings>();
+    //            settings.m_Number = 42;
+    //            settings.m_SomeString = "The answer to the universe";
+    //            AssetDatabase.CreateAsset(settings, k_MyCustomSettingsPath);
+    //            AssetDatabase.SaveAssets();
+    //        }
+    //        return settings;
+    //    }
 
-        internal static SerializedObject GetSerializedSettings()
-        {
-            return new SerializedObject(GetOrCreateSettings());
-        }
-    }
+    //    internal static SerializedObject GetSerializedSettings()
+    //    {
+    //        return new SerializedObject(GetOrCreateSettings());
+    //    }
+    //}
 
-    internal static class ScriptReferenceRetargettingSettingsIMGUIRegister
-    {
-        [SettingsProvider]
-        public static SettingsProvider CreateMyCustomSettingsProvider()
-        {
-            SettingsProvider provider = new SettingsProvider("Project/ScriptReferenceRetargetter", SettingsScope.Project)
-            {
-                // By default the last token of the path is used as display name if no label is provided.
-                label = "Script Reference Retargetter Settings",
-                // Create the SettingsProvider and initialize its drawing (IMGUI) function in place:
-                guiHandler = (searchContext) =>
-                {
-                    var settings = ScriptReferenceRetargettingSettings.GetSerializedSettings();
-                    EditorGUILayout.PropertyField(settings.FindProperty("m_Number"), new GUIContent("My Number"));
-                    EditorGUILayout.PropertyField(settings.FindProperty("m_SomeString"), new GUIContent("My String"));
-                },
+    //internal static class ScriptReferenceRetargettingSettingsIMGUIRegister
+    //{
+    //    [SettingsProvider]
+    //    public static SettingsProvider CreateMyCustomSettingsProvider()
+    //    {
+    //        SettingsProvider provider = new SettingsProvider("Project/ScriptReferenceRetargetter", SettingsScope.Project)
+    //        {
+    //            // By default the last token of the path is used as display name if no label is provided.
+    //            label = "Script Reference Retargetter Settings",
+    //            // Create the SettingsProvider and initialize its drawing (IMGUI) function in place:
+    //            guiHandler = (searchContext) =>
+    //            {
+    //                var settings = ScriptReferenceRetargettingSettings.GetSerializedSettings();
+    //                EditorGUILayout.PropertyField(settings.FindProperty("m_Number"), new GUIContent("My Number"));
+    //                EditorGUILayout.PropertyField(settings.FindProperty("m_SomeString"), new GUIContent("My String"));
+    //            },
 
-                // Populate the search keywords to enable smart search filtering and label highlighting:
-                keywords = new HashSet<string>(new[] { "Number", "Some String" })
-            };
+    //            // Populate the search keywords to enable smart search filtering and label highlighting:
+    //            keywords = new HashSet<string>(new[] { "Number", "Some String" })
+    //        };
 
-            return provider;
-        }
-    }
+    //        return provider;
+    //    }
+    //}
 
 
     public static class AssetScriptReferenceRetargeter
@@ -568,7 +569,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
         private struct AssemblyDefinitionStub
         {
+#pragma warning disable CS0649
             public string name;
+#pragma warning restore CS0649
         }
     }
 }
