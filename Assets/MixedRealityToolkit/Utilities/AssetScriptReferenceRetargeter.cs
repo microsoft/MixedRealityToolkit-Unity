@@ -147,6 +147,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 Directory.Delete(outputDirectory, true);
             }
 
+            Debug.Log($"Output Directory: {outputDirectory}")
+
             HashSet<string> foundNonYamlExtensions = new HashSet<string>();
             List<Tuple<string, string>> yamlAssets = new List<Tuple<string, string>>();
             foreach (string filePath in allFilePaths)
@@ -196,19 +198,21 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static async Task ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary)
         {
+            int lineNum = 0;
             using (StreamReader reader = new StreamReader(filePath))
             using (StreamWriter writer = new StreamWriter(targetPath))
             {
                 while (!reader.EndOfStream)
                 {
                     string line = await reader.ReadLineAsync();
-
+                    lineNum++;
                     if (line.Contains("m_Script"))
                     {
                         if (!line.Contains('}'))
                         {
                             // Read the second line as well
                             line += await reader.ReadLineAsync();
+                            lineNum++;
 
                             if (!line.Contains('}'))
                             {
@@ -236,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             else
                             {
                                 // Switch to error later
-                                Debug.LogWarning($"Couldn't find a script remap for {guid}.");
+                                Debug.LogWarning($"Couldn't find a script remap for {guid} in file: '{filePath}' at line '{lineNum}'.");
                             }
                         }
                         // else this is not a script file reference
