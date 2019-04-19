@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t.Item1, t.Item2, remapDictionary)));
             Task.WhenAll(tasks).Wait();
 
-            //PostProcess(outputDirectory);
+            PostProcess(outputDirectory);
         }
 
         private static async Task ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary)
