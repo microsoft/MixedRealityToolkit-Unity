@@ -83,8 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Event Handlers
         [Header("Events")]
-        [Tooltip("Invoked when the component starts running")]
-        public SliderEvent OnStartRunning;
         public SliderEvent OnValueUpdated;
         public SliderEvent OnInteractionStarted;
         public SliderEvent OnInteractionEnded;
@@ -103,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void Start()
         {
             UpdateUI();
-            OnStartRunning.Invoke(new SliderEventData(sliderValue, sliderValue, false));
+            OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, false));
         }
 
         private void OnDisable()
