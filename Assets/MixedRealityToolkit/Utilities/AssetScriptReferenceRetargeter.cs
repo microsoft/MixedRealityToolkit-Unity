@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         private const string YamlPrefix = "%YAML 1.1";
-        
+
         private static readonly Dictionary<string, string> sourceToOutputFolders = new Dictionary<string, string>
         {
             {"Library/PlayerDataCache/WindowsStoreApps", "UAP" },
@@ -101,6 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             try
             {
+                Debug.Log("Starting to Retarget Assets.");
                 RunRetargetToDLL();
                 Debug.Log("Complete.");
             }
@@ -113,10 +114,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static void RunRetargetToDLL()
         {
-            string[] allFilesUnderAssets = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
+            //string[] allFilesUnderAssets = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
 
-            Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
-            Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
+            //Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
+            //Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
 
             //Dictionary<string, ClassInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/Editor"));
             //Debug.Log($"Found {compiledClassReferences.Count} compiled class references.");
@@ -377,8 +378,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             List<DirectoryInfo> outputDirectories = new List<DirectoryInfo>();
             string playerDataCachePath = Application.dataPath.Replace("Assets", "Library/PlayerDataCache");
             DirectoryInfo playerDataCahce = new DirectoryInfo(playerDataCachePath);
-            
-            foreach(KeyValuePair<string, string> sourceToOutputPair in sourceToOutputFolders)
+
+            foreach (KeyValuePair<string, string> sourceToOutputPair in sourceToOutputFolders)
             {
                 DirectoryInfo directory = new DirectoryInfo(Application.dataPath.Replace("Assets", sourceToOutputPair.Key));
                 if (!directory.Exists)
@@ -492,7 +493,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             File.WriteAllLines(metaFilePath, metaFileContent);
                         }
                     }
-                }                
+                }
             }
         }
 
@@ -520,10 +521,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         private static void RecursiveFolderCleanup(DirectoryInfo folder)
-        {            
+        {
             foreach (DirectoryInfo subFolder in folder.GetDirectories())
             {
-                RecursiveFolderCleanup(subFolder);               
+                RecursiveFolderCleanup(subFolder);
             }
 
             string fileCheck;
