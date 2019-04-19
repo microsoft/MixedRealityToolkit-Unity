@@ -21,6 +21,8 @@ public class SlateEnabler : MonoBehaviour, IMixedRealityPointerHandler
         }
     }
 
+    public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
     public void OnPointerUp(MixedRealityPointerEventData eventData)
     {
         if (panComponent != null)

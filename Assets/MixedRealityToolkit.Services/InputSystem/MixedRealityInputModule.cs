@@ -253,6 +253,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointerDataToUpdate[pointerId].nextPressState = PointerEventData.FramePressState.Pressed;
         }
 
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
         {
         }

@@ -209,13 +209,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 hostTransform = transform;
             }
         }
-        private void Update()
-        {
-            if (currentState != State.Start)
-            {
-                UpdateStateMachine();
-            }
-        }
         #endregion MonoBehaviour Functions
 
         #region Private Methods
@@ -437,6 +430,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // as long as the ManipulationHandler is active.
                 // This is due to us reacting to both "Select" and "Grip" events.
                 eventData.Use();
+            }
+        }
+
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+            if (currentState != State.Start)
+            {
+                UpdateStateMachine();
             }
         }
 
