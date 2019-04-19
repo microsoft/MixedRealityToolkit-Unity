@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 Directory.Delete(outputDirectory, true);
             }
 
-            Debug.Log($"Output Directory: {outputDirectory}")
+            Debug.Log($"Output Directory: {outputDirectory}");
 
             HashSet<string> foundNonYamlExtensions = new HashSet<string>();
             List<Tuple<string, string>> yamlAssets = new List<Tuple<string, string>>();
