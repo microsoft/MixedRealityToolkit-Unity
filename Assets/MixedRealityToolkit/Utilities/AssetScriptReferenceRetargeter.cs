@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         private const string YamlPrefix = "%YAML 1.1";
-        
+
         private static readonly Dictionary<string, string> sourceToOutputFolders = new Dictionary<string, string>
         {
             {"Library/PlayerDataCache/WindowsStoreApps", "UAP" },
@@ -101,6 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             try
             {
+                Debug.Log("Starting to Retarget Assets.");
                 RunRetargetToDLL();
                 Debug.Log("Complete.");
             }
@@ -145,6 +146,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 Directory.Delete(outputDirectory, true);
             }
+
+            Debug.Log($"Output Directory: {outputDirectory}");
 
             HashSet<string> foundNonYamlExtensions = new HashSet<string>();
             List<Tuple<string, string>> yamlAssets = new List<Tuple<string, string>>();
@@ -195,19 +198,21 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static async Task ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary)
         {
+            int lineNum = 0;
             using (StreamReader reader = new StreamReader(filePath))
             using (StreamWriter writer = new StreamWriter(targetPath))
             {
                 while (!reader.EndOfStream)
                 {
                     string line = await reader.ReadLineAsync();
-
+                    lineNum++;
                     if (line.Contains("m_Script"))
                     {
                         if (!line.Contains('}'))
                         {
                             // Read the second line as well
                             line += await reader.ReadLineAsync();
+                            lineNum++;
 
                             if (!line.Contains('}'))
                             {
@@ -235,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             else
                             {
                                 // Switch to error later
-                                Debug.LogWarning($"Couldn't find a script remap for {guid}.");
+                                Debug.LogWarning($"Couldn't find a script remap for {guid} in file: '{filePath}' at line '{lineNum}'.");
                             }
                         }
                         // else this is not a script file reference
@@ -377,8 +382,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             List<DirectoryInfo> outputDirectories = new List<DirectoryInfo>();
             string playerDataCachePath = Application.dataPath.Replace("Assets", "Library/PlayerDataCache");
             DirectoryInfo playerDataCahce = new DirectoryInfo(playerDataCachePath);
-            
-            foreach(KeyValuePair<string, string> sourceToOutputPair in sourceToOutputFolders)
+
+            foreach (KeyValuePair<string, string> sourceToOutputPair in sourceToOutputFolders)
             {
                 DirectoryInfo directory = new DirectoryInfo(Application.dataPath.Replace("Assets", sourceToOutputPair.Key));
                 if (!directory.Exists)
@@ -492,7 +497,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             File.WriteAllLines(metaFilePath, metaFileContent);
                         }
                     }
-                }                
+                }
             }
         }
 
@@ -520,10 +525,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         private static void RecursiveFolderCleanup(DirectoryInfo folder)
-        {            
+        {
             foreach (DirectoryInfo subFolder in folder.GetDirectories())
             {
-                RecursiveFolderCleanup(subFolder);               
+                RecursiveFolderCleanup(subFolder);
             }
 
             string fileCheck;
