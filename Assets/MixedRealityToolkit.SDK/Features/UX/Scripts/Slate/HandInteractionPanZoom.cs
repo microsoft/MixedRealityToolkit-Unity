@@ -320,6 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 //test for scale limits
                 if (totalUVScale.x / scaleUVDelta > minScale && totalUVScale.x / scaleUVDelta < maxScale)
                 {
+                    //track total scale
                     totalUVScale /= scaleUVDelta;
                     for (int i = 0; i < uvs.Count; ++i)
                     {
