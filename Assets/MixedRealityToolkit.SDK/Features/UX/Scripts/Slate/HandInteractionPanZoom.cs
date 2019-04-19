@@ -60,6 +60,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Range(1.0f, 20.0f)]
         private float maxPanVertical = 2;
         [SerializeField]
+        [Range(0.1f, 1.0f)]
+        private float minScale = 0.2f;
+        [SerializeField]
+        [Range(1.0f, 10.0f)]
+        private float maxScale = 1.5f;
+        [SerializeField]
         [Range(0.0f, 0.99f)]
         [Tooltip("a value of 0 results in panning coming to a complete stop when released.")]
         private float momentumHorizontal = 0.9f;
@@ -109,6 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float initialTouchDistance = 0.0f;
         private float lastTouchDistance = 0.0f;
         private Vector2 totalUVOffset = Vector2.zero;
+        private Vector2 totalUVScale = Vector2.one;
         private bool affordancesVisible = false;
         private float runningAverageSmoothing = 0.0f;
         private const float percentToDecimal = 0.01f;
@@ -125,6 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             mesh.SetUVs(0, unTransformedUVs);
             totalUVOffset = Vector2.zero;
+            totalUVScale = Vector2.one;
             initialTouchDistance = 0.0f;
         }
 
@@ -309,10 +317,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 scaleUVDelta = currentContactRatio / previousContactRatio;
                 previousContactRatio = currentContactRatio;
 
-                for (int i = 0; i < uvs.Count; ++i)
+                //test for scale limits
+                if (totalUVScale.x / scaleUVDelta > minScale && totalUVScale.x / scaleUVDelta < maxScale)
                 {
-                    //this is where zoom is applied if Active
-                    uvs[i] = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid;
+                    totalUVScale /= scaleUVDelta;
+                    for (int i = 0; i < uvs.Count; ++i)
+                    {
+                        //this is where zoom is applied if Active
+                        uvs[i] = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid;
+                    }
                 }
             }
 
@@ -347,6 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     uvs[i] -= uvDelta;
                 }
             }
+
             mesh.uv = uvs.ToArray();
         }
         private float GetUVScaleFromTouches()
