@@ -22,6 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
             if (debugMessage != null)

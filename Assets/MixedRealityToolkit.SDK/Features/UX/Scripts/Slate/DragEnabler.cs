@@ -24,6 +24,8 @@ public class DragEnabler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRea
         }
     }
 
+    public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
     public void OnPointerUp(MixedRealityPointerEventData eventData)
     {
         if (manipulatorToDisable != null)

@@ -453,6 +453,8 @@ public class HandInteractionPan : BaseFocusHandler, IMixedRealityTouchHandler, I
         }
     }
 
+    void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
     void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
     {
         if (touchType == TouchType.HandRay)

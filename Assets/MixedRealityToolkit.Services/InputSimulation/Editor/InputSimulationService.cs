@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -33,6 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<Handedness, SimulatedHand> trackedHands = new Dictionary<Handedness, SimulatedHand>();
 
         /// <summary>
+        /// Active controllers
+        /// </summary>
+        private IMixedRealityController[] activeControllers = new IMixedRealityController[0];
+
+        /// <summary>
         /// Timestamp of the last hand device update
         /// </summary>
         private long lastHandUpdateTimestamp = 0;
@@ -48,6 +54,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             uint priority, 
             BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile)
         {
+        }
+
+        /// <inheritdoc />
+        public override IMixedRealityController[] GetActiveControllers()
+        {
+            return activeControllers;
         }
 
         /// <inheritdoc />
@@ -276,6 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             MixedRealityToolkit.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
 
             trackedHands.Add(handedness, controller);
+            UpdateActiveControllers();
 
             return controller;
         }
@@ -288,6 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
 
                 trackedHands.Remove(handedness);
+                UpdateActiveControllers();
             }
         }
 
@@ -298,6 +312,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 MixedRealityToolkit.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
             }
             trackedHands.Clear();
+            UpdateActiveControllers();
+        }
+
+        private void UpdateActiveControllers()
+        {
+            activeControllers = trackedHands.Values.ToArray<IMixedRealityController>();
         }
     }
 }
