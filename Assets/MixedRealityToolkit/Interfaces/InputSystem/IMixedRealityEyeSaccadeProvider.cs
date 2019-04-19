@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Provides eye tracking information.
