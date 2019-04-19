@@ -256,8 +256,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     throw new Exception("Found a transform without an AppBarButton component under buttonTransforms!");
                 
                 appBarButton.InitializeButtonContent(this);
-                // Set to invisible initially
-                appBarButton.SetVisible(false);
+                // Set to invisible initially if not custom
+                switch (appBarButton.ButtonType)
+                {
+                    case ButtonTypeEnum.Custom:
+                        break;
+
+                    default:
+                        appBarButton.SetVisible(false);
+                        break;
+                }
 
                 buttons.Add(appBarButton);
             }
@@ -278,11 +286,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 AppBarButton button = buttons[i];
 
-                if (button.ButtonType != ButtonTypeEnum.Custom)
-                    button.SetVisible(GetButtonVisible(button.ButtonType));
+                switch (button.ButtonType)
+                {
+                    case ButtonTypeEnum.Custom:
+                        break;
+
+                    default:
+                        button.SetVisible(GetButtonVisible(button.ButtonType));
+                        break;
+                }
 
                 if (!buttons[i].Visible)
+                {
                     continue;
+                }
 
                 activeButtonNum++;
             }

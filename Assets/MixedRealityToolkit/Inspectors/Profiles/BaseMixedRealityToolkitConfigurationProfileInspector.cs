@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -21,19 +20,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         [SerializeField]
         private Texture2D logoDarkTheme = null;
-        
+
         protected virtual void Awake()
         {
-            string assetPath = $"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/StandardAssets/Textures";
+            string assetPath = "StandardAssets/Textures";
 
             if (logoLightTheme == null)
             {
-                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{assetPath}/MRTK_Logo_Black.png", typeof(Texture2D));
+                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_Logo_Black.png"), typeof(Texture2D));
             }
 
             if (logoDarkTheme == null)
             {
-                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{assetPath}/MRTK_Logo_White.png", typeof(Texture2D));
+                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_Logo_White.png"), typeof(Texture2D));
             }
         }
 
@@ -44,7 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             // If we're being rendered as a sub profile, don't show the logo
             if (RenderAsSubProfile)
+            {
                 return;
+            }
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -53,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUILayout.EndHorizontal();
             GUILayout.Space(12f);
         }
-        
+
         /// <summary>
         /// Renders a button that will take user back to a specified profile object
         /// </summary>
@@ -64,7 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             // If we're being rendered as a sub profile, don't show the button
             if (RenderAsSubProfile)
+            {
                 return false;
+            }
 
             if (GUILayout.Button(message))
             {

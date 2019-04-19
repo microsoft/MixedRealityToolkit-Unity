@@ -41,7 +41,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="controllerHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        public SimulatedGestureHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public SimulatedGestureHand(
+            TrackingState trackingState, 
+            Handedness controllerHandedness, 
+            IMixedRealityInputSource inputSource = null, 
+            MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
         }
@@ -79,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 useRailsNavigation = gestureProfile.UseRailsNavigation;
             }
 
-            var inputSimProfile = MixedRealityToolkit.Instance?.GetService<InputSimulationService>()?.GetInputSimulationProfile();
+            var inputSimProfile = MixedRealityToolkit.Instance?.GetService<IInputSimulationService>()?.InputSimulationProfile;
             if (inputSimProfile != null)
             {
                 holdStartDuration = inputSimProfile.HoldStartDuration;
