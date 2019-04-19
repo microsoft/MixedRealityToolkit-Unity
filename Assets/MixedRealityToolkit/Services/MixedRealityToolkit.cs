@@ -25,11 +25,16 @@ namespace Microsoft.MixedReality.Toolkit
     /// The Profile can be swapped out at any time to meet the needs of your project.
     /// </summary>
     [DisallowMultipleComponent]
+    [ExecuteAlways]
     public class MixedRealityToolkit : MonoBehaviour, IMixedRealityServiceRegistrar
     {
 #region Mixed Reality Toolkit Profile configuration
 
         private const string MixedRealityPlayspaceName = "MixedRealityPlayspace";
+
+        private const string ActiveInstanceGameObjectName = "MixedRealityToolkit";
+
+        private const string InactiveInstanceGameObjectName = "MixedRealityToolkit (Inactive)";
 
         private static bool isInitializing = false;
 
@@ -47,12 +52,18 @@ namespace Microsoft.MixedReality.Toolkit
                     return false;
                 }
 
-                if (!ConfirmInitialized())
-                {
-                    return false;
-                }
-
                 return ActiveProfile != null;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if this is the active instance.
+        /// </summary>
+        public bool IsActiveInstance
+        {
+            get
+            {
+                return activeInstance == this;
             }
         }
 
@@ -123,10 +134,11 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-#endregion Mixed Reality Toolkit Profile configuration
+        #endregion Mixed Reality Toolkit Profile configuration
 
-#region Mixed Reality runtime service registry
+        #region Mixed Reality runtime service registry
 
+        private static HashSet<MixedRealityToolkit> toolkitInstances = new HashSet<MixedRealityToolkit>();
         private static readonly Dictionary<Type, IMixedRealityService> activeSystems = new Dictionary<Type, IMixedRealityService>();
 
         /// <summary>
@@ -527,32 +539,24 @@ namespace Microsoft.MixedReality.Toolkit
 
 #region MonoBehaviour Implementation
 
-        private static MixedRealityToolkit instance;
+        private static MixedRealityToolkit activeInstance;
         private static bool newInstanceBeingInitialized = false;
 
         /// <summary>
         /// Returns the Singleton instance of the classes type.
         /// If no instance is found, then we search for an instance in the scene.
-        /// If more than one instance is found, we log an error and no instance is returned.
+        /// If more than one instance is found, only the first instance is activated. All others are deactivated.
         /// </summary>
         public static MixedRealityToolkit Instance
         {
             get
             {
-                if (IsInitialized)
+                if (activeInstance != null)
                 {
-                    return instance;
+                    return activeInstance;
                 }
-
-                if (Application.isPlaying && !searchForInstance)
-                {
-                    return null;
-                }
-
 
                 var objects = FindObjectsOfType<MixedRealityToolkit>();
-                searchForInstance = false;
-                MixedRealityToolkit newInstance;
 
                 switch (objects.Length)
                 {
@@ -565,37 +569,27 @@ namespace Microsoft.MixedReality.Toolkit
                             return null;
                         }
 #endif
-                        Debug.Assert(!newInstanceBeingInitialized, "We shouldn't be initializing another MixedRealityToolkit unless we errored on the previous.");
-                        newInstanceBeingInitialized = true;
-                        newInstance = new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>();
+                        RegisterInstance(new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>());
                         break;
+
                     case 1:
-                        newInstanceBeingInitialized = false;
-                        newInstance = objects[0];
+                        RegisterInstance(objects[0]);
                         break;
+
                     default:
-                        newInstanceBeingInitialized = false;
-                        Debug.LogError($"Expected exactly 1 {nameof(MixedRealityToolkit)} but found {objects.Length}.");
-                        return null;
+                        foreach (MixedRealityToolkit toolkit in objects)
+                        {
+                            RegisterInstance(toolkit);
+                        }
+                        break;
                 }
 
-                Debug.Assert(newInstance != null);
-
-                if (!isApplicationQuitting)
+                if (activeInstance == null)
                 {
-                    // Setup any additional things the instance needs.
-                    newInstance.InitializeInstance();
-                }
-                else
-                {
-                    // Don't do any additional setup because the app is quitting.
-                    instance = newInstance;
-                    newInstanceBeingInitialized = false;
+                    Debug.LogError("Didn't find / couldn't create an active instance of mixed reality toolkit.");
                 }
 
-                Debug.Assert(instance != null);
-
-                return instance;
+                return activeInstance;
             }
         }
 
@@ -608,18 +602,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             lock (initializedLock)
             {
-                if (IsInitialized)
-                {
-                    newInstanceBeingInitialized = false;
-                    return;
-                }
-
-                instance = this;
-
-                if (Application.isPlaying)
-                {
-                    DontDestroyOnLoad(instance.transform.root);
-                }
+                gameObject.SetActive(true);
 
                 Application.quitting += () =>
                 {
@@ -645,10 +628,10 @@ namespace Microsoft.MixedReality.Toolkit
 
                 UnityEditor.EditorApplication.hierarchyChanged += () =>
                 {
-                    if (instance != null)
+                    if (activeInstance != null)
                     {
-                        Debug.Assert(instance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
-                        Debug.Assert(instance.transform.childCount == 0, "The MixedRealityToolkit should not have GameObject children!");
+                        Debug.Assert(activeInstance.transform.parent == null, "The MixedRealityToolkit should not be parented under any other GameObject!");
+                        Debug.Assert(activeInstance.transform.childCount == 0, "The MixedRealityToolkit should not have GameObject children!");
                     }
                 };
 #endif // UNITY_EDITOR
@@ -680,7 +663,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Returns whether the instance has been initialized or not.
         /// </summary>
-        public static bool IsInitialized => instance != null;
+        public static bool IsInitialized => activeInstance != null;
 
         /// <summary>
         /// Static function to determine if the MixedRealityToolkit class has been initialized or not.
@@ -745,75 +728,124 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if (!newInstanceBeingInitialized && !IsInitialized && !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+            if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
             {
-                ConfirmInitialized();
+                RegisterInstance(this);
             }
         }
 #endif // UNITY_EDITOR
 
         private void Awake()
         {
-            if (IsInitialized && instance != this)
-            {
-                if (Application.isEditor)
-                {
-                    DestroyImmediate(this);
-                }
-                else
-                {
-                    Destroy(this);
-                }
-
-                Debug.LogWarning("Trying to instantiate a second instance of the Mixed Reality Toolkit. Additional Instance was destroyed");
-            }
-            else if (!IsInitialized)
-            {
-                InitializeInstance();
-            }
-            else
-            {
-                Debug.LogError("Failed to properly initialize the MixedRealityToolkit");
-            }
+            RegisterInstance(this);
         }
 
         private void OnEnable()
         {
-            EnableAllServices();
+            RegisterInstance(this);
+
+            if (IsActiveInstance && Application.isPlaying)
+            {
+                EnableAllServices();
+            }
         }
 
         private void Update()
         {
-            UpdateAllServices();
+            if (IsActiveInstance && Application.isPlaying)
+            {
+                UpdateAllServices();
+            }
         }
 
         private void LateUpdate()
         {
-            LateUpdateAllServices();
+            if (IsActiveInstance && Application.isPlaying)
+            {
+                LateUpdateAllServices();
+            }
         }
 
         private void OnDisable()
         {
-            DisableAllServices();
+            if (IsActiveInstance && Application.isPlaying)
+            {
+                DisableAllServices();
+            }
         }
 
         private void OnDestroy()
         {
-            DestroyAllServices();
-            ClearCoreSystemCache();
+            UnregisterInstance(this);
+        }
 
-            if (instance == this)
+        #endregion MonoBehaviour Implementation
+
+        #region Instance Registration
+
+        private static void RegisterInstance(MixedRealityToolkit toolkitInstance)
+        {
+            if (MixedRealityToolkit.isApplicationQuitting)
+            {   // Don't register instances while application is quitting
+                return;
+            }
+            
+            if (MixedRealityToolkit.activeInstance == null)
             {
-                instance = null;
-                searchForInstance = true;
+                // If we don't have an instance, set it here
+                // Set the instance to active
+                MixedRealityToolkit.activeInstance = toolkitInstance;
+                toolkitInstances.Add(toolkitInstance);
+                toolkitInstance.gameObject.SetActive(true);
+                toolkitInstance.InitializeInstance();
+                toolkitInstance.name = ActiveInstanceGameObjectName;
+                return;
+            }
+
+            // If we're already registered, no need to proceed
+            if (!toolkitInstances.Add(toolkitInstance))
+                return;
+
+            // If we do, then it's not this instance, so deactivate this instance
+            toolkitInstance.gameObject.SetActive(false);
+            toolkitInstance.name = InactiveInstanceGameObjectName;
+            // Move to the bottom of the heirarchy so it stays out of the way
+            toolkitInstance.transform.SetSiblingIndex(int.MaxValue);
+        }
+
+        private static void UnregisterInstance(MixedRealityToolkit toolkitInstance)
+        {
+            toolkitInstances.Remove(toolkitInstance);
+
+            if (MixedRealityToolkit.activeInstance == toolkitInstance)
+            {   // If this is the active instance, we need to break it down
+                toolkitInstance.DestroyAllServices();
+                toolkitInstance.ClearCoreSystemCache();
+                // If this was the active instance, un-register the active instance
+                MixedRealityToolkit.activeInstance = null;
+
+                if (MixedRealityToolkit.isApplicationQuitting)
+                {   // Don't search for additional instances if we're quitting
+                    return;
+                }
+
+                foreach (MixedRealityToolkit instance in toolkitInstances)
+                {   // This may have been a  mass-deletion - be wary of soon-to-be-unregistered instances
+                    if (instance == null)
+                        continue;
+
+                    // Select the first available instance and register it immediately
+                    RegisterInstance(instance);
+                    break;
+                }
             }
         }
 
-#endregion MonoBehaviour Implementation
+        #endregion
 
-#region Service Container Management
+        #region Service Container Management
 
-#region Registration
+        #region Registration
         private bool RegisterServiceInternal(Type interfaceType, IMixedRealityService serviceInstance)
         {
             if (serviceInstance == null)
@@ -886,7 +918,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="interfaceType">The interface type for the system to be enabled.  E.G. InputSystem, BoundarySystem</param>
         /// <param name="serviceName">Name of the specific service</param>
-        public  void EnableAllServicesByTypeAndName(Type interfaceType, string serviceName)
+        public void EnableAllServicesByTypeAndName(Type interfaceType, string serviceName)
         {
             if (interfaceType == null)
             {

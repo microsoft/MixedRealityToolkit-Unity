@@ -22,6 +22,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
+            MixedRealityToolkit instance = (MixedRealityToolkit)target;
+
+            if (!instance.IsActiveInstance)
+            {
+                EditorGUILayout.HelpBox("This instance of the toolkt is inactive. There can only be one active instance loaded at any time.", MessageType.Warning);
+                if (GUILayout.Button ("Select Active Instance"))
+                {
+                    UnityEditor.Selection.activeGameObject = MixedRealityToolkit.Instance.gameObject;
+                }
+                return;
+            }
+
             serializedObject.Update();
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(activeProfile);
