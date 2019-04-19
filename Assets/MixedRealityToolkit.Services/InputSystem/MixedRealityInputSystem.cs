@@ -877,7 +877,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion Pointer Down
 
-        #region Pointer Updated
+        #region Pointer Dragged
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnPointerDraggedEventHandler =
             delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
@@ -894,7 +894,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler);
         }
 
-        #endregion Pointer Updated
+        #endregion Pointer Dragged
 
         #region Pointer Click
 
