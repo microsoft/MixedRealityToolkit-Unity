@@ -548,6 +548,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             isZooming = true;
         }
 
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)

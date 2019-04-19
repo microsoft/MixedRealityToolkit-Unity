@@ -58,6 +58,8 @@ public class GestureTester : MonoBehaviour, IMixedRealityGestureHandler<Vector3>
 
     public void OnGestureUpdated(InputEventData<Vector3> eventData)
     {
+        Debug.Log($"OnGestureUpdated [{Time.frameCount}]: {eventData.MixedRealityInputAction.Description}");
+
         var action = eventData.MixedRealityInputAction.Description;
         if (action == "Manipulate Action")
         {
@@ -83,6 +85,8 @@ public class GestureTester : MonoBehaviour, IMixedRealityGestureHandler<Vector3>
 
     public void OnGestureCompleted(InputEventData<Vector3> eventData)
     {
+        Debug.Log($"OnGestureCompleted [{Time.frameCount}]: {eventData.MixedRealityInputAction.Description}");
+
         var action = eventData.MixedRealityInputAction.Description;
         if (action == "Manipulate Action")
         {
