@@ -14,6 +14,5 @@ Handler | Events | Description
 --- | --- | ---
 [`IMixedRealityFocusChangedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler) | Before Focus Changed / Focus Changed | Raised on both the game object losing focus and the one gaining it every time a pointer changes focus.
 [`IMixedRealityFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler) | Focus Enter / Exit | Raised on the game object gaining focus when the first pointer enters it and on the one losing focus when the last pointer leaves it.
-[`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler) | Pointer Down / Up / Clicked | Raised to report pointer presses and releases.
-[`IMixedRealityPointerUpdatedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerUpdatedHandler) | Pointer Updated | Raised every frame a pointer is down. Useful to implement drag-like behaviors.
+[`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler) | Pointer Down / Dragged / Up / Clicked | Raised to report pointer press, drag and release.
 [`IMixedRealityTouchHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler) | Touch Started / Updated / Completed | Raised by touch-aware pointers like [**PokePointer**](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) to report touch activity.
