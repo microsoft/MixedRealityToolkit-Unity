@@ -13,18 +13,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     {
         [SerializeField]
         private TextMesh textMesh = null;
-        private void Start()
+
+        public void OnSliderUpdated(SliderEventData eventData)
         {
             if (textMesh == null)
             {
                 textMesh = GetComponent<TextMesh>();
             }
-        }
-        public void OnSliderUpdated(SliderEventData eventData)
-        {
+
             if (textMesh != null)
             {
-                textMesh.text = $"{eventData.NewValue}";
+                textMesh.text = $"{eventData.NewValue:F2}";
             }
         }
     }
