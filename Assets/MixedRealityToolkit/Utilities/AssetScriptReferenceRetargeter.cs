@@ -114,10 +114,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static void RunRetargetToDLL()
         {
-            //string[] allFilesUnderAssets = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
+            string[] allFilesUnderAssets = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
 
-            //Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
-            //Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
+            Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
+            Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
 
             //Dictionary<string, ClassInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/Editor"));
             //Debug.Log($"Found {compiledClassReferences.Count} compiled class references.");
