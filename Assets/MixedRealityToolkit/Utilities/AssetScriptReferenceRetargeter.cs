@@ -114,7 +114,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static void RunRetargetToDLL()
         {
             string[] allFilesUnderAssets = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
-            //ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Output"), null);
 
             Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
             Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
