@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             if (IsSelectPressed)
             {
-                MixedRealityToolkit.InputSystem.RaisePointerUpdated(this, MixedRealityInputAction.None, Handedness);
+                MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
             }
 
             // Use the results from the last update to set our NavigationResult

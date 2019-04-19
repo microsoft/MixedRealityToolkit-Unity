@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (isSelectPressed && IsInteractionEnabled)
             {
-                MixedRealityToolkit.InputSystem.RaisePointerUpdated(this, MixedRealityInputAction.None, Controller.ControllerHandedness);
+                MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Controller.ControllerHandedness);
             }
         }
 

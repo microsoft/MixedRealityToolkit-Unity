@@ -23,6 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             OnGrab.Invoke();
         }
 
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
             Debug.Log("OnRelease");

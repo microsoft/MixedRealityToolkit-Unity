@@ -879,19 +879,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Pointer Updated
 
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerUpdatedHandler> OnPointerUpdatedEventHandler =
-            delegate (IMixedRealityPointerUpdatedHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnPointerDraggedEventHandler =
+            delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
             {
                 var casted = ExecuteEvents.ValidateEventData<MixedRealityPointerEventData>(eventData);
-                handler.OnPointerUpdated(casted);
+                handler.OnPointerDragged(casted);
             };
 
         /// <inheritdoc />
-        public void RaisePointerUpdated(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
+        public void RaisePointerDragged(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
-            HandlePointerEvent(pointerEventData, OnPointerUpdatedEventHandler);
+            HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler);
         }
 
         #endregion Pointer Updated

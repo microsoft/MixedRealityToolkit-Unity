@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// You may also configure the script on only enable certain manipulations. The script works with 
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
-    public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerUpdatedHandler, IMixedRealityFocusHandler
+    public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
     {
         #region Public Enums
         public enum HandMovementType
@@ -433,7 +433,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void OnPointerUpdated(MixedRealityPointerEventData eventData)
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
             if (currentState != State.Start)
             {
