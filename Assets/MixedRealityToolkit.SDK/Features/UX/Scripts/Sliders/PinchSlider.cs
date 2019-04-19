@@ -18,9 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
 
         #region Serialized Fields and Properties
-        [Tooltip("The gameObject that contains all slider children. Moves the sliders together.")]
+        [Tooltip("The gameObject that contains the slider thumb.")]
         [SerializeField]
-        private GameObject sliderRoot = null;
+        private GameObject thumbRoot = null;
 
         [Range(0, 1)]
         [SerializeField]
@@ -81,7 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         #endregion
 
-
         #region Event Handlers
         [Header("Events")]
         [Tooltip("Invoked when the component starts running")]
@@ -97,16 +96,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float startSliderValue;
         private Vector3 startPointerPosition;
         private Vector3 startSliderPosition;
-        private Coroutine moveSliderCoroutine;
         private IMixedRealityPointer activePointer;
         #endregion
-
 
         #region Unity methods
         public void Start()
         {
             UpdateUI();
             OnStartRunning.Invoke(new SliderEventData(sliderValue, sliderValue, false));
+        }
+
+        private void OnDisable()
+        {
+            if (activePointer != null)
+            {
+                EndInteraction();
+            }
         }
         #endregion
 
@@ -125,26 +130,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     throw new ArgumentOutOfRangeException("Invalid slider axis");
             }
         }
-        private IEnumerator MoveSlider()
-        {
-            while (activePointer != null)
-            {
-                var delta = activePointer.Position - startPointerPosition;
-                var p0ToP1 = SliderEndPosition - SliderStartPosition;
-                var handDelta = Vector3.Dot(p0ToP1.normalized, delta);
-
-                SliderValue = Mathf.Clamp(startSliderValue + handDelta / p0ToP1.magnitude, 0, 1);
-
-                yield return null;
-            }
-        }
 
         private void UpdateUI()
         {
             var p0ToP1 = SliderEndPosition - SliderStartPosition;
             var newSliderPos = SliderStartPosition + p0ToP1 * sliderValue;
 
-            sliderRoot.transform.position = newSliderPos;
+            thumbRoot.transform.position = newSliderPos;
+        }
+
+        private void EndInteraction()
+        {
+            if (OnInteractionEnded != null)
+            {
+                OnInteractionEnded.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer is IMixedRealityPointer));
+            }
+            activePointer = null;
         }
 
         #endregion
@@ -165,34 +166,39 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            if (OnInteractionEnded != null)
+            if (eventData.Pointer == activePointer)
             {
-                OnInteractionEnded.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer is IMixedRealityPointer));
-            }
-            activePointer = null;
-            if (moveSliderCoroutine != null)
-            {
-                StopCoroutine(moveSliderCoroutine);
-                moveSliderCoroutine = null;
+                EndInteraction();
             }
         }
 
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            activePointer = eventData.Pointer;
-            startSliderValue = sliderValue;
-            startPointerPosition = activePointer.Position;
-            startSliderPosition = gameObject.transform.position;
-            moveSliderCoroutine = StartCoroutine(MoveSlider());
-            if (OnInteractionStarted != null)
+            if (activePointer == null)
             {
-                OnInteractionStarted.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer is IMixedRealityPointer));
+                activePointer = eventData.Pointer;
+                startSliderValue = sliderValue;
+                startPointerPosition = activePointer.Position;
+                startSliderPosition = gameObject.transform.position;
+                if (OnInteractionStarted != null)
+                {
+                    OnInteractionStarted.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer is IMixedRealityPointer));
+                }
             }
         }
 
-        public void OnPointerClicked(MixedRealityPointerEventData eventData)
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
+            if (eventData.Pointer == activePointer)
+            {
+                var delta = activePointer.Position - startPointerPosition;
+                var p0ToP1 = SliderEndPosition - SliderStartPosition;
+                var handDelta = Vector3.Dot(p0ToP1.normalized, delta);
+
+                SliderValue = Mathf.Clamp(startSliderValue + handDelta / p0ToP1.magnitude, 0, 1);
+            }
         }
+        public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
         #endregion
     }
 }

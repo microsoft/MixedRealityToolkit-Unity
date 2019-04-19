@@ -46,15 +46,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     Vector3.zero,
                     Handles.SphereHandleCap);
 
-                DrawLabelWithDottedLine(startPos + (Vector3.up * handleSize * 10f), startPos, "slider start");
-                DrawLabelWithDottedLine(endPos + (Vector3.up * handleSize * 10f), endPos, "slider end");
+                DrawLabelWithDottedLine(startPos + (Vector3.up * handleSize * 10f), startPos, handleSize, "slider start");
+                DrawLabelWithDottedLine(endPos + (Vector3.up * handleSize * 10f), endPos, handleSize, "slider end");
             }
         }
 
-        private void DrawLabelWithDottedLine(Vector3 labelPos, Vector3 dottedLineStart, string s)
+        private void DrawLabelWithDottedLine(Vector3 labelPos, Vector3 dottedLineStart, float handleSize, string labelText)
         {
             Handles.color = Color.white;
-            Handles.Label(labelPos, s, labelStyle);
+            Handles.Label(labelPos + Vector3.up * handleSize, labelText, labelStyle);
             Handles.DrawDottedLine(dottedLineStart, labelPos, 5f);
         }
     }

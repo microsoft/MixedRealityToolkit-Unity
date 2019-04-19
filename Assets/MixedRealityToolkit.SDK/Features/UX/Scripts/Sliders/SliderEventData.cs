@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public float NewValue { get; private set; }
 
         /// <summary>
-        /// Whether the 
+        /// Whether the slider is being interacted near or at a distance.
         /// </summary>
         public bool IsNear { get; set; }
     }
