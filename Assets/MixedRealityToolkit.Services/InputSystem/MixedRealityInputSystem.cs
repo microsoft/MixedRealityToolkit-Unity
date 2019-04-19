@@ -889,8 +889,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerUpdated(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
-            pointer.IsFocusLocked = (pointer.Result?.Details.Object != null);
-
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
             HandlePointerEvent(pointerEventData, OnPointerUpdatedEventHandler);
