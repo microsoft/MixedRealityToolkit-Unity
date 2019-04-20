@@ -9,6 +9,9 @@ You can find the Slate example in the **HandInteractionExamples** scene under:
 
 **HandInteractionPanZoomExample** scene has Slate pan & zoom interaction examples.
 
+<img src="../Documentation/Images/Slate/MRTK_Slate_PanZoom_Examples.png" width="650">
+
+
 ## Structure
 Slate control is composed of these elements.
 
@@ -44,6 +47,9 @@ This script handles articulated hand input for touching and moving the content o
 
 ### HandInteractionPanZoom.cs
 In addition to the panning interaction, this script supports two-handed zooming. You can replace HandInteractionPan.cs with this script to support zoom.
+
+<img src="../Documentation/Images/Slate/MRTK_Slate_PanZoom.png" width="500">
+
 
 #### SlateEnabler.cs 
 This script is intended to be used with DragEnabler. These two scripts allow the Slate and another object - for instance a Title Bar - to toggle their active status so that the Touch action only affects one at a time. This prevents interacting with the Slate to accidentally trigger the Title Bar behavior and vice versa. The SlateEnabler script is put on the GameObject that is NOT the Slate. Once attached- it toggles interaction with the Slate when the GameObject is being dragged or touched.
