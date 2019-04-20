@@ -89,7 +89,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private GameObject leftPoint;
         [SerializeField]
-        private GameObject rightPoint;    
+        private GameObject rightPoint;
+
+        [SerializeField]
+        [Tooltip("Current scale value. 1 is the original 100%.")]
+        private float currentScale;
+        public float CurrentScale
+        {
+            get { return currentScale; }
+        }
         #endregion Serialized Fields
 
 
@@ -317,8 +325,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 scaleUVDelta = currentContactRatio / previousContactRatio;
                 previousContactRatio = currentContactRatio;
 
+                currentScale = totalUVScale.x / scaleUVDelta;
+
                 //test for scale limits
-                if (totalUVScale.x / scaleUVDelta > minScale && totalUVScale.x / scaleUVDelta < maxScale)
+                if (currentScale > minScale && currentScale < maxScale)
                 {
                     //track total scale
                     totalUVScale /= scaleUVDelta;
