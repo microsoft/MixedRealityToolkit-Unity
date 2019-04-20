@@ -4,8 +4,10 @@
 Thin window style control for the 2D content with grabbable title bar and 'Follow Me' and 'Close' buttons. You can scroll 2D content with articulated hand.
 
 ## Example scene
-You can find the example scene **HandInteractionPanZoomExample** under:
+You can find the Slate example in the **HandInteractionExamples** scene under:
 [MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes)
+
+**HandInteractionPanZoomExample** scene has Slate pan & zoom interaction examples.
 
 ## Structure
 Slate control is composed of these elements.
