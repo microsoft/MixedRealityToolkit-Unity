@@ -85,8 +85,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static readonly Dictionary<string, string> sourceToOutputFolders = new Dictionary<string, string>
         {
-            {"Library/PlayerDataCache/WindowsStoreApps", "UAP" },
-            {"Library/PlayerDataCache/Win", "Standalone" },
+            {"Library/PlayerDataCache/WindowsStoreApps", "UAPPlayer" },
+            {"Library/PlayerDataCache/Win", "StandalonePlayer" },
         };
 
         private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".FBX", ".pdf", ".cginc" };
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
             Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
 
-            Dictionary<string, ClassInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/Editor"));
+            Dictionary<string, ClassInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer"));
             Debug.Log($"Found {compiledClassReferences.Count} compiled class references.");
 
             Dictionary<string, Tuple<string, long>> remapDictionary = new Dictionary<string, Tuple<string, long>>();
@@ -460,7 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             foreach (DirectoryInfo directory in directories)
             {
                 isUAP = false;
-                if (!directory.Name.Equals("Editor"))
+                if (!directory.Name.Equals("EditorPlayer"))
                 {
                     if (directory.Name.Contains("Standalone") || directory.Parent.Name.Contains("Standalone"))
                     {
