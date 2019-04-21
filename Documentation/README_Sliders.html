@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Sliders | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Sliders | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.41.0.0">
+    
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="sliders">Sliders</h1>
+
+<p><img src="Images/Sliders/MRTK_Sliders_Main.png" alt="Sliders"></p>
+<p>Sliders are UI components that allow you to continuously change a value by moving a slider on a track. Currently the Pinch Slider can be moved by directly grabbing the slider, either directly or at a distance. Sliders work on AR and VR, using motion controllers, hands, or Gesture + Voice.</p>
+<h2 id="sliders-example">Sliders Example</h2>
+<p>You can see an example usage of sliders in the file <code>Assets\MixedRealityToolkit.Examples\Demos\UX\Slider\Scenes\SliderExample.unity</code>.</p>
+<h2 id="how-to-use-sliders">How to use Sliders</h2>
+<p>Drag and drop the <strong>PinchSlider</strong> prefab into the scene hierarchy. If you want to modify or create your own slider, remember to do the following:</p>
+<ul>
+<li>Make sure your that your thumb object has a collider on it. In the PinchSlider prefab, the collider is on <code>SliderThumb/Button_AnimationContainer/Slider_Button</code></li>
+<li>Make sure that the object containing the collider also has a Near Interaction Grabbable component on it, if you want to be able to grab the slider near.</li>
+</ul>
+<p>We also recommend using the following hierarchy</p>
+<ul>
+<li>PinchSlider - Contains the sliderComponent
+<ul>
+<li>SliderThumb - Contains the movable thumb</li>
+<li>TrackVisuals - Containing the track and any other visuals</li>
+<li>OtherVisuals - Containing any other visuals</li>
+</ul>
+</li>
+</ul>
+<h2 id="slider-events">Slider Events</h2>
+<p>Sliders expose the following events:</p>
+<ul>
+<li>OnValueUpdated - Called whenever the slider value changes</li>
+<li>OnInteractionStarted - Called when the user grabs the slider</li>
+<li>OnInteractionEnded - Called when the user releases the slider</li>
+<li>OnHoverEntered - Called when the user's hand / controller hovers over the slider, using either near or far interaction.</li>
+<li>OnHoverExited - Called when the user's hand / controller is no longer near the slider.</li>
+</ul>
+<h2 id="configuring-slider-bound-and-axis">Configuring Slider Bound and Axis</h2>
+<p>You can directly move the starting and end points of the slider by moving the handles in the Scene:</p>
+<p><img src="Images/Sliders/MRTK_Sliders_Setup.png" alt="Sliders Config"></p>
+<p>You can also specify the axis (in local space) of the slider via the <em>Slider Axis</em> field</p>
+<p>If you cannot use the handles, you can instead specify the start and end points of the slider via the <em>Slider Start Distance</em> and <em>Slider End Distance</em> fields. These specify start / end position of slider as a distance from the slider's center, in local coordinates. This means that once you set the slider start and end distaces as you want them, you can scale the slider to be smaller or larger without needing to update the start and end distances.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_Sliders.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
