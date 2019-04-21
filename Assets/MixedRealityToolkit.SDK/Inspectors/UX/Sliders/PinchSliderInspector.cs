@@ -29,22 +29,31 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 Handles.color = Color.cyan;
                 Vector3 startPos = slider.SliderStartPosition;
                 Vector3 endPos = slider.SliderEndPosition;
-
                 Handles.DrawLine(startPos, endPos);
 
-                float handleSize = HandleUtility.GetHandleSize(startPos) * 0.15f;
 
+                EditorGUI.BeginChangeCheck();
+                
+                float handleSize = HandleUtility.GetHandleSize(startPos) * 0.15f;
                 slider.SliderStartPosition = Handles.FreeMoveHandle(startPos,
                     Quaternion.identity,
                     handleSize,
                     Vector3.zero,
                     Handles.SphereHandleCap);
-
                 slider.SliderEndPosition = Handles.FreeMoveHandle(endPos,
                     Quaternion.identity,
                     handleSize,
                     Vector3.zero,
                     Handles.SphereHandleCap);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    var sliderStartSerialized = serializedObject.FindProperty("sliderStartDistance");
+                    var sliderEndSerialized = serializedObject.FindProperty("sliderEndDistance");
+                    sliderStartSerialized.floatValue = slider.SliderStartDistance;
+                    sliderEndSerialized.floatValue = slider.SliderEndDistance;
+                    serializedObject.ApplyModifiedProperties();
+                }
 
                 DrawLabelWithDottedLine(startPos + (Vector3.up * handleSize * 10f), startPos, handleSize, "slider start");
                 DrawLabelWithDottedLine(endPos + (Vector3.up * handleSize * 10f), endPos, handleSize, "slider end");

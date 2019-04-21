@@ -52,9 +52,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Where the slider track starts, as distance from center along slider axis, in local space units.")]
         private float sliderStartDistance = -.5f;
+        public float SliderStartDistance
+        {
+            get { return sliderStartDistance; }
+            set { sliderStartDistance = value; }
+        }
+
         [SerializeField]
         [Tooltip("Where the slider track ends, as distance from center along slider axis, in local space units.")]
         private float sliderEndDistance = .5f;
+        public float SliderEndDistance
+        {
+            get { return sliderEndDistance; }
+            set { sliderEndDistance = value; }
+        }
 
         /// <summary>
         /// Gets the start position of the slider, in world space, or zero if invalid.
@@ -62,14 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public Vector3 SliderStartPosition
         {
-            get
-            {
-                return transform.TransformPoint(GetSliderAxis() * sliderStartDistance);
-            }
-            set
-            {
-                sliderStartDistance = Vector3.Dot(transform.InverseTransformPoint(value), GetSliderAxis());
-            }
+            get { return transform.TransformPoint(GetSliderAxis() * sliderStartDistance); }
+            set { sliderStartDistance = Vector3.Dot(transform.InverseTransformPoint(value), GetSliderAxis()); }
         }
 
         /// <summary>
@@ -78,14 +83,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public Vector3 SliderEndPosition
         {
-            get
-            {
-                return transform.TransformPoint(GetSliderAxis() * sliderEndDistance);
-            }
-            set
-            {
-                sliderEndDistance = Vector3.Dot(transform.InverseTransformPoint(value), GetSliderAxis());
-            }
+            get { return transform.TransformPoint(GetSliderAxis() * sliderEndDistance); }
+            set { sliderEndDistance = Vector3.Dot(transform.InverseTransformPoint(value), GetSliderAxis()); }
         }
 
         /// <summary>
@@ -95,6 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get { return SliderEndPosition - SliderStartPosition; }
         }
+
         #endregion
 
         #region Event Handlers
