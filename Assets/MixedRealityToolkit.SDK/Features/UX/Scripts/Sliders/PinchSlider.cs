@@ -12,7 +12,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Slider with a thumb (a GameObject), endpoints are defined by two GameObjects
+    /// A slider that can be moved by grabbing / pinching a slider thumb
     /// </summary>
     public class PinchSlider : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
     {
@@ -42,9 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private SliderAxis sliderAxis = SliderAxis.XAxis;
         [Serializable]
-        /// <summary>
-        /// The axis the slider moves along
-        /// </summary>
         private enum SliderAxis
         {
             XAxis = 0,
@@ -168,7 +165,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void UpdateUI()
         {
             var newSliderPos = SliderStartPosition + sliderThumbOffset + SliderTrackDirection * sliderValue;
-
             thumbRoot.transform.position = newSliderPos;
         }
 

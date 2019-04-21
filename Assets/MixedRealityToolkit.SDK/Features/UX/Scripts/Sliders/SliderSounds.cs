@@ -58,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private AudioSource grabReleaseAudioSource = null;
         private AudioSource passNotchAudioSource = null;
         #endregion
+
         private void Start()
         {
             if (grabReleaseAudioSource == null)
