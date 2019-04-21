@@ -1,5 +1,5 @@
 # Slider
-![App Bar](../Documentation/Images/Slider/MRTK_Slider_Main.jpg)
+![](../Documentation/Images/Slider/MRTK_UX_Slider_Main.jpg)
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. 
 
 ## How to use Slider
