@@ -16,7 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class PinchSlider : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
     {
-
         #region Serialized Fields and Properties
         [Tooltip("The gameObject that contains the slider thumb.")]
         [SerializeField]
@@ -54,11 +53,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Where the slider track starts, in local coordinates")]
-        private Vector3 sliderStartPosition = new Vector3(-0.5f, 0, 0);
+        [Tooltip("Where the slider track starts, as distance from center along slider axis, in local space units.")]
+        private float sliderStartDistance = -.5f;
         [SerializeField]
-        [Tooltip("Where the slider track ends, in local coordinates")]
-        private Vector3 sliderEndPosition = new Vector3(0.5f, 0, 0);
+        [Tooltip("Where the slider track ends, as distance from center along slider axis, in local space units.")]
+        private float sliderEndDistance = .5f;
 
         /// <summary>
         /// Gets the start position of the slider, in world space, or zero if invalid.
@@ -66,8 +65,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public Vector3 SliderStartPosition
         {
-            get { return transform.TransformPoint(sliderStartPosition); }
-            set { sliderStartPosition = Vector3.Project(transform.InverseTransformPoint(value), GetSliderAxis()); }
+            get
+            {
+                return transform.TransformPoint(GetSliderAxis() * sliderStartDistance);
+            }
+            set
+            {
+                sliderStartDistance = Vector3.Dot(transform.InverseTransformPoint(value), GetSliderAxis());
+            }
         }
 
         /// <summary>
@@ -76,8 +81,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public Vector3 SliderEndPosition
         {
-            get { return transform.TransformPoint(sliderEndPosition); }
-            set { sliderEndPosition = Vector3.Project(transform.InverseTransformPoint(value), GetSliderAxis()); }
+            get
+            {
+                return transform.TransformPoint(GetSliderAxis() * sliderEndDistance);
+            }
+            set
+            {
+                sliderEndDistance = Vector3.Dot(transform.InverseTransformPoint(value), GetSliderAxis());
+            }
         }
 
         /// <summary>
@@ -105,6 +116,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private IMixedRealityPointer activePointer;
         private Vector3 sliderThumbOffset = Vector3.zero;
         #endregion
+
+        #region Constants
+        /// <summary>
+        /// Minimum distance between start and end of slider, in world space
+        /// </summary>
+        private const float MinSliderLength = 0.001f;
+        #endregion  
 
         #region Unity methods
         public void Start()
