@@ -29,11 +29,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private static void SceneOpened(Scene scene, OpenSceneMode mode)
         {
+            // If building, don't perform this check
+            if (BuildPipeline.isBuildingPlayer)
+            {
+                return;
+            }
+
             CheckMixedRealityToolkitScene();
         }
 
         private static void NewSceneCreated(Scene scene, NewSceneSetup setup, NewSceneMode mode)
         {
+            // If building, don't perform this check
+            if (BuildPipeline.isBuildingPlayer)
+            {
+                return;
+            }
+
             switch (setup)
             {
                 // Ignore the check when the scene is explicitly empty.
