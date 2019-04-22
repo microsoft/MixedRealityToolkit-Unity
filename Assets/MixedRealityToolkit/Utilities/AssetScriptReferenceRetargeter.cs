@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         };
 
         private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".FBX", ".pdf", ".cginc" };
-        private static readonly HashSet<string> ExcludedSuffixFromCopy = new HashSet<string>() { ".cs", ".cs.meta" };
+        private static readonly HashSet<string> ExcludedSuffixFromCopy = new HashSet<string>() { ".cs", ".cs.meta", ".asmdef", ".asmdef.meta" };
 
         private static Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); //Guid, FileName
 
