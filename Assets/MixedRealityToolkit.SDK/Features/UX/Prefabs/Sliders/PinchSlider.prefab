@@ -1039,7 +1039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d11c9594c7919e41991b47c0a9275f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thumbRoot: {fileID: 0}
+  thumbRoot: {fileID: 7307063430758334042}
   sliderValue: 0.5
   sliderAxis: 0
   sliderStartDistance: -0.125
