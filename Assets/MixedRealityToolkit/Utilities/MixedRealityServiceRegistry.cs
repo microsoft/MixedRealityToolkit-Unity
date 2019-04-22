@@ -7,8 +7,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
-    // todo: collection
-
     /// <summary>
     /// Static class that represents the Mixed Reality Toolkit service registry.
     /// </summary>
