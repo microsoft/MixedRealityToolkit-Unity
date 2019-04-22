@@ -2,9 +2,9 @@
 
 ![](../Documentation/Images/MRTK_Logo_Rev.png)
 
-Recognizing there are multiple ways in which developers want to be able to get access to project through Unity, the Mixed Reality Toolkit has been engineered to be available through the following methods:
+Recognizing that there are multiple ways in which developers prefer to be able to get access to a project through Unity, the Mixed Reality Toolkit has been engineered to be available through many different methods.
 
-## Unity Asset downloadable from the MRTK GitHub site
+## Unity asset downloadable from the MRTK GitHub site
 
 You can download the packaged [Unity Asset from here](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases) for importing in to your project.
 
@@ -14,11 +14,11 @@ Unity now has an asset plugin for getting access to Unity projects using the dep
 
 Simply install the [Unity NuGet package](https://assetstore.unity.com/packages/tools/utilities/nuget-for-unity-104640) and search for the Mixed Reality Toolkit to download the project.
 
-## Unity Package Manager (*Coming soon*)
+## Unity package manager (*Coming soon*)
 
 As soon as it's available, the MRTK team will be working with Unity to publish the Mixed Reality Toolkit as a package through their Unity Package Manager.
 
-## Unity Asset Store (*under discussion*)
+## Unity asset store (*under discussion*)
 
 It has been raised within the Mixed Reality Toolkit team that the package should be published to the Unity store, this is currently being investigated.  
 
