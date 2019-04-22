@@ -119,7 +119,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
             Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
 
-            Dictionary<string, ClassInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer"));
+            // DLL name to Guid
+            Dictionary<string, string> asmDefMappings = RetrieveAsmDefGuids(allFilesUnderAssets);
+
+            Dictionary<string, ClassInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer"), asmDefMappings);
             Debug.Log($"Found {compiledClassReferences.Count} compiled class references.");
 
             Dictionary<string, Tuple<string, long>> remapDictionary = new Dictionary<string, Tuple<string, long>>();
@@ -137,10 +140,26 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
             }
 
-            ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary);
+            ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary, asmDefMappings);
         }
 
-        private static void ProcessYAMLAssets(string[] allFilePaths, string outputDirectory, Dictionary<string, Tuple<string, long>> remapDictionary)
+        private static Dictionary<string, string> RetrieveAsmDefGuids(string[] allFiles)
+        {
+            int lengthOfPrefix = Application.dataPath.IndexOf("Assets");
+            Dictionary<string, string> dllGuids = new Dictionary<string, string>();
+            foreach (string asmdefFile in allFiles.Where(t => t.EndsWith(".asmdef")))
+            {
+                string asmdefText = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(asmdefFile.Substring(lengthOfPrefix)).text;
+                string dllName = JsonUtility.FromJson<AssemblyDefinitionStub>(asmdefText).name;
+                string guid = File.ReadAllLines($"{asmdefFile}.meta")[1].Substring(6);
+                guid = CycleGuidForward(guid);
+                dllGuids.Add($"{dllName}.dll", guid);
+            }
+
+            return dllGuids;
+        }
+
+        private static void ProcessYAMLAssets(string[] allFilePaths, string outputDirectory, Dictionary<string, Tuple<string, long>> remapDictionary, Dictionary<string, string> dllGuids)
         {
             if (Directory.Exists(outputDirectory))
             {
@@ -193,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t.Item1, t.Item2, remapDictionary)));
             Task.WhenAll(tasks).Wait();
 
-            PostProcess(outputDirectory);
+            PostProcess(outputDirectory, dllGuids);
         }
 
         private static async Task ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary)
@@ -300,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             return toReturn;
         }
 
-        private static Dictionary<string, ClassInformation> ProcessCompiledDLLs(string temporaryDirectoryName, string outputDirectory)
+        private static Dictionary<string, ClassInformation> ProcessCompiledDLLs(string temporaryDirectoryName, string outputDirectory, Dictionary<string, string> asmDefMappings)
         {
             Assembly[] dlls = CompilationPipeline.GetAssemblies();
 
@@ -330,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 if (Directory.Exists(outputDirectory))
                 {
-                    Directory.Delete(outputDirectory);
+                    Directory.Delete(outputDirectory, true);
                 }
 
                 Directory.CreateDirectory(outputDirectory);
@@ -338,6 +357,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 {
                     if (dll.name.Contains("MixedReality"))
                     {
+                        if (!asmDefMappings.TryGetValue($"{dll.name}.dll", out string newDllGuid))
+                        {
+                            throw new InvalidOperationException($"No guid based on .asmdef was generated for dll '{dll.name}'.");
+                        }
+
                         File.Copy(Path.Combine(tmpDirPath, $"{dll.name}.dll"), Path.Combine(outputDirectory, $"{dll.name}.dll"));
                         File.Copy(Path.Combine(tmpDirPath, $"{dll.name}.dll.meta"), Path.Combine(outputDirectory, $"{dll.name}.dll.meta"));
 
@@ -354,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                                 {
                                     throw new InvalidDataException($"Type {type.Name} is not a member of the Microsoft.MixedReality.Toolkit namespace");
                                 }
-                                toReturn.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = guid });
+                                toReturn.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = newDllGuid });
                             }
                         }
                     }
@@ -369,12 +393,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static void PostProcess(string outputPath)
+        private static void PostProcess(string outputPath, Dictionary<string, string> dllGuids)
         {
             DirectoryInfo outputDirectory = new DirectoryInfo(outputPath);
             RecursiveFolderCleanup(outputDirectory);
             CopyIntermediaryAssemblies(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
-            UpdateMetaFiles();
+            UpdateMetaFiles(dllGuids);
         }
 
         private static void CopyIntermediaryAssemblies(string outputPath)
@@ -394,7 +418,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 string pluginPath = Path.Combine(outputPath, sourceToOutputPair.Value);
                 if (Directory.Exists(pluginPath))
                 {
-                    Directory.Delete(pluginPath);
+                    Directory.Delete(pluginPath, true);
                 }
                 Directory.CreateDirectory(pluginPath);
 
@@ -406,21 +430,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static void UpdateMetaFiles()
+        private static void UpdateMetaFiles(Dictionary<string, string> dllGuids)
         {
-            int lengthOfPrefix = Application.dataPath.IndexOf("Assets");
-            Dictionary<string, string> dllGuids = new Dictionary<string, string>();
-            string[] asmdefFiles = Directory.GetFiles(Application.dataPath, "*.asmdef", SearchOption.AllDirectories);
-
-            foreach (string asmdefFile in asmdefFiles)
-            {
-                string asmdefText = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(asmdefFile.Substring(lengthOfPrefix)).text;
-                string dllName = JsonUtility.FromJson<AssemblyDefinitionStub>(asmdefText).name;
-                string guid = File.ReadAllLines($"{asmdefFile}.meta")[1].Substring(6);
-                guid = CycleGuidForward(guid);
-                dllGuids.Add($"{dllName}.dll", guid);
-            }
-
             //Load the sample meta files
             DirectoryInfo assetDirectory = new DirectoryInfo(Application.dataPath);
             FileInfo editorMetaFile = assetDirectory.GetFiles("*sampleEditorDllMeta.txt", SearchOption.AllDirectories).FirstOrDefault();
