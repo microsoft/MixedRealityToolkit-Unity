@@ -12,11 +12,10 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Slider with a thumb (a GameObject), endpoints are defined by two GameObjects
+    /// A slider that can be moved by grabbing / pinching a slider thumb
     /// </summary>
     public class PinchSlider : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
     {
-
         #region Serialized Fields and Properties
         [Tooltip("The gameObject that contains the slider thumb.")]
         [SerializeField]
@@ -33,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 var oldSliderValue = sliderValue;
                 sliderValue = value;
                 UpdateUI();
-                OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value, activePointer is IMixedRealityPointer));
+                OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value, activePointer is IMixedRealityPointer, this));
             }
         }
 
@@ -43,9 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private SliderAxis sliderAxis = SliderAxis.XAxis;
         [Serializable]
-        /// <summary>
-        /// The axis the slider moves along
-        /// </summary>
         private enum SliderAxis
         {
             XAxis = 0,
@@ -54,11 +50,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Where the slider track starts, in local coordinates")]
-        private Vector3 sliderStartPosition = new Vector3(-0.5f, 0, 0);
+        [Tooltip("Where the slider track starts, as distance from center along slider axis, in local space units.")]
+        private float sliderStartDistance = -.5f;
+        public float SliderStartDistance
+        {
+            get { return sliderStartDistance; }
+            set { sliderStartDistance = value; }
+        }
+
         [SerializeField]
-        [Tooltip("Where the slider track ends, in local coordinates")]
-        private Vector3 sliderEndPosition = new Vector3(0.5f, 0, 0);
+        [Tooltip("Where the slider track ends, as distance from center along slider axis, in local space units.")]
+        private float sliderEndDistance = .5f;
+        public float SliderEndDistance
+        {
+            get { return sliderEndDistance; }
+            set { sliderEndDistance = value; }
+        }
 
         /// <summary>
         /// Gets the start position of the slider, in world space, or zero if invalid.
@@ -66,8 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public Vector3 SliderStartPosition
         {
-            get { return transform.TransformPoint(sliderStartPosition); }
-            set { sliderStartPosition = Vector3.Project(transform.InverseTransformPoint(value), GetSliderAxis()); }
+            get { return transform.TransformPoint(GetSliderAxis() * sliderStartDistance); }
+            set { sliderStartDistance = Vector3.Dot(transform.InverseTransformPoint(value), GetSliderAxis()); }
         }
 
         /// <summary>
@@ -76,8 +83,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public Vector3 SliderEndPosition
         {
-            get { return transform.TransformPoint(sliderEndPosition); }
-            set { sliderEndPosition = Vector3.Project(transform.InverseTransformPoint(value), GetSliderAxis()); }
+            get { return transform.TransformPoint(GetSliderAxis() * sliderEndDistance); }
+            set { sliderEndDistance = Vector3.Dot(transform.InverseTransformPoint(value), GetSliderAxis()); }
         }
 
         /// <summary>
@@ -87,6 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get { return SliderEndPosition - SliderStartPosition; }
         }
+
         #endregion
 
         #region Event Handlers
@@ -106,6 +114,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3 sliderThumbOffset = Vector3.zero;
         #endregion
 
+        #region Constants
+        /// <summary>
+        /// Minimum distance between start and end of slider, in world space
+        /// </summary>
+        private const float MinSliderLength = 0.001f;
+        #endregion  
+
         #region Unity methods
         public void Start()
         {
@@ -119,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             sliderThumbOffset = thumbRoot.transform.position - thumbProjectedOnTrack;
 
             UpdateUI();
-            OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, false));
+            OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, false, this));
         }
 
         private void OnDisable()
@@ -150,7 +165,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void UpdateUI()
         {
             var newSliderPos = SliderStartPosition + sliderThumbOffset + SliderTrackDirection * sliderValue;
-
             thumbRoot.transform.position = newSliderPos;
         }
 
@@ -158,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (OnInteractionEnded != null)
             {
-                OnInteractionEnded.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer is IMixedRealityPointer));
+                OnInteractionEnded.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer is IMixedRealityPointer, this));
             }
             activePointer = null;
         }
@@ -168,12 +182,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region IMixedRealityFocusHandler
         public void OnFocusEnter(FocusEventData eventData)
         {
-            OnHoverEntered.Invoke(new SliderEventData(sliderValue, sliderValue, eventData.Pointer is IMixedRealityNearPointer));
+            OnHoverEntered.Invoke(new SliderEventData(sliderValue, sliderValue, eventData.Pointer is IMixedRealityNearPointer, this));
         }
 
         public void OnFocusExit(FocusEventData eventData)
         {
-            OnHoverExited.Invoke(new SliderEventData(sliderValue, sliderValue, eventData.Pointer is IMixedRealityNearPointer));
+            OnHoverExited.Invoke(new SliderEventData(sliderValue, sliderValue, eventData.Pointer is IMixedRealityNearPointer, this));
         }
         #endregion
 
@@ -181,15 +195,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            if (eventData.Pointer == activePointer)
+            if (eventData.Pointer == activePointer && !eventData.used)
             {
                 EndInteraction();
+
+                // Mark the pointer data as used to prevent other behaviors from handling input events
+                eventData.Use();
             }
         }
 
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            if (activePointer == null)
+            if (activePointer == null && !eventData.used)
             {
                 activePointer = eventData.Pointer;
                 startSliderValue = sliderValue;
@@ -197,19 +214,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 startSliderPosition = gameObject.transform.position;
                 if (OnInteractionStarted != null)
                 {
-                    OnInteractionStarted.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer is IMixedRealityPointer));
+                    OnInteractionStarted.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer is IMixedRealityPointer, this));
                 }
+
+                // Mark the pointer data as used to prevent other behaviors from handling input events
+                eventData.Use();
             }
         }
 
         public void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
-            if (eventData.Pointer == activePointer)
+            if (eventData.Pointer == activePointer && !eventData.used)
             {
                 var delta = activePointer.Position - startPointerPosition;
                 var handDelta = Vector3.Dot(SliderTrackDirection.normalized, delta);
 
                 SliderValue = Mathf.Clamp(startSliderValue + handDelta / SliderTrackDirection.magnitude, 0, 1);
+
+                // Mark the pointer data as used to prevent other behaviors from handling input events
+                eventData.Use();
             }
         }
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }

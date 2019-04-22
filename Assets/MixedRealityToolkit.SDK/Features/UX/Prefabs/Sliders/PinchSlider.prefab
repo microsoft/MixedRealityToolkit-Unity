@@ -629,7 +629,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.011999969, y: 0.023562621, z: 0.024000015}
+  m_Size: {x: 0.03, y: 0.04, z: 0.03}
   m_Center: {x: 0, y: 0, z: -0.012000037}
 --- !u!114 &7307063430134822088
 MonoBehaviour:
@@ -1042,8 +1042,8 @@ MonoBehaviour:
   thumbRoot: {fileID: 0}
   sliderValue: 0.5
   sliderAxis: 0
-  sliderStartPosition: {x: -0.125, y: -0, z: -0}
-  sliderEndPosition: {x: 0.125, y: 0, z: 0}
+  sliderStartDistance: -0.125
+  sliderEndDistance: 0.125
   OnValueUpdated:
     m_PersistentCalls:
       m_Calls: []
@@ -1076,7 +1076,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Default
+          m_StringArgument: Hover
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: Microsoft.MixedReality.Toolkit.UI.SliderEvent, Microsoft.MixedReality.Toolkit.SDK,
