@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// Grab the shared material to avoid creating new material instances and breaking batching.
-        /// Because MaterialPropertyBlocks are used for setting material properties the shadered material is
+        /// Because MaterialPropertyBlocks are used for setting material properties the shared material is
         /// used to set the initial state of the MaterialPropertyBlock(s) before mutating state.
         /// </summary>
         /// <param name="renderer"></param>
