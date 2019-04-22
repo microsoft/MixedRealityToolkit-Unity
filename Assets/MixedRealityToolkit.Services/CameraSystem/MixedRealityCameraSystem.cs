@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         }
 
         private MixedRealityCameraProfile cameraProfile;
+        private bool cameraOpaqueLastFrame = false;
 
         /// <inheritdoc />
         public uint SourceId { get; } = 0;
@@ -30,6 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc />
         public override void Initialize()
         {
+            cameraOpaqueLastFrame = cameraProfile.IsOpaque;
+
             if (cameraProfile.IsOpaque)
             {
                 ApplySettingsForOpaqueDisplay();
@@ -43,13 +46,18 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc />
         public override void Update()
         {
-            if (cameraProfile.IsOpaque)
+            if (cameraProfile.IsOpaque != cameraOpaqueLastFrame)
             {
-                ApplySettingsForOpaqueDisplay();
-            }
-            else
-            {
-                ApplySettingsForTransparentDisplay();
+                cameraOpaqueLastFrame = cameraProfile.IsOpaque;
+
+                if (cameraProfile.IsOpaque)
+                {
+                    ApplySettingsForOpaqueDisplay();
+                }
+                else
+                {
+                    ApplySettingsForTransparentDisplay();
+                }
             }
         }
 
