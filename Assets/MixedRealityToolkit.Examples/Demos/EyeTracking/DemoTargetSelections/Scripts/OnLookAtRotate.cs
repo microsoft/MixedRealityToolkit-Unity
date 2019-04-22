@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// The associated GameObject will rotate when being looked at based on a given direction.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
-    public class OnLookAt_Rotate : BaseEyeFocusHandler
+    public class OnLookAtRotate : BaseEyeFocusHandler
     {
         #region Serialized variables
 
