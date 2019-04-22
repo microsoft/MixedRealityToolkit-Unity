@@ -81,6 +81,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             base.UpdateController(interactionSourceState);
         }
 
+        #endregion Update data functions
+
+        #region Controller model functions
+
         /// <summary>
         /// Ensure that if a controller model was desired that we have attempted initialization
         /// </summary>
@@ -98,10 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             controllerModelInitialized = true;
             CreateControllerModelFromPlatformSDK(interactionSourceState.source.id);
         }
-
-        #endregion Update data functions
-
-        #region Controller model functions
 
         protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
