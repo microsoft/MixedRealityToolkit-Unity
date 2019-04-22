@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #if UNITY_WSA
 
         private bool controllerModelInitialized = false;
-        private bool isControllerModelLoaded = false;
+        private bool failedToObtainControllerModel = false;
 
         #region Update data functions
 
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             // Note: Obtaining models from the driver will require access to the InteractionSource.
             // It's unclear whether the interaction source will be available during setup, so we attempt to create
             // the controller model on an input update
-            if (!isControllerModelLoaded ||
+            if (failedToObtainControllerModel ||
                 GetControllerVisualizationProfile() == null ||
                 !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private async void CreateControllerModelFromPlatformSDK(uint interactionSourceId)
         {
-            Debug.Log("Creating controller model from platform sdk");
+            Debug.Log("Creating controller model from platform SDK");
             byte[] fileBytes = null;
 
 #if WINDOWS_UWP
@@ -174,8 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
 
-            isControllerModelLoaded = (gltfGameObject != null);
-            if (!isControllerModelLoaded)
+            failedToObtainControllerModel = (gltfGameObject == null);
+            if (failedToObtainControllerModel)
             {
                 Debug.LogWarning("Failed to create controller model from driver, defaulting to BaseController behavior");
                 TryRenderControllerModel(GetType(), InputSourceType.Controller);
