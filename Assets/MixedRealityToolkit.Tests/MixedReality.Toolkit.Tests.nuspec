@@ -16,4 +16,14 @@
       <dependency id="Microsoft.MixedReality.Toolkit" version="$version$" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="**" exclude="*.asmdef;*.asmdef.meta;*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="Content\MixedRealityToolkit\" />
+
+    <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
+    <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tests.targets" />
+
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.EditModeTests.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.PlayModeTests.dll*" target="Plugins\" />
+  </files>
 </package>
