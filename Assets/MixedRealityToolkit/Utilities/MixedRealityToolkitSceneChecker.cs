@@ -29,23 +29,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private static void SceneOpened(Scene scene, OpenSceneMode mode)
         {
-            // If building, don't perform this check
-            if (BuildPipeline.isBuildingPlayer)
-            {
-                return;
-            }
-
             CheckMixedRealityToolkitScene();
         }
 
         private static void NewSceneCreated(Scene scene, NewSceneSetup setup, NewSceneMode mode)
         {
-            // If building, don't perform this check
-            if (BuildPipeline.isBuildingPlayer)
-            {
-                return;
-            }
-
             switch (setup)
             {
                 // Ignore the check when the scene is explicitly empty.
@@ -61,6 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private static void CheckMixedRealityToolkitScene()
         {
+            // If building, don't perform this check
+            if (BuildPipeline.isBuildingPlayer)
+            {
+                return;
+            }
+
             // Create The MR Manager if none exists.
             if (!MixedRealityToolkit.IsInitialized)
             {
