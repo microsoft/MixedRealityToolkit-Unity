@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// Based on those values, you can customize your camera and quality settings.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = (int)CreateProfileMenuItemIndices.Camera)]
+    [MixedRealityServiceProfile(typeof(IMixedRealityCameraSystem))]
     public class MixedRealityCameraProfile : BaseMixedRealityProfile
     {
         private enum DisplayType
@@ -20,15 +22,15 @@ namespace Microsoft.MixedReality.Toolkit
             Transparent
         }
 
-        [SerializeField]
-        [Tooltip("Should the camera be reused in each scene?\nIf so, then the camera's root will be flagged so it is not destroyed when the scene is unloaded.")]
-        private bool isCameraPersistent = false;
+        public float NearClipPlaneOpaqueDisplay => nearClipPlaneOpaqueDisplay;
+        public CameraClearFlags CameraClearFlagsOpaqueDisplay => cameraClearFlagsOpaqueDisplay;
+        public Color BackgroundColorOpaqueDisplay => backgroundColorOpaqueDisplay;
+        public int OpaqueQualityLevel => opaqueQualityLevel;
 
-        /// <summary>
-        /// Should the camera be reused in each scene?
-        /// If so, then the camera's root will be flagged so it is not destroyed when the scene is unloaded.
-        /// </summary>
-        public bool IsCameraPersistent => isCameraPersistent;
+        public float NearClipPlaneTransparentDisplay => nearClipPlaneTransparentDisplay;
+        public CameraClearFlags CameraClearFlagsTransparentDisplay => cameraClearFlagsTransparentDisplay;
+        public Color BackgroundColorTransparentDisplay => backgroundColorTransparentDisplay;
+        public int HoloLensQualityLevel => holoLensQualityLevel;
 
         [SerializeField]
         [Tooltip("The near clipping plane distance for an opaque display.")]
@@ -81,27 +83,6 @@ namespace Microsoft.MixedReality.Toolkit
 #endif
                 return currentDisplayType == DisplayType.Opaque;
             }
-        }
-
-        public void ApplySettingsForOpaqueDisplay()
-        {
-            CameraCache.Main.clearFlags = cameraClearFlagsOpaqueDisplay;
-            CameraCache.Main.nearClipPlane = nearClipPlaneOpaqueDisplay;
-            CameraCache.Main.backgroundColor = backgroundColorOpaqueDisplay;
-            SetQuality(opaqueQualityLevel);
-        }
-
-        public void ApplySettingsForTransparentDisplay()
-        {
-            CameraCache.Main.clearFlags = cameraClearFlagsTransparentDisplay;
-            CameraCache.Main.backgroundColor = backgroundColorTransparentDisplay;
-            CameraCache.Main.nearClipPlane = nearClipPlaneTransparentDisplay;
-            SetQuality(holoLensQualityLevel);
-        }
-
-        private static void SetQuality(int level)
-        {
-            QualitySettings.SetQualityLevel(level, false);
         }
     }
 }
