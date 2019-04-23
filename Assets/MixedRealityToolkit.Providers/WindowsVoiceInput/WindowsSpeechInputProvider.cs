@@ -96,9 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 {
                     keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
                 }
-                catch (UnityException e)
+                catch (UnityException ex)
                 {
-                    Debug.LogError($"Could not start WindowsSpeechInputProvider: {e.Message}");
+                    Debug.LogError($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
                     keywordRecognizer = null;
                     return;
                 }
