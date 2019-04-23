@@ -25,7 +25,7 @@
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.BoundarySystem.dll*" target="Plugins\" />
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.dll*" target="Plugins\" />
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSimulation.dll*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSimulation.Inspectors.dll*" target="Plugins\" />
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor.dll*" target="Plugins\" />
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSystem.dll*" target="Plugins\" />
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.InputSystem.Inspectors.dll*" target="Plugins\" />
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem.dll*" target="Plugins\" />
