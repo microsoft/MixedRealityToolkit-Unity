@@ -16,12 +16,6 @@ namespace Microsoft.MixedReality.Toolkit
     [MixedRealityServiceProfile(typeof(IMixedRealityCameraSystem))]
     public class MixedRealityCameraProfile : BaseMixedRealityProfile
     {
-        private enum DisplayType
-        {
-            Opaque = 0,
-            Transparent
-        }
-
         public float NearClipPlaneOpaqueDisplay => nearClipPlaneOpaqueDisplay;
         public CameraClearFlags CameraClearFlagsOpaqueDisplay => cameraClearFlagsOpaqueDisplay;
         public Color BackgroundColorOpaqueDisplay => backgroundColorOpaqueDisplay;
@@ -63,26 +57,5 @@ namespace Microsoft.MixedReality.Toolkit
         [SerializeField]
         [Tooltip("Set the desired quality for your application for HoloLens.")]
         private int holoLensQualityLevel = 0;
-
-        [HideInInspector]
-        private DisplayType currentDisplayType;
-
-        /// <summary>
-        /// Is the current camera displaying on an Opaque (AR) device or a VR / immersive device
-        /// </summary>
-        public bool IsOpaque
-        {
-            get
-            {
-                currentDisplayType = DisplayType.Opaque;
-#if UNITY_WSA
-                if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
-                {
-                    currentDisplayType = DisplayType.Transparent;
-                }
-#endif
-                return currentDisplayType == DisplayType.Opaque;
-            }
-        }
     }
 }
