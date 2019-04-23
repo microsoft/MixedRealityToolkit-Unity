@@ -85,8 +85,6 @@
         href: README_Solver.md     
     - name: Spatial Awareness
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
-      items:
-      - name: Configuring the Spatial Awareness Mesh Observer
     - name: In-Editor Input Simulation
       href: InputSimulation/InputSimulationService.md
     - name: Diagnostics System
