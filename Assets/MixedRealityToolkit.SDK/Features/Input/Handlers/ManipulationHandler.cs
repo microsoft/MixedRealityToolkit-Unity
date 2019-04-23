@@ -383,16 +383,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Hand Event Handlers
 
-        private MixedRealityInteractionMapping GetSpatialGripInfoForController(IMixedRealityController controller)
-        {
-            if (controller == null)
-            {
-                return null;
-            }
-
-            return controller.Interactions?.First(x => x.InputType == DeviceInputType.SpatialGrip);
-        }
-
         /// <inheritdoc />
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
@@ -502,88 +492,75 @@ namespace Microsoft.MixedReality.Toolkit.UI
             hostTransform.localScale = Vector3.Lerp(hostTransform.localScale, targetScale, lerpAmount);
         }
         
-        public bool usePointerPose = false;
-
         private void HandleOneHandMoveUpdated()
         {
             Debug.Assert(pointerIdToPointerMap.Count == 1);
             IMixedRealityPointer pointer = pointerIdToPointerMap.Values.First();
 
-            var interactionMapping = GetSpatialGripInfoForController(pointer.Controller);
-            if (usePointerPose || interactionMapping != null)
+            Quaternion targetRotation = Quaternion.identity;
+            RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
+            if (rotateInOneHandType == RotateInOneHandType.MaintainOriginalRotation)
             {
-                Quaternion targetRotation = Quaternion.identity;
-                RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
-                if (rotateInOneHandType == RotateInOneHandType.MaintainOriginalRotation)
-                {
-                    targetRotation = hostTransform.rotation;
-                }
-                else if (rotateInOneHandType == RotateInOneHandType.MaintainRotationToUser)
-                {
-                    targetRotation = CameraCache.Main.transform.rotation * startObjectRotationCameraSpace;
-                }
-                else if (rotateInOneHandType == RotateInOneHandType.GravityAlignedMaintainRotationToUser)
-                {
-                    var cameraForwardFlat = CameraCache.Main.transform.forward;
-                    cameraForwardFlat.y = 0;
-                    targetRotation = Quaternion.LookRotation(cameraForwardFlat, Vector3.up) * startObjectRotationFlatCameraSpace;
-                }
-                else if (rotateInOneHandType == RotateInOneHandType.FaceUser)
-                {
-                    Vector3 directionToTarget = hostTransform.position - CameraCache.Main.transform.position;
-                    targetRotation = Quaternion.LookRotation(-directionToTarget);
-                }
-                else if (rotateInOneHandType == RotateInOneHandType.FaceAwayFromUser)
-                {
-                    Vector3 directionToTarget = hostTransform.position - CameraCache.Main.transform.position;
-                    targetRotation = Quaternion.LookRotation(directionToTarget);
-                }
-                else
-                {
-                    targetRotation = (usePointerPose ? pointer.Rotation : interactionMapping.PoseData.Rotation) * objectToHandRotation;
-                    switch (constraintOnRotation)
-                    {
-                        case RotationConstraintType.XAxisOnly:
-                            targetRotation.eulerAngles = Vector3.Scale(targetRotation.eulerAngles, Vector3.right);
-                            break;
-                        case RotationConstraintType.YAxisOnly:
-                            targetRotation.eulerAngles = Vector3.Scale(targetRotation.eulerAngles, Vector3.up);
-                            break;
-                        case RotationConstraintType.ZAxisOnly:
-                            targetRotation.eulerAngles = Vector3.Scale(targetRotation.eulerAngles, Vector3.forward);
-                            break;
-                    }
-                }
-
-                Vector3 targetPosition;
-                if (IsNearManipulation())
-                {
-                    if (oneHandRotationModeNear == RotateInOneHandType.RotateAboutGrabPoint)
-                    {
-                        if (usePointerPose)
-                        {
-                            targetPosition = (pointer.Rotation * objectToHandTranslation) + pointer.Position;
-                        }
-                        else
-                        {
-                            targetPosition = (interactionMapping.PoseData.Rotation * objectToHandTranslation) + interactionMapping.PoseData.Position;
-                        }
-                    }
-                    else // RotateAboutCenter or DoNotRotateInOneHand
-                    {
-                        targetPosition = objectToHandTranslation + (usePointerPose ? pointer.Position : interactionMapping.PoseData.Position);
-                    }
-                }
-                else
-                {
-                    targetPosition = m_moveLogic.Update(GetPointersCentroid(), IsNearManipulation());
-                }
-
-                float lerpAmount = GetLerpAmount();
-                Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
-                Vector3 smoothedPosition = Vector3.Lerp(hostTransform.position, targetPosition, lerpAmount);
-                hostTransform.SetPositionAndRotation(smoothedPosition, smoothedRotation);
+                targetRotation = hostTransform.rotation;
             }
+            else if (rotateInOneHandType == RotateInOneHandType.MaintainRotationToUser)
+            {
+                targetRotation = CameraCache.Main.transform.rotation * startObjectRotationCameraSpace;
+            }
+            else if (rotateInOneHandType == RotateInOneHandType.GravityAlignedMaintainRotationToUser)
+            {
+                var cameraForwardFlat = CameraCache.Main.transform.forward;
+                cameraForwardFlat.y = 0;
+                targetRotation = Quaternion.LookRotation(cameraForwardFlat, Vector3.up) * startObjectRotationFlatCameraSpace;
+            }
+            else if (rotateInOneHandType == RotateInOneHandType.FaceUser)
+            {
+                Vector3 directionToTarget = hostTransform.position - CameraCache.Main.transform.position;
+                targetRotation = Quaternion.LookRotation(-directionToTarget);
+            }
+            else if (rotateInOneHandType == RotateInOneHandType.FaceAwayFromUser)
+            {
+                Vector3 directionToTarget = hostTransform.position - CameraCache.Main.transform.position;
+                targetRotation = Quaternion.LookRotation(directionToTarget);
+            }
+            else
+            {
+                targetRotation = pointer.Rotation * objectToHandRotation;
+                switch (constraintOnRotation)
+                {
+                    case RotationConstraintType.XAxisOnly:
+                        targetRotation.eulerAngles = Vector3.Scale(targetRotation.eulerAngles, Vector3.right);
+                        break;
+                    case RotationConstraintType.YAxisOnly:
+                        targetRotation.eulerAngles = Vector3.Scale(targetRotation.eulerAngles, Vector3.up);
+                        break;
+                    case RotationConstraintType.ZAxisOnly:
+                        targetRotation.eulerAngles = Vector3.Scale(targetRotation.eulerAngles, Vector3.forward);
+                        break;
+                }
+            }
+
+            Vector3 targetPosition;
+            if (IsNearManipulation())
+            {
+                if (oneHandRotationModeNear == RotateInOneHandType.RotateAboutGrabPoint)
+                {
+                    targetPosition = (pointer.Rotation * objectToHandTranslation) + pointer.Position;
+                }
+                else // RotateAboutCenter or DoNotRotateInOneHand
+                {
+                    targetPosition = objectToHandTranslation + pointer.Position;
+                }
+            }
+            else
+            {
+                targetPosition = m_moveLogic.Update(GetPointersCentroid(), IsNearManipulation());
+            }
+
+            float lerpAmount = GetLerpAmount();
+            Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
+            Vector3 smoothedPosition = Vector3.Lerp(hostTransform.position, targetPosition, lerpAmount);
+            hostTransform.SetPositionAndRotation(smoothedPosition, smoothedRotation);
         }
 
         private void HandleTwoHandManipulationStarted(State newState)
@@ -613,18 +590,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             m_moveLogic.Setup(GetPointersCentroid(), hostTransform.position);
 
-            var interactionMapping = GetSpatialGripInfoForController(pointer.Controller);
-            if (usePointerPose || interactionMapping != null)
+            // Calculate relative transform from object to hand.
+            Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
+            objectToHandRotation = worldToPalmRotation * hostTransform.rotation;
+            objectToHandTranslation = (hostTransform.position - pointer.Position);
+            if (oneHandRotationModeNear == RotateInOneHandType.RotateAboutGrabPoint)
             {
-                // Calculate relative transform from object to hand.
-                Quaternion worldToPalmRotation = Quaternion.Inverse(usePointerPose ? pointer.Rotation : interactionMapping.PoseData.Rotation);
-                objectToHandRotation = worldToPalmRotation * hostTransform.rotation;
-                objectToHandTranslation = (hostTransform.position - (usePointerPose ? pointer.Position : interactionMapping.PoseData.Position));
-                if (oneHandRotationModeNear == RotateInOneHandType.RotateAboutGrabPoint)
-                {
-                    objectToHandTranslation = worldToPalmRotation * objectToHandTranslation;
-                }
+                objectToHandTranslation = worldToPalmRotation * objectToHandTranslation;
             }
+
             startObjectRotationCameraSpace = Quaternion.Inverse(CameraCache.Main.transform.rotation) * hostTransform.rotation;
             var cameraFlat = CameraCache.Main.transform.forward;
             cameraFlat.y = 0;
