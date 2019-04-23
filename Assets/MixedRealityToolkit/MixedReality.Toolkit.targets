@@ -11,10 +11,11 @@
   <ItemGroup>
     <!-- Include content, but only if explicitly requested. This is useful if an MSBuild project references this
          nuget package, and the output of the MSBuild project is copied into a Unity project. -->
-    <Content Include="$(MSBuildThisFileDirectory)..\Content\**" Condition=" '$(MRTKIncludeContent)' == 'true' ">
+    <Content Include="$(MSBuildThisFileDirectory)..\MRTK\**" Condition=" '$(MRTKIncludeContent)' == 'true' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-      <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <!-- Don't show .meta files in Solution Explorer - it's not useful. -->
+      <Visible Condition=" '%(Extension)' == '.meta' ">false</Visible>
+      <Link>MRTK\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
 
     <!-- Get all the dlls for the target player, and store the Identity in a custom OriginalPath metadata.
