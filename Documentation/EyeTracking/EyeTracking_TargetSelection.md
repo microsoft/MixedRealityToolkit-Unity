@@ -186,7 +186,7 @@ is set up for one of the gems that explodes when you select it.
 <img src="../../Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget.jpg" width="750" alt="MRTK">
 
 The _OnSelected()_ event triggers the method _'TargetSelected'_ in the 
-[HitBehavior_DestroyOnSelect](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehavior_DestroyOnSelect) 
+[HitBehaviorDestroyOnSelect](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehaviorDestroyOnSelect) 
 script attached to the gem GameObject.
 The interesting part is _how_ the selection is triggered. 
 The [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget)
