@@ -12,8 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         public static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
-        private static InputSimulationService inputSimService = null;
-        private static InputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<InputSimulationService>());
+        private static IInputSimulationService inputSimService = null;
+        private static IInputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
 
         public static void RecordKeyframe(InputAnimation animation, double time)
         {

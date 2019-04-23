@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         {
             TestUtilities.InitializeMixedRealityToolkitScene(true);
 
-            var inputSimService = MixedRealityToolkit.Instance.GetService<InputSimulationService>();
+            var inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>();
             inputSimService.Update();
 
             // using (var tester = new EventTester<SourceDetectedHandler>())

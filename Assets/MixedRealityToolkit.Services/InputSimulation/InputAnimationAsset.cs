@@ -87,13 +87,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return false;
             }
 
-            var inputSimService = mrtk.GetService<InputSimulationService>();
+            var inputSimService = mrtk.GetService<IInputSimulationService>();
             if (inputSimService == null)
             {
                 return false;
             }
 
-            var profile = inputSimService.GetInputSimulationProfile();
+            var profile = inputSimService.InputSimulationProfile;
             if (!profile)
             {
                 return false;

@@ -20,13 +20,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
 
-        public readonly SimulatedHandData HandDataLeft = new SimulatedHandData();
-        public readonly SimulatedHandData HandDataRight = new SimulatedHandData();
+        private SimulatedHandData handDataLeft = new SimulatedHandData();
+        public SimulatedHandData HandDataLeft
+        {
+            get
+            {
+                return handDataLeft;
+            }
+        }
+
+        private SimulatedHandData handDataRight = new SimulatedHandData();
+        public SimulatedHandData HandDataRight
+        {
+            get
+            {
+                return handDataRight;
+            }
+        }
 
         /// <summary>
         /// If true then keyboard and mouse input are used to simulate hands.
         /// </summary>
-        public bool UserInputEnabled = true;
+        private bool userInputEnabled = true;
+        public bool UserInputEnabled
+        {
+            get
+            {
+                return userInputEnabled;
+            }
+            set
+            {
+                userInputEnabled = value;
+            }
+        }
 
         /// <summary>
         /// Dictionary to capture all active hands detected

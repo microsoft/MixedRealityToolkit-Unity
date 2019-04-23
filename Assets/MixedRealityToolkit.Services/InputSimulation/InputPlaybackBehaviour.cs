@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (Application.isPlaying)
             {
-                var inputSimService = MixedRealityToolkit.Instance.GetService<InputSimulationService>();
+                var inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>();
                 if (inputSimService != null)
                 {
                     inputSimService.UserInputEnabled = true;
