@@ -1,35 +1,38 @@
-﻿using Microsoft.MixedReality.Toolkit.Utilities;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class MixedRealityPlayspace
     {
-        /// <summary>
-        /// The name of the playspace <see cref="GameObject"/>.
-        /// </summary>
-        public const string Name = "MixedRealityPlayspace";
+        private const string Name = "MixedRealityPlayspace";
 
-        private static Transform transform;
+        private static Transform mixedRealityPlayspace;
 
         /// <summary>
-        /// The transform of the playspace <see cref="GameObject"/>.
+        /// 
         /// </summary>
         public static Transform Transform
         {
             get
             {
-                if (transform != null)
+                if (mixedRealityPlayspace)
                 {
-                    return transform;
+                    return mixedRealityPlayspace;
                 }
 
                 if (CameraCache.Main.transform.parent == null)
                 {
-                    transform = new GameObject(Name).transform;
-                    CameraCache.Main.transform.SetParent(transform);
+                    mixedRealityPlayspace = new GameObject(Name).transform;
+                    CameraCache.Main.transform.SetParent(mixedRealityPlayspace);
                 }
                 else
                 {
@@ -45,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit
                         CameraCache.Main.transform.parent.name = Name;
                     }
 
-                    transform = CameraCache.Main.transform.parent;
+                    mixedRealityPlayspace = CameraCache.Main.transform.parent;
                 }
 
                 // It's very important that the Playspace align with the tracked space,
@@ -54,30 +57,74 @@ namespace Microsoft.MixedReality.Toolkit
                 // tracked space origin overlaps with the world space origin. If a platform ever does
                 // something else (i.e, placing the lower left hand corner of the tracked space at world 
                 // space 0,0,0), we should compensate for that here.
-                return transform;
+                return mixedRealityPlayspace;
             }
         }
 
         /// <summary>
-        /// The position of the playspace.
+        /// 
         /// </summary>
         public static Vector3 Position => Transform.position;
 
         /// <summary>
-        /// Add a <see cref="GameObject"/> as a child of the playspace.
+        /// 
         /// </summary>
-        /// <param name="transform">The transform of the <see cref="GameObject"/> to be added.</param>
+        public static Quaternion Rotation => Transform.rotation;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="transform"></param>
         public static void AddChild(Transform transform)
         {
             transform.SetParent(Transform);
         }
 
-        // todo: remove child
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void DetachChildren()
+        {
+            Transform.DetachChildren();
+        }
 
-        // todo: child count
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="localPosition"></param>
+        /// <returns></returns>
+        public static Vector3 TransformPoint(Vector3 localPosition)
+        {
+            return Transform.TransformPoint(localPosition);
+        }
 
-        // todo: get children
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="worldPosition"></param>
+        /// <returns></returns>
+        public static Vector3 InverseTransformPoint(Vector3 worldPosition)
+        {
+            return Transform.InverseTransformPoint(worldPosition);
+        }
 
-        // todo: detatch children
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="localDirection"></param>
+        /// <returns></returns>
+        public static Vector3 TransformDirection(Vector3 localDirection)
+        {
+            return Transform.TransformDirection(localDirection);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="transformation"></param>
+        public static void PerformTransformation(Action<Transform> transformation)
+        {
+            transformation?.Invoke(Transform);
+        }
     }
 }

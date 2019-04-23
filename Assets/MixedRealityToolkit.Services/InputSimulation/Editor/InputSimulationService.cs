@@ -49,10 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IMixedRealityServiceRegistrar registrar, 
             IMixedRealityInputSystem inputSystem,
             MixedRealityInputSystemProfile inputSystemProfile,
-            Transform playspace,
             string name, 
             uint priority, 
-            BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile)
+            BaseMixedRealityProfile profile) : base(registrar, inputSystem, inputSystemProfile, name, priority, profile)
         {
         }
 

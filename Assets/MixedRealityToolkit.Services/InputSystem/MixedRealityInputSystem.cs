@@ -17,25 +17,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         public MixedRealityInputSystem(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealityInputSystemProfile profile,
-            Transform playspace) : base(registrar, profile)
+            MixedRealityInputSystemProfile profile) : base(registrar, profile)
         {
             if (registrar == null)
             {
                 Debug.LogError("The MixedRealityInputSystem object requires a valid IMixedRealityServiceRegistrar instance.");
             }
-
-            if (playspace == null)
-            {
-                Debug.LogError("The MixedRealityInputSystem object requires a valid playspace Transform.");
-            }
-            Playspace = playspace;
         }
-
-        /// <summary>
-        /// The transform of the playspace scene object.
-        /// </summary>
-        private Transform Playspace = null;
 
         /// <inheritdoc />
         public event Action InputEnabled;
@@ -157,7 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
                     GazeProvider.InputSystem = this;
-                    GazeProvider.Playspace = Playspace;
                     GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
                     // Current implementation implements both provider types in one concrete class.
                     EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
@@ -214,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < profile.DataProviderConfigurations.Length; i++)
                 {
                     MixedRealityInputDataProviderConfiguration configuration = profile.DataProviderConfigurations[i];
-                    object[] args = { Registrar, this, profile, Playspace, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
+                    object[] args = { Registrar, this, profile, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
 
                     if (Registrar.RegisterDataProvider<IMixedRealityInputDeviceManager>(
                         configuration.ComponentType.Type,

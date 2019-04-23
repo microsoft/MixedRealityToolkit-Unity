@@ -29,8 +29,6 @@ namespace Microsoft.MixedReality.Toolkit
     {
 #region Mixed Reality Toolkit Profile configuration
 
-        private const string MixedRealityPlayspaceName = "MixedRealityPlayspace";
-
         private static bool isInitializing = false;
 
         private static bool isApplicationQuitting = false;
@@ -377,7 +375,7 @@ namespace Microsoft.MixedReality.Toolkit
                 InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                object[] args = { this, ActiveProfile.InputSystemProfile, Instance.MixedRealityPlayspace };
+                object[] args = { this, ActiveProfile.InputSystemProfile };
                 if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType, args: args) || InputSystem == null)
                 {
                     Debug.LogError("Failed to start the Input System!");
@@ -400,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
-                object[] args = { this, ActiveProfile.BoundaryVisualizationProfile, Instance.MixedRealityPlayspace, ActiveProfile.TargetExperienceScale };
+                object[] args = { this, ActiveProfile.BoundaryVisualizationProfile, ActiveProfile.TargetExperienceScale };
                 if (!RegisterService<IMixedRealityBoundarySystem>(ActiveProfile.BoundarySystemSystemType, args: args) || BoundarySystem == null)
                 {
                     Debug.LogError("Failed to start the Boundary System!");
@@ -423,7 +421,7 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
-                object[] args = { this, Instance.MixedRealityPlayspace };
+                object[] args = { this };
                 if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType, args: args) || TeleportSystem == null)
                 {
                     Debug.LogError("Failed to start the Teleport System!");
@@ -432,7 +430,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (ActiveProfile.IsDiagnosticsSystemEnabled)
             {
-                object[] args = { this, ActiveProfile.DiagnosticsSystemProfile, Instance.MixedRealityPlayspace };
+                object[] args = { this, ActiveProfile.DiagnosticsSystemProfile };
                 if (!RegisterService<IMixedRealityDiagnosticsSystem>(ActiveProfile.DiagnosticsSystemSystemType, args: args) || DiagnosticsSystem == null)
                 {
                     Debug.LogError("Failed to start the Diagnostics System!");
@@ -692,54 +690,6 @@ namespace Microsoft.MixedReality.Toolkit
             // Assigning the Instance to access is used Implicitly.
             MixedRealityToolkit access = Instance;
             return IsInitialized;
-        }
-
-        private Transform mixedRealityPlayspace;
-
-        /// <summary>
-        /// Returns the MixedRealityPlayspace for the local player
-        /// </summary>
-        public Transform MixedRealityPlayspace
-        {
-            get
-            {
-                AssertIsInitialized();
-
-                if (mixedRealityPlayspace)
-                {
-                    return mixedRealityPlayspace;
-                }
-
-                if (CameraCache.Main.transform.parent == null)
-                {
-                    mixedRealityPlayspace = new GameObject(MixedRealityPlayspaceName).transform;
-                    CameraCache.Main.transform.SetParent(mixedRealityPlayspace);
-                }
-                else
-                {
-                    if (CameraCache.Main.transform.parent.name != MixedRealityPlayspaceName)
-                    {
-                        // Since the scene is set up with a different camera parent, its likely
-                        // that there's an expectation that that parent is going to be used for
-                        // something else. We print a warning to call out the fact that we're 
-                        // co-opting this object for use with teleporting and such, since that
-                        // might cause conflicts with the parent's intended purpose.
-                        Debug.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {MixedRealityPlayspaceName}. The existing parent will be renamed and used instead.");
-                        // If we rename it, we make it clearer that why it's being teleported around at runtime.
-                        CameraCache.Main.transform.parent.name = MixedRealityPlayspaceName;
-                    }
-
-                    mixedRealityPlayspace = CameraCache.Main.transform.parent;
-                }
-
-                // It's very important that the MixedRealityPlayspace align with the tracked space,
-                // otherwise reality-locked things like playspace boundaries won't be aligned properly.
-                // For now, we'll just assume that when the playspace is first initialized, the
-                // tracked space origin overlaps with the world space origin. If a platform ever does
-                // something else (i.e, placing the lower left hand corner of the tracked space at world 
-                // space 0,0,0), we should compensate for that here.
-                return mixedRealityPlayspace;
-            }
         }
 
 #if UNITY_EDITOR
