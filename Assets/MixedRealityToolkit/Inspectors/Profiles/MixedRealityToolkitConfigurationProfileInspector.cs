@@ -58,35 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            configurationProfile = target as MixedRealityToolkitConfigurationProfile;
-
-            // Create The MR Manager if none exists.
-            if (!MixedRealityToolkit.IsInitialized)
-            {
-                // Search the scene for one, in case we've just hot reloaded the assembly.
-                var managerSearch = FindObjectsOfType<MixedRealityToolkit>();
-
-                if (managerSearch.Length == 0)
-                {
-                    HideNoActiveToolkitWarning = SessionState.GetBool(HideNoActiveToolkitWarningKey, false);
-                    if (!HideNoActiveToolkitWarning)
-                    {
-                        NoActiveToolkitWarning.OpenWindow(configurationProfile);
-                    }
-                    return;
-                }
-            }
-
-            if (!MixedRealityToolkit.IsInitialized)
-            {
-                return;
-            }
-
-            if (!MixedRealityToolkit.Instance.HasActiveProfile)
-            {
-                return;
-            }
-
             // Experience configuration
             targetExperienceScale = serializedObject.FindProperty("targetExperienceScale");
             // Camera configuration
