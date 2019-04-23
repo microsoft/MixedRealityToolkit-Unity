@@ -128,12 +128,12 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_SliderEventData__ctor_" data-uid="Microsoft.MixedReality.Toolkit.UI.SliderEventData.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_SliderEventData__ctor_System_Single_System_Single_System_Boolean_Microsoft_MixedReality_Toolkit_UI_PinchSlider_" data-uid="Microsoft.MixedReality.Toolkit.UI.SliderEventData.#ctor(System.Single,System.Single,System.Boolean,Microsoft.MixedReality.Toolkit.UI.PinchSlider)">SliderEventData(Single, Single, Boolean, PinchSlider)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_SliderEventData__ctor_System_Single_System_Single_IMixedRealityPointer_Microsoft_MixedReality_Toolkit_UI_PinchSlider_" data-uid="Microsoft.MixedReality.Toolkit.UI.SliderEventData.#ctor(System.Single,System.Single,IMixedRealityPointer,Microsoft.MixedReality.Toolkit.UI.PinchSlider)">SliderEventData(Single, Single, IMixedRealityPointer, PinchSlider)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SliderEventData(float o, float n, bool isNear, PinchSlider slider)</code></pre>
+    <pre><code class="lang-csharp hljs">public SliderEventData(float o, float n, IMixedRealityPointer pointer, PinchSlider slider)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -156,8 +156,8 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">isNear</span></td>
+        <td><span class="xref">IMixedRealityPointer</span></td>
+        <td><span class="parametername">pointer</span></td>
         <td></td>
       </tr>
       <tr>
@@ -169,32 +169,6 @@
   </table>
   <h3 id="properties">Properties
   </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_SliderEventData_IsNear_" data-uid="Microsoft.MixedReality.Toolkit.UI.SliderEventData.IsNear*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_SliderEventData_IsNear" data-uid="Microsoft.MixedReality.Toolkit.UI.SliderEventData.IsNear">IsNear</h4>
-  <div class="markdown level1 summary"><p>Whether the slider is being interacted near or at a distance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsNear { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_SliderEventData_NewValue_" data-uid="Microsoft.MixedReality.Toolkit.UI.SliderEventData.NewValue*"></a>
@@ -243,6 +217,35 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_SliderEventData_Pointer_" data-uid="Microsoft.MixedReality.Toolkit.UI.SliderEventData.Pointer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_SliderEventData_Pointer" data-uid="Microsoft.MixedReality.Toolkit.UI.SliderEventData.Pointer">Pointer</h4>
+  <div class="markdown level1 summary"><p>The currently active pointer manipulating / hovering the slider,
+or null if no pointer is manipulating the slider.
+Note: OnSliderUpdated is called with .Pointer == null
+OnStart, so always check if this field is null before using!</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMixedRealityPointer Pointer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityPointer</span></td>
         <td></td>
       </tr>
     </tbody>
