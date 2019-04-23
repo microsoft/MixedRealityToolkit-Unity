@@ -92,7 +92,17 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             if (keywordRecognizer == null)
             {
-                keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
+                try
+                {
+                    keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
+                }
+                catch (UnityException e)
+                {
+                    Debug.LogError($"Could not start WindowsSpeechInputProvider: {e.Message}");
+                    keywordRecognizer = null;
+                    return;
+                }
+
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
             }
 
