@@ -33,7 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// The currently active pointer manipulating / hovering the slider,
-        /// or null if no pointer is manipulating the slider
+        /// or null if no pointer is manipulating the slider.
+        /// Note: OnSliderUpdated is called with .Pointer == null
+        /// OnStart, so always check if this field is null before using!
         /// </summary>
         public IMixedRealityPointer Pointer { get; set; }
     }
