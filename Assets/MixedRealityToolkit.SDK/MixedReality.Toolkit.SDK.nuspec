@@ -15,6 +15,7 @@
     <dependencies>
       <dependency id="Microsoft.MixedReality.Toolkit" version="$version$" />
       <dependency id="Microsoft.MixedReality.Toolkit.Services" version="$version$" />
+	  <dependency id="Microsoft.MixedReality.Toolkit.Providers" version="$version$" />
     </dependencies>
   </metadata>
   <files>
