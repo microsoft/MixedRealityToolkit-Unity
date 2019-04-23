@@ -501,6 +501,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             hostTransform.rotation = Quaternion.Lerp(hostTransform.rotation, targetRotationTwoHands, lerpAmount);
             hostTransform.localScale = Vector3.Lerp(hostTransform.localScale, targetScale, lerpAmount);
         }
+        
+        public bool usePointerPose = false;
 
         private void HandleOneHandMoveUpdated()
         {
@@ -508,7 +510,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             IMixedRealityPointer pointer = pointerIdToPointerMap.Values.First();
 
             var interactionMapping = GetSpatialGripInfoForController(pointer.Controller);
-            if (interactionMapping != null)
+            if (usePointerPose || interactionMapping != null)
             {
                 Quaternion targetRotation = Quaternion.identity;
                 RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
@@ -538,7 +540,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 else
                 {
-                    targetRotation = interactionMapping.PoseData.Rotation * objectToHandRotation;
+                    targetRotation = (usePointerPose ? pointer.Rotation : interactionMapping.PoseData.Rotation) * objectToHandRotation;
                     switch (constraintOnRotation)
                     {
                         case RotationConstraintType.XAxisOnly:
@@ -558,11 +560,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     if (oneHandRotationModeNear == RotateInOneHandType.RotateAboutGrabPoint)
                     {
-                        targetPosition = (interactionMapping.PoseData.Rotation * objectToHandTranslation) + interactionMapping.PoseData.Position;
+                        if (usePointerPose)
+                        {
+                            targetPosition = (pointer.Rotation * objectToHandTranslation) + pointer.Position;
+                        }
+                        else
+                        {
+                            targetPosition = (interactionMapping.PoseData.Rotation * objectToHandTranslation) + interactionMapping.PoseData.Position;
+                        }
                     }
                     else // RotateAboutCenter or DoNotRotateInOneHand
                     {
-                        targetPosition = objectToHandTranslation + interactionMapping.PoseData.Position;
+                        targetPosition = objectToHandTranslation + (usePointerPose ? pointer.Position : interactionMapping.PoseData.Position);
                     }
                 }
                 else
@@ -605,12 +614,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             m_moveLogic.Setup(GetPointersCentroid(), hostTransform.position);
 
             var interactionMapping = GetSpatialGripInfoForController(pointer.Controller);
-            if (interactionMapping != null)
+            if (usePointerPose || interactionMapping != null)
             {
                 // Calculate relative transform from object to hand.
-                Quaternion worldToPalmRotation = Quaternion.Inverse(interactionMapping.PoseData.Rotation);
+                Quaternion worldToPalmRotation = Quaternion.Inverse(usePointerPose ? pointer.Rotation : interactionMapping.PoseData.Rotation);
                 objectToHandRotation = worldToPalmRotation * hostTransform.rotation;
-                objectToHandTranslation = (hostTransform.position - interactionMapping.PoseData.Position);
+                objectToHandTranslation = (hostTransform.position - (usePointerPose ? pointer.Position : interactionMapping.PoseData.Position));
                 if (oneHandRotationModeNear == RotateInOneHandType.RotateAboutGrabPoint)
                 {
                     objectToHandTranslation = worldToPalmRotation * objectToHandTranslation;
