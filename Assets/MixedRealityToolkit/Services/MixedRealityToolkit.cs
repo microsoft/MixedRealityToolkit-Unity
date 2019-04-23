@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public bool RegisterService<T>(T serviceInstance) where T : IMixedRealityService
         {
-            return RegisterServiceInternal(serviceInstance);
+            return RegisterServiceInternal<T>(serviceInstance);
         }
 
         /// <inheritdoc />
@@ -223,6 +223,8 @@ namespace Microsoft.MixedReality.Toolkit
             if (IsCoreSystem(interfaceType))
             {
                 activeSystems.Remove(interfaceType);
+                // Core services are always removable
+                MixedRealityServiceRegistry.RemoveService<T>(serviceInstance, this);
                 return true;
             }
 
@@ -231,6 +233,11 @@ namespace Microsoft.MixedReality.Toolkit
             if (registeredMixedRealityServices.Contains(registryInstance))
             {
                 registeredMixedRealityServices.Remove(registryInstance);
+                if (!(serviceInstance is IMixedRealityDataProvider))
+                {
+                    // Only remove IMixedRealityService or IMixedRealityExtensionService (not IMixedRealityDataProvider)
+                    MixedRealityServiceRegistry.RemoveService<T>(serviceInstance, this);
+                }
                 return true;
             }
 
@@ -815,7 +822,17 @@ namespace Microsoft.MixedReality.Toolkit
         private bool RegisterServiceInternal<T>(T serviceInstance) where T : IMixedRealityService
         {
             Type interfaceType = typeof(T);
-            return RegisterServiceInternal(interfaceType, serviceInstance);
+            if (RegisterServiceInternal(interfaceType, serviceInstance))
+            {
+                if (!(serviceInstance is IMixedRealityDataProvider))
+                {
+                    // Services (including extensions) are added to the registry, data providers are not.
+                    MixedRealityServiceRegistry.AddService<T>(serviceInstance, this);
+                }
+                return true;
+            }
+
+            return false;
         }
 
 #endregion Registration

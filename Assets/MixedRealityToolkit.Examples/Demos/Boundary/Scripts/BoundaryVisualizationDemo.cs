@@ -32,6 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         private bool showBoundaryCeiling = true;
 
+        private IMixedRealityBoundarySystem boundarySystem = null;
+
         #region MonoBehaviour Implementation
 
         private void Awake()
@@ -43,8 +45,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void Start()
         {
+            if (!MixedRealityServiceRegistry.TryGetService<IMixedRealityBoundarySystem>(out boundarySystem))
+            {
+                Debug.LogError("Failed to get the boundary service.");
+                return;
+            }
 
-            if (MixedRealityToolkit.BoundarySystem != null)
+            if (boundarySystem != null)
             {
                 if (markers.Count == 0)
                 {
@@ -55,25 +62,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void Update()
         {
-            if (MixedRealityToolkit.BoundarySystem != null)
+            if (boundarySystem != null)
             {
-                MixedRealityToolkit.BoundarySystem.ShowFloor = showFloor;
-                MixedRealityToolkit.BoundarySystem.ShowPlayArea = showPlayArea;
-                MixedRealityToolkit.BoundarySystem.ShowTrackedArea = showTrackedArea;
-                MixedRealityToolkit.BoundarySystem.ShowBoundaryWalls = showBoundaryWalls;
-                MixedRealityToolkit.BoundarySystem.ShowBoundaryCeiling = showBoundaryCeiling;
+                boundarySystem.ShowFloor = showFloor;
+                boundarySystem.ShowPlayArea = showPlayArea;
+                boundarySystem.ShowTrackedArea = showTrackedArea;
+                boundarySystem.ShowBoundaryWalls = showBoundaryWalls;
+                boundarySystem.ShowBoundaryCeiling = showBoundaryCeiling;
             }
         }
 
-        private async void OnEnable()
+        private void OnEnable()
         {
-            await new WaitUntil(() => MixedRealityToolkit.BoundarySystem != null);
-            MixedRealityToolkit.BoundarySystem.Register(gameObject);
+            boundarySystem?.Register(gameObject);
         }
 
         private void OnDisable()
         {
-            MixedRealityToolkit.BoundarySystem?.Unregister(gameObject);
+            boundarySystem?.Unregister(gameObject);
         }
 
         #endregion MonoBehaviour Implementation
@@ -100,18 +106,30 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             float widthRect;
             float heightRect;
 
-            if (!MixedRealityToolkit.BoundarySystem.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
+            if (boundarySystem == null) { return; }
+
+            if (!boundarySystem.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
             {
                 // If we have no boundary manager or rectangular bounds we will show no indicators
                 return;
             }
 
-            MixedRealityBoundaryVisualizationProfile visualizationProfile = MixedRealityToolkit.Instance.ActiveProfile.BoundaryVisualizationProfile;
-            if (visualizationProfile == null)
+            // Get the materials needed for marker display
+            GameObject playArea = boundarySystem.GetPlayAreaVisualization();
+            if (playArea == null)
             {
-                // We do not have a visualization profile configured, therefore do not render the indicators.
+                // Failed to get the play area visualization;
                 return;
             }
+            Material playAreaMaterial = playArea.GetComponent<Renderer>().sharedMaterial;
+
+            GameObject trackedArea = boundarySystem.GetTrackedAreaVisualization();
+            if (trackedArea == null)
+            {
+                // Failed to get the tracked area visualization;
+                return;
+            }
+            Material trackedAreaMaterial = trackedArea.GetComponent<Renderer>().sharedMaterial;
 
             const int indicatorCount = 20;
             const float indicatorDistance = 0.2f;
@@ -131,14 +149,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                     Material material = null;
                     // Check inscribed rectangle first
-                    if (MixedRealityToolkit.BoundarySystem.Contains(position, UnityBoundary.Type.PlayArea))
+                    if (boundarySystem.Contains(position, UnityBoundary.Type.PlayArea))
                     {
-                        material = visualizationProfile.PlayAreaMaterial;
+                        material = playAreaMaterial;
                     }
                     // Then check geometry
-                    else if (MixedRealityToolkit.BoundarySystem.Contains(position, UnityBoundary.Type.TrackedArea))
+                    else if (boundarySystem.Contains(position, UnityBoundary.Type.TrackedArea))
                     {
-                        material = visualizationProfile.TrackedAreaMaterial;
+                        material = trackedAreaMaterial;
                     }
 
                     if (material != null)

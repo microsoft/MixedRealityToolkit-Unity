@@ -61,19 +61,27 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Adds an <see cref="IMixedRealityService"/> instance to the registry.
+        /// Removes an <see cref="IMixedRealityService"/> instance from the registry.
         /// </summary>
         /// <typeparam name="T">The interface type of the service being removed.</typeparam>
-        /// <param name="serviceInstance">Instance of the service to add.</param>
+        /// <param name="serviceInstance">Instance of the service to remove.</param>
         /// <param name="registrar">Instance of the registrar manages the service.</param>
         /// <returns>
-        /// True if the service was successfully added, false otherwise.
+        /// True if the service was successfully removed, false otherwise.
         /// </returns>
         public static bool RemoveService<T>(T serviceInstance, IMixedRealityServiceRegistrar registrar) where T : IMixedRealityService
         {
             return RemoveServiceInternal(typeof(T), serviceInstance, registrar);
         }
 
+        /// <summary>
+        /// Removes an <see cref="IMixedRealityService"/> instance from the registry.
+        /// </summary>
+        /// <typeparam name="T">The interface type of the service being removed.</typeparam>
+        /// <param name="serviceInstance">Instance of the service to remove.</param>
+        /// <returns>
+        /// True if the service was successfully removed, false otherwise.
+        /// </returns>
         public static bool RemoveService<T>(T serviceInstance) where T : IMixedRealityService
         {
             T tempService;
@@ -93,11 +101,13 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// 
+        /// Removes an <see cref="IMixedRealityService"/> instance from the registry.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">The interface type of the service being removed.</typeparam>
+        /// <param name="name">The friendly name of the service to remove.</param>
+        /// <returns>
+        /// True if the service was successfully removed, false otherwise.
+        /// </returns>
         public static bool RemoveService<T>(string name) where T : IMixedRealityService
         {
             T tempService;            
@@ -112,18 +122,19 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// 
+        /// Removes an <see cref="IMixedRealityService"/> instance from the registry.
         /// </summary>
-        /// <param name="interfaceType"></param>
-        /// <param name="serviceInstance"></param>
-        /// <param name="registrar"></param>
-        /// <returns></returns>
+        /// <param name="interfaceType">The interface type of the service being removed.</param>
+        /// <param name="serviceInstance">Instance of the service to remove.</param>
+        /// <param name="registrar">Instance of the registrar manages the service.</param>
+        /// <returns>
+        /// True if the service was successfully removed, false otherwise.
+        /// </returns>
         private static bool RemoveServiceInternal(
             Type interfaceType,
             IMixedRealityService serviceInstance,
             IMixedRealityServiceRegistrar registrar)
         {
-
             List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
 
             return services.Remove(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>(serviceInstance, registrar));
@@ -202,14 +213,10 @@ namespace Microsoft.MixedReality.Toolkit
             out T serviceInstance,
             string name = null) where T : IMixedRealityService
         {
-            IMixedRealityServiceRegistrar registrar;
-
             return TryGetService<T>(
                 out serviceInstance,
-                out registrar,
+                out _,                  // The registrar out param is not used, i tcan be discarded.
                 name);
         }
-
-        // todo: consider adding methods to return all services of a given type, all services registered by a specific registrar, all services with a given name, all of the registered services.
     }
 }
