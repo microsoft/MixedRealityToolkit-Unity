@@ -14,63 +14,6 @@ using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
-    // TODO Include settings
-    //internal class ScriptReferenceRetargettingSettings : ScriptableObject
-    //{
-    //    public const string k_MyCustomSettingsPath = "Assets/Editor/MyCustomSettings.asset";
-
-    //    [SerializeField]
-    //    private int m_Number;
-
-    //    [SerializeField]
-    //    private string m_SomeString;
-
-    //    internal static ScriptReferenceRetargettingSettings GetOrCreateSettings()
-    //    {
-    //        var settings = AssetDatabase.LoadAssetAtPath<ScriptReferenceRetargettingSettings>(k_MyCustomSettingsPath);
-    //        if (settings == null)
-    //        {
-    //            settings = CreateInstance<ScriptReferenceRetargettingSettings>();
-    //            settings.m_Number = 42;
-    //            settings.m_SomeString = "The answer to the universe";
-    //            AssetDatabase.CreateAsset(settings, k_MyCustomSettingsPath);
-    //            AssetDatabase.SaveAssets();
-    //        }
-    //        return settings;
-    //    }
-
-    //    internal static SerializedObject GetSerializedSettings()
-    //    {
-    //        return new SerializedObject(GetOrCreateSettings());
-    //    }
-    //}
-
-    //internal static class ScriptReferenceRetargettingSettingsIMGUIRegister
-    //{
-    //    [SettingsProvider]
-    //    public static SettingsProvider CreateMyCustomSettingsProvider()
-    //    {
-    //        SettingsProvider provider = new SettingsProvider("Project/ScriptReferenceRetargetter", SettingsScope.Project)
-    //        {
-    //            // By default the last token of the path is used as display name if no label is provided.
-    //            label = "Script Reference Retargetter Settings",
-    //            // Create the SettingsProvider and initialize its drawing (IMGUI) function in place:
-    //            guiHandler = (searchContext) =>
-    //            {
-    //                var settings = ScriptReferenceRetargettingSettings.GetSerializedSettings();
-    //                EditorGUILayout.PropertyField(settings.FindProperty("m_Number"), new GUIContent("My Number"));
-    //                EditorGUILayout.PropertyField(settings.FindProperty("m_SomeString"), new GUIContent("My String"));
-    //            },
-
-    //            // Populate the search keywords to enable smart search filtering and label highlighting:
-    //            keywords = new HashSet<string>(new[] { "Number", "Some String" })
-    //        };
-
-    //        return provider;
-    //    }
-    //}
-
-
     public static class AssetScriptReferenceRetargeter
     {
         private struct ClassInformation
@@ -89,11 +32,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {"Library/PlayerDataCache/Win", "StandalonePlayer" },
         };
 
-        private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".FBX", ".pdf", ".cginc" };
+        private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".pdf", ".cginc" };
         private static readonly HashSet<string> ExcludedSuffixFromCopy = new HashSet<string>() { ".cs", ".cs.meta", ".asmdef", ".asmdef.meta" };
 
         private static Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); //Guid, FileName
 
+        // This is the knonw Unity-defined script fileId
         private const string ScriptFileIdConstant = "11500000";
 
         [MenuItem("Assets/Retarget To DLL")]
@@ -101,14 +45,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             try
             {
-                Debug.Log("Starting to Retarget Assets.");
+                Debug.Log("Starting to retarget assets.");
                 RunRetargetToDLL();
-                Debug.Log("Complete.");
+                Debug.Log("Completed asset retargeting.");
             }
             catch (Exception ex)
             {
-                Debug.LogError("Failed.");
+                Debug.LogError("Failed to retarget assets.");
                 Debug.LogException(ex);
+
+                throw ex;
             }
         }
 
@@ -152,6 +98,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 string asmdefText = AssetDatabase.LoadAssetAtPath<AssemblyDefinitionAsset>(asmdefFile.Substring(lengthOfPrefix)).text;
                 string dllName = JsonUtility.FromJson<AssemblyDefinitionStub>(asmdefText).name;
                 string guid = File.ReadAllLines($"{asmdefFile}.meta")[1].Substring(6);
+                if (!Guid.TryParse(guid, out Guid _))
+                {
+                    throw new InvalidDataException("AsmDef meta file must have changed, as we can no longer parse a guid out of it.");
+                }
                 guid = CycleGuidForward(guid);
                 dllGuids.Add($"{dllName}.dll", guid);
             }
@@ -159,6 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             return dllGuids;
         }
 
+        /// <param name="remapDictionary">Script file guid references to final editor dll guid and fileID.</param>
+        /// <param name="dllGuids">Dll name to Dll file guid mapping.</param>
         private static void ProcessYAMLAssets(string[] allFilePaths, string outputDirectory, Dictionary<string, Tuple<string, long>> remapDictionary, Dictionary<string, string> dllGuids)
         {
             if (Directory.Exists(outputDirectory))
@@ -182,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 else
                 {
                     string extension = Path.GetExtension(filePath);
-                    if (!ExcludedYamlAssetExtensions.Contains(extension))
+                    if (!ExcludedYamlAssetExtensions.Contains(extension.ToLower()))
                     {
                         foundNonYamlExtensions.Add(extension);
                     }
@@ -206,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             foreach (var extension in foundNonYamlExtensions)
             {
-                Debug.Log($"Not a YAML extension: {extension}");
+                Debug.LogWarning($"Not a YAML extension: {extension}");
             }
 
             var tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t.Item1, t.Item2, remapDictionary)));
@@ -289,6 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
+        /// <returns>Returns a dictionary of type name at the script location mapped to additional data.</returns>
         private static Dictionary<string, ClassInformation> ProcessScripts(string[] allFilePaths)
         {
             int lengthOfPrefix = Application.dataPath.IndexOf("Assets");
@@ -319,6 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             return toReturn;
         }
 
+        /// <returns>Returns a dictionary of type name inside MRTK DLLs mapped to additional data.</returns>
         private static Dictionary<string, ClassInformation> ProcessCompiledDLLs(string temporaryDirectoryName, string outputDirectory, Dictionary<string, string> asmDefMappings)
         {
             Assembly[] dlls = CompilationPipeline.GetAssemblies();
@@ -342,7 +296,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
 
                 // Load these directories
-                // TODO maybe we don't need to
                 AssetDatabase.Refresh();
 
                 Dictionary<string, ClassInformation> toReturn = new Dictionary<string, ClassInformation>();
@@ -403,10 +356,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static void CopyIntermediaryAssemblies(string outputPath)
         {
-            List<DirectoryInfo> outputDirectories = new List<DirectoryInfo>();
-            string playerDataCachePath = Application.dataPath.Replace("Assets", "Library/PlayerDataCache");
-            DirectoryInfo playerDataCahce = new DirectoryInfo(playerDataCachePath);
-
             foreach (KeyValuePair<string, string> sourceToOutputPair in sourceToOutputFolders)
             {
                 DirectoryInfo directory = new DirectoryInfo(Application.dataPath.Replace("Assets", sourceToOutputPair.Key));
@@ -487,7 +436,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     string metaFilePath = string.Empty;
                     foreach (FileInfo file in files)
                     {
-                        //Editor is guid + 1
+                        //Editor is guid + 1; which has done when we processed Editor DLLs
                         //Standalone is guid + 2
                         //UAP is guid + 3
                         dllGuid = dllGuids[file.Name];
@@ -512,10 +461,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static StringBuilder guidBuilder = new StringBuilder(32);
         private static string CycleGuidForward(string guid)
         {
-            guidBuilder.Clear();
+            StringBuilder guidBuilder = new StringBuilder();
+            guid = guid.ToLower();
+
             //Add one to each hexit in the guid to make it unique, but also reproducible
             foreach (char hexit in guid)
             {
@@ -542,35 +492,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 RecursiveFolderCleanup(subFolder);
             }
 
-            string fileCheck;
             FileInfo[] fileList = folder.GetFiles("*");
             DirectoryInfo[] folderList = folder.GetDirectories();
             foreach (FileInfo file in fileList)
             {
                 if (file.Extension.Equals(".meta"))
                 {
-                    fileCheck = file.FullName.Remove(file.FullName.Length - 5);
-                    bool foundMatch = false;
-                    foreach (FileInfo checkFile in fileList)
-                    {
-                        if (checkFile.FullName.Equals(fileCheck))
-                        {
-                            foundMatch = true;
-                            break;
-                        }
-                    }
-                    if (!foundMatch)
-                    {
-                        foreach (DirectoryInfo checkFolder in folderList)
-                        {
-                            if (checkFolder.FullName.Equals(fileCheck))
-                            {
-                                foundMatch = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!foundMatch)
+                    string nameCheck = file.FullName.Remove(file.FullName.Length - 5);
+
+                    // If we don't have any files or folders match the nameCheck we will delete the file
+                    if (!fileList.Concat<FileSystemInfo>(folderList).Any(t => nameCheck.Equals(t.FullName)))
                     {
                         file.Delete();
                     }
