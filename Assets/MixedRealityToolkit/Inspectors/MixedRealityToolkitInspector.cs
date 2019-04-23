@@ -3,6 +3,7 @@
 
 using UnityEditor;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -99,9 +100,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             Selection.activeObject = MixedRealityToolkit.Instance;
             Debug.Assert(MixedRealityToolkit.IsInitialized);
+            AssureCamera();
             var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
             Debug.Assert(playspace != null);
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
+        }
+
+        private static void AssureCamera()
+        {
+            if (CameraCache.Main != null)
+                return;
+
+            var newCamera = new GameObject("Main Camera");
+            var camera = newCamera.AddComponent<Camera>();
+            newCamera.AddComponent<AudioListener>();
+            camera.tag = "MainCamera";
+            camera.depth = 1f;
         }
 
         /// <summary>
