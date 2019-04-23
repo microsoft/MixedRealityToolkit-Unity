@@ -2,15 +2,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
+using Microsoft.MixedReality.Toolkit.Input;
+
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class SliderEventData
     {
-        public SliderEventData(float o, float n, bool isNear, PinchSlider slider)
+        public SliderEventData(float o, float n, IMixedRealityPointer pointer, PinchSlider slider)
         {
             OldValue = o;
             NewValue = n;
-            IsNear = isNear;
+            Pointer = pointer;
             Slider = slider;
         }
 
@@ -30,8 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public PinchSlider Slider { get; private set; }
 
         /// <summary>
-        /// Whether the slider is being interacted near or at a distance.
+        /// The currently active pointer manipulating / hovering the slider,
+        /// or null if no pointer is manipulating the slider
         /// </summary>
-        public bool IsNear { get; set; }
+        public IMixedRealityPointer Pointer { get; set; }
     }
 }
