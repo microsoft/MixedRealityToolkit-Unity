@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,10 +48,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private bool velocityActive = false;
         [SerializeField]
-        [Range(0.0f, 99.0f)]
+        [Range(0.0f, 0.99f)]
         private float velocityDampingX = 0.9f;
         [SerializeField]
-        [Range(0.0f, 99.0f)]
+        [Range(0.0f, 0.99f)]
         private float velocityDampingY = 0.9f;
         [SerializeField]
         [Range(0.0f, 99.0f)]

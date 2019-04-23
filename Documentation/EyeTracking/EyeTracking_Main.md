@@ -1,4 +1,4 @@
-![Eye Tracking in MRTK](../../External/ReadMeImages/EyeTracking/mrtk_et_compilation.png)
+![Eye Tracking in MRTK](../../Documentation/Images/EyeTracking/mrtk_et_compilation.png)
 # Eye Tracking in the Mixed Reality Toolkit
 
 The [Mixed Reality Toolkit](https://github.com/Microsoft/MixedRealityToolkit-Unity) (MRTK) supports amongst others _'HoloLens 2'_ which offers an exciting and powerful new input: Eye Tracking! 

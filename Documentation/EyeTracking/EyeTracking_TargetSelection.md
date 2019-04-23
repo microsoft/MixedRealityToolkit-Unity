@@ -1,4 +1,4 @@
-![MRTK](../../External/ReadMeImages/EyeTracking/mrtk_et_targetselect.png)
+![MRTK](../../Documentation/Images/EyeTracking/mrtk_et_targetselect.png)
 
 # Eye-Supported Target Selection
 This page discusses different options for accessing eye gaze data and eye gaze specific events to select targets in MRTK. 
@@ -172,7 +172,7 @@ For the example of the _'smart attentive notifications'_, the following happens:
 The key to an enjoyable experience here is to carefully tune the speed of any of these behaviors to avoid causing discomfort by reacting to the user’s eye gaze too quickly all the time. 
 Otherwise this can quickly feel extremely overwhelming.
 
-<img src="../../External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg" width="750" alt="MRTK">
+<img src="../../Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg" width="750" alt="MRTK">
 
 #### Example: Multimodal Gaze-Supported Target Selection
 One event provided by the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget), yet not used by the 
@@ -183,7 +183,7 @@ For example, the screenshot below is from
 It shows how the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget)
 is set up for one of the gems that explodes when you select it.
 
-<img src="../../External/ReadMeImages/EyeTracking/mrtk_et_EyeTrackingTarget.jpg" width="750" alt="MRTK">
+<img src="../../Documentation/Images/EyeTracking/mrtk_et_EyeTrackingTarget.jpg" width="750" alt="MRTK">
 
 The _OnSelected()_ event triggers the method _'TargetSelected'_ in the 
 [HitBehavior_DestroyOnSelect](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehavior_DestroyOnSelect) 

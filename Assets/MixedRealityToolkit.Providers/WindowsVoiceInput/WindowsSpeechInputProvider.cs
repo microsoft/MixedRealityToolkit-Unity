@@ -92,7 +92,17 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             if (keywordRecognizer == null)
             {
-                keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
+                try
+                {
+                    keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
+                }
+                catch (UnityException ex)
+                {
+                    Debug.LogError($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
+                    keywordRecognizer = null;
+                    return;
+                }
+
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
             }
 

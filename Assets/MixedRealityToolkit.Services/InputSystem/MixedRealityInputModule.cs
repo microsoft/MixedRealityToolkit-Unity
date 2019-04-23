@@ -77,10 +77,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 MixedRealityToolkit.InputSystem.Unregister(gameObject);
 
-                foreach (IMixedRealityInputSource inputSource in MixedRealityToolkit.InputSystem.DetectedInputSources)
+                foreach (var p in pointerDataToUpdate)
                 {
-                    OnSourceLost(inputSource);
+                    pointerDataToRemove.Add(p.Value);
                 }
+                pointerDataToUpdate.Clear();
 
                 // Process once more to handle pointer removals.
                 Process();
@@ -252,6 +253,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointerDataToUpdate[pointerId].nextPressState = PointerEventData.FramePressState.Pressed;
         }
 
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
         {
         }
@@ -281,11 +284,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            OnSourceLost(eventData.InputSource);
-        }
+            var inputSource = eventData.InputSource;
 
-        void OnSourceLost(IMixedRealityInputSource inputSource)
-        {
             for (int i = 0; i < inputSource.Pointers.Length; i++)
             {
                 var pointer = inputSource.Pointers[i];

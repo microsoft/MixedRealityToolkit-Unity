@@ -15,45 +15,57 @@ using UnityEngine;
 /// </summary>
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class SimulatedHandData
-    {
-        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
-        // Timestamp of hand data, as FileTime, e.g. DateTime.UtcNow.ToFileTime() 
-        public long Timestamp;
-        public bool IsTracked;
-        public Vector3[] Joints = new Vector3[jointCount];
-        public bool IsPinching;
-    }
-
+    /// <summary>
+    /// Internal class to define current gesture and smoothly animate hand data points.
+    /// </summary>
+    [Serializable]
     internal class SimulatedHandState
     {
+        [SerializeField]
         private Handedness handedness = Handedness.None;
         public Handedness Handedness => handedness;
 
         // Show a tracked hand device
-        public bool IsVisible = false;
-        // Hand is simulated
-        public bool IsSimulated = false;
-        // Device is always tracked, regardless if simulating
-        public bool IsAlwaysTracked = false;
+        public bool IsTracked = false;
         // Activate the pinch gesture
         public bool IsPinching { get; private set; }
 
-        private Vector3 screenPosition;
+        public Vector3 ScreenPosition;
         // Rotation of the hand
-        private Vector3 handRotateEulerAngles = Vector3.zero;
+        public Vector3 HandRotateEulerAngles = Vector3.zero;
         // Random offset to simulate tracking inaccuracy
-        private Vector3 jitterOffset = Vector3.zero;
-        // Remaining time until the hand is hidden
-        private float timeUntilHide = 0.0f;
+        public Vector3 JitterOffset = Vector3.zero;
+
+        [SerializeField]
+        private SimulatedHandPose.GestureId gesture = SimulatedHandPose.GestureId.None;
+        public SimulatedHandPose.GestureId Gesture
+        {
+            get { return gesture; }
+            set
+            {
+                if (value != SimulatedHandPose.GestureId.None && value != gesture)
+                {
+                    gesture = value;
+                    gestureBlending = 0.0f;
+                }
+            }
+        }
 
         // Interpolation between current pose and target gesture
-        private float lastGestureAnim = 0.0f;
-        private float currentGestureAnim = 0.0f;
-        private SimulatedHandPose.GestureId gesture = SimulatedHandPose.GestureId.None;
-        public SimulatedHandPose.GestureId Gesture => gesture;
+        private float gestureBlending = 0.0f;
+        public float GestureBlending
+        {
+            get { return gestureBlending; }
+            set
+            {
+                gestureBlending = Mathf.Clamp(value, gestureBlending, 1.0f);
 
+                // Pinch is a special gesture that triggers the Select and TriggerPress input actions
+                IsPinching = (gesture == SimulatedHandPose.GestureId.Pinch && gestureBlending > 0.9f);
+            }
+        }
+
+        private float poseBlending = 0.0f;
         private SimulatedHandPose pose = new SimulatedHandPose();
 
         public SimulatedHandState(Handedness _handedness)
@@ -61,170 +73,169 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handedness = _handedness;
         }
 
-        public void Reset(float defaultHandDistance, SimulatedHandPose.GestureId defaultGesture)
+        public void Reset()
         {
-            // Start at current mouse position
-            Vector3 mousePos = UnityEngine.Input.mousePosition;
-            screenPosition = new Vector3(mousePos.x, mousePos.y, defaultHandDistance);
+            ScreenPosition = Vector3.zero;
+            HandRotateEulerAngles = Vector3.zero;
+            JitterOffset = Vector3.zero;
 
-            gesture = defaultGesture;
-            lastGestureAnim = 1.0f;
-            currentGestureAnim = 1.0f;
+            ResetGesture();
+        }
+
+        /// <summary>
+        /// Set the position in viewport space rather than screen space (pixels).
+        /// </summary>
+        public void SetViewportPosition(Vector3 point)
+        {
+            ScreenPosition = CameraCache.Main.ViewportToScreenPoint(point);
+        }
+
+        public void SimulateInput(Vector3 mouseDelta, float noiseAmount, Vector3 rotationDeltaEulerAngles)
+        {
+            // Apply mouse delta x/y in screen space, but depth offset in world space
+            ScreenPosition.x += mouseDelta.x;
+            ScreenPosition.y += mouseDelta.y;
+            Vector3 newWorldPoint = CameraCache.Main.ScreenToWorldPoint(ScreenPosition);
+            newWorldPoint += CameraCache.Main.transform.forward * mouseDelta.z;
+            ScreenPosition = CameraCache.Main.WorldToScreenPoint(newWorldPoint);
+
+            HandRotateEulerAngles += rotationDeltaEulerAngles;
+
+            JitterOffset = UnityEngine.Random.insideUnitSphere * noiseAmount;
+        }
+
+        public void ResetGesture()
+        {
+            gestureBlending = 1.0f;
 
             SimulatedHandPose gesturePose = SimulatedHandPose.GetGesturePose(gesture);
             if (gesturePose != null)
             {
                 pose.Copy(gesturePose);
             }
-
-            handRotateEulerAngles = Vector3.zero;
-            jitterOffset = Vector3.zero;
-        }
-
-        // Update hand state
-        // If hideTimeout value is null, hands will stay visible after tracking stops
-        public void UpdateVisibility(float hideTimeout)
-        {
-            if (IsAlwaysTracked)
-            {
-                IsVisible = true;
-            }
-            else
-            {
-                timeUntilHide = IsSimulated ? hideTimeout : timeUntilHide - Time.deltaTime;
-                IsVisible = (timeUntilHide > 0.0f);
-            }
-        }
-
-        public void SimulateInput(Vector3 mouseDelta, float noiseAmount, Vector3 rotationDeltaEulerAngles)
-        {
-            if (!IsSimulated)
-            {
-                return;
-            }
-
-            // Apply mouse delta x/y in screen space, but depth offset in world space
-            screenPosition.x += mouseDelta.x;
-            screenPosition.y += mouseDelta.y;
-            Vector3 newWorldPoint = CameraCache.Main.ScreenToWorldPoint(screenPosition);
-            newWorldPoint += CameraCache.Main.transform.forward * mouseDelta.z;
-            screenPosition = CameraCache.Main.WorldToScreenPoint(newWorldPoint);
-
-            handRotateEulerAngles += rotationDeltaEulerAngles;
-
-            jitterOffset = UnityEngine.Random.insideUnitSphere * noiseAmount;
-        }
-
-        public void AnimateGesture(SimulatedHandPose.GestureId newGesture, float gestureAnimDelta)
-        {
-            if (!IsSimulated)
-            {
-                return;
-            }
-
-            if (newGesture != SimulatedHandPose.GestureId.None && newGesture != gesture)
-            {
-                gesture = newGesture;
-                lastGestureAnim = 0.0f;
-                currentGestureAnim = Mathf.Clamp01(gestureAnimDelta);
-            }
-            else
-            {
-                lastGestureAnim = currentGestureAnim;
-                currentGestureAnim = Mathf.Clamp01(currentGestureAnim + gestureAnimDelta);
-            }
-
-            SimulatedHandPose gesturePose = SimulatedHandPose.GetGesturePose(gesture);
-            if (gesturePose != null)
-            {
-                pose.TransitionTo(gesturePose, lastGestureAnim, currentGestureAnim);
-            }
-
-            // Pinch is a special gesture that triggers the Select and TriggerPress input actions
-            IsPinching = (gesture == SimulatedHandPose.GestureId.Pinch && currentGestureAnim > 0.9f);
         }
 
         internal void FillCurrentFrame(Vector3[] jointsOut)
         {
-            Quaternion rotation = Quaternion.Euler(handRotateEulerAngles);
-            Vector3 position = CameraCache.Main.ScreenToWorldPoint(screenPosition + jitterOffset);
+            SimulatedHandPose gesturePose = SimulatedHandPose.GetGesturePose(gesture);
+            if (gesturePose != null)
+            {
+                pose.TransitionTo(gesturePose, poseBlending, gestureBlending);
+            }
+            poseBlending = gestureBlending;
+
+            Quaternion rotation = Quaternion.Euler(HandRotateEulerAngles);
+            Vector3 position = CameraCache.Main.ScreenToWorldPoint(ScreenPosition + JitterOffset);
             pose.ComputeJointPositions(handedness, rotation, position, jointsOut);
         }
     }
 
+    /// <summary>
+    /// Produces simulated data every frame that defines joint positions.
+    /// </summary>
     public class SimulatedHandDataProvider
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
+        protected MixedRealityInputSimulationProfile profile;
+
         /// <summary>
-        /// This event is raised whenever the hand data changes.
-        /// Hand data changes at 45 fps.
+        /// If true then the hand is always visible, regardless of simulating.
         /// </summary>
-        public event Action OnHandDataChanged = delegate { };
+        public bool IsAlwaysVisibleLeft = false;
+        /// <summary>
+        /// If true then the hand is always visible, regardless of simulating.
+        /// </summary>
+        public bool IsAlwaysVisibleRight = false;
 
-        public SimulatedHandData CurrentFrameLeft = new SimulatedHandData();
-        public SimulatedHandData CurrentFrameRight = new SimulatedHandData();
+        private SimulatedHandState HandStateLeft;
+        private SimulatedHandState HandStateRight;
 
-        private MixedRealityInputSimulationProfile profile;
-
-        private SimulatedHandState stateLeft;
-        private SimulatedHandState stateRight;
+        // If true then hands are controlled by user input
+        private bool isSimulatingLeft = false;
+        private bool isSimulatingRight = false;
         // Last frame's mouse position for computing delta
         private Vector3? lastMousePosition = null;
+        // Last timestamp when hands were tracked
+        private long lastSimulatedTimestampLeft = 0;
+        private long lastSimulatedTimestampRight = 0;
+        // Cached delegates for hand joint generation
+        private SimulatedHandData.HandJointDataGenerator generatorLeft;
+        private SimulatedHandData.HandJointDataGenerator generatorRight;
 
         public SimulatedHandDataProvider(MixedRealityInputSimulationProfile _profile)
         {
             profile = _profile;
 
-            stateLeft = new SimulatedHandState(Handedness.Left);
-            stateRight = new SimulatedHandState(Handedness.Right);
+            HandStateLeft = new SimulatedHandState(Handedness.Left);
+            HandStateRight = new SimulatedHandState(Handedness.Right);
+
+            HandStateLeft.Gesture = profile.DefaultHandGesture;
+            HandStateRight.Gesture = profile.DefaultHandGesture;
+
+            HandStateLeft.Reset();
+            HandStateRight.Reset();
         }
 
-        public void Update()
+        /// <summary>
+        /// Capture a snapshot of simulated hand data based on current state.
+        /// </summary>
+        public bool UpdateHandData(SimulatedHandData handDataLeft, SimulatedHandData handDataRight)
         {
-            bool wasLeftVisible = stateLeft.IsVisible;
-            bool wasRightVisible = stateRight.IsVisible;
+            SimulateUserInput();
 
+            bool handDataChanged = false;
+            // TODO: DateTime.UtcNow can be quite imprecise, better use Stopwatch.GetTimestamp
+            // https://stackoverflow.com/questions/2143140/c-sharp-datetime-now-precision
+            long timestamp = DateTime.UtcNow.Ticks;
+
+            // Cache the generator delegates so we don't gc alloc every frame
+            if (generatorLeft == null)
+            {
+                generatorLeft = HandStateLeft.FillCurrentFrame;
+            }
+
+            if (generatorRight == null)
+            {
+                generatorRight = HandStateRight.FillCurrentFrame;
+            }
+
+            handDataChanged |= handDataLeft.UpdateWithTimestamp(timestamp, HandStateLeft.IsTracked, HandStateLeft.IsPinching, generatorLeft);
+            handDataChanged |= handDataRight.UpdateWithTimestamp(timestamp, HandStateRight.IsTracked, HandStateRight.IsPinching, generatorRight);
+
+            return handDataChanged;
+        }
+
+        /// <summary>
+        /// Update hand state based on keyboard and mouse input
+        /// </summary>
+        private void SimulateUserInput()
+        {
             if (UnityEngine.Input.GetKeyDown(profile.ToggleLeftHandKey))
             {
-                stateLeft.IsAlwaysTracked = !stateLeft.IsAlwaysTracked;
+                IsAlwaysVisibleLeft = !IsAlwaysVisibleLeft;
             }
             if (UnityEngine.Input.GetKeyDown(profile.ToggleRightHandKey))
             {
-                stateRight.IsAlwaysTracked = !stateRight.IsAlwaysTracked;
+                IsAlwaysVisibleRight = !IsAlwaysVisibleRight;
             }
 
             if (UnityEngine.Input.GetKeyDown(profile.LeftHandManipulationKey))
             {
-                stateLeft.IsSimulated = true;
+                isSimulatingLeft = true;
             }
             if (UnityEngine.Input.GetKeyUp(profile.LeftHandManipulationKey))
             {
-                stateLeft.IsSimulated = false;
+                isSimulatingLeft = false;
             }
 
             if (UnityEngine.Input.GetKeyDown(profile.RightHandManipulationKey))
             {
-                stateRight.IsSimulated = true;
+                isSimulatingRight = true;
             }
             if (UnityEngine.Input.GetKeyUp(profile.RightHandManipulationKey))
             {
-                stateRight.IsSimulated = false;
-            }
-
-            // Hide cursor if either of the hands is simulated
-            Cursor.visible = !stateLeft.IsSimulated && !stateRight.IsSimulated;
-
-            stateLeft.UpdateVisibility(profile.HandHideTimeout);
-            stateRight.UpdateVisibility(profile.HandHideTimeout);
-            // Reset when enabling
-            if (!wasLeftVisible && stateLeft.IsVisible)
-            {
-                stateLeft.Reset(profile.DefaultHandDistance, profile.DefaultHandGesture);
-            }
-            if (!wasRightVisible && stateRight.IsVisible)
-            {
-                stateRight.Reset(profile.DefaultHandDistance, profile.DefaultHandGesture);
+                isSimulatingRight = false;
             }
 
             Vector3 mouseDelta = (lastMousePosition.HasValue ? UnityEngine.Input.mousePosition - lastMousePosition.Value : Vector3.zero);
@@ -255,41 +266,66 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 rotationDeltaEulerAngles.z = -rotationDelta;
             }
-            stateLeft.SimulateInput(mouseDelta, profile.HandJitterAmount, rotationDeltaEulerAngles);
-            stateRight.SimulateInput(mouseDelta, profile.HandJitterAmount, rotationDeltaEulerAngles);
+
+            SimulateHandInput(ref lastSimulatedTimestampLeft, HandStateLeft, isSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, rotationDeltaEulerAngles);
+            SimulateHandInput(ref lastSimulatedTimestampRight, HandStateRight, isSimulatingRight, IsAlwaysVisibleRight, mouseDelta, rotationDeltaEulerAngles);
 
             float gestureAnimDelta = profile.HandGestureAnimationSpeed * Time.deltaTime;
-            AnimateGesture(stateLeft, gestureAnimDelta);
-            AnimateGesture(stateRight, gestureAnimDelta);
+            HandStateLeft.GestureBlending += gestureAnimDelta;
+            HandStateRight.GestureBlending += gestureAnimDelta;
 
             lastMousePosition = UnityEngine.Input.mousePosition;
-
-            ApplyHandData();
         }
 
-        private void ApplyHandData()
+        /// Apply changes to one hand and update tracking
+        private void SimulateHandInput(
+            ref long lastSimulatedTimestamp,
+            SimulatedHandState state,
+            bool isSimulating,
+            bool isAlwaysVisible,
+            Vector3 mouseDelta,
+            Vector3 rotationDeltaEulerAngles)
         {
-            bool handDataChanged = false;
-            handDataChanged |= UpdateHandDataFromState(CurrentFrameLeft, stateLeft);
-            handDataChanged |= UpdateHandDataFromState(CurrentFrameRight, stateRight);
-
-            if (handDataChanged)
+            if (!state.IsTracked && isSimulating)
             {
-                OnHandDataChanged();
+                // Start at current mouse position
+                Vector3 mousePos = UnityEngine.Input.mousePosition;
+                state.ScreenPosition = new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance);
             }
-        }
 
-        private void AnimateGesture(SimulatedHandState state, float gestureAnimDelta)
-        {
-            if (state.IsAlwaysTracked)
+            if (isSimulating)
             {
-                // Toggle gestures on/off
-                state.AnimateGesture(ToggleGesture(state.Gesture), gestureAnimDelta);
+                state.SimulateInput(mouseDelta, profile.HandJitterAmount, rotationDeltaEulerAngles);
+
+                if (isAlwaysVisible)
+                {
+                    // Toggle gestures on/off
+                    state.Gesture = ToggleGesture(state.Gesture);
+                }
+                else
+                {
+                    // Enable gesture while mouse button is pressed
+                    state.Gesture = SelectGesture();
+                }
+            }
+
+            // Update tracked state of a hand.
+            // If hideTimeout value is null, hands will stay visible after tracking stops.
+            // TODO: DateTime.UtcNow can be quite imprecise, better use Stopwatch.GetTimestamp
+            // https://stackoverflow.com/questions/2143140/c-sharp-datetime-now-precision
+            DateTime currentTime = DateTime.UtcNow;
+            if (isAlwaysVisible || isSimulating)
+            {
+                state.IsTracked = true;
+                lastSimulatedTimestamp = currentTime.Ticks;
             }
             else
             {
-                // Enable gesture while mouse button is pressed
-                state.AnimateGesture(SelectGesture(), gestureAnimDelta);
+                float timeSinceTracking = (float)currentTime.Subtract(new DateTime(lastSimulatedTimestamp)).TotalSeconds;
+                if (timeSinceTracking > profile.HandHideTimeout)
+                {
+                    state.IsTracked = false;
+                }
             }
         }
 
@@ -332,38 +368,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // 'None' will not change the gesture
                 return SimulatedHandPose.GestureId.None;
             }
-        }
-
-        private bool UpdateHandDataFromState(SimulatedHandData frame, SimulatedHandState state)
-        {
-            bool handDataChanged = false;
-            bool wasTracked = frame.IsTracked;
-            bool wasPinching = frame.IsPinching;
-
-            frame.IsTracked = state.IsVisible;
-            frame.IsPinching = state.IsPinching;
-            if (wasTracked != frame.IsTracked || wasPinching != frame.IsPinching)
-            {
-                handDataChanged = true;
-            }
-
-            if (frame.IsTracked)
-            {
-                var prevTime = frame.Timestamp;
-                frame.Timestamp = DateTime.UtcNow.Ticks;
-                if (frame.Timestamp != prevTime)
-                {
-                    state.FillCurrentFrame(frame.Joints);
-                    handDataChanged = true;
-                }
-            }
-            else
-            {
-                // If frame is not tracked, set timestamp to zero
-                frame.Timestamp = 0;
-            }
-
-            return handDataChanged;
         }
     }
 }
