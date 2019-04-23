@@ -4214,7 +4214,7 @@ PrefabInstance:
     - target: {fileID: 4533479808247404460, guid: 231a4253eb1a74d4e87393459447cc95,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4533479808247404460, guid: 231a4253eb1a74d4e87393459447cc95,
         type: 3}
@@ -4236,6 +4236,18 @@ PrefabInstance:
       propertyPath: m_textInfo.wordCount
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4533479808247404460, guid: 231a4253eb1a74d4e87393459447cc95,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217,
+        type: 2}
+    - target: {fileID: 4533479808247404460, guid: 231a4253eb1a74d4e87393459447cc95,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
+        type: 2}
     - target: {fileID: 4533479807832870191, guid: 231a4253eb1a74d4e87393459447cc95,
         type: 3}
       propertyPath: m_IsActive
@@ -4281,6 +4293,12 @@ PrefabInstance:
       propertyPath: OnLookAway.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Disengage
       objectReference: {fileID: 0}
+    - target: {fileID: 4533479808247404465, guid: 231a4253eb1a74d4e87393459447cc95,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 231a4253eb1a74d4e87393459447cc95, type: 3}
 --- !u!4 &1562698547 stripped
@@ -5358,6 +5376,23 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4533479808247404460, guid: 231a4253eb1a74d4e87393459447cc95,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217,
+        type: 2}
+    - target: {fileID: 4533479808247404460, guid: 231a4253eb1a74d4e87393459447cc95,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
+        type: 2}
+    - target: {fileID: 4533479808247404460, guid: 231a4253eb1a74d4e87393459447cc95,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4533479808906774278, guid: 231a4253eb1a74d4e87393459447cc95,
         type: 3}
       propertyPath: m_Size.x
@@ -5388,5 +5423,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4533479808247404465, guid: 231a4253eb1a74d4e87393459447cc95,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 231a4253eb1a74d4e87393459447cc95, type: 3}

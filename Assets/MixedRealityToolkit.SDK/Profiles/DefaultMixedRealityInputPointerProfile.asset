@@ -24,7 +24,6 @@ MonoBehaviour:
     type: 3}
   gazeProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.GazeProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
-  showCursorWithEyeGaze: 0
   pointerOptions:
   - controllerType: 1071
     handedness: 7

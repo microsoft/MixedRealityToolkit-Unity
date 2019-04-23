@@ -598,6 +598,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
             // let the Input Handlers know what the pointer action is

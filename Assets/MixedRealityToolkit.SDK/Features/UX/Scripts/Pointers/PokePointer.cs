@@ -107,6 +107,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnPostSceneQuery()
         {
+            base.OnPostSceneQuery();
+
             if (Result?.CurrentPointerTarget != null)
             {
                 float dist = Vector3.Distance(Result.StartPoint, Result.Details.Point) - distBack;
@@ -138,13 +140,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnPreCurrentPointerTargetChange()
         {
-            if (currentTouchableObjectDown != null)
-            {
-                // We need to raise the event now, since the pointer's focused object or touchable will change 
-                // after we leave this function. This will make sure the same object that received the Down event
-                // will also receive the Up event.
-                TryRaisePokeUp(Result.CurrentPointerTarget, Position);
-            }
+            // We need to raise the event now, since the pointer's focused object or touchable will change 
+            // after we leave this function. This will make sure the same object that received the Down event
+            // will also receive the Up event.
+            TryRaisePokeUp();
         }
 
         private void TryRaisePokeDown(GameObject targetObject, Vector3 touchPosition)
@@ -191,6 +190,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private void TryRaisePokeUp()
+        {
+            if (currentTouchableObjectDown != null)
+            {
+                TryRaisePokeUp(Result.CurrentPointerTarget, Position);
+            }
+        }
+
         private void RaiseTouchUpdated(GameObject targetObject, Vector3 touchPosition)
         {
             if (currentTouchableObjectDown != null)
@@ -233,6 +240,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             normal = (closestProximityTouchable != null) ? closestProximityTouchable.Forward : Vector3.forward;
             return true;
+        }
+
+        /// <inheritdoc />
+        public override void OnSourceLost(SourceStateEventData eventData)
+        {
+            TryRaisePokeUp();
+
+            base.OnSourceLost(eventData);
         }
     }
 }
