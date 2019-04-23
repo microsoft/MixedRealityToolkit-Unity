@@ -6,7 +6,7 @@ The diagnostics system profile provides options for configuring:
 
 ## General Settings
 
-![Diagnostics General Settings](../../External/ReadMeImages/Diagnostics/DiagnosticsGeneralSettings.png)
+![Diagnostics General Settings](../../Documentation/Images/Diagnostics/DiagnosticsGeneralSettings.png)
 
 ### Show Diagnostics
 
@@ -16,7 +16,7 @@ Indicates whether or not the diagnostics system is to display the configured dia
 
 ## Profiler Settings
 
-![Diagnostics Profiler Settings](../../External/ReadMeImages/Diagnostics/DiagnosticsProfilerSettings.png)
+![Diagnostics Profiler Settings](../../Documentation/Images/Diagnostics/DiagnosticsProfilerSettings.png)
 
 ### Show Profiler
 

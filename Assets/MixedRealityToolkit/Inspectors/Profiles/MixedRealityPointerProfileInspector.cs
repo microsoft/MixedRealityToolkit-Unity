@@ -127,7 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.Space();
                     EditorGUILayout.PropertyField(gazeCursorPrefab);
                     EditorGUILayout.PropertyField(gazeProviderType);
-                    EditorGUILayout.PropertyField(showCursorWithEyeGaze);
 
                     EditorGUILayout.Space();
                     if (GUILayout.Button("Customize Gaze Provider Settings"))

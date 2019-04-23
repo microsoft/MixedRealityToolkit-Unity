@@ -66,13 +66,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Can manipulation be done only with one hand, only with two hands, or with both?")]
         private HandMovementType manipulationType = HandMovementType.OneAndTwoHanded;
 
-        public HandMovementType ManipulationType => manipulationType;
+        public HandMovementType ManipulationType
+        {
+            get => manipulationType;
+            set => manipulationType = value;
+        }
 
         [SerializeField]
         [Tooltip("What manipulation will two hands perform?")]
         private TwoHandedManipulation twoHandedManipulationType = TwoHandedManipulation.MoveRotateScale;
-
-        public TwoHandedManipulation TwoHandedManipulationType => twoHandedManipulationType;
+        
+        public TwoHandedManipulation TwoHandedManipulationType
+        {
+            get => twoHandedManipulationType;
+            set => twoHandedManipulationType = value;
+        }
 
         [SerializeField]
         [Tooltip("Specifies whether manipulation can be done using far interaction with pointers.")]
@@ -93,34 +101,54 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Rigid body behavior of the dragged object when releasing it.")]
         private ReleaseBehaviorType releaseBehavior = ReleaseBehaviorType.KeepVelocity | ReleaseBehaviorType.KeepAngularVelocity;
 
-        public ReleaseBehaviorType ReleaseBehavior => releaseBehavior;
+        public ReleaseBehaviorType ReleaseBehavior
+        {
+            get => releaseBehavior;
+            set => releaseBehavior = value;
+        }
 
         [Header("Constraints")]
         [SerializeField]
         [Tooltip("Constrain rotation along an axis")]
         private RotationConstraintType constraintOnRotation = RotationConstraintType.None;
 
-        public RotationConstraintType ConstraintOnRotation => constraintOnRotation;
+        public RotationConstraintType ConstraintOnRotation
+        {
+            get => constraintOnRotation;
+            set => constraintOnRotation = value;
+        }
 
         [SerializeField]
         [Tooltip("Constrain movement")]
         private MovementConstraintType constraintOnMovement = MovementConstraintType.None;
 
-        public MovementConstraintType ConstraintOnMovement => constraintOnMovement;
+        public MovementConstraintType ConstraintOnMovement
+        {
+            get => constraintOnMovement;
+            set => constraintOnMovement = value;
+        }
 
         [Header("Smoothing")]
         [SerializeField]
         [Tooltip("Check to enable frame-rate independent smoothing. ")]
         private bool smoothingActive = true;
 
-        public bool SmoothingActive => smoothingActive;
+        public bool SmoothingActive
+        {
+            get => smoothingActive;
+            set => smoothingActive = value;
+        }
 
         [SerializeField]
         [Range(0, 1)]
         [Tooltip("Enter amount representing amount of smoothing to apply to the movement, scale, rotation.  Smoothing of 0 means no smoothing. Max value means no change to value.")]
         private float smoothingAmountOneHandManip = 0.001f;
 
-        public float SmoothingAmoutOneHandManip => smoothingAmountOneHandManip;
+        public float SmoothingAmoutOneHandManip
+        {
+            get => smoothingAmountOneHandManip;
+            set => smoothingAmountOneHandManip = value;
+        }
 
         #endregion Serialized Fields
 
@@ -179,13 +207,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (hostTransform == null)
             {
                 hostTransform = transform;
-            }
-        }
-        private void Update()
-        {
-            if (currentState != State.Start)
-            {
-                UpdateStateMachine();
             }
         }
         #endregion MonoBehaviour Functions
@@ -409,6 +430,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // as long as the ManipulationHandler is active.
                 // This is due to us reacting to both "Select" and "Grip" events.
                 eventData.Use();
+            }
+        }
+
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+            if (currentState != State.Start)
+            {
+                UpdateStateMachine();
             }
         }
 

@@ -1539,6 +1539,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         public void OnSourceDetected(SourceStateEventData eventData)
         {
             if (eventData.Controller != null)

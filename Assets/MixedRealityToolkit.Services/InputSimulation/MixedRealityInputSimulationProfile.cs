@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Simulated Input Profile", fileName = "MixedRealityInputSimulationProfile", order = (int)CreateProfileMenuItemIndices.InputSimulation)]
-    [MixedRealityServiceProfile(typeof(InputSimulationService))]
+    [MixedRealityServiceProfile(typeof(IInputSimulationService))]
     public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile
     {
         [Header("Camera Control")]
@@ -69,12 +69,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // The right stick has no default settings in the Input Manager and will need to be setup for a game controller to look
         [SerializeField]
         [Tooltip("Look Horizontal Axis - Right Stick On Controller")]
-        private string lookHorizontal = "LookHorizontal";
+        private string lookHorizontal = ControllerMappingLibrary.AXIS_4;
         public string LookHorizontal => lookHorizontal;
         // Look vertical string for right stick of game controller
         [SerializeField]
         [Tooltip("Look Vertical Axis - Right Stick On Controller ")]
-        private string lookVertical = "LookVertical";
+        private string lookVertical = ControllerMappingLibrary.AXIS_5;
         public string LookVertical => lookVertical;
 
         [Header("Eye Simulation")]

@@ -46,7 +46,7 @@ To ensure that there are no direct links between components, MRTK v2 utilizes in
 services, data providers and application code. These interfaces are defined in and all communication is routed 
 through the Mixed Reality Toolkit core component.
 
-![Using the spatial awareness system via interfaces](../../External/ReadMeImages/Packaging/AccessingViaInterfaces.png)
+![Using the spatial awareness system via interfaces](../../Documentation/Images/Packaging/AccessingViaInterfaces.png)
 
 ### Manual Componentization
 
