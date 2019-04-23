@@ -22,8 +22,6 @@ A tool tip can be dynamically added to an object at runtime as well as pre-set t
 Tool tips can also be assigned to motion controllers, for example to explain the assigned actions of buttons. The example scene below also includes two tooltip groups on the bottom. These are layed out to match position of the buttons on the motion controllers. When motion controllers are detected, these tool tips will be attached automatically to the controllers, using [`AttachToController`](xref:Microsoft.MixedReality.Toolkit.UI.Utilities.Solvers.AttachToController) script.
 
 ## Example scene ##
-[/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes)
+In the [example scene files](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes), you will be able to find various examples of tool tips. First group on the left demonstrates the static tool tips examples that are always visible. In the center, you can see the example of using multiple tool tips on a single object. Each tooltip has different child object as a target object which works as an anchor. The group on the right shows the examples of dynamically spawning tool tips.
 
 <img src="../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png" width="600">
-
-In the scene file, you will be able to find various examples of tool tips. First group on the left demonstrates the static tool tips examples that are always visible. In the center, you can see the example of using multiple tool tips on a single object. Each tooltip has different child object as a target object which works as an anchor. The group on the right shows the examples of dynamically spawning tool tips.

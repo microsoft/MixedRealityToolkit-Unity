@@ -229,6 +229,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         public override void OnPostSceneQuery()
         {
+            if (IsSelectPressed)
+            {
+                MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+            }
+
             // Use the results from the last update to set our NavigationResult
             float clearWorldLength = 0f;
             TeleportSurfaceResult = TeleportSurfaceResult.None;

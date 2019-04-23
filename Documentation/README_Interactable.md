@@ -2,7 +2,7 @@
 
 ![Interactable](../Documentation/Images/Interactable/InteractableExamples.png)
 
-The *Interactable* concept provides basic UI functionality for any kind of object the user wants to interact with. It can be used to construct input objects from it, for example buttons, toggle switches, checkboxes and so on. They offer internal states, interaction events and visual feedback based on themes. In fact, most [interaction example scenes](README_HandInteractionExamples.md) revolve around interactions based on Interactables. 
+With Interactable script, you can make any object interactable with differentiated visual state. For example, you can change color of the object on focus or make it bigger on pressed state. Since you can have multiple themes that control different parts of the object, you can achieve sophisticated visual states including shader property changes. In fact, most [interaction example scenes](README_HandInteractionExamples.md) revolve around interactions based on Interactables. 
 
 ## How to use interactables ##
 

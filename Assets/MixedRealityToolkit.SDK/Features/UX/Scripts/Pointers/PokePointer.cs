@@ -107,6 +107,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnPostSceneQuery()
         {
+            base.OnPostSceneQuery();
+
             if (Result?.CurrentPointerTarget != null)
             {
                 float dist = Vector3.Distance(Result.StartPoint, Result.Details.Point) - distBack;
