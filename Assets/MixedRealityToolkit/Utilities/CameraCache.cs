@@ -20,7 +20,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             get
             {
-                var mainCamera = cachedCamera == null ? Refresh(Camera.main) : cachedCamera;
+                var mainCamera = Camera.main;
+
+                if (mainCamera == null)
+                {
+                    Debug.LogWarning("No main camera found. The mixed reality toolkit requires at least one camera in the scene. One will be generated now.");
+                    mainCamera = new GameObject("Main Camera", typeof(Camera)) { tag = "MainCamera" }.GetComponent<Camera>();
+                }
+
+                mainCamera = cachedCamera == null ? Refresh(mainCamera) : cachedCamera;
 
                 if (mainCamera == null)
                 {
@@ -30,14 +38,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     switch (cameras.Length)
                     {
                         case 0:
-                            Debug.LogWarning("No main camera found. The mixed reality toolkit requires at least one camera in the scene. One will be generated now.");
-                            Camera newMainCamera = new GameObject("Main Camera", typeof(Camera)) { tag = "MainCamera" }.GetComponent<Camera>();
-                            mainCamera = Refresh(newMainCamera);
+                            Debug.LogError("No Cameras found in the scene!");
                             break;
 
                         case 1:
                             mainCamera = Refresh(cameras[0]);
                             break;
+
                         default:
                             // Search for main camera by name.
                             for (int i = 0; i < cameras.Length; i++)
