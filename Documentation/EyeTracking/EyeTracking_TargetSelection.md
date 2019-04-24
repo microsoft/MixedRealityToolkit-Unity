@@ -81,12 +81,12 @@ _MRTK Configuration Profile_ -> _Input System Profile_ -> _Input Actions Profile
 Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus if it is eye gaze.
 Similar to the _FocusHandler_, the _BaseEyeFocusHandler_ is specific Eye Tracking.
 
-Here is an example from [mrtk_eyes_02_TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_02_TargetSelection.unity
+Here is an example from [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
 ).
-Having the OnLookAt_Rotate.cs attached, a GameObject will rotate while being looked at. 
+Having the [OnLookAtRotate.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotate) attached, a GameObject will rotate while being looked at. 
 
 ```csharp
-    public class OnLookAt_Rotate : BaseEyeFocusHandler
+    public class OnLookAtRotate : BaseEyeFocusHandler
     {
         ... 
 
@@ -141,7 +141,7 @@ This has two advantages:
 2. Several Unity events have already been set up to make it fast and convenient to handle and reuse existing behaviors.
 
 #### Example: Attentive Notifications
-For example, in [mrtk_eyes_02_TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_02_TargetSelection.unity), 
+For example, in [EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity), 
 you can find an example for _'smart attentive notifications'_ that react to your eye gaze. 
 These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility.
 While the user is reading the notification, the information keeps getting displayed crisp and clear. 
@@ -179,7 +179,7 @@ One event provided by the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolki
 _'Attentive Notifications'_ is the _OnSelected()_ event. 
 Using the _EyeTrackingTarget_, you can specify what triggers the selection which will invoke the _OnSelected()_ event. 
 For example, the screenshot below is from 
-[mrtk_eyes_02_TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_02_TargetSelection.unity).
+[EyeTrackingDemo-02-TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity).
 It shows how the [EyeTrackingTarget](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget)
 is set up for one of the gems that explodes when you select it.
 
