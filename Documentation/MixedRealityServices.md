@@ -1,4 +1,4 @@
-# What makes a Mixed Reality feature
+# What makes a mixed reality feature
 
 To avoid the performance overheads of the `MonoBehaviour` class, all *services* (systems, features, or modules that require independent operation in a Mixed Reality Solution, e.g. Input, Boundary, SpatialAwareness) are required to be discrete plain old c# classes which implement `IMixedRealityService` and to register with the `MixedRealityToolkit`.
 
