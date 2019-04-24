@@ -3656,6 +3656,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Utilities/ExtensionServiceCreationWizard.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Utilities/ExtensionServiceCreationWizard.html",
+          "hash": "lqCB1Iqik4+wRpJGLPGE1g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/howto_migrate.md",
       "output": {
         ".html": {
@@ -4447,6 +4459,54 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.CreateResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.CreateResult.html",
+          "hash": "thJUACbZOBc5Rw71uzLPTg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.CreationStage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.CreationStage.html",
+          "hash": "CdU3OJQz5yD/4MbMncsxKw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.html",
+          "hash": "3hlj4OaTqsSnAoW13kfdmQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceWizard.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceWizard.html",
+          "hash": "hbBxWnacvwL4nExKgjZPVw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.HelpDrawer.yml",
       "output": {
         ".html": {
@@ -4811,7 +4871,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.html",
-          "hash": "tRN40CZZsXrPTtzByWwq7Q=="
+          "hash": "BfRfZEuEUauCmdiI0/Ettg=="
         }
       },
       "is_incremental": false,
@@ -14051,7 +14111,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "m+0fATmr9gc9xnfrJ2qtxQ=="
+          "hash": "lztaLRT5fBmvP5gW6hbdZw=="
         }
       },
       "is_incremental": false,
@@ -14113,13 +14173,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 90,
+          "total_file_count": 91,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 862,
+          "total_file_count": 866,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
