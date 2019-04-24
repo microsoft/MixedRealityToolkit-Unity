@@ -16,7 +16,7 @@ The [HandInteractionExamples.unity](https://github.com/Microsoft/MixedRealityToo
 
 ![Object collection](../Documentation/Images/ObjectCollection/MRTK_ObjectCollection_ExampleScene1.jpg)
 
-[Periodic Table of the Elements](https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable) is an example app that demonstrates how object collections work. It uses object collection to layout the 3D element boxes in different shapes.
+[Periodic table of the elements](https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable) is an example app that demonstrates how object collections work. It uses object collection to layout the 3D element boxes in different shapes.
 
 ![Object collection](../Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Types.jpg)
 

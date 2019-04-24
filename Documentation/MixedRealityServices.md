@@ -1,6 +1,6 @@
 # What makes a mixed reality feature
 
-To avoid the performance overheads of the `MonoBehaviour` class, all *services* (systems, features, or modules that require independent operation in a Mixed Reality Solution, e.g. Input, Boundary, SpatialAwareness) are required to be discrete plain old c# classes which implement `IMixedRealityService` and to register with the `MixedRealityToolkit`.
+To avoid the performance overheads of the `MonoBehaviour` class, all *services* (systems, features, or modules that require independent operation in a mixed reality solution, e.g. input, boundary, spatial awareness) are required to be discrete plain old c# classes which implement `IMixedRealityService` and to register with the `MixedRealityToolkit`.
 
 The `MixedRealityToolkit` then coordinates all referencing between services and ensures that they receive all appropriate events (E.g. Awake/Initialize, Update, Destroy) as well as facilitating the finding of other services when needed.
 
@@ -12,8 +12,8 @@ An individual service can be any functionality that needs to be implemented in t
 
 * Performance - without the overhead of a MonoBehaviour, [script updates are approximately 80% faster and don't require a `GameObject` to live in the scene](https://blogs.unity3d.com/2015/12/23/1k-update-calls/).
 * Reference-ability - services can be discovered from the `MixedRealityToolkit` a lot faster and easier than searching `GameObjects` in a scene or using `FindObjectsOfType<T>`.
-* No Type dependency - Though a method similar to Dependency Injection, services can be decoupled from their type, this means the concrete implementation can be swapped out at any time without adversely affecting code that consumes it (E.G. Replacing the default InputSystem with your custom one, so long as you've fully implemented each interface).
-* Multi-scene usage - If a service does need to know about a `Transform` position in a scene, it can simply reference, or create, a `GameObject` _rather than be a component attached to it_. This makes it a lot easier to find and use the service when the project spans multiple scenes.
+* No type dependency - though a method similar to dependency injection, services can be decoupled from their type, this means the concrete implementation can be swapped out at any time without adversely affecting code that consumes it (e.g. replacing the default InputSystem with your custom one, so long as you've fully implemented each interface).
+* Multi-scene usage - if a service does need to know about a `transform` position in a scene, it can simply reference, or create, a `GameObject` _rather than be a component attached to it_. This makes it a lot easier to find and use the service when the project spans multiple scenes.
 
 ## Service interfaces
 

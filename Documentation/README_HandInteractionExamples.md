@@ -12,22 +12,22 @@ If you see big text after the TextMesh Pro import, please open another Unity sce
 
 <img src="../Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP1.png" width="350">
 
-## Pressable Button ##
-See [Button](README_Button.md) page for the details.
+## Pressable button ##
+See [button](README_Button.md) page for the details.
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_PressTouch.png)
 
-## Bounding Box ##
-See [Bounding Box](README_BoundingBox.md) page for the details.
+## Bounding box ##
+See [bounding box](README_BoundingBox.md) page for the details.
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_BoundingBox.png)
 
-## Manipulation Handler ##
-See [Manipulation Handler](README_ManipulationHandler.md) page for the details.
+## Manipulation handler ##
+See [manipulation handler](README_ManipulationHandler.md) page for the details.
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Manipulation.png)
 
 ## Slate ##
-See [Slate](README_Slate.md) page for the details.
+See [slate](README_Slate.md) page for the details.
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Slate.png)
 
-## System Keyboard ##
-See [System Keyboard](README_SystemKeyboard.md) page for the details.
+## System keyboard ##
+See [system keyboard](README_SystemKeyboard.md) page for the details.
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Keyboard.png)

@@ -2,18 +2,18 @@
 
 ![Tooltip](../Documentation/Images/Tooltip/MRTK_Tooltip_Main.png)
 
-This example scene demonstrates an implementation of the ToolTip user interface element. Tool tips are usually used to convey a hint or extra information upon closer inspection of an object. Tool tips can be used to explain button inputs on the motion controllers or to label objects in the physical environment.
+This example scene demonstrates an implementation of the tooltip user interface element. Tooltips are usually used to convey a hint or extra information upon closer inspection of an object. Tooltips can be used to explain button inputs on the motion controllers or to label objects in the physical environment.
 
 ## Demo video ##
 
-The [example scene](https://gfycat.com/WarmOblongBilby) demonstrates two ways to display a Tooltip on an object.
+The [example scene](https://gfycat.com/WarmOblongBilby) demonstrates two ways to display a tooltip on an object.
 
-## How to use a tool tip ##
-A tool tip can be added directly to the hierarchy and targeted to an object.
+## How to use a tooltip ##
+A tooltip can be added directly to the hierarchy and targeted to an object.
 
-To use this method simply add a game object and one of the [tool tip prefabs](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips) to the scene hierarchy. In the prefab's inspector panel, expand the *Tool Tip* (script). Select a tip state and configure the tool tip.  Enter the respective text for the tool tip in the text field. Expand the *ToolTipConnector* (Script) and drag the object that is to have the tool tip from the hierarchy into the field labelled *Target*. This attaches the tool tip to the object. 
+To use this method simply add a game object and one of the [tooltip prefabs](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips) to the scene hierarchy. In the prefab's inspector panel, expand the *Tool Tip* (script). Select a tip state and configure the tooltip.  Enter the respective text for the tool tip in the text field. Expand the *ToolTipConnector* (Script) and drag the object that is to have the tooltip from the hierarchy into the field labelled *Target*. This attaches the tooltip to the object. 
 
-This use assumes a tool tip that is always showing or that is shown / hidden via script by changing the tip state property of the tool tip component.
+This use assumes a tooltip that is always showing or that is shown / hidden via script by changing the tooltip state property of the tooltip component.
  
 ## Dynamically spawning tooltips ##
 A tooltip can be dynamically added to an object at runtime as well as pre-set to show and hide on a tap or focus. Simply add the [`ToolTipSpawner`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips/ToolTipSpawner.cs) script to any game object. Delays for appearing and disappearing can be set in the scripts inspector as well as a lifetime so that the tooltip will disappear after a set duration. Tooltips also feature style properties such as background visuals in the spawner script. By default the tooltip will be anchored to the object with the spawner script. This can be changed by assigning a GameObject to the anchor field.

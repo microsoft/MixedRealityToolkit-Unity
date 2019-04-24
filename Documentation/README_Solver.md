@@ -19,7 +19,7 @@ The third category is the solver itself. The following solvers provide the build
 * **Orbital**: Locks to a specified position * offset from the referenced object.
 * **ConstantViewSize**: Scales to maintain a constant size relative to the view of the referenced object.
 * **RadialView**: Keeps the object within a view cone cast by the referenced object.
-* **SurfaceMagnetism**, casts rays to Surfaces in the world, and align the object to that surface.
+* **SurfaceMagnetism**, casts rays to surfaces in the world, and align the object to that surface.
 * **Momentum**: Applies acceleration/velocity/friction to simulate momentum and springiness for an object being moved by other solvers/components.
 * **InBetween**: Keeps an object in between two tracked objects.
 

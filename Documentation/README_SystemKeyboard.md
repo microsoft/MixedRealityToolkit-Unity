@@ -1,6 +1,6 @@
-# System Keyboard #
+# System keyboard #
 
-![System Keyboard](../Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)
+![System keyboard](../Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)
 
 A Unity application can invoke the system keyboard at any time. Note that the system keyboard will behave according to the target platform's capabilities, for example the keyboard on HoloLens 2 would support direct hand interactions, while the keyboard on HoloLens (1st gen) would support GGV<sup>[1](https://docs.microsoft.com/en-us/windows/mixed-reality/gaze)</sup>.
 
