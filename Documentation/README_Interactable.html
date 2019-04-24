@@ -83,98 +83,85 @@
 <h1 id="interactable">Interactable</h1>
 
 <p><img src="Images/Interactable/InteractableExamples.png" alt="Interactable"></p>
-<p>With Interactable script, you can make any object interactable with differentiated visual state. For example, you can change color of the object on focus or make it bigger on pressed state. Since you can have multiple themes that control different parts of the object, you can achieve sophisticated visual states including shader property changes.</p>
-<p>With Interactable script, you can make any object interactable with differentiated visual state. For example, you can change color of the object on focus or make it bigger on pressed state. Since you can have multiple themes that control different parts of the object, you can achieve sophisticated visual states including shader property changes.</p>
-<h2 id="how-to-use-interactable">How to use Interactable</h2>
-<p>Add the Interactable Component to a GameObject</p>
+<p>With Interactable script, you can make any object interactable with differentiated visual state. For example, you can change color of the object on focus or make it bigger on pressed state. Since you can have multiple themes that control different parts of the object, you can achieve sophisticated visual states including shader property changes. In fact, most <a href="README_HandInteractionExamples.html">interaction example scenes</a> revolve around interactions based on Interactables.</p>
+<h2 id="how-to-use-interactables">How to use interactables</h2>
+<p>Simply add the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Interactable.cs"><code>Interactable.cs</code></a> component to a GameObject.</p>
 <p><img src="Images/Interactable/InteractableInspector_basicSteps.png" alt="Interactable"></p>
 <ol>
-<li>A Collider must exist on the GameObject with the Interactable or the child of the Interactable for it to receive input.</li>
-<li>Use the OnClick event to make something happen.</li>
-<li>Add visual feedback by linking a Target to a Profile and assigning a Theme.</li>
+<li>A collider must exist on the GameObject with the interactable or the child of the interactable for it to receive input.</li>
+<li>Use the <em>OnClick</em> event to make something happen.</li>
+<li>Add visual feedback by linking a target to a profile and assigning a theme.</li>
 </ol>
-<h2 id="input-settings">Input Settings</h2>
-<p>The basic features allow for button style interactions, such as pointer focus and clicks, that maps to interaction states to drive themes which are setup through the Interactable profile. Controller or hand focus, down, up and click (both near and far) are handled. Functionality can be extended using external scripts that can set state manually.</p>
+<p>Interactable features can be extended using external components like <code>PhysicalPressEventRouter</code> which enables press events to drive some state changes in the interactable.</p>
+<h2 id="input-settings">Input settings</h2>
+<p>The basic features allow for button style interactions, such as pointer focus and clicks, that maps to interaction states to drive themes which are setup through the interactable profile. Controller or hand focus, down, up and click (both near and far) are handled. Functionality can be extended using external scripts that can set state manually.</p>
 <img src="Images/Interactable/InputFeatures_short.png" width="450">
-<h3 id="input-actions">Input Actions</h3>
-<p>Select the action, from the input configuration or controller mapping profile, that the Interactable should react to.
-See the InputProfile or the DefaultMixedRealityInputActionsProfile for more on how Input Actions are setup and intended to be used in the application.
- </p>
-<h3 id="enabled">Enabled</h3>
-<p>Sets the Interactable's enabled state, which will disable some input handling and update the themes to reflect the current state which is disabled.
-This is different from disabling input all together (using Enable Input) This means we have a button that would normally be interactive, but at this moment it is disabled (could be like a submit button waiting for all the required fields to be completed) and has a visual look and feel to denote it's disabled state.
- </p>
-<h3 id="isglobal">IsGlobal</h3>
-<p>Focus is not required to detect input actions, default behavior is false.
- </p>
-<h3 id="voice-commands">Voice Commands</h3>
-<p>A voice command to trigger an OnClick event. This will also trigger a quick state change to drive any themes visuals.
+<p><strong>Input Actions</strong>
+Select the action, from the input configuration or controller mapping profile, that the interactable should react to.
+See <a href="Input/Overview.html">Overview of the input system in MRTK</a> for more on how input actions are setup and intended to be used in the application.
  
-Note: Make sure there is a unique voice command on each button. The Voice Recognizer is global (even if the Interactable isn't) and will not register the same voice command twice; in this case an error will be thrown.
- </p>
-<h3 id="requires-gazeonly-available-when-the-voice-command-field-has-a-value">Requires Gaze (Only available when the Voice Command field has a value)</h3>
-<p>The voice command requires the Interactable to have focus to listen for the voice command.</p>
-<ul>
-<li>There are several ways to use voice commands to trigger an interactable, be careful not to have multiple objects with the same voice command or there will be conflicts.</li>
-<li>Using the MRTK voice recognition profile or online speech service are other ways to enable voice commands.</li>
-</ul>
-<p><strong>Dev Tip</strong>: Interactable Features can be extended using external components like PhysicalPressEventRouter which enables press events to drive some state changes in Interactable.</p>
-<h2 id="example-scene">Example Scene</h2>
-<p>See demonstrations of Interactable in the InteractableExamples scene.
-More examples can also be found in the HandInteractionExamples scene.</p>
+<strong>Enabled</strong>
+Sets the interactables enabled state, which will disable some input handling and update the themes to reflect the current state which is disabled.</p>
+<p>This is different from disabling input all together (using <em>Enable Input</em>). It means that a specific button that would normally be interactive will be disabled and has a visual look and feel to denote its disabled state. A typical example of this would be a submit button waiting for all the required input fields to be completed.</p>
+<p><strong>IsGlobal</strong>
+Focus is not required to detect input actions, default behavior is false.
+ 
+<strong>Voice Commands</strong>
+A voice command to trigger an OnClick event. This will also trigger a quick state change to drive any themes visuals.
+ 
+Note: Make sure there is a unique voice command on each button. The voice recognizer is global (even if the interactable is not) and will not register the same voice command twice; in this case an error will be thrown.
+ 
+<strong>Requires Gaze (Only available when the voice command field has a value)</strong>
+The voice command requires the interactable to have focus to listen for the voice command. There are several ways to use voice commands to trigger an interactable, be careful not to have multiple objects with the same voice command or there will be conflicts. Using the MRTK voice recognition profile or online speech service are other ways to enable voice commands.</p>
 <h2 id="profiles-and-themes">Profiles and Themes</h2>
 <p>The profile will define how button content will be linked to and manipulated by themes, based on state changes.</p>
 <img src="Images/Interactable/Profiles_noTarget.png" width="450">
-<p>Themes work a lot like Materials, they are ScriptableObjects that contain a list of data that will be assigned to an object based on the current state. Like Materials, they can be edited individually in the Project panel or through the Interactable profile. Editing a Theme through an Interactable will update its settings for all other Interactables using that theme. Themes can be extended to control any aspect of a GameObject with a few basic themes provided that can change color, scale, position or an combination of the three.</p>
+<p>Themes work a lot like materials. They are scriptable objects that contain a list of data that will be assigned to an object based on the current state. Like materials, they can be edited individually in the project panel or through the interactable profile. Editing a theme through an interactable will update its settings for all other interactables using that theme. Themes can be extended to control any aspect of a GameObject with a few basic themes provided that can change color, scale, position or an combination of the three.</p>
 <img src="Images/Interactable/DefaultTheme_button.png" width="450">
-<h3 id="default-themes">Default Themes</h3>
-<p>A default theme will be provided whenever an target object is added to a profile. It is not advised to edit the default theme, like in the case MRTK is updated, the theme could get overridden. A create Theme button is provided whenever the default theme is used to make it easier to create a new themes. </p>
+<p>A default theme will be provided whenever an target object is added to a profile. It is not advised to edit the default theme, like in the case MRTK is updated, the theme could get overridden. A &quot;Create Theme&quot; button is provided whenever the default theme is used to make it easier to create a new themes. </p>
 <img src="Images/Interactable/DefaultTheme_values.png" width="450">
-<p>Example of the Default Theme.</p>
+*Example of the Default Theme*
 <img src="Images/Interactable/Theme.png" width="450">
-<p>Example of a Color Theme</p>
-<p>The best way to save a profile of a button, with all the themes and targets setup, is to create a prefab of your button.
-<em>Note: Themes that effect mesh objects (Color or Shader Themes) are able to detect the shader properties in the material assigned to the target object. A drop down list of shader properties will define how the values of the theme are applied and is a convenience of this ability. Conflicts can arise if the same theme is used on objects that do not share the same material shader setting. Best practice is to create a separate theme for objects with different shaders; this is not an issue when using the same Color Theme on a text object and a mesh object, because all the shader properties are ignored on text objects.</em></p>
-<h3 id="creating-toggles">Creating Toggles</h3>
-<p>Toggle or multi-step buttons can be created in the Profile using the Dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the Dimensions value is increased, slots for additional themes are provided for each item in the Profile. This allows for a Normal Theme and a Toggled Theme to be used depending if the Interactable is toggled or not. </p>
+*Example of a Color Theme*
+<p>The best way to save a profile of a button, with all the themes and targets setup, is to create a prefab of your button.</p>
+<p>Note that themes that manipulate mesh objects (color or shader themes) are able to detect the shader properties in the material assigned to the target object. A drop down list of shader properties will define how the values of the theme are applied and is a convenience of this ability. Conflicts can arise if the same theme is used on objects that do not share the same material shader setting. Best practice is to create a separate theme for objects with different shaders; this is not an issue when using the same color theme on a text object and a mesh object, because all the shader properties are ignored on text objects.</p>
+<p>Toggle or multi-step buttons can be created in the profile using the dimensions field. The idea is that each set of states can have multiple dimensions and in this case, when the dimensions value is increased, slots for additional themes are provided for each item in the profile. This allows for a normal theme and a toggled theme to be used depending if the interactable is toggled or not. </p>
 <img src="Images/Interactable/Profile_toggle.png" width="450">
-<p>With Dimensions being a numeric value, the options for adding themes or steps is endless. An example of a multi-step button with 3 dimensions is one that controls speed. We may only want to have the option for 3 values, Fast (1x), Faster (2x) or Fastest (3x). Using Dimensions we could control the text or texture of the button for each step using 3 different themes. <strong>Developers can assess the DimensionIndex to determine which dimension is currently active.</strong></p>
+<p>With dimensions being a numeric value, the options for adding themes or steps is endless. An example of a multi-step button with 3 dimensions is one that controls speed. We may only want to have the option for 3 values, Fast (1x), Faster (2x) or Fastest (3x). Dimensions are used to control the text or texture of the button for each individual speed setting, using 3 different themes for each of them. Developers can assess the <em>DimensionIndex</em> to determine which dimension is currently active.</p>
 <h2 id="events">Events</h2>
-<p>You can use Interactable to detect input events other than just OnClick. The Events feature provides a way to enable functionality to extend a button, but not really visual or needed to provide feedback based on state changes.</p>
+<p>You can use an interactable to detect input events other than just OnClick. The events feature provides a way to enable functionality to extend a button, but not really visual or needed to provide feedback based on state changes.</p>
 <img src="Images/Interactable/Events.png" width="450">
-<p>At the bottom of the Interactable component, click the Add Event button to reveal additional event options. A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor Interactable state changes and define patterns to detect. When a pattern is detected, we can make something happen through the inspector or directly in code.</p>
+<p>At the bottom of the interactable component, click the &quot;Add Event&quot; button to reveal additional event options. A drop down menu contains the current list of supported events like toggle, hold or double tap. The idea of these events is to monitor interactable state changes and define patterns to detect. When a pattern is detected, an action can be triggered through the inspector or directly in code.</p>
 <img src="Images/Interactable/Event_audioClip.png" width="450">
-<p>Example of audio clip to play on click. There is an Audio Theme for playing audio clips for each state change, like focus.</p>
+*Example of audio clip to play on click. There is an audio theme for playing audio clips for each state change, like focus*
 <img src="Images/Interactable/Event_toggle.png" width="450">
-<p>Example of Toggle events</p>
+*Example of Toggle events*
 <img src="Images/Interactable/Event_hold.png" width="450">
-<p>Example of a hold event</p>
-<p>Events can be placed on an object to monitor a separate Interactable. Use InteractableReceiver for a single event (from the list) or InteractableReceiverList for a list of events similar to the Interactable event list.</p>
+*Example of a hold event*
+<p>Events can be placed on an object to monitor a separate interactable. Use <code>InteractableReceiver</code> for a single event (from the list) or <code>InteractableReceiverList</code> for a list of events similar to the interactable event list.</p>
 <img src="Images/Interactable/InteractableReceiver.png" width="450">
-<p>Example of InteractableReceiver existing on a separate gameObject from the Interactable, referencing the Interactable for event and state updates.
-Search Scope provides a preferred path to search for an Interactable if one is not explicitly assigned.</p>
+*Example of InteractableReceiver existing on a separate gameObject from the Interactable, referencing the Interactable for event and state updates*
+<p>&quot;Search Scope&quot; provides a preferred path to search for an Iiteractable if one is not explicitly assigned.</p>
 <h2 id="states">States</h2>
 <p>States are a list of terms that can be used to define interactions phases, like press or observed.</p>
 <img src="Images/Interactable/DefaultStates.png" width="450">
-<p>Interactable States provides two major roles.</p>
+<p>Interactable states provide two major roles:</p>
 <ul>
-<li>Establish a list of states that we care about. This list will be displayed in the themes and can also be referenced by the events.</li>
+<li>Establish a list of states that are relevant for the Interactable. This list will be displayed in the themes and can also be referenced by the events.</li>
 <li>Controls how different interaction phases are ranked into states. For instance, a press state is also in a focused state, but the InteractableStates class will define it is a press state based on the ranking preferences setup in the State ScriptableObject.</li>
 </ul>
 <img src="Images/Interactable/StatesScriptableObject.png" width="450">
 <p>The InteractableStates State Model will handle any state list with a layered ranking system, starting with the most isolated state and ending with the state that could contain all other states.</p>
-<p>The DefaultInteractableStates list contains 4 states</p>
-<ul>
-<li>Default - nothing is happening, this is the most isolated base state. If anything does happen, it should over rule this state.</li>
-<li>Focus - the object is being pointed at. This is a single state, no other states are currently set, but it will out rank Default.</li>
-<li>Press - the object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus.</li>
-<li>Disabled - the button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.</li>
-</ul>
+<p>The DefaultInteractableStates list contains 4 states:
+<strong>Default</strong>: Nothing is happening, this is the most isolated base state. If anything does happen, it should over rule this state.
+<strong>Focus</strong>: The object is being pointed at. This is a single state, no other states are currently set, but it will out rank Default.
+<strong>Press</strong>: The object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus.
+<strong>Disabled</strong>: The button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.</p>
 <p>A bit value (#) is assigned to the state depending on the order in the list.</p>
-<h2 id="extending-themes">Extending Themes</h2>
-<p>Extend InteractableThemeBase to create a new theme that will show up in the Theme Property drop-down list. Themes can be created to control anything based on state changes. We could have a custom component on a GameObject that is driven by a custom theme with the values for each state being set in the inspector.</p>
+<h2 id="extending-themes">Extending themes</h2>
+<p>Extend <code>InteractableThemeBase</code> to create a new theme that will show up in the theme property drop-down list. Themes can be created to control anything based on state changes. We could have a custom component on a GameObject that is driven by a custom theme with the values for each state being set in the inspector.</p>
 <p>Setup the configuration of the theme settings in the constructor.</p>
-<pre><code>public NewCustomTheme()
+<pre><code class="lang-csharp">public NewCustomTheme()
 {
     Types = new Type[] { typeof(Transform) };
     Name = &quot;Custom Theme Scale&quot;;
@@ -188,56 +175,47 @@ Search Scope provides a preferred path to search for an Interactable if one is n
         });
 }
 </code></pre>
-<ul>
-<li>Name -  the display name of the property, this will display next to the property field under each state title</li>
-<li>Types - allow filtering based on components on the object. In this case, this theme will show up in the list when assigned to an object with a Transform</li>
-<li>Name - the name that will show up in the inspector</li>
-<li>ThemeProperties - a list of properties that theme will store to be used when the state changes.</li>
-</ul>
-<p>Each Theme Property has a name, type (so we know what type of fields we want to display for each state), a set of values for each state and a default value for the fields.
-We can also choose to hide the state fields in the inspector, if the theme does not need them.</p>
+<p><strong>Name</strong>: The display name of the property, this will display next to the property field under each state title.
+<strong>Types</strong>: Allow filtering based on components on the object. In this case, this theme will show up in the list when assigned to an object with a Transform.
+<strong>Name</strong>: The name that will show up in the inspector.
+<strong>ThemeProperties</strong>: A list of properties that theme will store to be used when the state changes.</p>
+<p>Each Theme Property has a name, type (defining the fields to display for each state), a set of values for each state and a default value for the fields. The state fields can also be hidden in the inspector, if the theme does not require them to be visible.</p>
 <p>Override Init to run any startup code, that needs references to the Host GameObject.</p>
-<pre><code>public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+<pre><code class="lang-csharp">public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
 {
     InteractableThemePropertyValue start = new InteractableThemePropertyValue();
     start.Vector3 = Host.transform.localScale;
     return start;
 }
 </code></pre>
-<p>GetProperty should grab the current property of the Host. This will be used for animation later.
-Property is provided in case the current value depends on a cached property value. In this case we are grabbing the current scale.</p>
-<pre><code>public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+<p>GetProperty should grab the current property of the Host. This will be used for animation later. Property is provided in case the current value depends on a cached property value. In the example below on the current scale.</p>
+<pre><code class="lang-csharp">public override void SetValue(InteractableThemeProperty property, int index, float percentage)
 {
     Host.transform.localScale = Vector3.Lerp(property.StartValue.Vector3, property.Values[index].Vector3, percentage);
 }
 </code></pre>
-<p>The SetValue function is used to set the property value based on the current state.</p>
-<ul>
-<li>Property - a list of property values per state, set through the theme inspector.</li>
-<li>Index - correlates to the current state.</li>
-<li>Percentage - a float value between 0 and 1. It will be the eased value if an Animation curve is used.</li>
-</ul>
+<p>The SetValue function is used to set the property value based on the current state.
+<strong>Property</strong>: A list of property values per state, set through the theme inspector.
+<strong>Index</strong>: Correlates to the current state.
+<strong>Percentage</strong>: A float value between 0 and 1. It will be the eased value if an Animation curve is used.</p>
 <p>Custom Settings added to the new class will also be displayed in the inspector. If there are properties that need to be exposed in the inspector but do not need to be based on states, they should be added to the Custom Settings list.</p>
-<h1 id="extending-events">Extending Events</h1>
+<h2 id="extending-events">Extending events</h2>
 <p>Like Themes, events can be extended to detect any state pattern or to expose functionality. </p>
-<p>Custom events can be created and used in two main ways</p>
+<p>Custom events can be created and used in two main ways:</p>
 <ul>
-<li>Extend ReceiverBase to create a custom event that will show up in the dropdown list of event types. A Unity Event is provided by default, but additional Unity Events can be added or the event can be set to hide UnityEvents.
-This functionality allows a designer to work with an engineer on a project to create a custom event that the designer or implementer to setup in the editor.</li>
-<li>Extend ReceiverBaseMonoBehavior to create a completely custom event component that can reside on the Interactable or another object. The ReceiverBaseMonoBehavior will reference the Interactable to detect state changes.
-This approach is the most direct for engineers that do not want to work through the inspector.</li>
+<li>Extend <code>ReceiverBase</code> to create a custom event that will show up in the dropdown list of event types. A Unity event is provided by default, but additional Unity events can be added or the event can be set to hide Unity events. This functionality allows a designer to work with an engineer on a project to create a custom event that the designer or implementer to setup in the editor.</li>
+<li>Extend <code>ReceiverBaseMonoBehavior</code> to create a completely custom event component that can reside on the interactable or another object. The <code>ReceiverBaseMonoBehavior</code> will reference the interactable to detect state changes. This approach is the most direct for engineers that do not want to work through the inspector.</li>
 </ul>
-<h3 id="option-1-extend-receiverbase">Option 1: Extend ReceiverBase</h3>
-<p>MixedRealityToolkit.Examples contains an example extension of ReceiverBase to display status information about the Interactable.</p>
-<pre><code>public CustomInteractablesReceiver(UnityEvent ev) : base(ev)
+<h3 id="example-for-extending-receiverbase">Example for extending <code>ReceiverBase</code></h3>
+<p><code>MixedRealityToolkit.Examples</code> contains an example extension of ReceiverBase to display status information about the interactable.</p>
+<pre><code class="lang-csharp">public CustomInteractablesReceiver(UnityEvent ev) : base(ev)
 {
     Name = &quot;CustomEvent&quot;;
     HideUnityEvents = true; // hides Unity events in the receiver - meant to be code only
 }
 </code></pre>
-<p><strong>OnUpdate</strong> is an abstract method that can be used to detect patterns. Here is an example of accessing all the states of the Interactable.
-Though there is a definite state that is defined with state.CurrentState(), the state object has a reference to all other states and their values.</p>
-<pre><code>public override void OnUpdate(InteractableStates state, Interactable source)
+<p><em>OnUpdate</em> is an abstract method that can be used to detect patterns. Here is an example of accessing all the states of the interactable. Though there is a definite state that is defined with <code>state.CurrentState()</code>, the state object has a reference to all other states and their values.</p>
+<pre><code class="lang-csharp">public override void OnUpdate(InteractableStates state, Interactable source)
 {
     if (state.CurrentState() != lastState)
     {
@@ -267,8 +245,8 @@ Though there is a definite state that is defined with state.CurrentState(), the 
     }
 }
 </code></pre>
-<p>Two Interactable event methods are also available if driving functionality from OnClick or OnVoiceCommand is needed.</p>
-<pre><code>public virtual void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1)
+<p>Two interactable event methods are also available if driving functionality from <em>OnClick</em> or <em>OnVoiceCommand</em> is needed.</p>
+<pre><code class="lang-csharp">public virtual void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1)
 {
     // voice command called
 }  
@@ -277,10 +255,9 @@ public virtual void OnClick(InteractableStates state, Interactable source, IMixe
     // click called
 }
 </code></pre>
-<h2 id="extending-states">Extending States</h2>
-<p>The functionality of how states are ranked can be overridden by extending InteractableStates class.</p>
-<p>Override the CompareStates method to manually control the ranking.</p>
-<pre><code>public override State CompareStates()
+<h2 id="extending-states">Extending states</h2>
+<p>The functionality of how states are ranked can be overridden by extending <code>InteractableStates</code> class. Override the <code>CompareStates</code> method to manually control the ranking.</p>
+<pre><code class="lang-csharp">public override State CompareStates()
 {
     int bit = GetBit();
     currentState = stateList[0];

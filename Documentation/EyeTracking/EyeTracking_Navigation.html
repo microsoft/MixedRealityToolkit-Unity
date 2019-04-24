@@ -156,19 +156,19 @@ In the following, the parameters of <em>Scroll_RectTransf</em> that are availabl
 <p><img src="../Images/EyeTracking/mrtk_et_nav_scroll.jpg" alt="Eye-supported scroll setup in Unity"></p>
 <h3 id="eyetrackingtarget">EyeTrackingTarget</h3>
 <p>Attaching the <em>EyeTrackingTarget</em> component allows for flexibly handle eye-gaze-related events.
-In our scroll sample, we use it to ensure that the text starts scrolling when the user <em>looks</em> at the panel and stops when the user is <em>looking away</em> from it.
-Alternatively you can use the
+The scroll sample demonstrates scrolling text that starts when the user <em>looks</em> at the panel and stops when the user is <em>looking away</em> from it.
+Alternatively, please use the
 <a href="EyeTracking_TargetSelection.html#use-eye-gaze-specific-baseeyefocushandler">BaseEyeFocusHandler</a>
-to handle Eye Tracking events directly in your code to trigger the <em>StartFocusing</em> and <em>StopFocusing</em> methods in <em>Scroll_RectTransf</em>.</p>
+to handle eye tracking events directly in code to trigger the <em>StartFocusing</em> and <em>StopFocusing</em> methods in <em>Scroll_RectTransf</em>.</p>
 <p><img src="../Images/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg" alt="Eye-supported scroll setup in Unity: EyeTrackingTarget"></p>
 <h2 id="gaze-supported-pan-and-zoom">Gaze-supported Pan and Zoom</h2>
 <p>Who hasn't used a virtual map before to search for their home or to explore entirely new places?
 Eye Tracking allows you to directly dive into exactly the parts that you're interested in and once zoomed in, you can smoothly follow the course of a street to explore your neighborhood!
 This is not only useful for exploring geographical maps, but also to checking out details in photographs, data visualizations or even live-streamed medical imagery.
 To use this capability in your app is easy!
-For content rendered to a <a href="https://docs.unity3d.com/ScriptReference/Texture.html">Texture</a> (e.g., a photo, streamed data), simply add the_PanZoom_Texture_ script.
+For content rendered to a <a href="https://docs.unity3d.com/ScriptReference/Texture.html">texture</a> (e.g., a photo, streamed data), simply add the_PanZoom_Texture_ script.
 For a <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a> use <em>PanZoom_RectTransf</em>.
-Extending the <a href="#auto-scroll">Auto Scroll</a> capability, we essentially enable to scroll both vertically and horizontally at the same time and magnify content right around the user's current focus point.</p>
+Extending the <a href="#auto-scroll">auto scroll</a> capability enables to scroll both vertically and horizontally at the same time and to magnify content right around the user's current focus point.</p>
 <table>
 <thead>
 <tr>
@@ -251,8 +251,8 @@ To enable this behavior, simply add the <em>OnLookAt_RotateByEyeGaze</em> script
 You can tweak several parameters that are listed below to limit how fast and in which directions the hologram will turn.</p>
 <p>As you can imagine, having this behavior active at all times may quickly become pretty distracting in a crowded scene.
 This is why you may want to start out with this behavior disabled and then enable it quickly using voice commands.
-Alternatively, we added an example in <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_03_Navigation.unity">mrtk_eyes_03_Navigation.unity</a>
-to use <em>Target_MoveToCamera</em> for which you can select a focused target and it flies in front of you - simply say <em>&quot;Come to me&quot;</em>.
+Alternatively, <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_03_Navigation.unity">mrtk_eyes_03_Navigation.unity</a>
+uses <em>Target_MoveToCamera</em> showcasing how to select a focused target to make it fly in front of the user when they say <em>&quot;Come to me&quot;</em>.
 Once in the near mode, the auto rotation mode is automatically enabled.
 In that mode, you can observe it from all sides either simply leaning back and looking at it, walking around it or reaching out to grab and rotate it with your hand!
 When you dismiss the target (look &amp; pinch or say <em>&quot;Send back&quot;</em>), it will return to its original location and will stop reacting to you from afar.</p>

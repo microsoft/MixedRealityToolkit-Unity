@@ -402,7 +402,7 @@ public enum HandednessType
 }
 </code></pre>
 <h2 id="best-practices-including-unity-recommendations">Best Practices, including Unity recommendations</h2>
-<p>Some of the target platforms of this project require us to take performance into consideration.  With this in mind we should always be careful of allocating memory in frequently called code in tight update loops or algorithms.</p>
+<p>Some of the target platforms of this project require to take performance into consideration. With this in mind always be careful when allocating memory in frequently called code in tight update loops or algorithms.</p>
 <h2 id="encapsulation">Encapsulation</h2>
 <p>Always use private fields and public properties if access to the field is needed from outside the class or struct.  Be sure to co-locate the private field and the public property. This makes it easier to see, at a glance, what backs the property and that the field is modifiable by script.</p>
 <p>If you need to have the ability to edit your field in the inspector, it's best practice to follow the rules for Encapsulation and serialize your backing field.</p>

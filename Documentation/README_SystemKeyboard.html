@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>System Keyboard | Mixed Reality Toolkit Documentation </title>
+    <title>System keyboard | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="System Keyboard | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="System keyboard | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.42.0.0">
     
     <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
@@ -80,34 +80,38 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="system-keyboard">System Keyboard</h1>
+<h1 id="system-keyboard">System keyboard</h1>
 
-<p><img src="Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png" alt="System Keyboard"></p>
-<p>Inside Unity app, you can invoke the system keyboard. HoloLens2's system keyboard supports direct hand interactions.</p>
-<h2 id="system-keyboard-example">System Keyboard Example</h2>
-<p>You can see simple example of how to bring up system keyboard in <code>Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Script\OpenKeyboard.cs</code></p>
-<h2 id="how-to-invoke-system-keyboard">How to Invoke System Keyboard</h2>
-<pre><code>public TouchScreenKeyboard keyboard;
-...
+<p><img src="Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png" alt="System keyboard"></p>
+<p>A Unity application can invoke the system keyboard at any time. Note that the system keyboard will behave according to the target platform's capabilities, for example the keyboard on HoloLens 2 would support direct hand interactions, while the keyboard on HoloLens (1st gen) would support GGV<sup><a href="https://docs.microsoft.com/en-us/windows/mixed-reality/gaze">1</a></sup>.</p>
+<h2 id="how-to-invoke-the-system-keyboard">How to invoke the system keyboard</h2>
+<pre><code class="lang-csharp">    public TouchScreenKeyboard keyboard;
 
-public void OpenSystemKeyboard()
-{
-    keyboard = TouchScreenKeyboard.Open(&quot;&quot;, TouchScreenKeyboardType.Default, false, false, false, false);
-}
-</code></pre>
-<h2 id="how-to-read-text-typed">How to read text typed</h2>
-<pre><code>public TouchScreenKeyboard keyboard;
-...
+    ...
 
-private void Update()
-{
-    if (keyboard != null)
+    public void OpenSystemKeyboard()
     {
-        keyboardText = keyboard.text;
-        // Do stuff with keyboardText
+        keyboard = TouchScreenKeyboard.Open(&quot;&quot;, TouchScreenKeyboardType.Default, false, false, false, false);
     }
-}
 </code></pre>
+<h2 id="how-to-read-the-input">How to read the input</h2>
+<pre><code class="lang-csharp">
+    public TouchScreenKeyboard keyboard;
+
+    ...
+
+    private void Update()
+    {
+        if (keyboard != null)
+        {
+            keyboardText = keyboard.text;
+            // Do stuff with keyboardText
+        }
+    }
+</code></pre>
+<h2 id="system-keyboard-example">System keyboard example</h2>
+<p>You can see simple example of how to bring up system keyboard in
+<a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Script/OpenKeyboard.cs"><code>OpenKeyboard.cs</code></a></p>
 </article>
           </div>
           

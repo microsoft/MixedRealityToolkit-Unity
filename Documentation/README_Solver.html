@@ -84,40 +84,32 @@
 
 <p><img src="Images/Solver/MRTK_Solver_Main.png" alt="Solver"></p>
 <p>At this time, there is no easy, reliable way to specify the update order for Unity components. This can make it difficult to implement deterministic compound transformations. The solver system addresses this issue.</p>
-<p>Building on this, Solvers offer a range of follow behaviors (eg tag-along) which can be safely stacked (eg, tag-along + surface magnetism + momentum).</p>
-<h2 id="basic-architecture">Basic architecture</h2>
+<p>Building on this, solvers offer a range of behaviors to attach objects to other objects or systems. One example would be a tag-along object that hovers in front of the user (based on the camera). A solver could also be attached to a controller and an object to make the object tag-along the controller. All solvers can be safely stacked, for example a tag-along behavior + surface magnetism + momentum.</p>
+<h2 id="how-to-use-a-solver">How to use a solver</h2>
+<p>First, add the desired behavior to an object by using the respective solver type. All solvers are based on <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Utilities/Solvers/Solver.cs"><code>Solver.cs</code></a>.</p>
 <p>The Solver system consists of three categories of scripts:</p>
 <ul>
-<li><strong>SolverBase</strong>, the base abstract class for all Solvers to derive from. It provides state tracking, smoothing parameters and implementation, automatic solver system integration, and update order.</li>
-<li><strong>SolverHandler</strong>, sets the reference object (eg, the main camera transform) and handles gathering of solver components and executes them in order.</li>
+<li><strong>SolverBase</strong>: The base abstract class that all solvers to derive from. It provides state tracking, smoothing parameters and implementation, automatic solver system integration, and update order.</li>
+<li><strong>SolverHandler</strong>: Sets the reference object (eg, the main camera transform) and handles gathering of solver components and executes them in order.</li>
 </ul>
-<p>The following Solvers provide the building blocks for basic behavior:</p>
+<p>The third category is the solver itself. The following solvers provide the building blocks for basic behavior:</p>
 <ul>
-<li><strong>Orbital</strong>, locks to a specified position * offset from the referenced object.</li>
-<li><strong>ConstantViewSize</strong>, scales to maintain a constant size relative to the view of the referenced object.</li>
-<li><strong>RadialView</strong>, keeps the object within a view cone cast by the referenced object.</li>
-<li><strong>SurfaceMagnetism</strong>, casts rays to Surfaces in the world, and align the object to that surface.</li>
-<li><strong>Momentum</strong>, applies acceleration/velocity/friction to simulate momentum and springiness for an object being moved by other solvers/components.</li>
-<li><strong>InBetween</strong>, keeps an object in between two tracked objects.</li>
+<li><strong>Orbital</strong>: Locks to a specified position * offset from the referenced object.</li>
+<li><strong>ConstantViewSize</strong>: Scales to maintain a constant size relative to the view of the referenced object.</li>
+<li><strong>RadialView</strong>: Keeps the object within a view cone cast by the referenced object.</li>
+<li><strong>SurfaceMagnetism</strong>, casts rays to surfaces in the world, and align the object to that surface.</li>
+<li><strong>Momentum</strong>: Applies acceleration/velocity/friction to simulate momentum and springiness for an object being moved by other solvers/components.</li>
+<li><strong>InBetween</strong>: Keeps an object in between two tracked objects.</li>
 </ul>
-<p>When <strong>UpdateLinkedTransform</strong> is <em>true</em>, the solver will calculate position &amp; orientation, but will not apply it. This lets other components use the transform values.</p>
-<h2 id="how-do-i-add-a-solver-to-my-scene">How do I add a solver to my scene?</h2>
-<ul>
-<li>Add the desired behavior to an object. <strong>SolverHandler</strong> will be added automatically. You can mix and match, their order will change how the object behaves at runtime.</li>
-<li><strong>SolverHandler</strong> has two fields for setting the reference object. You can choose a tracked object (such as the user camera or L/R motion controllers), or instead use the <strong>TransformTarget</strong> field which overrides any set tracked object. This enables you to have solvers reference any scene object. Yes, that means objects can have tag alongs and cast surface magnetism as well as tracked objects. Very handy.</li>
-<li>Surface magnetism scripts rely on a <em>LayerMask</em> for raycasting. As a recommendation, create a custom <em>LayerMask</em> (the example uses <em>Surface</em>). Note that using <em>default</em> or <em>everything</em> will result in UI components or cursors contributing to the solver. This can produce weird and unexpected behavior. Objects lurching toward you etc...</li>
-</ul>
+<p>When a solver is used, the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Utilities/Solvers/SolverHandler.cs"><code>SolverHandler.cs</code></a> will be added automatically. It has two fields for setting the reference object. You can choose a tracked object (such as the user camera or L/R motion controllers), or instead use the <strong>TransformTarget</strong> field which overrides any set tracked object. This enables you to have solvers reference any scene object. That means objects can have tag alongs and cast surface magnetism as well as tracked objects.</p>
+<p>The urface magnetism scripts rely on a <em>LayerMask</em> for raycasting. As a recommendation, create a custom layer mask (the example uses <em>Surface</em>). Note that using <em>default</em> or <em>everything</em> will result in UI components or cursors contributing to the solver. Note that this can produce weird and unexpected behavior, for example objects lurching toward the user and so on.</p>
+<p>When <em>UpdateLinkedTransform</em> is true, the solver will calculate position &amp; orientation, but will not apply it. This lets other components use the transform values.</p>
 <img src="Images/Solver/MRTK_Solver_Orbital.png" width="450">
-<p>Example of using Orbital solver in the <a href="README_Slate.html">Slate</a> prefab.</p>
-<h2 id="expectations-for-extending-or-adding-to-the-solver-system">Expectations for Extending or Adding to the Solver System</h2>
-<ul>
-<li>To create a new solver script, you will want to extend from the abstract base class, <em>Solver</em>. This will ensure your new solver will tie into the state tracking and execution from both Solver and SolverHandler.</li>
-<li>The power with solvers comes from them being modular in nature, so as you extend Solver, keep this in mind. Its better to have many small solver scripts vs. one big one.</li>
-</ul>
+*Example of using Orbital solver in the [Slate](README_Slate.md) prefab.*
+<h2 id="expectations-for-extending-or-adding-to-the-solver-system">Expectations for extending or adding to the solver system</h2>
+<p>To create a new solver script, you will want to extend from the abstract base class, <em>Solver</em>. This will ensure your new solver will tie into the state tracking and execution from both Solver and SolverHandler. The power with solvers comes from them being modular in nature, so as you extend Solver, keep this in mind. Its better to have many small solver scripts vs. one big one.</p>
 <h2 id="known-issues">Known Issues</h2>
-<ul>
-<li>Sometimes solvers behave differently than one may expect based on the order in which they're executed. Previous solvers can change or even neutralize the behavior of earlier solvers. Try re-arranging their execution order if the settings on a particular solver aren't having the desired effect.</li>
-</ul>
+<p>Sometimes solvers behave differently than one may expect based on the order in which they're executed. Previous solvers can change or even neutralize the behavior of earlier solvers. Try re-arranging their execution order if the settings on a particular solver aren't having the desired effect.</p>
 </article>
           </div>
           

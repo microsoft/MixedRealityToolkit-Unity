@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Manipulation Handler | Mixed Reality Toolkit Documentation </title>
+    <title>Manipulation handler | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Manipulation Handler | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Manipulation handler | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.42.0.0">
     
     <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
@@ -80,81 +80,84 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="manipulation-handler">Manipulation Handler</h1>
+<h1 id="manipulation-handler">Manipulation handler</h1>
 
-<p><img src="Images/ManipulationHandler/MRTK_Manipulation_Main.png" alt="Manipulation Handler"></p>
-<p>The ManipulationHandler script allows for an object to be made movable, scalable, and rotatable using one or two hands. Manipulation can be restricted so that it only allows certain kinds of transformation.
-The script works with various types of inputs including HoloLens 2 articulated hand input, hand-rays, HoloLens gesture input, and immersive headset motion controller input.</p>
-<h2 id="how-to-use-manipulation-handler">How to use Manipulation Handler</h2>
-<p>In the inspector panel, you will be able to find various options that you can configure. Make sure to add a Collidable to your object -- the collidable should match the grabbable bounds of the object. To make it respond to near articulated hand input, you need to add the NearInteractionGrabbable.cs script as well. </p>
+<p><img src="Images/ManipulationHandler/MRTK_Manipulation_Main.png" alt="Manipulation handler"></p>
+<p>The <em>ManipulationHandler</em> script allows for an object to be made movable, scalable, and rotatable using one or two hands. Manipulation can be restricted so that it only allows certain kinds of transformation. The script works with various types of inputs including HoloLens 2 articulated hand input, hand-rays, HoloLens (1st gen) gesture input, and immersive headset motion controller input.</p>
+<h2 id="how-to-use-the-manipulation-handler">How to use the manipulation handler</h2>
+<p>Add the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/ManipulationHandler.cs"><code>ManipulationHandler.cs</code></a> component to a GameObject.</p>
+<p>Make sure to also add a collidable to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs"><code>NearInteractionGrabbable.cs</code></a> script as well. </p>
 <p><img src="Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png" alt="Manipulation Handler"></p>
-<h2 id="inspector-properties">Inspector Properties</h2>
+<h2 id="inspector-properties">Inspector properties</h2>
 <img src="Images/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
-<h3 id="host-transform">Host Transform</h3>
-<p>Transform that will be dragged. Defaults to the object of the component.</p>
-<h3 id="manipulation-type">Manipulation Type</h3>
-<p>Specifies whether the object can be manipulated using one hand, two hands, or both.</p>
+<p><strong>Host Transform</strong>
+Transform that will be dragged. Defaults to the object of the component.</p>
+<p><strong>Manipulation Type</strong>
+Specifies whether the object can be manipulated using one hand, two hands, or both.</p>
 <ul>
-<li>One handed only</li>
-<li>Two handed only</li>
-<li>One and Two handed</li>
+<li><em>One handed only</em></li>
+<li><em>Two handed only</em></li>
+<li><em>One and Two handed</em></li>
 </ul>
-<h3 id="two-handed-manipulation-type">Two Handed Manipulation Type</h3>
+<p><strong>Two Handed Manipulation Type</strong></p>
+<ul>
+<li><em>Scale</em>: Only scaling is allowed.</li>
+<li><em>Rotate</em>: Only rotation is allowed.</li>
+<li><em>Move Scale</em>: Moving and scaling is allowed.</li>
+<li><em>Move Rotate</em>: Moving and rotating is allowed.</li>
+<li><em>Rotate Scale</em>: Rotating and scaling is allowed.</li>
+<li><em>Move Rotate Scale</em>: Moving, rotating and scaling is allowed.</li>
+</ul>
 <p><img src="Images/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg" alt="Manipulation Handler"></p>
+<p><strong>Allow Far Manipulation</strong>
+Specifies whether manipulation can be done using far interaction with pointers. </p>
+<p><strong>One Hand Rotation Mode Near</strong>
+Specifies how the object will behave when it is being grabbed with one hand / controller near.</p>
+<p><strong>One Hand Rotation Mode Far</strong>
+Specifies how the object will behave when it is being grabbed with one hand / controller at distance.</p>
+<p><strong>One Hand Rotation Mode Options</strong>
+Specifies how the object will rotate when it is being grabbed with one hand.</p>
 <ul>
-<li>Scale</li>
-<li>Rotate</li>
-<li>Move Scale</li>
-<li>Move Rotate</li>
-<li>Rotate Scale</li>
-<li>Move Rotate Scale</li>
+<li><em>Maintain original rotation</em>: Does not rotate object as it is being moved</li>
+<li><em>Maintain rotation to user</em>: Maintains the object's original rotation to the user</li>
+<li><em>Gravity aligned maintain rotation to user</em>: Maintains object's original rotation to user, but makes the object vertical. Useful for bounding boxes.</li>
+<li><em>Face user</em>: Ensures object always faces the user. Useful for slates/panels.</li>
+<li><em>Face away from user</em>: Ensures object always faces away from user. Useful for slates/panels that are configured backwards.</li>
+<li><em>Rotate about object center</em>:  Only works for articulated hands/controllers. Rotate object using rotation of the hand/controller, but about the object center point. Useful for inspecting at a distance.</li>
+<li><em>Rotate about grab point</em>:  Only works for articulated hands/controllers. Rotate object as if it was being held by hand/controller. Useful for inspection.</li>
 </ul>
-<h3 id="allow-far-manipulation">Allow Far Manipulation</h3>
-<p>Specifies whether manipulation can be done using far interaction with pointers. </p>
-<h3 id="one-hand-rotation-mode-near">One Hand Rotation Mode Near</h3>
-<p>Specifies how the object will behave when it is being grabbed with one hand/controller near.</p>
-<h3 id="one-hand-rotation-mode-far">One Hand Rotation Mode Far</h3>
-<p>Specifies how the object will behave when it is being grabbed with one hand/controller at distance.</p>
-<h3 id="one-hand-rotation-mode-options">One Hand Rotation Mode Options</h3>
+<p><strong>Release Behavior</strong>
+When an object is released, specify its physical movement behavior. Requires a rigidbody component to be on that object.</p>
 <ul>
-<li>Maintain original rotation - does not rotate object as it is being moved</li>
-<li>Maintain rotation to user - maintains the object's original rotation to the user</li>
-<li>Gravity aligned maintain rotation to user - maintains object's original rotation to user, but makes the object vertical. Useful for bounding boxes.</li>
-<li>Face user - ensures object always faces the user. Useful for slates/panels.</li>
-<li>Face away from user - ensures object always faces away from user. Useful for slates/panels that are configured backwards.</li>
-<li>Rotate about object center - Only works for articulated hands/controllers. Rotate object using rotation of the hand/controller, but about the object center point. Useful for inspecting at a distance.</li>
-<li>Rotate about grab point - Only works for articulated hands/controllers. Rotate object as if it was being held by hand/controller. Useful for inspection.</li>
+<li><em>Nothing</em></li>
+<li><em>Everything</em></li>
+<li><em>Keep Velocity</em></li>
+<li><em>Keep Angular Velocity</em></li>
 </ul>
-<h3 id="release-behavior">Release Behavior</h3>
-<p>When an object is released, specify its physical movement behavior. Requires a rigidbody component to be on that object.</p>
+<p><strong>Constraints on Rotation</strong>
+Specifies on which axis the object will rotate when interacted with.</p>
 <ul>
-<li>Nothing</li>
-<li>Everything</li>
-<li>Keep Velocity</li>
-<li>Keep Angular Velocity</li>
+<li><em>None</em></li>
+<li><em>X-Axis Only</em></li>
+<li><em>Y-Axis Only</em></li>
+<li><em>Z-Axis Only</em></li>
 </ul>
-<h3 id="constraints-on-rotation">Constraints on Rotation</h3>
+<p><strong>Constraints on Movement</strong></p>
 <ul>
-<li>None</li>
-<li>X-Axis Only</li>
-<li>Y-Axis Only</li>
-<li>Z-Axis Only</li>
+<li><em>None</em></li>
+<li><em>Fix distance from head</em></li>
 </ul>
-<h3 id="constraints-on-movement">Constraints on Movement</h3>
+<p><strong>Smoothing Active</strong>
+Specifies whether smoothing is active.</p>
+<p><strong>Smoothing Amount One Hand</strong>
+Amount of smoothing to apply to the movement, scale, rotation. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
+<h2 id="events">Events</h2>
+<p>Manupulation handler provides the following events:</p>
 <ul>
-<li>None</li>
-<li>Fix distance from head</li>
-</ul>
-<h3 id="smoothing-active">Smoothing Active</h3>
-<p>Specifies whether smoothing is active.</p>
-<h3 id="smoothing-amount-one-hand">Smoothing Amount One Hand</h3>
-<p>Amount of smoothing to apply to the movement, scale, rotation. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
-<h3 id="events">Events</h3>
-<ul>
-<li>OnManipulationStarted - Fired when manipulation starts</li>
-<li>OnManipulationEnded - Fires when the manipulation ends</li>
-<li>OnHoverStarted - Fires when a hand / controller hovers the manipulatable, near or far</li>
-<li>OnHoverEnded - Fires when a hand / controller un-hovers the manipulatable, near or far</li>
+<li><em>OnManipulationStarted</em>: Fired when manipulation starts.</li>
+<li><em>OnManipulationEnded</em>: Fires when the manipulation ends.</li>
+<li><em>OnHoverStarted</em>: Fires when a hand / controller hovers the manipulatable, near or far.</li>
+<li><em>OnHoverEnded</em>: Fires when a hand / controller un-hovers the manipulatable, near or far.</li>
 </ul>
 </article>
           </div>
