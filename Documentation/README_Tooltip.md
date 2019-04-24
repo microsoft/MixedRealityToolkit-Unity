@@ -15,7 +15,7 @@ To use this method simply add a game object and one of the [tool tip prefabs](ht
 
 This use assumes a tool tip that is always showing or that is shown / hidden via script by changing the tip state property of the tool tip component.
  
-## Dynamically spawning tool tips ##
+## Dynamically spawning tooltips ##
 A tool tip can be dynamically added to an object at runtime as well as pre-set to show and hide on a tap or focus. Simply add the [`ToolTipSpawner`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips/ToolTipSpawner.cs) script to any game object. Delays for appearing and disappearing can be set in the scripts inspector as well as a lifetime so that the tool tip will disappear after a set duration. Tool tips also feature style properties such as background visuals in the spawner script. By default the tool tip will be anchored to the object with the spawner script. This can be changed by assigning a game object to the anchor field.
 
 ## Tool tips on motion controllers ##
