@@ -18,7 +18,7 @@ This use assumes a tool tip that is always showing or that is shown / hidden via
 ## Dynamically spawning tooltips ##
 A tooltip can be dynamically added to an object at runtime as well as pre-set to show and hide on a tap or focus. Simply add the [`ToolTipSpawner`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips/ToolTipSpawner.cs) script to any game object. Delays for appearing and disappearing can be set in the scripts inspector as well as a lifetime so that the tooltip will disappear after a set duration. Tooltips also feature style properties such as background visuals in the spawner script. By default the tooltip will be anchored to the object with the spawner script. This can be changed by assigning a GameObject to the anchor field.
 
-## Tool tips on motion controllers ##
+## Tooltips on motion controllers ##
 Tooltips can also be assigned to motion controllers, for example to explain the assigned actions of buttons. The example scene below also includes two tooltip groups on the bottom. These are layed out to match position of the buttons on the motion controllers. When motion controllers are detected, these tooltips will be attached automatically to the controllers, using the [`AttachToController.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Utilities/Solvers/AttachToController.cs) script.
 
 ## Example scene ##
