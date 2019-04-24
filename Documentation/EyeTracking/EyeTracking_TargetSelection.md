@@ -83,7 +83,7 @@ Similar to the _FocusHandler_, the _BaseEyeFocusHandler_ is specific Eye Trackin
 
 Here is an example from [mrtk_eyes_02_TargetSelection.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_02_TargetSelection.unity
 ).
-Having the [OnLookAt_Rotate.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAt_Rotate) attached, a GameObject will rotate while being looked at. 
+Having the OnLookAt_Rotate.cs attached, a GameObject will rotate while being looked at. 
 
 ```csharp
     public class OnLookAt_Rotate : BaseEyeFocusHandler
