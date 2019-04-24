@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         InputSystemGlobalListener,
         IMixedRealityGazeProvider,
         IMixedRealityEyeGazeProvider,
-        IMixedRealityInputHandler
+        IMixedRealityInputHandler,
+        IMixedRealityInputHandler<Vector2>
     {
         private const float VelocityThreshold = 0.1f;
 
@@ -207,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private bool isDown = false;
 
             // Input source that raised pointer down
-            private IMixedRealityInputSource currentInputSource;
+            public IMixedRealityInputSource currentInputSource;
 
             // Handedness of the input source that raised pointer down
             private Handedness currentHandedness = Handedness.None;
@@ -288,12 +289,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            public Quaternion rotation;
+
             /// <inheritdoc />
             public override Quaternion Rotation
             {
                 get
                 {
-                    return gazeTransform.rotation;
+                    if (currentInputSource == null)
+                    {
+                        rotation = gazeTransform.rotation;
+                    }
+                    return rotation;
                 }
             }
 
@@ -456,6 +463,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     gazePointer.RaisePointerDown(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
                     return;
                 }
+            }
+        }
+
+        public void OnInputChanged(InputEventData<Vector2> eventData)
+        {
+            if (gazePointer.currentInputSource != null && gazePointer.currentInputSource == eventData.InputSource)
+            {
+                Debug.Log("V " + eventData.InputData.ToString("F3"));
+                gazePointer.rotation *= Quaternion.AngleAxis(eventData.InputData.x, Vector3.up);
             }
         }
 
