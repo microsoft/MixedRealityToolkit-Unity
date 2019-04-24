@@ -53,6 +53,7 @@ From here you can navigate to all the configuration profiles for the MRTK, inclu
 * [Speech Commands](#speech)
 * [Controller Mapping Configuration](#mapping)
 * [Controller Visualization Settings](#visualization)
+* [Service Inspectors](#inspectors)
 
 These configuration profiles are detailed below in their relevant sections:
 
@@ -318,3 +319,15 @@ If your controller representation in the scene needs to be offset from the physi
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
+
+<a name="inspectors"/>
+
+## Service Inspectors
+
+Service Inspectors are an editor-only feature that generates in-scene objects representing active services. Selecting these objects displays inspectors which offer documentation links, control over editor visualizations and insight into the state of the service.
+
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.png)
+
+You can enable service inspectors by checking 'Use Service Inspectors' under Editor Settings in your Configuration Profile.
+
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors)
