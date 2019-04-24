@@ -7,8 +7,12 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// From https://answers.unity.com/questions/486694/default-editor-enum-as-flags-.html
+    /// An attribute that allows a particular field to be rendered as multi-selectable
+    /// set of flags.
     /// </summary>
+    /// <remarks>
+    /// From https://answers.unity.com/questions/486694/default-editor-enum-as-flags-.html
+    /// </remarks>
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class EnumFlagsAttribute : PropertyAttribute
     {

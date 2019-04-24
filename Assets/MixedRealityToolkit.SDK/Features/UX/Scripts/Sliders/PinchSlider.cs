@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 var oldSliderValue = sliderValue;
                 sliderValue = value;
                 UpdateUI();
-                OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value, activePointer is IMixedRealityPointer, this));
+                OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value, activePointer, this));
             }
         }
 
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             sliderThumbOffset = thumbRoot.transform.position - thumbProjectedOnTrack;
 
             UpdateUI();
-            OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, false, this));
+            OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, null, this));
         }
 
         private void OnDisable()
@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (OnInteractionEnded != null)
             {
-                OnInteractionEnded.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer is IMixedRealityPointer, this));
+                OnInteractionEnded.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer, this));
             }
             activePointer = null;
         }
@@ -182,12 +182,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region IMixedRealityFocusHandler
         public void OnFocusEnter(FocusEventData eventData)
         {
-            OnHoverEntered.Invoke(new SliderEventData(sliderValue, sliderValue, eventData.Pointer is IMixedRealityNearPointer, this));
+            OnHoverEntered.Invoke(new SliderEventData(sliderValue, sliderValue, eventData.Pointer, this));
         }
 
         public void OnFocusExit(FocusEventData eventData)
         {
-            OnHoverExited.Invoke(new SliderEventData(sliderValue, sliderValue, eventData.Pointer is IMixedRealityNearPointer, this));
+            OnHoverExited.Invoke(new SliderEventData(sliderValue, sliderValue, eventData.Pointer, this));
         }
         #endregion
 
@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 startSliderPosition = gameObject.transform.position;
                 if (OnInteractionStarted != null)
                 {
-                    OnInteractionStarted.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer is IMixedRealityPointer, this));
+                    OnInteractionStarted.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer, this));
                 }
 
                 // Mark the pointer data as used to prevent other behaviors from handling input events

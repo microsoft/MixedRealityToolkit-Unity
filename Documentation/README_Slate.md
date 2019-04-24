@@ -37,6 +37,10 @@ In general, the `NearInteractionTouchable.cs` script must be attached to any obj
 
 * [`HandInteractionPan.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/HandInteractionPan.cs): This script handles articulated hand input for touching and moving the content on the slate's *ContentQuad*.
 
+* [`HandInteractionPanZoom.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/HandInteractionPanZoom.cs): In addition to the panning interaction, this script supports two-handed zooming.
+
+<img src="../Documentation/Images/Slate/MRTK_Slate_PanZoom.png" width="500">
+
 * [`SlateEnabler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/SlateEnabler.cs): This script is intended to be used with DragEnabler. These two scripts allow the slate and another object - for instance a title bar - to toggle their active status so that the touch action only affects one at a time. This prevents interacting with the slate to accidentally trigger the title bar behavior and vice versa. The slate enabler script is put on the game object that is not the slate. Once attached it toggles interaction with the slate when the game object is being dragged or touched.
 
 * [`DragEnabler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/DragEnabler.cs): This script is intended to be used with SlateEnabler. These two scripts allow the slate and another object - for instance a title bar - to toggle their active status so that the touch action only affects one at a time. The drag enabler script is put on the slate. Once attached, it toggles interaction with an accompanying object such as a title bar while the slate is being touched.

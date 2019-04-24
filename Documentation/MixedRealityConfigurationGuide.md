@@ -106,6 +106,7 @@ Each of the individual profiles are detailed below:
 * [Controller visualization settings](#visualization)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit configuration screen.
+
 ---
 <a name="boundary"/>
 
@@ -116,6 +117,7 @@ The boundary system translates the perceived boundary reported by the underlying
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
+
 ---
 <a name="teleportation"/>
 
@@ -150,6 +152,7 @@ This is only applicable for devices that can provide a scanned environment, such
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit configuration screen.
+
 ---
 <a name="diagnostic"/>
 
@@ -166,6 +169,7 @@ The diagnostics profile provides several simple systems to monitor whilst the pr
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit configuration screen.
+
 ---
 <a name="services"/>
 
@@ -182,6 +186,7 @@ Check out the [Guide to building Registered Services]() (Coming Soon) for more d
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit configuration screen.
+
 ---
 <a name="inputactions"/>
 
@@ -209,6 +214,7 @@ Events utilizing input actions are not limited to physical controllers and can s
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit input system settings screen.
+
 ---
 <a name="inputactionrules"/>
 
@@ -225,6 +231,7 @@ Input action Rules can be configured for any of the available input axis. Howeve
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit input system settings screen.
+
 ---
 <a name="pointer"/>
 
@@ -260,6 +267,7 @@ Gestures are a system specific implementation allowing you to assign input actio
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit input system settings screen.
+
 ---
 <a name="speech"/>
 
@@ -272,6 +280,7 @@ Like gestures, some runtime platforms also provide intelligent "Speech to Text" 
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit input system settings screen.
+
 ---
 <a name="mapping"/>
 
@@ -302,6 +311,7 @@ Clicking on the Image for any of the pre-built controller systems allows you to 
 There is also an advanced screen for configuring other OpenVR or Unity input controllers that are not identified above.
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit input system settings screen.
+
 ---
 <a name="visualization"/>
 
