@@ -45,5 +45,10 @@ MonoBehaviour:
   diagnosticsSystemType:
     reference: Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem,
       Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem
+  sceneSystemProfile: {fileID: 11400000, guid: 069efa41032a317409790a6a08435311, type: 2}
+  enableSceneSystem: 1
+  sceneSystemType:
+    reference: Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem,
+      MixedRealityToolkit.Services.SceneSystem
   registeredServiceProvidersProfile: {fileID: 11400000, guid: efbaf6ea540c69f4fb75415a5d145a53,
     type: 2}
