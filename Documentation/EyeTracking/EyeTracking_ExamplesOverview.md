@@ -52,7 +52,7 @@ Or how about magically zooming directly toward where you were looking at?
 These are some of the examples showcased in this tutorial about eye-supported navigation.
 In addition, there is an example for hands-free rotation of 3D holograms by making them automatically rotate based on your current focus. 
 
-**Summary**: Scroll, Pan, Zoom, 3D Rotation using a combination of Eyes, Voice and Hand input.
+**Summary**: Scroll, pan, zoom, 3D rotation using a combination of eyes, voice and hand input.
 
 <br>
 
