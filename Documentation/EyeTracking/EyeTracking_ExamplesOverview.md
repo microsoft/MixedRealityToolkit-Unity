@@ -29,7 +29,7 @@ Make sure that the _'OnLoad_StartScene'_ script is enabled for this so that the 
 How to quickly change a scene and test it in the Unity editor:
 - Load the _root_ scene
 - Disable the _'OnLoad_StartScene'_ script
-- _Drag and drop_ one of the Eye Tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view.
+- _Drag and drop_ one of the eye tracking test scenes that are described below (or any other scene) into your _hierarchy_ view.
 
 ![Example for the OnLoad_StartScene script](/Documentation/Images/EyeTracking/mrtk_et_rootscene_onload2.png)
   
