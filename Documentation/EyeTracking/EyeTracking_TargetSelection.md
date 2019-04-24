@@ -146,7 +146,7 @@ you can find an example for _'smart attentive notifications'_ that react to your
 These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility.
 While the user is reading the notification, the information keeps getting displayed crisp and clear. 
 After reading it and looking away from the notification, the notification will automatically be dismissed and fades out.
-To achieve all this, there are a few generic behavior scripts that are not specific to Eye Tracking at all such as:
+To achieve all this, there are a few generic behavior scripts that are not specific to eye tracking at all such as:
 - [FaceUser.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FaceUser)
 - [ChangeSize.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeSize)
 - [BlendOut.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.BlendOut)
