@@ -39,7 +39,7 @@ color when being looked at.
 ```
 
 #### Selecting a Focused Hologram 
-To select focused holograms, use Input Event Listeners to confirm a selection. 
+To select focused holograms, use input event listeners to confirm a selection. 
 For example, adding the _IMixedRealityPointerHandler_ will make them react to simple pointer input. 
 The _IMixedRealityPointerHandler_ interface requires implementing the following three interface members: 
 _OnPointerUp_, _OnPointerDown_, and _OnPointerClicked_.
