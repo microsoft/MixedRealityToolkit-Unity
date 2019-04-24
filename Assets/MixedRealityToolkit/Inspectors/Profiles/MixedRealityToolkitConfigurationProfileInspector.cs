@@ -43,6 +43,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty enableDiagnosticsSystem;
         private SerializedProperty diagnosticsSystemType;
         private SerializedProperty diagnosticsSystemProfile;
+        // Scene system properties
+        private static bool showSceneSystemProperties = true;
+        private SerializedProperty enableSceneSystem;
+        private SerializedProperty sceneSystemType;
+        private SerializedProperty sceneSystemProfile;
 
         // Additional registered components profile
         private static bool showRegisteredServiceProperties = true;
@@ -82,6 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
             diagnosticsSystemProfile = serializedObject.FindProperty("diagnosticsSystemProfile");
+            // Scene system configuration
+            enableSceneSystem = serializedObject.FindProperty("enableSceneSystem");
+            sceneSystemType = serializedObject.FindProperty("sceneSystemType");
+            sceneSystemProfile = serializedObject.FindProperty("sceneSystemProfile");
 
             // Additional registered components configuration
             registeredServiceProvidersProfile = serializedObject.FindProperty("registeredServiceProvidersProfile");
@@ -257,6 +266,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.PropertyField(enableDiagnosticsSystem);
                     EditorGUILayout.PropertyField(diagnosticsSystemType);
                     changed |= RenderProfile(diagnosticsSystemProfile);
+                }
+            }
+
+            // Scene System configuration
+            EditorGUILayout.Space();
+            showSceneSystemProperties = EditorGUILayout.Foldout(showDiagnosticProperties, "Scene System Settings", true);
+            if (showSceneSystemProperties)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(enableSceneSystem);
+                    EditorGUILayout.PropertyField(sceneSystemType);
+                    changed |= RenderProfile(sceneSystemProfile);
                 }
             }
 
