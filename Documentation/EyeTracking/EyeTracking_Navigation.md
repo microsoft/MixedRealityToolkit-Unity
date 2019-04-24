@@ -62,7 +62,7 @@ Who hasn't used a virtual map before to search for their home or to explore enti
 Eye Tracking allows you to directly dive into exactly the parts that you're interested in and once zoomed in, you can smoothly follow the course of a street to explore your neighborhood!
 This is not only useful for exploring geographical maps, but also to checking out details in photographs, data visualizations or even live-streamed medical imagery. 
 To use this capability in your app is easy! 
-For content rendered to a [Texture]( https://docs.unity3d.com/ScriptReference/Texture.html) (e.g., a photo, streamed data), simply add the_PanZoom_Texture_ script.
+For content rendered to a [texture]( https://docs.unity3d.com/ScriptReference/Texture.html) (e.g., a photo, streamed data), simply add the_PanZoom_Texture_ script.
 For a [RectTransform](https://docs.unity3d.com/ScriptReference/RectTransform.html) use _PanZoom_RectTransf_.
 Extending the [Auto Scroll](#auto-scroll) capability enables to scroll both vertically and horizontally at the same time and to magnify content right around the user's current focus point.
 
