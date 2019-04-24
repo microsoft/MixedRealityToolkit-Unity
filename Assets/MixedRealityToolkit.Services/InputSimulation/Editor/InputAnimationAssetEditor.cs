@@ -36,22 +36,23 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
                 }
             }
 
-            if (asset.IsRecording)
-            {
-                Rect rect = GUILayoutUtility.GetRect(new GUIContent(""), "Button");
-                DrawKeyframes(asset.RecordingInputAnimation, rect, Color.red, Color.white);
+            // if (asset.IsRecording)
+            // {
+            //     Rect rect = GUILayoutUtility.GetRect(new GUIContent(""), "Button");
+            //     DrawKeyframes(asset.RecordingInputAnimation, rect, Color.red, Color.white);
 
-                Repaint();
-            }
-            else if (asset.InputAnimation != null)
-            {
-                Rect rect = GUILayoutUtility.GetRect(new GUIContent(""), "Button");
-                DrawKeyframes(asset.InputAnimation, rect, Color.gray, Color.yellow);
-            }
+            //     Repaint();
+            // }
+            // else if (asset.InputAnimation != null)
+            // {
+            //     Rect rect = GUILayoutUtility.GetRect(new GUIContent(""), "Button");
+            //     DrawKeyframes(asset.InputAnimation, rect, Color.gray, Color.yellow);
+            // }
 
             GUI.enabled = isGUIEnabled;
         }
 
+        #if false
         /// <summary>
         /// Draws a timeline of which keyframes are defined in the input animation.
         /// </summary>
@@ -110,5 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
                 EditorGUI.DrawRect(blockRect, keyframeColor);
             }
         }
+        #endif
     }
 }

@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            double currentTime = playable.GetTime();
+            float currentTime = (float)playable.GetTime();
             InputAnimationUtils.ApplyInputAnimation(InputAnimation, currentTime);
         }
     }

@@ -8,277 +8,221 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [System.Serializable]
-    public class InputAnimationCurve<T> : ISerializationCallbackReceiver
-    {
-        internal class Keyframe
-        {
-            public Keyframe(double time, T value)
-            {
-                this.time = time;
-                this.Value = value;
-            }
-
-            internal double time;
-            public double Time => time;
-            public T Value;
-        }
-
-        [NonSerialized]
-        private List<Keyframe> keyframes = new List<Keyframe>();
-        [SerializeField]
-        [HideInInspector]
-        internal List<double> serializedFrames = null;
-        [SerializeField]
-        [HideInInspector]
-        internal List<T> serializedValues = null;
-
-        public int KeyframeCount => keyframes.Count;
-
-        private double duration = 0.0;
-        public double Duration
-        {
-            get { return duration; }
-            set { duration = value; }
-        }
-
-        public double GetTime(int index)
-        {
-            return keyframes[index].time;
-        }
-
-        public T GetValue(int index)
-        {
-            return keyframes[index].Value;
-        }
-
-        public void OnBeforeSerialize()
-        {
-            serializedFrames = new List<double>(keyframes.Count);
-            serializedValues = new List<T>();
-            serializedValues.Capacity = keyframes.Count;
-            for (int i = 0; i < keyframes.Count; ++i)
-            {
-                serializedFrames.Add(keyframes[i].time);
-                serializedValues.Add(keyframes[i].Value);
-            }
-        }
-
-        public void OnAfterDeserialize()
-        {
-            keyframes.Clear();
-            keyframes.Capacity = serializedFrames.Count;
-            for (int i = 0; i < serializedFrames.Count; ++i)
-            {
-                keyframes.Add(new Keyframe(serializedFrames[i], serializedValues[i]));
-            }
-            serializedFrames = null;
-            serializedValues = null;
-        }
-
-        /// <summary>
-        /// Find an index i in the sorted keyframes list, such that keyframes[i].Time <= time < keyframes[i+1].Time.
-        /// </summary>
-        /// <returns>
-        /// 0 <= i < keyframeCount if a full interval could be found.
-        /// -1 if time is less than the first keyframe time.
-        /// keyframeCount-1 if time is greater than the last keyframe time.
-        /// </returns>
-        /// <remarks>
-        /// Uses binary search.
-        /// </remarks>
-        public int FindKeyframeInterval(double time)
-        {
-            int lowIdx = -1;
-            int highIdx = keyframes.Count;
-            while (lowIdx < highIdx - 1)
-            {
-                int midIdx = (lowIdx + highIdx) >> 1;
-                if (time >= keyframes[midIdx].time)
-                {
-                    lowIdx = midIdx;
-                }
-                else
-                {
-                    highIdx = midIdx;
-                }
-            }
-            return lowIdx;
-        }
-
-        /// <summary>
-        /// Find an index i in the sorted keyframes list, such that keyframes[i].Time <= time < keyframes[i+1].Time.
-        /// </summary>
-        /// <returns>
-        /// 0 <= i < keyframeCount if a full interval could be found.
-        /// -1 if time is less than the first keyframe time.
-        /// keyframeCount-1 if time is greater than the last keyframe time.
-        /// </returns>
-        /// <remarks>
-        /// Uses binary search.
-        /// </remarks>
-        public int FindKeyframeInterval(double time, out T low, out double lowTime, out T high, out double highTime)
-        {
-            int result = FindKeyframeInterval(time);
-            if (result >= 0)
-            {
-                low = keyframes[result].Value;
-                lowTime = keyframes[result].Time;
-            }
-            else
-            {
-                low = default(T);
-                lowTime = 0;
-            }
-            if (result < keyframes.Count - 1)
-            {
-                high = keyframes[result + 1].Value;
-                highTime = keyframes[result + 1].Time;
-            }
-            else
-            {
-                high = default(T);
-                highTime = 0;
-            }
-            return result;
-        }
-
-        public T InsertKeyframe(T value, double time)
-        {
-            // Find the greated index with less-or-equal frame
-            int prevIndex = FindKeyframeInterval(time);
-            var keyframe = new Keyframe(time, value);
-            // Insert after the index
-            keyframes.Insert(prevIndex + 1, keyframe);
-
-            return keyframe.Value;
-        }
-
-        public void RemoveKeyframeAt(double time)
-        {
-            keyframes.RemoveAll(k => k.time == time);
-        }
-
-        public void RemoveKeyframe(T keyframe)
-        {
-            keyframes.RemoveAll(k => k.Value.Equals(keyframe));
-        }
-
-        public void ClearKeyframes()
-        {
-            keyframes.Clear();
-        }
-
-        public void SetKeyframeTime(double oldTime, double newTime)
-        {
-            foreach (var keyframe in keyframes.FindAll(k => k.time == oldTime))
-            {
-                keyframe.time = newTime;
-            }
-
-            SortKeyframes();
-        }
-
-        private static int KeyframeComp(Keyframe a, Keyframe b)
-        {
-            if (a.Time < b.Time)
-            {
-                return -1;
-            }
-            else if (a.Time > b.Time)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        private void SortKeyframes()
-        {
-            keyframes.Sort(KeyframeComp);
-        }
-    }
-
-    [System.Serializable]
-    public class InputKeyframe
-    {
-        public SimulatedHandData HandDataLeft = null;
-        public SimulatedHandData HandDataRight = null;
-
-        public MixedRealityPose CameraPose = MixedRealityPose.ZeroIdentity;
-
-        public InputKeyframe(SimulatedHandData handDataLeft, SimulatedHandData handDataRight)
-        {
-            this.HandDataLeft = handDataLeft;
-            this.HandDataRight = handDataRight;
-        }
-    }
-
-    [System.Serializable]
-    public class InputAnimation : InputAnimationCurve<InputKeyframe>
+    public class InputAnimation
     {
         protected static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
-        public bool Interpolate(double time, SimulatedHandData resultHandDataLeft, SimulatedHandData resultHandDataRight, out MixedRealityPose resultCameraPose)
-        {
-            // Find [low, high] bracket of keyframes
-            FindKeyframeInterval(time, out InputKeyframe low, out double lowTime, out InputKeyframe high, out double highTime);
+        private float duration = 0.0f;
+        public float Duration => duration;
 
-            if (low != null && high != null)
+        private AnimationCurve handTrackedCurveLeft;
+        private AnimationCurve handTrackedCurveRight;
+        private AnimationCurve handPinchCurveLeft;
+        private AnimationCurve handPinchCurveRight;
+        private AnimationCurve[] handJointCurvesLeft;
+        private AnimationCurve[] handJointCurvesRight;
+        private AnimationCurve[] cameraPositionCurves;
+        private AnimationCurve[] cameraRotationCurves;
+
+        public InputAnimation()
+        {
+            handTrackedCurveLeft = new AnimationCurve();
+            handTrackedCurveRight = new AnimationCurve();
+            handPinchCurveLeft = new AnimationCurve();
+            handPinchCurveRight = new AnimationCurve();
+            handJointCurvesLeft = CreateAnimationCurveArray(3 * jointCount);
+            handJointCurvesRight = CreateAnimationCurveArray(3 * jointCount);
+            cameraPositionCurves = CreateAnimationCurveArray(3);
+            cameraRotationCurves = CreateAnimationCurveArray(4);
+        }
+
+        private AnimationCurve[] CreateAnimationCurveArray(int count)
+        {
+            var curves = new AnimationCurve[count];
+            for (int i = 0; i < count; ++i)
             {
-                float blend = (float)((double)(time - lowTime) / (double)(highTime - lowTime));
-                InterpolateHandData(resultHandDataLeft, low.HandDataLeft, high.HandDataLeft, blend);
-                InterpolateHandData(resultHandDataRight, low.HandDataRight, high.HandDataRight, blend);
-                InterpolateCameraPose(out resultCameraPose, low.CameraPose, high.CameraPose, blend);
-                return true;
+                curves[i] = new AnimationCurve();
             }
-            else if (low != null)
+            return curves;
+        }
+
+        protected AnimationCurve GetHandJointCurve(Handedness handedness, TrackedHandJoint joint, int component)
+        {
+            const int maxComponent = 3;
+            Debug.Assert(component < maxComponent);
+
+            int index = (int)joint * maxComponent + component;
+
+            if (handedness == Handedness.Left)
             {
-                resultHandDataLeft.Copy(low.HandDataLeft);
-                resultHandDataRight.Copy(low.HandDataRight);
-                resultCameraPose = low.CameraPose;
-                return true;
+                return handJointCurvesLeft[index];
             }
-            else if (high != null)
+            else if (handedness == Handedness.Right)
             {
-                resultHandDataLeft.Copy(high.HandDataLeft);
-                resultHandDataRight.Copy(high.HandDataRight);
-                resultCameraPose = high.CameraPose;
-                return true;
+                return handJointCurvesRight[index];
             }
-            else
+            return null;
+        }
+
+        protected AnimationCurve GetHeadPositionCurve(int component)
+        {
+            const int maxComponent = 3;
+            Debug.Assert(component < maxComponent);
+
+            return cameraPositionCurves[component];
+        }
+
+        protected AnimationCurve GetHeadRotationCurve(int component)
+        {
+            const int maxComponent = 4;
+            Debug.Assert(component < maxComponent);
+
+            return cameraRotationCurves[component];
+        }
+
+        /// AnimationUtility is only available with UnityEditor
+        #if UNITY_EDITOR
+
+        public void AddHandStateKeys(float time, Handedness handedness, bool isTracked, bool isPinching)
+        {
+            if (handedness == Handedness.Left)
             {
-                resultCameraPose = MixedRealityPose.ZeroIdentity;
-                return false;
+                AddHandStateKeys(time, isTracked, isPinching, handTrackedCurveLeft, handPinchCurveLeft);
+            }
+            else if (handedness == Handedness.Right)
+            {
+                AddHandStateKeys(time, isTracked, isPinching, handTrackedCurveRight, handPinchCurveRight);
             }
         }
 
-        private void InterpolateHandData(SimulatedHandData result, SimulatedHandData low, SimulatedHandData high, float blend)
+        public void AddHandJointKeys(float time, Handedness handedness, TrackedHandJoint joint, Vector3 jointPosition)
         {
-            const float pinchThreshold = 0.9f;
+            if (handedness == Handedness.Left)
+            {
+                AddHandJointKeys(time, joint, jointPosition, handJointCurvesLeft);
+            }
+            else if (handedness == Handedness.Right)
+            {
+                AddHandJointKeys(time, joint, jointPosition, handJointCurvesRight);
+            }
+        }
 
-            bool isTracked = low.IsTracked && high.IsTracked;
-            bool isPinching = (low.IsPinching ? (1.0f - blend) : 0.0f) + (high.IsPinching ? blend : 0.0f) > pinchThreshold;
+        public void AddHandDataKeys(float time, Handedness handedness, SimulatedHandData data)
+        {
+            if (handedness == Handedness.Left)
+            {
+                AddHandStateKeys(time, data.IsTracked, data.IsPinching, handTrackedCurveLeft, handPinchCurveLeft);
+                for (int i = 0; i < jointCount; ++i)
+                {
+                    AddHandJointKeys(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesLeft);
+                }
+            }
+            else if (handedness == Handedness.Right)
+            {
+                AddHandStateKeys(time, data.IsTracked, data.IsPinching, handTrackedCurveRight, handPinchCurveRight);
+                for (int i = 0; i < jointCount; ++i)
+                {
+                    AddHandJointKeys(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesRight);
+                }
+            }
+        }
 
+        private void AddHandStateKeys(float time, bool isTracked, bool isPinching, AnimationCurve trackedCurve, AnimationCurve pinchCurve)
+        {
+            int key;
+
+            key = trackedCurve.AddKey(time, isTracked ? 1.0f : 0.0f);
+            AnimationUtility.SetKeyBroken(trackedCurve, key, true);
+
+            key = pinchCurve.AddKey(time, isPinching ? 1.0f : 0.0f);
+            AnimationUtility.SetKeyBroken(pinchCurve, key, true);
+
+            duration = Mathf.Max(duration, time);
+        }
+
+        private void AddHandJointKeys(float time, TrackedHandJoint joint, Vector3 jointPosition, AnimationCurve[] jointCurves)
+        {
+            int curveIndex = (int)joint * 3;
+            jointCurves[curveIndex + 0].AddKey(time, jointPosition.x);
+            jointCurves[curveIndex + 1].AddKey(time, jointPosition.y);
+            jointCurves[curveIndex + 2].AddKey(time, jointPosition.z);
+
+            duration = Mathf.Max(duration, time);
+        }
+
+        public void AddCameraPoseKeys(float time, MixedRealityPose cameraPose)
+        {
+            cameraPositionCurves[0].AddKey(time, cameraPose.Position.x);
+            cameraPositionCurves[1].AddKey(time, cameraPose.Position.y);
+            cameraPositionCurves[2].AddKey(time, cameraPose.Position.z);
+
+            cameraRotationCurves[0].AddKey(time, cameraPose.Rotation.x);
+            cameraRotationCurves[1].AddKey(time, cameraPose.Rotation.y);
+            cameraRotationCurves[2].AddKey(time, cameraPose.Rotation.z);
+            cameraRotationCurves[3].AddKey(time, cameraPose.Rotation.w);
+
+            duration = Mathf.Max(duration, time);
+        }
+
+        #endif // UNITY_EDITOR
+
+        public void EvaluateHandData(float time, Handedness handedness, SimulatedHandData result)
+        {
+            if (handedness == Handedness.Left)
+            {
+                EvaluateHandData(time, result, handTrackedCurveLeft, handPinchCurveLeft, handJointCurvesLeft);
+            }
+            else if (handedness == Handedness.Right)
+            {
+                EvaluateHandData(time, result, handTrackedCurveRight, handPinchCurveRight, handJointCurvesRight);
+            }
+        }
+
+        private void EvaluateHandData(float time, SimulatedHandData result, AnimationCurve trackedCurve, AnimationCurve pinchCurve, AnimationCurve[] jointCurves)
+        {
+            bool isTracked = (trackedCurve.Evaluate(time) > 0.0f);
+            bool isPinching = (pinchCurve.Evaluate(time) > 0.0f);
             result.Update(isTracked, isPinching,
                 (Vector3[] jointPositions) =>
                 {
+                    int jointCurve = 0;
                     for (int i = 0; i < jointCount; ++i)
                     {
-                        jointPositions[i] = Vector3.Lerp(low.Joints[i], high.Joints[i], blend);
+                        float x = jointCurves[jointCurve++].Evaluate(time);
+                        float y = jointCurves[jointCurve++].Evaluate(time);
+                        float z = jointCurves[jointCurve++].Evaluate(time);
+                        jointPositions[i].Set(x, y, z);
                     }
                 });
         }
 
-        private void InterpolateCameraPose(out MixedRealityPose result, MixedRealityPose low, MixedRealityPose high, float blend)
+        public MixedRealityPose EvaluateCameraPose(float time)
         {
-            result = new MixedRealityPose();
-            result.Position = Vector3.Lerp(low.Position, high.Position, blend);
-            result.Rotation = Quaternion.Slerp(low.Rotation, high.Rotation, blend);
+            var cameraPose = new MixedRealityPose();
+
+            {
+                float x = cameraPositionCurves[0].Evaluate(time);
+                float y = cameraPositionCurves[1].Evaluate(time);
+                float z = cameraPositionCurves[2].Evaluate(time);
+                cameraPose.Position = new Vector3(x, y, z);
+            }
+
+            {
+                float x = cameraRotationCurves[0].Evaluate(time);
+                float y = cameraRotationCurves[1].Evaluate(time);
+                float z = cameraRotationCurves[2].Evaluate(time);
+                float w = cameraRotationCurves[3].Evaluate(time);
+                cameraPose.Rotation = new Quaternion(x, y, z, w);
+            }
+
+            return cameraPose;
         }
     }
 }

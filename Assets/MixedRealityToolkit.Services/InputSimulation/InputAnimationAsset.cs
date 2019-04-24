@@ -19,24 +19,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public InputAnimation inputAnimation;
 
-        private double currentTime;
+        private float currentTime;
 
         public void Awake()
         {
             inputAnimation = new InputAnimation();
-            currentTime = 0.0;
+            currentTime = 0.0f;
         }
 
         public void Update()
         {
             currentTime += Time.deltaTime;
-            InputAnimationUtils.RecordKeyframeFiltered(
-                inputAnimation,
-                currentTime,
-                settings.EpsilonTime,
-                settings.EpsilonJointPositions,
-                settings.EpsilonCameraPosition,
-                settings.EpsilonCameraRotation);
+            InputAnimationUtils.RecordKeyframe(inputAnimation, currentTime);
         }
     }
 
