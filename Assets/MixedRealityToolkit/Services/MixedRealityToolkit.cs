@@ -1029,6 +1029,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             return typeof(IMixedRealityInputSystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityCameraSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityFocusProvider).IsAssignableFrom(type) ||
                    typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
@@ -1039,6 +1040,7 @@ namespace Microsoft.MixedReality.Toolkit
         private void ClearCoreSystemCache()
         {
             inputSystem = null;
+            cameraSystem = null;
             teleportSystem = null;
             boundarySystem = null;
             spatialAwarenessSystem = null;
