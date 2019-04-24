@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -13,6 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private bool lateInitialize = true;
 
+        /// <summary>
+        /// Prefer using EnsureInputSystemValid(), which will only await if the input system isn't
+        /// yet valid.
+        /// </summary>
         protected readonly WaitUntil WaitUntilInputSystemValid = new WaitUntil(() => MixedRealityToolkit.InputSystem != null);
 
         protected virtual void OnEnable()
@@ -27,10 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (lateInitialize)
             {
-                if (MixedRealityToolkit.InputSystem == null)
-                {
-                    await WaitUntilInputSystemValid;
-                }
+                await EnsureInputSystemValid();
 
                 // We've been destroyed during the await.
                 if (this == null)
@@ -46,6 +48,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected virtual void OnDisable()
         {
             MixedRealityToolkit.InputSystem?.Unregister(gameObject);
+        }
+
+        /// <summary>
+        /// A task that will only complete when the input system has in a valid state.
+        /// </summary>
+        /// <remarks>
+        /// It's possible for this object to have been destroyed after the await, which
+        /// implies that callers should check that this != null after awaiting this task.
+        /// </remarks>
+        protected async Task EnsureInputSystemValid()
+        {
+            if (MixedRealityToolkit.InputSystem == null)
+            {
+                await WaitUntilInputSystemValid;
+            }
         }
     }
 }

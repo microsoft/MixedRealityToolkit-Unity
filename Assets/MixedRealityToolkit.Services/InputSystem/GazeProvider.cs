@@ -353,7 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Start();
 
-            await WaitUntilInputSystemValid;
+            await EnsureInputSystemValid();
 
             if (this == null)
             {
