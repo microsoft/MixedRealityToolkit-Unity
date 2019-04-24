@@ -40,7 +40,7 @@ This tutorial showcases the ease of accessing eye gaze data to select targets.
 It includes an example for subtle yet powerful feedback to provide confidence to the user that a target is focused while not being overwhelming.
 In addition, there is a simple example of smart notifications that automatically disappear after being read. 
 
-**Summary**: Fast and effortless target selections using a combination of Eyes, Voice and Hand input.
+**Summary**: Fast and effortless target selections using a combination of eyes, voice and hand input.
 
 <br>
 
