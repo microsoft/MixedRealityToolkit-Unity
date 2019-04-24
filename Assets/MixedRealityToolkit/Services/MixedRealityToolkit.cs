@@ -557,6 +557,14 @@ namespace Microsoft.MixedReality.Toolkit
                 switch (objects.Length)
                 {
                     case 0:
+#if UNITY_EDITOR
+                        // Generating a new instance during app shutdown in the editor allows instances to persist into edit mode, which may cause unwanted behavior
+                        if (isApplicationQuitting)
+                        {
+                            Debug.LogWarning("Trying to find instance during application shutdown.");
+                            return null;
+                        }
+#endif
                         Debug.Assert(!newInstanceBeingInitialized, "We shouldn't be initializing another MixedRealityToolkit unless we errored on the previous.");
                         newInstanceBeingInitialized = true;
                         newInstance = new GameObject(nameof(MixedRealityToolkit)).AddComponent<MixedRealityToolkit>();

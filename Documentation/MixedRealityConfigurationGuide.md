@@ -1,6 +1,6 @@
 # Mixed Reality Toolkit Configuration Guide
 
-![](../External/ReadMeImages/MRTK_Logo_Rev.png)
+![](../Documentation/Images/MRTK_Logo_Rev.png)
 
 The Mixed Reality Toolkit centralizes as much of the configuration required to manage the toolkit as possible (except for true runtime "things").
 
@@ -20,7 +20,7 @@ The main configuration profile, which is attached to the *MixedRealityToolkit* G
 
 > The Mixed Reality Toolkit "locks" the default configuration screens to ensure you always have a common start point for your project and we encourage you to start defining your own settings as your project evolves.
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
 
 > All the "default" profiles for the Mixed Reality Toolkit can be found in the SDK project in the following folder
 
@@ -28,7 +28,7 @@ The main configuration profile, which is attached to the *MixedRealityToolkit* G
 
 When you open the main Mixed Reality Toolkit Configuration Profile, you will see the following screen in the inspector:
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png)
 
 > If you select a MixedRealityToolkitConfigurationProfile asset without the MixedRealityToolkit in the scene, it will ask you if you want the MRTK to automatically setup the scene for you.  This is optional, however, there must be an active MixedRealityToolkit object in the scene to access all the configuration screens.
 
@@ -65,7 +65,7 @@ From here you can navigate to all the configuration profiles for the MRTK, inclu
 
 Located on the main Mixed Reality Toolkit configuration page, this setting defines the default operation for the Mixed Reality environment for your project.
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png)
 
 
 ---
@@ -75,7 +75,7 @@ Located on the main Mixed Reality Toolkit configuration page, this setting defin
 
 The camera settings define how the camera will be setup for your Mixed Reality project, defining the generic clipping, quality and transparency settings.
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
 
@@ -88,11 +88,11 @@ The Mixed Reality Project provides a robust and well-trained input system for ro
 
 > The MRTK also allows you to write your own Input System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide to building Registered Services]() (Coming soon)
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png)
 
 Behind the Input System provided by the MRTK are several other systems, these help to drive and manage the complex inter-weavings required to abstract out the complexities of a multi-platform / mixed reality framework.
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png)
 
 Each of the individual profiles are detailed below:
 
@@ -106,6 +106,7 @@ Each of the individual profiles are detailed below:
 * [Controller Visualization Settings](#visualization)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
+
 ---
 <a name="boundary"/>
 
@@ -113,9 +114,10 @@ Each of the individual profiles are detailed below:
 
 The boundary system translates the perceived boundary reported by the underlying platforms boundary / guardian system.  The Boundary visualizer configuration gives you the ability to automatically show the recorded boundary within your scene relative to the user's position.  The boundary will also react / update based on where the user teleports within the scene.
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
+
 ---
 <a name="teleportation"/>
 
@@ -125,7 +127,7 @@ The Mixed Reality Project provides a full featured Teleportation system for mana
 
 > The MRTK also allows you to write your own Teleportation System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide to building Registered Services]() (Coming soon)
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png)
 
 ---
 <a name="spatialawareness"/>
@@ -137,7 +139,7 @@ You can view the architecture behind the [MRTK Spatial Awareness system here](..
 
 > The MRTK also allows you to write your own Spatial Awareness System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide to building Registered Services]() (Coming soon)
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png)
 
 The Mixed Reality Toolkit Spatial Awareness configuration lets you tailor how the system starts, whether it is automatically when the application starts or later programmatically as well as setting the extents for the Field of View.
 
@@ -147,9 +149,10 @@ This is only applicable for devices that can provide a scanned environment, such
 
 > Note, the Spatial Awareness system is still in active development, please report any issues or requests in the [MRTK Issues section on GitHub](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues)
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
+
 ---
 <a name="diagnostic"/>
 
@@ -159,13 +162,14 @@ An optional but highly useful feature of the MRTK is the plugin Diagnostics func
 
 > The MRTK also allows you to write your own Diagnostic System and you can use the selection below to switch the system used without rewriting the toolkit.  For more information on writing your own systems, [please see this guide to building Registered Services]() (Coming soon)
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png)
 
 The diagnostics profile provides several simple systems to monitor whilst the project is running, including a handy On/Off switch to enable / disable the display pane in the scene.
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
+
 ---
 <a name="services"/>
 
@@ -179,9 +183,10 @@ Any registered service still gets the full advantage of all of the Unity events,
 
 Check out the [Guide to building Registered Services]() (Coming Soon) for more details about creating your own services
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the main Mixed Reality Toolkit Configuration screen.
+
 ---
 <a name="inputactions"/>
 
@@ -206,9 +211,10 @@ Events utilizing Input Actions are not limited to physical controllers and can s
 
 > Input Actions are one of the few components which is not editable at runtime, they are a design time configuration only.  This profile should not be swapped out whilst the project is running due to the framework (and your projects) dependency on the ID's generated for each action.
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
+
 ---
 <a name="inputactionrules"/>
 
@@ -222,9 +228,10 @@ For example, converting the single Dual Axis input event from a DPad in to the 4
 
 Input Action Rules can be configured for any of the available input axis. However, Input actions from one Axis type can be translated to another Input Action of the same Axis type.  You can map a Dual Axis action to another Dual Axis action, but not to a Digital or None action.
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
+
 ---
 <a name="pointer"/>
 
@@ -236,7 +243,7 @@ Pointers can also be visualized within the active scene using one of the many Li
 
 > See the [Guide to Pointers documentation]() **Coming Soon** for more information on creating your own pointers.
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
 
@@ -257,9 +264,10 @@ Gestures are a system specific implementation allowing you to assign Input Actio
 
 > Note, the current implementation is for the HoloLens only and will be enhanced for other systems as they are added to the Toolkit in the future (no dates yet).
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
+
 ---
 <a name="speech"/>
 
@@ -269,9 +277,10 @@ Like Gestures, some runtime platforms also provide intelligent Speech to Text fu
 
 > The system currently only supports speech when running on Windows 10 platforms, e.g. HoloLens and Windows 10 desktop and will be enhanced for other systems as they are added to the Toolkit in the future (no dates yet).
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
+
 ---
 <a name="mapping"/>
 
@@ -281,7 +290,7 @@ One of the core configuration screens for the Mixed Reality Toolkit is the abili
 
 The configuration screen below allows you to configure any of the controllers currently recognized by the toolkit.
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png)
 
 The MRTK provides a default configuration for the following controllers / systems:
 
@@ -297,11 +306,12 @@ The MRTK provides a default configuration for the following controllers / system
 
 Clicking on the Image for any of the pre-built controller systems allows you to configure a single Input Action for all its corresponding inputs, for example, see the Oculus Touch controller configuration screen below:
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png)
 
 There is also an advanced screen for configuring other OpenVR or Unity input controllers that are not identified above.
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
+
 ---
 <a name="visualization"/>
 
@@ -315,6 +325,6 @@ This can be configured at a "Global" (all instances of a controller for a specif
 
 If your controller representation in the scene needs to be offset from the physical controller position, then simply set that offset against the controller model's prefab.  (e.g. setting the transform position of the controller prefab with an offset position)
 
-![](../External/ReadMeImages/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png)
 
 > Clicking on the "Back to Configuration Profile" button will take you back to the Mixed Reality Toolkit Input System Settings screen.
