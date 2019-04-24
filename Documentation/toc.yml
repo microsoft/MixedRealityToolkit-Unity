@@ -7,7 +7,7 @@
 - name: Feature Overviews
   href: MixedRealityServices.md
   items:
-    - name: Core Features
+  - name: Core Features
     items:
     - name: Packages
       href: Packaging/MRTK_Packages.md
