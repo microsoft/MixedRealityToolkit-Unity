@@ -50,14 +50,40 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// </summary>
         public RecognitionConfidenceLevel RecognitionConfidenceLevel { get; set; }
 
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-        private KeywordRecognizer keywordRecognizer;
-
         /// <inheritdoc />
         public bool IsRecognitionActive
         {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             get { return keywordRecognizer != null && keywordRecognizer.IsRunning; }
+#else
+            get { return false; }
+#endif
         }
+
+        /// <inheritdoc />
+        public void StartRecognition()
+        {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+            if (keywordRecognizer != null && !keywordRecognizer.IsRunning)
+            {
+                keywordRecognizer.Start();
+            }
+#endif
+        }
+
+        /// <inheritdoc />
+        public void StopRecognition()
+        {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+            if (keywordRecognizer != null && keywordRecognizer.IsRunning)
+            {
+                keywordRecognizer.Stop();
+            }
+#endif
+        }
+
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        private KeywordRecognizer keywordRecognizer;
 
 #if UNITY_EDITOR
         /// <inheritdoc />
@@ -148,24 +174,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
         }
 #endif // UNITY_EDITOR
-
-        /// <inheritdoc />
-        public void StartRecognition()
-        {
-            if (keywordRecognizer != null && !keywordRecognizer.IsRunning)
-            {
-                keywordRecognizer.Start();
-            }
-        }
-
-        /// <inheritdoc />
-        public void StopRecognition()
-        {
-            if (keywordRecognizer != null && keywordRecognizer.IsRunning)
-            {
-                keywordRecognizer.Stop();
-            }
-        }
 
         private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
