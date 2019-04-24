@@ -16,6 +16,14 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     [MixedRealityServiceProfile(typeof(IMixedRealitySceneSystem))]
     public class MixedRealitySceneSystemProfile : BaseMixedRealityProfile
     {
+        public bool UseManagerScene => useManagerScene;
+
+        public UnityEngine.Object ManagerSceneObject => managerSceneObject;
+
+        [SerializeField]
+        [Tooltip("Using a manager scene ensures a MixedRealityToolkit instance will always be loaded first in your application. It also ensures that this scene and instance will never be unloaded.")]
+        private bool useManagerScene = true;
+
         [SerializeField]
 #if (UNITY_EDITOR)
         [SceneAssetReference]
