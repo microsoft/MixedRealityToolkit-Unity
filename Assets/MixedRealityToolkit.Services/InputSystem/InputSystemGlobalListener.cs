@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Prefer using EnsureInputSystemValid(), which will only await if the input system isn't
         /// yet valid.
         /// </summary>
+        [Obsolete("Prefer using EnsureInputSystemValid()")]
         protected readonly WaitUntil WaitUntilInputSystemValid = new WaitUntil(() => MixedRealityToolkit.InputSystem != null);
 
         protected virtual void OnEnable()
@@ -61,7 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (MixedRealityToolkit.InputSystem == null)
             {
+#pragma warning disable CS0618 // WaitUntilInputSystemValid is obsolete for outside-of-class usage.
                 await WaitUntilInputSystemValid;
+#pragma warning restore CS0618
             }
         }
     }
