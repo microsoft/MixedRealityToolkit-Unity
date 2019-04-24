@@ -10,30 +10,6 @@ using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    /// <summary>
-    /// Utility component to record an InputAnimation.
-    /// </summary>
-    internal class InputAnimationRecorder : MonoBehaviour
-    {
-        public InputRecordingSettings settings = null;
-
-        public InputAnimation inputAnimation;
-
-        private float currentTime;
-
-        public void Awake()
-        {
-            inputAnimation = new InputAnimation();
-            currentTime = 0.0f;
-        }
-
-        public void Update()
-        {
-            currentTime += Time.deltaTime;
-            InputAnimationUtils.RecordKeyframe(inputAnimation, currentTime);
-        }
-    }
-
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Input Animation Asset", fileName = "InputAnimationAsset", order = 100)]
     public class InputAnimationAsset : PlayableAsset
     {
@@ -45,25 +21,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         private InputAnimation inputAnimation = new InputAnimation();
-        public InputAnimation InputAnimation => inputAnimation;
-
-        /// Utility class that records input animation.
-        internal InputAnimationRecorder recorder = null;
-
-        /// <summary>
-        /// True if new input animation is being recorded.
-        /// </summary>
-        public bool IsRecording => (recorder != null);
-
-        /// <summary>
-        /// New input animation data that is currently being recorded.
-        /// </summary>
-        public InputAnimation RecordingInputAnimation => (recorder ? recorder.inputAnimation : null);
+        public InputAnimation InputAnimation
+        {
+            get
+            {
+                return inputAnimation;
+            }
+            set
+            {
+                inputAnimation = value;
+            }
+        }
 
         /// </inheritdoc>
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            if (Application.isPlaying && !IsRecording)
+            if (Application.isPlaying)
             {
                 var playable = ScriptPlayable<InputPlaybackBehaviour>.Create(graph);
                 var behaviour = playable.GetBehaviour();
@@ -71,39 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return playable;
             }
             return Playable.Null;
-        }
-
-        public bool StartRecording()
-        {
-            var mrtk = MixedRealityToolkit.Instance;
-            if (!mrtk)
-            {
-                return false;
-            }
-
-            var inputSimService = mrtk.GetService<IInputSimulationService>();
-            if (inputSimService == null)
-            {
-                return false;
-            }
-
-            var profile = inputSimService.InputSimulationProfile;
-            if (!profile)
-            {
-                return false;
-            }
-
-            recorder = mrtk.gameObject.AddComponent<InputAnimationRecorder>();
-            recorder.settings = profile.RecordingSettings;
-
-            return true;
-        }
-
-        public void StopRecording()
-        {
-            inputAnimation = recorder.inputAnimation;
-
-            GameObject.Destroy(recorder);
         }
     }
 }
