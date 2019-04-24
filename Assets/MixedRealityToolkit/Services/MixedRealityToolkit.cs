@@ -13,6 +13,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
@@ -450,6 +451,15 @@ namespace Microsoft.MixedReality.Toolkit
                 }
             }
 
+            if (ActiveProfile.IsSceneSystemEnabled)
+            {
+                object[] args = { this, ActiveProfile.SceneSystemProfile };
+                if (!RegisterService<IMixedRealitySceneSystem>(ActiveProfile.SceneSystemSystemType, args: args) || SceneSystem == null)
+                {
+                    Debug.LogError("Failed to start the Scene System!");
+                }
+            }
+
             if (ActiveProfile.RegisteredServiceProvidersProfile != null)
             {
                 for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile?.Configurations?.Length; i++)
@@ -746,7 +756,7 @@ namespace Microsoft.MixedReality.Toolkit
             {   // If we're already registered, no need to proceed
                 return;
             }
-            
+
             // If we do, then it's not this instance, so deactivate this instance
             toolkitInstance.name = InactiveInstanceGameObjectName;
             // Move to the bottom of the heirarchy so it stays out of the way
@@ -1019,7 +1029,8 @@ namespace Microsoft.MixedReality.Toolkit
                    typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type) ||
-                   typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type);
+                   typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type) ||
+                   typeof(IMixedRealitySceneSystem).IsAssignableFrom(type);
         }
 
         private void ClearCoreSystemCache()
@@ -1030,6 +1041,7 @@ namespace Microsoft.MixedReality.Toolkit
             boundarySystem = null;
             spatialAwarenessSystem = null;
             diagnosticsSystem = null;
+            sceneSystem = null;
         }
 
         private IMixedRealityService GetServiceByNameInternal(Type interfaceType, string serviceName)
@@ -1360,6 +1372,40 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static bool logDiagnosticsSystem = true;
 
-#endregion Core System Accessors
+        private static IMixedRealitySceneSystem sceneSystem = null;
+
+        /// <summary>
+        /// Returns true if the MixedRealityToolkit exists and has an active profile that has Scene system enabled.
+        /// </summary>
+        public static bool IsSceneSystemEnabled => IsInitialized && Instance.HasActiveProfile && Instance.ActiveProfile.IsSceneSystemEnabled;
+
+        /// <summary>
+        /// The current Scene System registered with the Mixed Reality Toolkit.
+        /// </summary>
+        public static IMixedRealitySceneSystem SceneSystem
+        {
+            get
+            {
+                if (isApplicationQuitting)
+                {
+                    return null;
+                }
+
+                if (sceneSystem != null)
+                {
+                    return sceneSystem;
+                }
+
+                sceneSystem = Instance.GetService<IMixedRealitySceneSystem>(showLogs: logSceneSystem);
+                // If we found a valid system, then we turn logging back on for the next time we need to search.
+                // If we didn't find a valid system, then we stop logging so we don't spam the debug window.
+                logSceneSystem = sceneSystem != null;
+                return sceneSystem;
+            }
+        }
+
+        private static bool logSceneSystem = true;
+
+        #endregion Core System Accessors
     }
 }
