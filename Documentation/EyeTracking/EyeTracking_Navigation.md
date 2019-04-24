@@ -64,7 +64,7 @@ This is not only useful for exploring geographical maps, but also to checking ou
 To use this capability in your app is easy! 
 For content rendered to a [texture]( https://docs.unity3d.com/ScriptReference/Texture.html) (e.g., a photo, streamed data), simply add the_PanZoom_Texture_ script.
 For a [RectTransform](https://docs.unity3d.com/ScriptReference/RectTransform.html) use _PanZoom_RectTransf_.
-Extending the [Auto Scroll](#auto-scroll) capability enables to scroll both vertically and horizontally at the same time and to magnify content right around the user's current focus point.
+Extending the [auto scroll](#auto-scroll) capability enables to scroll both vertically and horizontally at the same time and to magnify content right around the user's current focus point.
 
 
 Parameters | Description 
