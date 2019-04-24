@@ -52,7 +52,7 @@ Attaching the _EyeTrackingTarget_ component allows for flexibly handle eye-gaze-
 The scroll sample demonstrates scrolling text that starts when the user *looks* at the panel and stops when the user is *looking away* from it.
 Alternatively, please use the 
 [BaseEyeFocusHandler](EyeTracking_TargetSelection.md#use-eye-gaze-specific-baseeyefocushandler) 
-to handle Eye Tracking events directly in code to trigger the *StartFocusing* and *StopFocusing* methods in _Scroll_RectTransf_.
+to handle eye tracking events directly in code to trigger the *StartFocusing* and *StopFocusing* methods in _Scroll_RectTransf_.
 
 ![Eye-supported scroll setup in Unity: EyeTrackingTarget](../../Documentation/Images/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg)
 
