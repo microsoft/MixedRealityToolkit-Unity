@@ -420,7 +420,7 @@ public enum HandednessType
 
 ## Best Practices, including Unity recommendations
 
-Some of the target platforms of this project require us to take performance into consideration.  With this in mind we should always be careful of allocating memory in frequently called code in tight update loops or algorithms.
+Some of the target platforms of this project require to take performance into consideration. With this in mind always be careful when allocating memory in frequently called code in tight update loops or algorithms.
 
 ## Encapsulation
 
