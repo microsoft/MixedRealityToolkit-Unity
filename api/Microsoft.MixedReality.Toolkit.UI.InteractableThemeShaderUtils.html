@@ -197,7 +197,9 @@
   
   <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeShaderUtils_GetValidMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeShaderUtils.GetValidMaterial*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeShaderUtils_GetValidMaterial_Renderer_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeShaderUtils.GetValidMaterial(Renderer)">GetValidMaterial(Renderer)</h4>
-  <div class="markdown level1 summary"><p>Grab a valid Material from an object, if in the editor, use the shared material</p>
+  <div class="markdown level1 summary"><p>Grab the shared material to avoid creating new material instances and breaking batching.
+Because MaterialPropertyBlocks are used for setting material properties the shared material is
+used to set the initial state of the MaterialPropertyBlock(s) before mutating state.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

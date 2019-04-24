@@ -2785,6 +2785,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Slate/MRTK_Slate_PanZoom.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Slate/MRTK_Slate_PanZoom.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Slate/MRTK_Slate_PanZoom_Examples.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Slate/MRTK_Slate_PanZoom_Examples.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Slate/MRTK_Slate_Scale.png",
       "output": {
         "resource": {
@@ -3542,7 +3564,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Slate.html",
-          "hash": "xl3kxtHzW3sS6jaUfYoD9A=="
+          "hash": "MIdfJFTV7rrr+x9j1/zmzg=="
         }
       },
       "is_incremental": false,
@@ -6733,7 +6755,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandInteractionPanZoom.HandPanData.html",
-          "hash": "zMlXoc6Ou0COcppiR9JL0w=="
+          "hash": "EjIeyBPMEZJ/K7qwSJKSnA=="
         }
       },
       "is_incremental": false,
@@ -6745,7 +6767,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandInteractionPanZoom.html",
-          "hash": "cYhVrhawZuE08YrXRezJ/w=="
+          "hash": "OKhYvE3g0VKGPlqkE8VE8A=="
         }
       },
       "is_incremental": false,
@@ -8449,7 +8471,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "GRkRJen/WE3/ai5Ktg6TlQ=="
+          "hash": "4IO3Kgjho1QqsU1/Bpl9Wg=="
         }
       },
       "is_incremental": false,
@@ -10573,7 +10595,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableThemeShaderUtils.html",
-          "hash": "LI9jbF0Nax/ThHVPUDb09Q=="
+          "hash": "znTdYdFedqVfeW1AIWOEUQ=="
         }
       },
       "is_incremental": false,
@@ -14081,13 +14103,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -14103,6 +14118,13 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0

@@ -84,6 +84,11 @@
 
 <p><img src="Images/Slate/MRTK_Slate_Main.png" alt="Slate"></p>
 <p>Thin window style control for the 2D content with grabbable title bar and 'Follow Me' and 'Close' buttons. You can scroll 2D content with articulated hand.</p>
+<h2 id="example-scene">Example scene</h2>
+<p>You can find the Slate example in the <strong>HandInteractionExamples</strong> scene under:
+<a href="/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes">MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/</a></p>
+<p><strong>HandInteractionPanZoomExample</strong> scene has Slate pan &amp; zoom interaction examples.</p>
+<img src="Images/Slate/MRTK_Slate_PanZoom_Examples.png" width="650">
 <h2 id="structure">Structure</h2>
 <p>Slate control is composed of these elements.</p>
 <img src="Images/Slate/MRTK_Slate_Structure.png" width="650">
@@ -108,6 +113,9 @@
 <img src="Images/Slate/MRTK_Slate_Scripts.png">
 <h3 id="handinteractionpancs">HandInteractionPan.cs</h3>
 <p>This script handles articulated hand input for touching and moving the content on the slate's <strong>ContentQuad</strong></p>
+<h3 id="handinteractionpanzoomcs">HandInteractionPanZoom.cs</h3>
+<p>In addition to the panning interaction, this script supports two-handed zooming. You can replace HandInteractionPan.cs with this script to support zoom.</p>
+<img src="Images/Slate/MRTK_Slate_PanZoom.png" width="500">
 <h4 id="slateenablercs">SlateEnabler.cs</h4>
 <p>This script is intended to be used with DragEnabler. These two scripts allow the Slate and another object - for instance a Title Bar - to toggle their active status so that the Touch action only affects one at a time. This prevents interacting with the Slate to accidentally trigger the Title Bar behavior and vice versa. The SlateEnabler script is put on the GameObject that is NOT the Slate. Once attached- it toggles interaction with the Slate when the GameObject is being dragged or touched.</p>
 <h4 id="dragenablercs">DragEnabler.cs</h4>
