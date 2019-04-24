@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public bool IsCameraSystemEnabled
         {
-            get { return CameraProfile != null && enableCameraSystem; }
+            get { return CameraProfile != null && cameraSystemType != null && cameraSystemType.Type != null && enableCameraSystem; }
             internal set { enableCameraSystem = value; }
         }
 
