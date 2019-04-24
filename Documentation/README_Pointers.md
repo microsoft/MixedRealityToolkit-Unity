@@ -2,7 +2,7 @@
 
 ![Pointer](../Documentation/Images/Pointers/MRTK_Pointer_Main.png)
 
-A [pointer](../Documentation/Input/Pointers.md) is something attached to a controller that gives focus and dispatches [inputs]((../Documentation/Input/Overview.md)) to the game object it is pointing to. 
+A [pointer](../Documentation/Input/Pointers.md) is something attached to a controller that gives focus and dispatches [inputs](../Documentation/Input/Overview.md) to the game object it is pointing to. 
 
 For a game object to be able to receive focus it must have a collider (so it can be hit by physics raycasts) and belong to one of the layers defined in the pointer raycast layer masks in the pointer profile.
 
