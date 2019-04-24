@@ -24,7 +24,8 @@ param(
     [ValidatePattern("^\d+\.\d+\.\d+[fpb]\d+$")]
     [string]$UnityVersion, 
     [switch]$Clean,
-    [switch]$Verbose
+    [switch]$Verbose,
+    [switch]$NoNuget
 )
 
 Import-Module UnitySetup -MinimumVersion '4.0.97' -ErrorAction Stop
@@ -129,5 +130,8 @@ $unityPackages | Foreach-Object {
     catch { Write-Error $_ }
 }
 
-# Wait for, receive, and remove all the nuget jobs
-$nugetJobs | Receive-Job -Wait -AutoRemoveJob
+if (!$NoNuget)
+{
+    # Wait for, receive, and remove all the nuget jobs
+    $nugetJobs | Receive-Job -Wait -AutoRemoveJob
+}

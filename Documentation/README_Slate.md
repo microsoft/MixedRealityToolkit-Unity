@@ -3,6 +3,15 @@
 
 Thin window style control for the 2D content with grabbable title bar and 'Follow Me' and 'Close' buttons. You can scroll 2D content with articulated hand.
 
+## Example scene
+You can find the Slate example in the **HandInteractionExamples** scene under:
+[MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes)
+
+**HandInteractionPanZoomExample** scene has Slate pan & zoom interaction examples.
+
+<img src="../Documentation/Images/Slate/MRTK_Slate_PanZoom_Examples.png" width="650">
+
+
 ## Structure
 Slate control is composed of these elements.
 
@@ -35,6 +44,12 @@ Slate control contains Bounding Box script for scaling and rotating. For more in
 
 ### HandInteractionPan.cs
 This script handles articulated hand input for touching and moving the content on the slate's **ContentQuad**
+
+### HandInteractionPanZoom.cs
+In addition to the panning interaction, this script supports two-handed zooming. You can replace HandInteractionPan.cs with this script to support zoom.
+
+<img src="../Documentation/Images/Slate/MRTK_Slate_PanZoom.png" width="500">
+
 
 #### SlateEnabler.cs 
 This script is intended to be used with DragEnabler. These two scripts allow the Slate and another object - for instance a Title Bar - to toggle their active status so that the Touch action only affects one at a time. This prevents interacting with the Slate to accidentally trigger the Title Bar behavior and vice versa. The SlateEnabler script is put on the GameObject that is NOT the Slate. Once attached- it toggles interaction with the Slate when the GameObject is being dragged or touched.

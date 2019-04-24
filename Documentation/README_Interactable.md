@@ -3,6 +3,8 @@
 
 With Interactable script, you can make any object interactable with differentiated visual state. For example, you can change color of the object on focus or make it bigger on pressed state. Since you can have multiple themes that control different parts of the object, you can achieve sophisticated visual states including shader property changes.
 
+With Interactable script, you can make any object interactable with differentiated visual state. For example, you can change color of the object on focus or make it bigger on pressed state. Since you can have multiple themes that control different parts of the object, you can achieve sophisticated visual states including shader property changes.
+
 ## How to use Interactable
 Add the Interactable Component to a GameObject
 
