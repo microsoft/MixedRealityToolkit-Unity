@@ -31,8 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             IMixedRealityInputSystem inputSystem,
             MixedRealityInputSystemProfile inputSystemProfile,
             Transform playspace,
-            string name = null, 
-            uint priority = DefaultPriority, 
+            string name = null,
+            uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, inputSystemProfile, playspace, name, priority, profile) { }
 
         /// <summary>
@@ -51,14 +51,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         public RecognitionConfidenceLevel RecognitionConfidenceLevel { get; set; }
 
         /// <inheritdoc />
-        public bool IsRecognitionActive
-        {
+        public bool IsRecognitionActive =>
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-            get { return keywordRecognizer != null && keywordRecognizer.IsRunning; }
-#else
-            get { return false; }
+            keywordRecognizer?.IsRunning ??
 #endif
-        }
+            false;
 
         /// <inheritdoc />
         public void StartRecognition()
@@ -100,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         public override void Enable()
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
-            
+
             if (InputSystemProfile == null) { return; }
 
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
