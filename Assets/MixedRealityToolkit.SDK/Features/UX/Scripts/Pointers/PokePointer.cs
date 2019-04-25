@@ -249,5 +249,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             base.OnSourceLost(eventData);
         }
+
+        public override void OnInputDown(InputEventData eventData)
+        {
+            // Poke pointer should not respond when a button is pressed or hand is pinched
+            // It should only dispatch events based on collision with touchables.
+        }
+
+        public override void OnInputUp(InputEventData eventData)
+        {
+            // Poke pointer should not respond when a button is released or hand is un-pinched
+            // It should only dispatch events based on collision with touchables.
+        }
     }
 }
