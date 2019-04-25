@@ -4,6 +4,13 @@
     href: README.md
   - name: Authors
     href: Authors.md
+- name: Getting Started with MRTK
+  href: GettingStartedWithTheMRTK.md
+  items:
+  - name: Downloading MRTK
+    href: DownloadingTheMRTK.md
+  - name: Upgrading from the HoloToolkit (HTK)
+    href: HTKToMRTKPortingGuide.md
 - name: Feature Overviews
   href: MixedRealityServices.md
   items:
@@ -108,14 +115,16 @@
       href: TODO.md
 - name: How-to Guides 
   items:
-  - name: Getting Started
-    href: GettingStartedWithTheMRTK.md
-    items:
-    - name: Downloading MRTK
-      href: DownloadingTheMRTK.md
-    - name: Upgrading from the HoloToolkit (HTK)
-      href: HTKToMRTKPortingGuide.md
-  - name: 
+  - name: How to setup global voice commands 
+    href: TODO.md
+  - name: How to setup a scene to be used for both HoloLens and VR with proper camera and scene content height
+    href: TODO.md
+  - name: How to trigger an action using MRTK button
+    href: TODO.md
+  - name: How to use Input Action (voice, controller...)
+    href: TODO.md
+  - name: How to trigger an action using MRTK button
+    href: TODO.md
 - name: Contributing
   href: Contributing/CONTRIBUTING.md
   items:
