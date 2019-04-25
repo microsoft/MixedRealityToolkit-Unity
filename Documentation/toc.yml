@@ -82,6 +82,7 @@
     - name: Performance
       href: Performance/PerfGettingStarted.md
   - name: Utility
+    items:
     - name: In-Editor Input Simulation
       href: InputSimulation/InputSimulationService.md
     - name: Diagnostics System
