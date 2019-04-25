@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Input Animation Asset", fileName = "InputAnimationAsset", order = 100)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input Animation", fileName = "MixedRealityInputAnimation", order = 100)]
     public class InputAnimationAsset : PlayableAsset
     {
         /// </inheritdoc>
