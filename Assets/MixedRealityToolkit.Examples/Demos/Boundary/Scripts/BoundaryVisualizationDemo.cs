@@ -34,6 +34,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private IMixedRealityBoundarySystem boundarySystem = null;
 
+        private IMixedRealityBoundarySystem BoundarySystem
+        {
+            get
+            {
+                MixedRealityServiceRegistry.TryGetService<IMixedRealityBoundarySystem>(out boundarySystem);
+                return boundarySystem;
+            }
+        }
+
         #region MonoBehaviour Implementation
 
         private void Awake()
@@ -45,13 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void Start()
         {
-            if (!MixedRealityServiceRegistry.TryGetService<IMixedRealityBoundarySystem>(out boundarySystem))
-            {
-                Debug.LogError("Failed to get the boundary service.");
-                return;
-            }
-
-            if (boundarySystem != null)
+            if (BoundarySystem != null)
             {
                 if (markers.Count == 0)
                 {
@@ -62,24 +65,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void Update()
         {
-            if (boundarySystem != null)
+            if (BoundarySystem != null)
             {
-                boundarySystem.ShowFloor = showFloor;
-                boundarySystem.ShowPlayArea = showPlayArea;
-                boundarySystem.ShowTrackedArea = showTrackedArea;
-                boundarySystem.ShowBoundaryWalls = showBoundaryWalls;
-                boundarySystem.ShowBoundaryCeiling = showBoundaryCeiling;
+                BoundarySystem.ShowFloor = showFloor;
+                BoundarySystem.ShowPlayArea = showPlayArea;
+                BoundarySystem.ShowTrackedArea = showTrackedArea;
+                BoundarySystem.ShowBoundaryWalls = showBoundaryWalls;
+                BoundarySystem.ShowBoundaryCeiling = showBoundaryCeiling;
             }
         }
 
         private void OnEnable()
         {
-            boundarySystem?.Register(gameObject);
+            BoundarySystem?.Register(gameObject);
         }
 
         private void OnDisable()
         {
-            boundarySystem?.Unregister(gameObject);
+            BoundarySystem?.Unregister(gameObject);
         }
 
         #endregion MonoBehaviour Implementation
@@ -106,16 +109,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             float widthRect;
             float heightRect;
 
-            if (boundarySystem == null) { return; }
+            if (BoundarySystem == null) { return; }
 
-            if (!boundarySystem.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
+            if (!BoundarySystem.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
             {
                 // If we have no boundary manager or rectangular bounds we will show no indicators
                 return;
             }
 
             // Get the materials needed for marker display
-            GameObject playArea = boundarySystem.GetPlayAreaVisualization();
+            GameObject playArea = BoundarySystem.GetPlayAreaVisualization();
             if (playArea == null)
             {
                 // Failed to get the play area visualization;
@@ -123,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
             Material playAreaMaterial = playArea.GetComponent<Renderer>().sharedMaterial;
 
-            GameObject trackedArea = boundarySystem.GetTrackedAreaVisualization();
+            GameObject trackedArea = BoundarySystem.GetTrackedAreaVisualization();
             if (trackedArea == null)
             {
                 // Failed to get the tracked area visualization;
@@ -149,12 +152,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                     Material material = null;
                     // Check inscribed rectangle first
-                    if (boundarySystem.Contains(position, UnityBoundary.Type.PlayArea))
+                    if (BoundarySystem.Contains(position, UnityBoundary.Type.PlayArea))
                     {
                         material = playAreaMaterial;
                     }
                     // Then check geometry
-                    else if (boundarySystem.Contains(position, UnityBoundary.Type.TrackedArea))
+                    else if (BoundarySystem.Contains(position, UnityBoundary.Type.TrackedArea))
                     {
                         material = trackedAreaMaterial;
                     }
