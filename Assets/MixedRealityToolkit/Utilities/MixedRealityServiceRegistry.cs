@@ -165,12 +165,12 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
-
+            
             int registryIndex = -1;
             if (!string.IsNullOrWhiteSpace(name))
             {
                 // Find the desired service by it's name.
-                for (int i = 0; i < registry.Count; i++)
+                for (int i = 0; i < services.Count; i++)
                 {
                     if (services[i].Key.Name != name) { continue; }
 
