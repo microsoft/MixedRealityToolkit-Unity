@@ -49,8 +49,8 @@ SkimProofUpdateSpeed | The lower the value, the slower the scrolling will speed 
 
 ### EyeTrackingTarget
 Attaching the _EyeTrackingTarget_ component allows for flexibly handle eye-gaze-related events.
-In our scroll sample, we use it to ensure that the text starts scrolling when the user *looks* at the panel and stops when the user is *looking away* from it.
-Alternatively you can use the 
+The scroll sample demonstrates scrolling text that starts when the user *looks* at the panel and stops when the user is *looking away* from it.
+Alternatively, please use the 
 [BaseEyeFocusHandler](EyeTracking_TargetSelection.md#use-eye-gaze-specific-baseeyefocushandler) 
 to handle Eye Tracking events directly in your code to trigger the *StartFocusing* and *StopFocusing* methods in [ScrollRectTransf](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ScrollRectTransf).
 
@@ -99,6 +99,7 @@ As you can imagine, having this behavior active at all times may quickly become 
 This is why you may want to start out with this behavior disabled and then enable it quickly using voice commands.
 Alternatively, we added an example in [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity)
 to use [TargetMoveToCamera](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TargetMoveToCamera) for which you can select a focused target and it flies in front of you - simply say *"Come to me"*.
+
 Once in the near mode, the auto rotation mode is automatically enabled.
 In that mode, you can observe it from all sides either simply leaning back and looking at it, walking around it or reaching out to grab and rotate it with your hand! 
 When you dismiss the target (look & pinch or say *"Send back"*), it will return to its original location and will stop reacting to you from afar.
