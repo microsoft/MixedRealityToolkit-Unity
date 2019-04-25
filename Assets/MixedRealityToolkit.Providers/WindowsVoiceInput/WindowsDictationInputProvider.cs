@@ -53,10 +53,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             await StopRecordingAsync();
         }
 
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         /// <inheritdoc />
         public async Task StartRecordingAsync(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10, string micDeviceName = "")
         {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
             if (IsListening || isTransitioning || inputSystem == null || !Application.isPlaying)
@@ -105,11 +105,15 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             dictationAudioClip = Microphone.Start(deviceName, false, recordingTime, samplingRate);
             textSoFar = new StringBuilder();
             isTransitioning = false;
+#else
+            await Task.CompletedTask;
+#endif
         }
 
         /// <inheritdoc />
         public async Task<AudioClip> StopRecordingAsync()
         {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (!IsListening || isTransitioning || !Application.isPlaying)
             {
                 Debug.LogWarning("Unable to stop recording");
@@ -144,20 +148,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             isTransitioning = false;
             return dictationAudioClip;
-        }
 #else
-        /// <inheritdoc />
-        public Task StartRecordingAsync(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10, string micDeviceName = "")
-        {
-            return Task.CompletedTask;
-        }
-
-        /// <inheritdoc />
-        public Task<AudioClip> StopRecordingAsync()
-        {
-            return Task.CompletedTask as Task<AudioClip>;
-        }
+            await Task.CompletedTask;
+            return null;
 #endif
+        }
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         private bool hasFailed;
