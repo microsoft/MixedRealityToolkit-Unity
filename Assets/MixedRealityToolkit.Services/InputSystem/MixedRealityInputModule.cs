@@ -275,10 +275,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var pointer = inputSource.Pointers[i];
                 if (pointer.InputSourceParent == inputSource)
                 {
-                    // TODO(https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/4084):
                     // This !ContainsKey is only necessary due to inconsistent initialization of
                     // various input providers and this class's ActivateModule() call.
-                    // This is a workaround to unblock consumers while we investigate.
                     int pointerId = (int)pointer.PointerId;
                     if (!pointerDataToUpdate.ContainsKey(pointerId))
                     {
