@@ -52,7 +52,7 @@ For this, it is better to ensure frequent tests of your eye-based interactions o
 ![MRTK](../../Documentation/Images/EyeTracking/mrtk_setup_eyes_simulate.png)
     
 2. **Disable default head gaze cursor**: 
-In general, we recommend to avoid showing an eye gaze cursor or if you insist on showing one to make it _very_ subtle.
+In general, it is recommended to avoid showing an eye gaze cursor or if absolutely required to make it _very_ subtle.
 Check out our [eye gaze cursor tutorial](EyeTracking_Cursor.md) for more information on how to best handle it.
 We do recommend to hide the default head gaze cursor that is attached to the MRTK gaze pointer profile by default.
     - Navigate to your main _'MRTK Configuration Profile'_ -> _'Input System Profile'_ -> _'PointerSettings.PointerProfile'_
