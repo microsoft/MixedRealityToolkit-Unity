@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handedness: 0
   destroyOnSourceLost: 0
-  useSourcePoseData: 0
+  useSourcePoseData: 1
   poseAction:
     id: 12
     description: Mouse Delta
@@ -53,7 +53,7 @@ MonoBehaviour:
   cursorPrefab: {fileID: 1151083198953756, guid: 667821d88830305449757690d22f71e0,
     type: 3}
   disableCursorOnStart: 0
-  setCursorVisibilityOnSourceDetected: 1
+  setCursorVisibilityOnSourceDetected: 0
   raycastOrigin: {fileID: 0}
   activeHoldAction:
     id: 0
@@ -72,4 +72,4 @@ MonoBehaviour:
   hideCursorWhenInactive: 1
   movementThresholdToUnHide: 0.5
   hideTimeout: 3
-  speed: 0.2
+  speed: 7.3
