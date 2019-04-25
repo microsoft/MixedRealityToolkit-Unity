@@ -94,13 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // ray to worldspace conversion
-            Camera RaycastCamera = MixedRealityToolkit.InputSystem.FocusProvider.UIRaycastCamera;
-            RaycastCamera.transform.position = Rays[0].Origin;
-            RaycastCamera.transform.rotation = Quaternion.LookRotation(Rays[0].Direction);
-
-            // The RayCastCamera is placed so that the current cursor position is in the center of the camera's view space.
-            Vector3 viewportPos = new Vector3(0.5f, 0.5f, 1.0f);
-            gameObject.transform.position = RaycastCamera.ViewportToWorldPoint(viewportPos);
+            gameObject.transform.position = transform.position + transform.forward * DefaultPointerExtent;
         }
 
         public override Vector3 Position
