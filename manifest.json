@@ -6139,18 +6139,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.IMixedRealityPlacementHandler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.IMixedRealityPlacementHandler.html",
-          "hash": "rer2CwvT5pLSVimdx1ympA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.IMixedRealityService.yml",
       "output": {
         ".html": {
@@ -11467,18 +11455,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.ControllerElement.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ControllerElement.html",
-          "hash": "tZxxHrzpJInF5usyME2Fsw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.CreateProfileMenuItemIndices.yml",
       "output": {
         ".html": {
@@ -13123,18 +13099,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.QuaternionSmoothed.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.QuaternionSmoothed.html",
-          "hash": "ka0dxvCM9KMERyUtrH9rlA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.RadialViewReferenceDirection.yml",
       "output": {
         ".html": {
@@ -13571,7 +13535,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.html",
-          "hash": "7gZYSSgPwZ0xnewRjTPjeQ=="
+          "hash": "vB4c6v/atinklNNg+2uFdw=="
         }
       },
       "is_incremental": false,
@@ -14099,7 +14063,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.html",
-          "hash": "cbsjHNiWiAeCiWYUiC9BcQ=="
+          "hash": "JPvjreiy1IC+yXL9gpBoSA=="
         }
       },
       "is_incremental": false,
@@ -14111,7 +14075,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "lztaLRT5fBmvP5gW6hbdZw=="
+          "hash": "M+NWvXnyie3F2wVAf3S/0Q=="
         }
       },
       "is_incremental": false,
@@ -14163,6 +14127,13 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -14172,19 +14143,12 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 866,
+          "total_file_count": 863,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
