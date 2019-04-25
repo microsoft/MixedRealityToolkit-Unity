@@ -39,9 +39,9 @@ color when being looked at.
 ```
 
 #### Selecting a Focused Hologram 
-To select focused holograms, we can use Input Event Listeners to confirm a selection. 
-For example, you can add the _IMixedRealityPointerHandler_ to react to simple pointer input. 
-The _IMixedRealityPointerHandler_ interface requires you to implement the following three interface members: 
+To select focused holograms, use input event listeners to confirm a selection. 
+For example, adding the _IMixedRealityPointerHandler_ will make them react to simple pointer input. 
+The _IMixedRealityPointerHandler_ interface requires implementing the following three interface members: 
 _OnPointerUp_, _OnPointerDown_, and _OnPointerClicked_.
 
 The _MixedRealityInputAction_ is a configurable list of actions that you want to distinguish in your app and can be edited in the 
@@ -146,7 +146,7 @@ you can find an example for _'smart attentive notifications'_ that react to your
 These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility.
 While the user is reading the notification, the information keeps getting displayed crisp and clear. 
 After reading it and looking away from the notification, the notification will automatically be dismissed and fades out.
-To achieve all this, we created a few generic behavior scripts that are not specific to Eye Tracking at all such as:
+To achieve all this, there are a few generic behavior scripts that are not specific to eye tracking at all such as:
 - [FaceUser.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FaceUser)
 - [ChangeSize.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ChangeSize)
 - [BlendOut.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.BlendOut)
