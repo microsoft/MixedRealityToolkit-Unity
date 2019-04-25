@@ -151,9 +151,9 @@ The <em>IMixedRealityPointerHandler</em> interface requires implementing the fol
 <h3 id="use-eye-gaze-specific-baseeyefocushandler">Use Eye-Gaze-Specific <em>BaseEyeFocusHandler</em></h3>
 <p>Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus if it is eye gaze.
 Similar to the <em>FocusHandler</em>, the <em>BaseEyeFocusHandler</em> is specific Eye Tracking.</p>
-<p>Here is an example from <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_02_TargetSelection.unity">mrtk_eyes_02_TargetSelection.unity</a>.
-Having the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAt_Rotate.html">OnLookAt_Rotate.cs</a> attached, a GameObject will rotate while being looked at.</p>
-<pre><code class="lang-csharp">    public class OnLookAt_Rotate : BaseEyeFocusHandler
+<p>Here is an example from <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity">EyeTrackingDemo-02-TargetSelection.unity</a>.
+Having the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotate.html">OnLookAtRotate.cs</a> attached, a GameObject will rotate while being looked at.</p>
+<pre><code class="lang-csharp">    public class OnLookAtRotate : BaseEyeFocusHandler
     {
         ... 
 
@@ -203,7 +203,7 @@ GameObject.</p>
 <li>Several Unity events have already been set up to make it fast and convenient to handle and reuse existing behaviors.</li>
 </ol>
 <h4 id="example-attentive-notifications">Example: Attentive Notifications</h4>
-<p>For example, in <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_02_TargetSelection.unity">mrtk_eyes_02_TargetSelection.unity</a>,
+<p>For example, in <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity">EyeTrackingDemo-02-TargetSelection.unity</a>,
 you can find an example for <em>'smart attentive notifications'</em> that react to your eye gaze.
 These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility.
 While the user is reading the notification, the information keeps getting displayed crisp and clear.
@@ -246,12 +246,12 @@ Otherwise this can quickly feel extremely overwhelming.</p>
 <em>'Attentive Notifications'</em> is the <em>OnSelected()</em> event.
 Using the <em>EyeTrackingTarget</em>, you can specify what triggers the selection which will invoke the <em>OnSelected()</em> event.
 For example, the screenshot below is from
-<a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_02_TargetSelection.unity">mrtk_eyes_02_TargetSelection.unity</a>.
+<a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity">EyeTrackingDemo-02-TargetSelection.unity</a>.
 It shows how the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html">EyeTrackingTarget</a>
 is set up for one of the gems that explodes when you select it.</p>
 <img src="../Images/EyeTracking/mrtk_et_EyeTrackingTarget.jpg" width="750" alt="MRTK">
 <p>The <em>OnSelected()</em> event triggers the method <em>'TargetSelected'</em> in the
-<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehavior_DestroyOnSelect.html">HitBehavior_DestroyOnSelect</a>
+<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehaviorDestroyOnSelect.html">HitBehaviorDestroyOnSelect</a>
 script attached to the gem GameObject.
 The interesting part is <em>how</em> the selection is triggered.
 The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html">EyeTrackingTarget</a>

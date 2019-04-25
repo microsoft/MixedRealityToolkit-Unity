@@ -94,19 +94,19 @@ These are some of the examples that are described on this page in context of eye
 <a href="EyeTracking_TargetSelection.html#use-eye-gaze-specific-eyetrackingtarget">EyeTrackingTarget</a>
 component.
 The examples discussed in the following are all part of the
-<a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_03_Navigation.unity">mrtk_eyes_03_Navigation.unity</a>
+<a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity">EyeTrackingDemo-03-Navigation.unity</a>
 scene.</p>
 <p><strong>Summary:</strong> Auto scroll of text, eye-gaze-supported pan and zoom of a virtual map, hands-free gaze-directed 3D rotation.</p>
 <h2 id="auto-scroll">Auto Scroll</h2>
 <p>Auto scroll enables the user to scroll through texts without lifting a finger.
 Simply continue reading and the text will automatically scroll up or down depending on where the user is looking.
-You can start off from the example provided in <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_03_Navigation.unity">mrtk_eyes_03_Navigation.unity</a>.
+You can start off from the example provided in <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity">EyeTrackingDemo-03-Navigation.unity</a>.
 This example uses a <a href="https://docs.unity3d.com/ScriptReference/TextMesh.html">TextMesh</a> component to allow for flexibly loading and formatting new text.
 To enable auto scroll, simply add the following two scripts to your collider component of the textbox:</p>
-<h3 id="scroll_recttransf">Scroll_RectTransf</h3>
-<p>To scroll through a <a href="https://docs.unity3d.com/ScriptReference/TextMesh.html">TextMesh</a> or more generally speaking a <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a> component you can use the <em>Scroll_RectTransf</em> script.
-If you want to scroll through a texture instead of a <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a>, use <em>Scroll_Texture</em> instead of <em>Scroll_RectTransf</em>.
-In the following, the parameters of <em>Scroll_RectTransf</em> that are available in the Unity Editor are explained in more detail:</p>
+<h3 id="scrollrecttransf">ScrollRectTransf</h3>
+<p>To scroll through a <a href="https://docs.unity3d.com/ScriptReference/TextMesh.html">TextMesh</a> or more generally speaking a <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a> component you can use the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ScrollRectTransf.html">ScrollRectTransf</a> script.
+If you want to scroll through a texture instead of a <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a>, use <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ScrollTexture.html">ScrollTexture</a> instead of <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ScrollRectTransf.html">ScrollRectTransf</a>.
+In the following, the parameters of <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ScrollRectTransf.html">ScrollRectTransf</a> that are available in the Unity Editor are explained in more detail:</p>
 <table>
 <thead>
 <tr>
@@ -159,16 +159,16 @@ In the following, the parameters of <em>Scroll_RectTransf</em> that are availabl
 The scroll sample demonstrates scrolling text that starts when the user <em>looks</em> at the panel and stops when the user is <em>looking away</em> from it.
 Alternatively, please use the
 <a href="EyeTracking_TargetSelection.html#use-eye-gaze-specific-baseeyefocushandler">BaseEyeFocusHandler</a>
-to handle eye tracking events directly in code to trigger the <em>StartFocusing</em> and <em>StopFocusing</em> methods in <em>Scroll_RectTransf</em>.</p>
+to handle Eye Tracking events directly in your code to trigger the <em>StartFocusing</em> and <em>StopFocusing</em> methods in <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ScrollRectTransf.html">ScrollRectTransf</a>.</p>
 <p><img src="../Images/EyeTracking/mrtk_et_nav_scroll_ettarget.jpg" alt="Eye-supported scroll setup in Unity: EyeTrackingTarget"></p>
 <h2 id="gaze-supported-pan-and-zoom">Gaze-supported Pan and Zoom</h2>
 <p>Who hasn't used a virtual map before to search for their home or to explore entirely new places?
 Eye Tracking allows you to directly dive into exactly the parts that you're interested in and once zoomed in, you can smoothly follow the course of a street to explore your neighborhood!
 This is not only useful for exploring geographical maps, but also to checking out details in photographs, data visualizations or even live-streamed medical imagery.
 To use this capability in your app is easy!
-For content rendered to a <a href="https://docs.unity3d.com/ScriptReference/Texture.html">texture</a> (e.g., a photo, streamed data), simply add the_PanZoom_Texture_ script.
-For a <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a> use <em>PanZoom_RectTransf</em>.
-Extending the <a href="#auto-scroll">auto scroll</a> capability enables to scroll both vertically and horizontally at the same time and to magnify content right around the user's current focus point.</p>
+For content rendered to a <a href="https://docs.unity3d.com/ScriptReference/Texture.html">Texture</a> (e.g., a photo, streamed data), simply add the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomTexture.html">PanZoomTexture</a> script.
+For a <a href="https://docs.unity3d.com/ScriptReference/RectTransform.html">RectTransform</a> use <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomRectTransf.html">PanZoomRectTransf</a>.
+Extending the <a href="#auto-scroll">Auto Scroll</a> capability, we essentially enable to scroll both vertically and horizontally at the same time and magnify content right around the user's current focus point.</p>
 <table>
 <thead>
 <tr>
@@ -247,13 +247,13 @@ Extending the <a href="#auto-scroll">auto scroll</a> capability enables to scrol
 <h2 id="attention-based-3d-rotation">Attention-based 3D Rotation</h2>
 <p>Imagine looking at a 3D object and the parts you want to see more closely magically turn toward you - as if the system would read your mind and know to turn the item toward you!
 That is the idea for attention-based 3D rotations which enable you to investigate all side of a hologram without lifting a finger.
-To enable this behavior, simply add the <em>OnLookAt_RotateByEyeGaze</em> script to the part of your GameObject with a <a href="https://docs.unity3d.com/ScriptReference/Collider.html">Collider</a> component.
+To enable this behavior, simply add the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotateByEyeGaze.html">OnLookAtRotateByEyeGaze</a> script to the part of your GameObject with a <a href="https://docs.unity3d.com/ScriptReference/Collider.html">Collider</a> component.
 You can tweak several parameters that are listed below to limit how fast and in which directions the hologram will turn.</p>
 <p>As you can imagine, having this behavior active at all times may quickly become pretty distracting in a crowded scene.
 This is why you may want to start out with this behavior disabled and then enable it quickly using voice commands.
-Alternatively, <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/mrtk_eyes_03_Navigation.unity">mrtk_eyes_03_Navigation.unity</a>
-uses <em>Target_MoveToCamera</em> showcasing how to select a focused target to make it fly in front of the user when they say <em>&quot;Come to me&quot;</em>.
-Once in the near mode, the auto rotation mode is automatically enabled.
+Alternatively, we added an example in <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity">EyeTrackingDemo-03-Navigation.unity</a>
+to use <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TargetMoveToCamera.html">TargetMoveToCamera</a> for which you can select a focused target and it flies in front of you - simply say <em>&quot;Come to me&quot;</em>.</p>
+<p>Once in the near mode, the auto rotation mode is automatically enabled.
 In that mode, you can observe it from all sides either simply leaning back and looking at it, walking around it or reaching out to grab and rotate it with your hand!
 When you dismiss the target (look &amp; pinch or say <em>&quot;Send back&quot;</em>), it will return to its original location and will stop reacting to you from afar.</p>
 <table>
