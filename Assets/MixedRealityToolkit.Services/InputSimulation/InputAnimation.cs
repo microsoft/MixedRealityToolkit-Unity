@@ -320,8 +320,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void EvaluateHandData(float time, SimulatedHandData result, AnimationCurve trackedCurve, AnimationCurve pinchCurve, AnimationCurve[] jointCurves)
         {
-            bool isTracked = (trackedCurve.Evaluate(time) > 0.0f);
-            bool isPinching = (pinchCurve.Evaluate(time) > 0.0f);
+            bool isTracked = (trackedCurve.Evaluate(time) > 0.5f);
+            bool isPinching = (pinchCurve.Evaluate(time) > 0.5f);
             result.Update(isTracked, isPinching,
                 (Vector3[] jointPositions) =>
                 {
