@@ -93,15 +93,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 }
             }
 
-            // Update all self-registered facades
-            foreach (ServiceFacade facade in ServiceFacade.ActiveFacadeObjects)
+            try
             {
-                if (facade == null)
+                // Update all self-registered facades
+                foreach (ServiceFacade facade in ServiceFacade.ActiveFacadeObjects)
                 {
-                    continue;
-                }
+                    if (facade == null)
+                    {
+                        continue;
+                    }
 
-                facade.CheckIfStillValid();
+                    facade.CheckIfStillValid();
+                }
+            }
+            catch(Exception e)
+            {
+                e = null;
+                Debug.LogWarning("Service Facades should remain parented under the MixedRealityToolkit instance.");
             }
         }
 
