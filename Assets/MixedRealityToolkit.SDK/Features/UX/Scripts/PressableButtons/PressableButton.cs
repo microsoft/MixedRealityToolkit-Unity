@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
     {
         const string InitialMarkerTransformName = "Initial Marker";
-        
+
         [SerializeField]
         [Tooltip("The object that is being pushed.")]
         private GameObject movingButtonVisuals = null;
@@ -48,8 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [Header("Position markers")]
         [Tooltip("Used to mark where button movement begins. If null, it will be automatically generated.")]
-        [SerializeField]
-        private Transform initialTransform;
 
         [Header("Events")]
         public UnityEvent TouchBegin;
@@ -63,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private const float MaxRetractDistanceBeforeReset = 0.0001f;
 
         private float currentPushDistance = 0.0f;
-        
+
         private Dictionary<IMixedRealityController, Vector3> touchPoints = new Dictionary<IMixedRealityController, Vector3>();
 
         [Header("Button State")]
@@ -75,17 +73,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private bool isPressing = false;
 
+        private Transform initialTransform;
+
         ///<summary>
         /// Represents the state of whether or not a finger is currently touching this button.
         ///</summary>
-        private bool IsTouching
+        public bool IsTouching
         {
             get
             {
                 return isTouching;
             }
 
-            set
+            private set
             {
                 if (value != isTouching)
                 {
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 eventData.Use();
             }
         }
-        
+
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
             if (touchPoints.ContainsKey(eventData.Controller))
@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 eventData.Use();
             }
         }
-        
+
         #endregion OnTouch
 
         #region private Methods

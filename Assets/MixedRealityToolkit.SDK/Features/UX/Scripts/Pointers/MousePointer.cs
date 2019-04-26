@@ -82,10 +82,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
-            // screenspace to ray conversion
             transform.position = CameraCache.Main.transform.position;
 
-            Ray ray = new Ray(transform.position, transform.forward);
+            Ray ray = new Ray(Position, Rotation * Vector3.forward);
             Rays[0].CopyRay(ray, PointerExtent);
 
             if (MixedRealityRaycaster.DebugEnabled)
@@ -124,7 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 isInteractionEnabled = true;
             }
         }
-       
 
         /// <inheritdoc />
         public override void OnSourceLost(SourceStateEventData eventData)
@@ -134,6 +132,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
                 isInteractionEnabled = false;
+            }
+        }
+
+        /// <inheritdoc />
+        public override void OnSourcePoseChanged(SourcePoseEventData<Vector2> eventData)
+        {
+            if (Controller == null ||
+                eventData.Controller == null ||
+                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
+            {
+                return;
+            }
+
+            if (UseSourcePoseData)
+            {
+                UpdateMousePosition(eventData.SourceData.x, eventData.SourceData.y);
             }
         }
 

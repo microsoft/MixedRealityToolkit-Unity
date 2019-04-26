@@ -1,46 +1,46 @@
-# Slate
-![Slate](../External/ReadMeImages/Slate/MRTK_Slate_Main.png)
+# Slate #
 
-Thin window style control for the 2D content with grabbable title bar and 'Follow Me' and 'Close' buttons. You can scroll 2D content with articulated hand.
+![Slate](../Documentation/Images/Slate/MRTK_Slate_Main.png)
 
-## Structure
-Slate control is composed of these elements.
+The [`Slate.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Prefabs/Slate.prefab) offers a thin window style control for displaying 2D content, for example plain text or articles including media. It offers a grabbable title bar as well as *Follow Me* and *Close* functionality. The content window can be scrolled via articulated hand input.
 
-<img src="../External/ReadMeImages/Slate/MRTK_Slate_Structure.png" width="650">
+## How to use a slate control ##
+A slate control is composed of the following elements:
 
-- TitleBar
-- Title
-- BackPlate
-- ContentQuad: Content is assigned as material. The example uses a sample material 'PanContent'
-- Buttons
+* **TitleBar**: The entire title bar on top of the slate.
+* **Title**: The title area on the left side of the title bar.
+* **Buttons**: The button area on the right side of the title bar.
+* **BackPlate**: The back side of the slate.
+* **ContentQuad**: Content is assigned as material. The example uses a sample material 'PanContent'.
 
-## Bounding Box
+<img src="../Documentation/Images/Slate/MRTK_Slate_Structure.png" width="650">
 
-Slate control contains Bounding Box script for scaling and rotating. For more information on Bounding Box, please see [Bounding Box](README_BoundingBox.md) page.
+## Bounding Box ##
+A slate control contains a bounding box script for scaling and rotating. For more information on bounding box, please see the [Bounding box](README_BoundingBox.md) page.
 
-<img src="../External/ReadMeImages/Slate/MRTK_Slate_Box.png" width="650">
+<img src="../Documentation/Images/Slate/MRTK_Slate_Box.png" width="650">
 
-<img src="../External/ReadMeImages/Slate/MRTK_Slate_Scale.png" width="650">
+<img src="../Documentation/Images/Slate/MRTK_Slate_Scale.png" width="650">
 
-## Buttons
+## Buttons ##
+A standard slate offers two buttons as default on the top right of the title bar:
 
-<img src="../External/ReadMeImages/Slate/MRTK_Slate_Buttons.png" width="650">
+* **Follow Me**: Toggles an orbital solver components to make the slate object follow the user.
+* **Close**: Disables the slate object.
 
-- Follow Me: Toggles 'Orbital' solver components to make the Slate object follow the user.
-- Close: Disables the Slate object
+<img src="../Documentation/Images/Slate/MRTK_Slate_Buttons.png" width="650">
 
-## Scripts
+## Scripts ##
+In general, the `NearInteractionTouchable.cs` script must be attached to any object that is intended to receive touch events from the `IMixedRealityTouchHandler`.
 
-<img src="../External/ReadMeImages/Slate/MRTK_Slate_Scripts.png">
+<img src="../Documentation/Images/Slate/MRTK_Slate_Scripts.png">
 
-### HandInteractionPan.cs
-This script handles articulated hand input for touching and moving the content on the slate's **ContentQuad**
+* [`HandInteractionPan.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/HandInteractionPan.cs): This script handles articulated hand input for touching and moving the content on the slate's *ContentQuad*.
 
-#### SlateEnabler.cs 
-This script is intended to be used with DragEnabler. These two scripts allow the Slate and another object - for instance a Title Bar - to toggle their active status so that the Touch action only affects one at a time. This prevents interacting with the Slate to accidentally trigger the Title Bar behavior and vice versa. The SlateEnabler script is put on the GameObject that is NOT the Slate. Once attached- it toggles interaction with the Slate when the GameObject is being dragged or touched.
+* [`HandInteractionPanZoom.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/HandInteractionPanZoom.cs): In addition to the panning interaction, this script supports two-handed zooming.
 
-#### DragEnabler.cs 
-This script is intended to be used with SlateEnabler. These two scripts allow the Slate and another object - for instance a Title Bar - to toggle their active status so that the Touch action only affects one at a time. The DragEnabler script is put on the Slate. Once attached, it toggles interaction with an accompanying object such as a Title Bar while the Slate is being touched.
+<img src="../Documentation/Images/Slate/MRTK_Slate_PanZoom.png" width="500">
 
-#### NearInteractionTouchable.cs
-This script must be attached to any object that is intended to receive Touch events from implemented the `IMixedRealityTouchHandler`.
+* [`SlateEnabler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/SlateEnabler.cs): This script is intended to be used with DragEnabler. These two scripts allow the slate and another object - for instance a title bar - to toggle their active status so that the touch action only affects one at a time. This prevents interacting with the slate to accidentally trigger the title bar behavior and vice versa. The slate enabler script is put on the game object that is not the slate. Once attached it toggles interaction with the slate when the game object is being dragged or touched.
+
+* [`DragEnabler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/DragEnabler.cs): This script is intended to be used with SlateEnabler. These two scripts allow the slate and another object - for instance a title bar - to toggle their active status so that the touch action only affects one at a time. The drag enabler script is put on the slate. Once attached, it toggles interaction with an accompanying object such as a title bar while the slate is being touched.

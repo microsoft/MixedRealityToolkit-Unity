@@ -19,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 lastTrackerToUnityTranslation = Vector3.zero;
         private Quaternion lastTrackerToUnityRotation = Quaternion.identity;
         private bool wasLooking = false;
-        private bool wasCursorVisible = true;
 
         public ManualCameraControl(MixedRealityInputSimulationProfile _profile)
         {
@@ -150,8 +149,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // if mousebutton is either control, shift or focused
                 UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-                // save current cursor visibility before hiding it
-                wasCursorVisible = UnityEngine.Cursor.visible;
                 UnityEngine.Cursor.visible = false;
             }
 
@@ -169,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // if mousebutton is either control, shift or focused
                 UnityEngine.Cursor.lockState = CursorLockMode.None;
-                UnityEngine.Cursor.visible = wasCursorVisible;
+                UnityEngine.Cursor.visible = true;
             }
 
             // do nothing if (this.MouseLookButton == MouseButton.None)
@@ -258,8 +255,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // unlock the cursor if it was locked
                     UnityEngine.Cursor.lockState = CursorLockMode.None;
 
-                    // save original state of cursor before hiding
-                    wasCursorVisible = UnityEngine.Cursor.visible;
                     // hide the cursor
                     UnityEngine.Cursor.visible = false;
 
@@ -271,8 +266,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     UnityEngine.Cursor.lockState = CursorLockMode.Locked;
                     UnityEngine.Cursor.lockState = CursorLockMode.None;
 
-                    // restore the cursor
-                    UnityEngine.Cursor.visible = wasCursorVisible;
+                    // show the cursor
+                    UnityEngine.Cursor.visible = true;
                 }
 
     #if UNITY_EDITOR

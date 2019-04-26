@@ -1,34 +1,33 @@
-# Hand Interaction Examples scene
-![Hand Interaction Examples](../External/ReadMeImages/MRTK_Examples.png)
+# Hand interaction examples scene #
 
-In this example scene, you can find various types of interactions and UI controls that supports HoloLens2's articulated hand input.
-You can find the **HandInteractionExamples.unity** scene under **Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes**
+![Hand Interaction Examples](../Documentation/Images/MRTK_Examples.png)
 
-*This example scene uses **TextMesh Pro**. Please click **'Import TMP Essentials'** button when you see this prompt. Unity will import TextMesh Pro packages*
+The [HandInteractionExamples.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity) example scene contains various types of interactions and UI controls that highlight articulated hand input.
 
-<img src="../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP2.png" width="450">
+**Please note:** This example scene uses *TextMesh Pro*. To open the scene, please click *'Import TMP Essentials'* when the respective prompt is shown during the import of the scene. Unity will then import TextMesh Pro packages.
 
-*If you see big text after TextMesh Pro import, please open other Unity scene and open this scene again.*
+<img src="../Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP2.png" width="450">
 
-<img src="../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_TMP1.png" width="350">
+If you see big text after the TextMesh Pro import, please open another Unity scene and then open the example scene again.
 
+<img src="../Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP1.png" width="350">
 
-## Pressable Button
-See [Button](README_Button.md) page for the details.
-![Hand Interaction Examples](../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_PressTouch.png)
+## Pressable button ##
+See [button](README_Button.md) page for the details.
+![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_PressTouch.png)
 
-## Bounding Box
-See [Bounding Box](README_BoundingBox.md) page for the details.
-![Hand Interaction Examples](../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_BoundingBox.png)
+## Bounding box ##
+See [bounding box](README_BoundingBox.md) page for the details.
+![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_BoundingBox.png)
 
-## Manipulation Handler
-See [Manipulation Handler](README_ManipulationHandler.md) page for the details.
-![Hand Interaction Examples](../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Manipulation.png)
+## Manipulation handler ##
+See [manipulation handler](README_ManipulationHandler.md) page for the details.
+![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Manipulation.png)
 
-## Slate
-See [Slate](README_Slate.md) page for the details.
-![Hand Interaction Examples](../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Slate.png)
+## Slate ##
+See [slate](README_Slate.md) page for the details.
+![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Slate.png)
 
-## System Keyboard
-See [System Keyboard](README_SystemKeyboard.md) page for the details.
-![Hand Interaction Examples](../External/ReadMeImages/HandInteractionExamples/MRTK_Examples_Keyboard.png)
+## System keyboard ##
+See [system keyboard](README_SystemKeyboard.md) page for the details.
+![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Keyboard.png)

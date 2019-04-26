@@ -1,13 +1,12 @@
 - name: About MRTK
   items:
   - name: MRTK v2
-    href: ../MRTK-vNext.md
+    href: MRTK-vNext.md
   - name: Authors
     href: Authors.md
   - name: Mixed Reality Services
-    href: ../External/Documentation/MixedRealityServices.md
+    href: MixedRealityServices.md
 - name: How-tos
-  href: ../External/HowTo/README.md
   items:
   - name: Getting Started
     href: GettingStartedWithTheMRTK.md
@@ -85,8 +84,9 @@
         href: README_Solver.md     
     - name: Spatial Awareness
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
-      items:
+      items:	
       - name: Configuring the Spatial Awareness Mesh Observer
+        href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
     - name: In-Editor Input Simulation
       href: InputSimulation/InputSimulationService.md
     - name: Diagnostics System
@@ -111,19 +111,19 @@
     - name: Moving your project from HTK to MRTK
       href: HTKToMRTKPortingGuide.md
 - name: Contributing
-  href: ../CONTRIBUTING.md
+  href: Contributing/CONTRIBUTING.md
   items:
   - name: Feature Contribution Process
-    href: ../Feature_Contribution_Process.md
+    href: Contributing/Feature_Contribution_Process.md
   - name: Coding Guidelines
-    href: ../CodingGuidelines.md
+    href: Contributing/CodingGuidelines.md
   - name: Documentation guide
-    href: DocumentationGuide.md
+    href: Contributing/DocumentationGuide.md
   - name: Developer portal generation with DocFX
-    href: DevDocGuide.md
+    href: Contributing/DevDocGuide.md
 - name: Planning
   items:
   - name: Roadmap
-    href: ../Roadmap.md
+    href: Contributing/Roadmap.md
 - name: Notice
-  href: ../NOTICE.md
+  href: Legal/NOTICE.md

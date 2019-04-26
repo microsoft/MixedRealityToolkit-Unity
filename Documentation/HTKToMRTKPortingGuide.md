@@ -53,7 +53,7 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 
 ## Speech
 
-### Keyword Recognition
+### Keyword recognition
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
@@ -68,7 +68,7 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 | Setup                     | Add a DictationInputManager to your scene. | Dictation support requires service (e.g., Windows Dictation Input Manager) to be added to the Input System's data providers. |
 | Event handlers            | `IDictationHandler` | `IMixedRealityDictationHandler`[`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) |
 
-## Spatial Awareness / Mapping
+## Spatial awareness / mapping
 
 ### Mesh
 
@@ -83,7 +83,7 @@ Some events no longer have unique events and now contain a MixedRealityInputActi
 |---------------------------|----------|-----------|
 | Setup                     | Use the `SurfaceMeshesToPlanes` script. | Not yet implemented. |
 
-### Spatial Understanding
+### Spatial understanding
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
