@@ -3,6 +3,11 @@
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
+    /// <summary>
+    /// Manager interface for a camera system in the Mixed Reality Toolkit.
+    /// The camera system is expected to manage render settings on the main camera.
+    /// It should update the camera's clear settings, render mask, etc based on platform.
+    /// </summary>
     public interface IMixedRealityCameraSystem : IMixedRealityEventSystem, IMixedRealityEventSource, IMixedRealityDataProvider
     {
         /// <summary>
