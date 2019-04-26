@@ -613,16 +613,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
             isNearManipulation = IsNearManipulation();
             // TODO: If we are on HoloLens 1, push and pop modal input handler so that we can use old
             // gaze/gesture/voice manipulation. For HoloLens 2, we don't want to do this.
-            OnManipulationStarted.Invoke(new ManipulationEventData { IsNearInteraction = isNearManipulation });
-
+            OnManipulationStarted.Invoke(new ManipulationEventData
+            {
+                ManipulationSource = this,
+                IsNearInteraction = isNearManipulation,
+                PointerCentroid = GetPointersCentroid(),
+                PointerVelocity = GetPointersVelocity(),
+                PointerAngularVelocity = GetPointersAngularVelocity()
+            });
         }
+
         private void HandleManipulationEnded()
         {
             // TODO: If we are on HoloLens 1, push and pop modal input handler so that we can use old
             // gaze/gesture/voice manipulation. For HoloLens 2, we don't want to do this.
-            OnManipulationEnded.Invoke(new ManipulationEventData { IsNearInteraction = isNearManipulation });
-
+            OnManipulationEnded.Invoke(new ManipulationEventData
+            {
+                ManipulationSource = this,
+                IsNearInteraction = isNearManipulation,
+                PointerCentroid = GetPointersCentroid(),
+                PointerVelocity = GetPointersVelocity(),
+                PointerAngularVelocity = GetPointersAngularVelocity()
+            });
         }
+
         #endregion Private Event Handlers
 
         #region Unused Event Handlers

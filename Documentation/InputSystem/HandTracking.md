@@ -33,7 +33,7 @@ Hand mesh display can have a noticeable performance impact, for this reason it c
 
 Position and rotation can be requested from the input system for each individual hand joint as a [MixedRealityPose](xref:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose).
 
-Alternatively we also have access to [GameObjects](https://docs.unity3d.com/ScriptReference/GameObject.html) that follow the joints. This can be useful if another GameObject should track a joint continuously.
+Alternatively the system allows access to [GameObjects](https://docs.unity3d.com/ScriptReference/GameObject.html) that follow the joints. This can be useful if another GameObject should track a joint continuously.
 
 | Note: Joint object are destroyed when hand tracking is lost! Make sure that any scripts using the joint object handle the `null` case gracefully to avoid errors! |
 | --- |

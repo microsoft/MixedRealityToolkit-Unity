@@ -129,10 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Start();
 
-            if (MixedRealityToolkit.InputSystem == null)
-            {
-                await WaitUntilInputSystemValid;
-            }
+            await EnsureInputSystemValid();
 
             // We've been destroyed during the await.
             if (this == null)
