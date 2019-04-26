@@ -824,11 +824,7 @@ namespace Microsoft.MixedReality.Toolkit
             Type interfaceType = typeof(T);
             if (RegisterServiceInternal(interfaceType, serviceInstance))
             {
-                if (!(serviceInstance is IMixedRealityDataProvider))
-                {
-                    // Services (including extensions) are added to the registry, data providers are not.
-                    MixedRealityServiceRegistry.AddService<T>(serviceInstance, this);
-                }
+                MixedRealityServiceRegistry.AddService<T>(serviceInstance, this);
                 return true;
             }
 

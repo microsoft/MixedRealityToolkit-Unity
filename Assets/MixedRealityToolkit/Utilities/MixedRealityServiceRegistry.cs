@@ -16,10 +16,9 @@ namespace Microsoft.MixedReality.Toolkit
     /// </remarks>
     public static class MixedRealityServiceRegistry
     {
-        // todo: is this the data type we want?
         /// <summary>
         /// The service registry store where the key is the Type of the service interface and the value is
-        /// a pair in which they key is the service instance and the value is the regisrar instance.
+        /// a pair in which they key is the service instance and the value is the registrar instance.
         /// </summary>
         private static Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>> registry = 
             new Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>>();
@@ -41,6 +40,14 @@ namespace Microsoft.MixedReality.Toolkit
         /// </returns>
         public static bool AddService<T>(T serviceInstance, IMixedRealityServiceRegistrar registrar) where T : IMixedRealityService
         {
+            if (serviceInstance is IMixedRealityDataProvider)
+            {
+                // Data providers are generally not used by application code. Services that intend for clients to
+                // directly communicate with their data providers will expose a GetDataProvider or similarly named
+                // method.
+                return false;
+            }
+
             Type interfaceType = typeof(T);
             T existingService;
 
@@ -135,6 +142,8 @@ namespace Microsoft.MixedReality.Toolkit
             IMixedRealityService serviceInstance,
             IMixedRealityServiceRegistrar registrar)
         {
+            if (!registry.ContainsKey(interfaceType)) { return false; }
+
             List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
 
             return services.Remove(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>(serviceInstance, registrar));
@@ -215,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             return TryGetService<T>(
                 out serviceInstance,
-                out _,                  // The registrar out param is not used, i tcan be discarded.
+                out _,                  // The registrar out param is not used, it can be discarded.
                 name);
         }
     }
