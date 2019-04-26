@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     // Basic value types within a shader
     public enum ShaderPropertyType { Color, Float, Range, TexEnv, Vector, None }
@@ -100,7 +97,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
         }
 
         /// <summary>
-        /// Grab a valid Material from an object, if in the editor, use the shared material
+        /// Grab the shared material to avoid creating new material instances and breaking batching.
+        /// Because MaterialPropertyBlocks are used for setting material properties the shared material is
+        /// used to set the initial state of the MaterialPropertyBlock(s) before mutating state.
         /// </summary>
         /// <param name="renderer"></param>
         /// <returns></returns>
@@ -110,18 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
             if (renderer != null)
             {
-#if UNITY_EDITOR
-                if (!Application.isPlaying)
-                {
-                    material = renderer.sharedMaterial;
-                }
-                else
-                {
-                    material = renderer.material;
-                }
-#else
-                material = renderer.material;
-#endif
+                material = renderer.sharedMaterial;
             }
             return material;
         }

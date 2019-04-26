@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Creates an elliptical line shape.
@@ -70,14 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <inheritdoc />
         protected override float GetUnClampedWorldLengthInternal()
         {
-            // Crude approximation
-            // TODO optimize
             float distance = 0f;
             Vector3 last = GetUnClampedPoint(0f);
 
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < BaseMixedRealityLineDataProvider.UnclampedWorldLengthSearchSteps; i++)
             {
-                Vector3 current = GetUnClampedPoint((float)i / 10);
+                Vector3 current = GetUnClampedPoint((float)i / BaseMixedRealityLineDataProvider.UnclampedWorldLengthSearchSteps);
                 distance += Vector3.Distance(last, current);
             }
 

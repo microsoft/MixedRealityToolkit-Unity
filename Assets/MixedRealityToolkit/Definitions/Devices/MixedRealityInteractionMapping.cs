@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Maps the capabilities of controllers, linking the Physical inputs of a controller to a Logical construct in a runtime project<para/>
@@ -219,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// Should the X axis be inverted?
         /// </summary>
         /// <remarks>
-        /// Only valid for <see cref="Utilities.AxisType.SingleAxis"/> and <see cref="Utilities.AxisType.DualAxis"/> inputs.
+        /// Only valid for <see cref="Microsoft.MixedReality.Toolkit.Utilities.AxisType.SingleAxis"/> and <see cref="Microsoft.MixedReality.Toolkit.Utilities.AxisType.DualAxis"/> inputs.
         /// </remarks>
         public bool InvertXAxis
         {
@@ -244,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// Should the Y axis be inverted?
         /// </summary>
         /// <remarks>
-        /// Only valid for <see cref="Utilities.AxisType.DualAxis"/> inputs.
+        /// Only valid for <see cref="Microsoft.MixedReality.Toolkit.Utilities.AxisType.DualAxis"/> inputs.
         /// </remarks>
         public bool InvertYAxis
         {

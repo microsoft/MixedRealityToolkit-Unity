@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Utility component to animate and visualize a light that can be used with 
@@ -138,16 +138,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
                     hoverLightData[dataIndex] = new Vector4(light.transform.position.x,
                                                             light.transform.position.y,
                                                             light.transform.position.z,
-                                                            light.Radius);
+                                                            1.0f);
                     hoverLightData[dataIndex + 1] = new Vector4(light.Color.r,
                                                                 light.Color.g,
                                                                 light.Color.b,
-                                                                1.0f);
+                                                                1.0f / Mathf.Clamp(light.Radius, 0.001f, 1.0f));
                 }
                 else
                 {
                     hoverLightData[dataIndex] = Vector4.zero;
-                    hoverLightData[dataIndex + 1] = Vector4.zero;
                 }
             }
 

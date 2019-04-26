@@ -1,14 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(MixedRealityToolkitConfigurationProfile))]
     public class MixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
@@ -40,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private static bool showSpatialAwarenessProperties = true;
         private SerializedProperty enableSpatialAwarenessSystem;
         private SerializedProperty spatialAwarenessSystemType;
+        private SerializedProperty spatialAwarenessSystemProfile;
         // Diagnostic system properties
         private static bool showDiagnosticProperties = true;
         private SerializedProperty enableDiagnosticsSystem;
@@ -50,8 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private static bool showRegisteredServiceProperties = true;
         private SerializedProperty registeredServiceProvidersProfile;
 
-        private MixedRealityToolkitConfigurationProfile configurationProfile;
-
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -59,44 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             if (target == null)
             {
                 // Either when we are recompiling, or the inspector window is hidden behind another one, the target can get destroyed (null) and thereby will raise an ArgumentException when accessing serializedObject. For now, just return.
-                return;
-            }
-
-            configurationProfile = target as MixedRealityToolkitConfigurationProfile;
-
-            // Create The MR Manager if none exists.
-            if (!MixedRealityToolkit.IsInitialized)
-            {
-                // Search the scene for one, in case we've just hot reloaded the assembly.
-                var managerSearch = FindObjectsOfType<MixedRealityToolkit>();
-
-                if (managerSearch.Length == 0)
-                {
-                    if (EditorUtility.DisplayDialog(
-                        "Attention!",
-                        "There is no active Mixed Reality Toolkit in your scene!\n\nWould you like to create one now?",
-                        "Yes",
-                        "Later"))
-                    {
-                        var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-                        Debug.Assert(playspace != null);
-                        MixedRealityToolkit.Instance.ActiveProfile = configurationProfile;
-                    }
-                    else
-                    {
-                        Debug.LogWarning("No Mixed Reality Toolkit in your scene.");
-                        return;
-                    }
-                }
-            }
-
-            if (!MixedRealityToolkit.ConfirmInitialized())
-            {
-                return;
-            }
-
-            if (!MixedRealityToolkit.Instance.HasActiveProfile)
-            {
                 return;
             }
 
@@ -119,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             // Spatial Awareness system configuration
             enableSpatialAwarenessSystem = serializedObject.FindProperty("enableSpatialAwarenessSystem");
             spatialAwarenessSystemType = serializedObject.FindProperty("spatialAwarenessSystemType");
+            spatialAwarenessSystemProfile = serializedObject.FindProperty("spatialAwarenessSystemProfile");
             // Diagnostics system configuration
             enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
@@ -130,6 +89,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         public override void OnInspectorGUI()
         {
+            var configurationProfile = (MixedRealityToolkitConfigurationProfile)target;
+
             serializedObject.Update();
             RenderMixedRealityToolkitLogo();
 
@@ -280,7 +241,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 {
                     EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
                     EditorGUILayout.PropertyField(spatialAwarenessSystemType);
-                    EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer. Spatial Awareness observers are registered as Additional Service Providers.", MessageType.Info);
+                    EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
+                    changed |= RenderProfile(spatialAwarenessSystemProfile);
                 }
             }
 
@@ -300,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             // Registered Services configuration
             EditorGUILayout.Space();
-            showRegisteredServiceProperties = EditorGUILayout.Foldout(showRegisteredServiceProperties, "Additional Service Providers", true);
+            showRegisteredServiceProperties = EditorGUILayout.Foldout(showRegisteredServiceProperties, "Extension Services", true);
             if (showRegisteredServiceProperties)
             {
                 using (new EditorGUI.IndentLevelScope())

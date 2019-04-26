@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Cursor Interface for handling input events and setting visibility.
@@ -15,6 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// The <see cref="IMixedRealityPointer"/> this <see cref="IMixedRealityCursor"/> is associated with.
         /// </summary>
         IMixedRealityPointer Pointer { get; set; }
+
+        /// <summary>
+        /// Surface distance to place the cursor off of the surface at
+        /// </summary>
+        float SurfaceCursorDistance { get; }
 
         /// <summary>
         /// The maximum distance the cursor can be with nothing hit

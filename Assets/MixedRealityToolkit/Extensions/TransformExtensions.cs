@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for Unity's Transform class
@@ -158,6 +158,93 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             {
                 yield return transform;
             }
+        }
+
+        /// <summary>
+        /// Transforms the size from local to world.
+        /// </summary>
+        /// <param name="transform">The transform.</param>
+        /// <param name="localSize">The local size.</param>
+        /// <returns>World size.</returns>
+        public static Vector3 TransformSize(this Transform transform, Vector3 localSize)
+        {
+            Vector3 transformedSize = new Vector3(localSize.x, localSize.y, localSize.z);
+
+            Transform t = transform;
+            do
+            {
+                transformedSize.x *= t.localScale.x;
+                transformedSize.y *= t.localScale.y;
+                transformedSize.z *= t.localScale.z;
+                t = t.parent;
+            }
+            while (t != null);
+
+            return transformedSize;
+        }
+
+        /// <summary>
+        /// Transforms the size from world to local.
+        /// </summary>
+        /// <param name="transform">The transform.</param>
+        /// <param name="worldSize">The world size</param>
+        /// <returns>World size.</returns>
+        public static Vector3 InverseTransformSize(this Transform transform, Vector3 worldSize)
+        {
+            Vector3 transformedSize = new Vector3(worldSize.x, worldSize.y, worldSize.z);
+
+            Transform t = transform;
+            do
+            {
+                transformedSize.x /= t.localScale.x;
+                transformedSize.y /= t.localScale.y;
+                transformedSize.z /= t.localScale.z;
+                t = t.parent;
+            }
+            while (t != null);
+
+            return transformedSize;
+        }
+
+        /// <summary>
+        /// Gets the hierarchical depth of the Transform from its root. Returns -1 if the transform is the root.
+        /// </summary>
+        /// <param name="t">The transform to get the depth for.</param>
+        /// <returns></returns>
+        public static int GetDepth(this Transform t)
+        {
+            int depth = -1;
+
+            Transform root = t.transform.root;
+            if (root == t.transform)
+            {
+                return depth;
+            }
+
+            TryGetDepth(t, root, ref depth);
+
+            return depth;
+        }
+
+        /// <summary>
+        /// Trys to get the hierarchical depth of the Transform from the specified parent. This method is recursive.
+        /// </summary>
+        /// <param name="target">The transfrom to get the depth for</param>
+        /// <param name="parent">The starting transform to look for the target transform in</param>
+        /// <param name="depth">The depth of the target transform</param>
+        /// <returns>'true' if the depth could be retrieved, or 'false' because the transform is a root transform.</returns>
+        public static bool TryGetDepth(Transform target, Transform parent, ref int depth)
+        {
+            foreach (Transform child in parent)
+            {
+                depth++;
+                if (child == target.transform || TryGetDepth(target, child, ref depth))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

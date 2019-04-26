@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     public class DistorterGravity : Distorter
     {
@@ -94,9 +94,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
 
         public void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(WorldCenterOfGravity, 0.05f);
-            Gizmos.DrawWireSphere(WorldCenterOfGravity, radius);
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawSphere(WorldCenterOfGravity, 0.01f);
         }
     }
 }

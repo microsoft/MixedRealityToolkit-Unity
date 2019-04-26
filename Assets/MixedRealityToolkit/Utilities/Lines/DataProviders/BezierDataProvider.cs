@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public class BezierDataProvider : BaseMixedRealityLineDataProvider
     {
@@ -31,9 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         [Header("Bezier Settings")]
         [SerializeField]
         private BezierPointSet controlPoints = new BezierPointSet(0.5f);
+
         [Tooltip("If true, control points 2 and 3 will be transformed relative to points 1 and 4 respectively")]
         [SerializeField]
         private bool useLocalTangentPoints = false;
+
         private Vector3 localOffset;
 
         protected override Vector3 GetPointInternal(int pointIndex)
@@ -100,13 +101,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
 
         protected override float GetUnClampedWorldLengthInternal()
         {
-            // Crude approximation
-            // TODO optimize
             float distance = 0f;
             Vector3 last = GetUnClampedPoint(0f);
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < BaseMixedRealityLineDataProvider.UnclampedWorldLengthSearchSteps; i++)
             {
-                Vector3 current = GetUnClampedPoint((float)i / 10);
+                Vector3 current = GetUnClampedPoint((float)i / BaseMixedRealityLineDataProvider.UnclampedWorldLengthSearchSteps);
                 distance += Vector3.Distance(last, current);
             }
             return distance;
@@ -114,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
 
         protected override Vector3 GetUpVectorInternal(float normalizedLength)
         {
-            // Bezeir up vectors just use transform up
+            // Bezier up vectors just use transform up
             return transform.up;
         }
     }

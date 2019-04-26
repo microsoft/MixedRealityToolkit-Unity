@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Data;
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +12,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     public class ControllerPopupWindow : EditorWindow
     {
@@ -212,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                     {
                         new ControllerInputActionOption
                         {
-                            Controller = SupportedControllerType.None,
+                            Controller = 0,
                             Handedness = Handedness.None,
                             InputLabelPositions = new[] {new Vector2(0, 0)},
                             IsLabelFlipped = new []{false}
@@ -354,11 +352,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                             controllerInputActionOptions.Controllers.Add(currentControllerOption);
                             isMouseInRects = new bool[currentInteractionList.arraySize];
 
-                            if (controllerInputActionOptions.Controllers.Any(option => option.Controller == SupportedControllerType.None))
+                            if (controllerInputActionOptions.Controllers.Any(option => option.Controller == 0))
                             {
                                 controllerInputActionOptions.Controllers.Remove(
                                     controllerInputActionOptions.Controllers.Find(option =>
-                                        option.Controller == SupportedControllerType.None));
+                                        option.Controller == 0));
                             }
 
                             File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(controllerInputActionOptions));

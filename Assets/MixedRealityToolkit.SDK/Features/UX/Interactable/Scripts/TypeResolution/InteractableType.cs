@@ -1,8 +1,10 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using System;
-using System.Collections.Generic;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
+
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A wrapper for a Type which gives a "friendly name" for the type (i.e.
@@ -24,8 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable
 
         /// <summary>
         /// The assembly qualified name of the class (for example, 
-        /// "Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes.InteractableActivateTheme, 
-        /// Microsoft.MixedReality.Toolkit.SDK")
+        /// "Microsoft.MixedReality.Toolkit.UI.InteractableActivateTheme, 
+        /// Microsoft.MixedReality.Toolkit.UI")
         /// </summary>
         public string AssemblyQualifiedName { get; private set; }
 

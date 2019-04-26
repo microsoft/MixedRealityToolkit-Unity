@@ -1,18 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
+using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [CustomEditor(typeof(BaseMixedRealityLineDataProvider))]
-    public class BaseLineDataProviderInspector : Editor
+    public class BaseLineDataProviderInspector : UnityEditor.Editor
     {
         private const string DrawLinePointsKey = "MRTK_Line_Inspector_DrawLinePoints";
         private const string BasicSettingsFoldoutKey = "MRTK_Line_Inspector_BasicSettings";
@@ -61,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
         private SerializedProperty distorters;
         private SerializedProperty distortionMode;
         private SerializedProperty distortionStrength;
+        private SerializedProperty distortionEnabled;
         private SerializedProperty uniformDistortionStrength;
 
         private ReorderableList manualUpVectorList;
@@ -97,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
             distorters = serializedObject.FindProperty("distorters");
             distortionMode = serializedObject.FindProperty("distortionMode");
             distortionStrength = serializedObject.FindProperty("distortionStrength");
+            distortionEnabled = serializedObject.FindProperty("distortionEnabled");
             uniformDistortionStrength = serializedObject.FindProperty("uniformDistortionStrength");
 
             manualUpVectorList = new ReorderableList(serializedObject, manualUpVectors, false, true, true, true);
@@ -254,23 +253,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
 
             if (distortionSettingsFoldout)
             {
-                if (distorters.arraySize > 0)
-                {
-                    EditorGUI.indentLevel++;
-
-                    if (distorters.arraySize > 0)
-                    {
-                        EditorGUILayout.PropertyField(distortionMode);
-                        EditorGUILayout.PropertyField(distortionStrength);
-                        EditorGUILayout.PropertyField(uniformDistortionStrength);
-                    }
-
-                    EditorGUI.indentLevel--;
-                }
-                else
+                if (distorters.arraySize <= 0)
                 {
                     EditorGUILayout.HelpBox("No distorters attached to this line.\nTry adding a distortion component.", MessageType.Info);
                 }
+
+                EditorGUI.indentLevel++;
+
+                EditorGUILayout.PropertyField(distortionEnabled);
+                EditorGUILayout.PropertyField(distortionMode);
+                EditorGUILayout.PropertyField(distortionStrength);
+                EditorGUILayout.PropertyField(uniformDistortionStrength);
+
+                EditorGUI.indentLevel--;
             }
 
             serializedObject.ApplyModifiedProperties();

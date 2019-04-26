@@ -3,10 +3,10 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     /// <summary>
-    /// The BoundaryEdge structure defines the points of a line segment that are used to
+    /// The Edge structure defines the points of a line segment that are used to
     /// construct a polygonal boundary.
     /// </summary>
     public struct Edge
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         public readonly Vector2 PointB;
 
         /// <summary>
-        /// Initializes the BoundaryEdge structure.
+        /// Initializes the Edge structure.
         /// </summary>
         /// <param name="pointA">The first point of the line segment.</param>
         /// <param name="pointB">The second point of the line segment.</param>
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         }
 
         /// <summary>
-        /// Initializes the BoundaryEdge structure.
+        /// Initializes the Edge structure.
         /// </summary>
         /// <param name="pointA">The first point of the line segment.</param>
         /// <param name="pointB">The second point of the line segment.</param>

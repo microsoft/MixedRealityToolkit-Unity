@@ -1,21 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup;
-using System;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [Obsolete("Use BaseMixedRealityToolkitConfigurationProfileInspector instead")]
-    public abstract class MixedRealityBaseConfigurationProfileInspector { }
-
     /// <summary>
-    /// Base class for all Mixed Reality Toolkit specific <see cref="Microsoft.MixedReality.Toolkit.Core.Definitions.BaseMixedRealityProfile"/> inspectors to inherit from.
+    /// Base class for all Mixed Reality Toolkit specific <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> inspectors to inherit from.
     /// </summary>
     public abstract class BaseMixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityProfileInspector
     {
@@ -26,19 +20,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         [SerializeField]
         private Texture2D logoDarkTheme = null;
-        
+
         protected virtual void Awake()
         {
-            string assetPath = $"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/StandardAssets/Textures";
+            string assetPath = "StandardAssets/Textures";
 
             if (logoLightTheme == null)
             {
-                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{assetPath}/MRTK_Logo_Black.png", typeof(Texture2D));
+                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_Logo_Black.png"), typeof(Texture2D));
             }
 
             if (logoDarkTheme == null)
             {
-                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{assetPath}/MRTK_Logo_White.png", typeof(Texture2D));
+                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_Logo_White.png"), typeof(Texture2D));
             }
         }
 
@@ -49,7 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             // If we're being rendered as a sub profile, don't show the logo
             if (RenderAsSubProfile)
+            {
                 return;
+            }
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -58,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             GUILayout.EndHorizontal();
             GUILayout.Space(12f);
         }
-        
+
         /// <summary>
         /// Renders a button that will take user back to a specified profile object
         /// </summary>
@@ -69,7 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         {
             // If we're being rendered as a sub profile, don't show the button
             if (RenderAsSubProfile)
+            {
                 return false;
+            }
 
             if (GUILayout.Button(message))
             {

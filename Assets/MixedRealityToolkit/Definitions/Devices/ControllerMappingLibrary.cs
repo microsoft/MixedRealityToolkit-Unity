@@ -2,17 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup;
 using UnityEditor;
 using UnityEngine;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Helper utility to manage all the required Axis configuration for platforms, where required
@@ -282,12 +280,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         private static Texture2D GetControllerTextureInternal(string relativeTexturePath, Handedness handedness, string suffix)
         {
             string handednessSuffix = string.Empty;
-            if (handedness == Handedness.Left) handednessSuffix = "_left";
-            else if (handedness == Handedness.Right) handednessSuffix = "_right";
+            if (handedness == Handedness.Left)
+            {
+                handednessSuffix = "_left";
+            }
+            else if (handedness == Handedness.Right)
+            {
+                handednessSuffix = "_right";
+            }
 
             string themeSuffix = EditorGUIUtility.isProSkin ? "_white" : "_black";
 
-            string fullTexturePath = $"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/{relativeTexturePath}{handednessSuffix}{themeSuffix}{suffix}.png";
+            string fullTexturePath = MixedRealityToolkitFiles.MapRelativeFilePath($"{relativeTexturePath}{handednessSuffix}{themeSuffix}{suffix}.png");
             return (Texture2D)AssetDatabase.LoadAssetAtPath(fullTexturePath, typeof(Texture2D));
         }
 

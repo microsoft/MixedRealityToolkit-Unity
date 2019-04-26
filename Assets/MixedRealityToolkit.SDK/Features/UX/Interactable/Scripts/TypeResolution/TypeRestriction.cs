@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.TypeResolution
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Controls the behavior of the InteractableTypeFinder.FindTypes function. See individual

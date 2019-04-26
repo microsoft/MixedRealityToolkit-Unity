@@ -110,5 +110,5 @@ Shader "Mixed Reality Toolkit/Text3DShader"
             ENDCG
         }
     }
-	CustomEditor "Microsoft.MixedReality.Toolkit.Core.Inspectors.Text3DShaderGUI"
+	CustomEditor "Microsoft.MixedReality.Toolkit.Editor.Text3DShaderGUI"
 }

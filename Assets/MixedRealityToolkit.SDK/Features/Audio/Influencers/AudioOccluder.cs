@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Audio;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
+namespace Microsoft.MixedReality.Toolkit.Audio
 {
     /// <summary>
-    /// Class that implements <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.Audio.IAudioInfluencer"/> to provide an audio occlusion effect, similar
+    /// Class that implements <see cref="Microsoft.MixedReality.Toolkit.Audio.IAudioInfluencer"/> to provide an audio occlusion effect, similar
     /// to listening to sound from outside of an enclosed space.
     /// </summary>
     /// <remarks>

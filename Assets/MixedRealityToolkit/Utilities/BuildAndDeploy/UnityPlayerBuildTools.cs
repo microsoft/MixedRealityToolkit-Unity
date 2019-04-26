@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -14,7 +14,7 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
+namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
     /// <summary>
     /// Cross platform player build tools
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
         /// Starts the build process
         /// </summary>
         /// <param name="buildInfo"></param>
-        /// <returns>The <see cref="BuildReport"/> from Unity's <see cref="BuildPipeline"/></returns>
+        /// <returns>The <see href="https://docs.unity3d.com/ScriptReference/Build.Reporting.BuildReport.html">BuildReport</see> from Unity's <see href="https://docs.unity3d.com/ScriptReference/BuildPipeline.html">BuildPipeline</see></returns>
         public static BuildReport BuildUnityPlayer(IBuildInfo buildInfo)
         {
             EditorUtility.DisplayProgressBar("Build Pipeline", "Gathering Build Data...", 0.25f);
@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                 switch (EditorUserBuildSettings.activeBuildTarget)
                 {
                     case BuildTarget.WSAPlayer:
-                        success = await UwpPlayerBuildTools.BuildPlayer(new UwpBuildInfo(true) { BuildAppx = true });
+                        success = await UwpPlayerBuildTools.BuildPlayer(new UwpBuildInfo(true));
                         break;
                     default:
                         var buildInfo = new BuildInfo(true) as IBuildInfo;
@@ -217,8 +217,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                     case "-autoIncrement":
                         buildInfo.AutoIncrement = true;
                         break;
-                    case "-scenes":
-                        // TODO parse json scene list and set them.
+                    case "-sceneList":
+                        buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(arguments[++i]));
+                        break;
+                    case "-sceneListFile":
+                        string path = arguments[++i];
+                        if (File.Exists(path))
+                        {
+                            buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(File.ReadAllText(path)));
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"Scene list file at '{path}' does not exist.");
+                        }
                         break;
                     case "-buildOutput":
                         buildInfo.OutputDirectory = arguments[++i];
@@ -241,6 +252,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
                         break;
                 }
             }
+        }
+
+        private static IEnumerable<string> SplitSceneList(string sceneList)
+        {
+            return from scene in sceneList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                   select scene.Trim();
         }
 
         /// <summary>

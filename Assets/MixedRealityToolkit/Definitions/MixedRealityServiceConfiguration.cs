@@ -1,19 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Defines a system, feature, or manager to be registered with as a <see cref="Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityExtensionService"/> on startup.
+    /// Defines a system, feature, or manager to be registered with as a <see cref="IMixedRealityExtensionService"/> on startup.
     /// </summary>
     [Serializable]
-    public struct MixedRealityServiceConfiguration
+    public struct MixedRealityServiceConfiguration : IMixedRealityServiceConfiguration
     {
         /// <summary>
         /// Constructor.
@@ -24,10 +22,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// <param name="runtimePlatform">The runtime platform(s) to run this system, feature, or manager on.</param>
         /// <param name="configurationProfile">The configuration profile for the service.</param>
         public MixedRealityServiceConfiguration(
-            SystemType componentType, 
-            string componentName, 
-            uint priority, 
-            SupportedPlatforms runtimePlatform, 
+            SystemType componentType,
+            string componentName,
+            uint priority,
+            SupportedPlatforms runtimePlatform,
             BaseMixedRealityProfile configurationProfile)
         {
             this.componentType = componentType;
@@ -41,34 +39,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         [Implements(typeof(IMixedRealityExtensionService), TypeGrouping.ByNamespaceFlat)]
         private SystemType componentType;
 
-        /// <summary>
-        /// The concrete type for the system, feature or manager.
-        /// </summary>
+        /// <inheritdoc />
         public SystemType ComponentType => componentType;
 
         [SerializeField]
         private string componentName;
 
-        /// <summary>
-        /// The simple, human readable name for the system, feature, or manager.
-        /// </summary>
+        /// <inheritdoc />
         public string ComponentName => componentName;
 
         [SerializeField]
         private uint priority;
 
-        /// <summary>
-        /// The priority this system, feature, or manager will be initialized in.
-        /// </summary>
+        /// <inheritdoc />
         public uint Priority => priority;
 
         [EnumFlags]
         [SerializeField]
         private SupportedPlatforms runtimePlatform;
 
-        /// <summary>
-        /// The runtime platform(s) to run this service.
-        /// </summary>
+        /// <inheritdoc />
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
 
         [SerializeField]

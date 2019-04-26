@@ -1,18 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Profile;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Inspector for themes, and used by Interactable
@@ -24,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(Theme))]
-    public class ThemeInspector : Editor
+    public class ThemeInspector : UnityEditor.Editor
     {
         protected SerializedProperty settings;
 
@@ -137,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                     for (int k = 0; k < stateLocations.Length; k++)
                     {
                         string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
-                        States.States defaultStates = (States.States)AssetDatabase.LoadAssetAtPath(path, typeof(States.States));
+                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
                         if (defaultStates != null)
                         {
                             states.objectReferenceValue = defaultStates;
@@ -427,8 +424,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                             shaderNames.InsertArrayElementAtIndex(shaderNames.arraySize);
                             SerializedProperty names = shaderNames.GetArrayElementAtIndex(shaderNames.arraySize - 1);
                             names.stringValue = shaderProps[n].Name;
+                            
                         }
-
+                        Debug.Log(shaderNames.arraySize + " / " + propId.intValue);
                     }
                 }
 
@@ -770,6 +768,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
             if (themeObj != null)
             {
                 box = InspectorUIUtility.Box(30);
+                themeObj.Update();
             }
 
             for (int n = 0; n < themeSettings.arraySize; n++)
@@ -907,7 +906,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                         if (!hasTextComp)
                         {
                             GUIStyle popupStyle = new GUIStyle(EditorStyles.popup);
-                            popupStyle.margin.right = Mathf.RoundToInt(Screen.width * 0.25f);
+                            popupStyle.margin.right = Mathf.RoundToInt(Screen.width - (Screen.width - 40));
                             propId.intValue = EditorGUILayout.Popup("Material " + name.stringValue + "Id", propId.intValue, shaderOptionNames, popupStyle);
                             idCount++;
 
@@ -991,6 +990,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                 }
 
                 EditorGUILayout.EndVertical();
+
+                if (themeObj != null)
+                {
+                    themeObj.ApplyModifiedProperties();
+                }
             }
         }
 
@@ -1049,7 +1053,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                         if (shaderNames.arraySize > propId.intValue)
                         {
                             SerializedProperty propName = shaderNames.GetArrayElementAtIndex(propId.intValue);
-                            shaderPropName = propName.stringValue;
+                            shaderPropName = propName.stringValue.Substring(1);
                         }
 
                         if (n >= values.arraySize)
@@ -1074,13 +1078,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Themes
                                 break;
                             case InteractableThemePropertyValueTypes.Color:
                                 SerializedProperty colorValue = item.FindPropertyRelative("Color");
-                                colorValue.colorValue = EditorGUILayout.ColorField(new GUIContent(name.stringValue, ""), colorValue.colorValue);
+                                colorValue.colorValue = EditorGUILayout.ColorField(new GUIContent(shaderPropName, shaderPropName), colorValue.colorValue);
                                 break;
                             case InteractableThemePropertyValueTypes.ShaderFloat:
-                                floatValue.floatValue = EditorGUILayout.FloatField(new GUIContent(name.stringValue, ""), floatValue.floatValue);
+                                floatValue.floatValue = EditorGUILayout.FloatField(new GUIContent(shaderPropName, shaderPropName), floatValue.floatValue);
                                 break;
                             case InteractableThemePropertyValueTypes.shaderRange:
-                                vector2Value.vector2Value = EditorGUILayout.Vector2Field(new GUIContent(name.stringValue, ""), vector2Value.vector2Value);
+                                vector2Value.vector2Value = EditorGUILayout.Vector2Field(new GUIContent(shaderPropName, shaderPropName), vector2Value.vector2Value);
                                 break;
                             case InteractableThemePropertyValueTypes.Vector2:
                                 vector2Value.vector2Value = EditorGUILayout.Vector2Field(new GUIContent(name.stringValue, ""), vector2Value.vector2Value);

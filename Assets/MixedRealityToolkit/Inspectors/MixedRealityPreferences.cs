@@ -2,11 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     internal static class MixedRealityPreferences
     {
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
         #region Ignore startup settings prompt
 
-        private static readonly GUIContent IgnoreContent = new GUIContent("Ignore settings prompt on startup", "Prevents settings dialog popup from showing on startup.\n\nThis setting applies to all projects using MRTK.");
+        private static readonly GUIContent IgnoreContent = new GUIContent("Ignore settings prompt on startup", "Prevents settings dialog popup from showing on startup.\n\nThis setting applies to all projects using the Mixed Reality Toolkit.");
         private const string IGNORE_KEY = "MixedRealityToolkit_Editor_IgnoreSettingsPrompts";
         private static bool ignorePrefLoaded;
         private static bool ignoreSettingsPrompt;
@@ -64,39 +64,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
         #endregion Ignore startup settings prompt
 
-        #region Show Canvas Utility Prompt
-
-        private static readonly GUIContent CanvasUtilityContent = new GUIContent("Canvas world space utility dialogs", "Enable or disable the dialog popups for the world space canvas settings.\n\nThis setting only applies to the currently running project.");
-        private const string CANVAS_KEY = "EnableCanvasUtilityDialog";
-        private static bool isCanvasUtilityPrefLoaded;
-        private static bool showCanvasUtilityPrompt;
-
-        /// <summary>
-        /// Should the <see cref="Canvas"/> utility dialog show when updating the <see cref="RenderMode"/> settings on that component?
-        /// </summary>
-        public static bool ShowCanvasUtilityPrompt
-        {
-            get
-            {
-                if (!isCanvasUtilityPrefLoaded)
-                {
-                    showCanvasUtilityPrompt = EditorPreferences.Get(CANVAS_KEY, true);
-                    isCanvasUtilityPrefLoaded = true;
-                }
-
-                return showCanvasUtilityPrompt;
-            }
-            set => EditorPreferences.Set(CANVAS_KEY, showCanvasUtilityPrompt = value);
-        }
-
-        #endregion Show Canvas Utility Prompt
-
         [SettingsProvider]
         private static SettingsProvider Preferences()
         {
-            var provider = new SettingsProvider("Project/MRTK")
+            var provider = new SettingsProvider("Project/Mixed Reality Toolkit", SettingsScope.Project)
             {
-                label = "MRTK",
+                label = "Microsoft Mixed Reality Toolkit",
 
                 guiHandler = GUIHandler,
 
@@ -119,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
                 if (!LockProfiles)
                 {
-                    EditorGUILayout.HelpBox("This is only to be used to update the default SDK profiles. If any edits are made, and not checked into the MRTK's Github, the changes may be lost next time you update your local copy.", MessageType.Warning);
+                    EditorGUILayout.HelpBox("This is only to be used to update the default SDK profiles. If any edits are made, and not checked into the Mixed Reality Toolkit - Unity repository, the changes may be lost next time you update your local copy.", MessageType.Warning);
                 }
 
                 EditorGUI.BeginChangeCheck();
@@ -129,19 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                 if (EditorGUI.EndChangeCheck())
                 {
                     IgnoreSettingsPrompt = ignoreSettingsPrompt;
-                }
-
-                EditorGUI.BeginChangeCheck();
-                showCanvasUtilityPrompt = EditorGUILayout.Toggle(CanvasUtilityContent, ShowCanvasUtilityPrompt);
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    ShowCanvasUtilityPrompt = showCanvasUtilityPrompt;
-                }
-
-                if (!ShowCanvasUtilityPrompt)
-                {
-                    EditorGUILayout.HelpBox("Be aware that if a Canvas needs to receive input events it is required to have the CanvasUtility attached or the Focus Provider's UIRaycast Camera assigned to the canvas' camera reference.", MessageType.Warning);
                 }
 
                 EditorGUI.BeginChangeCheck();
@@ -158,4 +118,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             return provider;
         }
     }
+
 }

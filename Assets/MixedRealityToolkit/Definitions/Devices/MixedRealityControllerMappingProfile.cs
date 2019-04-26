@@ -1,16 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Providers;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// New controller types can be registered by adding the MixedRealityControllerAttribute to
@@ -83,11 +81,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
                     if (idx < 0)
                     {
+                        var newMapping = new MixedRealityControllerMapping(controllerType, handedness);
+                        newMapping.SetDefaultInteractionMapping(overwrite: false);
+
+                        // Re-use existing mapping with the same supported controller type.
+                        foreach (var otherMapping in mixedRealityControllerMappingProfiles)
+                        {
+                            if (otherMapping.SupportedControllerType == newMapping.SupportedControllerType &&
+                                otherMapping.Handedness == newMapping.Handedness)
+                            {
+                                try
+                                {
+                                    newMapping.SynchronizeInputActions(otherMapping.Interactions);
+                                }
+                                catch (ArgumentException e)
+                                {
+                                    Debug.LogError($"Controller mappings between {newMapping.Description} and {otherMapping.Description} do not match. Error message: {e.Message}");
+                                }
+                                break;
+                            }
+                        }
+
                         idx = mixedRealityControllerMappingProfiles.Length;
                         Array.Resize(ref mixedRealityControllerMappingProfiles, idx + 1);
-                        mixedRealityControllerMappingProfiles[idx] = new MixedRealityControllerMapping(controllerType, handedness);
-
-                        mixedRealityControllerMappingProfiles[idx].SetDefaultInteractionMapping(overwrite: false);
+                        mixedRealityControllerMappingProfiles[idx] = newMapping;
                     }
                 }
             }

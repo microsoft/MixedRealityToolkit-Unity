@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
+namespace Microsoft.MixedReality.Toolkit.Audio
 {
     /// <summary>
     /// An audio effect that limits the frequency range of a sound to simulate being played 
