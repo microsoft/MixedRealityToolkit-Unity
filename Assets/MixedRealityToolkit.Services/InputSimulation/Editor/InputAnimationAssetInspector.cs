@@ -5,8 +5,10 @@ using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 using UnityEditor;
 using System;
+using System.Text.RegularExpressions;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -71,6 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Texture2D iconStepBack = null;
         private Texture2D iconJumpFwd = null;
         private Texture2D iconJumpBack = null;
+
+        bool markersFoldout = true;
+        bool testTemplateFoldout = false;
+        private Vector2 testTemplateScroll = Vector2.zero;
 
         public void Awake()
         {
@@ -203,7 +209,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             EditorGUILayout.Space();
 
-            DrawEventsGUI();
+            DrawMarkersGUI();
+
+            DrawTestTemplateGUI();
 
             EditorGUILayout.Space();
 
@@ -294,11 +302,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public void DrawEventsGUI()
+        public void DrawMarkersGUI()
         {
             InputAnimation anim = inputAnimation.InputAnimation;
 
-            bool addEvent = GUILayout.Button("Add Event");
+            markersFoldout = EditorGUILayout.Foldout(markersFoldout, "Markers");
+            if (!markersFoldout)
+            {
+                return;
+            }
+
+            EditorGUILayout.BeginVertical();
+
+            bool addEvent = GUILayout.Button("Add Marker");
 
             for (int i = 0; i < anim.markerCount; ++i)
             {
@@ -333,6 +349,73 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 anim.AddMarker(marker);
                 EditorUtility.SetDirty(inputAnimation);
             }
+
+            EditorGUILayout.EndVertical();
+        }
+
+        private void DrawTestTemplateGUI()
+        {
+            testTemplateFoldout = EditorGUILayout.Foldout(testTemplateFoldout, "Template");
+            if (!testTemplateFoldout)
+            {
+                return;
+            }
+
+            var anim = inputAnimation.InputAnimation;
+
+            string testName = Regex.Replace(inputAnimation.name, @"[^a-zA-Z0-9_]", "");
+            string sceneName = SceneManager.GetActiveScene().name;
+
+            string testTemplate = "";
+
+            // Common setup of scene and loading input animation
+            testTemplate += string.Format(
+                "/// Test {0}\n" +
+                "[UnityTest]\n" +
+                "public IEnumerator Test_{1}()\n" +
+                "{{\n" +
+                "    // Load test scene\n" +
+                "    var loadOp = TestUtilities.LoadTestSceneAsync(\"{2}\");\n" +
+                "    while (loadOp.MoveNext())\n" +
+                "    {{\n" +
+                "        yield return new WaitForFixedUpdate();\n" +
+                "    }}\n" +
+                "\n" +
+                "    // Load input animation\n" +
+                "    var inputAsset = (InputAnimationAsset)Resources.Load(\"{3}\", typeof(InputAnimationAsset));\n" +
+                "\n" +
+                "    // Component to drive animation in the scene\n" +
+                "    var director = TestUtilities.RunPlayable(inputAsset);\n" +
+                "\n",
+                inputAnimation.name,
+                testName,
+                sceneName,
+                inputAnimation.name);
+
+            // Wait for each of the test markers in the input animation
+            for (int i = 0; i < anim.markerCount; ++i)
+            {
+                var marker = anim.GetMarker(i);
+
+                testTemplate += string.Format(
+                    "    // {0}\n" +
+                    "    {{\n" +
+                    "        InputAnimationMarker marker = inputAsset.InputAnimation.GetMarker({1});\n" +
+                    "        yield return new WaitForPlayableTime(director, marker.time);\n" +
+                    "        // ADD TEST CONDITIONS HERE\n" +
+                    "    }}\n",
+                    marker.name,
+                    i);
+            }
+
+            testTemplate +=
+                "\n" +
+                "    yield return new WaitForPlayableEnded(director);\n" +
+                "}";
+
+            testTemplateScroll = EditorGUILayout.BeginScrollView(testTemplateScroll, GUILayout.Height(200));
+            EditorGUILayout.TextArea(testTemplate);
+            EditorGUILayout.EndScrollView();
         }
 
         private bool StartRecording()

@@ -109,20 +109,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(MixedRealityToolkit.Instance.HasActiveProfile);
         }
 
-        public static IEnumerator RunPlayableGraphAsync(PlayableDirector director)
+        public static PlayableDirector RunPlayable(PlayableAsset playableAsset)
         {
-            if (!director)
-            {
-                yield break;
-            }
+            GameObject directorObject = new GameObject();
+            PlayableDirector director = directorObject.AddComponent<PlayableDirector>();
+            director.playableAsset = playableAsset;
 
             director.Play();
 
-            var graph = director.playableGraph;
-            while (graph.IsValid() && graph.IsPlaying())
-            {
-                yield return director.time;
-            }
+            return director;
         }
     }
 
@@ -146,6 +141,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             this.director = director;
             this.playableTime = time;
+        }
+    }
+
+    
+    /// <summary>
+    /// Utility class that waits until the PlayableDirector reaches a specified local time.
+    /// </summary>
+    public class WaitForPlayableEnded : CustomYieldInstruction
+    {
+        private PlayableDirector director;
+
+        public override bool keepWaiting
+        {
+            get
+            {
+                var graph = director.playableGraph;
+                return graph.IsValid() && graph.IsPlaying();
+            }
+        }
+
+        public WaitForPlayableEnded(PlayableDirector director)
+        {
+            this.director = director;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator Test01_MyInputTest()
         {
-            var loadOp = TestUtilities.LoadTestSceneAsync("MyTestScene");
+            var loadOp = TestUtilities.LoadTestSceneAsync("HandInteractionExamples");
             while (loadOp.MoveNext())
             {
                 yield return new WaitForFixedUpdate();
@@ -33,33 +33,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.OnManipulationStarted.AddListener((ManipulationEventData) => { isManipulating = true; });
             manipHandler.OnManipulationEnded.AddListener((ManipulationEventData) => { isManipulating = false; });
 
-            var director = Object.FindObjectOfType<PlayableDirector>();
+            var inputAsset = (InputAnimationAsset)Resources.Load("ButtonsPushFar", typeof(InputAnimationAsset));
 
-            var playOp = TestUtilities.RunPlayableGraphAsync(director);
-            Assert.IsFalse(isHovered);
-            Assert.IsFalse(isManipulating);
+            // var playOp = TestUtilities.RunPlayableAsync(inputAsset);
+            var director = TestUtilities.RunPlayable(inputAsset);
 
-            // Just before focusing on the cheese
-            yield return new WaitForPlayableTime(director, 2.25);
-            Assert.IsFalse(isHovered);
-            Assert.IsFalse(isManipulating);
+            // ADD COMMENT HERE
+            var marker0 = inputAsset.InputAnimation.GetMarker(0);
+            yield return new WaitForPlayableTime(director, marker0.time);
+            Debug.Log($"{marker0.name}");
+            // ADD TEST CONDITIONS HERE
 
-            // Just after focusing on the cheese
-            yield return new WaitForPlayableTime(director, 2.43);
-            Assert.IsTrue(isHovered);
-            Assert.IsFalse(isManipulating);
+            // ADD COMMENT HERE
+            var marker1 = inputAsset.InputAnimation.GetMarker(1);
+            yield return new WaitForPlayableTime(director, marker1.time);
+            Debug.Log($"{marker1.name}");
+            // ADD TEST CONDITIONS HERE
 
-            // Just before grabbing the cheese
-            yield return new WaitForPlayableTime(director, 4.42);
-            Assert.IsTrue(isHovered);
-            Assert.IsFalse(isManipulating);
-
-            // Just after grabbing the cheese
-            yield return new WaitForPlayableTime(director, 4.67);
-            Assert.IsTrue(isHovered);
-            Assert.IsTrue(isManipulating);
-
-            yield return playOp;
+            yield return new WaitForPlayableEnded(director);
         }
 
         [TearDown]
