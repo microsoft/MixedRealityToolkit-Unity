@@ -34,17 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.LabelField(pointer.PointerName);
                 EditorGUILayout.Toggle("Interaction Enabled", pointer.IsInteractionEnabled);
                 EditorGUILayout.Toggle("Focus Locked", pointer.IsFocusLocked);
-
-                IPointerResult pointerResult = pointer.Result;
-                if (pointerResult == null)
-                {
-                    EditorGUILayout.ObjectField("Focus Result", null, typeof(GameObject), true);
-                }
-                else
-                {
-                    EditorGUILayout.ObjectField("Focus Result", pointerResult.CurrentPointerTarget, typeof(GameObject), true);
-                }
-
+                EditorGUILayout.ObjectField("Focus Result", pointer.Result?.CurrentPointerTarget, typeof(GameObject), true);
                 EditorGUILayout.EndVertical();
 
                 pointerFound = true;
