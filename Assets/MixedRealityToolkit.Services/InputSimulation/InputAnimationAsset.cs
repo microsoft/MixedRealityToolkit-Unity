@@ -21,17 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         private InputAnimation inputAnimation = new InputAnimation();
-        public InputAnimation InputAnimation
-        {
-            get
-            {
-                return inputAnimation;
-            }
-            set
-            {
-                inputAnimation = value;
-            }
-        }
+        public InputAnimation InputAnimation { get { return inputAnimation; } set { inputAnimation = value; } }
 
         /// </inheritdoc>
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)

@@ -38,29 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Tools for recording input tests.
     /// </summary>
-    public class InputTestRecordingWindow : EditorWindow
+    [CustomEditor(typeof(InputAnimationAsset))]
+    public class InputAnimationAssetEditor : UnityEditor.Editor
     {
-        private InputAnimationAsset _inputAnimation;
-        private InputAnimationAsset inputAnimation
-        {
-            get
-            {
-                return _inputAnimation;
-            }
-            set
-            {
-                if (_inputAnimation != value)
-                {
-                    _inputAnimation = value;
-
-                    if (director != null)
-                    {
-                        director.playableAsset = inputAnimation;
-                    }
-                }
-            }
-        }
-
         public enum RecordingMode
         {
             /// <summary>
@@ -76,6 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private RecordingMode mode;
         public RecordingMode Mode => mode;
 
+        private InputAnimationAsset inputAnimation => target as InputAnimationAsset;
+
         private GameObject ownerObject = null;
         private PlayableDirector director = null;
         private InputAnimationRecorder recorder = null;
@@ -89,15 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Texture2D iconStepBack = null;
         private Texture2D iconJumpFwd = null;
         private Texture2D iconJumpBack = null;
-
-        [MenuItem("Mixed Reality Toolkit/Utilities/Input Test Recording")]
-        private static void ShowWindow()
-        {
-            InputTestRecordingWindow window = GetWindow<InputTestRecordingWindow>();
-            window.titleContent = new GUIContent("Input Test Recording");
-            window.minSize = new Vector2(420.0f, 300.0f);
-            window.Show();
-        }
 
         public void Awake()
         {
@@ -140,15 +113,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 iconJumpBack = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_TimelineJumpBack.png"), typeof(Texture2D));
             }
 
-            ownerObject = new GameObject();
-            ownerObject.hideFlags = HideFlags.HideAndDontSave;
-
             SetMode(RecordingMode.Recording);
         }
 
         public void OnDestroy()
         {
-            Destroy(ownerObject);
+            if (ownerObject != null)
+            {
+                Destroy(ownerObject);
+            }
         }
 
         public void SetMode(RecordingMode _mode)
@@ -156,6 +129,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (_mode != mode)
             {
                 mode = _mode;
+                UpdateSceneObjects();
+            }
+        }
+
+        /// Make sure the necessary scene objects exist based on the mode
+        private void UpdateSceneObjects()
+        {
+            if (Application.isPlaying)
+            {
+                if (ownerObject == null)
+                {
+                    ownerObject = new GameObject();
+                    ownerObject.hideFlags = HideFlags.HideAndDontSave;
+                }
 
                 switch (mode)
                 {
@@ -175,22 +162,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         director = ownerObject.AddComponent<PlayableDirector>();
                         director.playOnAwake = false;
                         director.playableAsset = inputAnimation;
-                        director.Play();
-                        director.Pause();
                         break;
                 }
             }
+            else
+            {
+                if (ownerObject != null)
+                {
+                    DestroyImmediate(ownerObject);
+                }
+                return;
+            }
         }
 
-        private void OnGUI()
+        public override void OnInspectorGUI()
         {
             bool isGUIEnabled = GUI.enabled;
 
-            inputAnimation = (InputAnimationAsset)EditorGUILayout.ObjectField("Input Animation", inputAnimation, typeof(InputAnimationAsset), false);
-            if (inputAnimation == null)
-            {
-                return;
-            }
+            UpdateSceneObjects();
 
             string[] modeStrings = { "Record", "Playback" };
             RecordingMode newMode = (RecordingMode)GUILayout.SelectionGrid((int)mode, modeStrings, modeStrings.Length);
@@ -208,6 +197,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     DrawPlaybackGUI();
                     break;
             }
+
+            EditorGUILayout.Space();
+
+            DrawEventsGUI();
+
+            EditorGUILayout.Space();
+
+            GUI.enabled = isGUIEnabled;
+            DrawDefaultInspector();
         }
 
         private void DrawRecordingGUI()
@@ -216,9 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (!Application.isPlaying)
             {
                 EditorGUILayout.HelpBox("Input test recording is only available in play mode", MessageType.Info);
-
-                isGUIEnabled = false;
-                GUI.enabled = false;
+                return;
             }
 
             bool wasRecording = (recorder != null);
@@ -246,9 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (!Application.isPlaying)
             {
                 EditorGUILayout.HelpBox("Input test playback is only available in play mode", MessageType.Info);
-
-                isGUIEnabled = false;
-                GUI.enabled = false;
+                return;
             }
 
             bool wasPlaying = (director.state == PlayState.Playing);
@@ -294,6 +288,47 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (director.state == PlayState.Playing)
             {
                 Repaint();
+            }
+        }
+
+        public void DrawEventsGUI()
+        {
+            InputAnimation anim = inputAnimation.InputAnimation;
+
+            bool addEvent = GUILayout.Button("Add Event");
+
+            for (int i = 0; i < anim.markerCount; ++i)
+            {
+                var marker = anim.GetMarker(i);
+
+                EditorGUILayout.BeginHorizontal();
+                float newMarkerTime = EditorGUILayout.FloatField(marker.time);
+                string newMarkerName = EditorGUILayout.TextField(marker.name);
+                bool removeMarker = GUILayout.Button("Remove");
+                EditorGUILayout.EndHorizontal();
+
+                if (removeMarker)
+                {
+                    anim.RemoveMarker(i);
+                    continue;
+                }
+                if (newMarkerTime != marker.time)
+                {
+                    anim.SetMarkerTime(i, newMarkerTime);
+                }
+                if (newMarkerName != marker.name)
+                {
+                    marker.name = newMarkerName;
+                }
+            }
+
+            if (addEvent)
+            {
+                var marker = new InputAnimationMarker();
+                marker.time = (float)director.time;
+                marker.name = "Marker";
+                anim.AddMarker(marker);
+                EditorUtility.SetDirty(inputAnimation);
             }
         }
 
