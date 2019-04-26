@@ -270,15 +270,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             targetPosition -= CameraCache.Main.transform.position - MixedRealityPlayspace.Position;
             targetPosition.y = height;
 
-            MixedRealityPlayspace.PerformTransformation(
-                p =>
-                {
-                    p.position = targetPosition;
-                    p.RotateAround(
+            MixedRealityPlayspace.Position = targetPosition;
+            MixedRealityPlayspace.RotateAround(
                         CameraCache.Main.transform.position, 
                         Vector3.up, 
                         targetRotation.y - CameraCache.Main.transform.eulerAngles.y);
-                });
 
             isProcessingTeleportRequest = false;
 

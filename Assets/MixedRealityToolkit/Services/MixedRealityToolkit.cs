@@ -766,11 +766,12 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-#endregion MonoBehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
-#region Service Container Management
+        #region Service Container Management
 
-#region Registration
+        #region Registration
+        // NOTE: This method intentionally does not add to the registry. This is actually mostly a helper function for RegisterServiceInternal<T>.
         private bool RegisterServiceInternal(Type interfaceType, IMixedRealityService serviceInstance)
         {
             if (serviceInstance == null)

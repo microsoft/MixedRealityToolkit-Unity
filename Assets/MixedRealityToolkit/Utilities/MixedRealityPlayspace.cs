@@ -64,12 +64,20 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The location of the playspace.
         /// </summary>
-        public static Vector3 Position => Transform.position;
+        public static Vector3 Position
+        {
+            get { return Transform.position; }
+            set { Transform.position = value; }
+        }
 
         /// <summary>
         /// The playspace's rotation.
         /// </summary>
-        public static Quaternion Rotation => Transform.rotation;
+        public static Quaternion Rotation
+        {
+            get { return Transform.rotation; }
+            set { Transform.rotation = value;  }
+        }
 
         /// <summary>
         /// Adds a child object to the playspace's heirarchy.
@@ -117,9 +125,24 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Rotates the playspace around the specified axis.
+        /// </summary>
+        /// <param name="point">The point to pass through during rotation.</param>
+        /// <param name="axis">The axis about which to rotate.</param>
+        /// <param name="angle">The angle, in degrees, to rotate.</param>
+        public static void RotateAround(Vector3 point, Vector3 axis, float angle)
+        {
+            Transform.RotateAround(point, axis, angle);
+        }
+
+        /// <summary>
         /// Performs a playspace transformation.
         /// </summary>
         /// <param name="transformation">The transformation to be applied to the playspace.</param>
+        /// <remarks>
+        /// This method takes a lambda function and may contribute to garbage collector pressure.
+        /// For best performance, avoid calling this method from an inner loop function.
+        /// </remarks>
         public static void PerformTransformation(Action<Transform> transformation)
         {
             transformation?.Invoke(Transform);

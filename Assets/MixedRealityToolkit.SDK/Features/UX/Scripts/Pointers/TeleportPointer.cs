@@ -362,11 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                             {
                                 canMove = false;
                                 // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
-                                MixedRealityPlayspace.PerformTransformation(
-                                    p =>
-                                    {
-                                        p.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
-                                    });
+                                MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
                             }
                             else // We may be trying to strafe backwards.
                             {
@@ -383,11 +379,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                                     var height = MixedRealityPlayspace.Position.y;
                                     var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityPlayspace.Position;
                                     newPosition.y = height;
-                                    MixedRealityPlayspace.PerformTransformation(
-                                        p =>
-                                        {
-                                            p.position = newPosition;
-                                        });
+                                    MixedRealityPlayspace.Position = newPosition;
                                 }
                             }
                         }
