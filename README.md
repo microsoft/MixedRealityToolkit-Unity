@@ -29,23 +29,9 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 | To develop apps for Windows Mixed Reality headsets, you need the Windows 10 Fall Creators Update | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
 
 # Feature Areas
-
-- Input System
-- Articulated Hands + Gestures (HoloLens 2)
-- Eye Tracking (HoloLens 2)
-- Voice Commanding
-- Gaze + Select (HoloLens)
-- Controller Visualization
-- Teleportation
-- UI Controls
-- Solver and Interactions
-- Spatial Understanding
-- Diagnostic Tool
-- MRTK Standard Shader
-
-| ![](Documentation/Images/MRTK170802_Short_17.png) Input System<br/>&nbsp;  | ![](Documentation/Images/MRTK170802_Short_17.png) Hand Tracking (HoloLens 2) | ![](Documentation/Images/MRTK170802_Short_17.png) Eye Tracking (HoloLens 2) | ![](Documentation/Images/MRTK170802_Short_17.png) Voice Commanding | ![](Documentation/Images/MRTK170802_Short_17.png) Gaze + Select (HoloLens) | ![](Documentation/Images/MRTK170802_Short_17.png) Teleportation<br/>&nbsp; |
+| ![](Documentation/Images/MRTK_Icon_InputSystem.png) Input System<br/>&nbsp;  | ![](Documentation/Images/MRTK_Icon_HandTracking.png) Hand Tracking (HoloLens 2) | ![](Documentation/Images/MRTK_Icon_EyeTracking.png) Eye Tracking (HoloLens 2) | ![](Documentation/Images/MRTK_Icon_VoiceCommand.png) Voice Commanding | ![](Documentation/Images/MRTK_Icon_GazeSelect.png) Gaze + Select (HoloLens) | ![](Documentation/Images/MRTK_Icon_Teleportation.png) Teleportation<br/>&nbsp; |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| ![](Documentation/Images/MRTK170802_Short_17.png) UI Controls<br/>&nbsp; | ![](Documentation/Images/MRTK170802_Short_17.png) Solver and Interactions | ![](Documentation/Images/MRTK170802_Short_17.png) Controller Visualization | ![](Documentation/Images/MRTK170802_Short_17.png) Spatial Understanding | ![](Documentation/Images/MRTK170802_Short_17.png) Diagnostic Tool<br/>&nbsp; | ![](Documentation/Images/MRTK170802_Short_17.png) MRTK Standard Shader |
+| ![](Documentation/Images/MRTK_Icon_UIControls.png) UI Controls<br/>&nbsp; | ![](Documentation/Images/MRTK_Icon_Solver.png) Solver and Interactions | ![](Documentation/Images/MRTK_Icon_ControllerVisualization.png) Controller Visualization | ![](Documentation/Images/MRTK_Icon_SpatialUnderstanding.png) Spatial Understanding | ![](Documentation/Images/MRTK_Icon_Diagnostics.png) Diagnostic Tool<br/>&nbsp; | ![](Documentation/Images/MRTK_Icon_StandardShader.png) MRTK Standard Shader |
 
 
 
