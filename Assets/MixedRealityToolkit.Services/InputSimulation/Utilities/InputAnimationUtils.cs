@@ -31,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var hand = HandJointUtils.FindHand(handedness);
             if (hand == null)
             {
+                animation.AddHandStateKeys(time, handedness, false, false);
                 return false;
             }
 

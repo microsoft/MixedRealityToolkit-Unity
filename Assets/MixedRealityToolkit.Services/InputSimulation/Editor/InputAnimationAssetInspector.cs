@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (ownerObject != null)
             {
-                Destroy(ownerObject);
+                DestroyImmediate(ownerObject);
             }
         }
 
