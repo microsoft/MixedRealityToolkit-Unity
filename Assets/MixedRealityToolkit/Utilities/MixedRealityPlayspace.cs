@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// 
+    /// A static class encapsulating the Mixed Reality playspace.
     /// </summary>
     public static class MixedRealityPlayspace
     {
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static Transform mixedRealityPlayspace;
 
         /// <summary>
-        /// 
+        /// The transform of the playspace.
         /// </summary>
         public static Transform Transform
         {
@@ -62,26 +62,26 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// 
+        /// The location of the playspace.
         /// </summary>
         public static Vector3 Position => Transform.position;
 
         /// <summary>
-        /// 
+        /// The playspace's rotation.
         /// </summary>
         public static Quaternion Rotation => Transform.rotation;
 
         /// <summary>
-        /// 
+        /// Adds a child object to the playspace's heirarchy.
         /// </summary>
-        /// <param name="transform"></param>
+        /// <param name="transform">The child object's transform.</param>
         public static void AddChild(Transform transform)
         {
             transform.SetParent(Transform);
         }
 
         /// <summary>
-        /// 
+        /// Detaches all child objects from the playspace's heirarchy.
         /// </summary>
         public static void DetachChildren()
         {
@@ -89,39 +89,45 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// 
+        /// Transforms a position from local to world space.
         /// </summary>
-        /// <param name="localPosition"></param>
-        /// <returns></returns>
+        /// <param name="localPosition">The position to be transformed.</param>
+        /// <returns>
+        /// The position, in world space.
+        /// </returns>
         public static Vector3 TransformPoint(Vector3 localPosition)
         {
             return Transform.TransformPoint(localPosition);
         }
 
         /// <summary>
-        /// 
+        /// Transforms a position from world to local space.
         /// </summary>
-        /// <param name="worldPosition"></param>
-        /// <returns></returns>
+        /// <param name="worldPosition">The position to be transformed.</param>
+        /// <returns>
+        /// The position, in local space.
+        /// </returns>
         public static Vector3 InverseTransformPoint(Vector3 worldPosition)
         {
             return Transform.InverseTransformPoint(worldPosition);
         }
 
         /// <summary>
-        /// 
+        /// Transforms a direction from local to world space.
         /// </summary>
-        /// <param name="localDirection"></param>
-        /// <returns></returns>
+        /// <param name="localDirection">The direction to be transformed.</param>
+        /// <returns>
+        /// The direction, in world space.
+        /// </returns>
         public static Vector3 TransformDirection(Vector3 localDirection)
         {
             return Transform.TransformDirection(localDirection);
         }
 
         /// <summary>
-        /// 
+        /// Performs a playspace transformation.
         /// </summary>
-        /// <param name="transformation"></param>
+        /// <param name="transformation">The transformation to be applied to the playspace.</param>
         public static void PerformTransformation(Action<Transform> transformation)
         {
             transformation?.Invoke(Transform);
