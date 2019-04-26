@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK")]
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
-    public class InputSimulationService : BaseInputDeviceManager
+    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService
     {
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
