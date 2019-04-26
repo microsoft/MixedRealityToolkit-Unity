@@ -58,7 +58,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             GUI.color = enabledColor;
 
-            if (observerIndex == 0)
+            if (!Application.isPlaying)
+            {
+                EditorGUILayout.HelpBox("Observers will be populated once you enter play mode.", MessageType.Info);
+            }
+            else if (observerIndex == 0)
             {
                 EditorGUILayout.LabelField("(None found)", EditorStyles.miniLabel);
             }

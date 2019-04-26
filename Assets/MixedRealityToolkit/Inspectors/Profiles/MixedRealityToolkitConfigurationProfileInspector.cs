@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -205,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.PropertyField(enableInputSystem);
                     EditorGUILayout.PropertyField(inputSystemType);
-                    changed |= RenderProfile(inputSystemProfile);
+                    changed |= RenderProfile(inputSystemProfile, true, typeof(IMixedRealityInputSystem));
                 }
             }
 
@@ -225,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                     EditorGUILayout.PropertyField(enableBoundarySystem);
                     EditorGUILayout.PropertyField(boundarySystemType);
-                    changed |= RenderProfile(boundaryVisualizationProfile);
+                    changed |= RenderProfile(boundaryVisualizationProfile, true, typeof(IMixedRealityBoundarySystem));
                 }
             }
 
@@ -251,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
                     EditorGUILayout.PropertyField(spatialAwarenessSystemType);
                     EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
-                    changed |= RenderProfile(spatialAwarenessSystemProfile);
+                    changed |= RenderProfile(spatialAwarenessSystemProfile, true, typeof(IMixedRealitySpatialAwarenessSystem));
                 }
             }
 

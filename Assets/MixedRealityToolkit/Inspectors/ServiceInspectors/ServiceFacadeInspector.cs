@@ -195,7 +195,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         /// <returns></returns>
         private bool DrawProfile(Type serviceType)
         {
-
             IMixedRealityServiceInspector inspectorInstance;
             if (GetServiceInspectorInstance(serviceType, out inspectorInstance))
             {
@@ -216,28 +215,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 if (typeof(IMixedRealityInputSystem).IsAssignableFrom(serviceType))
                 {
                     SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("inputSystemProfile");
-                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
+                    BaseMixedRealityProfileInspector.RenderReadOnlyProfile(serviceProfileProp);
                     EditorGUILayout.Space();
                     foundAndDrewProfile = true;
                 }
                 else if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(serviceType))
                 {
                     SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("boundaryVisualizationProfile");
-                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
+                    BaseMixedRealityProfileInspector.RenderReadOnlyProfile(serviceProfileProp);
                     EditorGUILayout.Space();
                     foundAndDrewProfile = true;
                 }
                 else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(serviceType))
                 {
                     SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("diagnosticsSystemProfile");
-                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
+                    BaseMixedRealityProfileInspector.RenderReadOnlyProfile(serviceProfileProp);
                     EditorGUILayout.Space();
                     foundAndDrewProfile = true;
                 }
                 else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(serviceType))
                 {
                     SerializedProperty serviceProfileProp = activeProfileObject.FindProperty("spatialAwarenessSystemProfile");
-                    BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
+                    BaseMixedRealityProfileInspector.RenderReadOnlyProfile(serviceProfileProp);
                     EditorGUILayout.Space();
                     foundAndDrewProfile = true;
                 }
@@ -259,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                             SerializedProperty serviceConfigArray = serviceConfigObject.FindProperty("configurations");
                             SerializedProperty serviceConfigProp = serviceConfigArray.GetArrayElementAtIndex(serviceIndex);
                             SerializedProperty serviceProfileProp = serviceConfigProp.FindPropertyRelative("configurationProfile");
-                            BaseMixedRealityProfileInspector.RenderProfile(serviceProfileProp, null, false, serviceType);
+                            BaseMixedRealityProfileInspector.RenderReadOnlyProfile(serviceProfileProp);
                             EditorGUILayout.Space();
                             foundAndDrewProfile = true;
                             break;

@@ -18,6 +18,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             MixedRealityTeleportSystem teleport = (MixedRealityTeleportSystem)target;
 
             EditorGUILayout.LabelField("Event Listeners", EditorStyles.boldLabel);
+
+            if (!Application.isPlaying)
+            {
+                EditorGUILayout.HelpBox("Event listeners will be populated once you enter play mode.", MessageType.Info);
+                return;
+            }
+
             if (teleport.EventListeners.Count == 0)
             {
                 EditorGUILayout.LabelField("(None found)", EditorStyles.miniLabel);

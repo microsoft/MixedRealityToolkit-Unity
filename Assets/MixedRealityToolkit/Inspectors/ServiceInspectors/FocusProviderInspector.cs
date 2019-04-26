@@ -19,6 +19,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.LabelField("Active Pointers", EditorStyles.boldLabel);
 
+            if (!Application.isPlaying)
+            {
+                EditorGUILayout.HelpBox("Pointers will be populated once you enter play mode.", MessageType.Info);
+                return;
+            }
+
             int numPointersFound = 0;
             foreach (IMixedRealityPointer pointer in focusProvider.GetPointers<IMixedRealityPointer>())
             {
