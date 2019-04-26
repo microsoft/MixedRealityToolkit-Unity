@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 if (mainCamera == null)
                 {   // If no main camera was found, create it now
-                    Debug.LogWarning("No main camera found. The mixed reality toolkit requires at least one camera in the scene. One will be generated now.");
+                    Debug.LogWarning("No main camera found. The Mixed Reality Toolkit requires at least one camera in the scene. One will be generated now.");
                     mainCamera = new GameObject("Main Camera", typeof(Camera)) { tag = "MainCamera" }.GetComponent<Camera>();
                 }
 
