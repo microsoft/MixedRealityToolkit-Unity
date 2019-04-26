@@ -131,26 +131,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public void AddHandJointKeys(float time, Handedness handedness, TrackedHandJoint joint, Vector3 jointPosition)
+        public void AddHandJointKeys(float time, Handedness handedness, TrackedHandJoint joint, Vector3 jointPosition, float positionThreshold)
         {
             if (handedness == Handedness.Left)
             {
-                AddHandJointKeys(time, joint, jointPosition, handJointCurvesLeft);
+                AddHandJointKeys(time, joint, jointPosition, handJointCurvesLeft, positionThreshold);
             }
             else if (handedness == Handedness.Right)
             {
-                AddHandJointKeys(time, joint, jointPosition, handJointCurvesRight);
+                AddHandJointKeys(time, joint, jointPosition, handJointCurvesRight, positionThreshold);
             }
         }
 
-        public void AddHandDataKeys(float time, Handedness handedness, SimulatedHandData data)
+        public void AddHandDataKeys(float time, Handedness handedness, SimulatedHandData data, float positionThreshold, float rotationThreshold)
         {
             if (handedness == Handedness.Left)
             {
                 AddHandStateKeys(time, data.IsTracked, data.IsPinching, handTrackedCurveLeft, handPinchCurveLeft);
                 for (int i = 0; i < jointCount; ++i)
                 {
-                    AddHandJointKeys(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesLeft);
+                    AddHandJointKeys(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesLeft, positionThreshold);
                 }
             }
             else if (handedness == Handedness.Right)
@@ -158,50 +158,129 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 AddHandStateKeys(time, data.IsTracked, data.IsPinching, handTrackedCurveRight, handPinchCurveRight);
                 for (int i = 0; i < jointCount; ++i)
                 {
-                    AddHandJointKeys(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesRight);
+                    AddHandJointKeys(time, (TrackedHandJoint)i, data.Joints[i], handJointCurvesRight, positionThreshold);
                 }
             }
         }
 
         private void AddHandStateKeys(float time, bool isTracked, bool isPinching, AnimationCurve trackedCurve, AnimationCurve pinchCurve)
         {
-            AddBoolKey(trackedCurve, time, isTracked);
-            AddBoolKey(pinchCurve, time, isPinching);
+            AddBoolKeyFiltered(trackedCurve, time, isTracked);
+            AddBoolKeyFiltered(pinchCurve, time, isPinching);
 
             duration = Mathf.Max(duration, time);
         }
 
-        private void AddHandJointKeys(float time, TrackedHandJoint joint, Vector3 jointPosition, AnimationCurve[] jointCurves)
+        private void AddHandJointKeys(float time, TrackedHandJoint joint, Vector3 jointPosition, AnimationCurve[] jointCurves, float positionThreshold)
         {
             int curveIndex = (int)joint * 3;
-            jointCurves[curveIndex + 0].AddKey(time, jointPosition.x);
-            jointCurves[curveIndex + 1].AddKey(time, jointPosition.y);
-            jointCurves[curveIndex + 2].AddKey(time, jointPosition.z);
+            AddFloatKeyFiltered(jointCurves[curveIndex + 0], time, jointPosition.x, positionThreshold);
+            AddFloatKeyFiltered(jointCurves[curveIndex + 1], time, jointPosition.y, positionThreshold);
+            AddFloatKeyFiltered(jointCurves[curveIndex + 2], time, jointPosition.z, positionThreshold);
 
             duration = Mathf.Max(duration, time);
         }
 
-        public void AddCameraPoseKeys(float time, MixedRealityPose cameraPose)
+        public void AddCameraPoseKeys(float time, MixedRealityPose cameraPose, float positionThreshold, float rotationThreshold)
         {
-            cameraPositionCurves[0].AddKey(time, cameraPose.Position.x);
-            cameraPositionCurves[1].AddKey(time, cameraPose.Position.y);
-            cameraPositionCurves[2].AddKey(time, cameraPose.Position.z);
+            AddFloatKeyFiltered(cameraPositionCurves[0], time, cameraPose.Position.x, positionThreshold);
+            AddFloatKeyFiltered(cameraPositionCurves[1], time, cameraPose.Position.y, positionThreshold);
+            AddFloatKeyFiltered(cameraPositionCurves[2], time, cameraPose.Position.z, positionThreshold);
 
-            cameraRotationCurves[0].AddKey(time, cameraPose.Rotation.x);
-            cameraRotationCurves[1].AddKey(time, cameraPose.Rotation.y);
-            cameraRotationCurves[2].AddKey(time, cameraPose.Rotation.z);
-            cameraRotationCurves[3].AddKey(time, cameraPose.Rotation.w);
+            AddFloatKeyFiltered(cameraRotationCurves[0], time, cameraPose.Rotation.x, rotationThreshold);
+            AddFloatKeyFiltered(cameraRotationCurves[1], time, cameraPose.Rotation.y, rotationThreshold);
+            AddFloatKeyFiltered(cameraRotationCurves[2], time, cameraPose.Rotation.z, rotationThreshold);
+            AddFloatKeyFiltered(cameraRotationCurves[3], time, cameraPose.Rotation.w, rotationThreshold);
 
             duration = Mathf.Max(duration, time);
+        }
+
+        /// Add a float value to an animation curve
+        private static int AddFloatKey(AnimationCurve curve, float time, float value)
+        {
+            return curve.AddKey(time, value);
+        }
+
+        /// Add a float value to an animation curve
+        /// Keys are only added if the value changes sufficiently
+        private static int AddFloatKeyFiltered(AnimationCurve curve, float time, float value, float epsilon)
+        {
+            int insertAfter = FindKeyframeInterval(curve, time);
+            if (insertAfter >= 0 && Mathf.Abs(curve.keys[insertAfter].value - value) < epsilon)
+            {
+                // Value unchanged from previous key, ignore
+                return -1;
+            }
+
+            return curve.AddKey(time, value);
         }
 
         /// Utility function that creates a non-interpolated keyframe suitable for boolean values
         private static int AddBoolKey(AnimationCurve curve, float time, bool value)
         {
+            float fvalue = value ? 1.0f : 0.0f;
             // Set tangents and weights such than the the input value is cut off and out tangent is constant.
-            var keyframe = new Keyframe(time, value ? 1.0f : 0.0f, 0.0f, 0.0f, 0.0f, 1.0e6f);
+            var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, 1.0e6f);
             keyframe.weightedMode = WeightedMode.Both;
+
             return curve.AddKey(keyframe);
+        }
+
+        /// Utility function that creates a non-interpolated keyframe suitable for boolean values
+        /// Keys are only added if the value changes
+        private static int AddBoolKeyFiltered(AnimationCurve curve, float time, bool value)
+        {
+            float fvalue = value ? 1.0f : 0.0f;
+            // Set tangents and weights such than the the input value is cut off and out tangent is constant.
+            var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, 1.0e6f);
+            keyframe.weightedMode = WeightedMode.Both;
+
+            int insertAfter = FindKeyframeInterval(curve, time);
+            if (insertAfter >= 0 && curve.keys[insertAfter].value == fvalue)
+            {
+                // Value unchanged from previous key, ignore
+                return -1;
+            }
+
+            int insertBefore = insertAfter + 1;
+            if (insertBefore < curve.keys.Length && curve.keys[insertBefore].value == fvalue)
+            {
+                // Same value as next key, replace next key
+                return curve.MoveKey(insertBefore, keyframe);
+            }
+
+            return curve.AddKey(keyframe);
+        }
+
+        /// <summary>
+        /// Find an index i in the sorted events list, such that events[i].time <= time < events[i+1].time.
+        /// </summary>
+        /// <returns>
+        /// 0 <= i < eventCount if a full interval could be found.
+        /// -1 if time is less than the first event time.
+        /// eventCount-1 if time is greater than the last event time.
+        /// </returns>
+        /// <remarks>
+        /// Uses binary search.
+        /// </remarks>
+        private static int FindKeyframeInterval(AnimationCurve curve, float time)
+        {
+            var keys = curve.keys;
+            int lowIdx = -1;
+            int highIdx = keys.Length;
+            while (lowIdx < highIdx - 1)
+            {
+                int midIdx = (lowIdx + highIdx) >> 1;
+                if (time >= keys[midIdx].time)
+                {
+                    lowIdx = midIdx;
+                }
+                else
+                {
+                    highIdx = midIdx;
+                }
+            }
+            return lowIdx;
         }
 
         public void AddMarker(InputAnimationMarker marker)

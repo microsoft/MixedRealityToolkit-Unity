@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void Update()
         {
             currentTime += Time.deltaTime;
-            InputAnimationUtils.RecordKeyframe(inputAnimation, currentTime);
+            InputAnimationUtils.RecordKeyframe(inputAnimation, currentTime, settings);
         }
     }
 

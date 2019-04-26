@@ -15,18 +15,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static IInputSimulationService inputSimService = null;
         private static IInputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
 
-        public static void RecordKeyframe(InputAnimation animation, float time)
+        public static void RecordKeyframe(InputAnimation animation, float time, InputRecordingSettings settings)
         {
-            RecordInputHandData(animation, time, Handedness.Left);
-            RecordInputHandData(animation, time, Handedness.Right);
+            RecordInputHandData(animation, time, Handedness.Left, settings);
+            RecordInputHandData(animation, time, Handedness.Right, settings);
             if (CameraCache.Main)
             {
                 var cameraPose = new MixedRealityPose(CameraCache.Main.transform.position, CameraCache.Main.transform.rotation);
-                animation.AddCameraPoseKeys(time, cameraPose);
+                animation.AddCameraPoseKeys(time, cameraPose, settings.CameraPositionThreshold, settings.CameraRotationThreshold);
             }
         }
 
-        public static bool RecordInputHandData(InputAnimation animation, float time, Handedness handedness)
+        public static bool RecordInputHandData(InputAnimation animation, float time, Handedness handedness, InputRecordingSettings settings)
         {
             var hand = HandJointUtils.FindHand(handedness);
             if (hand == null)
@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (hand.TryGetJoint((TrackedHandJoint)i, out MixedRealityPose jointPose))
                     {
-                        animation.AddHandJointKeys(time, handedness, (TrackedHandJoint)i, jointPose.Position);
+                        animation.AddHandJointKeys(time, handedness, (TrackedHandJoint)i, jointPose.Position, settings.JointPositionThreshold);
                     }
                 }
             }

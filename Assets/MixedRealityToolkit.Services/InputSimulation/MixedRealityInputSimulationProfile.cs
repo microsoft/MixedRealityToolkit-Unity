@@ -13,21 +13,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class InputRecordingSettings
     {
         [SerializeField]
-        [Tooltip("Minimum time between keyframes")]
-        private float epsilonTime = 0.05f;
-        public float EpsilonTime => epsilonTime;
-        [SerializeField]
         [Tooltip("Minimum movement of hand joints to record a keyframe")]
-        private float epsilonJointPositions = 0.001f;
-        public float EpsilonJointPositions => epsilonJointPositions;
+        private float jointPositionThreshold = 0.001f;
+        public float JointPositionThreshold => jointPositionThreshold;
         [SerializeField]
         [Tooltip("Minimum movement of the camera to record a keyframe")]
-        private float epsilonCameraPosition = 0.05f;
-        public float EpsilonCameraPosition => epsilonCameraPosition;
+        private float cameraPositionThreshold = 0.002f;
+        public float CameraPositionThreshold => cameraPositionThreshold;
         [SerializeField]
         [Tooltip("Minimum rotation angle of the camera to record a keyframe")]
-        private float epsilonCameraRotation = Mathf.Deg2Rad * 2.0f;
-        public float EpsilonCameraRotation => epsilonCameraRotation;
+        private float cameraRotationThreshold = Mathf.Deg2Rad * 0.5f;
+        public float CameraRotationThreshold => cameraRotationThreshold;
     }
 
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Simulated Input Profile", fileName = "MixedRealityInputSimulationProfile", order = (int)CreateProfileMenuItemIndices.InputSimulation)]
