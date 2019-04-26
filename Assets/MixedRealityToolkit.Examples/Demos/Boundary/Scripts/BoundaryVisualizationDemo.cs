@@ -38,7 +38,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             get
             {
-                MixedRealityServiceRegistry.TryGetService<IMixedRealityBoundarySystem>(out boundarySystem);
+                if (boundarySystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityBoundarySystem>(out boundarySystem);
+                }
                 return boundarySystem;
             }
         }
