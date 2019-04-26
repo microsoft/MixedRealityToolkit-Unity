@@ -197,7 +197,13 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
-                // Use the first service found
+                if (services.Count > 1)
+                {
+                    Debug.LogWarning("Multiple instances of the requested service were found. Please re-call this method and provide a value for the name parameter.");
+                    serviceInstance = default(T);
+                    registrar = null;
+                    return false;
+                }
                 registryIndex = 0;
             }
 
