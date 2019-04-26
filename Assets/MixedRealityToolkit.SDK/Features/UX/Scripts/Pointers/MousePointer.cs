@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Vector3 mouseDeltaRotation = Vector3.zero;
                     mouseDeltaRotation.x += eventData.InputData.x;
                     mouseDeltaRotation.y += eventData.InputData.y;
-                    UpdateMouseRotation(mouseDeltaRotation);
+                    UpdateMouseRotation(mouseDeltaRotation * speed);
                 }
             }
         }
