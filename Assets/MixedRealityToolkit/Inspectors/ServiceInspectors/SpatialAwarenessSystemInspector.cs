@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (observerIndex >= observerColors.Length)
             {
-                observerIndex -= observerColors.Length;
+                observerIndex = 0;
             }
 
             return Color.Lerp(Color.white, observerColors[observerIndex], 0.35f);
