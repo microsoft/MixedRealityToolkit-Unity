@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            int numPointersFound = 0;
+            bool pointerFound = false;
             foreach (IMixedRealityPointer pointer in focusProvider.GetPointers<IMixedRealityPointer>())
             {
                 GUI.color = pointer.IsInteractionEnabled ? enabledColor : disabledColor;
@@ -47,10 +47,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 EditorGUILayout.EndVertical();
 
-                numPointersFound++;
+                pointerFound = true;
             }
 
-            if (numPointersFound == 0)
+            if (!pointerFound)
             {
                 EditorGUILayout.LabelField("(None found)", EditorStyles.miniLabel);
             }
