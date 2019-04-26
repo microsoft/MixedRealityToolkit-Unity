@@ -41,6 +41,13 @@ MRTK-Unity provides a set of foundational components and features to accelerate 
 - Solver and Interactions
 - Spatial Understanding
 - Diagnostic Tool
+- MRTK Standard Shader
+
+| ![](Documentation/Images/MRTK170802_Short_17.png) Input System<br/>&nbsp;  | ![](Documentation/Images/MRTK170802_Short_17.png) Hand Tracking (HoloLens 2) | ![](Documentation/Images/MRTK170802_Short_17.png) Eye Tracking (HoloLens 2) | ![](Documentation/Images/MRTK170802_Short_17.png) Voice Commanding | ![](Documentation/Images/MRTK170802_Short_17.png) Gaze + Select (HoloLens) | ![](Documentation/Images/MRTK170802_Short_17.png) Teleportation<br/>&nbsp; |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| ![](Documentation/Images/MRTK170802_Short_17.png) UI Controls<br/>&nbsp; | ![](Documentation/Images/MRTK170802_Short_17.png) Solver and Interactions | ![](Documentation/Images/MRTK170802_Short_17.png) Controller Visualization | ![](Documentation/Images/MRTK170802_Short_17.png) Spatial Understanding | ![](Documentation/Images/MRTK170802_Short_17.png) Diagnostic Tool<br/>&nbsp; | ![](Documentation/Images/MRTK170802_Short_17.png) MRTK Standard Shader |
+
+
 
 # Getting Started with MRTK 
 Please check out the [Getting Started Guide](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/GettingStartedWithTheMRTK.html)
