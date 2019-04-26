@@ -81,14 +81,6 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Detaches all child objects from the playspace's heirarchy.
-        /// </summary>
-        public static void DetachChildren()
-        {
-            Transform.DetachChildren();
-        }
-
-        /// <summary>
         /// Transforms a position from local to world space.
         /// </summary>
         /// <param name="localPosition">The position to be transformed.</param>
