@@ -129,10 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Start();
 
-            if (MixedRealityToolkit.InputSystem == null)
-            {
-                await WaitUntilInputSystemValid;
-            }
+            await EnsureInputSystemValid();
 
             // We've been destroyed during the await.
             if (this == null)
@@ -345,7 +342,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual void OnPreSceneQuery() { }
 
         /// <inheritdoc />
-        public virtual void OnPostSceneQuery() { }
+        public virtual void OnPostSceneQuery()
+        {
+            if (IsSelectPressed)
+            {
+                MixedRealityToolkit.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+            }
+        }
 
         ///  <inheritdoc />
         public virtual void OnPreCurrentPointerTargetChange() { }

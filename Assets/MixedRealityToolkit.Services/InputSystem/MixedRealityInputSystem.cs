@@ -878,6 +878,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion Pointer Down
 
+        #region Pointer Dragged
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnPointerDraggedEventHandler =
+            delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<MixedRealityPointerEventData>(eventData);
+                handler.OnPointerDragged(casted);
+            };
+
+        /// <inheritdoc />
+        public void RaisePointerDragged(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
+        {
+            pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
+
+            HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler);
+        }
+
+        #endregion Pointer Dragged
+
         #region Pointer Click
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnInputClickedEventHandler =
