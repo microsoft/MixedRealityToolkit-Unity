@@ -705,19 +705,6 @@ MonoBehaviour:
     handedness: 7
     interactions:
     - id: 0
-      description: Spatial Mouse Position
-      axisType: 7
-      inputType: 3
-      inputAction:
-        id: 4
-        description: Pointer Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
       description: Mouse Delta Position
       axisType: 4
       inputType: 4
@@ -730,7 +717,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-    - id: 2
+    - id: 1
       description: Mouse Scroll Position
       axisType: 4
       inputType: 50
@@ -743,7 +730,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-    - id: 3
+    - id: 2
       description: Left Mouse Button
       axisType: 2
       inputType: 7
@@ -756,7 +743,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-    - id: 4
+    - id: 3
       description: Right Mouse Button
       axisType: 2
       inputType: 7
@@ -769,7 +756,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-    - id: 5
+    - id: 4
       description: Mouse Button 2
       axisType: 2
       inputType: 7
@@ -782,7 +769,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-    - id: 6
+    - id: 5
       description: Mouse Button 3
       axisType: 2
       inputType: 7
@@ -795,7 +782,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-    - id: 7
+    - id: 6
       description: Mouse Button 4
       axisType: 2
       inputType: 7
@@ -808,7 +795,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-    - id: 8
+    - id: 7
       description: Mouse Button 5
       axisType: 2
       inputType: 7
@@ -821,7 +808,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-    - id: 9
+    - id: 8
       description: Mouse Button 6
       axisType: 2
       inputType: 7
@@ -830,6 +817,32 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 329
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 9
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 10
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0

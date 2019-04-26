@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 isSimulatingRight = false;
             }
-
+       
             Vector3 mouseDelta = (lastMousePosition.HasValue ? UnityEngine.Input.mousePosition - lastMousePosition.Value : Vector3.zero);
             mouseDelta.z += UnityEngine.Input.GetAxis("Mouse ScrollWheel") * profile.HandDepthMultiplier;
             float rotationDelta = profile.HandRotationSpeed * Time.deltaTime;
