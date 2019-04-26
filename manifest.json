@@ -2213,6 +2213,138 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_ControllerVisualization.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_ControllerVisualization.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_Diagnostics.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_Diagnostics.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_EyeTracking.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_EyeTracking.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_GazeSelect.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_GazeSelect.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_HandTracking.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_HandTracking.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_InputSystem.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_InputSystem.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_Solver.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_Solver.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_SpatialUnderstanding.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_SpatialUnderstanding.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_StandardShader.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_StandardShader.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_Teleportation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_Teleportation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_UIControls.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_UIControls.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_VoiceCommand.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_VoiceCommand.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MRTK_Logo_Rev.png",
       "output": {
         "resource": {
@@ -3684,7 +3816,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "lLkm7fr2LEUGaeXCHSNdnQ=="
+          "hash": "YCtcFzYFK7DUo03LfTU/YA=="
         }
       },
       "is_incremental": false,
@@ -14122,16 +14254,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 863,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 90,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 863,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
