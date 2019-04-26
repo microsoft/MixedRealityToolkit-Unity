@@ -84,7 +84,7 @@ Specifies whether smoothing is active.
 Amount of smoothing to apply to the movement, scale, rotation. Smoothing of 0 means no smoothing. Max value means no change to value.
 
 ## Events ##
-Manupulation handler provides the following events:
+Manipulation handler provides the following events:
 
 * *OnManipulationStarted*: Fired when manipulation starts.
 * *OnManipulationEnded*: Fires when the manipulation ends.
