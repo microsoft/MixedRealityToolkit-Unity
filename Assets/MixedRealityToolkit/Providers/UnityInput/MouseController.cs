@@ -66,26 +66,29 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             for (int i = 0; i < Interactions.Length; i++)
             {
-
+                
 
                 if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
                 {
-                    if (InputSource.Pointers[0].BaseCursor != null)
+                    // add mouse delta as rotation
+                    var mouseDeltaRotation = Vector3.zero;
+                    mouseDeltaRotation.x += -UInput.GetAxis("Mouse Y");
+                    mouseDeltaRotation.y += UInput.GetAxis("Mouse X");
+                    IMixedRealityMousePointer mousePointer = (IMixedRealityMousePointer)InputSource.Pointers[0];
+                    if (mousePointer != null)
                     {
-                        // add mouse delta as rotation
-                        var mouseDeltaRotation = Vector3.zero;
-                        mouseDeltaRotation.x += -UInput.GetAxis("Mouse Y");
-                        mouseDeltaRotation.y += UInput.GetAxis("Mouse X");
-
-                        MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
-                        controllerPose.Rotation = Quaternion.Euler(mouseDeltaRotation);
-                        Interactions[i].PoseData = controllerPose;
-
-                        if (Interactions[i].Changed)
-                        {
-                            MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
-                        }
+                        mouseDeltaRotation *= mousePointer.Speed;
                     }
+
+                    MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
+                    controllerPose.Rotation = Quaternion.Euler(mouseDeltaRotation);
+                    Interactions[i].PoseData = controllerPose;
+
+                    if (Interactions[i].Changed)
+                    {
+                        MixedRealityToolkit.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
+                    }
+
                 }
 
 
