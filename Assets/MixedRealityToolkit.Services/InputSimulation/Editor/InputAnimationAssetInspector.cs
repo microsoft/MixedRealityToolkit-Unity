@@ -159,9 +159,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             DestroyImmediate(recorder);
                         }
 
-                        director = ownerObject.AddComponent<PlayableDirector>();
-                        director.playOnAwake = false;
-                        director.playableAsset = inputAnimation;
+                        if (director == null)
+                        {
+                            director = ownerObject.AddComponent<PlayableDirector>();
+                            director.playOnAwake = false;
+                            director.playableAsset = inputAnimation;
+                        }
                         break;
                 }
             }
