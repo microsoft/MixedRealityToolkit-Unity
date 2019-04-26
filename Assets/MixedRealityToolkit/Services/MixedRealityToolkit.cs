@@ -600,8 +600,15 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void InitializeInstance()
         {
+            if (newInstanceBeingInitialized)
+            {
+                return;
+            }
+
             lock (initializedLock)
             {
+                newInstanceBeingInitialized = true;
+
                 gameObject.SetActive(true);
 
                 Application.quitting += () =>
@@ -644,14 +651,7 @@ namespace Microsoft.MixedReality.Toolkit
                 newInstanceBeingInitialized = false;
             }
         }
-
-        /// <summary>
-        /// Flag to search for instance the first time Instance property is called.
-        /// Subsequent attempts will generally switch this flag false, unless the instance was destroyed.
-        /// </summary>
-        // ReSharper disable once StaticMemberInGenericType
-        private static bool searchForInstance = true;
-
+        
         /// <summary>
         /// Expose an assertion whether the MixedRealityToolkit class is initialized.
         /// </summary>
