@@ -45,16 +45,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         protected virtual void Awake()
         {
-            string assetPath = $"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/StandardAssets/Textures";
+            string assetPath = "StandardAssets/Textures";
 
             if (logoLightTheme == null)
             {
-                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{assetPath}/MRTK_Logo_Black.png", typeof(Texture2D));
+                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_Logo_Black.png"), typeof(Texture2D));
             }
 
             if (logoDarkTheme == null)
             {
-                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath($"{assetPath}/MRTK_Logo_White.png", typeof(Texture2D));
+                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath($"{assetPath}/MRTK_Logo_White.png"), typeof(Texture2D));
             }
         }
 
@@ -77,12 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 header = target.ToString();
 
             EditorGUI.LabelField(labelRect, header, EditorStyles.boldLabel);
-
-            /*GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            GUILayout.Label(EditorGUIUtility.isProSkin ? logoDarkTheme : logoLightTheme, GUILayout.MaxHeight(128f));
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();*/
         }
 
         public override void OnInspectorGUI()
