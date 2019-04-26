@@ -165,13 +165,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void AddHandStateKeys(float time, bool isTracked, bool isPinching, AnimationCurve trackedCurve, AnimationCurve pinchCurve)
         {
-            int key;
-
-            key = trackedCurve.AddKey(time, isTracked ? 1.0f : 0.0f);
-            AnimationUtility.SetKeyBroken(trackedCurve, key, true);
-
-            key = pinchCurve.AddKey(time, isPinching ? 1.0f : 0.0f);
-            AnimationUtility.SetKeyBroken(pinchCurve, key, true);
+            AddBoolKey(trackedCurve, time, isTracked);
+            AddBoolKey(pinchCurve, time, isPinching);
 
             duration = Mathf.Max(duration, time);
         }
@@ -198,6 +193,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             cameraRotationCurves[3].AddKey(time, cameraPose.Rotation.w);
 
             duration = Mathf.Max(duration, time);
+        }
+
+        /// Utility function that creates a non-interpolated keyframe suitable for boolean values
+        private static int AddBoolKey(AnimationCurve curve, float time, bool value)
+        {
+            // Set tangents and weights such than the the input value is cut off and out tangent is constant.
+            var keyframe = new Keyframe(time, value ? 1.0f : 0.0f, 0.0f, 0.0f, 0.0f, 1.0e6f);
+            keyframe.weightedMode = WeightedMode.Both;
+            return curve.AddKey(keyframe);
         }
 
         public void AddMarker(InputAnimationMarker marker)
